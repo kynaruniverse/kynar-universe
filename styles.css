@@ -305,4 +305,9 @@ a {
   .ku-email-form {
   margin-top: 2rem;
   }
+  .ku-email-note {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
 }
