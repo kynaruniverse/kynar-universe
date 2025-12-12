@@ -50,7 +50,12 @@ main {
 /* Header */
 .ku-header {
   position: relative;
-  background: linear-gradient(to bottom, rgba(128,0,32,0.25), #ffffff);
+  background: linear-gradient(
+    to bottom,
+    #800020 0%,        /* deep burgundy at the top */
+    #800020 55%,       /* hold burgundy */
+    #50c878 100%       /* fade into emerald */
+  );
   border-bottom: 1px solid var(--border-subtle);
   z-index: 10;
 }
