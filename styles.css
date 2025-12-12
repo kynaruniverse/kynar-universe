@@ -52,10 +52,9 @@ main {
   position: relative;
   background: linear-gradient(
     to right,
-    #006400 0%,    /* dark/forest green */
-    #008000 35%,   /* standard green */
-    #00a86b 65%,   /* jade green */
-    #50c878 100%   /* your emerald variable value */
+    #064e3b 0%,
+    #047857 50%,
+    #059669 100%
   );
   border-bottom: 1px solid var(--border-subtle);
   z-index: 10;
