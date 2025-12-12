@@ -15,7 +15,9 @@
   <header class="ku-header">
     <div class="ku-header-inner">
       <a href="index.html" class="ku-brand">
-        <span class="ku-brand-mark">IV</span>
+        <button class="ku-brand-mark" id="ku-menu-toggle" aria-label="Open menu">
+  ☰
+</button>
         <span class="ku-brand-text">
           <span class="ku-brand-name">The Innovator's Vault</span>
           <span class="ku-brand-tagline">Part of Kynar Universe</span>
@@ -28,6 +30,13 @@
         <a href="index.html#about">About</a>
       </nav>
     </div>
+    <div class="ku-menu-dropdown" id="ku-menu-dropdown">
+  <a href="index.html">Home</a>
+  <a href="products.html">Marketplace</a>
+  <a href="freebies.html">Free kit</a>
+  <a href="blog.html">Journal</a>
+  <a href="index.html#about">About</a>
+</div>
   </header>
 
   <main>
@@ -105,5 +114,22 @@
   <footer class="ku-footer">
     <p>© The Innovator's Vault • Part of Kynar Universe. Digital tools for utility and creative work. 2025</p>
   </footer>
+  <script>
+  const toggle = document.getElementById('ku-menu-toggle');
+  const menu = document.getElementById('ku-menu-dropdown');
+
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const isOpen = menu.style.display === 'flex';
+      menu.style.display = isOpen ? 'none' : 'flex';
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && e.target !== toggle) {
+        menu.style.display = 'none';
+      }
+    });
+  }
+</script>
 </body>
 </html>
