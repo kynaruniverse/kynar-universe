@@ -124,7 +124,7 @@ main {
 .ku-nav a {
   flex: 0 0 auto;
   padding: 0.3rem 0.75rem;
-  border-radius: 999px;
+  border-radius: 4px;
   background: rgba(255,255,255,0.12);   /* subtle pills on green */
   color: #ffffff;
   font-weight: 500;
