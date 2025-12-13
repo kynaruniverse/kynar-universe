@@ -67,7 +67,7 @@ main {
   left: 0;
   width: 100%;
   background: var(--header-strip);
-  z-index: 40;
+  z-index: 50;
 }
 
 .ku-topbar-inner {
@@ -151,7 +151,7 @@ main {
   left: 0;
   width: 100%;
   background: var(--nav-gold);
-  z-index: 30;
+  z-index: 60;
 }
 
 .ku-nav-main {
@@ -183,7 +183,7 @@ main {
   width: 100%;
   background: var(--header-strip);
   padding: 0.4rem 0;
-  z-index: 20;
+  z-index: 50;
   display: flex;
   justify-content: center;
   align-items: center;
