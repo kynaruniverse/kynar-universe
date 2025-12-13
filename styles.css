@@ -57,7 +57,7 @@ a {
 
 /* Layout helpers */
 main {
-  padding-top: 8.5rem; /* topbar + nav + search strip */
+  padding-top: 9.5rem; /* topbar + nav + search strip */
 }
 
 /* Top brand strip */
@@ -178,13 +178,16 @@ main {
 /* Teal search strip */
 .ku-search-strip {
   position: fixed;
-  top: 2.4rem + 2.3rem; /* fallback if calc not supported */
-  top: calc(2.4rem + 2.3rem);
+  top: 3.8rem;
   left: 0;
   width: 100%;
   background: var(--header-strip);
   padding: 0.4rem 0;
   z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .ku-search-strip-inner {
