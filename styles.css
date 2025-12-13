@@ -3,21 +3,22 @@
   --bg-alt: #f5f5dc;
   --surface: #ffffff;
   --surface-soft: #f5f5dc;
-  --border-subtle: #dddddd;
-  --text-main: #333333;
-  --text-soft: #555555;
-  --text-muted: #888888;
-  --forest: #006400;
-  --gold: #ffd700;
-  --emerald: #50c878;
-  --burgundy: #800020;
+  --border-subtle: #d6c7a3;
+  --text-main: #2d1b1b;
+  --text-soft: #4b3b35;
+  --text-muted: #8a7b73;
 
-  /* Amazon-style header colors */
-  --amazon-dark: #131921;
-  --amazon-nav-strip: #232f3e;
-  --amazon-search-bg: #feffff;
-  --amazon-search-btn: #febd69;
-  --amazon-text-white: #ffffff;
+  /* Brand / mockup colors */
+  --header-strip: #dde2ea;       /* light grey-blue top strip */
+  --nav-gold: #b28a3b;           /* big nav + hero gold */
+  --nav-gold-dark: #8c6a2b;
+  --teal-deep: #0c5b53;          /* search bar + biz outlines */
+  --teal-soft: #d4ebe6;          /* biz tiles bg */
+  --rose-soft: #f3c8cf;          /* creative tiles bg */
+  --rose-outline: #b45468;
+  --teal-outline: #2a7a73;
+  --burgundy: #800020;
+  --accent-red: #b53232;         /* subscribe button */
 }
 
 /* Reset */
@@ -56,212 +57,186 @@ a {
 
 /* Layout helpers */
 main {
-  padding-top: 5rem;
+  padding-top: 8.5rem; /* topbar + nav + search strip */
 }
 
-/* Header */
-.ku-header {
+/* Top brand strip */
+.ku-topbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background: var(--amazon-dark);
-  border-bottom: none;
-  z-index: 10;
+  background: var(--header-strip);
+  z-index: 40;
 }
 
-.ku-header-inner {
+.ku-topbar-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0.5rem 1.25rem;
+  padding: 0.4rem 1.25rem;
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 1rem;
-  height: 60px;
 }
 
-.ku-brand {
+.ku-topbar-menu {
   display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--amazon-text-white);
-  text-decoration: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  border: none;
+  background: transparent;
   padding: 0;
-  flex-shrink: 0;
-}
-
-/* "All" button in the nav strip */
-.ku-brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  padding: 0.35rem 0.6rem;
-  border-radius: 2px;
-  background: var(--amazon-nav-strip);
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.85rem;
-  border: 1px solid transparent;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.ku-brand-mark i {
-  font-size: 0.9rem;
+.ku-topbar-menu span {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: #7a5b32;
 }
 
-.ku-brand-mark:hover {
-  outline: 1px solid var(--amazon-text-white);
-}
-
-.ku-brand-text {
+.ku-topbar-logo {
+  text-decoration: none;
+  color: #000000;
   display: flex;
   flex-direction: column;
-}
-
-.ku-brand-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--amazon-text-white);
-}
-
-.ku-brand-tagline {
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* --- Search bar --- */
-.ku-header-search {
-  flex-grow: 1;
-  display: flex;
-  max-width: 600px;
-  position: relative;
-  height: 40px;
-}
-
-.ku-search-input {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 4px 0 0 4px;
-  width: 100%;
-  background-color: var(--amazon-search-bg);
-  outline: none;
-  transition: box-shadow 0.2s;
-}
-
-.ku-search-input:focus {
-  box-shadow: 0 0 0 3px #f90;
-  z-index: 1;
-}
-
-.ku-search-button {
-  background: var(--amazon-search-btn);
-  color: var(--amazon-dark);
-  width: 45px;
-  border: none;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.ku-search-button i {
-  font-size: 1rem;
-}
-
-/* --- Account / cart --- */
-.ku-account-links {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  color: var(--amazon-text-white);
-  flex-shrink: 0;
-}
-
-.ku-account-link {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.75rem;
-  white-space: nowrap;
-}
-
-.ku-account-link span:first-child {
-  font-size: 0.7rem;
   line-height: 1;
 }
 
-.ku-account-link span:last-child {
-  font-size: 0.9rem;
-  font-weight: 700;
-  line-height: 1.2;
+.ku-logo-word {
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  font-size: 1.1rem;
 }
 
-.ku-cart-link {
-  display: flex;
-  align-items: flex-end;
-  font-weight: 700;
-  font-size: 0.9rem;
-  gap: 0.25rem;
+.ku-logo-sub {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
 }
 
-.ku-cart-link i {
-  font-size: 1.2rem;
+.ku-topbar-tagline {
+  margin-left: 1.5rem;
+  font-size: 0.85rem;
+  color: #2b4a3f;
+  flex-grow: 1;
 }
 
-.ku-header-nav-wrap {
+.ku-topbar-signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.4rem 0.4rem 0 0;
+  background: #b84c55;
+  color: #ffffff;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.ku-signin-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: #0f5b55;
+}
+
+/* Gold nav bar */
+.ku-header {
+  position: fixed;
+  top: 2.4rem; /* height of topbar */
+  left: 0;
   width: 100%;
-  background: var(--amazon-nav-strip);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--nav-gold);
+  z-index: 30;
 }
 
-.ku-nav {
+.ku-nav-main {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0.45rem 1.25rem;
   display: flex;
-  gap: 0.75rem;
-  font-size: 0.85rem;
-  overflow-x: auto;
-  padding: 0 1.25rem;
-  scrollbar-width: none;
-  background: transparent;
-  border-radius: 0;
+  gap: 2rem;
+  font-size: 0.9rem;
+}
+
+.ku-nav-main a {
+  text-decoration: none;
+  color: #1b140a;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-weight: 600;
+}
+
+.ku-nav-main a:hover {
+  color: #ffffff;
+}
+
+/* Teal search strip */
+.ku-search-strip {
+  position: fixed;
+  top: 2.4rem + 2.3rem; /* fallback if calc not supported */
+  top: calc(2.4rem + 2.3rem);
+  left: 0;
   width: 100%;
-  height: 39px;
+  background: var(--header-strip);
+  padding: 0.4rem 0;
+  z-index: 20;
+}
+
+.ku-search-strip-inner {
+  max-width: 1200px;
+}
+
+/* we will wrap contents later; for now style direct children */
+.ku-search-strip {
+  display: flex;
+  justify-content: center;
   align-items: center;
+  gap: 0.75rem;
 }
 
-.ku-nav::-webkit-scrollbar {
-  display: none;
+.ku-search-pill {
+  flex: 1;
+  max-width: 720px;
+  border-radius: 1.4rem;
+  border: none;
+  background: var(--teal-deep);
+  color: #e9f3f1;
+  padding: 0.7rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
 }
 
-.ku-nav a {
-  flex: 0 0 auto;
-  padding: 0.25rem 0.5rem;
-  border-radius: 2px;
-  background: transparent;
-  color: #ffffff;
-  font-weight: 500;
-  letter-spacing: 0;
-  text-transform: capitalize;
-  white-space: nowrap;
-  transition: background 0.2s ease, color 0.2s ease;
+.ku-search-pill i {
+  font-size: 1rem;
 }
 
-.ku-nav a:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+.ku-subscribe-btn {
+  padding: 0.6rem 1.1rem;
+  border-radius: 0.6rem;
+  background: #111111;
+  border: 2px solid var(--accent-red);
+  color: var(--accent-red);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  text-decoration: none;
 }
 
+/* Dropdown menu using new toggle button */
 .ku-menu-dropdown {
   position: absolute;
-  top: 99px;
+  top: 2.4rem; /* drop from topbar on mobile when needed */
   left: 1.25rem;
   background: #ffffff;
   border-radius: 0.75rem;
@@ -272,7 +247,7 @@ main {
   flex-direction: column;
   gap: 0.25rem;
   min-width: 180px;
-  z-index: 40;
+  z-index: 50;
 }
 
 .ku-menu-dropdown a {
@@ -282,7 +257,7 @@ main {
 }
 
 .ku-menu-dropdown a:hover {
-  color: var(--forest);
+  color: var(--teal-deep);
 }
 
 /* Hero */
@@ -703,49 +678,33 @@ main {
 }
 
 @media (max-width: 720px) {
-  .ku-header-inner {
+  .ku-topbar-inner {
     flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 0.75rem;
-    height: auto;
-    padding-bottom: 0.5rem;
-  }
-    /* --- Mobile Layout Adjustments --- */
-
-  .ku-header-inner .ku-brand {
-    padding-top: 0.2rem;
-    padding-left: 0.5rem;
-    order: 2;
+    row-gap: 0.3rem;
   }
 
-  .ku-header-search {
-    order: 3;
+  .ku-topbar-tagline {
+    flex-basis: 100%;
+    margin-left: 0;
+    font-size: 0.8rem;
+  }
+
+  .ku-search-strip {
+    flex-direction: column;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .ku-search-pill {
     width: 100%;
-    max-width: 100%;
-    margin: 0.2rem 0.5rem 0.5rem 0.5rem;
   }
 
-  .ku-account-links {
-    display: none; 
-
+  .ku-subscribe-btn {
+    width: 100%;
+    text-align: center;
   }
 
   main {
-    padding-top: 10rem; 
-  }
-
-  /* 4.Nav Strip alignment */
-  .ku-header-nav-wrap {
-    margin: 0;
-  }
-
-  .ku-nav {
-        padding: 0 0.5rem;
-    overflow-x: auto;
-  }
-
-  .ku-brand-mark {
-    margin-right: 0.5rem;
+    padding-top: 10rem; /* allow for taller stacked header */
   }
 }
 
