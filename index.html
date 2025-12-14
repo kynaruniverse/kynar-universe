@@ -6,27 +6,28 @@
     <meta name="description" content="KYNAR Universe: The Sole Creator Marketplace for authentic digital goods, including e-books, art, templates, and productivity tools.">
     <title>KYNAR Universe - Digital Goods Marketplace</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-..." crossorigin="anonymous"> 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          crossorigin="anonymous">
 </head>
 <body>
     
     <div class="header-wrapper">
         
         <header class="top-header">
-            <div class="logo-and-menu-area">
-                
-                <button class="menu-icon custom-burger" aria-label="Toggle Navigation Menu">
+            <div class="logo-area">
+                <button class="menu-icon custom-burger" aria-label="Toggle navigation menu" type="button">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
                 
-                <div class="site-branding">
-                    <a href="/" class="site-title-link" aria-label="KYNAR Universe Homepage">
+                <div class="site-title">
+                    <a href="/" class="site-title-link" aria-label="KYNAR Universe homepage">
                         <h1 class="main-title">KYNAR</h1>
                         <p class="sub-title">UNIVERSE.CO.UK</p>
                     </a>
-                    <figure class="site-rating" role="img" aria-label="Five star rating">
+                    <figure class="stars" role="img" aria-label="Five star rating">
                         <i class="fas fa-star" aria-hidden="true"></i>
                         <i class="fas fa-star" aria-hidden="true"></i>
                         <i class="fas fa-star" aria-hidden="true"></i>
@@ -36,20 +37,23 @@
                 </div>
             </div>
 
-            <aside class="slogan-header" aria-label="Site Slogan">
+            <aside class="slogan-header" aria-label="Site slogan">
                 Unlock the Universe of Digital Goods
             </aside>
 
             <div class="account-area">
                 <a href="#" class="sign-in-link">
-                    <img src="log-in-icon.png" alt="User Sign In" class="custom-lock-icon">
+                    <span class="custom-lock-icon">
+                        <img src="log-in-icon.png" alt="User sign in">
+                    </span>
                     <span class="sign-in-text">SIGN IN</span>
                 </a>
             </div>
         </header>
 
-        <nav class="main-nav" aria-label="Primary Site Navigation">
-            <ul role="list"> <li><a href="#">MARKETPLACE</a></li>
+        <nav class="main-nav" aria-label="Primary site navigation">
+            <ul role="list">
+                <li><a href="#">MARKETPLACE</a></li>
                 <li><a href="#">JOURNAL</a></li>
                 <li><a href="#">COMMUNITY</a></li>
                 <li><a href="#">MY ACCOUNT/DASHBOARD</a></li>
@@ -57,91 +61,97 @@
             </ul>
         </nav>
 
-        <section class="search-subscribe-bar" aria-label="Search and Subscription">
-            <div class="search-box">
-                <input type="text" placeholder="SEARCH KYNARUNIVERSE.CO.UK" name="site-search" aria-label="Search KYNARUNIVERSE.CO.UK">
-                <button type="submit" class="search-button" aria-label="Perform Search">
+        <section class="search-subscribe-bar" aria-label="Search and subscription">
+            <form class="search-box" role="search" aria-label="Site search">
+                <input type="text"
+                       name="site-search"
+                       placeholder="SEARCH KYNARUNIVERSE.CO.UK"
+                       aria-label="Search KYNARUNIVERSE.CO.UK">
+                <button type="submit" class="search-button" aria-label="Perform search">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </button>
-            </div>
+            </form>
             <a href="#" class="subscribe-button">SUBSCRIBE</a>
         </section>
     </div>
 
     <main class="main-content-container">
-        <section class="sole-creator-slogan" aria-label="Sole Creator Marketplace Slogan">
+        <section class="sole-creator-slogan" aria-label="Sole Creator Marketplace slogan">
             <p class="slogan-title">SOLE CREATOR MARKETPLACE</p>
             <p class="slogan-tagline">— Made by One, Shared with All.</p>
-            <p class="slogan-description">Authentic digital products<br>designed to inspire your projects<br>and daily life.</p>
+            <p class="slogan-description">
+                Authentic digital products designed to inspire your projects and daily life.
+            </p>
         </section>
 
         <section class="category-cards-section" aria-labelledby="category-cards-heading">
-            <h2 id="category-cards-heading" class="visually-hidden">Product Categories</h2> 
+            <h2 id="category-cards-heading" class="visually-hidden">Product categories</h2> 
             
             <div class="category-card creative-design-card">
-                <h3>CREATIVE & DESIGN</h3>
+                <h3>CREATIVE &amp; DESIGN</h3>
                 <div class="asset-grid">
                     
                     <a href="#" class="asset-item">
-                        <figure class="asset-icon-box">
-                            <img src="assets/icons/ebook-icon.jpeg" alt="Ebooks"> 
+                        <figure class="asset-icon-box ebook-icon-box">
+                            <img src="assets/icons/ebook-icon.jpeg" alt="Ebooks">
                         </figure>
                         <span>Ebooks</span>
                     </a>
                     
                     <a href="#" class="asset-item">
-                        <figure class="asset-icon-box">
-                            <img src="digital-art-icon.png" alt="Digital Art">
+                        <figure class="asset-icon-box digital-art-icon-box">
+                            <img src="digital-art-icon.png" alt="Digital art">
                         </figure>
                         <span>Digital Art</span>
                     </a>
 
                     <a href="#" class="asset-item">
-                        <figure class="asset-icon-box">
-                            <img src="social-media-icon.png" alt="Social Media Templates">
+                        <figure class="asset-icon-box social-icon-box">
+                            <img src="social-media-icon.png" alt="Social media templates">
                         </figure>
-                        <span>Social Media<br>Templates</span>
+                        <span>Social Media Templates</span>
                     </a>
                     
                     <a href="#" class="asset-item">
-                        <figure class="asset-icon-box">
-                            <img src="wallpaper-icon.png" alt="Wallpapers and Backgrounds">
+                        <figure class="asset-icon-box wallpaper-icon-box">
+                            <img src="wallpaper-icon.png" alt="Wallpapers and backgrounds">
                         </figure>
-                        <span>Wallpapers/<br>Backgrounds</span>
+                        <span>Wallpapers / Backgrounds</span>
                     </a>
                 </div>
                 <a href="#" class="browse-button">Browse Assets</a>
             </div>
 
             <div class="category-card productivity-business-card">
-                <h3>PRODUCTIVITY & BUSINESS</h3> <div class="asset-grid">
+                <h3>PRODUCTIVITY &amp; BUSINESS</h3>
+                <div class="asset-grid">
                     
                     <a href="#" class="asset-item">
-                        <figure class="asset-icon-box">
+                        <figure class="asset-icon-box guide-icon-box">
                             <img src="guide-icon.png" alt="Guides">
                         </figure>
                         <span>Guides</span>
                     </a>
                     
                     <a href="#" class="asset-item">
-                        <figure class="asset-icon-box">
-                            <img src="notion-icon.png" alt="Notion Templates and Dashboards">
+                        <figure class="asset-icon-box notion-icon-box">
+                            <img src="notion-icon.png" alt="Notion templates and dashboards">
                         </figure>
-                        <span>Notion Templates &<br>Dashboards</span>
+                        <span>Notion Templates &amp; Dashboards</span>
                     </a>
 
                     <a href="#" class="asset-item">
-                        <figure class="asset-icon-box">
-                            <img src="calendar-icon.png" alt="Calendars and Schedules">
+                        <figure class="asset-icon-box calendar-icon-box">
+                            <img src="calendar-icon.png" alt="Calendars and schedules">
                         </figure>
-                        <span>Calendars &<br>Schedules</span>
+                        <span>Calendars &amp; Schedules</span>
                     </a>
                     
                     <a href="#" class="asset-item">
-                        <figure class="asset-icon-box">
-                            <img src="planner-icon.png" alt="Planners and Trackers">
+                        <figure class="asset-icon-box planner-icon-box">
+                            <img src="planner-icon.png" alt="Planners and trackers">
                         </figure>
-                        <span>Planners &<br>Trackers</span>
+                        <span>Planners &amp; Trackers</span>
                     </a>
                 </div>
                 <a href="#" class="browse-button">Explore Tools</a>
@@ -153,6 +163,6 @@
         </section>
     </main>
 
-    <script src="script.js" defer></script> 
+    <script src="script.js" defer></script>
 </body>
 </html>
