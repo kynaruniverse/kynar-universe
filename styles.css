@@ -67,7 +67,7 @@ body {
 /* ===== HEADER WRAPPER ===== */
 .header-wrapper {
     background-color: var(--color-header-bg);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: none;
     border-radius: 0 0 var(--radius-header) var(--radius-header);
     box-shadow: 0 4px 12px var(--color-hero-shadow);
     margin-bottom: 30px;
@@ -183,12 +183,12 @@ body {
 /* SLOGAN (Center desktop only) */
 .slogan-header {
     font-style: italic;
-    font-size: 18px;
+    font-size: 12px;
     color: var(--color-search-bg);
     flex-grow: 1;
     text-align: center;
     padding: 0 20px;
-    display: none;
+    display: block;
 }
 
 /* ACCOUNT AREA */
@@ -291,7 +291,7 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: var(--space-sm);
-    padding: 8px 3% 10px;
+    padding: 6px 3% 8px;
     background-color: var(--color-header-bg);
 }
 
@@ -384,7 +384,7 @@ body {
     border-radius: 25px;
     width: 90%;
     max-width: 600px;
-    margin: 0 auto 40px;
+    margin: 10 auto 30px;
     padding: 30px;
     text-align: center;
     line-height: 1.6;
