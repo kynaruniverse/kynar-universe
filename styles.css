@@ -1,4 +1,4 @@
-/* ===== CSS VARIABLES ===== */
+/* ===== TOKENS (DESIGN SYSTEM) ===== */
 @font-face {
     font-family: 'Bantayog';
     src: url('fonts/Bantayog.woff2') format('woff2'),
@@ -7,7 +7,9 @@
     font-style: normal;
     font-display: swap;
 }
+
 :root {
+    /* Colors */
     --color-main-gold: #a99369;
     --color-dark-text: #111111;
     --color-light-bg: #d3d3d3;
@@ -21,7 +23,24 @@
     --color-slogan-bg: #9d8f6e;
     --color-search-bg: #1a5449;
     --color-header-bg: #c4c4c4;
-    /* spacing tokens used in media query */
+    --color-hero-shadow: rgba(0, 0, 0, 0.08);
+
+    /* Radii */
+    --radius-pill: 999px;
+    --radius-card: 20px;
+    --radius-header: 18px;
+
+    /* Typography */
+    --font-family-body: Arial, sans-serif;
+    --font-size-body: 13px;
+    --font-size-small: 11px;
+    --font-size-hero-title: 16px;
+    --font-size-hero-tagline: 14px;
+    --font-size-heading-card: 20px;
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
     --space-md: 20px;
     --space-lg: 40px;
 }
@@ -31,10 +50,11 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: var(--font-family-body);
 }
 
-html, body {
+html,
+body {
     max-width: 100%;
     overflow-x: hidden;
 }
@@ -44,12 +64,12 @@ body {
     min-height: 100vh;
 }
 
-/* ===== HEADER WRAPPER (Contains everything in top box) ===== */
+/* ===== HEADER WRAPPER ===== */
 .header-wrapper {
     background-color: var(--color-header-bg);
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 0 0 18px 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 0 0 var(--radius-header) var(--radius-header);
+    box-shadow: 0 4px 12px var(--color-hero-shadow);
     margin-bottom: 30px;
 }
 
@@ -62,18 +82,18 @@ body {
     background-color: transparent;
 }
 
-/* LOGO AREA (Left side) */
+/* LOGO AREA */
 .logo-area {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
+/* Burger */
 .custom-burger {
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-left: 1px;
     width: 40px;
     height: 30px;
     padding: 0;
@@ -96,7 +116,7 @@ body {
 .custom-burger span {
     display: block;
     width: 100%;
-    height: 5px; /* thicker lines */
+    height: 5px;
     background-color: var(--color-main-gold);
     border-radius: 0;
 }
@@ -106,12 +126,13 @@ body {
     outline-offset: 3px;
 }
 
+/* Logo text */
 .site-title {
     line-height: 1.05;
 }
 
 .site-title .main-title {
-    font-family: 'Bantayog', Arial, sans-serif;
+    font-family: 'Bantayog', var(--font-family-body);
     font-size: 32px;
     font-weight: normal;
     letter-spacing: 0.16em;
@@ -121,16 +142,17 @@ body {
 }
 
 .site-title .sub-title {
-    font-family: 'Bantayog', Arial, sans-serif;
+    font-family: 'Bantayog', var(--font-family-body);
     font-size: 9px;
     font-weight: normal;
     color: var(--color-dark-text);
     letter-spacing: 0.22em;
     text-transform: uppercase;
     opacity: 0.85;
-    margin: 2px 0 0 0;
+    margin-top: 2px;
 }
 
+/* Stars */
 .stars {
     font-size: 10px;
     line-height: 1;
@@ -142,18 +164,18 @@ body {
     margin: 0 1px;
 }
 
-/* SLOGAN (Center) */
+/* SLOGAN (Center desktop only) */
 .slogan-header {
     font-style: italic;
     font-size: 18px;
-    color: #1a5449;
+    color: var(--color-search-bg);
     flex-grow: 1;
     text-align: center;
     padding: 0 20px;
     display: none;
 }
 
-/* ACCOUNT AREA (Right side) */
+/* ACCOUNT AREA */
 .account-area {
     display: flex;
     flex-direction: column;
@@ -188,10 +210,11 @@ body {
     transition: color 0.2s ease;
     text-decoration: none;
     color: var(--color-dark-text);
-    font-size: 11px;
+    font-size: var(--font-size-small);
     font-weight: bold;
     text-align: center;
 }
+
 .sign-in-link:hover {
     color: var(--color-star-red);
 }
@@ -201,9 +224,8 @@ body {
     background-color: var(--color-main-gold);
     overflow-x: auto;
     padding: 12px 0;
-    max-height: 10px;
-    border-top: 1px solid rgba(0,0,0,0.12);
-    border-bottom: 1px solid rgba(0,0,0,0.12);
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .main-nav.active-menu {
@@ -232,7 +254,7 @@ body {
 
 .main-nav ul li a:hover,
 .main-nav ul li a:focus {
-    background-color: rgba(0,0,0,0.06);
+    background-color: rgba(0, 0, 0, 0.06);
     color: var(--color-star-red);
 }
 
@@ -245,18 +267,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--space-sm);
     padding: 10px 3% 16px;
-    background-color: var(--color-header-bg); /* grey band */
+    background-color: var(--color-header-bg);
 }
 
+/* Search box */
 .search-box {
     display: flex;
     background-color: #004833;
     flex: 0 1 70%;
     max-width: 70%;
     height: 35px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     overflow: hidden;
     border: 0;
 }
@@ -278,10 +301,10 @@ body {
 }
 
 .search-box:hover {
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.18);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
 }
 
-
+/* Search button */
 .search-button {
     background-color: transparent;
     border: none;
@@ -296,9 +319,10 @@ body {
 }
 
 .search-button:hover {
-    background-color: rgba(0,0,0,0.03);
+    background-color: rgba(0, 0, 0, 0.03);
 }
 
+/* Subscribe button */
 .subscribe-button {
     background-color: darkred;
     color: #ffcc00;
@@ -311,23 +335,23 @@ body {
     font-size: 8px;
     letter-spacing: 0.22em;
     border: 2px solid #ffcc00;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     text-shadow: none;
     box-shadow: 0 0 8px rgba(255, 204, 0, 0.85);
 }
 
 .subscribe-button:hover {
-    box-shadow: 0 0 12px rgba(255,204,0,0.95);
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.95);
 }
 
-/* ===== MAIN CONTENT ===== */
+/* ===== MAIN CONTENT WRAPPER ===== */
 .main-content-container {
     max-width: 100%;
     margin: 0 auto;
     padding: 0 15px;
 }
 
-/* ===== SLOGAN BOX ===== */
+/* ===== HERO / SLOGAN BOX ===== */
 .sole-creator-slogan {
     background-color: var(--color-slogan-bg);
     border: 3px solid var(--color-dark-text);
@@ -342,21 +366,20 @@ body {
 
 .slogan-title {
     font-weight: 800;
-    font-size: 16px;
-    margin-top: 6px;
-    margin-bottom: 10px;
+    font-size: var(--font-size-hero-title);
+    margin: 6px 0 10px;
     color: var(--color-dark-text);
 }
 
 .slogan-tagline {
-    font-size: 14px;
+    font-size: var(--font-size-hero-tagline);
     margin-bottom: 10px;
     color: var(--color-dark-text);
 }
 
 .slogan-description {
-    font-size: 13px;
-    color: rgba(17,17,17,0.9);
+    font-size: var(--font-size-body);
+    color: rgba(17, 17, 17, 0.9);
 }
 
 /* ===== CATEGORY CARDS ===== */
@@ -373,9 +396,8 @@ body {
     width: 100%;
     padding: 25px;
     text-align: center;
-    border: 4px solid;
-    border-radius: 20px;
-    border-width: 2px;
+    border: 2px solid;
+    border-radius: var(--radius-card);
 }
 
 .creative-design-card {
@@ -387,7 +409,7 @@ body {
 }
 
 .category-card h3 {
-    font-size: 20px;
+    font-size: var(--font-size-heading-card);
     letter-spacing: 1px;
     margin-bottom: 30px;
     color: var(--color-dark-text);
@@ -404,7 +426,7 @@ body {
 .asset-item {
     text-decoration: none;
     color: var(--color-dark-text);
-    font-size: 13px;
+    font-size: var(--font-size-body);
     font-weight: 600;
     display: flex;
     flex-direction: column;
@@ -413,10 +435,11 @@ body {
     font-style: normal;
 }
 
+/* Asset icons */
 .asset-icon-box {
     width: 100px;
     height: 100px;
-    border-radius: 20px;
+    border-radius: var(--radius-card);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -478,7 +501,7 @@ body {
     border-color: var(--color-card-border-green);
 }
 
-/* ===== BROWSE BUTTONS ===== */
+/* ===== CTA BUTTONS ===== */
 .browse-button {
     background-color: var(--color-main-gold);
     color: var(--color-dark-text);
@@ -489,7 +512,7 @@ body {
     font-weight: bold;
     font-size: 16px;
     font-style: italic;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     display: inline-block;
     width: 85%;
     border: 2px solid var(--color-dark-text);
@@ -517,7 +540,7 @@ body {
     padding: 18px 60px;
     font-weight: bold;
     font-size: 18px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     display: inline-block;
     width: 90%;
     max-width: 550px;
@@ -527,137 +550,137 @@ body {
 
 .browse-marketplace-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
     background-color: var(--color-dark-text);
     color: var(--color-main-gold);
 }
 
-/* 💻 DESKTOP RESPONSIVE (768px and up) */
+/* ===== DESKTOP (768px and up) ===== */
 @media (min-width: 768px) {
-    
+
     /* Center header band content */
     .header-wrapper {
         padding-inline: 0;
     }
-    
+
     .top-header,
     .main-nav,
     .search-subscribe-bar {
         max-width: 1200px;
         margin-inline: auto;
     }
-    
+
     .main-content-container {
         max-width: 100%;
         margin: 20px auto 0;
         padding: 0 15px;
     }
-    
+
     .top-header {
         padding: 20px var(--space-lg);
     }
-    
+
     .custom-burger {
         display: none;
     }
-    
+
     /* Branding */
     .site-title .main-title {
         font-size: 32px;
     }
-    
+
     .site-title .sub-title {
         font-size: 14px;
     }
-    
+
     .slogan-header {
         display: block;
         font-size: 20px;
     }
-    
+
     /* Account area */
     .custom-lock-icon {
         width: 60px;
         height: 60px;
     }
-    
+
     .sign-in-link {
         font-size: 12px;
     }
-    
+
     /* Nav */
     .main-nav {
         display: block;
         padding: 0;
     }
-    
+
     .main-nav ul {
         flex-direction: row;
         justify-content: center;
         gap: 0;
     }
-    
+
     .main-nav ul li a {
         padding: 12px 20px;
         border-bottom: none;
         border-right: 1px solid rgba(0, 0, 0, 0.1);
         font-size: 13px;
     }
-    
+
     .main-nav ul li:first-child a {
         border-left: 1px solid rgba(0, 0, 0, 0.1);
     }
-    
+
     .main-nav ul li:last-child a {
         border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
-    
+
     .main-nav ul li a:hover,
-.main-nav ul li a:focus {
-    background-color: rgba(0, 0, 0, 0.06);
-    color: var(--color-star-red);
-}
-    
+    .main-nav ul li a:focus {
+        background-color: rgba(0, 0, 0, 0.06);
+        color: var(--color-star-red);
+    }
+
     /* Search + subscribe (desktop) */
     .search-subscribe-bar {
-    justify-content: center;
-    padding: 16px 32px 20px;
-    gap: 20px;
-}
+        justify-content: center;
+        padding: 16px 32px 20px;
+        gap: 20px;
+    }
 
     .search-box {
-    flex: 0 1 60%;
-    max-width: 600px;
-    height: 48px;
-}
+        flex: 0 1 60%;
+        max-width: 600px;
+        height: 48px;
+    }
 
     .search-box input {
-    font-size: 14px;
-    font-weight: 600;
-}
+        font-size: 14px;
+        font-weight: 600;
+    }
 
     .search-button i {
-    transform: translateY(1px);
-}
+        transform: translateY(1px);
+    }
 
     .subscribe-button {
-    flex: 0 0 auto;
-    max-width: none;
-    padding: 10px 40px;
-    font-size: 14px;
-}
-    
+        flex: 0 0 auto;
+        max-width: none;
+        padding: 10px 40px;
+        font-size: 14px;
+    }
+
     /* Hero slogan */
     .sole-creator-slogan {
         width: 65%;
         padding: 35px;
         margin-top: var(--space-lg);
     }
-    
+
     .slogan-title {
         font-size: 20px;
     }
-    
+
     /* Category cards */
     .category-cards-section {
         flex-direction: row;
@@ -665,39 +688,39 @@ body {
         justify-content: center;
         padding: 0;
     }
-    
+
     .category-card {
-        box-shadow: 0 6px 18px rgba(0,0,0,0.10);
-    border-radius: 18px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
+        border-radius: 18px;
         width: 45%;
         max-width: 500px;
     }
-    
+
     .category-card h3 {
         font-size: 20px;
         letter-spacing: 0.12em;
         text-transform: uppercase;
     }
-    
+
     .asset-grid {
         gap: 25px;
     }
-    
+
     .asset-icon-box {
         width: 120px;
         height: 120px;
         font-size: 50px;
     }
-    
+
     .asset-item {
         font-size: 14px;
     }
-    
+
     .asset-item span {
         font-style: normal;
         font-weight: 600;
     }
-    
+
     /* Bottom CTA */
     .browse-marketplace-button {
         width: 50%;
