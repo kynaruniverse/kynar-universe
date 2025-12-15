@@ -138,7 +138,7 @@ body {
 
 /* Logo text */
 .site-title {
-    text-align: left;
+    text-align: center;
     line-height: 0.95;
 }
 
@@ -159,8 +159,8 @@ body {
     text-transform: none;
     color: var(--color-dark-text);
     display: block;
-    margin-left: 0;
-    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .site-title .sub-title {
@@ -172,7 +172,8 @@ body {
     text-transform: uppercase;
     opacity: 0.85;
     display: block;
-    margin-left: 0;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: -2px;
 }
 
