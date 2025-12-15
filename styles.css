@@ -307,7 +307,8 @@ body {
 
 .search-box input::placeholder {
     color: rgba(255, 255, 255, 0.75);
-    font-weight: 600;
+    font-size: 10px;
+    font-weight: 500;
 }
 
 .search-box:hover {
