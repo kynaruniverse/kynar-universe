@@ -169,9 +169,9 @@ body {
 
 /* Stars */
 .stars {
-    font-size: 10px;
+    font-size: 7px;
     line-height: 1;
-    margin-top: 6px;
+    margin-top: 1px;
 }
 
 .stars .fas {
