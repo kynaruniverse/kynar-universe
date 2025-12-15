@@ -218,16 +218,16 @@ body {
 
 .sign-in-link {
     display: inline-flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     text-transform: uppercase;
-    letter-spacing: 0.14rem;
+    letter-spacing: 0.12rem;
     transition: color 0.2s ease;
     text-decoration: none;
     color: var(--color-dark-text);
     font-family: 'bantayog', var(--font-family-body);
-    font-size: var(--font-size-small);
+    font-size: 10px;
     font-weight: bold;
     text-align: center;
 }
@@ -291,7 +291,7 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: var(--space-sm);
-    padding: 6px 3% 8px;
+    padding: 8px 3% 10px;
     background-color: var(--color-header-bg);
 }
 
@@ -384,7 +384,7 @@ body {
     border-radius: 25px;
     width: 90%;
     max-width: 600px;
-    margin: 10 auto 30px;
+    margin: 0 auto 40px;
     padding: 30px;
     text-align: center;
     line-height: 1.6;
