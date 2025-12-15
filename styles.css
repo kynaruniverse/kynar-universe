@@ -201,6 +201,7 @@ body {
     background-color: var(--color-main-gold);
     overflow-x: auto;
     padding: 12px 0;
+    max-height: 10px;
     border-top: 1px solid rgba(0,0,0,0.12);
     border-bottom: 1px solid rgba(0,0,0,0.12);
 }
