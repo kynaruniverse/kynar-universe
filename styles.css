@@ -344,13 +344,19 @@ body {
 
 /* Search button */
 .search-button {
-    background-color: transparent;
+    background: transparent;
     border: none;
-    color: #d3b36d;
-    padding: 0 10px;
+    padding: 0 8px;      /* tweak for left/right position */
     cursor: pointer;
-    font-family: 'bantayog', var(--font-family-body);
-    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button .search-icon {
+    width: 22px;         /* icon size */
+    height: 22px;
+    display: block;
 }
 
 .search-button i {
