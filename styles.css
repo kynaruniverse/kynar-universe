@@ -87,6 +87,7 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
+    margin-left: -4px;
 }
 
 /* Burger */
@@ -128,15 +129,24 @@ body {
 
 /* Logo text */
 .site-title {
-    line-height: 1.05;
+    line-height: 1.0;
+}
+
+.site-title-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.site-title-link:hover {
+    text-decoration: none;
 }
 
 .site-title .main-title {
     font-family: 'Bantayog', var(--font-family-body);
     font-size: 32px;
     font-weight: normal;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-transform: none;
     color: var(--color-dark-text);
     margin: 0;
 }
@@ -146,10 +156,10 @@ body {
     font-size: 9px;
     font-weight: normal;
     color: var(--color-dark-text);
-    letter-spacing: 0.22em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     opacity: 0.85;
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
 /* Stars */
