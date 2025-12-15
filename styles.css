@@ -130,7 +130,7 @@ body {
 /* Logo text */
 .site-title {
     text-align: left;
-    line-height: 1;
+    line-height: 0;
 }
 
 .site-title-link {
