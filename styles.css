@@ -421,12 +421,12 @@ body {
     
     box-shadow:
         /* subtle gold glow */
-        0 0 32px 6px rgba(169, 147, 105, 0.85),
+        0 0 16px 2px rgba(169, 147, 105, 0.55),
         /* drop shadow for depth */
-        0 10px 24px rgba(0, 0, 0, 0.35),
+        0 10px 20px rgba(0, 0, 0, 0.3),
         /* embossed / neumorphic edges */
-        8px 8px 18px rgba(0, 0, 0, 0.35),
-        -6px -6px 14px rgba(255, 255, 255, 0.65);
+        6px 6px 14px rgba(0, 0, 0, 0.3),
+        -5px -5px 10px rgba(255, 255, 255, 0.6);
 }
 
 .slogan-title {
