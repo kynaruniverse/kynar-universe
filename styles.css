@@ -499,6 +499,11 @@ body {
     background: #f0ebe5;            /* warm neutral */
 }
 
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
 .category-card h3 {
     font-size: var(--font-size-heading-card);
     letter-spacing: 1px;
