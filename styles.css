@@ -524,7 +524,7 @@ body {
     letter-spacing: 1px;
     margin-bottom: 30px;
     color: var(--color-dark-text);
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .asset-grid {
