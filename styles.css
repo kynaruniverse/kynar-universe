@@ -558,11 +558,12 @@ body {
     background-color: var(--color-main-gold);
     color: var(--color-dark-text);
     text-decoration: none;
+    font-family: 'Bantayog', var(--font-family-body);
     text-transform: uppercase;
     letter-spacing: 0.12em;
     padding: 10px 26px;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 11px;
     font-style: italic;
     border-radius: var(--radius-pill);
     display: inline-block;
