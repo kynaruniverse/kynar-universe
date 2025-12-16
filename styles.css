@@ -470,7 +470,12 @@ body {
     border-radius: var(--radius-card);
     flex: 0 0 80%;
     scroll-snap-align: start;
-    
+
+    /* make card a flex column */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     /* raised / 3D effect */
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
     transform: translateY(0);
@@ -528,6 +533,7 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin-bottom: 30px;
+    flex: 1;
 }
 
 .asset-item {
@@ -624,6 +630,8 @@ body {
     width: 85%;
     border: 2px solid var(--color-dark-text);
     transition: all 0.3s;
+    margin-top: 10px;
+    align-self: center;
 }
 
 .browse-button:hover {
@@ -802,10 +810,15 @@ body {
     }
 
     .category-card {
-        flex: 1 1 0;
-        width: 45%;
-        max-width: 500px;
+      flex: 1 1 0;
+      width: 45%;
+      max-width: 500px;
+
+      display: flex;              /* NEW */
+      flex-direction: column;     /* NEW */
+      justify-content: space-between; /* NEW */
     }
+
 
     .category-card h3 {
         font-size: 20px;
