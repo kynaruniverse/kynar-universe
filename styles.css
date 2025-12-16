@@ -570,7 +570,7 @@ body {
     border-radius: var(--radius-pill);
     display: inline-block;
     width: auto;
-    border: 2px solid var(--color-dark-text);
+    border: none;
     transition: all 0.3s;
     margin-top: 6px;
     align-self: center;
