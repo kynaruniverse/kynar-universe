@@ -414,14 +414,23 @@ body {
 /* ===== HERO / SLOGAN BOX ===== */
 .sole-creator-slogan {
     background-color: var(--color-slogan-bg);
-    border: 3px solid var(--color-dark-text);
     border-radius: 25px;
     width: 90%;
     max-width: 600px;
     margin: 0 auto 40px;
-    padding: 30px;
+    padding: 20px 30px 30px;
     text-align: center;
     line-height: 1.6;
+    border: none;
+    
+    box-shadow:
+        /* subtle gold glow */
+        0 0 20px rgba(169, 147, 105, 0.45),
+        /* drop shadow for depth */
+        0 10px 24px rgba(0, 0, 0, 0.35),
+        /* embossed / neumorphic edges */
+        8px 8px 18px rgba(0, 0, 0, 0.35),
+        -6px -6px 14px rgba(255, 255, 255, 0.65);
 }
 
 .slogan-title {
