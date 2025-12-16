@@ -571,9 +571,35 @@ body {
     display: inline-block;
     width: auto;
     border: none;
-    transition: all 0.3s;
     margin-top: 6px;
     align-self: center;
+    /*3D raised effect*/
+    box-shadow:
+        0 8px 0 rgba(0, 0, 0, 0.45),          /* hard drop shadow (ledge) */
+        0 12px 18px rgba(0, 0, 0, 0.35),      /* soft outer shadow */
+        inset 0 2px 0 rgba(255, 255, 255, .5);/* top highlight */
+    transform: translateY(0);
+    transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    margin-top: 6px;
+    align-self: center;
+}
+
+/* Hover: lift slightly more */
+.browse-button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 10px 0 rgba(0, 0, 0, 0.45),
+        0 16px 24px rgba(0, 0, 0, 0.4),
+        inset 0 2px 0 rgba(255, 255, 255, .55);
+}
+
+/* Active: pressed in */
+.browse-button:active {
+    transform: translateY(3px);
+    box-shadow:
+        0 3px 0 rgba(0, 0, 0, 0.5),
+        0 6px 10px rgba(0, 0, 0, 0.35),
+        inset 0 2px 4px rgba(0, 0, 0, 0.35);
 }
 
 .browse-button:hover {
