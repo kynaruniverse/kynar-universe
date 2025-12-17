@@ -862,10 +862,11 @@ body.drawer-open {
 /* ===== ACCOUNT PAGE LAYOUT ===== */
 .account-header-section {
   padding: 24px 15px 10px;
+  text-align: center;          /* center text inside this block */
 }
 
 .account-page-title {
-  font-family: 'Bantayog', var(--font-family-body);
+  font-family: 'Bantayog', var(--font-family-body); /* Bantayog font */
   font-size: 20px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
