@@ -46,16 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     messageEl.textContent = '';
   }
 
-  function updateModeUI() {
-    if (mode === 'signin') {
-      submitBtn.textContent = 'Sign in';
-      toggleModeBtn.textContent = 'Need an account? Sign up';
-    } else {
-      submitBtn.textContent = 'Create account';
-      toggleModeBtn.textContent = 'Already have an account? Sign in';
-    }
-  }
-
   // Click on header lock icon
   signInLink.addEventListener('click', (e) => {
     e.preventDefault();

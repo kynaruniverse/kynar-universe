@@ -381,49 +381,54 @@
 
     <!-- Firebase SDK + config -->
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-      import {
-        getAuth,
-        onAuthStateChanged,
-        signInWithEmailAndPassword,
-        createUserWithEmailAndPassword,
-        signOut
-      } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
-        authDomain: "kynar-universe-official.firebaseapp.com",
-        projectId: "kynar-universe-official",
-        storageBucket: "kynar-universe-official.firebasestorage.app",
-        messagingSenderId: "1089722386738",
-        appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
-      };
-
-      const app  = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db   = getFirestore(app);
-
-      window._firebaseAuth               = auth;
-      window._firebaseOnAuthStateChanged = onAuthStateChanged;
-      window._firebaseSignIn             = signInWithEmailAndPassword;
-      window._firebaseSignUp             = async (auth, email, pass, displayName) => {
-        const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        const uid = cred.user.uid;
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
+    authDomain: "kynar-universe-official.firebaseapp.com",
+    projectId: "kynar-universe-official",
+    storageBucket: "kynar-universe-official.firebasestorage.app",
+    messagingSenderId: "1089722386738",
+    appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
+  };
+  
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  
+  window._firebaseAuth = auth;
+  window._firebaseOnAuthStateChanged = onAuthStateChanged;
+  window._firebaseSignIn = signInWithEmailAndPassword;
+  window._firebaseSignUp = async (auth, email, pass, displayName) => {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    const uid = cred.user.uid;
     const userDocRef = doc(db, "users", uid);
     const now = new Date().toISOString();
-
+    
     await setDoc(userDocRef, {
       email,
       displayName: displayName || "",
       createdAt: now,
       updatedAt: now
     }, { merge: true });
-
+    
     return cred;
   };
-      window._firebaseSignOut            = signOut;
-      window._firebaseDb = db;
-    </script>
+  window._firebaseSignOut = signOut;
+  window._firebaseDb = db;
+</script>
 
     <!-- Auth UI logic -->
     <script src="auth-ui.js" type="module"></script>
