@@ -397,11 +397,11 @@ body {
     border: 2px solid var(--color-main-gold);
     border-radius: var(--radius-pill);
     text-shadow: none;
-    box-shadow: 0 0 8px var(--color-slogan-bg);
+    box-shadow: 0 0 6px var(--color-slogan-bg);
 }
 
 .subscribe-button:hover {
-    box-shadow: 0 0 12px var(--color-main-gold);
+    box-shadow: 0 0 9px var(--color-main-gold);
 }
 
 /* ===== MAIN CONTENT WRAPPER ===== */
