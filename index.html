@@ -338,18 +338,6 @@
         </nav>
     </footer>
 
-    <script src="script.js" defer></script>
-<!-- Slide‑in drawer panel -->
-<nav class="side-drawer" aria-hidden="true">
-  <button class="drawer-close" type="button">Close ✕</button>
-  <ul>
-    <li><a href="/marketplace">Marketplace</a></li>
-    <li><a href="/journal">Journal</a></li>
-    <li><a href="/resources">Resource Library</a></li>
-    <li><a href="/account">Account</a></li>
-  </ul>
-</nav>
-
     <!-- Auth modal -->
     <div class="auth-modal" id="auth-modal" aria-hidden="true">
       <div class="auth-modal-backdrop"></div>
@@ -366,7 +354,7 @@
 
           <label class="auth-label">
             <span>Password</span>
-            <input type="password" id="auth-password"
+            <input id="auth-password"
             type="password" required minlength="6">
             </label>
             
@@ -413,8 +401,7 @@
 
       const app  = initializeApp(firebaseConfig);
       const auth = getAuth(app);
-      const db   = 
-      getFirestore(app);
+      const db   = getFirestore(app);
 
       window._firebaseAuth               = auth;
       window._firebaseOnAuthStateChanged = onAuthStateChanged;
