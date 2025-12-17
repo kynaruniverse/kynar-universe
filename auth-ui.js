@@ -91,15 +91,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+    function updateModeUI() {
+    if (mode === 'signin') {
+      submitBtn.textContent = 'Sign in';
+      toggleModeBtn.textContent = 'Need an account? Sign up';
+      if (displayNameRow) displayNameRow.style.display = 'none';
+    } else {
+      submitBtn.textContent = 'Create account';
+      toggleModeBtn.textContent = 'Already have an account? Sign in';
+      if (displayNameRow) displayNameRow.style.display = '';
+    }
+  }
+  
   // Form submit (Firebase Email/Password)
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     messageEl.textContent = '';
     submitBtn.disabled = true;
-
+    
     const email = emailInput.value.trim();
-    const pass  = passInput.value.trim();
-
+    const pass = passInput.value.trim();
+    const displayName = displayNameInput ? displayNameInput.value.trim() : '';
+    
     try {
       if (mode === 'signin') {
         await signInFirebase(auth, email, pass);
