@@ -48,16 +48,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Click on header lock icon
   signInLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (auth.currentUser) {
-      // If logged in, clicking acts as log out
-      signOutFirebase(auth).catch(console.error);
-    } else {
-      mode = 'signin';
-      updateModeUI();
-      openModal();
-    }
-  });
+  e.preventDefault();
+  if (auth.currentUser) {
+    // If logged in, clicking acts as log out
+    signOutFirebase(auth)
+      .then(() => {
+        // Optional: force refresh so UI updates everywhere
+        window.location.href = 'index.html';
+      })
+      .catch(console.error);
+  } else {
+    mode = 'signin';
+    updateModeUI();
+    openModal();
+  }
+});
   
     // Log out from account panel button
   if (accountLogout) {
