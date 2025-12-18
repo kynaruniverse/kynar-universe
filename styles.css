@@ -1347,4 +1347,84 @@ body.drawer-open {
     border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
+/* Marketplace Layout */
+.shop-container {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.filter-sidebar {
+    flex: 0 0 250px;
+    background: var(--color-header-bg);
+    padding: 20px;
+    border: 1px solid var(--color-main-gold);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.filter-group {
+    margin-bottom: 25px;
+}
+
+.filter-group h4 {
+    font-family: 'Bantayog', sans-serif;
+    color: var(--color-star-red);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.filter-group label {
+    display: block;
+    font-family: 'Glacial Indifference', sans-serif;
+    font-size: 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.product-feed {
+    flex: 1;
+}
+
+.feed-controls {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-main-gold);
+    margin-bottom: 20px;
+    font-family: 'Glacial Indifference';
+}
+
+.feed-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.feed-item h4 {
+    font-family: 'Bantayog';
+    color: var(--color-dark-text);
+}
+
+.buy-link {
+    color: var(--color-star-red);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .shop-container {
+        flex-direction: column;
+    }
+    .filter-sidebar {
+        flex: none;
+        width: 100%;
+        position: relative;
+    }
+}
+
 }
