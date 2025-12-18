@@ -12,8 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Create a dim overlay behind the drawer
-    const overlay = document.createElement('div');
-    overlay.className = 'drawer-overlay';
+    const overlay = 
+    document.createElement('div');
+    overlay.className = 
+    'drawer-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
     document.body.appendChild(overlay);
     
     function openDrawer() {
