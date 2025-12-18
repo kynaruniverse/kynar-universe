@@ -1316,4 +1316,35 @@ body.drawer-open {
         width: 50%;
         font-size: 20px;
     }
+    
+    /* Ensure the Welcome Name stands out */
+#welcome-name {
+    color: var(--color-star-red);
+    text-transform: capitalize;
+}
+
+/* Fix for the initial circle in the screenshot */
+#user-initial {
+    text-transform: uppercase;
+    background-color: var(--color-main-gold);
+    color: white;
+    font-family: 'Bantayog', sans-serif;
+}
+
+/* Modal specific fixes (If using the 'Edit Profile' modal) */
+.auth-label input:focus {
+    border-color: var(--color-main-gold);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(169, 147, 105, 0.2);
+}
+
+/* Quick Actions spacing */
+.quick-actions-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
 }
