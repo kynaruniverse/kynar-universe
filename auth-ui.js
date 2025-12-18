@@ -6,13 +6,16 @@ const signInFirebase = window._firebaseSignIn;
 const signUpFirebase = window._firebaseSignUp;
 const signOutFirebase = window._firebaseSignOut;
 
-document.addEventListener('DOMContentLoaded', () => {
-  const signInLink = document.querySelector('.sign-in-link');
-  const signInText = document.querySelector('.sign-in-text');
-  const accountNavLink = document.getElementById('account-nav-link');
-  const authModal = document.getElementById('auth-modal');
+document.addEventListener('DOMContentLoaded', () => { const signInLink = 
+document.querySelector('.sign-in-link');
+  const signInText = 
+document.querySelector('.sign-in-text');
+  const accountNavLink = 
+document.getElementById('account-nav-link');
+  const authModal = 
+document.getElementById('auth-modal');
   
-  if (!auth || !signInLink || !authModal) return;
+  if (!auth || !signInLinauth-signInText) return;
   
   const backdrop = authModal.querySelector('.auth-modal-backdrop');
   const closeBtn = authModal.querySelector('.auth-modal-close');
