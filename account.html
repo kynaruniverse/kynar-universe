@@ -170,7 +170,7 @@
 
   <!-- Firebase protection for account page -->
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
@@ -187,83 +187,76 @@
   const auth = getAuth(app);
   const db   = getFirestore(app);
 
-    // SET GLOBALS so auth-ui.js works here too
+  // Globals for auth-ui.js
   window._firebaseAuth = auth;
   window._firebaseOnAuthStateChanged = onAuthStateChanged;
   window._firebaseSignOut = signOut; 
-  window._firebaseSignIn = () => {};
-  window._firebaseSignUp = () => {};
-
 
   const welcomeNameEl = document.getElementById('welcome-name');
-  const initialEl     = document.getElementById('user-initial'); // Fixed ID typo
+  const initialEl     = document.getElementById('user-initial');
 
-  // 1. AUTH STATE OBSERVER (Only for UI updates and protection)
+  // 1. AUTH STATE OBSERVER
   onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  // 1. IMMEDIATE BACKUP: Use email so it's not empty while we wait for Firestore
-  let nameToShow = user.email.split('@')[0]; // Shows "username" from "username@mail.com"
-  welcomeNameEl.textContent = nameToShow;
-  initialEl.textContent = nameToShow.charAt(0).toUpperCase();
-
-  try {
-    const userDocRef = doc(db, "users", user.uid);
-    const snap = await getDoc(userDocRef);
-    
-    if (snap.exists()) {
-      const data = snap.data();
-      
-      // 2. PREFERRED DATA: If Firestore name exists, override the email
-      if (data.displayName && data.displayName.trim() !== "") {
-        nameToShow = data.displayName;
-        welcomeNameEl.textContent = nameToShow;
-        initialEl.textContent = nameToShow.charAt(0).toUpperCase();
-      }
-      
-      // 3. SET DATE: Make sure the member date is correct
-      if (data.createdAt) {
-        const date = new Date(data.createdAt);
-        const options = { month: 'long', year: 'numeric' };
-        document.querySelector('.welcome-meta').textContent = `Member since ${date.toLocaleDateString(undefined, options)}`;
-      }
+    if (!user) {
+      window.location.href = "index.html";
+      return;
     }
-  } catch (err) {
-    console.error("Error fetching user data:", err);
-  }
-});
 
+    // Immediate fallback using email
+    let nameToShow = user.email.split('@')[0];
+    welcomeNameEl.textContent = nameToShow;
+    initialEl.textContent = nameToShow.charAt(0).toUpperCase();
 
-    if (welcomeNameEl) welcomeNameEl.textContent = nameToShow;
-    if (initialEl) initialEl.textContent = nameToShow.charAt(0).toUpperCase();
+    try {
+      const userDocRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userDocRef);
+      
+      if (snap.exists()) {
+        const data = snap.data();
+        if (data.displayName) {
+          nameToShow = data.displayName;
+          welcomeNameEl.textContent = nameToShow;
+          initialEl.textContent = nameToShow.charAt(0).toUpperCase();
+        }
+        if (data.createdAt) {
+          const date = new Date(data.createdAt);
+          const options = { month: 'long', year: 'numeric' };
+          document.querySelector('.welcome-meta').textContent = `Member since ${date.toLocaleDateString(undefined, options)}`;
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+    }
   });
 
-  // 2. SETTINGS MODAL LOGIC (Move this OUTSIDE the observer)
+  // 2. SETTINGS MODAL LOGIC
   const settingsModal = document.getElementById('settings-modal');
   const settingsForm  = document.getElementById('settings-form');
   const settingsInput = document.getElementById('settings-display-name');
   const settingsMsg   = document.getElementById('settings-message');
   const settingsBtn   = document.getElementById('settings-submit-btn');
 
-  document.querySelector('a[href="#settings"]').addEventListener('click', (e) => {
+  // Trigger Modal
+  document.getElementById('open-settings').addEventListener('click', (e) => {
     e.preventDefault();
     settingsModal.classList.add('is-open');
     settingsInput.value = welcomeNameEl.textContent;
   });
 
+  // Close Modal
   document.getElementById('settings-close').addEventListener('click', () => {
     settingsModal.classList.remove('is-open');
   });
 
+  // Save Settings
   settingsForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
     if (!user) return;
 
     const newName = settingsInput.value.trim();
+    if(!newName) return;
+
     settingsBtn.disabled = true;
     settingsMsg.textContent = "Updating...";
 
@@ -284,7 +277,6 @@
         settingsModal.classList.remove('is-open');
         settingsMsg.textContent = "";
       }, 1500);
-
     } catch (err) {
       settingsMsg.style.color = "red";
       settingsMsg.textContent = "Error updating profile.";
