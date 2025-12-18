@@ -187,10 +187,13 @@
   const auth = getAuth(app);
   const db   = getFirestore(app);
 
-  // SET GLOBALS so auth-ui.js works here too
+    // SET GLOBALS so auth-ui.js works here too
   window._firebaseAuth = auth;
   window._firebaseOnAuthStateChanged = onAuthStateChanged;
-  window._firebaseSignOut = signOut;
+  window._firebaseSignOut = signOut; 
+  window._firebaseSignIn = () => {};
+  window._firebaseSignUp = () => {};
+
 
   const welcomeNameEl = document.getElementById('welcome-name');
   const initialEl     = document.getElementById('user-initial'); // Fixed ID typo
