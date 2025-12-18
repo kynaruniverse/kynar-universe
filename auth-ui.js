@@ -11,10 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const accountNavLink = document.getElementById('account-nav-link');
   const authModal      = document.getElementById('auth-modal');
   
-  if (!signInLink || !authModal) return;
+  if (!signInLink) return;
 
-  const backdrop       = authModal.querySelector('.auth-modal-backdrop');
-  const closeBtn       = authModal.querySelector('.auth-modal-close');
+  const backdrop       = authModal?.querySelector('.auth-modal-backdrop');
+  const closeBtn       = authModal?.querySelector('.auth-modal-close');
+
   const form           = document.getElementById('auth-form');
   const emailInput     = document.getElementById('auth-email');
   const passInput      = document.getElementById('auth-password');
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let mode = 'signin'; 
 
   const openModal = () => {
+    if (!authModal) return;
     authModal.classList.add('is-open');
     authModal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('drawer-open');
