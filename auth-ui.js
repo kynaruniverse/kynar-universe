@@ -1,21 +1,18 @@
 // KYNAR - Auth UI wiring (uses globals set in index.html Firebase script)
 
-const auth = window._firebaseAuth;
-const onAuthChange = window._firebaseOnAuthStateChanged;
-const signInFirebase = window._firebaseSignIn;
-const signUpFirebase = window._firebaseSignUp;
+const auth            = window._firebaseAuth;
+const onAuthChange    = window._firebaseOnAuthStateChanged;
+const signInFirebase  = window._firebaseSignIn;
+const signUpFirebase  = window._firebaseSignUp;
 const signOutFirebase = window._firebaseSignOut;
 
-document.addEventListener('DOMContentLoaded', () => { const signInLink = 
-document.querySelector('.sign-in-link');
-  const signInText = 
-document.querySelector('.sign-in-text');
-  const accountNavLink = 
-document.getElementById('account-nav-link');
-  const authModal = 
-document.getElementById('auth-modal');
-  
-  if (!auth || !signInLinauth-signInText) return;
+document.addEventListener('DOMContentLoaded', () => {
+  const signInLink     = document.querySelector('.sign-in-link');
+  const signInText     = document.querySelector('.sign-in-text');
+  const accountNavLink = document.getElementById('account-nav-link');
+  const authModal      = document.getElementById('auth-modal');
+
+  if (!signInLink || !signInText || !authModal) return;
   
   const backdrop = authModal.querySelector('.auth-modal-backdrop');
   const closeBtn = authModal.querySelector('.auth-modal-close');
