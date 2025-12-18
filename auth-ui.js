@@ -1,4 +1,4 @@
-// KYNAR - Auth UI wiring
+// KYNAR - Full Auth UI wiring
 const auth            = window._firebaseAuth;
 const onAuthChange    = window._firebaseOnAuthStateChanged;
 const signInFirebase  = window._firebaseSignIn;
@@ -6,53 +6,41 @@ const signUpFirebase  = window._firebaseSignUp;
 const signOutFirebase = window._firebaseSignOut;
 
 document.addEventListener('DOMContentLoaded', () => {
-  const signInLink     = document.querySelector('.sign-in-link');
-  const signInText     = document.querySelector('.sign-in-text');
-  const accountNavLink = document.getElementById('account-nav-link');
+  // Elements
+  const signInLink      = document.querySelector('.sign-in-link');
+  const signInText      = document.querySelector('.sign-in-text');
   const accountNavLinks = document.querySelectorAll('#account-nav-link, #account-nav-mobile');
-  const authModal      = document.getElementById('auth-modal');
   
+  // Modals
+  const loginModal      = document.getElementById('auth-modal');
+  const signupModal     = document.getElementById('signup-modal');
+
   if (!signInLink) return;
 
-  const backdrop       = authModal?.querySelector('.auth-modal-backdrop');
-  const closeBtn       = authModal?.querySelector('.auth-modal-close');
-
-  const form           = document.getElementById('auth-form');
-  const emailInput     = document.getElementById('auth-email');
-  const passInput      = document.getElementById('auth-password');
-  const displayNameRow = document.querySelector('.auth-display-name-row');
-  const displayNameInput = document.getElementById('auth-display-name');
-  const submitBtn      = document.getElementById('auth-submit-btn');
-  const toggleModeBtn  = document.getElementById('auth-toggle-mode');
-  const messageEl      = document.getElementById('auth-message');
-  
-  let mode = 'signin'; 
-
-  const openModal = () => {
-    if (!authModal) return;
-    authModal.classList.add('is-open');
-    authModal.setAttribute('aria-hidden', 'false');
+  // --- Helper: Open/Close Logic ---
+  const openLogin = () => {
+    if (!loginModal) return;
+    signupModal?.classList.remove('is-open');
+    loginModal.classList.add('is-open');
     document.body.classList.add('drawer-open');
-    if (emailInput) emailInput.focus();
+    document.getElementById('auth-email')?.focus();
   };
 
-  const closeModal = () => {
-    authModal.classList.remove('is-open');
-    authModal.setAttribute('aria-hidden', 'true');
+  const openSignup = () => {
+    if (!signupModal) return;
+    loginModal?.classList.remove('is-open');
+    signupModal.classList.add('is-open');
+    document.body.classList.add('drawer-open');
+    document.getElementById('reg-name')?.focus();
+  };
+
+  const closeAllModals = () => {
+    loginModal?.classList.remove('is-open');
+    signupModal?.classList.remove('is-open');
     document.body.classList.remove('drawer-open');
-    if (form) form.reset();
-    if (messageEl) messageEl.textContent = '';
   };
 
-  const updateModeUI = () => {
-    const isSignIn = mode === 'signin';
-    submitBtn.textContent = isSignIn ? 'Sign in' : 'Create account';
-    toggleModeBtn.textContent = isSignIn ? 'Need an account? Sign up' : 'Already have an account? Sign in';
-    if (displayNameRow) displayNameRow.style.display = isSignIn ? 'none' : '';
-  };
-
-  // --- Listeners ---
-
+  // --- Sign In / Sign Out Button ---
   signInLink.addEventListener('click', async (e) => {
     e.preventDefault();
     if (auth.currentUser) {
@@ -61,90 +49,110 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.reload(); 
       } catch (err) { console.error('Logout failed:', err); }
     } else {
-      mode = 'signin';
-      updateModeUI();
-      openModal();
+      openLogin();
     }
   });
 
-    // NEW INTERCEPTOR - Works for both Desktop and Mobile links
+  // --- Interceptors (Account Links) ---
   accountNavLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       if (!auth.currentUser) {
         e.preventDefault();
-        mode = 'signin';
-        updateModeUI();
-        openModal();
+        openLogin();
       }
     });
   });
 
-  if (toggleModeBtn) {
-    toggleModeBtn.addEventListener('click', () => {
-      mode = (mode === 'signin') ? 'signup' : 'signin';
-      updateModeUI();
-    });
-  }
-
-  [closeBtn, backdrop].forEach(el => el?.addEventListener('click', closeModal));
-  
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && authModal.classList.contains('is-open')) closeModal();
+  // --- Modal Switching (Swapping) ---
+  document.getElementById('auth-toggle-mode')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openSignup();
   });
 
-    // Updated Form Submission with Success Messages
-  form?.addEventListener('submit', async (e) => {
+  document.getElementById('back-to-login')?.addEventListener('click', (e) => {
     e.preventDefault();
-    if (messageEl) {
-      messageEl.textContent = '';
-      messageEl.style.color = ''; // Reset color from potential previous errors
-    }
-    submitBtn.disabled = true;
+    openLogin();
+  });
+
+  // --- Close Listeners ---
+  const closeButtons = document.querySelectorAll('.auth-modal-close, .auth-modal-backdrop');
+  closeButtons.forEach(btn => btn.addEventListener('click', closeAllModals));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAllModals();
+  });
+
+  // --- LOGIN FORM SUBMISSION ---
+  const loginForm = document.getElementById('auth-form');
+  loginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msgEl = document.getElementById('auth-message');
+    const btn = document.getElementById('auth-submit-btn');
+    const email = document.getElementById('auth-email').value.trim();
+    const pass = document.getElementById('auth-password').value.trim();
+
+    btn.disabled = true;
+    if (msgEl) msgEl.textContent = "Signing in...";
 
     try {
-      const email = emailInput.value.trim();
-      const pass = passInput.value.trim();
-      
-      let successMessage = "";
-
-      if (mode === 'signin') {
-        await signInFirebase(auth, email, pass);
-        successMessage = "Welcome back! Redirecting...";
-      } else {
-        const dName = displayNameInput.value.trim();
-        await signUpFirebase(auth, email, pass, dName);
-        successMessage = "Account created! Welcome to the Universe.";
+      await signInFirebase(auth, email, pass);
+      if (msgEl) {
+        msgEl.style.color = "#28a745";
+        msgEl.textContent = "Welcome back! Redirecting...";
       }
-
-      // Show success feedback
-      if (messageEl) {
-        messageEl.textContent = successMessage;
-        messageEl.style.color = "#28a745"; // Success green
-      }
-
-      // Brief delay so they can actually read the message
       setTimeout(() => {
-        closeModal();
         window.location.href = 'account.html';
       }, 1500);
-
     } catch (err) {
-      submitBtn.disabled = false; // Re-enable only on error
-      if (messageEl) {
-        messageEl.textContent = err.message.replace('Firebase: ', '');
-        messageEl.style.color = "#dc3545"; // Error red
+      btn.disabled = false;
+      if (msgEl) {
+        msgEl.style.color = "#dc3545";
+        msgEl.textContent = err.message.replace('Firebase: ', '');
       }
     }
   });
 
+  // --- SIGNUP FORM SUBMISSION ---
+  const signupForm = document.getElementById('signup-form');
+  signupForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msgEl = document.getElementById('reg-message');
+    const btn = document.getElementById('reg-submit-btn');
+    
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-password').value.trim();
 
-    onAuthChange(auth, (user) => {
+    btn.disabled = true;
+    if (msgEl) msgEl.textContent = "Creating account...";
+
+    try {
+      // Calls the global helper in index.html
+      await window._firebaseSignUp(auth, email, pass, name);
+      
+      if (msgEl) {
+        msgEl.style.color = "#28a745";
+        msgEl.textContent = "Account created! Redirecting...";
+      }
+
+      setTimeout(() => {
+        window.location.href = 'account.html';
+      }, 2000);
+    } catch (err) {
+      btn.disabled = false;
+      if (msgEl) {
+        msgEl.style.color = "#dc3545";
+        msgEl.textContent = err.message.replace('Firebase: ', '');
+      }
+    }
+  });
+
+  // --- Auth State UI Updates ---
+  onAuthChange(auth, (user) => {
     if (signInText) signInText.textContent = !!user ? 'Sign out' : 'Sign in';
     accountNavLinks.forEach(link => {
       link.style.opacity = '1';
       link.style.pointerEvents = 'auto';
     });
   });
-
-  updateModeUI();
 });

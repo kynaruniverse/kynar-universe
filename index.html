@@ -357,11 +357,6 @@
             <input id="auth-password"
             type="password" required minlength="6">
             </label>
-            
-            <label class="auth-label auth-display-name-row" style="display:none;">
-              Display name
-            <input id="auth-display-name" type="text" maxlength="40" autocomplete="nickname">
-             </label>
 
           <button type="submit" class="auth-primary-btn" id="auth-submit-btn">
             Sign in
@@ -375,6 +370,39 @@
         </form>
       </div>
     </div>
+    
+    <div class="auth-modal" id="signup-modal" aria-hidden="true">
+  <div class="auth-modal-backdrop"></div>
+  <div class="auth-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="signup-title">
+    <button class="auth-modal-close" id="signup-close" type="button">✕</button>
+
+    <h2 id="signup-title" class="auth-modal-heading">Create Account</h2>
+
+    <form id="signup-form">
+      <label class="auth-label">
+        <span>Display Name</span>
+        <input type="text" id="reg-name" required placeholder="How should we address you?">
+      </label>
+
+      <label class="auth-label">
+        <span>Email Address</span>
+        <input type="email" id="reg-email" required placeholder="email@example.com">
+      </label>
+
+      <label class="auth-label">
+        <span>Password (Min 6 characters)</span>
+        <input type="password" id="reg-password" required minlength="6" placeholder="••••••••">
+      </label>
+
+      <button type="submit" class="auth-primary-btn" id="reg-submit-btn">Create Universe Account</button>
+      
+      <button type="button" class="auth-secondary-btn" id="back-to-login">Already have an account? Sign in</button>
+
+      <p class="auth-message" id="reg-message" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+
 
     <!-- Your main JS -->
     <script src="script.js" defer></script>
