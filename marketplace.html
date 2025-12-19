@@ -9,10 +9,13 @@
 </head>
 <body>
 
+    <!-- Drawer Overlay (ADDED) -->
+    <div class="drawer-overlay" aria-hidden="true"></div>
+
     <div class="header-wrapper">
         <header class="top-header">
             <div class="logo-area">
-                <button class="menu-icon custom-burger" type="button" aria-label="Toggle navigation menu">
+                <button class="menu-icon custom-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
                     <span></span><span></span><span></span>
                 </button>
                 <div class="site-title">
@@ -25,11 +28,11 @@
             </div>
             <p class="slogan-header">"The Universe of a Sole Creator"</p>
             <div class="account-area">
-                <a href="account.html" class="sign-in-link">
+                <a href="#" class="sign-in-link">
                     <div class="custom-lock-icon">
-                        <i class="fa-solid fa-lock"></i>
+                        <img src="/images/log-in-icon.png" alt="User sign in">
                     </div>
-                    <span class="sign-in-text">Account</span>
+                    <span class="sign-in-text">Sign in</span>
                 </a>
             </div>
         </header>
@@ -44,10 +47,10 @@
         </nav>
 
         <div class="search-subscribe-bar">
-            <form class="search-box">
-                <input type="text" placeholder="Search creations...">
-                <button type="submit" class="search-button">
-                    <i class="fa-solid fa-magnifying-glass" style="color: white;"></i>
+            <form class="search-box" id="search-form">
+                <input type="text" id="search-input" placeholder="Search creations...">
+                <button type="submit" class="search-submit">
+                    <img src="/images/search-button.svg" alt="Search" class="search-icon">
                 </button>
             </form>
             <a href="#" class="subscribe-button">SUBSCRIBE</a>
@@ -55,11 +58,12 @@
     </div>
 
     <main class="main-content-container">
+        <!-- Featured Section - NOT filterable -->
         <section class="featured-products">
             <h2 class="section-title" style="font-family: 'Bantayog'; text-align: center; margin-bottom: 20px;">Featured Creations</h2>
             <div class="category-cards-section">
                 
-                <article class="category-card planning-productivity-card" data-category="productivity" data-price="15">
+                <article class="category-card planning-productivity-card featured-card">
                     <div class="product-badge" style="background: var(--color-star-red); color: white; padding: 2px 8px; border-radius: 5px; font-size: 10px; align-self: flex-start;">Top Pick</div>
                     <h3>Ultimate Life Planner</h3>
                     <div class="asset-grid">
@@ -72,7 +76,7 @@
                     </div>
                 </article>
 
-                <article class="category-card prompts-content-card" data-category="productivity" data-price="9">
+                <article class="category-card prompts-content-card featured-card">
                     <div class="product-badge" style="background: var(--color-main-gold); color: white; padding: 2px 8px; border-radius: 5px; font-size: 10px; align-self: flex-start;">New</div>
                     <h3>ADHD Focus Guide</h3>
                     <div class="asset-grid">
@@ -87,6 +91,7 @@
             </div>
         </section>
 
+        <!-- Main Shop Section -->
         <div class="shop-layout">
             <aside class="marketplace-filters">
                 <div class="filter-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10px;">
@@ -119,6 +124,7 @@
                 </div>
             </aside>
 
+            <!-- ONLY List Items are Filterable -->
             <section class="scrollable-product-list" id="product-container">
                 <div class="list-item" data-category="homeschool" data-price="5">
                     <div class="item-details">
@@ -141,6 +147,39 @@
                         <a href="#" class="buy-link" style="display: block; font-size: 11px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 5px;">Details ➔</a>
                     </div>
                 </div>
+
+                <div class="list-item" data-category="productivity" data-price="12">
+                    <div class="item-details">
+                        <h4>Weekly Planner Template</h4>
+                        <p style="font-family: 'Glacial Indifference'; font-size: 12px; color: grey;">Notion Template • Lifetime Access</p>
+                    </div>
+                    <div class="item-action" style="text-align: right;">
+                        <span class="item-price">£12.00</span>
+                        <a href="#" class="buy-link" style="display: block; font-size: 11px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 5px;">Details ➔</a>
+                    </div>
+                </div>
+
+                <div class="list-item" data-category="creative" data-price="7">
+                    <div class="item-details">
+                        <h4>Mindfulness Coloring Book</h4>
+                        <p style="font-family: 'Glacial Indifference'; font-size: 12px; color: grey;">Digital PDF • 25 Pages</p>
+                    </div>
+                    <div class="item-action" style="text-align: right;">
+                        <span class="item-price">£7.00</span>
+                        <a href="#" class="buy-link" style="display: block; font-size: 11px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 5px;">Details ➔</a>
+                    </div>
+                </div>
+
+                <div class="list-item" data-category="productivity" data-price="0">
+                    <div class="item-details">
+                        <h4>Daily Habit Tracker</h4>
+                        <p style="font-family: 'Glacial Indifference'; font-size: 12px; color: grey;">Printable PDF • Free Download</p>
+                    </div>
+                    <div class="item-action" style="text-align: right;">
+                        <span class="item-price">FREE</span>
+                        <a href="#" class="buy-link" style="display: block; font-size: 11px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 5px;">Details ➔</a>
+                    </div>
+                </div>
             </section>
         </div>
     </main>
@@ -152,7 +191,7 @@
             <li><a href="marketplace.html">Marketplace</a></li>
             <li><a href="#">Journal</a></li>
             <li><a href="#">Resources</a></li>
-            <li><a href="account.html">Account</a></li>
+            <li><a href="account.html" class="account-nav-link">Account</a></li>
         </ul>
     </nav>
 

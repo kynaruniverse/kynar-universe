@@ -1,23 +1,23 @@
-// KYNAR - Full Auth UI wiring
-const auth            = window._firebaseAuth;
-const onAuthChange    = window._firebaseOnAuthStateChanged;
-const signInFirebase  = window._firebaseSignIn;
-const signUpFirebase  = window._firebaseSignUp;
+// KYNAR - Full Auth UI wiring with login icon image
+const auth = window._firebaseAuth;
+const onAuthChange = window._firebaseOnAuthStateChanged;
+const signInFirebase = window._firebaseSignIn;
+const signUpFirebase = window._firebaseSignUp;
 const signOutFirebase = window._firebaseSignOut;
 
 document.addEventListener('DOMContentLoaded', () => {
   // Elements
-  const signInLink      = document.querySelector('.sign-in-link');
-  const signInText      = document.querySelector('.sign-in-text');
+  const signInLink = document.querySelector('.sign-in-link');
+  const signInText = document.querySelector('.sign-in-text');
   const lockIconContainer = document.querySelector('.custom-lock-icon');
-  const accountNavLinks = document.querySelectorAll('#account-nav-link, #account-nav-mobile');
+  const accountNavLinks = document.querySelectorAll('#account-nav-link, #account-nav-mobile, .account-nav-link');
   
   // Modals
-  const loginModal      = document.getElementById('auth-modal');
-  const signupModal     = document.getElementById('signup-modal');
-
+  const loginModal = document.getElementById('auth-modal');
+  const signupModal = document.getElementById('signup-modal');
+  
   if (!signInLink) return;
-
+  
   // --- Helper: Open/Close Logic ---
   const openLogin = () => {
     if (!loginModal) return;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('drawer-open');
     document.getElementById('auth-email')?.focus();
   };
-
+  
   const openSignup = () => {
     if (!signupModal) return;
     loginModal?.classList.remove('is-open');
@@ -34,28 +34,33 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('drawer-open');
     document.getElementById('reg-name')?.focus();
   };
-
+  
   const closeAllModals = () => {
     loginModal?.classList.remove('is-open');
     signupModal?.classList.remove('is-open');
     document.body.classList.remove('drawer-open');
   };
-
-  // --- Sign In / Sign Out Button Logic ---
-    // --- Helper: Open/Close Logic ---
+  
+  // --- Sign In / Account Button Logic ---
   signInLink.addEventListener('click', (e) => {
     const user = auth.currentUser;
+    
+    // Check if we're on account.html (sign out button)
+    if (window.location.pathname.includes('account.html')) {
+      // This is handled by the sign-out button in account.html
+      return;
+    }
+    
     if (user) {
-      // If logged in, let the browser follow the link to account.html
+      // If logged in, go to account page
       window.location.href = 'account.html';
     } else {
-      // If NOT logged in, stop the link and open the login modal
+      // If NOT logged in, open login modal
       e.preventDefault();
       openLogin();
     }
   });
-
-
+  
   // --- Interceptors (Account Links) ---
   accountNavLinks.forEach(link => {
     link.addEventListener('click', (e) => {
@@ -65,26 +70,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-
+  
   // --- Modal Switching ---
   document.getElementById('auth-toggle-mode')?.addEventListener('click', (e) => {
     e.preventDefault();
     openSignup();
   });
-
+  
   document.getElementById('back-to-login')?.addEventListener('click', (e) => {
     e.preventDefault();
     openLogin();
   });
-
+  
   // --- Close Listeners ---
   const closeButtons = document.querySelectorAll('.auth-modal-close, .auth-modal-backdrop');
   closeButtons.forEach(btn => btn.addEventListener('click', closeAllModals));
-
+  
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeAllModals();
   });
-
+  
   // --- LOGIN FORM SUBMISSION ---
   const loginForm = document.getElementById('auth-form');
   loginForm?.addEventListener('submit', async (e) => {
@@ -93,10 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('auth-submit-btn');
     const email = document.getElementById('auth-email').value.trim();
     const pass = document.getElementById('auth-password').value.trim();
-
+    
     if (btn) btn.disabled = true;
     if (msgEl) msgEl.textContent = "Signing in...";
-
+    
     try {
       await signInFirebase(auth, email, pass);
       if (msgEl) {
@@ -114,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-
+  
   // --- SIGNUP FORM SUBMISSION ---
   const signupForm = document.getElementById('signup-form');
   signupForm?.addEventListener('submit', async (e) => {
@@ -125,10 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = document.getElementById('reg-name').value.trim();
     const email = document.getElementById('reg-email').value.trim();
     const pass = document.getElementById('reg-password').value.trim();
-
+    
     if (btn) btn.disabled = true;
     if (msgEl) msgEl.textContent = "Creating account...";
-
+    
     try {
       await window._firebaseSignUp(auth, email, pass, name);
       if (msgEl) {
@@ -146,31 +151,51 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-
+  
   // --- AUTH STATE UI UPDATES ---
   onAuthChange(auth, (user) => {
     const isLoggedIn = !!user;
     localStorage.setItem('kynar_auth_state', isLoggedIn ? 'logged_in' : 'logged_out');
-
+    
     if (isLoggedIn) {
-      // 1. Update text to show "Account" or User Name
+      // 1. Update text to show "Account" or User's First Name
       if (signInText) {
-        signInText.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Account';
+        const displayName = user.displayName ? user.displayName.split(' ')[0] : 'Account';
+        signInText.textContent = displayName;
       }
-      // 2. Change Lock Icon to a User Icon or Initial
+      
+      // 2. Change Login Icon to User Initial Circle
       if (lockIconContainer) {
-        const initial = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U';
-        lockIconContainer.innerHTML = `<span style="font-family:'Bantayog'; font-weight:bold; color:var(--color-star-red);">${initial}</span>`;
+        const initial = user.displayName ? user.displayName.charAt(0).toUpperCase() :
+          user.email ? user.email.charAt(0).toUpperCase() : 'U';
+        
+        lockIconContainer.innerHTML = `
+          <div style="
+            width: 100%; 
+            height: 100%; 
+            background-color: var(--color-main-gold); 
+            border-radius: 5px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-family: 'Bantayog', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--color-dark-text);
+          ">${initial}</div>
+        `;
       }
     } else {
-      // 1. Revert to Sign In text
+      // 1. Revert to "Sign in" text
       if (signInText) signInText.textContent = 'Sign in';
-      // 2. Revert to Lock Icon
+      
+      // 2. Revert to Login Icon Image
       if (lockIconContainer) {
-        lockIconContainer.innerHTML = `<i class="fa-solid fa-lock"></i>`;
+        lockIconContainer.innerHTML = `<img src="/images/log-in-icon.png" alt="User sign in" style="width: 100%; height: 100%; object-fit: contain;">`;
       }
     }
     
+    // Enable account links
     accountNavLinks.forEach(link => {
       link.style.opacity = '1';
       link.style.pointerEvents = 'auto';

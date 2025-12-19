@@ -7,13 +7,45 @@
   <meta name="description" content="Manage your KYNAR Universe profile and access your creations.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Auth Check at Top - ADDED -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
+      authDomain: "kynar-universe-official.firebaseapp.com",
+      projectId: "kynar-universe-official",
+      storageBucket: "kynar-universe-official.firebasestorage.app",
+      messagingSenderId: "1089722386738",
+      appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    
+    // Show loading state
+    document.documentElement.style.opacity = '0';
+    
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        document.documentElement.style.opacity = '1';
+      }
+    });
+  </script>
 </head>
 <body>
+
+  <!-- Drawer Overlay (ADDED) -->
+  <div class="drawer-overlay" aria-hidden="true"></div>
 
   <div class="header-wrapper">
     <header class="top-header">
       <div class="logo-area">
-        <button class="menu-icon custom-burger" type="button" aria-label="Toggle navigation menu">
+        <button class="menu-icon custom-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
 
@@ -29,12 +61,12 @@
       <p class="slogan-header">Digital tools for every corner of your life.</p>
 
       <div class="account-area">
-        <a href="#" class="sign-in-link">
+        <button id="sign-out-btn" class="sign-in-link" style="border: none; background: transparent; cursor: pointer;">
           <div class="custom-lock-icon">
-            <i class="fa-solid fa-lock"></i>
+            <img src="/images/log-in-icon.png" alt="Sign out">
           </div>
           <span class="sign-in-text">Sign out</span>
-        </a>
+        </button>
       </div>
     </header>
 
@@ -48,10 +80,10 @@
     </nav>
 
     <section class="search-subscribe-bar">
-      <form class="search-box">
-        <input type="text" placeholder="Search the Universe...">
-        <button class="search-button" type="submit">
-          <i class="fa-solid fa-magnifying-glass" style="color: white;"></i>
+      <form class="search-box" id="search-form">
+        <input type="text" id="search-input" placeholder="Search the Universe...">
+        <button class="search-submit" type="submit">
+          <img src="/images/search-button.svg" alt="Search" class="search-icon">
         </button>
       </form>
       <a href="#" class="subscribe-button">Subscribe</a>
@@ -89,7 +121,7 @@
           <h2 class="dashboard-panel-title">Recent purchases</h2>
         </div>
         <div class="purchase-list">
-          <p class="purchase-empty">Your recent purchases will appear here once you’ve bought something.</p>
+          <p class="purchase-empty">Your recent purchases will appear here once you've bought something.</p>
         </div>
         <a href="https://gumroad.com/library" target="_blank" rel="noopener" class="dashboard-link">
           View all purchases on Gumroad →
@@ -205,6 +237,17 @@
         }
       } catch (err) {
         console.error("Firestore error:", err);
+      }
+    });
+
+    // Sign Out Button (ADDED)
+    document.getElementById('sign-out-btn').addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        window.location.href = 'index.html';
+      } catch (err) {
+        console.error('Sign out error:', err);
+        alert('Error signing out. Please try again.');
       }
     });
 
