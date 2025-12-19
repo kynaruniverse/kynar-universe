@@ -195,6 +195,33 @@
         </ul>
     </nav>
 
+        <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+      import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+      
+      const firebaseConfig = {
+        apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
+        authDomain: "kynar-universe-official.firebaseapp.com",
+        projectId: "kynar-universe-official",
+        storageBucket: "kynar-universe-official.firebasestorage.app",
+        messagingSenderId: "1089722386738",
+        appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
+      };
+      
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      
+      // These link the global variables that auth-ui.js expects
+      window._firebaseAuth = auth;
+      window._firebaseOnAuthStateChanged = onAuthStateChanged;
+      window._firebaseSignIn = signInWithEmailAndPassword;
+      window._firebaseSignUp = async (auth, email, pass, displayName) => { /* same as index.html */ };
+      window._firebaseSignOut = signOut;
+      window._firebaseDb = db;
+    </script>
+
     <script src="script.js" defer></script>
     <script src="auth-ui.js" type="module"></script>
 </body>
