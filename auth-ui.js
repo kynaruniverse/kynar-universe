@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Elements
   const signInLink      = document.querySelector('.sign-in-link');
   const signInText      = document.querySelector('.sign-in-text');
+  const lockIconContainer = document.querySelector('.custom-lock-icon');
   const accountNavLinks = document.querySelectorAll('#account-nav-link, #account-nav-mobile');
   
   // Modals
@@ -40,15 +41,25 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('drawer-open');
   };
 
-  // --- Sign In / Sign Out Button ---
+  // --- Sign In / Sign Out Button Logic ---
   signInLink.addEventListener('click', async (e) => {
-    e.preventDefault();
+    // If user is logged in, clicking the "Account/Sign Out" area 
+    // on the Marketplace/Home should take them to their account page
+    // unless you specifically want them to sign out immediately.
     if (auth.currentUser) {
-      try {
-        await signOutFirebase(auth);
-        window.location.reload(); 
-      } catch (err) { console.error('Logout failed:', err); }
+       // Optional: Redirect to account instead of auto-logout
+       // window.location.href = 'account.html'; 
+       // return;
+       
+       // Current Logic: Logout
+       if(confirm("Do you want to sign out?")) {
+         try {
+            await signOutFirebase(auth);
+            window.location.reload(); 
+          } catch (err) { console.error('Logout failed:', err); }
+       }
     } else {
+      e.preventDefault();
       openLogin();
     }
   });
@@ -63,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Modal Switching (Swapping) ---
+  // --- Modal Switching ---
   document.getElementById('auth-toggle-mode')?.addEventListener('click', (e) => {
     e.preventDefault();
     openSignup();
@@ -91,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('auth-email').value.trim();
     const pass = document.getElementById('auth-password').value.trim();
 
-    btn.disabled = true;
+    if (btn) btn.disabled = true;
     if (msgEl) msgEl.textContent = "Signing in...";
 
     try {
@@ -104,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'account.html';
       }, 1500);
     } catch (err) {
-      btn.disabled = false;
+      if (btn) btn.disabled = false;
       if (msgEl) {
         msgEl.style.color = "#dc3545";
         msgEl.textContent = err.message.replace('Firebase: ', '');
@@ -123,23 +134,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('reg-email').value.trim();
     const pass = document.getElementById('reg-password').value.trim();
 
-    btn.disabled = true;
+    if (btn) btn.disabled = true;
     if (msgEl) msgEl.textContent = "Creating account...";
 
     try {
-      // Calls the global helper in index.html
       await window._firebaseSignUp(auth, email, pass, name);
-      
       if (msgEl) {
         msgEl.style.color = "#28a745";
         msgEl.textContent = "Account created! Redirecting...";
       }
-
       setTimeout(() => {
         window.location.href = 'account.html';
       }, 2000);
     } catch (err) {
-      btn.disabled = false;
+      if (btn) btn.disabled = false;
       if (msgEl) {
         msgEl.style.color = "#dc3545";
         msgEl.textContent = err.message.replace('Firebase: ', '');
@@ -147,19 +155,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-    // --- Auth State UI Updates ---
+  // --- AUTH STATE UI UPDATES ---
   onAuthChange(auth, (user) => {
     const isLoggedIn = !!user;
-    
     localStorage.setItem('kynar_auth_state', isLoggedIn ? 'logged_in' : 'logged_out');
 
-    // 2. Update the text as usual
-    if (signInText) signInText.textContent = isLoggedIn ? 'Sign out' : 'Sign in';
+    if (isLoggedIn) {
+      // 1. Update text to show "Account" or User Name
+      if (signInText) {
+        signInText.textContent = user.displayName ? user.displayName.split(' ')[0] : 'Account';
+      }
+      // 2. Change Lock Icon to a User Icon or Initial
+      if (lockIconContainer) {
+        const initial = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U';
+        lockIconContainer.innerHTML = `<span style="font-family:'Bantayog'; font-weight:bold; color:var(--color-star-red);">${initial}</span>`;
+      }
+    } else {
+      // 1. Revert to Sign In text
+      if (signInText) signInText.textContent = 'Sign in';
+      // 2. Revert to Lock Icon
+      if (lockIconContainer) {
+        lockIconContainer.innerHTML = `<i class="fa-solid fa-lock"></i>`;
+      }
+    }
     
     accountNavLinks.forEach(link => {
       link.style.opacity = '1';
       link.style.pointerEvents = 'auto';
     });
   });
-
 });
