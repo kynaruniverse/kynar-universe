@@ -184,6 +184,53 @@
             </section>
         </div>
     </main>
+    
+        <div class="auth-modal" id="auth-modal">
+        <div class="auth-modal-backdrop"></div>
+        <div class="auth-modal-dialog">
+            <button class="auth-modal-close">&times;</button>
+            <h2 class="auth-modal-heading">Sign In</h2>
+            <form id="auth-form">
+                <label class="auth-label">
+                    <span>Email Address</span>
+                    <input type="email" id="auth-email" required placeholder="you@example.com">
+                </label>
+                <label class="auth-label">
+                    <span>Password</span>
+                    <input type="password" id="auth-password" required placeholder="••••••••">
+                </label>
+                <button type="submit" class="auth-primary-btn" id="auth-submit-btn">Login</button>
+                <div class="auth-message" id="auth-message"></div>
+                <button type="button" class="auth-secondary-btn" id="auth-toggle-mode">Need an account? Sign up</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal">
+        <div class="auth-modal-backdrop"></div>
+        <div class="auth-modal-dialog">
+            <button class="auth-modal-close">&times;</button>
+            <h2 class="auth-modal-heading">Create Account</h2>
+            <form id="signup-form">
+                <label class="auth-label">
+                    <span>Display Name</span>
+                    <input type="text" id="reg-name" required placeholder="Your Name">
+                </label>
+                <label class="auth-label">
+                    <span>Email Address</span>
+                    <input type="email" id="reg-email" required placeholder="you@example.com">
+                </label>
+                <label class="auth-label">
+                    <span>Password</span>
+                    <input type="password" id="reg-password" required placeholder="Min 6 characters">
+                </label>
+                <button type="submit" class="auth-primary-btn" id="reg-submit-btn">Register</button>
+                <div class="auth-message" id="reg-message"></div>
+                <button type="button" class="auth-secondary-btn" id="back-to-login">Already have an account? Login</button>
+            </form>
+        </div>
+    </div>
+
 
     <nav class="side-drawer" aria-hidden="true">
         <button class="drawer-close" type="button">Close ✕</button>
