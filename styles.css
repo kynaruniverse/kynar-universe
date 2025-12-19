@@ -287,7 +287,7 @@ body {
     align-items: center;
     height: 100%;
     justify-content: center;
-    gap: 24px;
+    gap: 32px;
     min-width: max-content;
 }
 
@@ -301,7 +301,7 @@ body {
     align-items: center;
     padding: 12px 15px;
     text-decoration: none;
-    line-height: normal;
+    line-height: 1;
     color: var(--color-dark-text);
     font-family: 'Bantayog', var(--font-family-body);
     font-size: 12px;
@@ -313,7 +313,7 @@ body {
 }
 .main-nav ul li a i {
     font-size: 1.1rem;
-    transform: translateY(2px);
+    vertical-align: middle;
 }
 
 
