@@ -1707,3 +1707,25 @@ body.drawer-open {
     );
     animation: shimmer 3s infinite;
 }
+
+/* Ensure the button looks great on mobile */
+@media (max-width: 768px) {
+    .filter-actions-mobile {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        margin-left: -20px; /* Counteracts parent padding if necessary */
+        margin-right: -20px;
+        padding: 20px !important;
+        z-index: 5;
+    }
+}
+
+#apply-filters-btn:hover {
+    filter: brightness(1.1);
+}
+
+#apply-filters-btn:active {
+    transform: scale(0.98);
+}
+

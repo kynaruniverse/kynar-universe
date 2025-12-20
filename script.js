@@ -45,6 +45,30 @@ document.addEventListener('DOMContentLoaded', () => {
         
         overlay.addEventListener('click', closeDrawer);
     }
+    
+    // Function to close the marketplace filter sidebar
+const filterSidebar = document.getElementById('filter-sidebar');
+const applyFiltersBtn = document.getElementById('apply-filters-btn');
+const drawerOverlay = document.getElementById('drawer-overlay');
+
+if (applyFiltersBtn && filterSidebar) {
+    applyFiltersBtn.addEventListener('click', () => {
+        // 1. Remove the active class (the one that makes it visible/slide in)
+        filterSidebar.classList.remove('is-open'); // Adjust class name to match your sidebar's "open" class
+        
+        // 2. Hide the dark background overlay
+        if (drawerOverlay) {
+            drawerOverlay.classList.remove('is-active');
+        }
+        
+        // 3. Re-enable scrolling on the main page
+        document.body.classList.remove('drawer-open');
+        
+        // Optional: Smooth scroll user back to top of product list
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
 
     /* ===== 2. AUTH MODAL LOGIC ===== */
     const authTriggers = document.querySelectorAll('.sign-in-link');
