@@ -60,6 +60,16 @@
     --space-sm: 8px;
     --space-md: 20px;
     --space-lg: 40px;
+    
+    /* New Shadow Tokens */
+    --shadow-glow-gold: 0 0 32px 6px rgba(169, 147, 105, 0.85), 
+                        0 10px 24px rgba(0, 0, 0, 0.35), 
+                        8px 8px 18px rgba(0, 0, 0, 0.35), 
+                        -6px -6px 14px rgba(255, 255, 255, 0.65);
+
+    --shadow-3d-ledge: 0 8px 0 rgba(0, 0, 0, 0.45), 
+                       0 12px 18px rgba(0, 0, 0, 0.35), 
+                       inset 0 2px 0 rgba(255, 255, 255, .5);
 }
 /* ===== GLOBAL RESET ===== */
 * {
@@ -345,6 +355,39 @@ body {
     color: var(--color-star-red);
 }
 
+/* Shared Button DNA */
+.subscribe-button,
+.browse-button,
+.browse-marketplace-button,
+.auth-primary-btn,
+.auth-secondary-btn,
+.account-section-cta,
+#apply-filters-btn {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: var(--radius-pill);
+    transition: all 0.2s ease; /* Consolidates your transform and box-shadow transitions */
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Shared Content Panel DNA */
+.account-section-block, 
+.dashboard-panel, 
+.auth-modal-dialog,
+.marketplace-filters {
+    background-color: #fdfbf7;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 14px;
+    padding: 20px;
+}
+
+
 /* ===== SEARCH & SUBSCRIBE BAR ===== */
 .search-subscribe-bar {
     display: flex;
@@ -426,19 +469,12 @@ body {
 .subscribe-button {
     background-color: var(--color-star-red);
     color: var(--color-main-gold);
-    text-decoration: none;
-    flex: 0 0 auto;
+    border: 2px solid var(--color-main-gold);
     padding: 8px 20px;
-    text-align: center;
-    font-weight: bold;
     font-size: 10px;
     letter-spacing: 0.18em;
-    border: 2px solid var(--color-main-gold);
-    border-radius: var(--radius-pill);
-    text-transform: uppercase;
     box-shadow: 0 0 6px var(--color-slogan-bg);
-    transition: box-shadow 0.2s ease, transform 0.1s ease;
-    white-space: nowrap;
+    flex: 0 0 auto;
 }
 
 .subscribe-button:hover {
@@ -449,6 +485,7 @@ body {
 .subscribe-button:active {
     transform: translateY(1px);
 }
+
 
 /* ===== MAIN CONTENT WRAPPER ===== */
 .main-content-container {
@@ -472,17 +509,9 @@ body {
     line-height: 1.6;
     border: none;
     position: relative;
-    
-    /* Your signature 3D / Glow effect preserved exactly */
-    box-shadow:
-        /* subtle gold glow */
-        0 0 32px 6px rgba(169, 147, 105, 0.85),
-        /* drop shadow for depth */
-        0 10px 24px rgba(0, 0, 0, 0.35),
-        /* embossed / neumorphic edges */
-        8px 8px 18px rgba(0, 0, 0, 0.35),
-        -6px -6px 14px rgba(255, 255, 255, 0.65);
+    box-shadow: var(--shadow-glow-gold);
 }
+
 
 .slogan-title {
     font-weight: 800;
@@ -631,49 +660,26 @@ body {
 .browse-button {
     background-color: var(--color-main-gold);
     color: var(--color-dark-text);
-    text-decoration: none;
-    font-family: var(--font-display);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
     padding: 10px 26px;
-    font-weight: bold;
     font-size: 11px;
     font-style: italic;
-    border-radius: var(--radius-pill);
-    display: inline-block;
     width: auto;
-    border: none;
-    cursor: pointer;
     user-select: none;
-    
-    /* 3D raised effect - Preserved exactly */
-    box-shadow:
-        0 8px 0 rgba(0, 0, 0, 0.45),          /* hard drop shadow (ledge) */
-        0 12px 18px rgba(0, 0, 0, 0.35),      /* soft outer shadow */
-        inset 0 2px 0 rgba(255, 255, 255, .5);/* top highlight */
-    
-    transform: translateY(0);
-    transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
     margin-top: 6px;
     align-self: center;
+    box-shadow: var(--shadow-3d-ledge);
 }
 
 /* Hover: lift slightly more */
 .browse-button:hover {
     transform: translateY(-2px);
-    box-shadow:
-        0 10px 0 rgba(0, 0, 0, 0.45),
-        0 16px 24px rgba(0, 0, 0, 0.4),
-        inset 0 2px 0 rgba(255, 255, 255, .55);
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.45), 0 16px 24px rgba(0, 0, 0, 0.4), inset 0 2px 0 rgba(255, 255, 255, .55);
 }
 
-/* Active: pressed in (the "click" feel) */
+/* Active: pressed in */
 .browse-button:active {
     transform: translateY(3px);
-    box-shadow:
-        0 3px 0 rgba(0, 0, 0, 0.5),
-        0 6px 10px rgba(0, 0, 0, 0.35),
-        inset 0 2px 4px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.5), 0 6px 10px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(0, 0, 0, 0.35);
 }
 
 .bottom-browse-section {
@@ -684,42 +690,22 @@ body {
 .browse-marketplace-button {
     background-color: var(--color-main-gold);
     color: var(--color-dark-text);
-    text-decoration: none;
-    font-family: var(--font-display);
-    text-transform: uppercase;
     letter-spacing: 0.14em;
     padding: 18px 60px;
-    font-weight: bold;
     font-size: 18px;
-    border-radius: var(--radius-pill);
-    display: inline-block;
     width: 90%;
     max-width: 550px;
-    border: none;
-    cursor: pointer;
     user-select: none;
-
-    /* Glow + Embossed effect - Preserved exactly */
-    box-shadow:
-        /* glow */ 0 0 26px 4px rgba(169, 147, 105, 0.8),
-        /* drop shadow */ 0 10px 22px rgba(0, 0, 0, 0.45),
-        /* dark edge */ 6px 6px 14px rgba(0, 0, 0, 0.45),
-        /* light edge */ -5px -5px 12px rgba(255, 255, 255, 0.7);  
-
-    transition: transform 0.18s ease-out, box-shadow 0.18s ease-out,
-                background-color 0.18s ease-out, color 0.18s ease-out;
+    /* Glow + Embossed effect */
+    box-shadow: 0 0 26px 4px rgba(169, 147, 105, 0.8), 0 10px 22px rgba(0, 0, 0, 0.45), 6px 6px 14px rgba(0, 0, 0, 0.45), -5px -5px 12px rgba(255, 255, 255, 0.7);
 }
 
-/* Hover / active: pressed but still glowing */
 .browse-marketplace-button:hover,
 .browse-marketplace-button:active {
     transform: translateY(2px);
-    box-shadow:
-        0 0 18px 2px rgba(169, 147, 105, 0.7),
-        0 6px 14px rgba(0, 0, 0, 0.4),
-        3px 3px 10px rgba(0, 0, 0, 0.45),
-        -3px -3px 8px rgba(255, 255, 255, 0.65);
+    box-shadow: 0 0 18px 2px rgba(169, 147, 105, 0.7), 0 6px 14px rgba(0, 0, 0, 0.4), 3px 3px 10px rgba(0, 0, 0, 0.45), -3px -3px 8px rgba(255, 255, 255, 0.65);
 }
+
 
 /* ===== SITE FOOTER ===== */
 .site-footer {
@@ -866,18 +852,16 @@ body.drawer-open {
 .auth-modal-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.65); /* Slightly darker for better focus */
-    backdrop-filter: blur(2px); /* Subtle blur for a modern feel */
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(2px);
 }
 
+/* Shortened Auth Modal */
 .auth-modal-dialog {
     position: relative;
     width: 90%;
     max-width: 380px;
-    /* Removed margin: 80px auto since we are flex-centering */
     padding: 30px 25px 25px;
-    background: #f7f4ee; /* Warm paper-like background */
-    border-radius: 16px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     font-family: var(--font-glacial);
 }
@@ -921,25 +905,19 @@ body.drawer-open {
     box-shadow: 0 0 0 3px rgba(169, 147, 105, 0.2);
 }
 
+/* Shortened Auth Buttons */
 .auth-primary-btn,
 .auth-secondary-btn {
     width: 100%;
-    border-radius: var(--radius-pill);
     padding: 12px 16px;
     font-size: 11px;
-    font-family: var(--font-display);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
     margin-top: 10px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    letter-spacing: 0.12em;
 }
 
 .auth-primary-btn {
     background-color: var(--color-main-gold);
     color: var(--color-dark-text);
-    font-weight: bold;
     box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
 }
 
@@ -958,6 +936,7 @@ body.drawer-open {
     color: var(--color-star-red);
     border: 1px solid rgba(0, 0, 0, 0.15);
     font-weight: 600;
+    /* Overrides the 'bold' from DNA if you want it slightly lighter */
 }
 
 .auth-secondary-btn:hover {
@@ -1050,18 +1029,16 @@ body.drawer-open {
   margin: 0 auto;
 }
 
+/* Account Block */
 .account-section-block {
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: #fdfbf7;
-  padding: 20px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .account-section-block:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
 
 .account-section-title {
   font-family: var(--font-display);
@@ -1100,33 +1077,26 @@ body.drawer-open {
   margin-top: 6px;
 }
 
+/* Shortened Account Section CTAs */
 .account-section-cta {
-  display: inline-block;
-  margin-top: 5px;
-  padding: 8px 20px;
-  border-radius: var(--radius-pill);
-  border: none;
-  background-color: var(--color-main-gold);
-  color: var(--color-dark-text);
-  font-family: var(--font-display);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  font-weight: bold;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
+    margin-top: 5px;
+    padding: 8px 20px;
+    background-color: var(--color-main-gold);
+    color: var(--color-dark-text);
+    font-size: 11px;
+    letter-spacing: 0.12em;
 }
 
 .account-section-cta:hover {
-  opacity: 0.9;
+    opacity: 0.9;
+    transform: translateY(-1px);
+    /* Added subtle lift to match other buttons */
 }
 
 .account-section-cta-secondary {
-  background-color: var(--color-star-red);
-  color: var(--color-main-gold);
+    background-color: var(--color-star-red);
+    color: var(--color-main-gold);
 }
-
 
 /* ===== ACCOUNT DASHBOARD OVERVIEW ===== */
 .account-dashboard {
@@ -1233,31 +1203,25 @@ body.drawer-open {
         display: block; /* Shows the gold button we defined in Block 17 */
     }
     
-    .marketplace-filters {
-        display: none; 
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #fdfbf7; /* Matched to your account section-block color */
-        z-index: 12000; /* Stays above the Side Drawer and Header */
-        padding: 40px 20px;
-        box-sizing: border-box;
-    }
-    
-    /* When active, show the filter overlay */
-    .marketplace-filters.active {
-        display: block;
-        overflow-y: auto;
-        /* Simple slide up animation */
-        animation: slideUp 0.3s ease-out;
-    }
+    /* Shortened Marketplace Mobile Overlay */
+.marketplace-filters {
+    display: none; 
+    position: fixed;
+    inset: 0; /* Shorthand for top, left, width, height: 100% */
+    z-index: 12000;
+    box-sizing: border-box;
+    /* Background and padding are now in the DNA group */
+}
 
-    @keyframes slideUp {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
-    }
+.marketplace-filters.active {
+    display: block;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
 }
 
 /* ===== STATS ROW RESPONSIVENESS ===== */
@@ -1355,12 +1319,8 @@ body.drawer-open {
   color: rgba(17,17,17,0.6);
 }
 
-/* ===== DASHBOARD PANELS ===== */
+/* ==== DASHBOARD PANELS ==== */
 .dashboard-panel {
-  border-radius: 16px;
-  background-color: #fdfbf7;
-  border: 1px solid rgba(0,0,0,0.1);
-  padding: 20px;
   margin-bottom: 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 }
@@ -1370,18 +1330,19 @@ body.drawer-open {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
   padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .dashboard-panel-title {
   font-family: var(--font-display);
   font-size: 13px;
+  font-weight: bold;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-dark-text);
-  font-weight: bold;
 }
+
 
 .purchase-empty {
   font-family: var(--font-glacial);
@@ -1571,15 +1532,16 @@ body.drawer-open {
     margin-top: 30px;
 }
 
+/* Desktop Filters */
 .marketplace-filters {
-    background: #fdfbf7;
-    padding: 25px;
-    border-radius: var(--radius-card);
-    border: 1px solid var(--color-main-gold);
+    display: block;
+    position: sticky;
+    top: 20px;
     height: fit-content;
 }
 
-/* Sticky Filter Sidebar */
+
+/* Shortened Desktop Filters */
 @media (min-width: 900px) {
     .shop-layout {
         grid-template-columns: 280px 1fr;
@@ -1587,17 +1549,19 @@ body.drawer-open {
         padding: 0 24px;
     }
     .marketplace-filters {
+        display: block; /* Ensures it's visible as a sidebar */
         position: sticky;
         top: 20px;
+        height: fit-content;
     }
 }
 
-/* Fix: This ensures the menu actually appears when the JS triggers it */
+
+/* Shortened Mobile Filter Toggle */
 @media (max-width: 768px) {
     .marketplace-filters.is-open {
         display: block !important;
         overflow-y: auto;
-        /* Slide up animation */
         animation: slideUp 0.3s ease-out;
     }
 }
@@ -1735,6 +1699,19 @@ body.drawer-open {
     }
 }
 
+/* Base styling for the Apply button */
+#apply-filters-btn {
+    width: 100%; 
+    background-color: var(--color-star-red); 
+    color: white; 
+    padding: 15px; 
+    font-size: 13px; 
+    letter-spacing: 0.1em; 
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Your existing hover/active effects work perfectly with the block above */
 #apply-filters-btn:hover {
     filter: brightness(1.1);
 }
@@ -1742,6 +1719,7 @@ body.drawer-open {
 #apply-filters-btn:active {
     transform: scale(0.98);
 }
+
 
 /* Adds a divider between Featured and the Filterable list */
 .featured-products {
@@ -1758,3 +1736,4 @@ body.drawer-open {
 }
 
 
+}
