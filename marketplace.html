@@ -2,45 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Marketplace | KYNAR Universe</title>
+    
+    <meta name="description" content="Explore the KYNAR Universe Marketplace - Premium templates, systems, and creative resources.">
+    
     <link rel="stylesheet" href="styles.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="icon" type="image/png" href="assets/favicon.png">
 </head>
-<body>
-
-    <!-- Drawer Overlay (ADDED) -->
-    <div class="drawer-overlay" aria-hidden="true"></div>
+<body class="marketplace-page">
+    <a href="#main-marketplace-content" class="visually-hidden">Skip to content</a>
+    
+    <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
 
     <div class="header-wrapper">
         <header class="top-header">
             <div class="logo-area">
-                <button class="menu-icon custom-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <span></span><span></span><span></span>
+                <button class="menu-icon custom-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="side-drawer">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
+                
                 <div class="site-title">
                     <a href="index.html" class="site-title-link">
-                        <p class="main-title">Kynar</p>
+                        <h1 class="main-title">Kynar</h1>
                         <p class="sub-title">Universe.co.uk</p>
                     </a>
-                    <figure class="stars">✶ , * ✦ , * ✶ , ✶ * , ✦ *</figure>
+                    <figure class="stars" aria-hidden="true">✶ , * ✦ , * ✶ , ✶ * , ✦ *</figure>
                 </div>
             </div>
+
             <p class="slogan-header">Digital tools for every corner of your life.</p>
+
             <div class="account-area">
-                <a href="#" class="sign-in-link">
+                <a href="#" class="sign-in-link" role="button">
                     <div class="custom-lock-icon">
-                        <img src="/images/log-in-icon.png" alt="User sign in">
+                        <img src="images/log-in-icon.png" alt="User sign in icon" width="60" height="60">
                     </div>
                     <span class="sign-in-text">Sign in</span>
                 </a>
             </div>
         </header>
 
-        <nav class="main-nav">
+        <nav class="main-nav" aria-label="Primary Navigation">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="marketplace.html" style="color: var(--color-star-red);">Marketplace</a></li>
+                <li><a href="marketplace.html" style="color: var(--color-star-red);" aria-current="page">Marketplace</a></li>
                 <li><a href="account.html" id="account-nav-link" class="account-nav-link">Account</a></li>
                 <li><a href="#">Guides</a></li>
                 <li><a href="#">Library</a></li>
@@ -48,223 +59,259 @@
         </nav>
 
         <div class="search-subscribe-bar">
-            <form class="search-box" id="search-form">
-                <input type="text" id="search-input" placeholder="Search creations...">
-                <button type="submit" class="search-submit">
-                    <img src="/images/search-button.svg" alt="Search" class="search-icon">
+            <form class="search-box" id="search-form" role="search">
+                <label for="search-input" class="visually-hidden">Search creations</label>
+                <input type="text" id="search-input" placeholder="Search creations..." autocomplete="off">
+                <button type="submit" class="search-submit" aria-label="Submit search">
+                    <img src="images/search-button.svg" alt="" class="search-icon" aria-hidden="true">
                 </button>
             </form>
-            <a href="#" class="subscribe-button">SUBSCRIBE</a>
+            <a href="#subscribe" class="subscribe-button">SUBSCRIBE</a>
         </div>
-    </div>
-
-    <main class="main-content-container">
-        <!-- Featured Section - NOT filterable -->
-        <section class="featured-products">
-            <h2 class="section-title" style="font-family: 'Bantayog'; text-align: center; margin-bottom: 20px;">Featured Creations</h2>
-            <div class="category-cards-section">
-                
-                <article class="category-card planning-productivity-card featured-card">
-                    <div class="product-badge" style="background: var(--color-star-red); color: white; padding: 2px 8px; border-radius: 5px; font-size: 10px; align-self: flex-start;">Top Pick</div>
-                    <h3>Ultimate Life Planner</h3>
-                    <div class="asset-grid">
-                        <a href="#" class="asset-item"><span>Notion Template</span></a>
-                        <a href="#" class="asset-item"><span>Digital PDF</span></a>
-                    </div>
-                    <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                        <span class="price-tag" style="font-weight: bold; color: var(--color-star-red);">£15.00</span>
-                        <a href="#" class="browse-button">Buy Now</a>
-                    </div>
-                </article>
-
-                <article class="category-card prompts-content-card featured-card">
-                    <div class="product-badge" style="background: var(--color-main-gold); color: white; padding: 2px 8px; border-radius: 5px; font-size: 10px; align-self: flex-start;">New</div>
-                    <h3>ADHD Focus Guide</h3>
-                    <div class="asset-grid">
-                        <a href="#" class="asset-item"><span>E-Book</span></a>
-                        <a href="#" class="asset-item"><span>Worksheets</span></a>
-                    </div>
-                    <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                        <span class="price-tag" style="font-weight: bold; color: var(--color-star-red);">£9.00</span>
-                        <a href="#" class="browse-button">Buy Now</a>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-<button id="mobile-filter-toggle" class="mobile-filter-btn">
-    <i class="fa-solid fa-filter"></i> Filters
-</button>
-
-<div class="shop-layout">
-    <aside class="marketplace-filters" id="filter-sidebar">
-        <div class="filter-header" style="display: flex; flex-direction: column; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10px; gap: 5px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <h3 style="font-family: 'Bantayog'; font-size: 16px; margin: 0;">Filter & Sort</h3>
-                <button id="clear-filters" style="background: none; border: none; color: var(--color-star-red); cursor: pointer; font-size: 12px; font-weight: bold;">Reset</button>
-            </div>
-            <span id="result-count" style="font-size: 11px; font-family: 'Glacial Indifference'; color: #666;">Showing all creations</span>
-        </div>
-
-        <div class="filter-group">
-            <h4>Category</h4>
-            <label class="filter-label"><input type="checkbox" class="cat-filter" value="productivity"> Productivity</label>
-            <label class="filter-label"><input type="checkbox" class="cat-filter" value="homeschool"> Homeschool</label>
-            <label class="filter-label"><input type="checkbox" class="cat-filter" value="creative"> Creative</label>
-            <label class="filter-label"><input type="checkbox" class="cat-filter" value="digital-art"> Digital Art</label>
-            <label class="filter-label"><input type="checkbox" class="cat-filter" value="templates"> Templates</label>
-        </div>
-
-        <div class="filter-group">
-            <h4>Type</h4>
-            <label class="filter-label"><input type="checkbox" class="type-filter" value="pdf"> PDF Printable</label>
-            <label class="filter-label"><input type="checkbox" class="type-filter" value="notion"> Notion Template</label>
-            <label class="filter-label"><input type="checkbox" class="type-filter" value="procreate"> Procreate Brush</label>
-        </div>
-
-        <div class="filter-group">
-            <h4>Price Range</h4>
-            <label class="filter-label"><input type="radio" name="price" value="all" checked> All Prices</label>
-            <label class="filter-label"><input type="radio" name="price" value="0"> Free</label>
-            <label class="filter-label"><input type="radio" name="price" value="under10"> Under £10</label>
-            <label class="filter-label"><input type="radio" name="price" value="over10"> £10+</label>
-        </div>
+    </div> <main id="main-marketplace-content" class="main-content-container">
         
-        <div class="filter-group">
-            <h4>Sort By</h4>
-            <select class="sort-dropdown" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid var(--color-main-gold); font-family: 'Glacial Indifference';">
-                <option value="newest">Newest First</option>
-                <option value="low-high">Price: Low to High</option>
-                <option value="high-low">Price: High to Low</option>
-            </select>
-        </div>
-    </aside>
+       <section class="featured-products" aria-labelledby="featured-heading">
+        <h2 id="featured-heading" class="section-title" style="font-family: var(--font-display); text-align: center; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 0.1em;">
+            Featured Creations
+        </h2>
+        
+        <div class="category-cards-section">
+            
+            <article class="category-card planning-productivity-card featured-card">
+                <div class="product-badge" style="background: var(--color-star-red); color: white; padding: 4px 10px; border-radius: var(--radius-pill); font-size: 10px; font-weight: bold; align-self: flex-start; text-transform: uppercase;">
+                    Top Pick
+                </div>
+                <h3>Ultimate Life Planner</h3>
+                <div class="asset-grid">
+                    <span class="asset-item"><span>Notion Template</span></span>
+                    <span class="asset-item"><span>Digital PDF</span></span>
+                </div>
+                <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px;">
+                    <span class="price-tag" style="font-family: var(--font-glacial); font-weight: bold; color: var(--color-star-red); font-size: 18px;">£15.00</span>
+                    <a href="#" class="browse-button">Buy Now</a>
+                </div>
+            </article>
 
-    <section class="scrollable-product-list" id="product-container">
-        <div id="empty-state" style="display: none; text-align: center; padding: 50px 20px; font-family: 'Glacial Indifference'; color: #888;">
-            <i class="fa-solid fa-ghost" style="font-size: 40px; color: var(--color-main-gold); margin-bottom: 15px;"></i>
-            <p>No creations match these filters.<br>Try adjusting your selection!</p>
-        </div>
+            <article class="category-card prompts-content-card featured-card">
+                <div class="product-badge" style="background: var(--color-main-gold); color: var(--color-dark-text); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 10px; font-weight: bold; align-self: flex-start; text-transform: uppercase;">
+                    New
+                </div>
+                <h3>ADHD Focus Guide</h3>
+                <div class="asset-grid">
+                    <span class="asset-item"><span>E-Book</span></span>
+                    <span class="asset-item"><span>Worksheets</span></span>
+                </div>
+                <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px;">
+                    <span class="price-tag" style="font-family: var(--font-glacial); font-weight: bold; color: var(--color-star-red); font-size: 18px;">£9.00</span>
+                    <a href="#" class="browse-button">Buy Now</a>
+                </div>
+            </article>
 
-        <div class="list-item" data-category="homeschool" data-type="pdf" data-price="5">
-            <div class="item-details">
-                <h4>Homeschool Math Bundle</h4>
-                <p style="font-family: 'Glacial Indifference'; font-size: 12px; color: grey;">Printable PDF • 40 Pages</p>
-            </div>
-            <div class="item-action" style="text-align: right;">
-                <span class="item-price">£5.00</span>
-                <a href="#" class="buy-link" style="display: block; font-size: 11px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 5px;">Details ➔</a>
-            </div>
-        </div>
-
-        <div class="list-item" data-category="creative" data-type="procreate" data-price="0">
-            <div class="item-details">
-                <h4>Digital Watercolor Palette</h4>
-                <p style="font-family: 'Glacial Indifference'; font-size: 12px; color: grey;">Procreate Swatches • Instant Download</p>
-            </div>
-            <div class="item-action" style="text-align: right;">
-                <span class="item-price">FREE</span>
-                <a href="#" class="buy-link" style="display: block; font-size: 11px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 5px;">Details ➔</a>
-            </div>
-        </div>
-
-        <div class="list-item" data-category="productivity" data-type="notion" data-price="12">
-            <div class="item-details">
-                <h4>Weekly Planner Template</h4>
-                <p style="font-family: 'Glacial Indifference'; font-size: 12px; color: grey;">Notion Template • Lifetime Access</p>
-            </div>
-            <div class="item-action" style="text-align: right;">
-                <span class="item-price">£12.00</span>
-                <a href="#" class="buy-link" style="display: block; font-size: 11px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 5px;">Details ➔</a>
-            </div>
         </div>
     </section>
-</div>
 
-    </main>
-    
-        <div class="auth-modal" id="auth-modal">
+    <button id="mobile-filter-toggle" class="mobile-filter-btn">
+        <i class="fa-solid fa-filter" aria-hidden="true"></i> Filter Creations
+    </button>
+
+    <div class="shop-layout">
+        <aside class="marketplace-filters" id="filter-sidebar">
+            <div class="filter-header" style="border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 15px; margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <h3 style="font-family: var(--font-display); font-size: 16px; margin: 0; text-transform: uppercase; letter-spacing: 0.05em;">Filter & Sort</h3>
+                    <button id="clear-filters" style="background: none; border: none; color: var(--color-star-red); cursor: pointer; font-family: var(--font-display); font-size: 11px; font-weight: bold; text-transform: uppercase;">Reset</button>
+                </div>
+                <span id="result-count" style="font-size: 11px; font-family: var(--font-glacial); color: rgba(0,0,0,0.6); font-weight: 600;">Showing all creations</span>
+            </div>
+
+            <div class="filter-group">
+                <h4>Category</h4>
+                <label class="filter-label"><input type="checkbox" class="cat-filter" value="productivity"> Productivity</label>
+                <label class="filter-label"><input type="checkbox" class="cat-filter" value="homeschool"> Homeschool</label>
+                <label class="filter-label"><input type="checkbox" class="cat-filter" value="creative"> Creative</label>
+                <label class="filter-label"><input type="checkbox" class="cat-filter" value="digital-art"> Digital Art</label>
+                <label class="filter-label"><input type="checkbox" class="cat-filter" value="templates"> Templates</label>
+            </div>
+
+            <div class="filter-group">
+                <h4>Type</h4>
+                <label class="filter-label"><input type="checkbox" class="type-filter" value="pdf"> PDF Printable</label>
+                <label class="filter-label"><input type="checkbox" class="type-filter" value="notion"> Notion Template</label>
+                <label class="filter-label"><input type="checkbox" class="type-filter" value="procreate"> Procreate Brush</label>
+            </div>
+
+            <div class="filter-group">
+                <h4>Price Range</h4>
+                <label class="filter-label"><input type="radio" name="price" value="all" checked> All Prices</label>
+                <label class="filter-label"><input type="radio" name="price" value="0"> Free</label>
+                <label class="filter-label"><input type="radio" name="price" value="under10"> Under £10</label>
+                <label class="filter-label"><input type="radio" name="price" value="over10"> £10+</label>
+            </div>
+            
+            <div class="filter-group">
+                <h4>Sort By</h4>
+                <select class="sort-dropdown" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--color-main-gold); font-family: var(--font-glacial); font-weight: 600; background: white; cursor: pointer;">
+                    <option value="newest">Newest First</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
+                </select>
+            </div>
+        </aside>
+
+        <section class="scrollable-product-list" id="product-container" aria-live="polite">
+            
+            <div id="empty-state" style="display: none; text-align: center; padding: 60px 20px; font-family: var(--font-glacial); color: rgba(0,0,0,0.5);">
+                <i class="fa-solid fa-ghost" style="font-size: 40px; color: var(--color-main-gold); margin-bottom: 20px;"></i>
+                <p style="font-weight: 600;">No creations match these filters.</p>
+                <p style="font-size: 13px;">Try adjusting your selection or search terms!</p>
+            </div>
+
+            <div class="list-item" data-category="homeschool" data-type="pdf" data-price="5">
+                <div class="item-details">
+                    <h4>Homeschool Math Bundle</h4>
+                    <p style="font-family: var(--font-glacial); font-size: 12px; color: #777; margin-top: 4px;">Printable PDF • 40 Pages</p>
+                </div>
+                <div class="item-action" style="text-align: right;">
+                    <span class="item-price">£5.00</span>
+                    <a href="#" class="buy-link" style="display: block; font-family: var(--font-display); font-size: 10px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Details ➔</a>
+                </div>
+            </div>
+
+            <div class="list-item" data-category="creative" data-type="procreate" data-price="0">
+                <div class="item-details">
+                    <h4>Digital Watercolor Palette</h4>
+                    <p style="font-family: var(--font-glacial); font-size: 12px; color: #777; margin-top: 4px;">Procreate Swatches • Instant Download</p>
+                </div>
+                <div class="item-action" style="text-align: right;">
+                    <span class="item-price" style="color: var(--color-main-gold);">FREE</span>
+                    <a href="#" class="buy-link" style="display: block; font-family: var(--font-display); font-size: 10px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Details ➔</a>
+                </div>
+            </div>
+
+            <div class="list-item" data-category="productivity" data-type="notion" data-price="12">
+                <div class="item-details">
+                    <h4>Weekly Planner Template</h4>
+                    <p style="font-family: var(--font-glacial); font-size: 12px; color: #777; margin-top: 4px;">Notion Template • Lifetime Access</p>
+                </div>
+                <div class="item-action" style="text-align: right;">
+                    <span class="item-price">£12.00</span>
+                    <a href="#" class="buy-link" style="display: block; font-family: var(--font-display); font-size: 10px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Details ➔</a>
+                </div>
+            </div>
+
+        </section>
+    </div> </main>
+    <div class="auth-modal" id="auth-modal" aria-hidden="true" role="dialog">
         <div class="auth-modal-backdrop"></div>
         <div class="auth-modal-dialog">
-            <button class="auth-modal-close">&times;</button>
+            <button class="auth-modal-close" aria-label="Close Login Modal">&times;</button>
+            
             <h2 class="auth-modal-heading">Sign In</h2>
+            <p style="font-family: var(--font-glacial); font-size: 13px; text-align: center; margin-bottom: 20px; color: rgba(17,17,17,0.6);">Welcome back to the Universe.</p>
+            
             <form id="auth-form">
                 <label class="auth-label">
                     <span>Email Address</span>
-                    <input type="email" id="auth-email" required placeholder="you@example.com">
+                    <input type="email" id="auth-email" required placeholder="you@example.com" autocomplete="email">
                 </label>
                 <label class="auth-label">
                     <span>Password</span>
-                    <input type="password" id="auth-password" required placeholder="••••••••">
+                    <input type="password" id="auth-password" required placeholder="••••••••" autocomplete="current-password">
                 </label>
-                <button type="submit" class="auth-primary-btn" id="auth-submit-btn">Login</button>
+                
+                <button type="submit" class="auth-primary-btn" id="auth-submit-btn">Login to Kynar</button>
+                
                 <div class="auth-message" id="auth-message"></div>
+                
                 <button type="button" class="auth-secondary-btn" id="auth-toggle-mode">Need an account? Sign up</button>
             </form>
         </div>
     </div>
 
-    <div class="auth-modal" id="signup-modal">
+    <div class="auth-modal" id="signup-modal" aria-hidden="true" role="dialog">
         <div class="auth-modal-backdrop"></div>
         <div class="auth-modal-dialog">
-            <button class="auth-modal-close">&times;</button>
+            <button class="auth-modal-close" aria-label="Close Signup Modal">&times;</button>
+            
             <h2 class="auth-modal-heading">Create Account</h2>
+            <p style="font-family: var(--font-glacial); font-size: 13px; text-align: center; margin-bottom: 20px; color: rgba(17,17,17,0.6);">Join the creative community.</p>
+            
             <form id="signup-form">
                 <label class="auth-label">
                     <span>Display Name</span>
-                    <input type="text" id="reg-name" required placeholder="Your Name">
+                    <input type="text" id="reg-name" required placeholder="Your Name" autocomplete="name">
                 </label>
                 <label class="auth-label">
                     <span>Email Address</span>
-                    <input type="email" id="reg-email" required placeholder="you@example.com">
+                    <input type="email" id="reg-email" required placeholder="you@example.com" autocomplete="email">
                 </label>
                 <label class="auth-label">
                     <span>Password</span>
-                    <input type="password" id="reg-password" required placeholder="Min 6 characters">
+                    <input type="password" id="reg-password" required placeholder="Min 6 characters" autocomplete="new-password">
                 </label>
-                <button type="submit" class="auth-primary-btn" id="reg-submit-btn">Register</button>
+                
+                <button type="submit" class="auth-primary-btn" id="reg-submit-btn">Join Kynar Universe</button>
+                
                 <div class="auth-message" id="reg-message"></div>
+                
                 <button type="button" class="auth-secondary-btn" id="back-to-login">Already have an account? Login</button>
             </form>
         </div>
     </div>
 
-    <nav class="side-drawer" aria-hidden="true">
-        <button class="drawer-close" type="button">Close ✕</button>
-        <ul>
+    <nav class="side-drawer" id="side-drawer" aria-hidden="true">
+        <div class="drawer-header" style="padding: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: var(--font-display); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase;">Menu</span>
+            <button class="drawer-close" type="button" aria-label="Close menu" style="background: none; border: none; font-size: 18px; cursor: pointer;">&times;</button>
+        </div>
+        
+        <ul style="list-style: none; padding: 20px 0;">
             <li><a href="index.html">Home</a></li>
-            <li><a href="marketplace.html">Marketplace</a></li>
+            <li><a href="marketplace.html" style="color: var(--color-star-red); font-weight: bold;">Marketplace</a></li>
             <li><a href="#">Guides</a></li>
-            <li><a href="#"></a></li>
-            <li><a href="account.html" class="account-nav-link">Account</a></li>
+            <li><a href="#">Library</a></li>
+            <li style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05);">
+                <a href="account.html" class="account-nav-link" style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-regular fa-circle-user"></i> Account
+                </a>
+            </li>
         </ul>
     </nav>
 
-        <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-      import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-      
-      const firebaseConfig = {
-        apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
-        authDomain: "kynar-universe-official.firebaseapp.com",
-        projectId: "kynar-universe-official",
-        storageBucket: "kynar-universe-official.firebasestorage.app",
-        messagingSenderId: "1089722386738",
-        appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
-      };
-      
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
-      
-      // These link the global variables that auth-ui.js expects
-      window._firebaseAuth = auth;
-      window._firebaseOnAuthStateChanged = onAuthStateChanged;
-      window._firebaseSignIn = signInWithEmailAndPassword;
-      window._firebaseSignUp = async (auth, email, pass, displayName) => { /* same as index.html */ };
-      window._firebaseSignOut = signOut;
-      window._firebaseDb = db;
+    <footer class="site-footer" style="padding: 40px 20px; text-align: center; background: #fdfbf7; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 60px;">
+        <p style="font-family: var(--font-display); font-size: 14px; letter-spacing: 0.1em; margin-bottom: 10px;">&copy; 2024 KYNAR UNIVERSE</p>
+        <p style="font-family: var(--font-glacial); font-size: 11px; color: #888;">Digital tools for a creative life.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
+            authDomain: "kynar-universe-official.firebaseapp.com",
+            projectId: "kynar-universe-official",
+            storageBucket: "kynar-universe-official.firebasestorage.app",
+            messagingSenderId: "1089722386738",
+            appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // Expose to window for auth-ui.js
+        window._firebaseAuth = auth;
+        window._firebaseOnAuthStateChanged = onAuthStateChanged;
+        window._firebaseSignIn = signInWithEmailAndPassword;
+        window._firebaseSignUp = async (auth, email, pass, displayName) => {
+            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            await updateProfile(userCred.user, { displayName: displayName });
+            return userCred;
+        };
+        window._firebaseSignOut = signOut;
+        window._firebaseDb = db;
     </script>
 
     <script src="script.js" defer></script>
