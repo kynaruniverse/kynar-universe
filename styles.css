@@ -494,6 +494,12 @@ body {
     text-transform: uppercase;
 }
 
+.slogan-title span {
+    font-family: var(--font-display);
+    display: block;
+    margin-top: 2px;
+}
+
 .slogan-tagline {
     font-family: var(--font-glacial);
     font-size: var(--font-size-hero-tagline);
