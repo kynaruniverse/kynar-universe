@@ -1666,29 +1666,27 @@ body.drawer-open {
     font-family: var(--font-display);
 }
 
-/* ===== MARKETPLACE BADGE & CARD FIX ===== */
+/* ===== MARKETPLACE BADGE & CARD===== */
 
-/* 1. Fix the Card shift */
+/* 1.Card shift */
 .category-card.featured-card {
     position: relative !important; 
     overflow: visible !important;
-    /* This pushes the "Ultimate Life Planner" title back down */
     padding-top: 50px !important; 
 }
 
-/* 2. Nudge the Badge back toward the card */
+/* 2. Product Badge Position */
 .product-badge {
     position: absolute !important;
-    /* Adjusted from -12/-8 to sit perfectly on the corner */
-    top: 5px !important;    
-    left: 5px !important;   
+    top: 10px !important;    
+    left: 10px !important;   
     z-index: 10;
-    overflow: hidden; /* Keeps the shimmer inside */
+    overflow: hidden;
     box-shadow: 2px 4px 12px rgba(0,0,0,0.2);
     align-self: auto !important;
 }
 
-/* 3. The Shimmer (No changes needed here, just kept for completeness) */
+/* Product Badge Shimmer */
 @keyframes shimmer {
     0% { transform: translateX(-150%) skewX(-20deg); }
     100% { transform: translateX(150%) skewX(-20deg); }
