@@ -1665,3 +1665,19 @@ body.drawer-open {
     color: var(--color-dark-text);
     font-family: var(--font-display);
 }
+
+/* ===== MARKETPLACE BADGE OVERRIDES ===== */
+.category-card.featured-card {
+    position: relative !important; 
+    overflow: visible !important;  
+}
+
+.product-badge {
+    position: absolute !important;
+    top: -12px !important;   /* Adjusted slightly more for better 'pop' */
+    left: -8px !important;  /* Nudges it left past the card edge */
+    z-index: 10;
+    box-shadow: 2px 4px 12px rgba(0,0,0,0.2);
+    align-self: auto !important; /* Disables the old flex behavior */
+}
+
