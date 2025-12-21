@@ -1754,3 +1754,58 @@ QUICK ACTIONS */
     height: 80px;
     border-radius: 50%;
 }
+
+/* ============================================
+   GUIDES PAGE STYLES
+   ============================================ */
+
+/* Guide cards hover effect */
+.guide-card {
+    cursor: pointer;
+}
+
+.guide-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+}
+
+/* Filter tabs hover state */
+.filter-tab:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+}
+
+.filter-tab:active {
+    transform: translateY(1px);
+}
+
+/* Guide detail page - smooth scrolling for anchor links */
+.guide-detail-page {
+    scroll-behavior: smooth;
+}
+
+/* Guide content links */
+.guide-detail-page a:not(.browse-button):not(.sign-in-link):not(.subscribe-button) {
+    color: var(--color-star-red);
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.guide-detail-page a:not(.browse-button):not(.sign-in-link):not(.subscribe-button):hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments for guides */
+@media (max-width: 768px) {
+    .guides-grid {
+        grid-template-columns: 1fr !important;
+        padding: 0 15px 40px !important;
+    }
+    
+    .filter-tab {
+        font-size: 10px !important;
+        padding: 8px 15px !important;
+    }
+}
