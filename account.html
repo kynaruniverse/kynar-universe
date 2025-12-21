@@ -8,6 +8,11 @@
     
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script src="utilities.js"></script>
+    <script src="loading-state.js"></script>
+    <script src="script.js" defer></script>
+    <script src="auth-ui.js" type="module"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
@@ -77,7 +82,7 @@
 
         <section class="search-subscribe-bar">
             <form class="search-box" id="search-form">
-                <input type="text" id="search-input" placeholder="Search the Universe...">
+                <input type="text" id="search-input" placeholder="Search creations..." autocomplete="off">
                 <button class="search-submit" type="submit">
                     <img src="images/search-button.svg" alt="Search" class="search-icon">
                 </button>
@@ -96,20 +101,20 @@
                 <p id="user-meta" class="welcome-meta" style="font-family: var(--font-glacial); font-size: 14px; opacity: 0.6;">Loading member profile...</p>
             </header>
 
-            <section class="stats-row" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
+            <section class="stats-row" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px;">
                 <div class="stat-card" style="text-align: center; padding: 20px; background: white; border-radius: 15px;">
-                    <span id="owned-count" class="stat-number" style="display: block; font-family: var(--font-display); font-size: 24px;">0</span>
+                    <span id="owned-count" class="stat-number" style="display: block; font-family: var(--font-display); font-size: 24px;">...</span>
                     <span class="stat-label" style="font-size: 11px; text-transform: uppercase;">Owned</span>
                 </div>
                 <div class="stat-card" style="text-align: center; padding: 20px; background: white; border-radius: 15px;">
-                    <span id="wishlist-count" class="stat-number" style="display: block; font-family: var(--font-display); font-size: 24px;">0</span>
+                    <span id="wishlist-count" class="stat-number" style="display: block; font-family: var(--font-display); font-size: 24px;">...</span>
                     <span class="stat-label" style="font-size: 11px; text-transform: uppercase;">Wishlist</span>
                 </div>
             </section>
 
             <section class="dashboard-panel" style="background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px;">
                 <h2 style="font-family: var(--font-display); font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Recent Purchases</h2>
-                <div id="purchase-list"><p style="font-size: 13px; color: #999; padding: 20px 0;">No recent purchases found.</p></div>
+                <div id="purchase-list"><p style="font-size: 13px; color: #999; padding: 20px 0;">Loading purchases...</p></div>
                 <a href="https://gumroad.com/library" target="_blank" class="dashboard-link" style="color: var(--color-star-red); font-size: 12px; font-weight: bold;">Gumroad Library ➔</a>
             </section>
 
@@ -153,13 +158,13 @@
         </ul>
     </nav>
 
-    <script src="script.js" defer></script>
-    <script src="auth-ui.js" type="module"></script>
+   
 
+    <!-- ✅ REPLACE THIS ENTIRE SECTION WITH PURCHASE TRACKING -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
@@ -178,32 +183,143 @@
         const initialEl = document.getElementById('user-initial');
         const welcomeMetaEl = document.getElementById('user-meta');
 
+        // ========== PURCHASE TRACKING FUNCTIONS ==========
+        async function getUserPurchases(userId) {
+            try {
+                const userDoc = await getDoc(doc(db, "users", userId));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    return {
+                        purchases: data.purchases || [],
+                        wishlist: data.wishlist || []
+                    };
+                }
+                return { purchases: [], wishlist: [] };
+            } catch (error) {
+                console.error("Error fetching purchases:", error);
+                return { purchases: [], wishlist: [] };
+            }
+        }
+
+        async function addPurchase(userId, productData) {
+            try {
+                const userRef = doc(db, "users", userId);
+                await updateDoc(userRef, {
+                    purchases: arrayUnion({
+                        id: productData.id,
+                        title: productData.title,
+                        price: productData.price,
+                        purchaseDate: new Date().toISOString(),
+                        downloadUrl: productData.downloadUrl || ""
+                    }),
+                    updatedAt: new Date().toISOString()
+                });
+                return true;
+            } catch (error) {
+                console.error("Error adding purchase:", error);
+                return false;
+            }
+        }
+
+        async function addToWishlist(userId, productData) {
+            try {
+                const userRef = doc(db, "users", userId);
+                await updateDoc(userRef, {
+                    wishlist: arrayUnion({
+                        id: productData.id,
+                        title: productData.title,
+                        price: productData.price,
+                        addedDate: new Date().toISOString()
+                    }),
+                    updatedAt: new Date().toISOString()
+                });
+                return true;
+            } catch (error) {
+                console.error("Error adding to wishlist:", error);
+                return false;
+            }
+        }
+
+        // ========== LOAD ACCOUNT DATA WITH PURCHASES ==========
+        async function loadAccountData(user) {
+            const ownedCountEl = document.getElementById('owned-count');
+            const wishlistCountEl = document.getElementById('wishlist-count');
+            const purchaseListEl = document.getElementById('purchase-list');
+            
+            if (!user) return;
+            
+            // Get purchase data
+            const { purchases, wishlist } = await getUserPurchases(user.uid);
+            
+            // Update counts
+            if (ownedCountEl) ownedCountEl.textContent = purchases.length;
+            if (wishlistCountEl) wishlistCountEl.textContent = wishlist.length;
+            
+            // Display recent purchases
+            if (purchaseListEl) {
+                if (purchases.length > 0) {
+                    const recentPurchases = purchases.slice(-3).reverse(); // Last 3 purchases
+                    purchaseListEl.innerHTML = recentPurchases.map(purchase => `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <div>
+                                <p style="font-family: var(--font-display); font-size: 14px; margin: 0; font-weight: 600;">${purchase.title}</p>
+                                <p style="font-family: var(--font-glacial); font-size: 11px; color: #999; margin: 4px 0 0;">
+                                    ${new Date(purchase.purchaseDate).toLocaleDateString()}
+                                </p>
+                            </div>
+                            ${purchase.downloadUrl ? `
+                                <a href="${purchase.downloadUrl}" target="_blank" 
+                                   style="background: var(--color-main-gold); color: var(--color-dark-text); padding: 6px 14px; border-radius: 20px; font-size: 10px; text-decoration: none; font-family: var(--font-display); font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">
+                                    Download
+                                </a>
+                            ` : ''}
+                        </div>
+                    `).join('');
+                } else {
+                    purchaseListEl.innerHTML = '<p style="font-size: 13px; color: #999; padding: 20px 0;">No recent purchases found.</p>';
+                }
+            }
+        }
+
+        // ========== AUTH STATE & USER DATA ==========
         onAuthStateChanged(auth, async (user) => {
             if (user) {
+                // Load purchase data
+                await loadAccountData(user);
+                
+                // Update welcome section
                 let nameToShow = user.displayName || user.email.split('@')[0];
-                welcomeNameEl.textContent = nameToShow;
-                initialEl.textContent = nameToShow.charAt(0).toUpperCase();
+                if (welcomeNameEl) welcomeNameEl.textContent = nameToShow;
+                if (initialEl) initialEl.textContent = nameToShow.charAt(0).toUpperCase();
 
                 try {
                     const snap = await getDoc(doc(db, "users", user.uid));
                     if (snap.exists()) {
                         const data = snap.data();
                         if (data.displayName) {
-                            welcomeNameEl.textContent = data.displayName;
-                            initialEl.textContent = data.displayName.charAt(0).toUpperCase();
+                            nameToShow = data.displayName;
+                            if (welcomeNameEl) welcomeNameEl.textContent = nameToShow;
+                            if (initialEl) initialEl.textContent = nameToShow.charAt(0).toUpperCase();
                         }
-                        const date = new Date(data.createdAt);
-                        welcomeMetaEl.textContent = `Member since ${date.toLocaleDateString(undefined, {month: 'long', year: 'numeric'})}`;
+                        if (data.createdAt && welcomeMetaEl) {
+                            const date = new Date(data.createdAt);
+                            welcomeMetaEl.textContent = `Member since ${date.toLocaleDateString(undefined, {month: 'long', year: 'numeric'})}`;
+                        }
                     }
-                } catch (err) { console.error(err); }
+                } catch (err) { 
+                    console.error("Error loading user data:", err); 
+                }
+            } else {
+                window.location.replace("index.html");
             }
         });
 
+        // ========== SIGN OUT ==========
         document.getElementById('sign-out-btn').addEventListener('click', () => {
             signOut(auth).then(() => window.location.replace('index.html'));
         });
 
-        // Settings Logic
+        // ========== SETTINGS MODAL ==========
         const settingsModal = document.getElementById('settings-modal');
         document.getElementById('open-settings').addEventListener('click', (e) => {
             e.preventDefault();
@@ -227,8 +343,20 @@
                 msg.style.color = "green";
                 msg.textContent = "Saved!";
                 setTimeout(closeSettings, 1000);
-            } catch (err) { msg.textContent = "Error saving."; }
+            } catch (err) { 
+                msg.style.color = "#dc3545";
+                msg.textContent = "Error saving."; 
+            }
         });
+
+        // ========== EXPOSE PURCHASE FUNCTIONS GLOBALLY ==========
+        window.kynarPurchases = {
+            addPurchase,
+            addToWishlist,
+            getUserPurchases
+        };
+
+        console.log('✅ Account page loaded with purchase tracking');
     </script>
 </body>
 </html>
