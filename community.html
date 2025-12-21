@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Community | KYNAR Universe</title>
+    <meta name="description" content="Join the KYNAR Universe community. Share your creations, get inspired, and connect with fellow productivity enthusiasts.">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body class="community-page">
+    <a href="#main-content" class="visually-hidden">Skip to main content</a>
+    
+    <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
+
+    <div class="header-wrapper">
+        <header class="top-header">
+            <div class="logo-area">
+                <button class="menu-icon custom-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="side-drawer">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <div class="site-title">
+                    <a href="index.html" class="site-title-link">
+                        <h1 class="main-title">Kynar</h1>
+                        <p class="sub-title">Universe.co.uk</p>
+                    </a>
+                    <figure class="stars" aria-hidden="true">✶ , * ✦ , * ✶ , ✶ * , ✦ *</figure>
+                </div>
+            </div>
+
+            <p class="slogan-header">Digital tools for every corner of your life.</p>
+
+            <div class="account-area">
+                <a href="#" class="sign-in-link" role="button">
+                    <div class="custom-lock-icon">
+                        <img src="images/log-in-icon.png" alt="User sign in icon" width="60" height="60">
+                    </div>
+                    <span class="sign-in-text">Sign in</span>
+                </a>
+            </div>
+        </header>
+
+        <nav class="main-nav" aria-label="Primary Navigation">
+            <ul>
+                <li><a href="index.html"><i class="fa-solid fa-house"></i></a></li>
+                <li><a href="marketplace.html">Marketplace</a></li>
+                <li><a href="guides.html">Guides</a></li>
+                <li><a href="account.html" class="account-nav-link">Account</a></li>
+                </ul>
+        </nav>
+
+        <div class="search-subscribe-bar">
+            <form class="search-box" id="search-form" role="search">
+                <label for="search-input" class="visually-hidden">Search</label>
+                <input type="text" id="search-input" placeholder="Search creations..." autocomplete="off">
+                <button type="submit" class="search-submit" aria-label="Submit search">
+                    <img src="images/search-button.svg" alt="" class="search-icon" aria-hidden="true">
+                </button>
+            </form>
+            <a href="#subscribe" class="subscribe-button">SUBSCRIBE</a>
+        </div>
+    </div>
+
+    <main id="main-content" class="main-content-container">
+        
+        <!-- Hero Section -->
+        <section class="sole-creator-slogan" aria-labelledby="community-hero-title">
+            <h1 id="community-hero-title" class="slogan-title">
+                Join Our Community
+            </h1>
+            <p class="slogan-tagline">
+                Connect, share, and get inspired by fellow creators
+            </p>
+            <p class="slogan-description">
+                Be part of a growing community of productivity enthusiasts, homeschoolers, and creative minds making the most of their digital tools.
+            </p>
+            <div style="width: 50px; height: 2px; background: var(--color-main-gold); margin: 20px auto 0; opacity: 0.5;"></div>
+        </section>
+
+        <!-- Community Stats -->
+        <section style="max-width: 800px; margin: 0 auto 60px; padding: 0 15px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+                <div class="community-stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="member-count">2,500+</div>
+                    <div class="stat-text">Active Members</div>
+                </div>
+                <div class="community-stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-download"></i>
+                    </div>
+                    <div class="stat-number">5,000+</div>
+                    <div class="stat-text">Downloads</div>
+                </div>
+                <div class="community-stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="stat-number">4.9/5</div>
+                    <div class="stat-text">Average Rating</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Connect Section -->
+        <section style="max-width: 1000px; margin: 0 auto 60px; padding: 0 15px;">
+            <h2 style="font-family: var(--font-display); font-size: 24px; text-align: center; margin-bottom: 40px; color: var(--color-dark-text); text-transform: uppercase; letter-spacing: 0.08em;">
+                Connect With Us
+            </h2>
+            
+            <div class="social-grid">
+                <a href="#" class="social-card instagram-card" target="_blank" rel="noopener">
+                    <div class="social-icon">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <h3>Instagram</h3>
+                    <p>Daily inspiration, tips, and behind-the-scenes content</p>
+                    <span class="social-handle">@kynaruniverse</span>
+                </a>
+
+                <a href="#" class="social-card pinterest-card" target="_blank" rel="noopener">
+                    <div class="social-icon">
+                        <i class="fa-brands fa-pinterest"></i>
+                    </div>
+                    <h3>Pinterest</h3>
+                    <p>Save ideas, tutorials, and creative inspiration boards</p>
+                    <span class="social-handle">@kynaruniverse</span>
+                </a>
+
+                <a href="#" class="social-card twitter-card" target="_blank" rel="noopener">
+                    <div class="social-icon">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </div>
+                    <h3>X (Twitter)</h3>
+                    <p>Quick tips, product updates, and community highlights</p>
+                    <span class="social-handle">@kynaruniverse</span>
+                </a>
+
+                <a href="#" class="social-card youtube-card" target="_blank" rel="noopener">
+                    <div class="social-icon">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <h3>YouTube</h3>
+                    <p>Video tutorials, product walkthroughs, and how-tos</p>
+                    <span class="social-handle">KYNAR Universe</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- User Showcase Section -->
+        <section style="background: var(--color-slogan-bg); padding: 60px 20px; border-radius: 25px; max-width: 1200px; margin: 0 auto 60px;">
+            <h2 style="font-family: var(--font-display); font-size: 24px; text-align: center; margin-bottom: 15px; color: var(--color-dark-text); text-transform: uppercase; letter-spacing: 0.08em;">
+                Community Showcase
+            </h2>
+            <p style="font-family: var(--font-glacial); font-size: 14px; text-align: center; margin-bottom: 50px; color: rgba(17,17,17,0.7); max-width: 600px; margin-left: auto; margin-right: auto;">
+                See how our community is using KYNAR Universe products to organize their lives, teach their children, and boost productivity.
+            </p>
+
+            <div class="showcase-grid">
+                <!-- Showcase Item 1 -->
+                <div class="showcase-item">
+                    <div class="showcase-image-placeholder">
+                        <i class="fa-solid fa-image" style="font-size: 48px; color: rgba(0,0,0,0.1);"></i>
+                    </div>
+                    <div class="showcase-content">
+                        <div class="showcase-quote">"The digital planner has completely transformed how I organize my homeschool day. Everything is in one place!"</div>
+                        <div class="showcase-author">— Sarah M., Homeschool Mom</div>
+                        <div class="showcase-tag">Digital Planner User</div>
+                    </div>
+                </div>
+
+                <!-- Showcase Item 2 -->
+                <div class="showcase-item">
+                    <div class="showcase-image-placeholder">
+                        <i class="fa-solid fa-image" style="font-size: 48px; color: rgba(0,0,0,0.1);"></i>
+                    </div>
+                    <div class="showcase-content">
+                        <div class="showcase-quote">"The Notion templates saved me hours of setup time. They're beautifully designed and so easy to customize."</div>
+                        <div class="showcase-author">— James K., Entrepreneur</div>
+                        <div class="showcase-tag">Notion Template User</div>
+                    </div>
+                </div>
+
+                <!-- Showcase Item 3 -->
+                <div class="showcase-item">
+                    <div class="showcase-image-placeholder">
+                        <i class="fa-solid fa-image" style="font-size: 48px; color: rgba(0,0,0,0.1);"></i>
+                    </div>
+                    <div class="showcase-content">
+                        <div class="showcase-quote">"My kids absolutely love the coloring pages! Perfect for quiet time and developing fine motor skills."</div>
+                        <div class="showcase-author">— Emma L., Parent</div>
+                        <div class="showcase-tag">Printables User</div>
+                    </div>
+                </div>
+
+                <!-- Showcase Item 4 -->
+                <div class="showcase-item">
+                    <div class="showcase-image-placeholder">
+                        <i class="fa-solid fa-image" style="font-size: 48px; color: rgba(0,0,0,0.1);"></i>
+                    </div>
+                    <div class="showcase-content">
+                        <div class="showcase-quote">"The productivity bundle helped me get my business organized. I've never felt more in control of my workflow."</div>
+                        <div class="showcase-author">— Michael R., Freelancer</div>
+                        <div class="showcase-tag">Productivity Bundle User</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#share-your-story" class="browse-button" style="display: inline-block;">Share Your Story</a>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section id="subscribe" style="max-width: 700px; margin: 0 auto 60px; padding: 40px 30px; background: #f8ecda; border-radius: 20px;">
+            <h2 style="font-family: var(--font-display); font-size: 24px; text-align: center; margin-bottom: 15px; color: var(--color-dark-text); text-transform: uppercase; letter-spacing: 0.08em;">
+                Join Our Newsletter
+            </h2>
+            <p style="font-family: var(--font-glacial); font-size: 14px; text-align: center; margin-bottom: 30px; color: rgba(17,17,17,0.7);">
+                Get exclusive tips, free resources, and early access to new products. Delivered monthly to your inbox.
+            </p>
+
+            <form id="newsletter-form" style="display: flex; gap: 10px; max-width: 500px; margin: 0 auto; flex-wrap: wrap;">
+                <input 
+                    type="email" 
+                    id="newsletter-email" 
+                    placeholder="Enter your email address" 
+                    required
+                    style="flex: 1; min-width: 250px; padding: 12px 20px; border: 2px solid var(--color-main-gold); border-radius: var(--radius-pill); font-family: var(--font-glacial); font-size: 14px; outline: none; transition: box-shadow 0.2s ease;">
+                <button 
+                    type="submit" 
+                    class="browse-button" 
+                    style="margin: 0; white-space: nowrap;">
+                    Subscribe
+                </button>
+            </form>
+
+            <p id="newsletter-message" style="margin-top: 15px; text-align: center; font-family: var(--font-glacial); font-size: 12px; min-height: 18px;"></p>
+
+            <p style="font-family: var(--font-glacial); font-size: 11px; text-align: center; margin-top: 20px; color: rgba(17,17,17,0.5);">
+                We respect your privacy. Unsubscribe anytime.
+            </p>
+        </section>
+
+        <!-- Share Your Story Form -->
+        <section id="share-your-story" style="max-width: 700px; margin: 0 auto 60px; padding: 40px 30px; background: #e4e6f7; border-radius: 20px;">
+            <h2 style="font-family: var(--font-display); font-size: 24px; text-align: center; margin-bottom: 15px; color: var(--color-dark-text); text-transform: uppercase; letter-spacing: 0.08em;">
+                Share Your Story
+            </h2>
+            <p style="font-family: var(--font-glacial); font-size: 14px; text-align: center; margin-bottom: 30px; color: rgba(17,17,17,0.7);">
+                We'd love to hear how KYNAR Universe products have helped you! Your story might be featured in our community showcase.
+            </p>
+
+            <form id="story-form" style="display: flex; flex-direction: column; gap: 20px;">
+                <div>
+                    <label style="display: block; font-family: var(--font-glacial); font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--color-dark-text);">Your Name</label>
+                    <input 
+                        type="text" 
+                        id="story-name" 
+                        required
+                        style="width: 100%; padding: 12px 15px; border: 2px solid rgba(0,0,0,0.1); border-radius: 10px; font-family: var(--font-glacial); font-size: 14px; outline: none; transition: border-color 0.2s ease;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-family: var(--font-glacial); font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--color-dark-text);">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="story-email" 
+                        required
+                        style="width: 100%; padding: 12px 15px; border: 2px solid rgba(0,0,0,0.1); border-radius: 10px; font-family: var(--font-glacial); font-size: 14px; outline: none; transition: border-color 0.2s ease;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-family: var(--font-glacial); font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--color-dark-text);">Which Product(s)?</label>
+                    <input 
+                        type="text" 
+                        id="story-product" 
+                        placeholder="e.g., Digital Planner, Notion Template"
+                        required
+                        style="width: 100%; padding: 12px 15px; border: 2px solid rgba(0,0,0,0.1); border-radius: 10px; font-family: var(--font-glacial); font-size: 14px; outline: none; transition: border-color 0.2s ease;">
+                </div>
+
+                <div>
+                    <label style="display: block; font-family: var(--font-glacial); font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--color-dark-text);">Your Story (Max 200 characters)</label>
+                    <textarea 
+                        id="story-message" 
+                        rows="4" 
+                        maxlength="200"
+                        required
+                        placeholder="Tell us how KYNAR Universe products have helped you..."
+                        style="width: 100%; padding: 12px 15px; border: 2px solid rgba(0,0,0,0.1); border-radius: 10px; font-family: var(--font-glacial); font-size: 14px; outline: none; resize: vertical; transition: border-color 0.2s ease;"></textarea>
+                    <div id="char-count" style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.5); margin-top: 5px; text-align: right;">0 / 200</div>
+                </div>
+
+                <button 
+                    type="submit" 
+                    class="browse-button" 
+                    style="margin: 10px auto 0; display: inline-block;">
+                    Submit Story
+                </button>
+
+                <p id="story-message-feedback" style="margin: 0; text-align: center; font-family: var(--font-glacial); font-size: 12px; min-height: 18px;"></p>
+            </form>
+        </section>
+
+        <!-- FAQ Section -->
+        <section style="max-width: 800px; margin: 0 auto 60px; padding: 0 15px;">
+            <h2 style="font-family: var(--font-display); font-size: 24px; text-align: center; margin-bottom: 40px; color: var(--color-dark-text); text-transform: uppercase; letter-spacing: 0.08em;">
+                Community FAQ
+            </h2>
+
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How can I share my creations with the community?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Tag us on social media @kynaruniverse on Instagram, Pinterest, or X! We love seeing how you use our products and regularly feature community posts.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I get featured in the Community Showcase?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely! Submit your story using the form above. We review all submissions and feature standout stories monthly. You'll be contacted via email if selected.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is there a private community group?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We're currently exploring options for a dedicated community space! Join our newsletter to be the first to know when we launch exclusive member benefits.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How often do you post new content?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We post daily on Instagram and Pinterest, weekly on X, and bi-weekly on YouTube. Our newsletter goes out monthly with exclusive content and offers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 KYNAR UNIVERSE</p>
+        <p style="font-size: 11px; opacity: 0.7;">Digital tools for a creative life.</p>
+    </footer>
+
+    <!-- Modals -->
+    <div class="auth-modal" id="auth-modal" aria-hidden="true" role="dialog">
+        <div class="auth-modal-backdrop"></div>
+        <div class="auth-modal-dialog">
+            <button class="auth-modal-close" aria-label="Close Login Modal">&times;</button>
+            <h2 class="auth-modal-heading">Sign In</h2>
+            <p style="font-family: var(--font-glacial); font-size: 13px; text-align: center; margin-bottom: 20px; color: rgba(17,17,17,0.6);">Welcome back to the Universe.</p>
+            <form id="auth-form">
+                <label class="auth-label">
+                    <span>Email Address</span>
+                    <input type="email" id="auth-email" required placeholder="you@example.com" autocomplete="email">
+                </label>
+                <label class="auth-label">
+                    <span>Password</span>
+                    <input type="password" id="auth-password" required placeholder="••••••••" autocomplete="current-password">
+                </label>
+                <button type="submit" class="auth-primary-btn" id="auth-submit-btn">Login to Kynar</button>
+                <div class="auth-message" id="auth-message"></div>
+                <button type="button" class="auth-secondary-btn" id="auth-toggle-mode">Need an account? Sign up</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal" aria-hidden="true" role="dialog">
+        <div class="auth-modal-backdrop"></div>
+        <div class="auth-modal-dialog">
+            <button class="auth-modal-close" aria-label="Close Signup Modal">&times;</button>
+            <h2 class="auth-modal-heading">Create Account</h2>
+            <p style="font-family: var(--font-glacial); font-size: 13px; text-align: center; margin-bottom: 20px; color: rgba(17,17,17,0.6);">Join the creative community.</p>
+            <form id="signup-form">
+                <label class="auth-label">
+                    <span>Display Name</span>
+                    <input type="text" id="reg-name" required placeholder="Your Name" autocomplete="name">
+                </label>
+                <label class="auth-label">
+                    <span>Email Address</span>
+                    <input type="email" id="reg-email" required placeholder="you@example.com" autocomplete="email">
+                </label>
+                <label class="auth-label">
+                    <span>Password</span>
+                    <input type="password" id="reg-password" required placeholder="Min 6 characters" autocomplete="new-password">
+                </label>
+                <button type="submit" class="auth-primary-btn" id="reg-submit-btn">Join Kynar Universe</button>
+                <div class="auth-message" id="reg-message"></div>
+                <button type="button" class="auth-secondary-btn" id="back-to-login">Already have an account? Login</button>
+            </form>
+        </div>
+    </div>
+
+    <nav class="side-drawer" id="side-drawer" aria-hidden="true">
+        <div class="drawer-header" style="padding: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-family: var(--font-display); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase;">Menu</span>
+            <button class="drawer-close" type="button" aria-label="Close menu" style="background: none; border: none; font-size: 18px; cursor: pointer;">&times;</button>
+        </div>
+        
+        <ul style="list-style: none; padding: 20px 0;">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="marketplace.html">Marketplace</a></li>
+            <li><a href="guides.html">Guides</a></li>
+            <li><a href="community.html" style="color: var(--color-star-red); font-weight: bold;">Community</a></li>
+            <li style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05);">
+                <a href="account.html" class="account-nav-link" style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-regular fa-circle-user"></i> Account
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <script src="utilities.js"></script>
+    <script src="loading-state.js"></script>
+    <script src="script.js" defer></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, 
+                 createUserWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
+            authDomain: "kynar-universe-official.firebaseapp.com",
+            projectId: "kynar-universe-official",
+            storageBucket: "kynar-universe-official.firebasestorage.app",
+            messagingSenderId: "1089722386738",
+            appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window._firebaseAuth = auth;
+        window._firebaseOnAuthStateChanged = onAuthStateChanged;
+        window._firebaseSignIn = signInWithEmailAndPassword;
+
+        window._firebaseSignUp = async (auth, email, pass, displayName) => {
+            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            const uid = userCred.user.uid;
+            
+            await updateProfile(userCred.user, { displayName: displayName || "" });
+            
+            const userDocRef = doc(db, "users", uid);
+            const now = new Date().toISOString();
+            
+            await setDoc(userDocRef, {
+                email,
+                displayName: displayName || "",
+                createdAt: now,
+                updatedAt: now
+            }, { merge: true });
+            
+            return userCred;
+        };
+
+        window._firebaseSignOut = signOut;
+        window._firebaseDb = db;
+
+        console.log('✅ Firebase initialized successfully');
+    </script>
+    
+    <script src="auth-ui.js" type="module"></script>
+    <script src="community.js"></script>
+
+    <div class="loading-overlay" id="global-loading" aria-live="polite" aria-label="Loading">
+        <div class="loading-spinner"></div>
+    </div>
+</body>
+</html>
