@@ -159,6 +159,16 @@ body.drawer-open {
     margin-top:-2px;
 }
 
+.section-heading {
+    font-family: var(--font-display);
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--color-dark-text);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
 /* STAR DECORATIONS */
 
 .stars {
@@ -2176,4 +2186,145 @@ QUICK ACTIONS */
     .social-card {
         padding: 25px 20px;
     }
+}
+
+/* --- Community Page Layout Utilities --- */
+
+.accent-divider {
+    width: 50px;
+    height: 2px;
+    background: var(--color-main-gold);
+    margin: 20px auto 0;
+    opacity: 0.5;
+}
+
+.community-layout-narrow {
+    max-width: 1000px;
+    margin: 0 auto 60px;
+    padding: 0 15px;
+}
+
+.section-subtext {
+    font-family: var(--font-glacial);
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: rgba(17,17,17,0.7);
+    max-width: 600px;
+    margin-inline: auto;
+}
+
+.community-alert-banner {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8ecda;
+    border-radius: 15px;
+    font-family: var(--font-glacial);
+    font-size: 13px;
+    color: rgba(17,17,17,0.8);
+}
+
+.community-story-panel {
+    background: var(--color-slogan-bg);
+    padding: 60px 20px;
+    border-radius: 25px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.benefit-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.benefit-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--color-main-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+    color: var(--color-dark-text);
+}
+
+/* Form Sections */
+.community-form-section {
+    max-width: 700px;
+    margin: 0 auto 60px;
+    padding: 40px 30px;
+    border-radius: 20px;
+}
+
+.newsletter-bg { background: #f8ecda; }
+.feedback-bg { background: #e4e6f7; }
+
+.community-inline-form {
+    display: flex;
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.community-inline-form input {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 20px;
+    border: 2px solid var(--color-main-gold);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-glacial);
+}
+
+.community-vertical-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-family: var(--font-glacial);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-dark-text);
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    font-family: var(--font-glacial);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+    border-color: var(--color-main-gold);
+}
+
+.form-response-msg {
+    margin-top: 15px;
+    text-align: center;
+    font-family: var(--font-glacial);
+    font-size: 12px;
+    min-height: 18px;
 }
