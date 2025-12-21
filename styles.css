@@ -167,6 +167,7 @@ body.drawer-open {
     letter-spacing:.08em;
     line-height:1;
     margin-top:2px;
+    color:var(--color-main-gold);
     background:linear-gradient(to right,var(--color-main-gold),#004833,var(--color-star-red));
     -webkit-background-clip:text;
     background-clip:text;
@@ -175,9 +176,12 @@ body.drawer-open {
 }
 
 .stars .fas {
-    -webkit-text-fill-color:initial;
+    -webkit-text-fill-color:var(--color-star-red);
     color:var(--color-star-red);
     margin:0 1px;
+    background:none;
+    -webkit-background-clip:initial;
+    background-clip:initial;
 }
 
 /* HEADER SLOGAN */
