@@ -1,33 +1,44 @@
 class FocusTrap {
-    constructor(element) {
+    constructor(element, options = {}) {
         this.element = element;
         this.focusableElements = null;
         this.firstFocusable = null;
         this.lastFocusable = null;
         this.previousActiveElement = null;
+        this.isActive = false;
+        this.onEscape = options.onEscape || null;
     }
 
     activate() {
-        // Store the currently focused element
-        this.previousActiveElement = document.activeElement;
+        if (this.isActive) return;
+        this.isActive = true;
 
-        // Get all focusable elements within the trap
+        this.previousActiveElement = document.activeElement;
         this.updateFocusableElements();
 
-        // Focus the first element
+        if (this.focusableElements.length === 0) {
+            console.warn('FocusTrap: No focusable elements found in', this.element);
+            this.isActive = false;
+            return;
+        }
+
         if (this.firstFocusable) {
             this.firstFocusable.focus();
         }
 
-        // Add event listener for tab key
         this.element.addEventListener('keydown', this.handleKeydown);
+    }
+    
+    refresh() {
+        this.updateFocusableElements();
     }
 
     deactivate() {
-        // Remove event listener
+        if (!this.isActive) return;
+        this.isActive = false;
+
         this.element.removeEventListener('keydown', this.handleKeydown);
 
-        // Restore focus to the previously focused element
         if (this.previousActiveElement && this.previousActiveElement.focus) {
             this.previousActiveElement.focus();
         }
@@ -40,14 +51,22 @@ class FocusTrap {
             'textarea:not([disabled])',
             'input:not([disabled])',
             'select:not([disabled])',
-            '[tabindex]:not([tabindex="-1"])'
+            '[tabindex]:not([tabindex="-1"])',
+            'audio[controls]',
+            'video[controls]',
+            '[contenteditable]:not([contenteditable="false"])'
         ];
 
-        this.focusableElements = Array.from(
+        this.focusableElements = Array.from( 
             this.element.querySelectorAll(focusableSelectors.join(','))
-        ).filter(el => {
-            // Filter out hidden elements
-            return el.offsetParent !== null;
+        ).filter(el => { 
+            const style = window.getComputedStyle(el);
+            const isVisible = style.display !== 'none' 
+                && style.visibility !== 'hidden' 
+                && el.offsetParent !== null
+                && style.opacity !== '0';
+            
+            return isVisible && this.element.contains(el);
         });
 
         this.firstFocusable = this.focusableElements[0];
@@ -55,8 +74,17 @@ class FocusTrap {
     }
 
     handleKeydown = (e) => {
-        // Only handle Tab key
+        // Handle Escape key if callback provided
+        if (e.key === 'Escape' && this.onEscape) {
+            this.onEscape(e);
+            return;
+        }
+
+        // Only handle Tab key for focus trap
         if (e.key !== 'Tab') return;
+
+        // If no focusable elements, do nothing
+        if (this.focusableElements.length === 0) return;
 
         // If only one focusable element, prevent tabbing
         if (this.focusableElements.length === 1) {
@@ -85,12 +113,20 @@ class FocusTrap {
 const focusTraps = new Map();
 
 // Helper functions to integrate with existing modals
-function activateFocusTrap(modalElement, trapId = 'default') {
-    if (!modalElement) return;
+function activateFocusTrap(modalElement, trapId = 'default', options = {}) {
+    if (!modalElement) {
+        console.warn('activateFocusTrap: No element provided');
+        return;
+    }
 
-    const trap = new FocusTrap(modalElement);
+    // Deactivate existing trap with same ID
+    deactivateFocusTrap(trapId);
+
+    const trap = new FocusTrap(modalElement, options);
     trap.activate();
     focusTraps.set(trapId, trap);
+    
+    return trap; // Return trap instance for direct access if needed
 }
 
 function deactivateFocusTrap(trapId = 'default') {
@@ -101,9 +137,17 @@ function deactivateFocusTrap(trapId = 'default') {
     }
 }
 
+function refreshFocusTrap(trapId = 'default') {
+    const trap = focusTraps.get(trapId);
+    if (trap) {
+        trap.refresh();
+    }
+}
+
 // Export for use in other scripts
 if (typeof window !== 'undefined') {
     window.FocusTrap = FocusTrap;
     window.activateFocusTrap = activateFocusTrap;
     window.deactivateFocusTrap = deactivateFocusTrap;
+    window.refreshFocusTrap = refreshFocusTrap;
 }

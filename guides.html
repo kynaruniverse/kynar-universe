@@ -63,7 +63,8 @@
                     <img src="images/search-button.svg" alt="" class="search-icon" aria-hidden="true">
                 </button>
             </form>
-            <a href="#subscribe" class="subscribe-button">SUBSCRIBE</a>
+            <a href="#subscribe" class="btn btn-secondary btn-sm">SUBSCRIBE</a>
+
         </div>
     </div>
 
@@ -86,23 +87,13 @@
         <!-- Category Filter Tabs -->
         <div style="text-align: center; margin-bottom: 40px;">
             <div style="display: inline-flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 0 15px;">
-                <button class="filter-tab active" data-category="all" style="background: var(--color-main-gold); color: var(--color-dark-text); border: none; padding: 10px 20px; border-radius: var(--radius-pill); font-family: var(--font-display); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease;">
-                    All Guides
-                </button>
-                <button class="filter-tab" data-category="getting-started" style="background: transparent; color: var(--color-dark-text); border: 2px solid var(--color-main-gold); padding: 10px 20px; border-radius: var(--radius-pill); font-family: var(--font-display); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease;">
-                    Getting Started
-                </button>
-                <button class="filter-tab" data-category="tutorials" style="background: transparent; color: var(--color-dark-text); border: 2px solid var(--color-main-gold); padding: 10px 20px; border-radius: var(--radius-pill); font-family: var(--font-display); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease;">
-                    Product Tutorials
-                </button>
-                <button class="filter-tab" data-category="tips" style="background: transparent; color: var(--color-dark-text); border: 2px solid var(--color-main-gold); padding: 10px 20px; border-radius: var(--radius-pill); font-family: var(--font-display); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease;">
-                    Tips & Tricks
-                </button>
-                <button class="filter-tab" data-category="troubleshooting" style="background: transparent; color: var(--color-dark-text); border: 2px solid var(--color-main-gold); padding: 10px 20px; border-radius: var(--radius-pill); font-family: var(--font-display); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s ease;">
-                    Troubleshooting
-                </button>
-            </div>
-        </div>
+        <button class="filter-tab btn btn-primary btn-sm" data-category="all">All Guides</button>
+    <button class="filter-tab btn btn-secondary btn-sm" data-category="getting-started">Getting Started</button>
+    <button class="filter-tab btn btn-secondary btn-sm" data-category="tutorials">Product Tutorials</button>
+    <button class="filter-tab btn btn-secondary btn-sm" data-category="tips">Tips & Tricks</button>
+    <button class="filter-tab btn btn-secondary btn-sm" data-category="troubleshooting">Troubleshooting</button>
+</div>
+
 
         <!-- Guides Grid -->
         <section class="guides-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; padding: 0 10px 60px; max-width: 1200px; margin: 0 auto;">
@@ -116,7 +107,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Learn how to download, access, and organize your digital purchases. Perfect for first-time users.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">5 min read</span>
-                    <a href="guide-getting-started.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-getting-started.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -128,7 +119,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Step-by-step instructions for downloading and accessing your purchased files on any device.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">3 min read</span>
-                    <a href="guide-download.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-download.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -141,7 +132,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Master your digital planner with tips on navigation, customization, and daily planning workflows.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">8 min read</span>
-                    <a href="guide-digital-planners.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-digital-planners.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -153,7 +144,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Complete guide to importing, customizing, and using your Notion templates effectively.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">10 min read</span>
-                    <a href="guide-notion-setup.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-notion-setup.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -165,7 +156,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Best practices for printing homeschool resources, planners, and worksheets at home or professionally.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">6 min read</span>
-                    <a href="guide-printing.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-printing.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -178,7 +169,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Maximize your efficiency with these proven strategies for digital planning and organization.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">12 min read</span>
-                    <a href="guide-productivity-hacks.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-productivity-hacks.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -190,7 +181,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Discover innovative ways to customize and repurpose your digital templates for different projects.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">7 min read</span>
-                    <a href="guide-creative-uses.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-creative-uses.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -203,7 +194,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Quick solutions to the most frequently encountered problems with digital products and downloads.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">5 min read</span>
-                    <a href="guide-troubleshooting.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-troubleshooting.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -215,7 +206,7 @@
                 <p style="font-family: var(--font-glacial); font-size: 13px; color: rgba(17,17,17,0.8); line-height: 1.6; margin-bottom: 20px; flex-grow: 1;">Learn how to contact support, access your purchase history, and get assistance with any issues.</p>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
                     <span style="font-family: var(--font-glacial); font-size: 11px; color: rgba(17,17,17,0.6); text-transform: uppercase; font-weight: 600;">4 min read</span>
-                    <a href="guide-support.html" class="browse-button" style="margin-top: 0;">Read Guide</a>
+                    <a href="guide-support.html" class="btn btn-primary btn-sm">Read Guide</a>
                 </div>
             </article>
 
@@ -225,7 +216,7 @@
         <section style="text-align: center; padding: 40px 20px 60px; background: var(--color-slogan-bg); border-radius: 20px; margin: 40px auto 60px; max-width: 800px;">
             <h2 style="font-family: var(--font-display); font-size: 22px; margin-bottom: 15px; color: var(--color-dark-text); text-transform: uppercase; letter-spacing: 0.05em;">Can't Find What You're Looking For?</h2>
             <p style="font-family: var(--font-glacial); font-size: 14px; margin-bottom: 25px; color: rgba(17,17,17,0.8);">Contact our support team and we'll help you get the answers you need.</p>
-            <a href="mailto:support@kynaruniverse.co.uk" class="browse-marketplace-button" style="display: inline-block; width: auto; padding: 15px 40px; font-size: 14px;">Contact Support</a>
+            <a href="mailto:support@kynaruniverse.co.uk" class="btn btn-primary btn-md">Contact Support</a>
         </section>
 
     </main>
@@ -251,10 +242,9 @@
                     <span>Password</span>
                     <input type="password" id="auth-password" required placeholder="••••••••" autocomplete="current-password">
                 </label>
-                <button type="submit" class="auth-primary-btn" id="auth-submit-btn">Login to Kynar</button>
-                <div class="auth-message" id="auth-message"></div>
-                <button type="button" class="auth-secondary-btn" id="auth-toggle-mode">Need an account? Sign up</button>
-            </form>
+                <button type="submit" class="btn btn-primary btn-md" id="auth-submit-btn" style="width: 100%;">Login to Kynar</button>
+<button type="button" class="btn btn-secondary btn-md" id="auth-toggle-mode" style="width: 100%; margin-top: 10px;">Need an account? Sign up</button>
+</form>
         </div>
     </div>
 
@@ -277,9 +267,9 @@
                     <span>Password</span>
                     <input type="password" id="reg-password" required placeholder="Min 6 characters" autocomplete="new-password">
                 </label>
-                <button type="submit" class="auth-primary-btn" id="reg-submit-btn">Join Kynar Universe</button>
-                <div class="auth-message" id="reg-message"></div>
-                <button type="button" class="auth-secondary-btn" id="back-to-login">Already have an account? Login</button>
+                <button type="submit" class="btn btn-primary btn-md" id="reg-submit-btn" style="width: 100%;">Join Kynar Universe</button>
+                <button type="button" class="btn btn-secondary btn-md" id="back-to-login" style="width: 100%; margin-top: 10px;">Already have an account? Login</button>
+
             </form>
         </div>
     </div>
@@ -368,14 +358,12 @@
                     const category = tab.getAttribute('data-category');
 
                     // Update active state
-                    filterTabs.forEach(t => {
-                        t.style.background = 'transparent';
-                        t.style.color = 'var(--color-dark-text)';
-                        t.style.border = '2px solid var(--color-main-gold)';
-                    });
-                    tab.style.background = 'var(--color-main-gold)';
-                    tab.style.color = 'var(--color-dark-text)';
-                    tab.style.border = 'none';
+                    filterTabs.forEach(t => { 
+                        t.classList.remove('btn-primary'); 
+                        t.classList.add('btn-secondary');
+            });
+            tab.classList.remove('btn-secondary');
+            tab.classList.add('btn-primary');
 
                     // Filter cards
                     guideCards.forEach(card => {

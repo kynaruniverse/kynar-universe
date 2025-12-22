@@ -91,7 +91,7 @@
                     <img src="images/search-button.svg" alt="" class="search-icon" aria-hidden="true">
                 </button>
             </form>
-            <a href="#subscribe" class="subscribe-button">SUBSCRIBE</a>
+            <a href="#subscribe" class="btn btn-secondary btn-sm">SUBSCRIBE</a>
         </div>
     </div>
     
@@ -187,7 +187,7 @@
                 <form id="newsletter-form" action="https://formspree.io/f/mbdrkbve" method="POST" class="community-inline-form">
                     <input type="text" name="_gotcha" style="display:none" />
                     <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required>
-                    <button type="submit" class="browse-button">Subscribe</button>
+                    <button type="submit" class="btn btn-primary btn-md">Subscribe</button>
                 </form>
                 <div id="newsletter-success" class="form-success-content">
                     <i class="fa-solid fa-circle-check"></i>
@@ -233,7 +233,7 @@
                         <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what's on your mind..."></textarea>
                     </div>
                     
-                    <button type="submit" class="browse-button">Send Feedback</button>
+                    <button type="submit" class="btn btn-primary btn-md" style="width: 100%;">Send Feedback</button>
                     <p id="feedback-message-response" class="form-response-msg"></p>
                 </form>
                 
@@ -262,10 +262,77 @@
         
     </main>
     
-    <footer class="site-footer">
-        <p>&copy; 2025 KYNAR UNIVERSE</p>
-        <p style="font-size: 11px; opacity: 0.7;">Digital tools for a creative life.</p>
-    </footer>
+    <footer class="site-footer" style="padding: 40px 20px; text-align: center; background: #fdfbf7; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 60px;">
+    <p style="font-family: var(--font-display); font-size: 14px; letter-spacing: 0.1em; margin-bottom: 10px;">&copy; 2025 KYNAR UNIVERSE</p>
+    <p style="font-family: var(--font-glacial); font-size: 11px; color: #888;">Digital tools for a creative life.</p>
+</footer>
+
+    <div class="auth-modal" id="auth-modal" aria-hidden="true" role="dialog">
+        <div class="auth-modal-backdrop"></div>
+        <div class="auth-modal-dialog">
+            <button class="auth-modal-close" aria-label="Close Login Modal">&times;</button>
+            <h2 class="auth-modal-heading">Sign In</h2>
+            <p style="font-family: var(--font-glacial); font-size: 13px; text-align: center; margin-bottom: 20px; color: rgba(17,17,17,0.6);">Welcome back to the Universe.</p>
+            <form id="auth-form">
+                <label class="auth-label"><span>Email Address</span><input type="email" id="auth-email" required placeholder="you@example.com"></label>
+                <label class="auth-label"><span>Password</span><input type="password" id="auth-password" required placeholder="••••••••"></label>
+                <button type="submit" class="btn btn-primary btn-md" id="auth-submit-btn" style="width: 100%;">Login to Kynar</button>
+                <button type="button" class="btn btn-secondary btn-md" id="auth-toggle-mode" style="width: 100%; margin-top: 10px;">Need an account? Sign up</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="auth-modal" id="signup-modal" aria-hidden="true" role="dialog">
+        <div class="auth-modal-backdrop"></div>
+        <div class="auth-modal-dialog">
+            <button class="auth-modal-close" aria-label="Close Signup Modal">&times;</button>
+            <h2 class="auth-modal-heading">Create Account</h2>
+            <form id="signup-form">
+                <label class="auth-label"><span>Display Name</span><input type="text" id="reg-name" required placeholder="Your Name"></label>
+                <label class="auth-label"><span>Email Address</span><input type="email" id="reg-email" required placeholder="you@example.com"></label>
+                <label class="auth-label"><span>Password</span><input type="password" id="reg-password" required placeholder="Min 6 characters"></label>
+                <button type="submit" class="btn btn-primary btn-md" id="reg-submit-btn" style="width: 100%;">Join Kynar Universe</button>
+                <button type="button" class="btn btn-secondary btn-md" id="back-to-login" style="width: 100%; margin-top: 10px;">Already have an account? Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="utilities.js"></script>
+    <script src="loading-state.js"></script>
+    <script src="script.js" defer></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
+            authDomain: "kynar-universe-official.firebaseapp.com",
+            projectId: "kynar-universe-official",
+            storageBucket: "kynar-universe-official.firebasestorage.app",
+            messagingSenderId: "1089722386738",
+            appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window._firebaseAuth = auth;
+        window._firebaseOnAuthStateChanged = onAuthStateChanged;
+        window._firebaseSignIn = signInWithEmailAndPassword;
+        window._firebaseSignUp = async (auth, email, pass, displayName) => {
+            const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+            await updateProfile(userCred.user, { displayName });
+            await setDoc(doc(db, "users", userCred.user.uid), { email, displayName, createdAt: new Date().toISOString() });
+            return userCred;
+        };
+        window._firebaseSignOut = signOut;
+        window._firebaseDb = db;
+    </script>
+    <script src="auth-ui.js" type="module"></script>
+    <div class="loading-overlay" id="global-loading" aria-live="polite"><div class="loading-spinner"></div></div>
+
     
     <script src="community.js"></script>
     
