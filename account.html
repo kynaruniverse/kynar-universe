@@ -36,7 +36,7 @@
             if (!user) {
                 window.location.replace("index.html");
             } else {
-                document.documentElement.style.visibility = 'visible';
+                document.documentElement.style.visibility = 'visible'; document.body.style.opacity = '0'; setTimeout(() => {     document.body.style.transition = 'opacity 0.4s ease';     document.body.style.opacity = '1'; }, 10);
             }
         });
     </script>
@@ -88,7 +88,7 @@
                     <img src="images/search-button.svg" alt="Search" class="search-icon">
                 </button>
             </form>
-            <a href="#" class="subscribe-button">Subscribe</a>
+            <a href="#" class="btn btn-secondary btn-sm">Subscribe</a>
         </section>
     </div>
 
@@ -116,7 +116,8 @@
             <section class="dashboard-panel" style="background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px;">
                 <h2 style="font-family: var(--font-display); font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Recent Purchases</h2>
                 <div id="purchase-list"><p style="font-size: 13px; color: #999; padding: 20px 0;">Loading purchases...</p></div>
-                <a href="https://gumroad.com/library" target="_blank" class="dashboard-link" style="color: var(--color-star-red); font-size: 12px; font-weight: bold;">Gumroad Library ➔</a>
+                
+                <div style="margin-top: 20px;">     <a href="https://gumroad.com/library" target="_blank" class="btn btn-secondary btn-sm" style="display: inline-block;">Gumroad Library ➔</a> </div>
             </section>
 
             <section class="dashboard-panel" style="background: white; border-radius: 20px; padding: 25px;">
@@ -130,9 +131,11 @@
         </section>
     </main>
 
-    <footer class="site-footer" style="padding: 40px 20px; text-align: center;">
-        <p>© 2025 KYNAR UNIVERSE</p>
-    </footer>
+    <footer class="site-footer" style="padding: 40px 20px; text-align: center; background: transparent; border-top: 1px solid rgba(0,0,0,0.05); margin-top: 40px;">
+    <p style="font-family: var(--font-display); font-size: 14px; letter-spacing: 0.1em; margin-bottom: 5px;">&copy; 2025 KYNAR UNIVERSE</p>
+    <p style="font-family: var(--font-glacial); font-size: 11px; color: #888;">Manage your digital universe.</p>
+</footer>
+
 
     <div class="auth-modal" id="settings-modal" aria-hidden="true">
         <div class="auth-modal-backdrop" id="settings-backdrop"></div>
@@ -144,7 +147,7 @@
                     <span>Update Display Name</span>
                     <input id="settings-display-name" type="text" maxlength="40">
                 </label>
-                <button type="submit" class="auth-primary-btn" id="settings-submit-btn">Save</button>
+                <button type="submit" class="btn btn-primary btn-md" id="settings-submit-btn" style="width: 100%;">Save Changes</button>
                 <p id="settings-message" class="auth-message"></p>
             </form>
         </div>
@@ -279,11 +282,9 @@
                                     ${new Date(purchase.purchaseDate).toLocaleDateString()}
                                 </p>
                             </div>
-                            ${purchase.downloadUrl ? `
-                                <a href="${purchase.downloadUrl}" target="_blank" 
-                                   style="background: var(--color-main-gold); color: var(--color-dark-text); padding: 6px 14px; border-radius: 20px; font-size: 10px; text-decoration: none; font-family: var(--font-display); font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">
-                                    Download
-                                </a>
+                            ${purchase.downloadUrl ? `<a href="${purchase.downloadUrl}" target="_blank" class="btn btn-primary btn-sm">
+    Download
+</a>
                             ` : ''}
                         </div>
                     `).join('');

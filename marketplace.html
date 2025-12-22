@@ -66,7 +66,7 @@
                     <img src="images/search-button.svg" alt="" class="search-icon" aria-hidden="true">
                 </button>
             </form>
-            <a href="#subscribe" class="subscribe-button">SUBSCRIBE</a>
+            <a href="#subscribe" class="btn btn-secondary btn-sm">SUBSCRIBE</a>
         </div>
     </div> <main id="main-marketplace-content" class="main-content-container">
         
@@ -88,7 +88,7 @@
                 </div>
                 <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px;">
                     <span class="price-tag" style="font-family: var(--font-glacial); font-weight: bold; color: var(--color-star-red); font-size: 18px;">£15.00</span>
-                    <a href="#" class="browse-button">Buy Now</a>
+                    <a href="#" class="btn btn-primary btn-sm">Buy Now</a>
                 </div>
             </article>
 
@@ -103,16 +103,17 @@
                 </div>
                 <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px;">
                     <span class="price-tag" style="font-family: var(--font-glacial); font-weight: bold; color: var(--color-star-red); font-size: 18px;">£9.00</span>
-                    <a href="#" class="browse-button">Buy Now</a>
+                    <a href="#" class="btn btn-primary btn-sm">Buy Now</a>
                 </div>
             </article>
 
         </div>
     </section>
 
-    <button id="mobile-filter-toggle" class="mobile-filter-btn">
-        <i class="fa-solid fa-filter" aria-hidden="true"></i> Filter Creations
-    </button>
+    <button id="mobile-filter-toggle" class="btn btn-secondary btn-md" style="width: 100%; margin: 20px 0;">
+    <i class="fa-solid fa-filter" aria-hidden="true" style="margin-right: 8px;"></i> Filter Creations
+</button>
+
 
     <div class="shop-layout">
         <aside class="marketplace-filters" id="filter-sidebar">
@@ -158,9 +159,10 @@
             </div>
             
             <div class="filter-actions-mobile" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05);">
-    <button type="button" id="apply-filters-btn" style="width: 100%; background: var(--color-star-red); color: white; border: none; padding: 15px; border-radius: var(--radius-pill); font-family: var(--font-display); text-transform: uppercase; font-size: 13px; letter-spacing: 0.1em; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);">
-        Apply & Close
-    </button>
+    <button type="button" id="apply-filters-btn" class="btn btn-secondary btn-md" style="width: 100%;">
+    Apply & Close
+</button>
+
 </div>
 
         </aside>
@@ -180,8 +182,8 @@
                 </div>
                 <div class="item-action" style="text-align: right;">
                     <span class="item-price">£5.00</span>
-                    <a href="#" class="buy-link" style="display: block; font-family: var(--font-display); font-size: 10px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Details ➔</a>
-                </div>
+                    <a href="#" class="btn btn-primary btn-sm">Details ➔</a>
+</div>
             </div>
 
             <div class="list-item" data-category="creative" data-type="procreate" data-price="0">
@@ -191,8 +193,8 @@
                 </div>
                 <div class="item-action" style="text-align: right;">
                     <span class="item-price" style="color: var(--color-main-gold);">FREE</span>
-                    <a href="#" class="buy-link" style="display: block; font-family: var(--font-display); font-size: 10px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Details ➔</a>
-                </div>
+                    <a href="#" class="btn btn-primary btn-sm">Details ➔</a>
+</div>
             </div>
 
             <div class="list-item" data-category="productivity" data-type="notion" data-price="12">
@@ -202,8 +204,8 @@
                 </div>
                 <div class="item-action" style="text-align: right;">
                     <span class="item-price">£12.00</span>
-                    <a href="#" class="buy-link" style="display: block; font-family: var(--font-display); font-size: 10px; text-decoration: none; color: var(--color-star-red); font-weight: bold; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em;">Details ➔</a>
-                </div>
+                    <a href="#" <a href="#" class="btn btn-primary btn-sm">Details ➔</a>
+</div>
             </div>
 
         </section>
@@ -226,11 +228,9 @@
                     <input type="password" id="auth-password" required placeholder="••••••••" autocomplete="current-password">
                 </label>
                 
-                <button type="submit" class="auth-primary-btn" id="auth-submit-btn">Login to Kynar</button>
-                
-                <div class="auth-message" id="auth-message"></div>
-                
-                <button type="button" class="auth-secondary-btn" id="auth-toggle-mode">Need an account? Sign up</button>
+                <button type="submit" class="btn btn-primary btn-md" id="auth-submit-btn" style="width: 100%;">Login to Kynar</button>
+                <button type="button" class="btn btn-secondary btn-md" id="auth-toggle-mode" style="width: 100%; margin-top: 10px;">Need an account? Sign up</button>
+
             </form>
         </div>
     </div>
@@ -257,11 +257,9 @@
                     <input type="password" id="reg-password" required placeholder="Min 6 characters" autocomplete="new-password">
                 </label>
                 
-                <button type="submit" class="auth-primary-btn" id="reg-submit-btn">Join Kynar Universe</button>
-                
-                <div class="auth-message" id="reg-message"></div>
-                
-                <button type="button" class="auth-secondary-btn" id="back-to-login">Already have an account? Login</button>
+                <button type="submit" class="btn btn-primary btn-md" id="reg-submit-btn" style="width: 100%;">Join Kynar Universe</button>
+                <button type="button" class="btn btn-secondary btn-md" id="back-to-login" style="width: 100%; margin-top: 10px;">Already have an account? Login</button>
+
             </form>
         </div>
     </div>

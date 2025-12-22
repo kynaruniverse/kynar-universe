@@ -1,5 +1,5 @@
 /* ============================================================
-   KYNAR UNIVERSE - GLOBAL JAVASCRIPT (FIXED)
+   KYNAR UNIVERSE - GLOBAL JAVASCRIPT (CORRECTED)
    Handles: Navigation, Side Drawer, Auth Modals, Marketplace Engine
    ============================================================ */
 
@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (burger && element === drawer) {
             burger.setAttribute('aria-expanded', 'true');
         }
+        
+        // Activate focus trap if available
+        if (window.activateFocusTrap) {
+            window.activateFocusTrap(element, element.id || 'drawer-trap');
+        }
     }
     
     function closeAllDrawers() {
@@ -42,6 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.classList.remove('is-visible');
             overlay.setAttribute('aria-hidden', 'true');
         }
+        
+        // Deactivate focus traps
+        if (window.deactivateFocusTrap) {
+            window.deactivateFocusTrap('drawer-trap');
+            window.deactivateFocusTrap('auth-trap');
+        }
+        
         document.body.classList.remove('drawer-open');
         document.body.style.overflow = '';
         
@@ -81,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (authTriggers.length > 0 && authModal) {
         authTriggers.forEach(trigger => trigger.addEventListener('click', (e) => {
-            if (!window._firebaseAuth?.currentUser) { // Only open if NOT logged in
+            if (!window._firebaseAuth?.currentUser) {
                 e.preventDefault();
                 closeAllDrawers();
                 authModal.classList.add('is-open');
@@ -116,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             case 'newest':
             default:
-                return productsArray; // Keep original order
+                return productsArray;
         }
     }
     
@@ -180,20 +192,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear/Reset filters
     if (clearFiltersBtn) {
         clearFiltersBtn.addEventListener('click', () => {
-            // Uncheck all category and type filters
             document.querySelectorAll('.cat-filter, .type-filter').forEach(cb => cb.checked = false);
             
-            // Reset price to "all"
             const priceAll = document.querySelector('input[name="price"][value="all"]');
             if (priceAll) priceAll.checked = true;
             
-            // Reset sort to newest
             if (sortDropdown) sortDropdown.value = 'newest';
-            
-            // Clear search
             if (searchInput) searchInput.value = '';
             
-            // Re-run filters
             runAllFilters();
         });
     }
@@ -203,15 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
         searchForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Check if we're on marketplace page
-            const isMarketplace = window.location.pathname.includes('marketplace') ||
-                window.location.pathname.endsWith('marketplace.html');
+            const productContainer = document.getElementById('product-container');
             
-            if (!isMarketplace) {
-                // Redirect to marketplace with search query
+            if (!productContainer) {
                 window.location.href = `marketplace.html?search=${encodeURIComponent(searchInput.value)}`;
             } else {
-                // Already on marketplace, just filter
                 runAllFilters();
             }
         });
@@ -237,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Check URL parameters on load and run initial filter
+    // Check URL parameters on load
     const urlParams = new URLSearchParams(window.location.search);
     const searchQuery = urlParams.get('search');
     const categoryQuery = urlParams.get('category');
@@ -253,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Run filters on initial load (for marketplace page)
+    // Run filters on initial load
     if (document.getElementById('product-container')) {
         runAllFilters();
     }

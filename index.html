@@ -92,7 +92,7 @@
                 </button>
             </form>
 
-            <a href="#subscribe" class="subscribe-button">Subscribe</a>
+            <a href="#subscribe" class="btn btn-secondary btn-sm">Subscribe</a>
         </section>
     </div>
 
@@ -129,7 +129,7 @@
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Time Blocking Planner</span></a>
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Productivity Bundles</span></a>
                 </div>
-                <a href="marketplace.html?category=productivity" class="browse-button">Discover More</a>
+                <a href="marketplace.html?category=productivity" class="btn btn-primary btn-sm">Discover More</a>
             </article>
 
             <article class="category-card printables-homeschool-card">
@@ -142,7 +142,7 @@
                     <a href="marketplace.html?category=homeschool" class="asset-item"><span>Routine &amp; Behavior Charts</span></a>
                     <a href="marketplace.html?category=homeschool" class="asset-item"><span>Educational Colouring Bundle</span></a>
                 </div>
-                <a href="marketplace.html?category=homeschool" class="browse-button">Discover More</a>
+                <a href="marketplace.html?category=homeschool" class="btn btn-primary btn-sm">Discover More</a>
             </article>
 
             <article class="category-card colouring-creativity-card">
@@ -155,7 +155,7 @@
                     <a href="marketplace.html?category=creative" class="asset-item"><span>30-Day Doodle Challenge</span></a>
                     <a href="marketplace.html?category=creative" class="asset-item"><span>Affirmation Pages Pack</span></a>
                 </div>
-                <a href="marketplace.html?category=creative" class="browse-button">Discover More</a>
+                <a href="marketplace.html?category=creative" class="btn btn-primary btn-sm">Discover More</a>
             </article>
 
             <article class="category-card templates-systems-card">
@@ -168,7 +168,7 @@
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Small Business OS</span></a>
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Budget &amp; Expense Tracker</span></a>
                 </div>
-                <a href="marketplace.html?category=productivity" class="browse-button">Discover More</a>
+                <a href="marketplace.html?category=productivity" class="btn btn-primary btn-sm">Discover More</a>
             </article>
 
             <article class="category-card prompts-content-card">
@@ -181,7 +181,7 @@
                     <a href="marketplace.html?category=creative" class="asset-item"><span>Creative Art Prompt Pack</span></a>
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Habit Tracker + Prompt Bundle</span></a>
                 </div>
-                <a href="marketplace.html?category=productivity" class="browse-button">Discover More</a>
+                <a href="marketplace.html?category=productivity" class="btn btn-primary btn-sm">Discover More</a>
             </article>
 
             <article class="category-card audio-focus-card">
@@ -194,7 +194,7 @@
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Lo-Fi Study Music Pack</span></a>
                     <a href="marketplace.html?category=creative" class="asset-item"><span>Nature &amp; Ambient Sounds</span></a>
                 </div>
-                <a href="marketplace.html?category=creative" class="browse-button">Discover More</a>
+                <a href="marketplace.html?category=creative" class="btn btn-primary btn-sm">Discover More</a>
             </article>
 
             <article class="category-card code-automation-card">
@@ -207,7 +207,7 @@
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Google Sheets Templates</span></a>
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Data Collection Scripts</span></a>
                 </div>
-                <a href="marketplace.html?category=productivity" class="browse-button">Discover More</a>
+                <a href="marketplace.html?category=productivity" class="btn btn-primary btn-sm">Discover More</a>
             </article>
 
             <article class="category-card resource-libraries-card">
@@ -220,14 +220,13 @@
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>ADHD Productivity Hub</span></a>
                     <a href="marketplace.html?category=productivity" class="asset-item"><span>Side Hustle Resource Hub</span></a>
                 </div>
-                <a href="marketplace.html?category=productivity" class="browse-button">Discover More</a>
+                <a href="marketplace.html?category=productivity" class="btn btn-primary btn-sm">Discover More</a>
             </article>
         </section>
 
                 <section class="bottom-browse-section" style="padding: 60px 20px; text-align: center;">
-            <a href="marketplace.html" class="browse-marketplace-button">
-                Browse Full Marketplace
-            </a>
+            <a href="marketplace.html" class="btn btn-primary btn-lg">Browse Full Marketplace
+</a>
             <p style="font-family: var(--font-glacial); font-size: 14px; margin-top: 20px; color: rgba(17,17,17,0.6);">
                 Join thousands of creators simplifying their digital lives.
             </p>
@@ -267,8 +266,12 @@
                     <span>Password</span>
                     <input id="auth-password" type="password" required minlength="6" autocomplete="current-password" placeholder="••••••••">
                 </label>
-                <button type="submit" class="auth-primary-btn" id="auth-submit-btn">Sign In</button>
-                <button type="button" class="auth-secondary-btn" id="auth-toggle-mode">Need an account? Sign up</button>
+                <button type="submit" 
+                class="btn btn-primary btn-md" id="auth-submit-btn" style="width: 100%;">Sign In</button>
+                <button type="button" 
+                class="btn btn-secondary btn-md" 
+                id="auth-toggle-mode" style="width: 100%; margin-top: 10px;">Need an account? Sign up</button>
+
                 <p class="auth-message" id="auth-message" aria-live="polite"></p>
             </form>
         </div>
@@ -293,8 +296,8 @@
                     <span>Password (Min 6 characters)</span>
                     <input type="password" id="reg-password" required minlength="6" placeholder="••••••••" autocomplete="new-password">
                 </label>
-                <button type="submit" class="auth-primary-btn" id="reg-submit-btn">Create Universe Account</button>
-                <button type="button" class="auth-secondary-btn" id="back-to-login">Already have an account? Sign in</button>
+                <button type="submit" class="btn btn-primary btn-md" id="reg-submit-btn" style="width: 100%;">Create Universe Account</button>
+                <button type="button" class="btn btn-secondary btn-md" id="back-to-login" style="width: 100%; margin-top: 10px;">Already have an account? Sign in</button>
                 <p class="auth-message" id="reg-message" aria-live="polite"></p>
             </form>
         </div>
