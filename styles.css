@@ -183,18 +183,23 @@ input, button, textarea, select { font: inherit; }
 }
 .site-title-link { text-decoration: none; color: inherit; }
 
-/* Stars */
+/* Stars Decoration */
 .stars {
     font-family: var(--font-display); 
     font-size: 5px; 
     letter-spacing: .08em;
-    margin-left: 10px;
+    
+    /* AetherCode Fix: Use transform for precise positioning */
+    display: inline-block; /* Ensures the transform pivot is accurate */
+    transform: translateX(10px); /* Pushes the stars 10px to the right */
+    
     background: linear-gradient(to right, var(--color-main-gold), #004833, var(--color-star-red));
-    -webkit-background-clip: text;
+    -webkit-background-clip: text; 
     background-clip: text;
     -webkit-text-fill-color: transparent; 
     color: var(--color-main-gold);
 }
+
 
 /* Burger Menu */
 .custom-burger {
