@@ -715,8 +715,14 @@ input, button, textarea, select { font: inherit; }
     .search-box { flex: 0 1 50%; max-width: 600px; height: 42px; }
 
     .sole-creator-slogan { width: 65%; padding: 45px; margin-top: 40px; }
-    .category-cards-section { flex-wrap: wrap; justify-content: center; gap: 25px; overflow-x: visible; padding: 20px 0; }
-    .category-card { flex: 0 1 calc(33.333% - 25px); max-width: 350px; }
+    .category-cards-section { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 25px; 
+    padding: 20px 0;
+}
+.category-card { width: 100%; max-width: none; } /* Resets flex constraints */
+
     .stats-grid { grid-template-columns: repeat(4, 1fr); }
 
     .shop-layout { grid-template-columns: 280px 1fr; gap: 40px; padding: 0 24px; }
