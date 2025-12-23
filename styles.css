@@ -228,7 +228,7 @@ input, button, textarea, select { font: inherit; }
     font-family: var(--font-display); 
     
     /* Size Control */
-    font-size: 11px; /* Much smaller than title */
+    font-size: 6px; /* Much smaller than title */
     
     color: var(--color-dark-text); 
     letter-spacing: .16em;
