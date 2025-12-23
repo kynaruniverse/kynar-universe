@@ -22,149 +22,106 @@
         <div data-include="components/header.html"></div>
     </div>
 
-    </div> <main id="main-marketplace-content" class="main-content-container">
+    </div>     <main id="main-marketplace-content" class="main-content-container container shop-layout">
         
-       <section class="featured-products" aria-labelledby="featured-heading">
-        <h2 id="featured-heading" class="section-title text-center uppercase tracking-wide mb-30">
-    Featured Creations
-</h2>
-
-        
-        <div class="category-cards-section">
-            
-            <article class="category-card planning-productivity-card featured-card">
-                <div class="product-badge" style="background: var(--color-star-red); color: white; padding: 4px 10px; border-radius: var(--radius-pill); font-size: 10px; font-weight: bold; text-transform: uppercase;">
-                    Top Pick
-                </div>
-                <h3>Ultimate Life Planner</h3>
-                <div class="asset-grid">
-                    <span class="asset-item"><span>Notion Template</span></span>
-                    <span class="asset-item"><span>Digital PDF</span></span>
-                </div>
-                <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px;">
-                    <span class="price-tag" style="font-family: var(--font-glacial); font-weight: bold; color: var(--color-star-red); font-size: 18px;">£15.00</span>
-                    <a href="#" class="btn btn-primary btn-sm">Buy Now</a>
-                </div>
-            </article>
-
-            <article class="category-card prompts-content-card featured-card">
-                <div class="product-badge" style="background: var(--color-main-gold); color: var(--color-dark-text); padding: 4px 10px; border-radius: var(--radius-pill); font-size: 10px; font-weight: bold; text-transform: uppercase;">
-                    New
-                </div>
-                <h3>ADHD Focus Guide</h3>
-                <div class="asset-grid">
-                    <span class="asset-item"><span>E-Book</span></span>
-                    <span class="asset-item"><span>Worksheets</span></span>
-                </div>
-                <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px;">
-                    <span class="price-tag" style="font-family: var(--font-glacial); font-weight: bold; color: var(--color-star-red); font-size: 18px;">£9.00</span>
-                    <a href="#" class="btn btn-primary btn-sm">Buy Now</a>
-                </div>
-            </article>
-
-        </div>
-    </section>
-
-    <button id="mobile-filter-toggle" class="btn btn-secondary btn-md" style="width: 100%; margin: 20px 0;">
-    <i class="fa-solid fa-filter" aria-hidden="true" style="margin-right: 8px;"></i> Filter Creations
-</button>
-
-
-    <div class="shop-layout">
         <aside class="marketplace-filters" id="filter-sidebar">
-            <div class="filter-header" style="border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 15px; margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                    <h3 style="font-family: var(--font-display); font-size: 16px; margin: 0; text-transform: uppercase; letter-spacing: 0.05em;">Filter & Sort</h3>
-                    <button id="clear-filters" style="background: none; border: none; color: var(--color-star-red); cursor: pointer; font-family: var(--font-display); font-size: 11px; font-weight: bold; text-transform: uppercase;">Reset</button>
-                </div>
-                <span id="result-count" style="font-size: 11px; font-family: var(--font-glacial); color: rgba(0,0,0,0.6); font-weight: 600;">Showing all creations</span>
+            <div class="filter-header-mobile" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3>Filters</h3>
+                <button class="drawer-close" onclick="document.getElementById('filter-sidebar').classList.remove('is-open')" style="display: none;">&times;</button>
             </div>
 
             <div class="filter-group">
                 <h4>Category</h4>
                 <label class="filter-label"><input type="checkbox" class="cat-filter" value="productivity"> Productivity</label>
                 <label class="filter-label"><input type="checkbox" class="cat-filter" value="homeschool"> Homeschool</label>
-                <label class="filter-label"><input type="checkbox" class="cat-filter" value="creative"> Creative</label>
-                <label class="filter-label"><input type="checkbox" class="cat-filter" value="digital-art"> Digital Art</label>
-                <label class="filter-label"><input type="checkbox" class="cat-filter" value="templates"> Templates</label>
+                <label class="filter-label"><input type="checkbox" class="cat-filter" value="creative"> Creative & Art</label>
             </div>
 
             <div class="filter-group">
-                <h4>Type</h4>
-                <label class="filter-label"><input type="checkbox" class="type-filter" value="pdf"> PDF Printable</label>
-                <label class="filter-label"><input type="checkbox" class="type-filter" value="notion"> Notion Template</label>
-                <label class="filter-label"><input type="checkbox" class="type-filter" value="procreate"> Procreate Brush</label>
-            </div>
-
-            <div class="filter-group">
-                <h4>Price Range</h4>
-                <label class="filter-label"><input type="radio" name="price" value="all" checked> All Prices</label>
-                <label class="filter-label"><input type="radio" name="price" value="0"> Free</label>
+                <h4>Price</h4>
+                <label class="filter-label"><input type="radio" name="price" value="all" checked> Any Price</label>
                 <label class="filter-label"><input type="radio" name="price" value="under10"> Under £10</label>
                 <label class="filter-label"><input type="radio" name="price" value="over10"> £10+</label>
             </div>
-            
-            <div class="filter-group">
-                <h4>Sort By</h4>
-                <select class="sort-dropdown" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--color-main-gold); font-family: var(--font-glacial); font-weight: 600; background: white; cursor: pointer;">
-                    <option value="newest">Newest First</option>
-                    <option value="low-high">Price: Low to High</option>
-                    <option value="high-low">Price: High to Low</option>
-                </select>
+
+            <div class="filter-actions-mobile">
+                <button id="apply-filters-btn" class="btn btn-primary btn-full-width">Apply Filters</button>
             </div>
             
-            <div class="filter-actions-mobile" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05);">
-    <button type="button" id="apply-filters-btn" class="btn btn-secondary btn-md" style="width: 100%;">
-    Apply & Close
-</button>
-
-</div>
-
+            <button id="clear-filters" style="margin-top: 20px; background: none; border: none; text-decoration: underline; cursor: pointer; color: #888;">Clear all filters</button>
         </aside>
 
-        <section class="scrollable-product-list" id="product-container" aria-live="polite">
+        <section class="product-feed">
+            <div class="feed-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <span id="result-count" style="font-family: var(--font-glacial); font-weight: bold;">Showing all creations</span>
+                
+                <div class="sort-wrapper">
+                    <button class="mobile-filter-btn">
+                        <i class="fa-solid fa-filter"></i> Filters
+                    </button>
+                    
+                    <select class="sort-dropdown" aria-label="Sort products" style="padding: 8px; border-radius: 8px; border: 1px solid #ccc;">
+                        <option value="newest">Newest First</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="product-container" class="scrollable-product-list">
+                
+                <article class="list-item" data-category="productivity" data-type="template" data-price="12" data-date="2025-01-20">
+                    <div class="item-visual" style="width: 80px; height: 80px; background: #eee; border-radius: 10px; flex-shrink: 0;">
+                        </div>
+                    <div class="item-details" style="flex: 1; padding: 0 20px;">
+                        <h4 style="margin-bottom: 5px;">Ultimate Life Planner</h4>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 8px;">Notion Template • Productivity</p>
+                        <div class="tags" style="display: flex; gap: 5px;">
+                            <span class="asset-item" style="font-size: 10px; padding: 2px 8px;">Notion</span>
+                        </div>
+                    </div>
+                    <div class="item-action" style="text-align: right;">
+                        <div class="item-price">£12.00</div>
+                        <button class="btn btn-primary btn-sm" onclick="kynarPurchases.addToWishlist({id: 'p1', title: 'Ultimate Life Planner', price: 12})">Add</button>
+                    </div>
+                </article>
+
+                <article class="list-item" data-category="homeschool" data-type="printable" data-price="5" data-date="2025-01-18">
+                    <div class="item-visual" style="width: 80px; height: 80px; background: #e3f0e7; border-radius: 10px; flex-shrink: 0;"></div>
+                    <div class="item-details" style="flex: 1; padding: 0 20px;">
+                        <h4 style="margin-bottom: 5px;">Preschool Math Bundle</h4>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 8px;">PDF Printable • Homeschool</p>
+                         <div class="tags" style="display: flex; gap: 5px;">
+                            <span class="asset-item" style="font-size: 10px; padding: 2px 8px;">PDF</span>
+                        </div>
+                    </div>
+                    <div class="item-action" style="text-align: right;">
+                        <div class="item-price">£5.00</div>
+                        <button class="btn btn-primary btn-sm" onclick="kynarPurchases.addToWishlist({id: 'p2', title: 'Preschool Math', price: 5})">Add</button>
+                    </div>
+                </article>
+                
+                 <article class="list-item" data-category="creative" data-type="audio" data-price="0" data-date="2025-01-15">
+                    <div class="item-visual" style="width: 80px; height: 80px; background: #f7e5f0; border-radius: 10px; flex-shrink: 0;"></div>
+                    <div class="item-details" style="flex: 1; padding: 0 20px;">
+                        <h4 style="margin-bottom: 5px;">Focus Binaural Beats</h4>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 8px;">Audio MP3 • Creative</p>
+                    </div>
+                    <div class="item-action" style="text-align: right;">
+                        <div class="item-price">Free</div>
+                         <button class="btn btn-primary btn-sm" onclick="kynarPurchases.addToWishlist({id: 'p3', title: 'Focus Beats', price: 0})">Get</button>
+                    </div>
+                </article>
+
+            </div>
             
-            <div id="empty-state" style="display: none; text-align: center; padding: 60px 20px; font-family: var(--font-glacial); color: rgba(0,0,0,0.5);">
-                <i class="fa-solid fa-ghost" style="font-size: 40px; color: var(--color-main-gold); margin-bottom: 20px;"></i>
-                <p style="font-weight: 600;">No creations match these filters.</p>
-                <p style="font-size: 13px;">Try adjusting your selection or search terms!</p>
+            <div id="empty-state" style="display: none; text-align: center; padding: 40px;">
+                <p>No products match your filters.</p>
+                <button onclick="document.getElementById('clear-filters').click()" class="btn btn-secondary btn-sm">Clear Filters</button>
             </div>
-
-            <div class="list-item" data-category="homeschool" data-type="pdf" data-price="5">
-                <div class="item-details">
-                    <h4>Homeschool Math Bundle</h4>
-                    <p style="font-family: var(--font-glacial); font-size: 12px; color: #777; margin-top: 4px;">Printable PDF • 40 Pages</p>
-                </div>
-                <div class="item-action" style="text-align: right;">
-                    <span class="item-price">£5.00</span>
-                    <a href="#" class="btn btn-primary btn-sm">Details ➔</a>
-</div>
-            </div>
-
-            <div class="list-item" data-category="creative" data-type="procreate" data-price="0">
-                <div class="item-details">
-                    <h4>Digital Watercolor Palette</h4>
-                    <p style="font-family: var(--font-glacial); font-size: 12px; color: #777; margin-top: 4px;">Procreate Swatches • Instant Download</p>
-                </div>
-                <div class="item-action" style="text-align: right;">
-                    <span class="item-price" style="color: var(--color-main-gold);">FREE</span>
-                    <a href="#" class="btn btn-primary btn-sm">Details ➔</a>
-</div>
-            </div>
-
-            <div class="list-item" data-category="productivity" data-type="notion" data-price="12">
-                <div class="item-details">
-                    <h4>Weekly Planner Template</h4>
-                    <p style="font-family: var(--font-glacial); font-size: 12px; color: #777; margin-top: 4px;">Notion Template • Lifetime Access</p>
-                </div>
-                <div class="item-action" style="text-align: right;">
-                    <span class="item-price">£12.00</span>
-                    <a href="#" <a href="#" class="btn btn-primary btn-sm">Details ➔</a>
-</div>
-            </div>
-
         </section>
-    </div> </main>
+    </main>
+
         <div data-include="components/auth-modals.html"></div>
 
     <nav class="side-drawer" id="side-drawer" aria-hidden="true">
