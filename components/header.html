@@ -1,44 +1,47 @@
 <header class="top-header">
     <div class="logo-area">
-        <button class="menu-icon custom-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="side-drawer">
+        <button class="custom-burger" id="mobile-menu-trigger" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="side-drawer">
             <span></span><span></span><span></span>
         </button>
+        
         <div class="site-title">
             <a href="index.html" class="site-title-link">
                 <p class="main-title">Kynar</p>
                 <p class="sub-title">Universe.co.uk</p>
             </a>
-            <figure class="stars" aria-hidden="true">✶ , * ✦ , * ✶ , ✶ * , ✦ *</figure>
+            <figure class="stars" aria-hidden="true">✶ ✦ ✶ ✦ ✶</figure>
         </div>
     </div>
+
     <p class="slogan-header">Digital tools for every corner of your life.</p>
+
     <div class="account-area">
-        <a href="#" class="sign-in-link" role="button">
-            <div class="custom-lock-icon">
-                <img src="images/log-in-icon.png" alt="User sign in icon" width="60" height="60">
-            </div>
-            <span class="sign-in-text">Sign in</span>
+        <a href="#" class="sign-in-link" id="auth-trigger" role="button">
+            <div class="custom-lock-icon" id="header-lock-icon">
+                <i class="fa-regular fa-user" style="font-size: 20px;"></i>
+                </div>
+            <span class="sign-in-text" id="header-auth-text">Sign in</span>
         </a>
     </div>
 </header>
 
 <nav class="main-nav" aria-label="Primary site navigation">
     <ul>
-        <li><a href="index.html"><i class="fa-solid fa-house"></i></a></li>
+        <li><a href="index.html" aria-label="Home"><i class="fa-solid fa-house"></i></a></li>
         <li><a href="marketplace.html">Marketplace</a></li>
         <li><a href="guides.html">Guides</a></li>
         <li><a href="community.html">Community</a></li>
-        <li><a href="account.html" class="account-nav-link" id="account-nav-link">Account</a></li>
+        <li><a href="account.html" id="account-nav-desktop">Account</a></li>
     </ul>
 </nav>
 
 <div class="search-subscribe-bar">
-    <form class="search-box" id="search-form" role="search">
-        <label for="search-input" class="visually-hidden">Search</label>
-        <input type="text" id="search-input" placeholder="Search creations..." autocomplete="off">
+    <form class="search-box" id="global-search-form" role="search" action="marketplace.html">
+        <label for="global-search-input" class="visually-hidden">Search</label>
+        <input type="text" id="global-search-input" name="search" placeholder="Search creations..." autocomplete="off">
         <button type="submit" class="search-submit" aria-label="Submit search">
-            <img src="images/search-button.svg" alt="" class="search-icon" aria-hidden="true">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
         </button>
     </form>
-    <a href="#subscribe" class="btn btn-secondary btn-sm">Subscribe</a>
+    <a href="community.html#subscribe" class="btn btn-secondary btn-sm">Subscribe</a>
 </div>

@@ -1,24 +1,23 @@
 /**
  * KYNAR UNIVERSE - Community Page Module
- * Handles: FAQ Accordion, Formspree Submissions, Scroll interactions
+ * Architect: AetherCode
+ * Description: Optimized FAQ Accordion and Formspree handlers.
  */
 
 const CommunityPage = (() => {
 
-    // --- 1. UTILITIES ---
-    
-    // Simple Email Regex for client-side validation
-    const isValidEmail = (email) => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
+    // --- 1. FORM LOGIC ---
 
-    // Generic Form Handler for Formspree
-    const handleFormSubmission = async (config) => {
-        const { formId, successId, responseId, btnText } = config;
-        
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    /**
+     * Unified Formspree Handler
+     */
+    const handleFormSubmission = (config) => {
+        const { formId, successId, responseId } = config;
         const form = document.getElementById(formId);
         const successMsg = document.getElementById(successId);
-        const responseMsg = document.getElementById(responseId); // Optional error container
+        const responseMsg = document.getElementById(responseId);
         
         if (!form) return;
 
@@ -27,64 +26,69 @@ const CommunityPage = (() => {
             
             const submitBtn = form.querySelector('button[type="submit"]');
             const emailInput = form.querySelector('input[type="email"]');
-            
-            // 1. Validation
+            const honeypot = form.querySelector('input[name="_gotcha"]');
+
+            // 1. Bot Check (Honeypot)
+            if (honeypot && honeypot.value) return;
+
+            // 2. Client-side Validation
             if (emailInput && !isValidEmail(emailInput.value)) {
-                if (responseMsg) {
-                    responseMsg.textContent = "Please enter a valid email address.";
-                    responseMsg.style.color = "var(--color-star-red)";
-                } else {
-                    alert("Please enter a valid email address.");
-                }
+                this.showError(responseMsg, "Please enter a valid email address.");
                 return;
             }
 
-            // 2. Loading State
-            const originalText = submitBtn.innerText;
-            submitBtn.classList.add('btn-loading'); // Uses CSS spinner
-            submitBtn.disabled = true;
+            // 3. UI Loading State
+            if (window.LoadingState) {
+                window.LoadingState.buttonStart(submitBtn);
+            } else {
+                submitBtn.disabled = true;
+            }
 
-            // 3. Prepare Data
-            const formData = new FormData(form);
+            if (responseMsg) responseMsg.textContent = "";
 
             try {
                 const response = await fetch(form.action, {
                     method: 'POST',
-                    body: formData,
+                    body: new FormData(form),
                     headers: { 'Accept': 'application/json' }
                 });
 
                 if (response.ok) {
-                    // 4. Success
+                    // 4. Success State
                     form.reset();
                     form.style.display = 'none';
                     if (successMsg) {
                         successMsg.style.display = 'block';
-                        successMsg.focus(); // Accessibility focus
+                        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 } else {
-                    // 5. Error from Server
                     const data = await response.json();
                     throw new Error(data.errors ? data.errors.map(err => err.message).join(", ") : "Submission failed");
                 }
             } catch (error) {
-                // 6. Handle Network/API Errors
-                console.error('Form Error:', error);
-                if (responseMsg) {
-                    responseMsg.textContent = "Error: " + error.message;
-                    responseMsg.style.color = "var(--color-star-red)";
-                } else {
-                    alert("Something went wrong. Please try again.");
-                }
+                console.error('[Community Form Error]:', error);
+                this.showError(responseMsg, "Something went wrong. Please try again later.");
             } finally {
-                // 7. Reset Button State
-                submitBtn.classList.remove('btn-loading');
-                submitBtn.disabled = false;
+                // 5. Restore UI State
+                if (window.LoadingState) {
+                    window.LoadingState.buttonEnd(submitBtn);
+                } else {
+                    submitBtn.disabled = false;
+                }
             }
         });
     };
 
-    // --- 2. FAQ LOGIC ---
+    const showError = (container, message) => {
+        if (container) {
+            container.textContent = message;
+            container.style.color = "var(--color-star-red)";
+        } else {
+            alert(message);
+        }
+    };
+
+    // --- 2. FAQ ACCORDION ---
     
     const initFAQ = () => {
         const faqItems = document.querySelectorAll('.faq-item');
@@ -95,74 +99,51 @@ const CommunityPage = (() => {
             
             if (!questionBtn || !answerPanel) return;
 
-            // Set initial ARIA states
-            questionBtn.setAttribute('aria-expanded', 'false');
-            answerPanel.setAttribute('aria-hidden', 'true');
-
             questionBtn.addEventListener('click', () => {
-                const isActive = item.classList.contains('active');
+                const isOpen = item.classList.contains('active');
 
-                // Close all others (Accordion behavior)
+                // Accordion logic: Close others
                 faqItems.forEach(otherItem => {
                     if (otherItem !== item) {
                         otherItem.classList.remove('active');
-                        const otherBtn = otherItem.querySelector('.faq-question');
-                        const otherPanel = otherItem.querySelector('.faq-answer');
-                        if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
-                        if (otherPanel) otherPanel.setAttribute('aria-hidden', 'true');
+                        otherItem.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+                        otherItem.querySelector('.faq-answer')?.setAttribute('aria-hidden', 'true');
                     }
                 });
 
-                // Toggle current
+                // Toggle Current
                 item.classList.toggle('active');
-                questionBtn.setAttribute('aria-expanded', !isActive);
-                answerPanel.setAttribute('aria-hidden', isActive); // If was active, now hidden
+                questionBtn.setAttribute('aria-expanded', !isOpen);
+                answerPanel.setAttribute('aria-hidden', isOpen);
             });
         });
     };
 
-    // --- 3. INIT ---
+    // --- 3. INITIALIZATION ---
     
     const init = () => {
-        // Initialize FAQ
         initFAQ();
 
-        // Initialize Newsletter Form
+        // Newsletter
         handleFormSubmission({
             formId: 'newsletter-form',
             successId: 'newsletter-success',
-            responseId: 'newsletter-message', // Note: You might need to add this <p> to your HTML if you want inline errors
-            btnText: 'Subscribe'
+            responseId: 'newsletter-message'
         });
 
-        // Initialize Feedback Form
+        // Feedback
         handleFormSubmission({
             formId: 'feedback-form',
             successId: 'feedback-success',
-            responseId: 'feedback-message-response',
-            btnText: 'Send Feedback'
-        });
-
-        // Smooth Scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#' || !targetId) return;
-                
-                const target = document.querySelector(targetId);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
+            responseId: 'feedback-message-response'
         });
         
-        console.log('✨ Community Module Loaded');
+        console.log('✨ Community Module Initialized');
     };
 
-    return { init };
+    return { init, showError };
 
 })();
 
-// Initialize when DOM is ready
+// Start
 document.addEventListener('DOMContentLoaded', CommunityPage.init);

@@ -1,7 +1,7 @@
 /**
  * KYNAR UNIVERSE - Core Application Logic
- * Architecture: Modular
- * Standards: ES6+, Vanilla JS
+ * Architect: AetherCode
+ * Description: Layout controller, Marketplace filtering, and Guides logic.
  */
 
 const KynarApp = (() => {
@@ -9,11 +9,11 @@ const KynarApp = (() => {
     // --- 1. STATE & CONFIG ---
     const state = {
         isDrawerOpen: false,
-        searchDebounce: null
+        searchDebounce: null,
+        initialized: false
     };
 
-    // --- 2. ACCESSIBILITY / TRAP MANAGER ---
-    // Interfaces with the robust FocusTrap in utilities.js
+    // --- 2. ACCESSIBILITY MANAGER ---
     const TrapManager = {
         activate(element) {
             if (typeof window.activateFocusTrap === 'function') {
@@ -27,63 +27,56 @@ const KynarApp = (() => {
         }
     };
 
-    // --- 3. UI MODULE ---
+    // --- 3. UI LAYOUT MODULE ---
     const UI = {
         elements: {
-            // These are getters because elements might be injected dynamically
-            get burger() { return document.querySelector('.custom-burger'); },
             get sideDrawer() { return document.getElementById('side-drawer'); },
             get overlay() { return document.getElementById('drawer-overlay'); },
-            get closeButtons() { return document.querySelectorAll('.drawer-close, .drawer-close-btn, .auth-modal-close'); },
-            get mobileFilterBtn() { return document.querySelector('.mobile-filter-btn'); },
-            get authModal() { return document.getElementById('auth-modal'); },
-            get signupModal() { return document.getElementById('signup-modal'); }
+            get authModal() { return document.getElementById('auth-modal'); }
         },
 
         init() {
             this.bindEvents();
             this.highlightActiveLink();
-            this.setupAuthTriggers();
         },
 
         highlightActiveLink() {
-            // Automatically underline the current page in the nav
             const path = window.location.pathname;
             const page = path.split("/").pop() || "index.html";
             
-            // Desktop Nav
-            const links = document.querySelectorAll('.main-nav a');
-            links.forEach(link => {
-                // Strip href to just filename
+            document.querySelectorAll('.main-nav a, .drawer-list a').forEach(link => {
                 const href = link.getAttribute('href');
                 if (href === page) {
                     link.style.color = "var(--color-star-red)";
+                    link.classList.add('active-page'); // Helper class
                 } else {
-                    link.style.color = ""; // Reset
+                    link.style.color = ""; 
+                    link.classList.remove('active-page');
                 }
             });
         },
 
         bindEvents() {
-            // Delegated listener for static + dynamic elements
             document.body.addEventListener('click', (e) => {
-                // Burger Click
-                if (e.target.closest('.custom-burger')) {
+                const target = e.target;
+
+                // A. Burger Menu (Open Drawer)
+                if (target.closest('.custom-burger')) {
                     this.toggleDrawer('main');
                 }
                 
-                // Close Buttons
-                if (e.target.closest('.drawer-close') || e.target.closest('.drawer-close-btn') || e.target.closest('.auth-modal-close')) {
+                // B. Close Buttons (Generic)
+                if (target.closest('.drawer-close') || target.closest('.drawer-close-btn')) {
                     this.closeAll();
                 }
 
-                // Overlay Click
-                if (e.target.classList.contains('drawer-overlay') || e.target.classList.contains('auth-modal-backdrop')) {
+                // C. Overlay Click
+                if (target.classList.contains('drawer-overlay')) {
                     this.closeAll();
                 }
 
-                // Mobile Filter Toggle
-                if (e.target.closest('.mobile-filter-btn') || e.target.id === 'mobile-filter-toggle') {
+                // D. Mobile Filter Toggle
+                if (target.closest('.mobile-filter-btn') || target.id === 'mobile-filter-toggle') {
                     this.toggleDrawer('filter');
                 }
             });
@@ -95,17 +88,19 @@ const KynarApp = (() => {
         },
 
         toggleDrawer(type) {
-            const target = type === 'filter' ? document.getElementById('filter-sidebar') : this.elements.sideDrawer;
+            const target = type === 'filter' 
+                ? document.getElementById('filter-sidebar') 
+                : this.elements.sideDrawer;
+                
             if (!target) return;
             this.open(target);
         },
 
         open(element) {
-            this.closeAll(); // Ensure clean slate
+            this.closeAll(); // Ensure only one thing is open
             element.classList.add('is-open');
             element.setAttribute('aria-hidden', 'false');
             
-            // Show overlay
             if (this.elements.overlay) {
                 this.elements.overlay.classList.add('is-visible');
             }
@@ -116,45 +111,23 @@ const KynarApp = (() => {
         },
 
         closeAll() {
-            const openElements = document.querySelectorAll('.is-open');
+            // Close Drawers & Sidebars (BUT NOT AUTH MODALS - AuthManager handles those)
+            const openElements = document.querySelectorAll('.side-drawer.is-open, .marketplace-filters.is-open');
+            
             openElements.forEach(el => {
                 el.classList.remove('is-open');
                 el.setAttribute('aria-hidden', 'true');
             });
 
-            if (this.elements.overlay) {
+            // Hide overlay only if Auth Modals aren't open
+            const isAuthOpen = document.querySelector('.auth-modal.is-open');
+            if (this.elements.overlay && !isAuthOpen) {
                 this.elements.overlay.classList.remove('is-visible');
+                document.body.classList.remove('drawer-open');
             }
 
-            document.body.classList.remove('drawer-open');
             state.isDrawerOpen = false;
             TrapManager.deactivate();
-        },
-
-        setupAuthTriggers() {
-            // Handle "Sign in" clicks
-            document.body.addEventListener('click', (e) => {
-                const trigger = e.target.closest('.sign-in-link') || e.target.closest('[href="#login"]');
-                if (trigger) {
-                    const isLoggedIn = document.body.classList.contains('user-logged-in');
-                    if (!isLoggedIn) {
-                        e.preventDefault();
-                        const modal = this.elements.authModal;
-                        if(modal) this.open(modal);
-                    }
-                }
-
-                // Toggle between Login and Signup
-                if (e.target.id === 'auth-toggle-mode') {
-                    if (this.elements.authModal) this.elements.authModal.classList.remove('is-open');
-                    if (this.elements.signupModal) this.open(this.elements.signupModal);
-                }
-
-                if (e.target.id === 'back-to-login') {
-                    if (this.elements.signupModal) this.elements.signupModal.classList.remove('is-open');
-                    if (this.elements.authModal) this.open(this.elements.authModal);
-                }
-            });
         }
     };
 
@@ -164,49 +137,51 @@ const KynarApp = (() => {
         
         init() {
             if (!this.container) return; // Not on marketplace page
-            
             this.setupFilters();
-            this.parseUrlParams();
-            // Initial filter run
+            this.parseUrlParams(); // Process ?search=... or ?category=...
             this.filter(); 
         },
 
         setupFilters() {
-            const searchInput = document.getElementById('search-input');
-            const sortDropdown = document.querySelector('.sort-dropdown');
+            const searchInput = document.getElementById('global-search-input'); // Use global or page specific
+            const pageSearchInput = document.getElementById('search-input'); // Page specific fallback
+            
             const clearBtn = document.getElementById('clear-filters');
             const applyBtn = document.getElementById('apply-filters-btn');
 
-            // Search input (Debounced)
-            if (searchInput) {
-                searchInput.addEventListener('input', () => {
-                    clearTimeout(state.searchDebounce);
-                    state.searchDebounce = setTimeout(() => this.filter(), 300);
-                });
-            }
-
-            // Checkboxes & Radios
-            document.body.addEventListener('change', (e) => {
-                if (e.target.matches('.cat-filter, .type-filter, input[name="price"]')) {
-                    this.filter();
+            // Listen to both search inputs if they exist
+            [searchInput, pageSearchInput].forEach(input => {
+                if (input) {
+                    input.addEventListener('input', () => {
+                        clearTimeout(state.searchDebounce);
+                        state.searchDebounce = setTimeout(() => this.filter(), 300);
+                    });
                 }
-                if (e.target.matches('.sort-dropdown')) {
+            });
+
+            // Change Event Delegation
+            document.body.addEventListener('change', (e) => {
+                if (e.target.matches('.cat-filter, .type-filter, input[name="price"], .sort-dropdown')) {
                     this.filter();
                 }
             });
 
-            // Clear Button
+            // Clear Filters
             if (clearBtn) {
                 clearBtn.addEventListener('click', () => {
                     document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
                     document.querySelectorAll('input[name="price"]').forEach(r => r.checked = (r.value === 'all'));
+                    
                     if(searchInput) searchInput.value = '';
-                    if(sortDropdown) sortDropdown.value = 'newest';
+                    if(pageSearchInput) pageSearchInput.value = '';
+                    
+                    const sort = document.querySelector('.sort-dropdown');
+                    if(sort) sort.value = 'newest';
+                    
                     this.filter();
                 });
             }
             
-            // Mobile "Apply" Button (Just closes drawer)
             if (applyBtn) {
                 applyBtn.addEventListener('click', () => UI.closeAll());
             }
@@ -216,9 +191,12 @@ const KynarApp = (() => {
             const products = Array.from(this.container.children).filter(el => el.classList.contains('list-item'));
             if (!products.length) return;
 
-            const query = document.getElementById('search-input')?.value.trim().toLowerCase() || "";
+            // Get query from either input
+            const q1 = document.getElementById('global-search-input')?.value.trim().toLowerCase() || "";
+            const q2 = document.getElementById('search-input')?.value.trim().toLowerCase() || "";
+            const query = q2 || q1; // Prefer page specific, fallback to global
+
             const activeCats = Array.from(document.querySelectorAll('.cat-filter:checked')).map(cb => cb.value);
-            const activeTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
             const priceFilter = document.querySelector('input[name="price"]:checked')?.value || 'all';
             const sortBy = document.querySelector('.sort-dropdown')?.value || 'newest';
 
@@ -228,19 +206,17 @@ const KynarApp = (() => {
             products.forEach(product => {
                 const title = product.querySelector('h4')?.textContent.toLowerCase() || '';
                 const cat = product.dataset.category || '';
-                const type = product.dataset.type || '';
                 const price = parseFloat(product.dataset.price || 0);
 
                 const matchesSearch = !query || title.includes(query);
                 const matchesCat = activeCats.length === 0 || activeCats.includes(cat);
-                const matchesType = activeTypes.length === 0 || activeTypes.includes(type);
                 
                 let matchesPrice = true;
                 if (priceFilter === 'under10') matchesPrice = price > 0 && price < 10;
                 if (priceFilter === 'over10') matchesPrice = price >= 10;
-                if (priceFilter === '0') matchesPrice = price === 0;
+                if (priceFilter === '0') matchesPrice = price === 0; // Free items
 
-                if (matchesSearch && matchesCat && matchesType && matchesPrice) {
+                if (matchesSearch && matchesCat && matchesPrice) {
                     product.style.display = 'flex';
                     visibleProducts.push(product);
                     visibleCount++;
@@ -251,7 +227,6 @@ const KynarApp = (() => {
 
             this.sort(visibleProducts, sortBy);
             
-            // Update "Showing X results"
             const countDisplay = document.getElementById('result-count');
             const emptyState = document.getElementById('empty-state');
             
@@ -263,7 +238,6 @@ const KynarApp = (() => {
             products.sort((a, b) => {
                 const priceA = parseFloat(a.dataset.price || 0);
                 const priceB = parseFloat(b.dataset.price || 0);
-                // For "Newest", we need data-date. If missing, we default to DOM order (0)
                 const dateA = new Date(a.dataset.date || 0).getTime();
                 const dateB = new Date(b.dataset.date || 0).getTime();
 
@@ -273,7 +247,6 @@ const KynarApp = (() => {
                 return 0;
             });
 
-            // Re-append sorted
             const fragment = document.createDocumentFragment();
             products.forEach(el => fragment.appendChild(el));
             this.container.prepend(fragment);
@@ -281,18 +254,29 @@ const KynarApp = (() => {
 
         parseUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
+            
+            // 1. Handle Category
             const cat = urlParams.get('category');
             if (cat) {
                 const cb = document.querySelector(`.cat-filter[value="${cat}"]`);
                 if (cb) cb.checked = true;
             }
+
+            // 2. Handle Search Query (From Header)
+            const search = urlParams.get('search');
+            if (search) {
+                // Populate the inputs so filter() sees them
+                const globalInput = document.getElementById('global-search-input');
+                const pageInput = document.getElementById('search-input');
+                if (globalInput) globalInput.value = search;
+                if (pageInput) pageInput.value = search;
+            }
         }
     };
-    
-        // --- 5. GUIDES MODULE ---
+
+    // --- 5. GUIDES MODULE ---
     const Guides = {
         init() {
-            // Only run if we are on the guides page
             if (!document.querySelector('.guides-page')) return;
             
             const filterTabs = document.querySelectorAll('.filter-tab');
@@ -302,9 +286,9 @@ const KynarApp = (() => {
 
             filterTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    const category = tab.getAttribute('data-category');
+                    const category = tab.dataset.category;
 
-                    // 1. Update active state visuals
+                    // Update Active Tab
                     filterTabs.forEach(t => { 
                         t.classList.remove('btn-primary'); 
                         t.classList.add('btn-secondary');
@@ -312,14 +296,12 @@ const KynarApp = (() => {
                     tab.classList.remove('btn-secondary');
                     tab.classList.add('btn-primary');
 
-                    // 2. Filter cards
+                    // Filter Cards
                     guideCards.forEach(card => {
-                        const cardCat = card.getAttribute('data-category');
+                        const cardCat = card.dataset.category;
                         if (category === 'all' || cardCat === category) {
                             card.style.display = 'flex';
-                            // Optional: Add a fade-in animation
-                            card.style.opacity = '0';
-                            setTimeout(() => card.style.opacity = '1', 50);
+                            card.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
                         } else {
                             card.style.display = 'none';
                         }
@@ -329,9 +311,11 @@ const KynarApp = (() => {
         }
     };
 
-
     return {
         init: () => {
+            if (state.initialized) return; // Prevent double firing
+            state.initialized = true;
+
             UI.init();
             Marketplace.init();
             Guides.init();
@@ -340,15 +324,12 @@ const KynarApp = (() => {
     };
 })();
 
-// Wait for components (header/footer) to be injected before starting
+// Initialize when Components are Ready
 document.addEventListener('componentsLoaded', () => {
     KynarApp.init();
 });
 
-// Fallback safety net (in case event missed)
-setTimeout(() => {
-    if (!window.kynarAppStarted) {
-        window.kynarAppStarted = true;
-        KynarApp.init();
-    }
-}, 800);
+// Fallback safety (in case components load faster than script execution)
+if (document.querySelector('.header-wrapper header')) {
+    KynarApp.init();
+}
