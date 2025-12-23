@@ -234,7 +234,7 @@ input, button, textarea, select { font: inherit; }
     opacity: .85; 
     
     /* Spacing */
-    margin-top: 5px; /* Gap between Kynar and Universe */
+    margin-top: 2px; /* Gap between Kynar and Universe */
     
     /* Centering Force */
     display: block;
@@ -247,11 +247,11 @@ input, button, textarea, select { font: inherit; }
     font-family: var(--font-display); 
     
     /* Size: Exactly 2px smaller than Subtitle (11px - 2px = 9px) */
-    font-size: 9px; 
+    font-size: 4px; 
     letter-spacing: .08em;
     
     /* Spacing */
-    margin-top: 3px; /* Gap between Universe and Stars */
+    margin-top: 2px; /* Gap between Universe and Stars */
     
     /* Centering Force */
     display: block;
