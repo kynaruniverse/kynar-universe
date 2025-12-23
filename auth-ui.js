@@ -1,56 +1,46 @@
 /**
- * KYNAR UNIVERSE - Authentication UI Module
- * Handles: Login, Signup, Header State
+ * KYNAR UNIVERSE - Authentication UI Module (Mobile Safe Version)
+ * Uses polling to ensure forms are found even on slow connections.
  */
 import { auth, registerUser, signInWithEmailAndPassword, signOut, onAuthStateChanged } from './firebase-config.js';
 
 const AuthUI = (() => {
 
-    // --- 1. CONFIGURATION ---
     const CONFIG = {
-        redirectDelay: 1500,
-        paths: {
-            account: 'account.html',
-            home: 'index.html'
-        }
+        paths: { account: 'account.html', home: 'index.html' }
     };
 
-    // --- 2. INTERNAL UTILITIES ---
-    const triggerModalClose = () => {
-        // Uses the global Close logic from script.js / utilities.js
-        const activeCloseBtn = document.querySelector('.auth-modal.is-open .auth-modal-close');
-        if (activeCloseBtn) activeCloseBtn.click();
+    // --- HELPER: Mobile Alert ---
+    // Only shows alerts if we really need to debug. 
+    // You can delete this function later.
+    const debugLog = (msg) => {
+        // console.log(msg); // Fallback
+        // alert("DEBUG: " + msg); // Uncomment this if you want popups for every step
     };
 
-    // --- 3. UI UPDATERS ---
+    // --- UI UPDATERS ---
     const updateHeaderState = (user) => {
         const signInText = document.querySelector('.sign-in-text');
         const lockIconContainer = document.querySelector('.custom-lock-icon');
-        
-        // Mobile drawer link
         const mobileAccountLink = document.getElementById('account-nav-mobile');
 
         if (user) {
             // LOGGED IN
-            const initial = (user.displayName || 'U').charAt(0).toUpperCase();
             const firstName = (user.displayName || 'Account').split(' ')[0];
+            const initial = firstName.charAt(0).toUpperCase();
 
             if (signInText) signInText.textContent = firstName;
             
             if (lockIconContainer) {
                 lockIconContainer.innerHTML = `<span class="user-initial">${initial}</span>`;
                 lockIconContainer.classList.add('active-user');
-                // Change the parent link to go to account page instead of opening modal
-                const parentLink = lockIconContainer.closest('a');
-                if (parentLink) parentLink.setAttribute('href', CONFIG.paths.account);
+                lockIconContainer.closest('a')?.setAttribute('href', CONFIG.paths.account);
             }
             
-            // Update Mobile Link
             if (mobileAccountLink) {
                  mobileAccountLink.innerHTML = `<i class="fa-solid fa-user-check"></i> Hello, ${firstName}`;
                  mobileAccountLink.style.color = "var(--color-main-gold)";
             }
-
             document.body.classList.add('user-logged-in');
         } else {
             // LOGGED OUT
@@ -59,129 +49,136 @@ const AuthUI = (() => {
             if (lockIconContainer) {
                 lockIconContainer.innerHTML = `<img src="images/log-in-icon.png" alt="" width="60" height="60">`;
                 lockIconContainer.classList.remove('active-user');
-                const parentLink = lockIconContainer.closest('a');
-                if (parentLink) parentLink.setAttribute('href', '#'); 
+                lockIconContainer.closest('a')?.setAttribute('href', '#'); 
             }
 
             if (mobileAccountLink) {
                 mobileAccountLink.innerHTML = `<i class="fa-regular fa-circle-user"></i> My Account`;
                 mobileAccountLink.style.color = "";
             }
-            
             document.body.classList.remove('user-logged-in');
         }
     };
 
-    // --- 4. FORM HANDLERS ---
+    // --- FORM SUBMISSION HANDLER ---
     const handleAuthSubmit = async (form, actionType) => {
         const submitBtn = form.querySelector('button[type="submit"]');
         const msgContainer = form.querySelector('.auth-message');
-        const email = form.querySelector('input[type="email"]').value;
-        const password = form.querySelector('input[type="password"]').value;
         
-        // For signup, name input might differ by ID, so we grab generic text input or by ID
-        const nameInput = form.querySelector('input[type="text"]'); 
+        // Mobile Debug: Prove the JS caught the click
+        // alert(`Processing ${actionType}...`); 
+
+        // Get Inputs
+        const emailInput = form.querySelector('input[type="email"]');
+        const passInput = form.querySelector('input[type="password"]');
+        const nameInput = form.querySelector('input[type="text"]'); // For signup
+
+        const email = emailInput ? emailInput.value : '';
+        const password = passInput ? passInput.value : '';
+
+        // Validation
+        if (!email || !password) {
+            alert("Please fill in email and password.");
+            return;
+        }
 
         // Loading State
-        submitBtn.classList.add('btn-loading');
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = "Processing..."; 
         submitBtn.disabled = true;
         if (msgContainer) msgContainer.textContent = '';
 
         try {
             if (actionType === 'signup') {
-                if (!nameInput || !nameInput.value) throw new Error("Display name is required");
-                // Use our custom register function
+                if (!nameInput || !nameInput.value.trim()) {
+                    throw new Error("Please enter a Display Name.");
+                }
                 await registerUser(email, password, nameInput.value);
             } else {
-                // Standard Login
                 await signInWithEmailAndPassword(auth, email, password);
             }
 
-            // Success feedback
+            // Success
             if (msgContainer) {
-                msgContainer.style.color = 'var(--color-search-deep)';
+                msgContainer.style.color = 'green';
                 msgContainer.textContent = "Success! Redirecting...";
             }
+            
+            // alert("Success! Logging you in..."); // Visual confirmation
 
             setTimeout(() => {
-                if (window.location.href.includes(CONFIG.paths.account)) {
-                    window.location.reload(); 
-                } else {
-                    triggerModalClose();
-                    // Optional: Update header immediately just in case
-                    updateHeaderState(auth.currentUser);
+                const activeCloseBtn = document.querySelector('.auth-modal.is-open .auth-modal-close');
+                if (activeCloseBtn) activeCloseBtn.click();
+                
+                if (window.location.href.includes('account.html')) {
+                    window.location.reload();
                 }
             }, 1000);
 
         } catch (error) {
+            // alert("Error: " + error.message); // Visual Error
             console.error(error);
             if (msgContainer) {
-                msgContainer.style.color = 'var(--color-star-red)';
-                const cleanMsg = error.message.replace('Firebase:', '').replace('auth/', '').replace(/-/g, ' ');
-                msgContainer.textContent = cleanMsg;
+                msgContainer.style.color = 'red';
+                msgContainer.textContent = error.message.replace('Firebase:', '').replace('auth/', '');
             }
         } finally {
-            submitBtn.classList.remove('btn-loading');
+            submitBtn.textContent = originalBtnText;
             submitBtn.disabled = false;
         }
     };
 
-    const setupLogout = () => {
-        // We use delegation because the logout button might be in the dynamic header
-        document.body.addEventListener('click', async (e) => {
-            if (e.target.id === 'sign-out-btn' || e.target.closest('#sign-out-btn')) {
-                e.preventDefault();
-                await signOut(auth);
-                window.location.href = CONFIG.paths.home;
-            }
-        });
-    };
-
-    // --- 5. INIT ---
+    // --- INIT WITH POLLING (The Mobile Fix) ---
     const init = () => {
-        // 1. Listen for Auth State
-        onAuthStateChanged(auth, (user) => {
-            updateHeaderState(user);
-        });
+        // 1. Auth Listener
+        onAuthStateChanged(auth, (user) => updateHeaderState(user));
 
-        // 2. Attach Form Listeners (Now guaranteed to exist)
-        const loginForm = document.getElementById('auth-form');
-        const signupForm = document.getElementById('signup-form');
+        // 2. Poll for Forms (Checks every 0.5s until found)
+        let attempts = 0;
+        const formCheck = setInterval(() => {
+            attempts++;
+            const loginForm = document.getElementById('auth-form');
+            const signupForm = document.getElementById('signup-form');
+            const logoutBtn = document.getElementById('sign-out-btn'); // Link in Account page
 
-        if (loginForm) {
-            console.log("✅ Login Form Detected");
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                handleAuthSubmit(loginForm, 'login');
+            // If we found the forms, attach listeners and STOP looking
+            if (loginForm && signupForm) {
+                clearInterval(formCheck);
+                debugLog("Forms found after " + attempts + " attempts");
+
+                // Clear old listeners by cloning (optional safety) or just attaching
+                loginForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    handleAuthSubmit(loginForm, 'login');
+                };
+
+                signupForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    handleAuthSubmit(signupForm, 'signup');
+                };
+            }
+
+            // Logout Listener (Delegated to body to be safe)
+            document.body.addEventListener('click', async (e) => {
+                // Check if clicked element is the logout button or inside it
+                const btn = e.target.closest('#sign-out-btn');
+                if (btn) {
+                    e.preventDefault();
+                    if(confirm("Are you sure you want to sign out?")) {
+                        await signOut(auth);
+                        window.location.href = CONFIG.paths.home;
+                    }
+                }
             });
-        } else {
-            console.warn("⚠️ Login Form NOT found");
-        }
 
-        if (signupForm) {
-            console.log("✅ Signup Form Detected");
-            signupForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                handleAuthSubmit(signupForm, 'signup');
-            });
-        }
+            // Stop checking after 10 seconds to save battery
+            if (attempts > 20) clearInterval(formCheck);
 
-        setupLogout();
+        }, 500);
     };
 
     return { init };
 })();
 
-// === CRITICAL FIX ===
-// Wait for the components (Header/Modals) to be injected by utilities.js
-document.addEventListener('componentsLoaded', () => {
-    console.log("🧩 AuthUI: Components loaded, initializing...");
-    AuthUI.init();
-});
-
-// Fallback safety (in case the event fired before this script loaded)
-setTimeout(() => {
-    if (!document.getElementById('auth-form')) return;
-    // Check if listeners are missing (simple logic check)
-    // For now, we rely on componentsLoaded, which is robust in utilities.js
-}, 2000);
+// Start immediately
+AuthUI.init();
