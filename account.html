@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account | KYNAR Universe</title>
     <meta name="description" content="Manage your KYNAR Universe profile and access your digital tools.">
     
@@ -13,14 +13,15 @@
     <script type="module">
         import { auth, onAuthStateChanged } from "./firebase-config.js";
         
-        // Hide content immediately to prevent flashing
+        // Hide content immediately
         document.documentElement.style.visibility = 'hidden';
         
         onAuthStateChanged(auth, (user) => {
             if (!user) {
+                // Not logged in? Redirect.
                 window.location.replace("index.html");
             } else {
-                // User is logged in, reveal page
+                // Logged in? Reveal page smoothly.
                 document.documentElement.style.visibility = 'visible'; 
                 document.body.style.opacity = '0'; 
                 setTimeout(() => {     
@@ -42,32 +43,32 @@
     <main class="main-content-container">
         <section class="account-dashboard">
             
-            <header class="welcome-banner" style="text-align: center; margin-bottom: 40px;">
-                <div id="user-initial" class="profile-placeholder" style="width: 80px; height: 80px; font-size: 32px; margin: 0 auto 15px; display:flex; align-items:center; justify-content:center; background:var(--color-main-gold); color:white; border-radius:50%;">
+            <header class="welcome-banner">
+                <div id="user-initial" class="profile-placeholder">
                     <i class="fa-regular fa-user"></i>
                 </div>
                 
-                <h1 class="welcome-title" style="font-family: var(--font-display); font-size: 28px; text-transform: uppercase;">
-                    Welcome, <span id="welcome-name" style="color: var(--color-star-red);">Friend</span>!
+                <h1 class="welcome-title">
+                    Welcome, <span id="welcome-name">Friend</span>!
                 </h1>
-                <p id="user-meta" class="welcome-meta" style="font-family: var(--font-glacial); font-size: 14px; opacity: 0.6;">Loading member profile...</p>
+                <p id="user-meta" class="welcome-meta">Loading member profile...</p>
             </header>
 
             <section class="stats-grid">
                 <div class="stat-card-clean">
-                    <span id="owned-count" class="stat-number" style="font-family:var(--font-display); font-size:24px; display:block;">0</span>
-                    <span class="stat-label" style="font-size:11px; text-transform:uppercase;">Owned</span>
+                    <span id="owned-count" class="stat-number">0</span>
+                    <span class="stat-label">Owned</span>
                 </div>
                 <div class="stat-card-clean">
-                    <span id="wishlist-count" class="stat-number" style="font-family:var(--font-display); font-size:24px; display:block;">0</span>
-                    <span class="stat-label" style="font-size:11px; text-transform:uppercase;">Wishlist</span>
+                    <span id="wishlist-count" class="stat-number">0</span>
+                    <span class="stat-label">Wishlist</span>
                 </div>
             </section>
 
             <section class="dashboard-panel-clean">
                 <h2 class="panel-heading">Recent Purchases</h2>
                 <div id="purchase-list">
-                    <p style="font-size: 13px; color: #999; padding: 20px 0;">Loading purchases...</p>
+                    <p class="purchase-empty">Loading purchases...</p>
                 </div>
                 
                 <div style="margin-top: 20px;">     
@@ -105,7 +106,7 @@
                     <span>Update Display Name</span>
                     <input id="settings-display-name" type="text" maxlength="40">
                 </label>
-                <button type="submit" class="btn btn-primary btn-md" style="width: 100%;">Save Changes</button>
+                <button type="submit" class="btn btn-primary btn-md btn-full-width">Save Changes</button>
                 <p id="settings-message" class="auth-message"></p>
             </form>
         </div>
@@ -118,6 +119,7 @@
 
     <script type="module">
         import { auth, db, signOut, onAuthStateChanged } from "./firebase-config.js";
+        // NOTE: Importing specific firestore functions here is fine for page-specific logic
         import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
         // Main Logic Wrapper
@@ -129,18 +131,17 @@
             const welcomeMetaEl = document.getElementById('user-meta');
 
             // 1. Initial UI Set from Auth Data (Fastest)
-            // Use 'Friend' if displayName is null for some reason
             let nameToShow = user.displayName || "Friend"; 
             if (welcomeNameEl) welcomeNameEl.textContent = nameToShow;
             if (initialEl) initialEl.textContent = nameToShow.charAt(0).toUpperCase();
 
-            // 2. Load Extra Data from Firestore (Slower, but more complete)
+            // 2. Load Extra Data from Firestore
             loadAccountData(user.uid);
 
             // 3. Settings Form Logic
             setupSettingsForm(user);
             
-            // 4. Setup Local Sign Out
+            // 4. Local Sign Out
             const localSignOut = document.getElementById('account-sign-out');
             if (localSignOut) {
                 localSignOut.addEventListener('click', async (e) => {
@@ -199,7 +200,7 @@
                                 </div>
                             `).join('');
                         } else {
-                            purchaseListEl.innerHTML = '<p style="font-size: 13px; color: #999; padding: 20px 0;">No purchases yet.</p>';
+                            purchaseListEl.innerHTML = '<p class="purchase-empty">No purchases yet.</p>';
                         }
                     }
                 }
@@ -244,7 +245,7 @@
             }
         }
 
-        // Initialize when Auth is ready
+        // Initialize
         onAuthStateChanged(auth, (user) => {
             if (user) initAccountLogic(user);
         });
