@@ -1,7 +1,21 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, 
-         createUserWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import { 
+    getAuth, 
+    onAuthStateChanged, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
+    signOut, 
+    updateProfile 
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+import { 
+    getFirestore, 
+    doc, 
+    setDoc, 
+    getDoc, 
+    updateDoc, 
+    arrayUnion, 
+    arrayRemove 
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
@@ -12,37 +26,58 @@ const firebaseConfig = {
     appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
 };
 
-// Initialize Firebase
+// Initialize Services
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 /**
- * Custom Sign Up Function
- * Handles Auth creation + Profile Update + Firestore User Document
+ * Advanced Registration Flow
+ * execute profile update and DB creation in parallel for performance.
  */
 const registerUser = async (email, password, displayName) => {
-    // 1. Create Auth User
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCred.user;
-    
-    // 2. Update Auth Profile (Display Name)
-    await updateProfile(user, { displayName: displayName || "Creator" });
-    
-    // 3. Create Firestore Document
-    const now = new Date().toISOString();
-    await setDoc(doc(db, "users", user.uid), {
-        email: email,
-        displayName: displayName || "Creator",
-        createdAt: now,
-        updatedAt: now,
-        purchases: [], // Initialize empty arrays
-        wishlist: []
-    }, { merge: true });
+    try {
+        // 1. Create Auth User
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCred.user;
+        const finalName = displayName || "Creator";
+        const now = new Date().toISOString();
 
-    return user;
+        // 2. Parallel Execution: Update Profile & Create Firestore Doc
+        // This saves network round-trip time.
+        await Promise.all([
+            updateProfile(user, { displayName: finalName }),
+            setDoc(doc(db, "users", user.uid), {
+                email: email,
+                displayName: finalName,
+                createdAt: now,
+                updatedAt: now,
+                purchases: [],
+                wishlist: []
+            }, { merge: true })
+        ]);
+
+        return user;
+    } catch (error) {
+        console.error("Registration Error:", error);
+        throw error; // Re-throw to be handled by the UI layer
+    }
 };
 
-// Export services and helpers for other modules to use
-export { auth, db, registerUser, signInWithEmailAndPassword, signOut, onAuthStateChanged };
-console.log('✅ Firebase Module Initialized');
+// Export Services & Method Wrappers
+// This allows other files to import only from './firebase-config.js'
+export { 
+    auth, 
+    db, 
+    registerUser, 
+    signInWithEmailAndPassword, 
+    signOut, 
+    onAuthStateChanged,
+    // Firestore Helpers
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    arrayUnion,
+    arrayRemove
+};

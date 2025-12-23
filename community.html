@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community | KYNAR Universe</title>
     <meta name="description" content="Join our founding members. Digital tools for every corner of your life.">
     
@@ -20,23 +18,24 @@
     <meta name="twitter:image" content="https://kynaruniverse.co.uk/images/social-share.jpg">
     
     <link rel="preload" href="fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/png" href="assets/favicon.png">
 </head>
 
 <body class="community-page">
+    
     <a href="#main-content" class="visually-hidden">Skip to main content</a>
     
     <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
-    <div class="loading-overlay" id="global-loading" aria-live="polite"><div class="loading-spinner"></div></div>
+    <div class="loading-overlay" id="global-loading" aria-live="polite" aria-label="Loading">
+        <div class="loading-spinner"></div>
+    </div>
     
-        <div class="header-wrapper">
+    <div class="header-wrapper">
         <div data-include="components/header.html"></div>
     </div>
 
-    
     <main id="main-content" class="main-content-container container">
         
         <section class="sole-creator-slogan" aria-labelledby="community-hero-title">
@@ -59,28 +58,28 @@
                     <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
                     <h3>Instagram</h3>
                     <p>Daily inspiration, tips, and behind-the-scenes content</p>
-                    <span class="coming-soon-badge product-badge" style="position:static; display:inline-block; margin-top:10px;">Coming Soon</span>
+                    <span class="product-badge coming-soon-badge">Coming Soon</span>
                 </div>
                 
                 <div class="social-card pinterest-card coming-soon-card">
                     <div class="social-icon"><i class="fa-brands fa-pinterest"></i></div>
                     <h3>Pinterest</h3>
                     <p>Save ideas, tutorials, and creative inspiration boards</p>
-                    <span class="coming-soon-badge product-badge" style="position:static; display:inline-block; margin-top:10px;">Coming Soon</span>
+                    <span class="product-badge coming-soon-badge">Coming Soon</span>
                 </div>
                 
                 <div class="social-card twitter-card coming-soon-card">
                     <div class="social-icon"><i class="fa-brands fa-x-twitter"></i></div>
                     <h3>X (Twitter)</h3>
                     <p>Quick tips, product updates, and community highlights</p>
-                    <span class="coming-soon-badge product-badge" style="position:static; display:inline-block; margin-top:10px;">Coming Soon</span>
+                    <span class="product-badge coming-soon-badge">Coming Soon</span>
                 </div>
                 
                 <div class="social-card youtube-card coming-soon-card">
                     <div class="social-icon"><i class="fa-brands fa-youtube"></i></div>
                     <h3>YouTube</h3>
                     <p>Video tutorials, product walkthroughs, and how-tos</p>
-                    <span class="coming-soon-badge product-badge" style="position:static; display:inline-block; margin-top:10px;">Coming Soon</span>
+                    <span class="product-badge coming-soon-badge">Coming Soon</span>
                 </div>
             </div>
             
@@ -92,7 +91,7 @@
             </div>
         </section>
         
-        <section class="community-story-panel" style="margin-bottom: 60px;">
+        <section class="community-story-panel">
             <h2 class="section-heading">Be Part of Our Story</h2>
             <p class="section-subtext">
                 As a founding member, you'll help shape KYNAR Universe from the ground up.
@@ -101,20 +100,20 @@
             <div class="social-grid">
                 <div class="community-stat-card">
                     <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
-                    <h3 style="font-family: var(--font-display); margin-bottom: 10px;">Founding Member</h3>
-                    <p style="font-size: 14px;">Be recognized as one of our first supporters with special perks and benefits</p>
+                    <h3>Founding Member</h3>
+                    <p>Be recognized as one of our first supporters with special perks and benefits</p>
                 </div>
                 
                 <div class="community-stat-card">
                     <div class="stat-icon"><i class="fa-solid fa-comments"></i></div>
-                    <h3 style="font-family: var(--font-display); margin-bottom: 10px;">Direct Input</h3>
-                    <p style="font-size: 14px;">Your feedback will directly shape new products and features</p>
+                    <h3>Direct Input</h3>
+                    <p>Your feedback will directly shape new products and features</p>
                 </div>
                 
                 <div class="community-stat-card">
                     <div class="stat-icon"><i class="fa-solid fa-gift"></i></div>
-                    <h3 style="font-family: var(--font-display); margin-bottom: 10px;">Early Access</h3>
-                    <p style="font-size: 14px;">Get first access to new products before official launch</p>
+                    <h3>Early Access</h3>
+                    <p>Get first access to new products before official launch</p>
                 </div>
             </div>
         </section>
@@ -128,11 +127,13 @@
             <div id="newsletter-container">
                 <form id="newsletter-form" action="https://formspree.io/f/mbdrkbve" method="POST" class="community-inline-form">
                     <input type="text" name="_gotcha" style="display:none" />
+                    
                     <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required autocomplete="email">
                     <button type="submit" class="btn btn-primary btn-md">Subscribe</button>
                 </form>
+                
                 <div id="newsletter-success" class="form-success-content" aria-live="polite">
-                    <i class="fa-solid fa-circle-check" style="font-size: 30px; color: var(--color-search-deep); margin-bottom: 15px;"></i>
+                    <i class="fa-solid fa-circle-check"></i>
                     <h3>You're on the list</h3>
                     <p>Thanks for joining the KYNAR Universe newsletter.</p>
                 </div>
@@ -147,12 +148,13 @@
             
             <div id="feedback-container">
                 <form id="feedback-form" action="https://formspree.io/f/xykgpvle" method="POST" class="community-vertical-form">
+                    
+                    <input type="text" name="_gotcha" style="display:none" />
+
                     <div class="form-group">
                         <label for="feedback-name">Your Name</label>
                         <input type="text" id="feedback-name" name="name" required autocomplete="name">
                     </div>
-                    
-                    <input type="text" name="_gotcha" style="display:none" />
                     
                     <div class="form-group">
                         <label for="feedback-email">Email Address</label>
@@ -179,7 +181,7 @@
                 </form>
                 
                 <div id="feedback-success" class="form-success-content" aria-live="polite">
-                    <i class="fa-solid fa-paper-plane" style="font-size: 30px; color: var(--color-main-gold); margin-bottom: 15px;"></i>
+                    <i class="fa-solid fa-paper-plane"></i>
                     <h3>Message Sent!</h3>
                     <p>We'll review your feedback and get back to you soon.</p>
                 </div>
@@ -203,8 +205,8 @@
         
     </main>
     
-        <div data-include="components/footer.html"></div>
-
+    <div data-include="components/footer.html"></div>
+    <div data-include="components/auth-modals.html"></div>
 
     <nav class="side-drawer" id="side-drawer" aria-hidden="true">
         <div class="drawer-header">
@@ -224,14 +226,10 @@
         </ul>
     </nav>
 
-    <div data-include="components/auth-modals.html"></div>
-
-
     <script src="utilities.js"></script>
     <script src="loading-state.js"></script>
     <script src="script.js" defer></script> 
     <script src="community.js" defer></script>
-    <script src="firebase-config.js" type="module"></script>
     <script src="auth-ui.js" type="module"></script>
 
 </body>
