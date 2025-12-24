@@ -24,7 +24,7 @@
         <div data-include="components/header.html"></div>
     </div>
 
-    <main id="main-content" class="main-content-container">
+        <main id="main-content" class="main-content-container container">
         
         <section class="sole-creator-slogan" aria-labelledby="guides-hero-title">
             <h1 id="guides-hero-title" class="slogan-title">
@@ -47,7 +47,7 @@
             <button class="filter-tab btn btn-secondary btn-sm" data-category="troubleshooting">Troubleshooting</button>
         </div>
 
-        <section class="guides-grid">
+        <section class="guides-grid" aria-live="polite" id="guides-results">
             
             <article class="guide-card variant-cream" data-category="getting-started">
                 <div class="guide-icon">
@@ -170,9 +170,14 @@
     <div data-include="components/footer.html"></div>
     <div data-include="components/auth-modals.html"></div>
 
-    <script src="utilities.js"></script>
+        <script src="utilities.js"></script>
     <script src="loading-state.js"></script>
+    
+    <script type="module">
+        import './auth-ui.js';
+    </script>
+    
     <script src="script.js" defer></script>
-    <script src="auth-ui.js" type="module"></script>
+
 </body>
 </html>

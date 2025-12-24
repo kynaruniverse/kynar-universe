@@ -46,12 +46,13 @@ const KynarApp = (() => {
             
             document.querySelectorAll('.main-nav a, .drawer-list a').forEach(link => {
                 const href = link.getAttribute('href');
-                                if (href === page) {
-                    link.classList.add('active-page');
+                if (href === page) {
+                    link.style.color = "var(--color-star-red)";
+                    link.classList.add('active-page'); // Helper class
                 } else {
+                    link.style.color = ""; 
                     link.classList.remove('active-page');
                 }
-
             });
         },
 
@@ -153,9 +154,10 @@ const KynarApp = (() => {
             this.filter(); 
         },
 
-        setupFilters() {
-            const searchInput = document.getElementById('global-search-input'); // Use global or page specific
-            const pageSearchInput = document.getElementById('search-input'); // Page specific fallback
+                setupFilters() {
+            // Unified Search: Look for the Header search bar
+            const searchInput = document.getElementById('global-search-input');
+
             
             const clearBtn = document.getElementById('clear-filters');
             const applyBtn = document.getElementById('apply-filters-btn');
@@ -331,10 +333,24 @@ const KynarApp = (() => {
             Guides.init();
             RevealSystem.init(); // <--- This line is the spark plug!
             console.log('✨ KYNAR Universe Engine Started');
+                    // Update Footer Year
+        const yearEl = document.getElementById('year');
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
+
         }
     };
 
 })();
+
+// Temporal Bridge for Marketplace Actions
+window.kynarPurchases = {
+    addToWishlist: (item) => {
+        console.log("Added to wishlist:", item.title);
+        // This will be linked to firebase-logic.js in the next phase
+        alert(`${item.title} added to wishlist!`);
+    }
+};
+
 
 // Initialize when Components are Ready
 document.addEventListener('componentsLoaded', () => {
