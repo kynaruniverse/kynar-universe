@@ -31,11 +31,12 @@ const CommunityPage = (() => {
             // 1. Bot Check (Honeypot)
             if (honeypot && honeypot.value) return;
 
-            // 2. Client-side Validation
+                        // 2. Client-side Validation
             if (emailInput && !isValidEmail(emailInput.value)) {
-                this.showError(responseMsg, "Please enter a valid email address.");
+                showError(responseMsg, "Please enter a valid email address.");
                 return;
             }
+
 
             // 3. UI Loading State
             if (window.LoadingState) {
@@ -111,10 +112,18 @@ const CommunityPage = (() => {
                     }
                 });
 
-                // Toggle Current
+                                // Toggle Current
                 item.classList.toggle('active');
                 questionBtn.setAttribute('aria-expanded', !isOpen);
                 answerPanel.setAttribute('aria-hidden', isOpen);
+                
+                // Optional: Max-height animation support
+                if (!isOpen) {
+                    answerPanel.style.maxHeight = answerPanel.scrollHeight + "px";
+                } else {
+                    answerPanel.style.maxHeight = null;
+                }
+
             });
         });
     };
@@ -145,5 +154,11 @@ const CommunityPage = (() => {
 
 })();
 
-// Start
-document.addEventListener('DOMContentLoaded', CommunityPage.init);
+// Start - Listen for the custom component loader event
+document.addEventListener('componentsLoaded', () => CommunityPage.init());
+
+// Fallback for direct page access
+if (document.readyState !== 'loading') {
+    CommunityPage.init();
+}
+

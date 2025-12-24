@@ -26,10 +26,19 @@ const firebaseConfig = {
     appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
 };
 
-// Initialize Services
-const app = initializeApp(firebaseConfig);
+// Initialize Services with Singleton Pattern
+let app;
+try {
+    app = initializeApp(firebaseConfig);
+} catch (e) {
+    if (!/already-exists/.test(e.code)) {
+        console.error("Firebase initialization error", e);
+    }
+}
+
 const auth = getAuth(app);
 const db = getFirestore(app);
+
 
 /**
  * Advanced Registration Flow
@@ -45,17 +54,21 @@ const registerUser = async (email, password, displayName) => {
 
         // 2. Parallel Execution: Update Profile & Create Firestore Doc
         // This saves network round-trip time.
-        await Promise.all([
-            updateProfile(user, { displayName: finalName }),
-            setDoc(doc(db, "users", user.uid), {
-                email: email,
-                displayName: finalName,
-                createdAt: now,
-                updatedAt: now,
-                purchases: [],
-                wishlist: []
-            }, { merge: true })
-        ]);
+                // 1. Update Profile First (Ensures local Auth state is correct)
+        await updateProfile(user, { displayName: finalName });
+
+        // 2. Then Create Firestore Record
+        await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            email: email,
+            displayName: finalName,
+            createdAt: now,
+            updatedAt: now,
+            role: "user", // Added for marketplace permissions
+            purchases: [],
+            wishlist: []
+        }, { merge: true });
+
 
         return user;
     } catch (error) {

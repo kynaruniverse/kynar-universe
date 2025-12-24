@@ -36,7 +36,7 @@ const LoadingState = {
      * @param {string} message - Accessibility label
      * @param {number} maxDuration - Safety timeout in ms (default 15s)
      */
-    show(message = 'Loading...', maxDuration = 15000) {
+        show(message = 'Loading...', maxDuration = 10000) {
         if (!this.overlay) this.init();
         if (!this.overlay) return;
         
@@ -44,18 +44,20 @@ const LoadingState = {
         this.overlay.classList.add('is-visible');
         this.isLoading = true;
         
-        // Safety: Prevent infinite loading if an error occurs
+        // Trap focus to prevent background interaction
+        if (window.activateFocusTrap) {
+            window.activateFocusTrap(this.overlay, 'loading-trap');
+        }
+        
         if (this.timeout) clearTimeout(this.timeout);
-        this.timeout = setTimeout(() => {
-            console.warn('[LoadingState] Operation timed out, hiding overlay.');
-            this.hide();
-        }, maxDuration);
+        this.timeout = setTimeout(() => this.hide(), maxDuration);
     },
+
     
     /**
      * Hides the global spinner.
      */
-    hide() {
+        hide() {
         if (!this.overlay) return;
         
         if (this.timeout) {
@@ -65,24 +67,29 @@ const LoadingState = {
         
         this.overlay.classList.remove('is-visible');
         this.isLoading = false;
+
+        if (window.deactivateFocusTrap) {
+            window.deactivateFocusTrap('loading-trap');
+        }
     },
+
     
     /**
      * Puts a specific button into a loading state.
      * Prevents double-clicks and shows a spinner/loading style.
      */
-    buttonStart(button) {
+        buttonStart(button) {
         if (!button || button.classList.contains('btn-loading')) return;
         
-        // Store original state
+        button.dataset.originalHtml = button.innerHTML;
         button.dataset.wasDisabled = button.disabled;
-        // We store width to prevent button collapsing when text is hidden
         button.style.minWidth = getComputedStyle(button).width; 
         
         button.disabled = true;
         button.classList.add('btn-loading');
         button.setAttribute('aria-busy', 'true');
     },
+
 
     /**
      * Restores a button to its interactive state.

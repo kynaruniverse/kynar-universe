@@ -29,21 +29,24 @@ class FocusTrap {
             return;
         }
 
-        if (this.firstFocusable) {
+                if (this.firstFocusable) {
             this.firstFocusable.focus();
         }
 
         this.element.addEventListener('keydown', this.handleKeydown);
+        document.addEventListener('focusin', this.handleFocusIn, true);
     }
+
 
     refresh() {
         this.updateFocusableElements();
     }
 
-    deactivate() {
+        deactivate() {
         if (!this.isActive) return;
         this.isActive = false;
         this.element.removeEventListener('keydown', this.handleKeydown);
+        document.removeEventListener('focusin', this.handleFocusIn, true);
 
         // Return focus to where it was before opening
         if (this.previousActiveElement && typeof this.previousActiveElement.focus === 'function') {
@@ -79,6 +82,14 @@ class FocusTrap {
             this.onEscape(e);
             return;
         }
+        
+        handleFocusIn = (e) => {
+        if (this.isActive && !this.element.contains(e.target)) {
+            e.stopImmediatePropagation();
+            this.firstFocusable ? this.firstFocusable.focus() : this.element.focus();
+        }
+    }
+
 
         if (e.key !== 'Tab' || this.focusableElements.length === 0) return;
 
@@ -155,20 +166,20 @@ async function loadComponents() {
         const file = el.dataset.include;
         try {
             const resp = await fetch(file);
-            if (resp.ok) {
+                        if (resp.ok) {
                 const content = await resp.text();
-                
-                // Create a temporary container to parse HTML
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = content;
-                
-                // Replace the placeholder with the new content
-                el.outerHTML = content;
-                
-                // Note: Since we used outerHTML, 'el' is gone. 
-                // We rely on the DOM updating. If specific script execution 
-                // is needed inside components, it's safer to use the Global Event below.
-            } else {
+
+                // Move children out of tempDiv to replace placeholder el
+                while (tempDiv.firstChild) {
+                    const child = tempDiv.firstChild;
+                    if (child.nodeType === 1) executeScripts(child); // Fix for script tags
+                    el.parentNode.insertBefore(child, el);
+                }
+                el.remove();
+            }
+            else {
                 console.error(`[Loader] Failed to load ${file}: ${resp.status}`);
             }
         } catch (err) {
