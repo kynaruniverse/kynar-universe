@@ -96,12 +96,14 @@ class AuthManager {
                 authLink.setAttribute('data-modal-trigger', 'login');
             }
 
-            // Mobile: Standard Link
+                        // Mobile: Standard Link
             if (mobileLink) {
                 mobileLink.innerHTML = `<i class="fa-regular fa-circle-user"></i> My Account`;
                 mobileLink.style.color = "";
-                mobileLink.setAttribute('href', ROUTES.ACCOUNT); // Let it redirect via protected route logic
+                mobileLink.setAttribute('href', '#');
+                mobileLink.setAttribute('data-modal-trigger', 'login');
             }
+
         }
     }
 
@@ -221,28 +223,48 @@ class AuthManager {
         }
     }
 
-    async handleSignOut() {
-        if (confirm("Are you sure you want to sign out?")) {
+        async handleSignOut() {
+        if (!confirm("Are you sure you want to sign out?")) return;
+        
+        try {
             await signOut(auth);
+            // Clear local states if any exist
+            document.body.classList.remove('user-logged-in');
             window.location.href = ROUTES.HOME;
+        } catch (err) {
+            console.error("Sign-out failed:", err);
         }
     }
 
+
     // --- UTILITIES ---
 
-    openModal(selector) {
+        openModal(selector) {
         const modal = document.querySelector(selector);
-        if (modal) modal.classList.add('is-open');
-    }
+        if (!modal) return;
+        
+        modal.classList.add('is-open');
+        document.getElementById('drawer-overlay')?.classList.add('is-visible');
+        document.body.classList.add('drawer-open');
 
-    closeModal(selector) {
-        const modal = document.querySelector(selector);
-        if (modal) modal.classList.remove('is-open');
+        // Activate Focus Trap from utilities.js
+        if (window.activateFocusTrap) {
+            window.activateFocusTrap(modal, 'auth-trap', {
+                onEscape: () => this.closeAllModals()
+            });
+        }
     }
 
     closeAllModals() {
         document.querySelectorAll('.auth-modal').forEach(m => m.classList.remove('is-open'));
+        document.getElementById('drawer-overlay')?.classList.remove('is-visible');
+        document.body.classList.remove('drawer-open');
+        
+        if (window.deactivateFocusTrap) {
+            window.deactivateFocusTrap('auth-trap');
+        }
     }
+
 
     formatErrorMessage(error) {
         const code = error.code || '';

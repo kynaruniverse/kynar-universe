@@ -46,13 +46,12 @@ const KynarApp = (() => {
             
             document.querySelectorAll('.main-nav a, .drawer-list a').forEach(link => {
                 const href = link.getAttribute('href');
-                if (href === page) {
-                    link.style.color = "var(--color-star-red)";
-                    link.classList.add('active-page'); // Helper class
+                                if (href === page) {
+                    link.classList.add('active-page');
                 } else {
-                    link.style.color = ""; 
                     link.classList.remove('active-page');
                 }
+
             });
         },
 
@@ -96,38 +95,50 @@ const KynarApp = (() => {
             this.open(target);
         },
 
-        open(element) {
-            this.closeAll(); // Ensure only one thing is open
+                open(element) {
+            if (!element) return;
+            this.closeAll(); 
             element.classList.add('is-open');
             element.setAttribute('aria-hidden', 'false');
             
-            if (this.elements.overlay) {
-                this.elements.overlay.classList.add('is-visible');
-            }
-            
+            this.elements.overlay?.classList.add('is-visible');
             document.body.classList.add('drawer-open');
             state.isDrawerOpen = true;
             TrapManager.activate(element);
         },
 
-        closeAll() {
-            // Close Drawers & Sidebars (BUT NOT AUTH MODALS - AuthManager handles those)
-            const openElements = document.querySelectorAll('.side-drawer.is-open, .marketplace-filters.is-open');
+                closeAll() {
+            const openUI = document.querySelectorAll('.side-drawer.is-open, .marketplace-filters.is-open, .auth-modal.is-open');
             
-            openElements.forEach(el => {
+            openUI.forEach(el => {
                 el.classList.remove('is-open');
                 el.setAttribute('aria-hidden', 'true');
             });
 
-            // Hide overlay only if Auth Modals aren't open
-            const isAuthOpen = document.querySelector('.auth-modal.is-open');
-            if (this.elements.overlay && !isAuthOpen) {
-                this.elements.overlay.classList.remove('is-visible');
-                document.body.classList.remove('drawer-open');
-            }
-
+            this.elements.overlay?.classList.remove('is-visible');
+            document.body.classList.remove('drawer-open');
+            
             state.isDrawerOpen = false;
             TrapManager.deactivate();
+        }
+    }; // Properly close the UI module
+
+    // --- 3.5 REVEAL SYSTEM ---
+    const RevealSystem = {
+        init() {
+            const elements = document.querySelectorAll('.reveal-on-scroll');
+            if (!elements.length) return;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            elements.forEach(el => observer.observe(el));
         }
     };
 
@@ -234,23 +245,22 @@ const KynarApp = (() => {
             if (emptyState) emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
         },
 
-        sort(products, method) {
+                sort(products, method) {
             products.sort((a, b) => {
-                const priceA = parseFloat(a.dataset.price || 0);
-                const priceB = parseFloat(b.dataset.price || 0);
-                const dateA = new Date(a.dataset.date || 0).getTime();
-                const dateB = new Date(b.dataset.date || 0).getTime();
+                const pA = parseFloat(a.dataset.price || 0), pB = parseFloat(b.dataset.price || 0);
+                const dA = new Date(a.dataset.date || 0).getTime(), dB = new Date(b.dataset.date || 0).getTime();
 
-                if (method === 'low-high') return priceA - priceB;
-                if (method === 'high-low') return priceB - priceA;
-                if (method === 'newest') return dateB - dateA;
-                return 0;
+                if (method === 'low-high') return pA - pB;
+                if (method === 'high-low') return pB - pA;
+                return dB - dA; // Default Newest
             });
 
+                        // Use fragment to batch DOM updates for performance
             const fragment = document.createDocumentFragment();
             products.forEach(el => fragment.appendChild(el));
-            this.container.prepend(fragment);
-        },
+            this.container.appendChild(fragment);
+},
+
 
         parseUrlParams() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -311,17 +321,19 @@ const KynarApp = (() => {
         }
     };
 
-    return {
+        return {
         init: () => {
-            if (state.initialized) return; // Prevent double firing
+            if (state.initialized) return; 
             state.initialized = true;
 
             UI.init();
             Marketplace.init();
             Guides.init();
+            RevealSystem.init(); // <--- This line is the spark plug!
             console.log('✨ KYNAR Universe Engine Started');
         }
     };
+
 })();
 
 // Initialize when Components are Ready
