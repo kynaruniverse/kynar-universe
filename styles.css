@@ -760,6 +760,24 @@ h1, h2, h3, .main-title, .slogan-title {
 .item-details h4 { font: 18px var(--font-display); margin: 0 0 5px; color: var(--color-dark-text); }
 .item-price { font: bold 16px var(--font-glacial); color: var(--color-star-red); }
 
+/* Marketplace Layout Hardening */
+.item-visual {
+    width: 80px; height: 80px; 
+    background: var(--color-track-bg); 
+    border-radius: 10px; 
+    flex-shrink: 0;
+}
+.item-details { flex: 1; padding-inline: 1.25rem; }
+.item-details h4 { margin-block-end: 0.3rem; font-family: var(--font-display); }
+.sort-dropdown {
+    padding: 8px; 
+    border-radius: 8px; 
+    border: 1px solid var(--color-main-gold);
+    background: var(--color-light-bg);
+    color: var(--color-dark-text);
+}
+
+
 
 /*--- 8. ACCOUNT & DASHBOARD ---*/
 .account-dashboard { max-width: 1000px; margin: 0 auto; padding: 24px 12px 40px; }
@@ -1080,6 +1098,12 @@ h1, h2, h3, .main-title, .slogan-title {
     .marketplace-filters { position: sticky; top: 20px; }
 
 /*--- GUIDE ARTICLE LAYOUT SYSTEM ---*/
+
+/* Prevent sticky header from overlapping anchor targets */
+.guide-body section {
+    scroll-margin-top: 100px;
+}
+
 
 /* Breadcrumb */
 .guide-breadcrumb {

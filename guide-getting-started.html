@@ -24,7 +24,7 @@
         <div data-include="components/header.html"></div>
     </div>
 
-    <main id="main-content" class="main-content-container">
+    <main id="main-content" class="main-content-container container">
         
         <nav class="guide-breadcrumb" aria-label="Breadcrumb">
             <ol>
@@ -63,9 +63,10 @@
                 </ol>
             </div>
 
-            <div class="guide-body">
+                        <div class="guide-body">
                 
-                <section id="step1">
+                <section id="step1" class="reveal-on-scroll">
+
                     <h2>1. Creating Your Account</h2>
                     <p>Before you can purchase and download products, you'll need to create a free KYNAR Universe account. Here's how:</p>
                     
@@ -174,9 +175,14 @@
     <div data-include="components/footer.html"></div>
     <div data-include="components/auth-modals.html"></div>
 
-    <script src="utilities.js"></script>
+        <script src="utilities.js"></script>
     <script src="loading-state.js"></script>
+    
+    <script type="module">
+        import './auth-ui.js';
+    </script>
+    
     <script src="script.js" defer></script>
-    <script src="auth-ui.js" type="module"></script>
+
 </body>
 </html>

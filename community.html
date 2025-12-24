@@ -125,14 +125,15 @@
             </p>
             
             <div id="newsletter-container">
-                <form id="newsletter-form" action="https://formspree.io/f/mbdrkbve" method="POST" class="community-inline-form">
+                                <form id="newsletter-form" action="https://formspree.io/f/mbdrkbve" method="POST" class="community-inline-form">
                     <input type="text" name="_gotcha" style="display:none" />
                     
                     <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required autocomplete="email">
                     <button type="submit" class="btn btn-primary btn-md">Subscribe</button>
+                    <p id="newsletter-message" class="form-response-msg"></p>
                 </form>
                 
-                <div id="newsletter-success" class="form-success-content" aria-live="polite">
+                <div id="newsletter-success" class="form-success-content" aria-live="polite" style="display: none;">
                     <i class="fa-solid fa-circle-check"></i>
                     <h3>You're on the list</h3>
                     <p>Thanks for joining the KYNAR Universe newsletter.</p>
@@ -176,11 +177,11 @@
                         <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what's on your mind..."></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary btn-md btn-full-width">Send Feedback</button>
+                                        <button type="submit" class="btn btn-primary btn-md btn-full-width">Send Feedback</button>
                     <p id="feedback-message-response" class="form-response-msg"></p>
                 </form>
                 
-                <div id="feedback-success" class="form-success-content" aria-live="polite">
+                <div id="feedback-success" class="form-success-content" aria-live="polite" style="display: none;">
                     <i class="fa-solid fa-paper-plane"></i>
                     <h3>Message Sent!</h3>
                     <p>We'll review your feedback and get back to you soon.</p>
@@ -190,13 +191,14 @@
         
         <section class="community-layout-narrow">
             <h2 class="section-heading">Community FAQ</h2>
-            <div class="faq-accordion">
+                        <div class="faq-accordion">
                 <div class="faq-item">
-                    <button class="faq-question">
+                    <button class="faq-question" aria-expanded="false" aria-controls="faq-ans-1">
                         <span>When will your social media accounts be live?</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
-                    <div class="faq-answer">
+                    <div class="faq-answer" id="faq-ans-1" aria-hidden="true">
+
                         <p>We're actively building our social presence! Instagram, Pinterest, X, and YouTube channels will launch in early 2025.</p>
                     </div>
                 </div>
