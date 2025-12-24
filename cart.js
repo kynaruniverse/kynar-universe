@@ -179,6 +179,17 @@ const CartSystem = (() => {
             if (removeBtn) {
                 remove(removeBtn.dataset.id);
             }
+            
+                        // Checkout Navigation
+            if (target.id === 'checkout-btn') {
+                e.preventDefault();
+                if (state.items.length === 0) {
+                    showToast("Your cart is empty!");
+                } else {
+                    window.location.href = 'checkout.html';
+                }
+            }
+
 
             // Add to Cart
             const addBtn = target.closest('.js-add-to-cart');
