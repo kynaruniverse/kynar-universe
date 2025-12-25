@@ -2286,107 +2286,190 @@ h1, h2, h3, .main-title, .slogan-title {
     font-size: 18px;
 }
 
-/* 2. PILL FILTERS (Centered Variant) */
-.knowledge-filters { margin-bottom: 40px; }
-.center-pills { justify-content: center; }
+/* --- KYNAR 2026: GUIDES UPGRADE --- */
 
-/* 3. GUIDE TILES (The Glass Cards) */
-.guide-glass-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
+/* 2. HOLO-PILLS (The New Filter Buttons) */
+.knowledge-filters { margin-bottom: 50px; }
+
+.filter-pills-container.center-pills {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.guide-tile {
-    background: #fff;
-    border-radius: 24px;
-    padding: 25px;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
+.filter-pill {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px; /* Squircle shape */
+    padding: 10px 24px;
+    font: 600 13px var(--font-glacial);
+    color: var(--color-dark-text);
+    cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     position: relative;
     overflow: hidden;
 }
 
-.guide-tile:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px -5px rgba(169, 147, 105, 0.15);
+/* Hover State: Lift & Subtle Glow */
+.filter-pill:hover {
+    transform: translateY(-2px);
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(169, 147, 105, 0.15);
     border-color: rgba(169, 147, 105, 0.3);
 }
 
-/* Holographic sheen on hover */
-.guide-tile::after {
-    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
-    transform: skewX(-25deg); transition: 0.5s; pointer-events: none;
+/* Active State: The "Gold Fusion" Look */
+.filter-pill.active {
+    background: var(--color-dark-text);
+    color: #fff;
+    border-color: var(--color-dark-text);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-.guide-tile:hover::after { left: 200%; transition: 0.7s; }
+
+/* The "Active Dot" indicator */
+.filter-pill.active::after {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--color-main-gold);
+    border-radius: 50%;
+    margin-left: 8px;
+    margin-bottom: 1px;
+}
+
+
+/* 3. PRISM CARDS (The New Guide Tiles) */
+.guide-glass-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.guide-tile {
+    /* Base: Frosted Glass */
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 25px;
+    
+    /* The "Prism" Border - subtle gradient border */
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+        0 10px 30px -5px rgba(0, 0, 0, 0.05),
+        inset 0 0 20px rgba(255, 255, 255, 0.5); /* Inner glow */
+        
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Pearlescent Gradients per Category (Subtle) */
+.guide-tile[data-category="getting-started"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 235, 229, 0.6) 100%);
+}
+.guide-tile[data-category="tutorials"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(227, 240, 231, 0.6) 100%);
+}
+.guide-tile[data-category="tips"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(226, 243, 245, 0.6) 100%);
+}
+.guide-tile[data-category="troubleshooting"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(247, 229, 240, 0.6) 100%);
+}
+
+/* The "Neon" Hover Effect */
+.guide-tile:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: #fff; /* Brighten on hover */
+    box-shadow: 
+        0 20px 50px -10px rgba(169, 147, 105, 0.2), /* Gold shadow */
+        0 0 0 1px rgba(169, 147, 105, 0.3); /* Thin gold rim */
+}
+
+/* The Beam of Light Animation */
+.guide-tile::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -150%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    transform: skewX(-25deg);
+    transition: 0.5s;
+    pointer-events: none;
+}
+.guide-tile:hover::before {
+    left: 150%;
+    transition: 0.7s;
+}
+
+/* Typography & Layout Updates */
+.tile-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
 
 .tile-icon {
-    width: 50px; height: 50px;
-    background: var(--color-track-bg);
+    width: 48px; height: 48px;
+    background: #fff;
     border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
+    font-size: 20px;
     color: var(--color-dark-text);
-    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     transition: all 0.3s;
 }
+
 .guide-tile:hover .tile-icon {
-    background: var(--color-main-gold);
-    color: #fff;
-}
-
-.tile-content { flex: 1; margin-bottom: 20px; }
-
-.tile-cat {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    background: var(--color-dark-text);
     color: var(--color-main-gold);
-    font-weight: 700;
-    display: block;
-    margin-bottom: 8px;
+    transform: rotate(-10deg);
 }
 
-.guide-tile h3 {
-    font: 700 20px var(--font-display);
+.tile-content h3 {
+    font: 700 20px/1.2 var(--font-display);
     margin-bottom: 10px;
     color: var(--color-dark-text);
-    line-height: 1.2;
 }
 
-.guide-tile p {
-    font-size: 13px;
+.tile-content p {
+    font-size: 14px;
     color: rgba(0,0,0,0.6);
     line-height: 1.6;
+    margin-bottom: 0;
 }
 
 .tile-footer {
+    margin-top: auto;
     padding-top: 20px;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(0,0,0,0.04);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.read-time {
-    font-size: 11px;
-    color: #999;
-    font-weight: 600;
+.btn-arrow-link {
+    font: 700 11px var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-dark-text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.2s;
+}
+.btn-arrow-link:hover {
+    color: var(--color-main-gold);
+    gap: 10px;
 }
 
-.btn-text-gold {
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--color-dark-text);
-    transition: color 0.2s;
-}
-.btn-text-gold:hover { color: var(--color-main-gold); }
 
 /* 4. SUPPORT TERMINAL */
 .support-terminal {
