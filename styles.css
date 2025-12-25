@@ -357,46 +357,46 @@ h1, h2, h3, .main-title, .slogan-title {
     align-items: center;    
     justify-content: center; 
     text-align: center;     
-    line-height: 1;
+    line-height: 0.9; /* Tighter line height */
 }
 
 .site-title .main-title {
     font-family: var(--font-display); 
-    font-size: var(--fs-md);
+    font-size: 2rem; /* Bigger (was var(--fs-md)) */
     letter-spacing: .04em; 
-    line-height: 1.1;
     text-transform: uppercase;
     color: var(--color-dark-text); 
     margin: 0; 
     padding: 0;
 }
 
-
 .site-title .sub-title {
     font-family: var(--font-display); 
-    font-size: 8px; 
+    font-size: 0.65rem; /* Smaller */
     color: var(--color-dark-text); 
     letter-spacing: .16em;
     text-transform: uppercase; 
     opacity: .85; 
-    margin-top: 2px; /* Fixed: 0.05px was too small for browsers */
+    margin-top: -2px; /* Pull it up closer */
     display: block;
     width: 100%;
 }
 
 .stars {
     font-family: var(--font-display); 
-    font-size: 0.25rem; 
-    letter-spacing: 0.1em;
-    margin-block-start: 0.125rem;
+    font-size: 0.4rem; 
+    letter-spacing: 0.35em; /* Spreads stars to match width */
+    margin-block-start: 2px;
     display: block;
     text-align: center;
+    width: 100%; /* Match container width */
+    line-height: 1;
     background: linear-gradient(90deg, var(--color-main-gold), var(--color-search-deep), var(--color-star-red));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
 }
+
 
 
 
@@ -460,40 +460,47 @@ h1, h2, h3, .main-title, .slogan-title {
 }
 .main-nav ul li a:hover { background-color: rgba(0,0,0,.06); color: var(--color-star-red); }
 
-/* Search Bar */
+/* Search Bar & Action Row */
 .search-subscribe-bar {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 3% 10px; background-color: var(--color-header-bg);
-}
-.search-box {
     display: flex; 
     align-items: center; 
-    flex: 1; 
-    min-width: 140px;
-    height: 35px;
+    justify-content: flex-start; /* Aligns items to start */
+    gap: 10px;
+    padding: 10px 3%; 
+    background-color: var(--color-header-bg);
+    flex-wrap: nowrap; /* Forces single line */
+}
+
+.search-box {
+    flex: 0 0 50%; /* Force exactly 50% width */
+    min-width: auto; /* Override previous min-width */
+    height: 40px; /* Slightly taller for better touch target */
     background-color: var(--color-search-deep); 
     border-radius: var(--radius-pill);
     overflow: hidden; 
-    transition: box-shadow .2s, background-color 0.3s ease;
+    margin-right: auto; /* Pushes the buttons to the far right */
+}
+
+/* Container for the right-side actions to keep them tidy */
+.header-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1; /* Takes remaining space */
+    justify-content: flex-end; /* Aligns to right */
 }
 
 @media (max-width: 480px) {
-    .search-subscribe-bar { flex-wrap: wrap; }
-    .search-box { min-width: 100%; order: 2; }
+    .search-subscribe-bar { 
+        padding: 10px; 
+        gap: 5px;
+    }
+    .btn-secondary { /* Shrink subscribe button on tiny screens */
+        padding: 8px 12px;
+        font-size: 9px;
+    }
 }
 
-.search-box input {
-    flex: 1; border: none; padding: 0 15px; background: transparent;
-    font: 600 14px var(--font-display); color: #fff; outline: none;
-}
-.search-box input::placeholder {
-    color: rgba(255,255,255,.75); font-size: 8px; letter-spacing: .05em; text-transform: uppercase;
-}
-.search-submit {
-    background: transparent; border: none; width: 40px; height: 100%;
-    cursor: pointer; display: flex; justify-content: center; align-items: center;
-}
-.search-submit .search-icon { width: 18px; height: 18px; filter: brightness(0) invert(1); }
 
 
 
