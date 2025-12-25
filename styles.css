@@ -833,100 +833,123 @@ h1, h2, h3, .main-title, .slogan-title {
 }
 .filter-label:hover { color: var(--color-star-red); }
 
-/* Product List - Redesigned Layout */
-.scrollable-product-list { display: flex; flex-direction: column; gap: 15px; }
+/* --- MARKETPLACE 2.0: THE GALLERY GRID --- */
 
+/* 1. The Grid Container */
+.scrollable-product-list {
+    display: grid;
+    /* Responsive: 1 col mobile, 2 col tablet, 3 col desktop */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    gap: 25px;
+    padding: 10px 0;
+}
+
+/* 2. The Card (Base) */
 .list-item {
-    display: flex; 
-    flex-direction: row; 
-    align-items: center; /* Vertically center everything */
-    padding: 15px; 
-    background: #fdfbf7; 
-    border: 1px solid rgba(0,0,0,.08);
-    border-radius: 16px; 
-    transition: all .2s ease;
-    gap: 15px; /* Clean spacing between image, text, action */
-    position: relative;
-    overflow: hidden; /* Keeps everything inside the border */
-}
-
-.list-item:hover {
-    border-color: var(--color-main-gold); 
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-/* 1. Image Thumbnail */
-.item-visual {
-    width: 80px; 
-    height: 80px; 
-    background: var(--color-track-bg); 
-    border-radius: 12px; 
-    flex-shrink: 0; /* Prevents squishing */
-    object-fit: cover;
-}
-
-/* 2. Center Details */
-.item-details { 
-    flex: 1; 
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 0; /* Reset old padding */
-    min-width: 0; /* Fixes text truncation issues */
+    background: #fff;
+    border-radius: 20px;
+    padding: 10px;
+    gap: 12px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    isolation: isolate; /* Fixes hover rendering */
 }
 
-.item-details h4 { 
-    font: bold 15px var(--font-display); 
-    margin: 0 0 4px; 
-    color: var(--color-dark-text); 
-    line-height: 1.2;
+/* Hover State: Lift */
+.list-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -5px rgba(169, 147, 105, 0.2);
+    border-color: rgba(169, 147, 105, 0.4);
+}
+
+/* 3. The Image Area (With Badges) */
+.item-visual {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Square */
+    border-radius: 16px;
+    background: var(--color-track-bg);
+    overflow: hidden;
+    position: relative; /* Anchor for badges */
+}
+
+/* Internal Badge Positioning */
+.tags-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    z-index: 2;
+}
+
+.tag-badge {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
     text-transform: uppercase;
+    color: var(--color-dark-text);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 4. Text Content */
+.item-details {
+    padding: 5px 8px;
+    text-align: left;
+}
+
+.item-details h4 {
+    font: 700 17px/1.2 var(--font-display);
+    color: var(--color-dark-text);
+    margin-bottom: 6px;
+    text-transform: capitalize;
 }
 
 .item-details p {
-    font-size: 11px;
-    color: rgba(17,17,17,0.6);
-    margin-bottom: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 13px;
+    color: rgba(0,0,0,0.5);
+    font-weight: 500;
+    margin: 0;
 }
 
-/* 3. Right Action Area */
-.item-action { 
+/* 5. Action Footer */
+.item-action {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Align to right edge */
-    justify-content: center;
-    gap: 8px; /* Space between Price and Button */
-    min-width: 90px; /* Ensure consistent width */
-    text-align: right;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: #fcfcfc;
+    border-radius: 14px;
+    margin-top: auto;
+    border: 1px solid rgba(0,0,0,0.04);
 }
 
-.item-price { 
-    font: bold 16px var(--font-display); 
-    color: var(--color-dark-text); 
+.item-price {
+    font: 700 16px var(--font-glacial);
+    color: var(--color-dark-text);
 }
 
-/* Button Fix */
 .item-action .btn {
-    margin: 0; /* Remove weird margins */
-    width: 100%; /* Fill the action column width */
-    padding: 8px 0; /* Taller touch target */
-    font-size: 10px;
-    box-shadow: none; /* Cleaner look */
-    border-radius: 8px; /* Match card radius slightly */
+    margin: 0;
+    padding: 8px 18px;
+    font-size: 11px;
+    background: var(--color-dark-text);
+    color: #fff;
+    box-shadow: none;
+    width: auto;
 }
 
-/* Mobile Tweak for very small screens */
-@media (max-width: 360px) {
-    .item-visual { width: 60px; height: 60px; }
-    .item-action { min-width: 70px; }
+.item-action .btn:hover {
+    background: var(--color-main-gold);
+    transform: scale(1.05);
 }
-
-
-
 
 /*--- 8. ACCOUNT & DASHBOARD ---*/
 .account-dashboard { max-width: 1000px; margin: 0 auto; padding: 24px 12px 40px; }
