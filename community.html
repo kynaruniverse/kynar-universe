@@ -36,176 +36,106 @@
         <div data-include="components/header.html"></div>
     </div>
 
-    <main id="main-content" class="main-content-container container">
+        <main id="community-nexus" class="container main-content-container">
         
-        <section class="sole-creator-slogan" aria-labelledby="community-hero-title">
-            <h1 id="community-hero-title" class="slogan-title">Join Our Community</h1>
-            <p class="slogan-tagline">Be among the founding members of KYNAR Universe</p>
-            <p class="slogan-description">
-                We're just getting started! Join us as we build a community of productivity enthusiasts, homeschoolers, and creative minds making the most of their digital tools.
-            </p>
-            <hr class="accent-divider">
+        <section class="nexus-hero">
+            <span class="nexus-tag">EST. 2025</span>
+            <h1 class="nexus-title">Building the <span class="gold-text">Kynar Universe</span></h1>
+            <p class="nexus-sub">Join the architects of the next generation. We are building digital tools for every corner of your life, and we want you on the ground floor.</p>
         </section>
-        
-        <section class="community-layout-narrow">
-            <h2 class="section-heading">Connect With Us</h2>
-            <p class="section-subtext">
-                We're building our social presence! Follow along as we launch on your favorite platforms.
-            </p>
-            
-            <div class="social-grid">
-                <div class="social-card instagram-card coming-soon-card">
-                    <div class="social-icon"><i class="fa-brands fa-instagram"></i></div>
-                    <h3>Instagram</h3>
-                    <p>Daily inspiration, tips, and behind-the-scenes content</p>
-                    <span class="product-badge coming-soon-badge">Coming Soon</span>
-                </div>
-                
-                <div class="social-card pinterest-card coming-soon-card">
-                    <div class="social-icon"><i class="fa-brands fa-pinterest"></i></div>
-                    <h3>Pinterest</h3>
-                    <p>Save ideas, tutorials, and creative inspiration boards</p>
-                    <span class="product-badge coming-soon-badge">Coming Soon</span>
-                </div>
-                
-                <div class="social-card twitter-card coming-soon-card">
-                    <div class="social-icon"><i class="fa-brands fa-x-twitter"></i></div>
-                    <h3>X (Twitter)</h3>
-                    <p>Quick tips, product updates, and community highlights</p>
-                    <span class="product-badge coming-soon-badge">Coming Soon</span>
-                </div>
-                
-                <div class="social-card youtube-card coming-soon-card">
-                    <div class="social-icon"><i class="fa-brands fa-youtube"></i></div>
-                    <h3>YouTube</h3>
-                    <p>Video tutorials, product walkthroughs, and how-tos</p>
-                    <span class="product-badge coming-soon-badge">Coming Soon</span>
-                </div>
-            </div>
-            
-            <div class="community-alert-banner">
-                <p>
-                    <i class="fa-solid fa-bell"></i>
-                    <strong>Want to be notified when we launch?</strong> Subscribe to our newsletter below to stay updated!
-                </p>
-            </div>
-        </section>
-        
-        <section class="community-story-panel">
-            <h2 class="section-heading">Be Part of Our Story</h2>
-            <p class="section-subtext">
-                As a founding member, you'll help shape KYNAR Universe from the ground up.
-            </p>
-            
-            <div class="social-grid">
-                <div class="community-stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
-                    <h3>Founding Member</h3>
-                    <p>Be recognized as one of our first supporters with special perks and benefits</p>
-                </div>
-                
-                <div class="community-stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-comments"></i></div>
-                    <h3>Direct Input</h3>
-                    <p>Your feedback will directly shape new products and features</p>
-                </div>
-                
-                <div class="community-stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-gift"></i></div>
-                    <h3>Early Access</h3>
-                    <p>Get first access to new products before official launch</p>
-                </div>
-            </div>
-        </section>
-        
-        <section id="subscribe" class="community-form-section newsletter-bg">
-            <h2 class="section-heading">Join Our Newsletter</h2>
-            <p class="section-subtext">
-                Get exclusive tips, free resources, and updates. Delivered monthly to your inbox.
-            </p>
-            
-            <div id="newsletter-container">
-                                <form id="newsletter-form" action="https://formspree.io/f/mbdrkbve" method="POST" class="community-inline-form">
-                    <input type="text" name="_gotcha" style="display:none" />
-                    
-                    <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required autocomplete="email">
-                    <button type="submit" class="btn btn-primary btn-md">Subscribe</button>
-                    <p id="newsletter-message" class="form-response-msg"></p>
-                </form>
-                
-                <div id="newsletter-success" class="form-success-content" aria-live="polite" style="display: none;">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <h3>You're on the list</h3>
-                    <p>Thanks for joining the KYNAR Universe newsletter.</p>
-                </div>
-            </div>
-        </section>
-        
-        <section id="share-feedback" class="community-form-section feedback-bg">
-            <h2 class="section-heading">Share Your Feedback</h2>
-            <p class="section-subtext">
-                Tell us what you'd like to see, report any issues, or share how our products have helped you.
-            </p>
-            
-            <div id="feedback-container">
-                <form id="feedback-form" action="https://formspree.io/f/xykgpvle" method="POST" class="community-vertical-form">
-                    
-                    <input type="text" name="_gotcha" style="display:none" />
 
-                    <div class="form-group">
-                        <label for="feedback-name">Your Name</label>
-                        <input type="text" id="feedback-name" name="name" required autocomplete="name">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-email">Email Address</label>
-                        <input type="email" id="feedback-email" name="email" required autocomplete="email">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-type">Feedback Type</label>
-                        <select id="feedback-type" name="type" required>
-                            <option value="">Select an option...</option>
-                            <option value="suggestion">Product Suggestion</option>
-                            <option value="testimonial">Testimonial</option>
-                            <option value="bug">Report an Issue</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="feedback-message">Your Message</label>
-                        <textarea id="feedback-message" name="message" rows="5" required placeholder="Tell us what's on your mind..."></textarea>
-                    </div>
-                    
-                                        <button type="submit" class="btn btn-primary btn-md btn-full-width">Send Feedback</button>
-                    <p id="feedback-message-response" class="form-response-msg"></p>
-                </form>
-                
-                <div id="feedback-success" class="form-success-content" aria-live="polite" style="display: none;">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <h3>Message Sent!</h3>
-                    <p>We'll review your feedback and get back to you soon.</p>
-                </div>
+        <section class="perk-grid">
+            <div class="perk-module">
+                <div class="perk-icon"><i class="fa-solid fa-crown"></i></div>
+                <h3>Founding Member</h3>
+                <p>Secure your status as an original supporter with lifetime legacy benefits.</p>
+            </div>
+            
+            <div class="perk-module">
+                <div class="perk-icon"><i class="fa-solid fa-comments"></i></div>
+                <h3>Direct Input</h3>
+                <p>Your voice shapes our roadmap. Vote on the next templates and tools.</p>
+            </div>
+            
+            <div class="perk-module">
+                <div class="perk-icon"><i class="fa-solid fa-bolt"></i></div>
+                <h3>Early Access</h3>
+                <p>Get beta access to new products weeks before the public launch.</p>
             </div>
         </section>
+
+        <section class="social-nexus">
+            <h2 class="section-label">Connect With Us</h2>
+            <div class="shard-grid">
+                <a href="#" class="social-shard instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>Instagram</span>
+                    <small>Daily Inspiration</small>
+                </a>
+                <a href="#" class="social-shard pinterest">
+                    <i class="fa-brands fa-pinterest"></i>
+                    <span>Pinterest</span>
+                    <small>Visual Boards</small>
+                </a>
+                <a href="#" class="social-shard twitter">
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <span>X (Twitter)</span>
+                    <small>Live Updates</small>
+                </a>
+                <a href="#" class="social-shard youtube">
+                    <i class="fa-brands fa-youtube"></i>
+                    <span>YouTube</span>
+                    <small>Tutorials & Guides</small>
+                </a>
+            </div>
+        </section>
+
+        <div class="terminal-layout">
+            
+            <div class="vip-access-card">
+                <div class="vip-header">
+                    <h3>Join the Inner Circle</h3>
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                </div>
+                <p>No spam. Just high-value assets, free drops, and community updates.</p>
+                <form class="vip-form">
+                    <input type="email" placeholder="Enter your email address..." required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+
+            <div class="feedback-glass">
+                <h3>Share Feedback</h3>
+                <p>Tell us what to build next.</p>
+                <form class="feedback-mini-form">
+                    <select>
+                        <option>General Feedback</option>
+                        <option>Bug Report</option>
+                        <option>Feature Request</option>
+                    </select>
+                    <textarea placeholder="Type your message..."></textarea>
+                    <button type="submit" class="btn btn-secondary btn-full-width">Send Message</button>
+                </form>
+            </div>
+        </div>
         
-        <section class="community-layout-narrow">
-            <h2 class="section-heading">Community FAQ</h2>
-                        <div class="faq-accordion">
+        <section class="nexus-faq">
+            <h2 class="section-label">Community FAQ</h2>
+            <div class="faq-accordion">
                 <div class="faq-item">
-                    <button class="faq-question" aria-expanded="false" aria-controls="faq-ans-1">
-                        <span>When will your social media accounts be live?</span>
+                    <button class="faq-question">
+                        What will your social media accounts be live?
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
-                    <div class="faq-answer" id="faq-ans-1" aria-hidden="true">
-
-                        <p>We're actively building our social presence! Instagram, Pinterest, X, and YouTube channels will launch in early 2025.</p>
+                    <div class="faq-answer">
+                        <p>We are currently prepping our launch content! Follow us now to be the first to see our opening campaign in late 2025.</p>
                     </div>
                 </div>
             </div>
         </section>
-        
+
     </main>
+
     
     <div data-include="components/footer.html"></div>
     <div data-include="components/auth-modals.html"></div>
