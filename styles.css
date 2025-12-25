@@ -499,17 +499,49 @@ h1, h2, h3, .main-title, .slogan-title {
     justify-content: flex-end; 
 }
 
+/* 1. Compact Theme Toggle */
 .btn-theme-toggle {
-    width: 28px; height: 28px; /* Smaller circle */
-    font-size: 12px; /* Smaller moon icon */
-    margin-right: 0; /* Remove extra margin */
+    width: 28px;        /* Reduced from 35px */
+    height: 28px;       /* Reduced from 35px */
+    font-size: 12px;    /* Icon size inside circle */
+    border: 1px solid var(--color-dark-text);
+    background: transparent;
+    color: var(--color-dark-text);
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 5px;  /* Tighter spacing */
+    transition: all 0.3s ease;
+    flex-shrink: 0;     /* Prevent squashing */
 }
 
-.btn-cart-icon {
-    font-size: 16px; /* Smaller cart */
-    padding: 5px;
-    margin-right: 0;
+.btn-theme-toggle:hover {
+    background: var(--color-dark-text);
+    color: var(--color-light-bg);
+    transform: rotate(15deg);
 }
+
+/* 2. Compact Cart Icon */
+.btn-cart-icon {
+    font-size: 16px;    /* Reduced from 20px */
+    padding: 5px;       /* Reduced padding */
+    margin-right: 5px;  /* Tighter spacing */
+    position: relative;
+    background: transparent;
+    border: none;
+    color: var(--color-dark-text);
+    cursor: pointer;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+}
+
+.btn-cart-icon:hover { 
+    color: var(--color-main-gold); 
+    transform: scale(1.1); 
+}
+
 
 /* Mobile Subscribe Button Polish */
 @media (max-width: 480px) {
@@ -1643,6 +1675,13 @@ body.dark-mode .feedback-bg {
     border: 1px solid rgba(255,255,255,0.1); 
 }
 
+/* Custom Search SVG Sizing */
+.search-icon-svg {
+    width: 16px; 
+    height: 16px; 
+    object-fit: contain;
+    display: block;
+}
 
 
 
