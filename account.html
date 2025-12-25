@@ -27,75 +27,80 @@
         <div data-include="components/header.html"></div>
     </div>
 
-        <main class="main-content-container">
+            <main class="main-content-container">
         
         <div id="account-skeleton" class="account-dashboard">
-            <header class="welcome-banner" style="display: flex; flex-direction: column; align-items: center;">
-                <div class="skeleton" style="width: 52px; height: 52px; border-radius: 50%; margin-bottom: 15px;"></div>
-                <div class="skeleton" style="width: 60%; height: 30px; margin-bottom: 10px; border-radius: 6px;"></div>
-                <div class="skeleton" style="width: 40%; height: 16px; border-radius: 4px;"></div>
-            </header>
-            
-            <section class="stats-grid" style="margin-top: 30px;">
-                <div class="stat-card-clean skeleton" style="height: 80px;"></div>
-                <div class="stat-card-clean skeleton" style="height: 80px;"></div>
-            </section>
-
-            <div class="dashboard-panel-clean skeleton-card" style="height: 200px; margin-bottom: 20px;"></div>
-            <div class="dashboard-panel-clean skeleton-card" style="height: 150px;"></div>
+            <div class="skeleton-header skeleton"></div>
+            <div class="skeleton-grid">
+                <div class="skeleton-card skeleton" style="height: 120px;"></div>
+                <div class="skeleton-card skeleton" style="height: 120px;"></div>
+            </div>
+            <div class="skeleton-list skeleton" style="height: 300px; margin-top: 20px;"></div>
         </div>
 
-        <section id="account-real-content" class="account-dashboard" style="display: none;">
+        <section id="account-real-content" class="account-nexus" style="display: none;">
             
-            <header class="welcome-banner">
-                <div id="user-initial" class="profile-placeholder">
-                    <i class="fa-regular fa-user"></i>
+            <header class="nexus-header">
+                <div class="nexus-bg"></div> <div class="nexus-profile">
+                    <div class="holo-avatar">
+                        <span id="user-initial">K</span>
+                        <div class="holo-ring"></div>
+                    </div>
+                    <div class="nexus-welcome">
+                        <span class="nexus-label">Welcome back,</span>
+                        <h1 id="welcome-name" class="nexus-name">Creator</h1>
+                        <p id="user-meta" class="nexus-meta">Member since 2025</p>
+                    </div>
                 </div>
-                
-                <h1 class="welcome-title">
-                    Welcome, <span id="welcome-name">Friend</span>!
-                </h1>
-                <p id="user-meta" class="welcome-meta">Loading member profile...</p>
+
+                <div class="nexus-actions">
+                    <button id="open-settings" class="btn-glass-icon" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                    <button id="account-sign-out" class="btn-glass-icon danger" title="Sign Out">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
             </header>
 
-            <section class="stats-grid">
-                <div class="stat-card-clean">
-                    <span id="owned-count" class="stat-number">0</span>
-                    <span class="stat-label">Owned</span>
+            <div class="command-grid">
+                <div class="glass-stat">
+                    <div class="stat-icon"><i class="fa-solid fa-box-open"></i></div>
+                    <div class="stat-info">
+                        <span id="owned-count" class="stat-value">0</span>
+                        <span class="stat-title">Assets Owned</span>
+                    </div>
                 </div>
-                <div class="stat-card-clean">
-                    <span id="wishlist-count" class="stat-number">0</span>
-                    <span class="stat-label">Wishlist</span>
-                </div>
-            </section>
 
-            <section class="dashboard-panel-clean">
-                <h2 class="panel-heading">Recent Purchases</h2>
-                <div id="purchase-list">
-                    <p class="purchase-empty">Loading purchases...</p>
+                <div class="glass-stat">
+                    <div class="stat-icon"><i class="fa-regular fa-heart"></i></div>
+                    <div class="stat-info">
+                        <span id="wishlist-count" class="stat-value">0</span>
+                        <span class="stat-title">Wishlist</span>
+                    </div>
                 </div>
-                
-                <div style="margin-top: 20px;">     
-                    <a href="https://gumroad.com/library" target="_blank" class="btn btn-secondary btn-sm">Gumroad Library ➔</a> 
-                </div>
-            </section>
+            </div>
 
-            <section class="dashboard-panel-clean">
-                <h2 class="panel-heading">Quick Actions</h2>
-                <ul class="action-list">
-                    <li><a href="marketplace.html">🛒 Continue Shopping</a></li>
-                    <li><a href="#" id="open-settings">⚙️ Edit Profile Name</a></li>
-                    <li><a href="mailto:support@kynaruniverse.co.uk">💬 Contact Support</a></li>
-                    <li style="border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px;">
-                        <a href="#" id="account-sign-out" style="color: var(--color-star-red);">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
-                        </a>
-                    </li>
-                </ul>
-            </section>
+            <div class="digital-vault">
+                <div class="vault-header">
+                    <h2><i class="fa-solid fa-server"></i> Digital Vault</h2>
+                    <a href="https://gumroad.com/library" target="_blank" class="vault-link">
+                        Gumroad Library <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <div id="purchase-list" class="vault-grid">
+                    <div class="vault-empty">
+                        <i class="fa-solid fa-cloud"></i>
+                        <p>Your vault is empty.</p>
+                        <a href="marketplace.html" class="btn btn-primary btn-sm">Explore Marketplace</a>
+                    </div>
+                </div>
+            </div>
 
         </section>
     </main>
+
 
 
     <div data-include="components/footer.html"></div>
@@ -206,23 +211,34 @@
                     if (ownedCountEl) ownedCountEl.textContent = purchases.length;
                     if (wishlistCountEl) wishlistCountEl.textContent = wishlist.length;
 
-                    // Update List
+                                        // Update List (The Vault)
                     if (purchaseListEl) {
                         if (purchases.length > 0) {
-                            const recent = purchases.slice(-3).reverse();
+                            const recent = purchases.slice(-5).reverse(); // Show last 5
                             purchaseListEl.innerHTML = recent.map(p => `
-                                <div class="purchase-item">
-                                    <div>
-                                        <p class="purchase-title">${p.title}</p>
-                                        <p class="purchase-date">${new Date(p.purchaseDate).toLocaleDateString()}</p>
+                                <div class="vault-item">
+                                    <div class="v-info">
+                                        <h4>${p.title}</h4>
+                                        <div class="v-date">${new Date(p.purchaseDate).toLocaleDateString()}</div>
                                     </div>
-                                    ${p.downloadUrl ? `<a href="${p.downloadUrl}" target="_blank" class="btn btn-primary btn-sm">Download</a>` : ''}
+                                    ${p.downloadUrl ? 
+                                        `<a href="${p.downloadUrl}" target="_blank" class="btn btn-secondary btn-sm">
+                                            <i class="fa-solid fa-download"></i> Access
+                                        </a>` 
+                                        : '<span style="font-size:11px; opacity:0.5;">Processing</span>'}
                                 </div>
                             `).join('');
                         } else {
-                            purchaseListEl.innerHTML = '<p class="purchase-empty">No purchases yet.</p>';
+                            purchaseListEl.innerHTML = `
+                                <div class="vault-empty">
+                                    <i class="fa-solid fa-cloud"></i>
+                                    <p>Your digital vault is empty.</p>
+                                    <a href="marketplace.html" class="btn btn-primary btn-sm" style="margin-top:10px;">Explore the Universe</a>
+                                </div>
+                            `;
                         }
                     }
+
                 }
             } catch (error) {
                 console.error("Error loading profile:", error);
