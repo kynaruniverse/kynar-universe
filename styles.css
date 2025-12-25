@@ -998,120 +998,7 @@ h1, h2, h3, .main-title, .slogan-title {
 .action-list a:hover { color: var(--color-star-red); }
 
 
-/*--- GUIDES PAGE MODULE ---*/
 
-/* Filter Tabs Container */
-.guides-filters {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 60px;
-    padding: 0 15px;
-}
-
-/* Grid Layout */
-.guides-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 0 10px 60px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Card Base Styles */
-.guide-card {
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-}
-
-.guide-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.18);
-}
-
-/* Card Typography */
-.guide-card h3 {
-    font: 18px var(--font-display);
-    margin-bottom: 12px;
-    color: var(--color-dark-text);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.guide-card p {
-    font: 13px/1.6 var(--font-glacial);
-    color: rgba(17,17,17,0.8);
-    margin-bottom: 20px;
-    flex-grow: 1; /* Pushes footer to bottom */
-}
-
-/* Card Components */
-.guide-icon {
-    width: 50px; height: 50px;
-    background: var(--color-main-gold);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 20px;
-}
-
-.guide-icon i {
-    font-size: 24px;
-    color: var(--color-dark-text);
-}
-
-.guide-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: auto;
-}
-
-.read-time {
-    font: 600 11px var(--font-glacial);
-    color: rgba(17,17,17,0.6);
-    text-transform: uppercase;
-}
-
-/* Color Variants */
-.variant-cream       { background: #f8ecda; }
-.variant-mint        { background: #e3f0e7; }
-.variant-pink        { background: #f7e5f0; }
-.variant-periwinkle  { background: #e4e6f7; }
-.variant-light-cream { background: #f6f2e3; }
-.variant-blue        { background: #e2f3f5; }
-.variant-beige       { background: #f0ebe5; }
-.variant-grey        { background: #e7e8ed; }
-.variant-white       { background: #fdfbf7; }
-
-/* Bottom CTA */
-.guides-cta {
-    text-align: center;
-    padding: 40px 20px 60px;
-    background: #e3f0e7;
-    border-radius: 20px;
-    margin: 40px auto 60px;
-    max-width: 800px;
-}
-
-.guides-cta h2 {
-    font: 22px var(--font-display);
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.guides-cta p {
-    font: 14px var(--font-glacial);
-    margin-bottom: 25px;
-    color: rgba(17,17,17,0.8);
-}
 
 
 /*--- 10. LOADING & SKELETONS ---*/
@@ -2352,3 +2239,179 @@ h1, h2, h3, .main-title, .slogan-title {
     .nexus-welcome { text-align: center; }
     .command-grid { grid-template-columns: 1fr; }
 }
+
+/* --- KNOWLEDGE NEXUS (2026 Guides) --- */
+
+#knowledge-nexus {
+    padding-top: 20px;
+    padding-bottom: 80px;
+}
+
+/* 1. HERO & SEARCH */
+.knowledge-hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.knowledge-search {
+    position: relative;
+    max-width: 500px;
+    margin: 30px auto 0;
+}
+
+.knowledge-search input {
+    width: 100%;
+    padding: 16px 20px 16px 50px;
+    border-radius: 99px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: #fff;
+    font-size: 15px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+.knowledge-search input:focus {
+    outline: none;
+    box-shadow: 0 15px 40px -10px rgba(169, 147, 105, 0.2);
+    border-color: var(--color-main-gold);
+}
+
+.knowledge-search i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-main-gold);
+    font-size: 18px;
+}
+
+/* 2. PILL FILTERS (Centered Variant) */
+.knowledge-filters { margin-bottom: 40px; }
+.center-pills { justify-content: center; }
+
+/* 3. GUIDE TILES (The Glass Cards) */
+.guide-glass-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.guide-tile {
+    background: #fff;
+    border-radius: 24px;
+    padding: 25px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.guide-tile:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -5px rgba(169, 147, 105, 0.15);
+    border-color: rgba(169, 147, 105, 0.3);
+}
+
+/* Holographic sheen on hover */
+.guide-tile::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+    transform: skewX(-25deg); transition: 0.5s; pointer-events: none;
+}
+.guide-tile:hover::after { left: 200%; transition: 0.7s; }
+
+.tile-icon {
+    width: 50px; height: 50px;
+    background: var(--color-track-bg);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    color: var(--color-dark-text);
+    margin-bottom: 20px;
+    transition: all 0.3s;
+}
+.guide-tile:hover .tile-icon {
+    background: var(--color-main-gold);
+    color: #fff;
+}
+
+.tile-content { flex: 1; margin-bottom: 20px; }
+
+.tile-cat {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-main-gold);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.guide-tile h3 {
+    font: 700 20px var(--font-display);
+    margin-bottom: 10px;
+    color: var(--color-dark-text);
+    line-height: 1.2;
+}
+
+.guide-tile p {
+    font-size: 13px;
+    color: rgba(0,0,0,0.6);
+    line-height: 1.6;
+}
+
+.tile-footer {
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.read-time {
+    font-size: 11px;
+    color: #999;
+    font-weight: 600;
+}
+
+.btn-text-gold {
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-dark-text);
+    transition: color 0.2s;
+}
+.btn-text-gold:hover { color: var(--color-main-gold); }
+
+/* 4. SUPPORT TERMINAL */
+.support-terminal {
+    background: var(--color-track-bg);
+    border-radius: 24px;
+    padding: 60px 20px;
+    text-align: center;
+    margin-top: 60px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.terminal-content i {
+    font-size: 40px;
+    color: var(--color-main-gold);
+    margin-bottom: 20px;
+}
+
+.support-terminal h2 {
+    font: 700 24px var(--font-display);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.support-terminal p {
+    margin-bottom: 25px;
+    opacity: 0.7;
+}
+
