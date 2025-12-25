@@ -24,148 +24,135 @@
         <div data-include="components/header.html"></div>
     </div>
 
-        <main id="main-content" class="main-content-container container">
+            <main id="knowledge-nexus" class="container main-content-container">
         
-        <section class="sole-creator-slogan" aria-labelledby="guides-hero-title">
-            <h1 id="guides-hero-title" class="slogan-title">
-                Guides & Tutorials
-            </h1>
-            <p class="slogan-tagline">
-                Master your digital tools with step-by-step guidance
-            </p>
-            <p class="slogan-description">
-                Whether you're just getting started or looking to level up your productivity, our comprehensive guides will help you make the most of every creation.
-            </p>
-            <hr class="accent-divider">
+        <section class="knowledge-hero">
+            <span class="nexus-tag">ACADEMY</span>
+            <h1 class="nexus-title">The <span class="gold-text">Library</span></h1>
+            <p class="nexus-sub">Master your digital tools. Search our archive or browse by category.</p>
+            
+            <div class="knowledge-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="guide-search" placeholder="Search guides (e.g., 'Notion', 'Printing')...">
+            </div>
         </section>
 
-        <div class="guides-filters">
-            <button class="filter-tab btn btn-primary btn-sm" data-category="all">All Guides</button>
-            <button class="filter-tab btn btn-secondary btn-sm" data-category="getting-started">Getting Started</button>
-            <button class="filter-tab btn btn-secondary btn-sm" data-category="tutorials">Product Tutorials</button>
-            <button class="filter-tab btn btn-secondary btn-sm" data-category="tips">Tips & Tricks</button>
-            <button class="filter-tab btn btn-secondary btn-sm" data-category="troubleshooting">Troubleshooting</button>
+        <div class="knowledge-filters">
+            <div class="filter-pills-container center-pills">
+                <button class="filter-pill active" data-category="all">All</button>
+                <button class="filter-pill" data-category="getting-started">Start Here</button>
+                <button class="filter-pill" data-category="tutorials">Tutorials</button>
+                <button class="filter-pill" data-category="tips">Pro Tips</button>
+                <button class="filter-pill" data-category="troubleshooting">Fixes</button>
+            </div>
         </div>
 
-        <section class="guides-grid" aria-live="polite" id="guides-results">
+        <section class="guide-glass-grid" id="guides-grid">
             
-            <article class="guide-card variant-cream" data-category="getting-started">
-                <div class="guide-icon">
-                    <i class="fa-solid fa-rocket"></i>
+            <article class="guide-tile reveal-on-scroll" data-category="getting-started">
+                <div class="tile-icon"><i class="fa-solid fa-rocket"></i></div>
+                <div class="tile-content">
+                    <span class="tile-cat">Getting Started</span>
+                    <h3>Quick Start Guide</h3>
+                    <p>How to download, unzip, and access your files instantly.</p>
                 </div>
-                <h3>Getting Started Guide</h3>
-                <p>Learn how to download, access, and organize your digital purchases. Perfect for first-time users.</p>
-                <div class="guide-footer">
-                    <span class="read-time">5 min read</span>
-                    <a href="guide-getting-started.html" class="btn btn-primary btn-sm">Read Guide</a>
-                </div>
-            </article>
-
-            <article class="guide-card variant-mint" data-category="getting-started">
-                <div class="guide-icon">
-                    <i class="fa-solid fa-download"></i>
-                </div>
-                <h3>How to Download Files</h3>
-                <p>Step-by-step instructions for downloading and accessing your purchased files on any device.</p>
-                <div class="guide-footer">
-                    <span class="read-time">3 min read</span>
-                    <a href="guide-download.html" class="btn btn-primary btn-sm">Read Guide</a>
+                <div class="tile-footer">
+                    <span class="read-time"><i class="fa-regular fa-clock"></i> 5 min</span>
+                    <a href="guide-getting-started.html" class="btn-text-gold">Read <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </article>
 
-            <article class="guide-card variant-pink" data-category="tutorials">
-                <div class="guide-icon">
-                    <i class="fa-solid fa-calendar-days"></i>
+            <article class="guide-tile reveal-on-scroll" data-category="getting-started">
+                <div class="tile-icon"><i class="fa-solid fa-download"></i></div>
+                <div class="tile-content">
+                    <span class="tile-cat">Basics</span>
+                    <h3>Downloading Files</h3>
+                    <p>Step-by-step instructions for accessing purchases on iOS and Android.</p>
                 </div>
-                <h3>Using Digital Planners</h3>
-                <p>Master your digital planner with tips on navigation, customization, and daily planning workflows.</p>
-                <div class="guide-footer">
-                    <span class="read-time">8 min read</span>
-                    <a href="guide-digital-planners.html" class="btn btn-primary btn-sm">Read Guide</a>
-                </div>
-            </article>
-
-            <article class="guide-card variant-periwinkle" data-category="tutorials">
-                <div class="guide-icon">
-                    <i class="fa-brands fa-notion"></i>
-                </div>
-                <h3>Notion Template Setup</h3>
-                <p>Complete guide to importing, customizing, and using your Notion templates effectively.</p>
-                <div class="guide-footer">
-                    <span class="read-time">10 min read</span>
-                    <a href="guide-notion-setup.html" class="btn btn-primary btn-sm">Read Guide</a>
+                <div class="tile-footer">
+                    <span class="read-time"><i class="fa-regular fa-clock"></i> 3 min</span>
+                    <a href="guide-download.html" class="btn-text-gold">Read <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </article>
 
-            <article class="guide-card variant-light-cream" data-category="tutorials">
-                <div class="guide-icon">
-                    <i class="fa-solid fa-print"></i>
+            <article class="guide-tile reveal-on-scroll" data-category="tutorials">
+                <div class="tile-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                <div class="tile-content">
+                    <span class="tile-cat">Tutorial</span>
+                    <h3>Digital Planners</h3>
+                    <p>Master navigation, hyperlinks, and daily workflows.</p>
                 </div>
-                <h3>Printing Your PDFs</h3>
-                <p>Best practices for printing homeschool resources, planners, and worksheets at home or professionally.</p>
-                <div class="guide-footer">
-                    <span class="read-time">6 min read</span>
-                    <a href="guide-printing.html" class="btn btn-primary btn-sm">Read Guide</a>
-                </div>
-            </article>
-
-            <article class="guide-card variant-blue" data-category="tips">
-                <div class="guide-icon">
-                    <i class="fa-solid fa-lightbulb"></i>
-                </div>
-                <h3>10 Productivity Hacks</h3>
-                <p>Maximize your efficiency with these proven strategies for digital planning and organization.</p>
-                <div class="guide-footer">
-                    <span class="read-time">12 min read</span>
-                    <a href="guide-productivity-hacks.html" class="btn btn-primary btn-sm">Read Guide</a>
+                <div class="tile-footer">
+                    <span class="read-time"><i class="fa-regular fa-clock"></i> 8 min</span>
+                    <a href="guide-digital-planners.html" class="btn-text-gold">Read <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </article>
 
-            <article class="guide-card variant-beige" data-category="tips">
-                <div class="guide-icon">
-                    <i class="fa-solid fa-palette"></i>
+            <article class="guide-tile reveal-on-scroll" data-category="tutorials">
+                <div class="tile-icon"><i class="fa-brands fa-notion"></i></div>
+                <div class="tile-content">
+                    <span class="tile-cat">Deep Dive</span>
+                    <h3>Notion Setup</h3>
+                    <p>Importing and customizing your Notion workspace.</p>
                 </div>
-                <h3>Creative Uses for Templates</h3>
-                <p>Discover innovative ways to customize and repurpose your digital templates for different projects.</p>
-                <div class="guide-footer">
-                    <span class="read-time">7 min read</span>
-                    <a href="guide-creative-uses.html" class="btn btn-primary btn-sm">Read Guide</a>
-                </div>
-            </article>
-
-            <article class="guide-card variant-grey" data-category="troubleshooting">
-                <div class="guide-icon">
-                    <i class="fa-solid fa-wrench"></i>
-                </div>
-                <h3>Common Issues & Fixes</h3>
-                <p>Quick solutions to the most frequently encountered problems with digital products and downloads.</p>
-                <div class="guide-footer">
-                    <span class="read-time">5 min read</span>
-                    <a href="guide-troubleshooting.html" class="btn btn-primary btn-sm">Read Guide</a>
+                <div class="tile-footer">
+                    <span class="read-time"><i class="fa-regular fa-clock"></i> 10 min</span>
+                    <a href="guide-notion-setup.html" class="btn-text-gold">Read <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </article>
 
-            <article class="guide-card variant-white" data-category="troubleshooting">
-                <div class="guide-icon">
-                    <i class="fa-solid fa-life-ring"></i>
+            <article class="guide-tile reveal-on-scroll" data-category="tutorials">
+                <div class="tile-icon"><i class="fa-solid fa-print"></i></div>
+                <div class="tile-content">
+                    <span class="tile-cat">Physical</span>
+                    <h3>Printing PDF Assets</h3>
+                    <p>Best settings for home printers and professional shops.</p>
                 </div>
-                <h3>Getting Help & Support</h3>
-                <p>Learn how to contact support, access your purchase history, and get assistance with any issues.</p>
-                <div class="guide-footer">
-                    <span class="read-time">4 min read</span>
-                    <a href="guide-support.html" class="btn btn-primary btn-sm">Read Guide</a>
+                <div class="tile-footer">
+                    <span class="read-time"><i class="fa-regular fa-clock"></i> 6 min</span>
+                    <a href="guide-printing.html" class="btn-text-gold">Read <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="guide-tile reveal-on-scroll" data-category="tips">
+                <div class="tile-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                <div class="tile-content">
+                    <span class="tile-cat">Strategy</span>
+                    <h3>Productivity Hacks</h3>
+                    <p>10 proven strategies to maximize your efficiency.</p>
+                </div>
+                <div class="tile-footer">
+                    <span class="read-time"><i class="fa-regular fa-clock"></i> 12 min</span>
+                    <a href="guide-productivity-hacks.html" class="btn-text-gold">Read <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="guide-tile reveal-on-scroll" data-category="troubleshooting">
+                <div class="tile-icon"><i class="fa-solid fa-wrench"></i></div>
+                <div class="tile-content">
+                    <span class="tile-cat">Support</span>
+                    <h3>Common Fixes</h3>
+                    <p>Solutions for unzipping, broken links, and display issues.</p>
+                </div>
+                <div class="tile-footer">
+                    <span class="read-time"><i class="fa-regular fa-clock"></i> 5 min</span>
+                    <a href="guide-troubleshooting.html" class="btn-text-gold">Read <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </article>
 
         </section>
 
-        <section class="guides-cta">
-            <h2>Can't Find What You're Looking For?</h2>
-            <p>Contact our support team and we'll help you get the answers you need.</p>
-            <a href="mailto:support@kynaruniverse.co.uk" class="btn btn-primary btn-md">Contact Support</a>
+        <section class="support-terminal">
+            <div class="terminal-content">
+                <i class="fa-solid fa-headset"></i>
+                <h2>Need Specialist Help?</h2>
+                <p>Our team is standing by to assist with technical issues.</p>
+                <a href="mailto:support@kynaruniverse.co.uk" class="btn btn-primary btn-md">Open Support Ticket</a>
+            </div>
         </section>
 
     </main>
+
 
     <div data-include="components/footer.html"></div>
     <div data-include="components/auth-modals.html"></div>

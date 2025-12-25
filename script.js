@@ -378,42 +378,68 @@ const KynarApp = (() => {
     };
 
 
-    // --- 5. GUIDES MODULE ---
+        // --- 5. GUIDES MODULE (2026 Update) ---
     const Guides = {
         init() {
-            if (!document.querySelector('.guides-page')) return;
-            
-            const filterTabs = document.querySelectorAll('.filter-tab');
-            const guideCards = document.querySelectorAll('.guide-card');
+            // Updated Selector: Looks for the new Grid ID
+            const grid = document.getElementById('guides-grid');
+            if (!grid) return;
 
-            if (filterTabs.length === 0) return;
+            const pills = document.querySelectorAll('.filter-pill'); // New Pill Class
+            const searchInput = document.getElementById('guide-search'); // New Search Input
+            const cards = document.querySelectorAll('.guide-tile'); // New Card Class
 
-            filterTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const category = tab.dataset.category;
+            // 1. Pill Filter Logic
+            pills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    // Visual Update
+                    pills.forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
 
-                    // Update Active Tab
-                    filterTabs.forEach(t => { 
-                        t.classList.remove('btn-primary'); 
-                        t.classList.add('btn-secondary');
-                    });
-                    tab.classList.remove('btn-secondary');
-                    tab.classList.add('btn-primary');
-
-                    // Filter Cards
-                    guideCards.forEach(card => {
-                        const cardCat = card.dataset.category;
-                        if (category === 'all' || cardCat === category) {
-                            card.style.display = 'flex';
-                            card.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
+                    const category = pill.dataset.category;
+                    // Filter based on BOTH category and current search text
+                    this.filterGrid(cards, category, searchInput ? searchInput.value : '');
                 });
+            });
+
+            // 2. Search Logic
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const activePill = document.querySelector('.filter-pill.active');
+                    const category = activePill ? activePill.dataset.category : 'all';
+                    this.filterGrid(cards, category, e.target.value);
+                });
+            }
+        },
+
+        filterGrid(cards, category, searchTerm) {
+            const term = searchTerm.toLowerCase().trim();
+
+            cards.forEach(card => {
+                const cardCat = card.dataset.category;
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent.toLowerCase();
+                
+                // Check Category Match
+                const catMatch = (category === 'all' || cardCat === category);
+                
+                // Check Search Match
+                const searchMatch = !term || title.includes(term) || desc.includes(term);
+
+                // Apply
+                if (catMatch && searchMatch) {
+                    card.style.display = 'flex';
+                    // Optional: Retrigger reveal animation
+                    if(card.classList.contains('reveal-on-scroll')) {
+                        card.classList.add('is-visible');
+                    }
+                } else {
+                    card.style.display = 'none';
+                }
             });
         }
     };
+
 
         return {
         init: () => {
