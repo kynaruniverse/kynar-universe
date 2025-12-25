@@ -470,8 +470,7 @@ h1, h2, h3, .main-title, .slogan-title {
 
 .search-box {
     flex: 1; /* Grow to fill all available space */
-    max-width: 600px; /* Optional cap so it doesn't get too crazy on huge screens */
-    height: 36px; /* Slightly taller for better touch target */
+    height: 32px;
     background-color: var(--color-search-deep); 
     border-radius: var(--radius-pill);
     display: flex; 
