@@ -1,7 +1,8 @@
 /**
  * KYNAR UNIVERSE - Authentication Logic Layer
  * Architect: AetherCode
- * Description: Connects Firebase Auth state to the UI components (Header, Modals).
+ * Description: Connects Firebase Auth state to the UI components.
+ * Status: Patched (Close Button Fix applied)
  */
 
 import { 
@@ -19,10 +20,10 @@ const ROUTES = {
 };
 
 const SELECTORS = {
-    HEADER_AUTH_TRIGGER: '#auth-trigger',     // The "Sign In" link in header
-    HEADER_LOCK_ICON: '#header-lock-icon',    // The icon box
-    HEADER_AUTH_TEXT: '#header-auth-text',    // "Sign In" or "Account" text
-    MOBILE_ACC_LINK: '#account-nav-mobile',   // Mobile drawer link
+    HEADER_AUTH_TRIGGER: '#auth-trigger',     
+    HEADER_LOCK_ICON: '#header-lock-icon',    
+    HEADER_AUTH_TEXT: '#header-auth-text',    
+    MOBILE_ACC_LINK: '#account-nav-mobile',   
     
     MODAL_LOGIN: '#auth-modal',
     MODAL_SIGNUP: '#signup-modal',
@@ -33,7 +34,6 @@ const SELECTORS = {
     BTN_TOGGLE_TO_SIGNUP: '#auth-toggle-mode',
     BTN_TOGGLE_TO_LOGIN: '#back-to-login',
     
-    // Global Logout Trigger (can be anywhere)
     BTN_SIGNOUT: '[data-action="sign-out"]' 
 };
 
@@ -44,16 +44,13 @@ class AuthManager {
     }
 
     init() {
-        // 1. Listen for Auth Changes (Real-time)
+        // 1. Listen for Auth Changes
         onAuthStateChanged(auth, (user) => this.renderHeaderState(user));
 
-        // 2. Setup Global Event Listeners (Delegation)
+        // 2. Setup Global Event Listeners
         this.setupEventListeners();
     }
 
-    /**
-     * Updates the UI based on whether a user is logged in or out.
-     */
     renderHeaderState(user) {
         const lockIcon = document.querySelector(SELECTORS.HEADER_LOCK_ICON);
         const authText = document.querySelector(SELECTORS.HEADER_AUTH_TEXT);
@@ -61,20 +58,16 @@ class AuthManager {
         const mobileLink = document.querySelector(SELECTORS.MOBILE_ACC_LINK);
 
         if (user) {
-            // --- LOGGED IN ---
             document.body.classList.add('user-logged-in');
             
-            // Header: Show "Account" and gold border
             if (authText) authText.textContent = 'Account';
             if (lockIcon) lockIcon.classList.add('active-user');
             
-            // Link: Point to Account Dashboard
             if (authLink) {
                 authLink.setAttribute('href', ROUTES.ACCOUNT);
-                authLink.removeAttribute('data-modal-trigger'); // Remove modal trigger behavior
+                authLink.removeAttribute('data-modal-trigger');
             }
 
-            // Mobile: Personalized Greeting
             if (mobileLink) {
                 const name = (user.displayName || 'Creator').split(' ')[0];
                 mobileLink.innerHTML = `<i class="fa-solid fa-user-check"></i> Hello, ${name}`;
@@ -83,27 +76,22 @@ class AuthManager {
             }
 
         } else {
-            // --- LOGGED OUT ---
             document.body.classList.remove('user-logged-in');
 
-            // Header: Show "Sign In" and standard border
             if (authText) authText.textContent = 'Sign in';
             if (lockIcon) lockIcon.classList.remove('active-user');
 
-            // Link: Trigger Login Modal
             if (authLink) {
                 authLink.setAttribute('href', '#');
                 authLink.setAttribute('data-modal-trigger', 'login');
             }
 
-                        // Mobile: Standard Link
             if (mobileLink) {
                 mobileLink.innerHTML = `<i class="fa-regular fa-circle-user"></i> My Account`;
                 mobileLink.style.color = "";
                 mobileLink.setAttribute('href', '#');
                 mobileLink.setAttribute('data-modal-trigger', 'login');
             }
-
         }
     }
 
@@ -111,7 +99,7 @@ class AuthManager {
         document.addEventListener('click', (e) => {
             const target = e.target;
 
-            // A. Open Login Modal (Header Link)
+            // A. Open Login Modal
             const trigger = target.closest('[data-modal-trigger="login"]');
             if (trigger) {
                 e.preventDefault();
@@ -119,7 +107,7 @@ class AuthManager {
                 return;
             }
 
-            // B. Toggle Between Modals (Login <-> Signup)
+            // B. Toggle Between Modals
             if (target.matches(SELECTORS.BTN_TOGGLE_TO_SIGNUP)) {
                 this.closeModal(SELECTORS.MODAL_LOGIN);
                 this.openModal(SELECTORS.MODAL_SIGNUP);
@@ -129,20 +117,21 @@ class AuthManager {
                 this.openModal(SELECTORS.MODAL_LOGIN);
             }
 
-            // C. Close Modals (X button or Backdrop)
-            if (target.matches('.auth-modal-close') || target.matches('.auth-modal-backdrop')) {
-                const modal = target.closest('.auth-modal');
-                if (modal) modal.classList.remove('is-open');
+            // C. Close Modals (FIXED LOGIC)
+            // Uses .closest() to catch icon clicks, and checks ID for backdrop
+            if (target.closest('.auth-modal-close') || target.id === 'drawer-overlay') {
+                e.preventDefault();
+                this.closeAllModals(); // Properly clears overlay and body classes
             }
 
-            // D. Sign Out (Anywhere)
+            // D. Sign Out
             if (target.closest(SELECTORS.BTN_SIGNOUT)) {
                 e.preventDefault();
                 this.handleSignOut();
             }
         });
 
-        // E. Form Submissions (Event Delegation for dynamically loaded forms)
+        // E. Form Submissions
         document.addEventListener('submit', (e) => {
             if (e.target.matches(SELECTORS.FORM_LOGIN)) {
                 e.preventDefault();
@@ -154,8 +143,6 @@ class AuthManager {
             }
         });
     }
-
-    // --- FORM HANDLERS ---
 
     async handleLogin(form) {
         const email = form.querySelector('#auth-email').value;
@@ -178,33 +165,25 @@ class AuthManager {
         }, 'Account Created! Welcome.');
     }
 
-    /**
-     * Generic wrapper for Auth actions to handle loading states and errors.
-     */
     async processAuthAction(form, actionFn, successMessage) {
         const btn = form.querySelector('button[type="submit"]');
         const msg = form.querySelector('.auth-message');
         const originalText = btn.textContent;
 
         try {
-            // Loading State
             btn.textContent = 'Processing...';
             btn.disabled = true;
             if (msg) msg.textContent = '';
 
-            // Execute Logic
             await actionFn();
 
-            // Success State
             if (msg) {
-                msg.style.color = 'var(--color-search-deep)'; // Green/Teal
+                msg.style.color = 'var(--color-search-deep)';
                 msg.textContent = successMessage;
             }
 
-            // Close & Redirect
             setTimeout(() => {
                 this.closeAllModals();
-                // If on account page, reload to refresh data. Else redirect to account.
                 if (window.location.href.includes(ROUTES.ACCOUNT)) {
                     window.location.reload();
                 } else {
@@ -223,12 +202,11 @@ class AuthManager {
         }
     }
 
-        async handleSignOut() {
+    async handleSignOut() {
         if (!confirm("Are you sure you want to sign out?")) return;
         
         try {
             await signOut(auth);
-            // Clear local states if any exist
             document.body.classList.remove('user-logged-in');
             window.location.href = ROUTES.HOME;
         } catch (err) {
@@ -236,23 +214,29 @@ class AuthManager {
         }
     }
 
-
     // --- UTILITIES ---
 
-        openModal(selector) {
+    openModal(selector) {
         const modal = document.querySelector(selector);
         if (!modal) return;
         
+        // Ensure other modals are closed first
+        document.querySelectorAll('.auth-modal').forEach(m => m.classList.remove('is-open'));
+
         modal.classList.add('is-open');
         document.getElementById('drawer-overlay')?.classList.add('is-visible');
         document.body.classList.add('drawer-open');
 
-        // Activate Focus Trap from utilities.js
         if (window.activateFocusTrap) {
             window.activateFocusTrap(modal, 'auth-trap', {
                 onEscape: () => this.closeAllModals()
             });
         }
+    }
+
+    closeModal(selector) {
+        const modal = document.querySelector(selector);
+        if (modal) modal.classList.remove('is-open');
     }
 
     closeAllModals() {
@@ -265,7 +249,6 @@ class AuthManager {
         }
     }
 
-
     formatErrorMessage(error) {
         const code = error.code || '';
         if (code.includes('invalid-credential')) return "Incorrect email or password.";
@@ -275,6 +258,5 @@ class AuthManager {
     }
 }
 
-// Instantiate to start
 const authManager = new AuthManager();
 export default authManager;
