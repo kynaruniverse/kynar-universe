@@ -469,15 +469,17 @@ h1, h2, h3, .main-title, .slogan-title {
 }
 
 .search-box {
-    flex: 0 0 45%; /* Slightly less than 50% to give buttons room */
-    height: 32px; /* Sleeker height */
+    flex: 1; /* Grow to fill all available space */
+    max-width: 600px; /* Optional cap so it doesn't get too crazy on huge screens */
+    height: 36px; /* Slightly taller for better touch target */
     background-color: var(--color-search-deep); 
     border-radius: var(--radius-pill);
-    display: flex; /* Flex to align icon and input */
+    display: flex; 
     align-items: center;
     overflow: hidden; 
-    border: 1px solid transparent; /* Prevents border glitch */
+    border: 1px solid transparent; 
 }
+
 
 .search-box input {
     width: 100%;
