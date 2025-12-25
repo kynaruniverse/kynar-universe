@@ -362,40 +362,37 @@ h1, h2, h3, .main-title, .slogan-title {
 
 .site-title .main-title {
     font-family: var(--font-display); 
-    font-size: 2rem; /* Bigger (was var(--fs-md)) */
+    font-size: 1.4rem; /* Reduced from 2rem */
     letter-spacing: .04em; 
     text-transform: uppercase;
     color: var(--color-dark-text); 
-    margin: 0; 
-    padding: 0;
+    margin: 0; padding: 0;
 }
 
 .site-title .sub-title {
     font-family: var(--font-display); 
-    font-size: 0.65rem; /* Smaller */
+    font-size: 0.5rem; /* Reduced from 0.65rem */
     color: var(--color-dark-text); 
     letter-spacing: .16em;
     text-transform: uppercase; 
     opacity: .85; 
-    margin-top: -2px; /* Pull it up closer */
-    display: block;
-    width: 100%;
+    margin-top: -2px; 
+    display: block; width: 100%;
 }
 
 .stars {
     font-family: var(--font-display); 
-    font-size: 0.4rem; 
-    letter-spacing: 0.35em; /* Spreads stars to match width */
+    font-size: 0.3rem; /* Reduced from 0.4rem */
+    letter-spacing: 0.4em; 
     margin-block-start: 2px;
-    display: block;
-    text-align: center;
-    width: 100%; /* Match container width */
+    display: block; width: 100%;
     line-height: 1;
     background: linear-gradient(90deg, var(--color-main-gold), var(--color-search-deep), var(--color-star-red));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
+
 
 
 
@@ -460,46 +457,77 @@ h1, h2, h3, .main-title, .slogan-title {
 }
 .main-nav ul li a:hover { background-color: rgba(0,0,0,.06); color: var(--color-star-red); }
 
-/* Search Bar & Action Row */
+/* Search Bar & Action Row - REFINED */
 .search-subscribe-bar {
     display: flex; 
     align-items: center; 
-    justify-content: flex-start; /* Aligns items to start */
-    gap: 10px;
-    padding: 10px 3%; 
+    justify-content: flex-start;
+    gap: 8px; /* Reduced gap */
+    padding: 8px 15px; /* Tighter padding */
     background-color: var(--color-header-bg);
-    flex-wrap: nowrap; /* Forces single line */
+    flex-wrap: nowrap;
 }
 
 .search-box {
-    flex: 0 0 50%; /* Force exactly 50% width */
-    min-width: auto; /* Override previous min-width */
-    height: 40px; /* Slightly taller for better touch target */
+    flex: 0 0 45%; /* Slightly less than 50% to give buttons room */
+    height: 32px; /* Sleeker height */
     background-color: var(--color-search-deep); 
     border-radius: var(--radius-pill);
+    display: flex; /* Flex to align icon and input */
+    align-items: center;
     overflow: hidden; 
-    margin-right: auto; /* Pushes the buttons to the far right */
+    border: 1px solid transparent; /* Prevents border glitch */
 }
 
-/* Container for the right-side actions to keep them tidy */
+.search-box input {
+    width: 100%;
+    background: transparent !important; /* Forces removal of white box */
+    border: none;
+    color: white;
+    padding: 0 10px;
+    font-size: 12px;
+    height: 100%;
+    appearance: none; /* Removes native UI styling */
+}
+
+/* Icon Resizing */
 .header-actions-group {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex: 1; /* Takes remaining space */
-    justify-content: flex-end; /* Aligns to right */
+    gap: 5px; /* Tight gap between icons */
+    flex: 1;
+    justify-content: flex-end; 
 }
 
-@media (max-width: 480px) {
-    .search-subscribe-bar { 
-        padding: 10px; 
-        gap: 5px;
-    }
-    .btn-secondary { /* Shrink subscribe button on tiny screens */
-        padding: 8px 12px;
-        font-size: 9px;
-    }
+.btn-theme-toggle {
+    width: 28px; height: 28px; /* Smaller circle */
+    font-size: 12px; /* Smaller moon icon */
+    margin-right: 0; /* Remove extra margin */
 }
+
+.btn-cart-icon {
+    font-size: 16px; /* Smaller cart */
+    padding: 5px;
+    margin-right: 0;
+}
+
+/* Mobile Subscribe Button Polish */
+@media (max-width: 480px) {
+    .btn-secondary { 
+        padding: 6px 10px; /* Smaller button */
+        font-size: 9px; 
+        letter-spacing: 0.05em;
+    }
+    
+    .search-box {
+        flex: 1; /* Allow search to take remaining space if needed */
+        min-width: 0; /* Prevents overflow */
+    }
+    
+    /* Optional: Hide "Subscribe" text on very small screens, show icon? 
+       For now, just tight padding keeps it visible. */
+}
+
 
 
 
