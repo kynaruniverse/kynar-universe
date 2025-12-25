@@ -26,32 +26,6 @@
 
     <main id="main-marketplace-content" class="main-content-container container shop-layout">
         
-        <aside class="marketplace-filters" id="filter-sidebar">
-            <div class="filter-header-mobile" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3>Filters</h3>
-                <button class="drawer-close" id="mobile-filter-close" aria-label="Close filters">&times;</button>
-            </div>
-
-            <div class="filter-group">
-                <h4>Category</h4>
-                <label class="filter-label"><input type="checkbox" class="cat-filter" value="productivity"> Productivity</label>
-                <label class="filter-label"><input type="checkbox" class="cat-filter" value="homeschool"> Homeschool</label>
-                <label class="filter-label"><input type="checkbox" class="cat-filter" value="creative"> Creative & Art</label>
-            </div>
-
-            <div class="filter-group">
-                <h4>Price</h4>
-                <label class="filter-label"><input type="radio" name="price" value="all" checked> Any Price</label>
-                <label class="filter-label"><input type="radio" name="price" value="under10"> Under £10</label>
-                <label class="filter-label"><input type="radio" name="price" value="over10"> £10+</label>
-            </div>
-
-            <div class="filter-actions-mobile">
-                <button id="apply-filters-btn" class="btn btn-primary btn-full-width">Apply Filters</button>
-            </div>
-            
-            <button id="clear-filters" style="margin-top: 20px; background: none; border: none; text-decoration: underline; cursor: pointer; color: #888;">Clear all filters</button>
-        </aside>
 
         <section class="product-feed">
             <div class="feed-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -204,6 +178,92 @@
             </div>
         </div>
     </div>
+    
+        <div id="filter-modal" class="modern-filter-modal" aria-hidden="true">
+        <div class="filter-backdrop"></div>
+        
+        <div class="filter-panel">
+            <div class="modal-handle"></div>
+
+            <div class="filter-header">
+                <h3>Refine Selection</h3>
+                <button class="filter-close-btn" aria-label="Close filters">&times;</button>
+            </div>
+
+            <div class="filter-body">
+                <div class="filter-section">
+                    <h4>Category</h4>
+                    <div class="smart-tags-grid">
+                        <label class="smart-tag">
+                            <input type="checkbox" class="cat-filter" value="productivity">
+                            <span>Productivity</span>
+                        </label>
+                        <label class="smart-tag">
+                            <input type="checkbox" class="cat-filter" value="homeschool">
+                            <span>Homeschool</span>
+                        </label>
+                        <label class="smart-tag">
+                            <input type="checkbox" class="cat-filter" value="creative">
+                            <span>Creative</span>
+                        </label>
+                        <label class="smart-tag">
+                            <input type="checkbox" class="cat-filter" value="audio">
+                            <span>Audio</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Price Range</h4>
+                    <div class="price-cards-row">
+                        <label class="price-card">
+                            <input type="radio" name="price" value="all" checked>
+                            <span class="pc-content">
+                                <i class="fa-solid fa-infinity"></i>
+                                <span class="pc-label">Any</span>
+                            </span>
+                        </label>
+                        <label class="price-card">
+                            <input type="radio" name="price" value="0">
+                            <span class="pc-content">
+                                <i class="fa-solid fa-gift"></i>
+                                <span class="pc-label">Free</span>
+                            </span>
+                        </label>
+                        <label class="price-card">
+                            <input type="radio" name="price" value="under10">
+                            <span class="pc-content">
+                                <i class="fa-solid fa-coins"></i>
+                                <span class="pc-label">&lt; £10</span>
+                            </span>
+                        </label>
+                        <label class="price-card">
+                            <input type="radio" name="price" value="over10">
+                            <span class="pc-content">
+                                <i class="fa-solid fa-diamond"></i>
+                                <span class="pc-label">£10+</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Sort Order</h4>
+                    <select class="modern-select sort-dropdown">
+                        <option value="newest">Newest Arrivals</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-footer">
+                <button id="clear-filters-btn" class="btn-ghost">Reset</button>
+                <button id="apply-filters-btn" class="btn-solid-gold">Show Results</button>
+            </div>
+        </div>
+    </div>
+
 
 </body>
 </html>

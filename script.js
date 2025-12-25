@@ -240,46 +240,61 @@ const KynarApp = (() => {
             if(window.deactivateFocusTrap) window.deactivateFocusTrap('qv-trap');
         },
 
-        setupFilters() {
-            // ... (Keep your existing setupFilters code here, unchanged) ...
-            // Unified Search: Look for the Header search bar
-            const searchInput = document.getElementById('global-search-input');
-            const pageSearchInput = document.getElementById('search-input');
-            const clearBtn = document.getElementById('clear-filters');
-            const applyBtn = document.getElementById('apply-filters-btn');
-
-            [searchInput, pageSearchInput].filter(input => input).forEach(input => {
-                input.addEventListener('input', () => {
-                    clearTimeout(state.searchDebounce);
-                    state.searchDebounce = setTimeout(() => this.filter(), 300);
-                });
-            });
-
-            document.body.addEventListener('change', (e) => {
-                if (e.target.matches('.cat-filter, .type-filter, input[name="price"], .sort-dropdown')) {
-                    this.filter();
-                }
-            });
-
-            if (clearBtn) {
-                clearBtn.addEventListener('click', () => {
-                    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-                    document.querySelectorAll('input[name="price"]').forEach(r => r.checked = (r.value === 'all'));
-                    
-                    if(searchInput) searchInput.value = '';
-                    if(pageSearchInput) pageSearchInput.value = '';
-                    
-                    const sort = document.querySelector('.sort-dropdown');
-                    if(sort) sort.value = 'newest';
-                    
-                    this.filter();
-                });
-            }
+                setupFilters() {
+            // THE NEW FILTER UI CONTROLLER
+            const filterModal = document.getElementById('filter-modal');
             
-            if (applyBtn) {
-                applyBtn.addEventListener('click', () => UI.closeAll());
+            // This selects the existing "Filters" button on your main page
+            const openBtns = document.querySelectorAll('#mobile-filter-toggle, .mobile-filter-btn'); 
+            
+            const closeBtns = document.querySelectorAll('.filter-close-btn, .filter-backdrop, #apply-filters-btn');
+            const resetBtn = document.getElementById('clear-filters-btn');
+
+            // 1. Open Logic
+            openBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (filterModal) {
+                        filterModal.classList.add('is-active');
+                        document.body.style.overflow = 'hidden'; // Lock background scroll
+                    }
+                });
+            });
+
+            // 2. Close Logic
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if (filterModal) {
+                        filterModal.classList.remove('is-active');
+                        document.body.style.overflow = '';
+                        
+                        // If it was the "Show Results" button, trigger the filter
+                        if (btn.id === 'apply-filters-btn') {
+                            this.filter();
+                        }
+                    }
+                });
+            });
+
+            // 3. Reset Logic
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    // Reset Checkboxes
+                    document.querySelectorAll('.cat-filter').forEach(cb => cb.checked = false);
+                    // Reset Radio
+                    document.querySelectorAll('input[name="price"]').forEach(r => r.checked = (r.value === 'all'));
+                    // Reset Sort
+                    const sort = document.querySelector('.sort-dropdown');
+                    if (sort) sort.value = 'newest';
+
+                    // Apply & Close
+                    this.filter();
+                    filterModal.classList.remove('is-active');
+                    document.body.style.overflow = '';
+                });
             }
         },
+
 
         filter() {
             // ... (Keep your existing filter code here, unchanged) ...
