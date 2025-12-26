@@ -1,66 +1,56 @@
-<header class="top-header">
-    <div class="logo-area">
-        <button class="custom-burger" id="mobile-menu-trigger" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="side-drawer">
-            <span></span><span></span><span></span>
-        </button>
-        
+<div class="top-header">
+    
+    <button class="custom-burger" id="mobile-menu-trigger" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <a href="index.html" class="logo-area">
         <div class="site-title">
-            <a href="index.html" class="site-title-link">
-                <p class="main-title">Kynar</p>
-                <p class="sub-title">Universe.co.uk</p>
-            </a>
-            <figure class="stars" aria-hidden="true">✶ ✦ ✶ ✦ ✶</figure>
+            <h1 class="main-title">KYNAR</h1>
+            <span class="sub-title">UNIVERSE.CO.UK</span>
+            <div class="stars">★★★★★</div>
         </div>
+    </a>
+
+    <div class="slogan-header">
+        Digital tools for every corner of your life.
     </div>
-
-    <p class="slogan-header">Digital tools for every corner of your life.</p>
-
-        <div class="account-area">
-        <a href="#" class="sign-in-link" id="auth-trigger" role="button" data-modal-trigger="login">
-                        <div class="custom-lock-icon" id="header-lock-icon">
-                <img src="images/log-in-icon.png" alt="Sign In" style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-
-            <span class="sign-in-text" id="header-auth-text">Sign in</span>
-        </a>
-    </div>
-
-</header>
-
-<nav class="main-nav" aria-label="Primary site navigation">
-    <ul>
-        <li>
-            <a href="index.html">
-                <i class="fa-solid fa-house" aria-hidden="true"></i>
-                <span class="visually-hidden">Home</span>
-            </a>
-        </li>
-        <li><a href="marketplace.html">Marketplace</a></li>
-
-        <li><a href="guides.html">Guides</a></li>
-        <li><a href="community.html">Community</a></li>
-        <li><a href="account.html" id="account-nav-desktop">Account</a></li>
-    </ul>
-</nav>
-
-<div class="search-subscribe-bar">
-    <form class="search-box" id="global-search-form" role="search" action="marketplace.html" method="GET">
-        <label for="global-search-input" class="visually-hidden">Search creations</label>
-        <input type="search" id="global-search-input" name="search" placeholder="Search..." autocomplete="off">
-                <button type="submit" class="search-submit" aria-label="Submit search">
-            <img src="images/search-button.svg" alt="Search" class="search-icon-svg">
-        </button>
-
-    </form>
 
     <div class="header-actions-group">
+        <a href="#" class="sign-in-link" id="auth-trigger" role="button">
+            <div class="custom-lock-icon">
+                <img src="assets/lock-icon.svg" alt="Sign In" width="16" height="16">
+            </div>
+        </a>
         
-        <button class="btn-cart-icon cart-trigger" aria-label="View Cart" style="margin: 0;">
+        <button class="btn-cart-icon" id="cart-toggle" aria-label="Open cart">
             <i class="fa-solid fa-cart-shopping"></i>
-            <span id="cart-count-badge" class="cart-badge" style="display: none;">0</span>
+            <span class="cart-badge" id="cart-count">0</span>
         </button>
-
-        <a href="community.html#subscribe" class="btn btn-secondary btn-sm">Subscribe</a>
     </div>
 </div>
 
+<div class="search-subscribe-bar">
+    <div class="search-box">
+        <input type="text" id="global-search-input" placeholder="Search creations...">
+        <button class="search-submit" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+    
+    <button class="btn btn-primary btn-subscribe-mobile" onclick="window.location.href='community.html#vip-section'">
+        SUBSCRIBE
+    </button>
+</div>
+
+<nav class="main-nav">
+    <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="marketplace.html">Marketplace</a></li>
+        <li><a href="guides.html">Guides</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="account.html">Account</a></li>
+    </ul>
+</nav>
