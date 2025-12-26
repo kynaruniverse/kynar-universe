@@ -1,94 +1,28 @@
 /**
- * KYNAR UNIVERSE - Firebase Engine (2026 Edition)
- * Architect: AetherCode
- * Description: Core data backbone for Identity and the Digital Vault.
- * Evolution: Platinum Plus Parallel Logic
+ * QUIET FORGE CONNECTION
+ * Role: Initialize external database connection
  */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { 
-    getAuth, 
-    onAuthStateChanged, 
-    signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword, 
-    signOut, 
-    updateProfile 
-} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { 
-    getFirestore, 
-    doc, 
-    setDoc, 
-    getDoc, 
-    updateDoc, 
-    arrayUnion, 
-    arrayRemove 
-} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// TODO: REPLACE WITH YOUR ACTUAL FIREBASE CONFIG KEYS
 const firebaseConfig = {
-    apiKey: "AIzaSyDBCrZmrwbiAP4SFoIZrBYmJaYszdAj8pk",
-    authDomain: "kynar-universe-official.firebaseapp.com",
-    projectId: "kynar-universe-official",
-    storageBucket: "kynar-universe-official.firebasestorage.app",
-    messagingSenderId: "1089722386738",
-    appId: "1:1089722386738:web:372e68ab876deb4707ef2b"
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "your-project.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef"
 };
 
-// Initialize Application Services
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/**
- * INITIALIZE IDENTITY PROTOCOL
- * Orchestrates Auth profile and Firestore record in parallel.
- * Optimized for the 2026 "Zero-Latency" UX.
- */
-const registerUser = async (email, password, displayName) => {
-    try {
-        // 1. Authenticate Initial Signal
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCred.user;
-        const finalName = displayName || "Architect";
-        const now = new Date().toISOString();
-
-        // 2. Parallel Synchronization
-        // Fires both Identity and Data-Vault initialization simultaneously.
-        await Promise.all([
-            // Local Profile Mapping
-            updateProfile(user, { displayName: finalName }),
-            
-            // Database Record Establishment
-            setDoc(doc(db, "users", user.uid), {
-                uid: user.uid,
-                email: email,
-                displayName: finalName,
-                established: now,
-                lastSync: now,
-                accessLevel: "founding_member",
-                purchases: [],
-                wishlist: []
-            }, { merge: true })
-        ]);
-
-        return user;
-    } catch (error) {
-        console.error("Identity Protocol Error:", error);
-        throw error;
-    }
-};
-
-// Export Synchronized Services
-export { 
-    auth, 
-    db, 
-    registerUser, 
-    signInWithEmailAndPassword, 
-    signOut, 
-    onAuthStateChanged,
-    doc,
-    getDoc,
-    setDoc,
-    updateDoc,
-    arrayUnion,
-    arrayRemove
-};
+// Export for use in access-ui.js
+export { app, auth, db };
+console.log('Quiet Forge Connection: Established');
