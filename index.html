@@ -3,27 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kynar Universe: A digital sanctuary for clarity, creativity, and focus.">
-    <title>Kynar Universe / Quiet Forge</title>
-    
-    <link rel="preload" href="fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
+    <meta name="description" content="Kynar Universe: A digital sanctuary for clarity.">
+    <title>Kynar Universe / The Approach</title>
     
     <link rel="stylesheet" href="styles.css">
-    
     <link rel="icon" type="image/png" href="assets/favicon.png">
     
-    <meta property="og:image" content="images/social-share.jpg">
+    <meta property="og:image" content="images/social-share.webp">
 </head>
 <body>
 
-    <nav class="nav-forge" aria-label="Main Navigation">
-        <a href="index.html" class="logo-text">KYNAR UNIVERSE</a>
-        
-        <div style="display: flex; gap: 2rem;">
-            <a href="marketplace.html" class="ink-link" style="font-size: 0.85rem;">Marketplace</a>
-            <a href="account.html" class="ink-link" style="font-size: 0.85rem;">Account</a>
-        </div>
-    </nav>
+    <div data-include="components/header.html"></div>
 
     <main class="forge-container">
         
@@ -38,31 +28,30 @@
                 Handcrafted to organize your life without overwhelming your mind.
             </p>
 
-            <div class="mt-breath" style="margin-top: 3rem;">
-                <a href="marketplace.html" class="ink-link">Enter the Sanctuary</a>
+            <div style="margin-top: 3rem;">
+                <a href="archive.html" class="ink-link">Enter the Archive</a>
             </div>
         </section>
-
 
         <section class="forge-section" style="padding-top: 0;">
             <div class="stone-grid">
                 
-                <a href="marketplace.html?category=productivity" class="stone-block">
+                <a href="archive.html?collection=productivity" class="stone-block">
                     <span class="stone-meta">01 / Systems</span>
                     <h3 class="text-heading">Productivity &<br>Planning</h3>
                 </a>
 
-                <a href="marketplace.html?category=creative" class="stone-block">
+                <a href="archive.html?collection=creative" class="stone-block">
                     <span class="stone-meta">02 / Expression</span>
                     <h3 class="text-heading">Mindful<br>Creativity</h3>
                 </a>
 
-                <a href="marketplace.html?category=homeschool" class="stone-block">
+                <a href="archive.html?collection=homeschool" class="stone-block">
                     <span class="stone-meta">03 / Knowledge</span>
                     <h3 class="text-heading">Homeschool &<br>Learning</h3>
                 </a>
 
-                <a href="marketplace.html?category=automation" class="stone-block">
+                <a href="archive.html?collection=automation" class="stone-block">
                     <span class="stone-meta">04 / Efficiency</span>
                     <h3 class="text-heading">Code &<br>Automation</h3>
                 </a>
@@ -70,49 +59,17 @@
             </div>
         </section>
 
-
-        <footer class="forge-section" style="border-top: 1px solid rgba(0,0,0,0.05);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem;">
-                
-                <div>
-                    <h4 class="text-heading" style="font-size: 1.5rem;">Kynar Universe</h4>
-                    <p class="stone-meta" style="margin-bottom: 0;">© 2025 Quiet Forge Edition</p>
-                </div>
-
-                <div style="display: flex; gap: 2rem;">
-                    <a href="guides.html" class="ink-link" style="font-size: 0.85rem; color: var(--ink-secondary);">Guides</a>
-                    <a href="community.html" class="ink-link" style="font-size: 0.85rem; color: var(--ink-secondary);">Community</a>
-                </div>
-
-            </div>
-        </footer>
-
     </main>
+
+    <div data-include="components/footer.html"></div>
+    
+    <div data-include="components/access-modals.html"></div>
 
     <script src="utilities.js"></script>
     <script type="module">
         import './firebase-config.js';
-        import './auth-ui.js';
+        import './access-ui.js'; /* Updated Name */
     </script>
-    <script>
-        // Simple Reveal Logic for Quiet Forge
-        document.addEventListener('DOMContentLoaded', () => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
 
-            document.querySelectorAll('.stone-block').forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-                observer.observe(el);
-            });
-        });
-    </script>
 </body>
 </html>

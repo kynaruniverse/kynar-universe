@@ -1,76 +1,56 @@
 /*
-   QUIET FORGE SYSTEM v1.0
-   Status: Active // Directive: Calm & Originality
-   Architect: KynarCode v3
+   KYNAR UNIVERSE - QUIET FORGE SYSTEM v2.0
+   Directive: Editorial, Calm, Limestone & Ink.
 */
 
+/*--- 1. MATERIAL VARIABLES ---*/
 :root {
-    /* PALETTE: Alabaster & Iron (Lighter, Warmer) */
-    --bg-paper: #FDFDFB;        /* Near-white, like fresh paper */
-    --bg-stone: #F2F2F0;        /* Very pale grey/beige (Limestone) */
-    --bg-stone-deep: #EAEAE6;   /* Interaction state */
+    /* PALETTE: Limestone & Ink */
+    --bg-paper: #FDFDFB;        /* Warm White (Base) */
+    --bg-stone: #F2F2F0;        /* Pale Limestone (Cards) */
+    --bg-stone-deep: #EAEAE6;   /* Hover State */
     
-    --ink-primary: #222220;     /* Softened Charcoal (Less harsh than black) */
-    --ink-secondary: #666660;   /* Warm Grey */
-    --ink-faint: #B0B0A8;       /* Meta data */
+    --ink-primary: #222220;     /* Charcoal (Main Text) */
+    --ink-secondary: #666660;   /* Warm Grey (Body) */
+    --ink-faint: #B0B0A8;       /* Meta Data */
     
-    --glass-surface: rgba(253, 253, 251, 0.95); /* Brighter sticky nav */
-    --focus-line: #222220;
+    --glass-surface: rgba(253, 253, 251, 0.95); /* Sticky Nav */
+    --focus-line: #222220;      /* Input focus */
 
-    /* DIMENSIONS: Directional Rhythm */
-    --rhythm-pause: 18vh;       
-    --rhythm-flow: 8vh;         
-    --rhythm-breath: 1.5rem;    
-    --gutter: clamp(1.5rem, 4vw, 3rem); 
+    /* RHYTHM: Directional Whitespace */
+    --rhythm-pause: 15vh;       /* Major section break */
+    --rhythm-flow: 6vh;         /* Minor section break */
+    --rhythm-breath: 1.5rem;    /* Content gap */
+    --gutter: clamp(1.5rem, 5vw, 4rem); /* Page margins */
 
-    /* TYPOGRAPHY: Ink Hierarchy */
+    /* TYPOGRAPHY */
     --font-display: 'Bantayog', serif; 
     --font-body: 'Glacial Indifference', sans-serif; 
     
-    --fs-display: clamp(3rem, 8vw, 6.5rem); 
-    --fs-heading: clamp(1.5rem, 3vw, 2.5rem);
+    --fs-display: clamp(2.5rem, 6vw, 5rem); 
+    --fs-heading: clamp(1.25rem, 2.5vw, 2rem);
     --fs-body: 1.05rem;
-    --fs-meta: 0.85rem;
+    --fs-small: 0.85rem;
 
-    /* PHYSICS: Slow & Heavy */
+    /* PHYSICS */
     --ease-forge: cubic-bezier(0.2, 0.0, 0.2, 1); 
-    --radius-stone: 4px; /* Slightly softer corners for a friendlier feel */
-    --radius-soft: 8px;
+    --radius-stone: 4px; 
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        /* Dark Mode: Keep this dark, but warmer */
         --bg-paper: #191918;
         --bg-stone: #242422;
         --bg-stone-deep: #30302E;
         --ink-primary: #EAEAE6;
         --ink-secondary: #999995;
-        --glass-surface: rgba(25, 25, 24, 0.9);
-    }
-}
-
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-paper: #141413;
-        --bg-stone: #1E1E1C;
-        --bg-stone-deep: #2A2A28;
-        --ink-primary: #EAEAE6;
-        --ink-secondary: #999995;
-        --glass-surface: rgba(20, 20, 19, 0.9);
-        --focus-line: #EAEAE6;
+        --glass-surface: rgba(25, 25, 24, 0.95);
     }
 }
 
 /*--- 2. RESET & BASE ---*/
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { 
-    font-size: 100%; 
-    scroll-behavior: smooth; 
-    height: 100%;
-}
+html { scroll-behavior: smooth; font-size: 100%; height: 100%; }
 
 body {
     background-color: var(--bg-paper);
@@ -80,25 +60,16 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    width: 100%;
 }
 
-img, svg { display: block; max-width: 100%; }
-a { text-decoration: none; color: inherit; cursor: pointer; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; cursor: pointer; transition: opacity 0.3s ease; }
 
 /* Font Loading */
-@font-face {
-    font-family: 'Bantayog';
-    src: url('fonts/Bantayog.woff2') format('woff2');
-    font-weight: 400 900; font-display: block;
-}
-@font-face {
-    font-family: 'Glacial Indifference';
-    src: url('fonts/GlacialIndifferenceRegular.woff2') format('woff2');
-    font-weight: normal; font-display: swap;
-}
+@font-face { font-family: 'Bantayog'; src: url('fonts/Bantayog.woff2') format('woff2'); font-display: block; }
+@font-face { font-family: 'Glacial Indifference'; src: url('fonts/GlacialIndifferenceRegular.woff2') format('woff2'); font-display: swap; }
 
-/*--- 3. LAYOUT: Directional Whitespace ---*/
+/*--- 3. LAYOUT UTILITIES ---*/
 .forge-container {
     width: 100%;
     max-width: 1400px;
@@ -109,135 +80,74 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
 .forge-section {
     padding-top: var(--rhythm-pause);
     padding-bottom: var(--rhythm-flow);
-    /* Asymmetric spacing: Top heavy to signal arrival */
 }
 
-/*--- 4. TYPOGRAPHY: Ink Material ---*/
-.text-display {
-    font-family: var(--font-display);
-    font-size: var(--fs-display);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    color: var(--ink-primary);
-    margin-bottom: var(--rhythm-breath);
-}
+.text-display { font-family: var(--font-display); font-size: var(--fs-display); line-height: 1; letter-spacing: -0.02em; color: var(--ink-primary); }
+.text-heading { font-family: var(--font-display); font-size: var(--fs-heading); line-height: 1.2; }
+.text-body { color: var(--ink-secondary); max-width: 50ch; }
+.stone-meta { font-size: var(--fs-small); color: var(--ink-secondary); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
 
-.text-heading {
-    font-family: var(--font-display);
-    font-size: var(--fs-heading);
-    line-height: 1.1;
-    margin-bottom: 1rem;
-}
+/*--- 4. COMPONENTS: Stone & Ink ---*/
 
-.text-body {
-    color: var(--ink-secondary);
-    max-width: 45ch; /* Optimal reading length */
-    margin-bottom: var(--rhythm-breath);
-}
-
-/*--- 5. COMPONENT: The Ink Link (Nav & Actions) ---*/
+/* The Ink Link (Button Replacement) */
 .ink-link {
     font-family: var(--font-display);
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    position: relative;
-    padding-bottom: 4px;
-    display: inline-block;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
 }
+.ink-link:hover { border-bottom-color: var(--ink-primary); }
 
-.ink-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 1px;
-    background: var(--ink-primary);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.4s var(--ease-forge);
-}
-
-.ink-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-}
-
-/*--- 6. COMPONENT: Stone Cards (The New Product Display) ---*/
-/* No borders. Mass only. */
-.stone-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--rhythm-breath); /* Tight gap for grounded feel */
-    align-items: start;
-}
-
+/* The Stone Block (Card Replacement) */
 .stone-block {
     background: var(--bg-stone);
-    padding: clamp(2rem, 5vw, 3.5rem);
+    padding: 2rem;
     border-radius: var(--radius-stone);
-    transition: background 0.4s var(--ease-forge), transform 0.4s var(--ease-forge);
+    transition: background 0.3s var(--ease-forge), transform 0.3s var(--ease-forge);
+    height: 100%;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    min-height: 320px;
 }
-
 .stone-block:hover {
     background: var(--bg-stone-deep);
-    transform: translateY(-4px); /* Subtle lift */
+    transform: translateY(-2px);
 }
 
-.stone-block h3 {
-    margin-top: auto; /* Push title to bottom (Anchoring) */
-    font-family: var(--font-display);
-    font-size: 1.75rem;
+/* Inputs (Forms) */
+.ink-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--ink-secondary);
+    padding: 1rem 0;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--ink-primary);
+    border-radius: 0;
+    outline: none;
 }
+.ink-input:focus { border-bottom-color: var(--ink-primary); }
 
-.stone-meta {
-    font-size: var(--fs-meta);
-    color: var(--ink-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-}
-
-/*--- 7. NAVIGATION (Ghost) ---*/
+/* Sticky Nav (Ghost) */
 .nav-forge {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    padding: 1.5rem var(--gutter);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: sticky;
+    top: 0;
     z-index: 100;
     background: var(--glass-surface);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    transition: transform 0.4s ease;
+    padding: 1.5rem var(--gutter);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
 }
 
-.logo-text {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    letter-spacing: 0.05em;
-    z-index: 101;
-}
-
-/*--- 8. UTILITIES ---*/
-.visually-hidden {
-    position: absolute; width: 1px; height: 1px; padding: 0; 
-    overflow: hidden; clip: rect(0,0,0,0); border: 0;
-}
-
-.mt-large { margin-top: var(--rhythm-pause); }
-.mt-breath { margin-top: var(--rhythm-breath); }
-
-/* Mobile Adaptations */
-@media (max-width: 768px) {
-    :root {
-        --rhythm-pause: 12vh;
-        --fs-display: 3.5rem;
-    }
-    .forge-section { padding-top: 10vh; }
-    .stone-block { min-height: 250px; padding: 2rem; }
+/* Grid System */
+.stone-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--rhythm-breath);
 }

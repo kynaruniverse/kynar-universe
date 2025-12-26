@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Library / Kynar Universe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+
+    <div data-include="components/header.html"></div>
+
+    <main class="forge-container">
+        
+        <section class="forge-section">
+            <span class="stone-meta">Knowledge Base</span>
+            <h1 class="text-display">The Library</h1>
+            <p class="text-body">
+                Manuals for modern life. Deep dives into productivity systems, 
+                creative theory, and digital minimalism.
+            </p>
+        </section>
+
+        <section class="forge-section" style="padding-top: 0;">
+            <div style="display: flex; flex-direction: column; gap: var(--rhythm-breath);">
+                
+                <article class="stone-block" style="flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; min-height: auto;">
+                    <div style="flex: 1; min-width: 280px; padding-right: 2rem;">
+                        <span class="stone-meta">Getting Started</span>
+                        <h3 class="text-heading" style="font-size: 1.5rem; margin-bottom: 0.5rem;">The First Step</h3>
+                        <p class="text-body" style="font-size: 0.9rem; margin-bottom: 0;">
+                            How to download, unzip, and configure your new digital assets.
+                        </p>
+                    </div>
+                    <a href="library-entry.html" class="ink-link" style="margin-top: 1rem;">Open Guide</a>
+                </article>
+
+                <article class="stone-block" style="flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; min-height: auto; opacity: 0.7;">
+                    <div style="flex: 1; min-width: 280px; padding-right: 2rem;">
+                        <span class="stone-meta">Philosophy</span>
+                        <h3 class="text-heading" style="font-size: 1.5rem; margin-bottom: 0.5rem;">Digital Minimalism</h3>
+                        <p class="text-body" style="font-size: 0.9rem; margin-bottom: 0;">
+                            Why fewer tools lead to better work. (Drafting)
+                        </p>
+                    </div>
+                    <span class="stone-meta" style="margin-top: 1rem;">Coming Soon</span>
+                </article>
+
+            </div>
+        </section>
+
+    </main>
+    
+    <div data-include="components/footer.html"></div>
+    <div data-include="components/access-modals.html"></div>
+
+    <script src="utilities.js"></script>
+    <script type="module">
+        import './firebase-config.js';
+        import './access-ui.js';
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity / Kynar Universe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+
+    <div data-include="components/header.html"></div>
+
+    <main class="forge-container">
+        
+        <section class="forge-section">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem;">
+                <div>
+                    <span class="stone-meta">Personal Ledger</span>
+                    <h1 class="text-display" id="user-greeting">Guest</h1>
+                    <p class="text-body">
+                        This is the record of your gathered artifacts.
+                    </p>
+                </div>
+                
+                <div id="identity-actions" style="display: none;">
+                    <button id="btn-logout" class="ink-link" style="background:none; border:none; cursor:pointer; color: var(--ink-secondary);">
+                        Disconnect
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="forge-section" style="padding-top: 0;">
+            <h3 class="text-heading" style="margin-bottom: 1.5rem; font-size: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.5rem;">
+                Acquired Artifacts
+            </h3>
+
+            <div id="state-guest" class="stone-block" style="text-align: center; padding: 4rem 2rem;">
+                <p class="text-body" style="margin: 0 auto 1.5rem auto;">
+                    You are currently viewing as a guest. Access your identity to see your ledger.
+                </p>
+                <button class="trigger-access ink-link" style="background:none; border:none; border-bottom:1px solid var(--ink-primary); cursor:pointer;">
+                    Access Identity
+                </button>
+            </div>
+
+            <div id="state-user" style="display: none;">
+                <div class="stone-grid" id="artifact-list">
+                    <div class="stone-block" style="opacity: 0.6;">
+                        <span class="stone-meta">Ledger Empty</span>
+                        <h3 class="text-heading">No artifacts acquired yet.</h3>
+                        <a href="archive.html" class="ink-link" style="margin-top: auto;">Visit Archive</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <div data-include="components/footer.html"></div>
+    <div data-include="components/access-modals.html"></div>
+
+    <script src="utilities.js"></script>
+    <script type="module">
+        import './firebase-config.js';
+        import './access-ui.js';
+    </script>
+</body>
+</html>
