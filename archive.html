@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Archive / Kynar Universe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+
+    <div data-include="components/header.html"></div>
+
+    <main class="forge-container">
+        
+        <section class="forge-section" style="padding-bottom: 2rem;">
+            <h1 class="text-display" style="font-size: clamp(2.5rem, 5vw, 4rem);">The Archive</h1>
+            
+            <div style="margin-top: var(--rhythm-breath); max-width: 800px;">
+                
+                <div style="position: relative; margin-bottom: 2rem;">
+                    <input type="text" id="archive-search" class="ink-input" placeholder="Search the collection..." 
+                           style="font-family: var(--font-display); font-size: 1.5rem;">
+                </div>
+
+                <div id="filter-stream" style="display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none;">
+                    <button class="ink-link" data-filter="all" style="background:none; border:none; cursor:pointer; padding:0; color: var(--ink-primary);">All</button>
+                    <button class="ink-link" data-filter="productivity" style="background:none; border:none; cursor:pointer; padding:0; color: var(--ink-secondary);">Systems</button>
+                    <button class="ink-link" data-filter="homeschool" style="background:none; border:none; cursor:pointer; padding:0; color: var(--ink-secondary);">Knowledge</button>
+                    <button class="ink-link" data-filter="creative" style="background:none; border:none; cursor:pointer; padding:0; color: var(--ink-secondary);">Expression</button>
+                    <button class="ink-link" data-filter="automation" style="background:none; border:none; cursor:pointer; padding:0; color: var(--ink-secondary);">Code</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="artifact-grid" class="stone-grid" style="min-height: 50vh;">
+            <div class="stone-block" style="opacity: 0.5;">
+                <h3 class="text-heading">Loading Archive...</h3>
+            </div>
+        </section>
+
+    </main>
+
+    <div data-include="components/footer.html"></div>
+    <div data-include="components/access-modals.html"></div>
+
+    <script src="utilities.js"></script>
+    <script src="engine.js"></script> 
+    
+    <script type="module">
+        import './firebase-config.js';
+        import './access-ui.js';
+    </script>
+</body>
+</html>

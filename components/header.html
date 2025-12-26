@@ -1,45 +1,21 @@
-<div class="header-top-row">
+<nav class="nav-content" style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
     
-    <div class="header-side-element">
-        <button class="custom-burger" id="mobile-menu-trigger" aria-label="Open Menu">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
+    <a href="index.html" class="logo-text" aria-label="Return to The Approach">
+        KYNAR UNIVERSE
+    </a>
 
-    <div class="site-title-block">
-        <a href="index.html" class="brand-text">
-            KYNAR <span class="brand-suffix">26</span>
-        </a>
-        <p class="brand-tagline">Architecting Digital Futures</p>
-    </div>
-
-    <div class="header-actions-group">
-        <a href="#" id="auth-trigger" class="action-icon-link" title="Identify">
-            <div class="lock-status-indicator" id="header-lock-icon">
-                <i class="fa-regular fa-user"></i>
-            </div>
-        </a>
+    <div style="display: flex; gap: clamp(1rem, 3vw, 2.5rem); align-items: center;">
         
-        <button id="cart-toggle" class="cart-anchor">
-            <i class="fa-solid fa-basket-shopping"></i>
-            <span class="cart-badge-dot" id="cart-count">0</span>
-        </button>
-    </div>
-</div>
+        <a href="archive.html" class="ink-link" style="font-size: 0.85rem;">The Archive</a>
+        <a href="library.html" class="ink-link" style="font-size: 0.85rem;">Library</a>
+        
+        <a href="identity.html" class="ink-link" style="font-size: 0.85rem;">
+            Identity
+        </a>
 
-<nav class="header-nav-row" style="overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding: 15px var(--mobile-padding); border-bottom: 1px solid #f0f0f0;">
-    <ul class="nav-matrix-list" style="display: inline-flex; gap: 30px; list-style: none;">
-        <li><a href="index.html" class="nav-item" style="font-size: 11px; letter-spacing: 2px;">PORTAL</a></li>
-        <li><a href="marketplace.html" class="nav-item" style="font-size: 11px; letter-spacing: 2px;">MARKETPLACE</a></li>
-        <li><a href="guides.html" class="nav-item" style="font-size: 11px; letter-spacing: 2px;">ACADEMY</a></li>
-        <li><a href="community.html" class="nav-item" style="font-size: 11px; letter-spacing: 2px;">NEXUS</a></li>
-    </ul>
+        <a href="exchange.html" class="ink-link" style="font-size: 0.85rem;">
+            Satchel <span id="satchel-count" style="font-weight: bold; opacity: 0; transition: opacity 0.3s; margin-left: 2px;"></span>
+        </a>
+    </div>
+
 </nav>
-
-
-<div id="elastic-search-overlay" class="hidden-search-container">
-    <div class="search-inner">
-        <input type="search" id="global-search-input" placeholder="Search the database..." autocomplete="off">
-        <i class="fa-solid fa-magnifying-glass search-accent"></i>
-    </div>
-</div>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signals / Kynar Universe</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+
+    <div data-include="components/header.html"></div>
+
+    <main class="forge-container">
+        
+        <section class="forge-section" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h1 class="text-display">Join the <br>Quiet Forge.</h1>
+            <p class="text-body" style="margin: 0 auto var(--rhythm-breath) auto;">
+                We don't spam. We send one signal, once a month, containing 
+                new tools, design philosophy, and silence.
+            </p>
+
+            <div class="stone-block" style="text-align: left; margin-top: 3rem;">
+                <form id="signals-form">
+                    <div style="margin-bottom: 2rem;">
+                        <label class="stone-meta" for="signal-name">Your Name</label>
+                        <input type="text" id="signal-name" class="ink-input" placeholder="ENTER YOUR NAME" required>
+                    </div>
+                    <div style="margin-bottom: 2rem;">
+                        <label class="stone-meta" for="signal-email">Signal Frequency</label>
+                        <input type="email" id="signal-email" class="ink-input" placeholder="ENTER YOUR EMAIL" required>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+                        <p id="signal-status" class="stone-meta" style="color: var(--ink-secondary); opacity: 0; transition: opacity 0.3s;">
+                            Transmitting...
+                        </p>
+                        <button type="submit" class="ink-link" style="background: none; border: none; font-size: 1.1rem; cursor: pointer; border-bottom: 1px solid transparent;">
+                            Connect
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <div data-include="components/footer.html"></div>
+    <div data-include="components/access-modals.html"></div>
+
+    <script src="utilities.js"></script>
+    <script src="signals.js"></script> <script type="module">
+        import './firebase-config.js';
+        import './access-ui.js';
+    </script>
+</body>
+</html>
