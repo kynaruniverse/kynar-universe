@@ -99,9 +99,10 @@ const ForgeEngine = (() => {
             <article class="stone-block">
                 <div style="width: 100%; aspect-ratio: 1/1; background: #E6E6E2; margin-bottom: 1.5rem; border-radius: 2px; display:flex; align-items:center; justify-content:center;">
                     ${item.image 
-                        ? `<img src="${item.image}" alt="${item.title}" style="width:100%; height:100%; object-fit: cover;">` 
-                        : `<span style="color:#B0B0A8; font-size:0.8rem; letter-spacing:0.1em;">ARTIFACT</span>`
-                    }
+    ? `<img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit: cover; transition: opacity 0.5s ease;">` 
+    : `<span style="color:#B0B0A8; font-size:0.8rem; letter-spacing:0.1em;">ARTIFACT</span>`
+}
+
                 </div>
                 
                 <span class="stone-meta">${item.tag}</span>

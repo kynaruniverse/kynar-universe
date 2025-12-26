@@ -151,3 +151,111 @@ a { text-decoration: none; color: inherit; cursor: pointer; transition: opacity 
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--rhythm-breath);
 }
+
+/*--- 5. THE FINAL POLISH (Browser Skinning) ---*/
+
+/* Selection (Highlighting text) */
+::selection {
+    background: var(--ink-primary);
+    color: var(--bg-paper);
+}
+
+/* Scrollbar (Webkit - Chrome/Safari/Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-paper);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ink-secondary);
+    border-radius: 4px;
+    border: 2px solid var(--bg-paper); /* Creates padding effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-primary);
+}
+
+/* Focus States (Accessibility with Style) */
+:focus-visible {
+    outline: 2px solid var(--focus-line);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+/*--- 6. PROTOCOL: FLUID STONE (Mobile Optimization) ---*/
+
+@media (max-width: 768px) {
+    
+    :root {
+        /* Tighter rhythm for small screens */
+        --rhythm-pause: 10vh;
+        --rhythm-flow: 5vh;
+        --gutter: 1.25rem; /* Maximize content width */
+        --fs-display: 2.5rem; /* Prevent headline wrapping issues */
+        --radius-stone: 6px; /* slightly rounder feels better in hand */
+    }
+
+    /* NAV: The Horizontal Stream */
+    /* Instead of hiding links behind a menu, we let them flow. */
+    .nav-forge {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem var(--gutter);
+        gap: 1rem;
+    }
+
+    .nav-forge .logo-text {
+        width: 100%;
+        text-align: center;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .nav-forge > div {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 5px; /* Space for scrollbar */
+        justify-content: flex-start; /* Align left */
+        gap: 1.5rem;
+        /* Hide scrollbar but keep functionality */
+        scrollbar-width: none; 
+        -ms-overflow-style: none;
+        /* Snapping */
+        scroll-snap-type: x mandatory;
+    }
+    
+    .nav-forge > div::-webkit-scrollbar { display: none; }
+
+    .nav-forge a.ink-link {
+        white-space: nowrap;
+        scroll-snap-align: start;
+        padding: 0.5rem 0; /* Larger touch target */
+    }
+
+    /* ARTIFACTS: Full Width Stone */
+    .stone-grid {
+        grid-template-columns: 1fr; /* Force single column */
+        gap: 2rem;
+    }
+    
+    /* Better Thumb Targets */
+    .ink-link, button {
+        touch-action: manipulation; /* Removes double-tap zoom delay */
+    }
+
+    /* TEXT: Optical Balancing */
+    .text-display, .text-heading {
+        text-wrap: balance; /* Prevents "widows" (single words on new line) */
+    }
+}
+
+/* Landscape Mode Tweak (Phone rotated) */
+@media (max-width: 900px) and (orientation: landscape) {
+    :root { --rhythm-pause: 15vh; }
+    .nav-forge { position: relative; } /* Unstick nav to save vertical space */
+}
