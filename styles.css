@@ -1,7 +1,6 @@
 /*
-   KYNAR 2026 - OBSIDIAN & LIQUID LIGHT
-   Style: Bento / Mega-Type / Tactile
-   Architect: KynarForge Pro
+   KYNAR 2026 - PLATINUM & PAPER (Light Mode)
+   Style: Clean / Bento / High-Contrast
 */
 
 /* =========================================
@@ -17,44 +16,34 @@
 }
 
 @font-face {
-    font-family: 'Jimmy Flashcard';
-    src: url('fonts/Jimmy Flashcard.woff2') format('woff2'), url('fonts/Jimmy Flashcard.woff') format('woff');
-    font-weight: normal; font-style: normal; font-display: swap;
-}
-
-@font-face {
     font-family: 'Glacial Indifference';
     src: url('fonts/GlacialIndifferenceRegular.woff2') format('woff2'), url('fonts/GlacialIndifferenceRegular.woff') format('woff');
     font-weight: normal; font-style: normal; font-display: swap;
 }
 
 :root {
-    /* Kynar 2026 Palette: Obsidian & Neon Gold */
-    --bg-obsidian: #050505;
-    --bg-panel: #0f0f0f;
-    --text-main: #ffffff;
-    --text-muted: #888888;
+    /* Platinum Palette */
+    --bg-body: #ffffff;
+    --bg-surface: #f8f8f8;
+    --text-main: #050505;
+    --text-muted: #666666;
     
-    /* The Gold System */
-    --gold-dim: #7a6845;
-    --gold-neon: #D4AF37;
-    --gold-glow: rgba(212, 175, 55, 0.4);
+    /* Accents */
+    --gold-main: #c5a059; /* Darker gold for visibility on white */
+    --gold-light: #f4ecd8;
     
-    /* Tactile Surfaces (Glass) */
-    --glass-surface: rgba(255, 255, 255, 0.03);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.08);
-    --glass-highlight: 1px solid rgba(255, 255, 255, 0.15);
+    /* Borders & Lines */
+    --line-color: #e5e5e5;
+    --line-strong: #000000;
     
     /* Metrics */
     --bento-gap: 20px;
-    --radius-lg: 32px;
-    --radius-md: 20px;
-    --radius-sm: 12px;
+    --radius-lg: 16px; /* Slightly sharper corners for "Paper" feel */
+    --radius-sm: 8px;
     
-    /* Typography */
+    /* Fonts */
     --font-mega: 'Bantayog', sans-serif;
     --font-tech: 'Glacial Indifference', sans-serif;
-    --font-hand: 'Jimmy Flashcard', cursive;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,37 +51,28 @@
 html { scroll-behavior: smooth; font-size: 100%; }
 
 body {
-    background-color: var(--bg-obsidian);
+    background-color: var(--bg-body);
     color: var(--text-main);
     font-family: var(--font-tech);
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Subtle Grain Texture */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
-img { display: block; max-width: 100%; height: auto; border-radius: inherit; }
-
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-obsidian); }
-::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold-neon); }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
 
 /* =========================================
-   2. UI COMPONENTS (TACTILE)
+   2. UI COMPONENTS (CLEAN)
    ========================================= */
 
-/* The Bento Card - Core Building Block */
+/* The Bento Card (Paper Style) */
 .bento-card {
-    background: var(--glass-surface);
-    border: var(--glass-border);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--bg-surface);
+    border: 1px solid var(--line-color);
     border-radius: var(--radius-lg);
     padding: 24px;
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -100,209 +80,192 @@ img { display: block; max-width: 100%; height: auto; border-radius: inherit; }
 }
 
 .bento-card:hover {
-    transform: translateY(-4px) scale(1.01);
-    border: var(--glass-highlight);
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    transform: translateY(-4px);
+    border-color: var(--gold-main);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-.bento-card::after {
-    /* Inner Glow on Hover */
-    content: ''; position: absolute; inset: 0;
-    border-radius: inherit;
-    box-shadow: inset 0 0 20px var(--gold-glow);
-    opacity: 0; transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-.bento-card:hover::after { opacity: 0.3; }
-
-/* Buttons: 2026 Style */
+/* Buttons */
 .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 14px 28px; border-radius: 999px;
-    font-family: var(--font-mega); text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 12px 24px; border-radius: 6px;
+    font-family: var(--font-tech); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
     font-size: 12px; cursor: pointer; text-decoration: none;
-    transition: 0.3s; position: relative; overflow: hidden;
+    transition: 0.3s; border: none;
 }
 
 .btn-primary {
-    background: var(--gold-neon);
-    color: #000;
-    font-weight: 800;
-    box-shadow: 0 0 15px var(--gold-glow);
-    border: none;
+    background: var(--text-main);
+    color: white;
 }
 .btn-primary:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px var(--gold-glow);
+    background: var(--gold-main);
+    color: white;
 }
 
 .btn-secondary {
     background: transparent;
-    border: 1px solid var(--text-main);
+    border: 1px solid var(--line-color);
     color: var(--text-main);
 }
 .btn-secondary:hover {
-    background: var(--text-main);
-    color: #000;
+    border-color: var(--text-main);
+    background: white;
 }
 
 /* Inputs */
 input, select, textarea {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: white;
+    background: white;
+    border: 1px solid var(--line-color);
+    color: var(--text-main);
     font-family: var(--font-tech);
-    padding: 12px 16px; border-radius: 12px;
+    padding: 12px 16px; border-radius: 8px;
     width: 100%;
 }
 input:focus {
-    outline: none; border-color: var(--gold-neon);
-    background: rgba(0,0,0,0.5);
+    outline: none; border-color: var(--gold-main);
+    background: #fff;
 }
 
 /* =========================================
-   3. LAYOUT: BENTO GRID
+   3. HEADER (STACKED LAYOUT)
    ========================================= */
+.header-wrapper {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-color);
+}
 
+.header-top-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 20px;
+    max-width: 1400px; margin: 0 auto;
+}
+
+.brand-text {
+    font-family: var(--font-mega); font-size: 28px;
+    color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em;
+    line-height: 1;
+}
+
+.header-nav-row {
+    border-top: 1px solid var(--line-color);
+    display: none; /* Hidden on mobile */
+}
+
+@media (min-width: 900px) {
+    .header-nav-row { display: block; }
+}
+
+.desktop-nav-list {
+    display: flex; justify-content: center; gap: 40px;
+    padding: 12px 0;
+    list-style: none;
+}
+
+.desktop-nav-list a {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+    font-weight: bold; color: var(--text-muted);
+    transition: 0.2s;
+    position: relative;
+}
+
+.desktop-nav-list a:hover, .desktop-nav-list a.active-page {
+    color: var(--text-main);
+}
+/* Underline effect */
+.desktop-nav-list a.active-page::after {
+    content: ''; position: absolute; bottom: -13px; left: 0; width: 100%; 
+    height: 2px; background: var(--text-main);
+}
+
+/* =========================================
+   4. LAYOUT GRID
+   ========================================= */
 .container {
-    width: 100%; max-width: 1400px; /* Wider for Bento */
+    width: 100%; max-width: 1400px;
     margin: 0 auto; padding: 0 20px;
 }
 
-/* The Main Grid Wrapper */
 .bento-grid-wrapper {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr); /* 12 Column System */
-    gap: var(--bento-gap);
-    grid-auto-rows: minmax(180px, auto);
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    gap: var(--bento-gap); grid-auto-rows: minmax(180px, auto);
 }
 
-/* Helper Classes for Grid Spans */
 .span-12 { grid-column: span 12; }
 .span-8  { grid-column: span 8; }
 .span-6  { grid-column: span 6; }
 .span-4  { grid-column: span 4; }
-.span-3  { grid-column: span 3; }
 
-.row-span-2 { grid-row: span 2; }
-
-/* Mobile: Collapse to 1 column */
 @media (max-width: 900px) {
     .bento-grid-wrapper { display: flex; flex-direction: column; gap: 20px; }
-    .span-8, .span-6, .span-4, .span-3 { width: 100%; }
+    .span-8, .span-6, .span-4 { width: 100%; }
 }
 
 /* =========================================
-   4. HEADER (GLASS DOCK)
-   ========================================= */
-.header-wrapper {
-    position: sticky; top: 20px; z-index: 100;
-    margin: 0 20px;
-}
-
-.glass-dock {
-    background: rgba(15, 15, 15, 0.85);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 99px;
-    padding: 10px 25px;
-    display: flex; justify-content: space-between; align-items: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    max-width: 1000px; margin: 0 auto;
-}
-
-.brand-text {
-    font-family: var(--font-mega); font-size: 24px;
-    color: white; text-transform: uppercase; letter-spacing: 0.1em;
-}
-
-/* =========================================
-   5. MEGA HERO TYPOGRAPHY
+   5. MEGA HERO (LIGHT VERSION)
    ========================================= */
 .mega-hero-container {
-    position: relative;
-    height: 80vh;
+    position: relative; height: 70vh;
     display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    text-align: center;
+    overflow: hidden; text-align: center;
+    background: #fdfdfd;
+    border-bottom: 1px solid var(--line-color);
 }
 
 .mega-text {
     font-family: var(--font-mega);
-    font-size: clamp(60px, 18vw, 250px); /* Massive Scaling */
+    font-size: clamp(60px, 18vw, 250px);
     line-height: 0.8;
-    color: transparent;
-    -webkit-text-stroke: 2px rgba(255,255,255,0.15); /* Outline Effect */
+    color: rgba(0,0,0,0.03); /* Very faint grey */
     text-transform: uppercase;
-    position: absolute; z-index: 0;
-    pointer-events: none;
+    position: absolute; z-index: 0; pointer-events: none;
 }
 
 .hero-foreground {
-    z-index: 1; position: relative;
-    max-width: 600px;
-    padding: 40px;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(10px);
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255,255,255,0.1);
+    z-index: 1; position: relative; max-width: 600px; padding: 20px;
 }
 
 /* =========================================
-   6. UTILITIES & ANIMATIONS
+   6. UTILITIES
    ========================================= */
-.text-gold { color: var(--gold-neon); }
-.text-white { color: white; }
+.text-gold { color: var(--gold-main); }
+.text-white { color: var(--text-main); } /* Invert meaning for light mode or keep semantic */
+.text-muted { color: var(--text-muted); }
 
-/* Loading & Modals */
-.loading-overlay {
-    background: var(--bg-obsidian); z-index: 9999;
-    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-    transition: opacity 0.5s; opacity: 0; visibility: hidden;
-}
-.loading-overlay.is-visible { opacity: 1; visibility: visible; }
-.loading-spinner {
-    width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
-    border-top-color: var(--gold-neon); border-radius: 50%;
-    animation: spin 1s infinite linear;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+/* In Light Mode, 'text-white' usually means dark text on light bg, 
+   but specific components with dark backgrounds (like footer) need real white */
+.bg-dark { background: #111; color: white; }
+.bg-dark .text-muted { color: #888; }
+.bg-dark .text-white { color: white; }
 
-/* Drawer & Modal Defaults for Dark Mode */
-.side-drawer, .modern-filter-modal .filter-panel, .auth-modal-dialog {
-    background: #111;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: white;
+/* Drawers & Modals (Light) */
+.side-drawer, .modern-filter-modal .filter-panel, .auth-modal-dialog, .quick-view-panel {
+    background: white;
+    color: var(--text-main);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
 }
-.drawer-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
-.drawer-list a { color: rgba(255,255,255,0.8); }
+.drawer-header { border-bottom: 1px solid var(--line-color); }
+.drawer-list a { color: var(--text-main); }
 
-/* Hide Desktop Nav on Mobile */
-.desktop-nav { display: none; }
-@media(min-width: 900px) {
-    .desktop-nav { display: flex; gap: 30px; }
-    .custom-burger { display: none; }
+/* Animation */
+.reveal-on-scroll {
+    opacity: 0; transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
 
-/* 8. BUTTON LOADING STATE */
-.btn-loading {
-    position: relative;
-    color: transparent !important; /* Hide text */
-    pointer-events: none;
+/* Interactive States */
+.side-drawer.is-open, .modern-filter-modal.is-open, .quick-view-modal.is-open, .auth-modal.is-open {
+    visibility: visible; opacity: 1; pointer-events: auto; transform: translateX(0);
 }
-.btn-loading::after {
-    content: '';
-    position: absolute;
-    left: 50%; top: 50%;
-    width: 20px; height: 20px;
-    margin-left: -10px; margin-top: -10px;
-    border: 2px solid rgba(0,0,0,0.3);
-    border-top-color: var(--text-main);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+.modern-filter-modal.is-open, .quick-view-modal.is-open, .auth-modal.is-open {
+    transform: none; display: flex;
 }
-/* Adjust spinner color for secondary buttons */
-.btn-secondary.btn-loading::after {
-    border: 2px solid rgba(255,255,255,0.1);
-    border-top-color: white;
-}
+body.drawer-open { overflow: hidden; }
+
+/* Loading Overlay */
+.loading-overlay { background: rgba(255,255,255,0.9); }
+.loading-spinner { border-color: rgba(0,0,0,0.1); border-top-color: var(--text-main); }
+.btn-loading::after { border-color: rgba(255,255,255,0.3); border-top-color: white; }
