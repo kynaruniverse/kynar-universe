@@ -3,92 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Gateway | KYNAR Universe</title>
-    
+    <title>The Exchange / Kynar Universe</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/png" href="assets/favicon.png">
 </head>
+<body>
 
-<body class="checkout-page">
-    
-    <div class="header-wrapper">
-        <div data-include="components/header.html"></div>
-    </div>
+    <div data-include="components/header.html"></div>
 
-    <main class="container" style="padding-top: 80px; padding-bottom: 120px;">
+    <main class="forge-container">
         
-        <header style="text-align: center; margin-bottom: 60px;">
-            <div style="width: 80px; height: 80px; background: var(--gold-faint); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
-                <i class="fa-solid fa-shield-halved" style="font-size: 32px; color: var(--gold-neon);"></i>
-            </div>
-            <h1 style="font-family: 'Bantayog'; font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1; color: var(--text-main);">SECURE GATEWAY</h1>
-            <p class="text-muted" style="letter-spacing: 2px; font-size: 11px; font-weight: bold; text-transform: uppercase;">Encrypted Transaction Channel</p>
-        </header>
+        <section class="forge-section">
+            <span class="stone-meta">Acquisition Manifest</span>
+            <h1 class="text-display">The Exchange</h1>
+            <p class="text-body">
+                Review the artifacts you have gathered. confirm your intent to acquire them.
+            </p>
+        </section>
 
-        <form id="checkout-form" class="bento-grid-wrapper" style="display: none;">
+        <section class="forge-section" style="padding-top: 0;">
             
-            <section class="bento-card span-7 reveal-on-scroll">
-                <h2 style="margin-bottom: 30px; font-family: 'Bantayog'; text-transform: uppercase; letter-spacing: 1px;">Identity Protocol</h2>
+            <div style="display: grid; grid-template-columns: 1fr 350px; gap: 4rem; align-items: start;">
                 
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; font-size: 10px; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px;">FULL NAME</label>
-                    <input type="text" name="name" id="checkout-name" class="vip-input-field" required placeholder="ALEX CIPHER">
+                <div id="manifest-list" style="border-top: 1px solid rgba(0,0,0,0.05);">
+                    <div style="padding: 2rem 0; text-align: center; color: var(--ink-secondary);">
+                        Your satchel is empty.
+                    </div>
                 </div>
 
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; font-size: 10px; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px;">TRANSMISSION EMAIL</label>
-                    <input type="email" name="email" id="checkout-email" class="vip-input-field" required placeholder="ARCHITECT@KYNAR.CO.UK">
-                    <p style="font-size: 11px; color: var(--gold-neon); margin-top: 10px; font-weight: bold;">
-                        <i class="fa-solid fa-lock"></i> Assets will be synchronized to this ID.
+                <div class="stone-block" style="position: sticky; top: 120px;">
+                    <h3 class="text-heading" style="margin-bottom: 1.5rem;">Summary</h3>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <span class="stone-meta">Artifacts</span>
+                        <span class="text-body" id="summary-count">0</span>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                        <span class="stone-meta">Total Value</span>
+                        <span class="text-heading" id="summary-total">£0.00</span>
+                    </div>
+
+                    <button id="btn-acquire" class="ink-link" style="width: 100%; text-align: center; padding: 1rem; background: var(--ink-primary); color: var(--bg-paper); border: none; cursor: pointer;">
+                        Complete Exchange
+                    </button>
+                    
+                    <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--ink-secondary); text-align: center;">
+                        Secure digital transfer via Stripe.
                     </p>
                 </div>
 
-                <div>
-                    <label style="display: block; font-size: 10px; font-weight: bold; letter-spacing: 1px; margin-bottom: 8px;">FLIGHT NOTES (OPTIONAL)</label>
-                    <textarea name="message" class="vip-input-field" rows="3" placeholder="SPECIFY SPECIAL INSTRUCTIONS..." style="border-radius: 16px; resize: none;"></textarea>
-                </div>
-            </section>
+            </div>
 
-            <aside class="bento-card span-5 reveal-on-scroll" style="background: var(--bg-surface); border: none;">
-                <h2 style="margin-bottom: 30px; font-family: 'Bantayog'; text-transform: uppercase; letter-spacing: 1px;">Manifest</h2>
-                
-                <div id="checkout-items-list" style="margin-bottom: 30px;"></div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-top: 20px; border-top: 2px solid rgba(0,0,0,0.05);">
-                    <span style="font-family: 'Bantayog'; font-size: 12px; opacity: 0.5;">TOTAL DUE</span>
-                    <span id="checkout-total-display" style="font-size: 32px; font-family: 'Bantayog'; color: var(--text-main); line-height: 1;">£0.00</span>
-                </div>
-
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 20px;">
-                    INITIALIZE TRANSFER <i class="fa-solid fa-bolt" style="margin-left: 10px;"></i>
-                </button>
-                
-                <div style="text-align: center; margin-top: 30px; opacity: 0.2; filter: grayscale(1);">
-                    <i class="fa-brands fa-cc-stripe" style="font-size: 32px;"></i>
-                </div>
-            </aside>
-
-        </form>
-
-        <div id="checkout-empty" style="display: none; text-align: center; padding: 100px 20px;">
-            <i class="fa-solid fa-box-open" style="font-size: 60px; color: var(--bg-surface); margin-bottom: 30px;"></i>
-            <h2 style="font-family: 'Bantayog'; margin-bottom: 20px;">MANIFEST EMPTY</h2>
-            <a href="marketplace.html" class="btn btn-secondary">RETURN TO ARMORY</a>
-        </div>
+        </section>
 
     </main>
 
     <div data-include="components/footer.html"></div>
-    <div data-include="components/auth-modals.html"></div>
-    <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true"></div>
+    <div data-include="components/access-modals.html"></div>
 
     <script src="utilities.js"></script>
-    <script src="loading-state.js"></script>
-    <script src="script.js" defer></script>
-    <script src="cart.js" defer></script>
-    <script src="checkout.js" defer></script>
-    <script type="module" src="auth-ui.js"></script>
-
+    <script src="gathering.js"></script> <script src="exchange.js"></script> <script type="module">
+        import './firebase-config.js';
+        import './access-ui.js';
+    </script>
 </body>
 </html>

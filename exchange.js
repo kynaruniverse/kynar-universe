@@ -1,111 +1,84 @@
 /**
- * KYNAR UNIVERSE - Elastic Checkout Logic
- * Architect: KynarForge Pro
- * Evolution: Platinum Plus Secure Gateway
+ * QUIET FORGE EXCHANGE LOGIC
+ * Role: Render manifest and process transaction
  */
-
-import { auth, db, doc, updateDoc, arrayUnion, onAuthStateChanged } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- DOM ELEMENTS ---
-    const form = document.getElementById('checkout-form');
-    const emptyState = document.getElementById('checkout-empty');
-    const itemsList = document.getElementById('checkout-items-list');
-    const totalDisplay = document.getElementById('checkout-total-display');
-    const nameInput = document.getElementById('checkout-name');
-    const emailInput = document.getElementById('checkout-email');
+    const DOM = {
+        list: document.getElementById('manifest-list'),
+        count: document.getElementById('summary-count'),
+        total: document.getElementById('summary-total'),
+        btn: document.getElementById('btn-acquire')
+    };
 
-    // --- 1. LOAD CART DATA ---
-    const rawData = localStorage.getItem('kynar_cart_v1');
-    const cartItems = rawData ? JSON.parse(rawData) : [];
-
-    if (cartItems.length === 0) {
-        if(form) form.remove(); 
-        if(emptyState) emptyState.style.display = 'block';
-        return;
+    function init() {
+        renderManifest();
+        
+        if (DOM.btn) {
+            DOM.btn.addEventListener('click', processExchange);
+        }
     }
 
-    // --- 2. RENDER UI (Platinum Editorial Style) ---
-    if(form) form.style.display = 'grid'; 
-    
-    // Calculate Total
-    const total = cartItems.reduce((sum, item) => sum + item.price, 0);
-    if(totalDisplay) totalDisplay.textContent = `£${total.toFixed(2)}`;
+    function renderManifest() {
+        const items = window.Satchel.getContents();
+        const total = window.Satchel.total();
 
-    // Render List with Tactile Borders
-    if(itemsList) {
-        itemsList.innerHTML = cartItems.map(item => `
-            <div style="display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px;">
-                <span style="font-size: 14px; font-weight: bold; color: var(--text-main);">${item.title}</span>
-                <span style="font-weight: bold; color: var(--gold-neon);">£${item.price.toFixed(2)}</span>
+        DOM.count.textContent = items.length;
+        DOM.total.textContent = `£${total.toFixed(2)}`;
+
+        if (items.length === 0) {
+            DOM.list.innerHTML = `
+                <div style="padding: 4rem 0; text-align: center;">
+                    <p class="text-body" style="margin: 0 auto;">Your satchel is light. No artifacts gathered.</p>
+                    <a href="archive.html" class="ink-link" style="margin-top: 1.5rem; display: inline-block;">Return to Archive</a>
+                </div>
+            `;
+            DOM.btn.style.opacity = '0.5';
+            DOM.btn.style.pointerEvents = 'none';
+            return;
+        }
+
+        DOM.list.innerHTML = items.map(item => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                <div>
+                    <span class="stone-meta">${item.collection || 'Artifact'}</span>
+                    <h4 class="text-heading" style="font-size: 1.25rem;">${item.title}</h4>
+                </div>
+                <div style="text-align: right;">
+                    <span class="text-body" style="display: block; font-weight: bold;">£${item.price.toFixed(2)}</span>
+                    <button onclick="removeItem('${item.id}')" class="ink-link" style="font-size: 0.75rem; color: var(--ink-secondary); border: none; background: none; cursor: pointer; margin-top: 0.5rem;">
+                        Remove
+                    </button>
+                </div>
             </div>
         `).join('');
     }
 
-    // --- 3. AUTH CHECK & AUTO-FILL ---
-    let currentUser = null;
+    // Expose remove function globally for the HTML onclick
+    window.removeItem = (id) => {
+        window.Satchel.remove(id);
+        renderManifest();
+    };
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            currentUser = user;
-            if(nameInput && !nameInput.value) nameInput.value = user.displayName || '';
-            if(emailInput && !emailInput.value) emailInput.value = user.email || '';
-        }
-    });
-
-    // --- 4. HANDLE SUBMISSION ---
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    function processExchange() {
+        const originalText = DOM.btn.textContent;
+        DOM.btn.textContent = 'Securing...';
+        
+        // Simulation of API call
+        setTimeout(() => {
+            // Success
+            DOM.btn.textContent = 'Exchange Complete';
+            DOM.btn.style.background = '#4CAF50'; // Muted Success Green
             
-            if (!currentUser) {
-                // Trigger Platinum Auth Modal
-                const authModal = document.getElementById('auth-modal');
-                if (authModal) {
-                    authModal.classList.add('is-open'); 
-                    document.querySelector('.drawer-overlay')?.classList.add('is-visible');
-                    alert("Identity verification required to access the vault.");
-                }
-                return;
-            }
-
-            const btn = form.querySelector('button[type="submit"]');
-            if(window.LoadingState) window.LoadingState.buttonStart(btn);
+            alert("Exchange successful. Artifacts have been added to your Identity.");
             
-            try {
-                // A. Prepare Purchase Data
-                const newPurchases = cartItems.map(item => ({
-                    id: item.id,
-                    title: item.title,
-                    price: item.price,
-                    purchaseDate: new Date().toISOString(),
-                    downloadUrl: 'guide-download.html' 
-                }));
-
-                // B. Write to Firestore
-                const userRef = doc(db, "users", currentUser.uid);
-                
-                await updateDoc(userRef, {
-                    purchases: arrayUnion(...newPurchases)
-                });
-
-                // C. Success Handling
-                if(window.LoadingState) window.LoadingState.buttonEnd(btn, "ACQUIRED");
-                
-                localStorage.removeItem('kynar_cart_v1');
-                
-                setTimeout(() => {
-                    window.location.href = 'account.html';
-                }, 1000);
-
-            } catch (error) {
-                console.error("Order Error:", error);
-                if(window.LoadingState) window.LoadingState.buttonEnd(btn, "FAILED");
-                alert("Transaction interrupted. Please verify your connection.");
-            }
-        });
+            // Clear and Redirect
+            window.Satchel.clear();
+            window.location.href = 'identity.html';
+            
+        }, 1500);
     }
 
-    console.log("💳 Secure Gateway Synchronized");
+    init();
 });
