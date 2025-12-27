@@ -1,57 +1,62 @@
-/* * KYNAR UNIVERSE / ENGINE V3.0
- * Theme: Royal Botanist (Silver, Emerald, Burgundy)
- * Typography: Bantayog (Voice), Glacial (Structure), Cormorant (Soul)
+/* * KYNAR UNIVERSE / HYBRID ENGINE V4.0
+ * Theme: Royal Botanist (Silver, Emerald, Burgundy, Gold)
+ * Architecture: 3D Physics, Fluid Type, Mobile-First Drawer
  */
 
-/* --- 1. FONT LOADING SYSTEM --- */
-
-/* Local Display Font */
+/* --- 1. TYPOGRAPHY ENGINE (From Old CSS) --- */
 @font-face {
     font-family: 'Bantayog';
-    src: url('fonts/Bantayog.woff2') format('woff2'),
-         url('fonts/Bantayog.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    src: url('fonts/Bantayog.woff2') format('woff2'), url('fonts/Bantayog.woff') format('woff');
+    font-weight: normal; font-style: normal; font-display: swap;
 }
-
-/* Local UI Font */
+@font-face {
+    font-family: 'Jimmy Flashcard';
+    src: url('fonts/Jimmy Flashcard.woff2') format('woff2'), url('fonts/Jimmy Flashcard.woff') format('woff');
+    font-weight: normal; font-style: normal; font-display: swap;
+}
 @font-face {
     font-family: 'Glacial Indifference';
-    src: url('fonts/GlacialIndifferenceRegular.woff2') format('woff2'),
-         url('fonts/GlacialIndifferenceRegular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    src: url('fonts/GlacialIndifferenceRegular.woff2') format('woff2'), url('fonts/GlacialIndifferenceRegular.woff') format('woff');
+    font-weight: normal; font-style: normal; font-display: swap;
 }
-
-/* External Library Font (The Suggestion) */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
 
 :root {
     /* --- PALETTE: Royal Botanist --- */
+    /* Backgrounds */
     --bg-canvas: #F0F2F3;      /* Platinum Silver (Main Background) */
     --bg-card: #FFFFFF;        /* Pure White (Cards) */
     --bg-panel: #E3E8E8;       /* Sidebar/Headers */
     
+    /* Typography Colors */
     --ink-display: #092C23;    /* Deep Jungle Green (Headings) */
     --ink-body: #2F4F4F;       /* Dark Slate Gray (Reading text) */
     --ink-muted: #8FA3A3;      /* Silver Green (Meta/Borders) */
     
-    --accent-gold: #C5A059;    /* Antique Gold (Borders/Lines) */
+    /* Accents */
+    --accent-gold: #C5A059;    /* Antique Gold (Borders/Lines/Focus) */
     --accent-red: #800020;     /* Burgundy (Buttons/Actions) */
     --accent-red-hover: #5C0015;
-    
-    /* --- TYPOGRAPHY MAPPING --- */
-    --font-display: 'Bantayog', sans-serif;           /* Logo & Giant Headers */
-    --font-ui: 'Glacial Indifference', sans-serif;    /* Nav, Buttons, Price */
-    --font-reading: 'Cormorant Garamond', serif;      /* Articles, Descriptions */
 
-    /* --- LAYOUT PHYSICS --- */
+    /* --- TYPOGRAPHY MAPPING (From Old CSS) --- */
+    --font-display: 'Bantayog', sans-serif;
+    --font-accent: 'Jimmy Flashcard', sans-serif; /* For signatures/slogans */
+    --font-ui: 'Glacial Indifference', sans-serif;
+    
+    /* Fluid Type Scale */
+    --fs-xl: clamp(1.75rem, 1.5rem + 1.5vw, 3rem); /* Main Titles */
+    --fs-lg: clamp(1.25rem, 1.1rem + 0.8vw, 1.75rem); /* Section Headings */
+    --fs-md: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);  /* Body Text */
+
+    /* --- PHYSICS & DIMENSIONS --- */
     --max-width: 1280px;
-    --gutter: 2rem;
-    --radius: 0px; /* Sharp corners for architectural feel */
-    --shadow-soft: 0 10px 30px -10px rgba(9, 44, 35, 0.1);
+    --radius-pill: 999px;
+    --radius-card: 12px;
+    
+    /* --- 3D EFFECTS (Adapted to New Colors) --- */
+    /* Gold-tinted shadows instead of plain black */
+    --shadow-3d: 0 6px 0 #8E7036, 0 12px 18px rgba(9, 44, 35, 0.15), inset 0 2px 0 rgba(255,255,255,0.5);
+    --shadow-3d-hover: 0 8px 0 #8E7036, 0 16px 24px rgba(9, 44, 35, 0.2), inset 0 2px 0 rgba(255,255,255,0.55);
+    --shadow-3d-active: 0 2px 0 #8E7036, 0 4px 8px rgba(9, 44, 35, 0.2), inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* --- RESET & BASE --- */
@@ -60,8 +65,7 @@
 body {
     background-color: var(--bg-canvas);
     color: var(--ink-body);
-    font-family: var(--font-ui); /* Default to Glacial */
-    font-size: 16px;
+    font-family: var(--font-ui);
     line-height: 1.6;
     overflow-x: hidden;
 }
@@ -76,29 +80,27 @@ h1, h2, h3, .nav-logo {
 }
 
 .text-display { 
-    font-size: clamp(2.5rem, 6vw, 5rem); 
+    font-size: var(--fs-xl);
     margin-bottom: 1rem;
+    text-wrap: balance;
 }
 
-.text-heading { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.text-heading { font-size: var(--fs-lg); margin-bottom: 0.5rem; }
 
-/* The "Soul" text for descriptions */
+/* The "Soul" text */
 p.text-body, .article-content {
-    font-family: var(--font-reading);
-    font-size: 1.25rem; /* Larger for readability */
+    font-size: var(--fs-md);
     color: var(--ink-body);
     line-height: 1.7;
 }
 
-.stone-meta {
-    font-family: var(--font-ui);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+/* Handwritten Accent */
+.slogan-accent {
+    font-family: var(--font-accent);
     color: var(--accent-gold);
-    font-weight: bold;
-    display: block;
-    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    transform: rotate(-2deg);
+    display: inline-block;
 }
 
 /* --- LAYOUT: THE CONTAINER --- */
@@ -106,137 +108,157 @@ p.text-body, .article-content {
     width: 100%;
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 0 var(--gutter);
+    padding: 0 2rem;
 }
 
 .forge-section {
     padding: 4rem 0;
-    border-bottom: 1px solid rgba(197, 160, 89, 0.2); /* Faint gold line */
+    border-bottom: 1px solid rgba(197, 160, 89, 0.15); /* Faint gold line */
 }
 
-/* --- LAYOUT: THE PRODUCT GRID (Fixing the layout) --- */
-.product-grid {
-    display: grid;
-    /* Smart scaling: fit as many 320px cards as possible */
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-    gap: 2.5rem;
-    align-items: start;
+/* --- COMPONENT: 3D BUTTONS (Adapted from Old CSS) --- */
+.btn {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.2s ease;
+    border: none;
+    padding: 14px 30px;
+    font-size: 0.9rem;
 }
 
-/* --- COMPONENT: THE ARTIFACT CARD --- */
-.stone-block {
-    background: var(--bg-card);
-    border: 1px solid rgba(0,0,0,0.05);
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Force equal heights in grid */
+/* Primary: Burgundy with Gold Shadow */
+.btn-primary {
+    background-color: var(--accent-red);
+    color: white;
+    /* Special Burgundy Shadow Variant */
+    box-shadow: 0 6px 0 #4A0012, 0 12px 18px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.2);
 }
 
-/* The "Lift" Effect */
-.stone-block:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-soft);
-    border-color: var(--accent-gold);
+.btn-primary:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 0 #4A0012, 0 16px 24px rgba(0,0,0,0.25);
 }
 
-.stone-image-frame {
-    width: 100%;
-    aspect-ratio: 16/10; /* Cinematic ratio */
-    background: var(--bg-panel);
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-    border-bottom: 2px solid var(--accent-gold);
+.btn-primary:active { 
+    transform: translateY(3px); 
+    box-shadow: 0 2px 0 #4A0012, 0 4px 8px rgba(0,0,0,0.2); 
 }
 
-.stone-image-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+/* Secondary: Gold Outline */
+.btn-secondary {
+    background: transparent;
+    color: var(--ink-display);
+    border: 2px solid var(--accent-gold);
+    box-shadow: none;
+}
+.btn-secondary:hover {
+    background: var(--accent-gold);
+    color: white;
+    transform: translateY(-2px);
 }
 
-.stone-block:hover img { transform: scale(1.05); }
-
-/* --- COMPONENT: NAVIGATION --- */
+/* --- COMPONENT: NAVIGATION (Frosted Glass) --- */
 .nav-forge {
-    background: rgba(240, 242, 243, 0.9); /* Translucent Silver */
+    background: rgba(240, 242, 243, 0.85); /* Translucent Silver */
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--accent-gold);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    padding: 1.25rem 0;
+    position: sticky; top: 0; z-index: 1000;
+    padding: 1rem 0;
 }
 
-.nav-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+.nav-content { display: flex; justify-content: space-between; align-items: center; }
 
 .nav-logo {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     text-decoration: none;
     color: var(--ink-display);
 }
 
-.nav-links {
-    display: flex;
-    gap: 2rem;
-}
-
+.nav-links { display: flex; gap: 2rem; }
 .nav-links a {
     text-decoration: none;
     font-family: var(--font-ui);
     color: var(--ink-body);
     font-weight: 700;
-    font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: 0.9rem;
     transition: color 0.2s;
 }
-
 .nav-links a:hover { color: var(--accent-red); }
 
-/* --- COMPONENT: BUTTONS (Burgundy) --- */
-.ink-link, button {
-    display: inline-block;
-    font-family: var(--font-ui);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: none;
+/* Mobile Burger (Hidden on Desktop) */
+.custom-burger {
+    display: none;
+    flex-direction: column; justify-content: space-between;
+    width: 30px; height: 20px;
+    background: none; border: none; cursor: pointer;
+}
+.custom-burger span {
+    width: 100%; height: 3px;
+    background: var(--ink-display);
+    transition: 0.3s;
 }
 
-/* Standard Links */
-a.ink-link {
-    color: var(--accent-red);
-    font-size: 0.85rem;
-    border-bottom: 1px solid transparent;
-}
-a.ink-link:hover { border-bottom-color: var(--accent-red); }
-
-/* Primary Action Buttons (Buy/Download) */
-button[onclick], button[type="submit"] {
-    background: var(--accent-red);
-    color: white;
-    padding: 1rem 2rem;
-    font-size: 0.85rem;
-    margin-top: 1rem;
-    width: 100%; /* Full width on cards */
+/* --- COMPONENT: ARTIFACT CARD (Hybrid) --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
-button:hover {
-    background: var(--accent-red-hover);
-    transform: translateY(-1px);
+.stone-block {
+    background: var(--bg-card);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden; /* For shimmer effects */
 }
 
-/* --- COMPONENT: SATCHEL DRAWER --- */
+/* The Lift + Glow Effect */
+.stone-block:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(9, 44, 35, 0.1);
+    border-color: var(--accent-gold);
+}
+
+.stone-image-frame {
+    width: 100%; aspect-ratio: 16/10;
+    background: var(--bg-panel);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    position: relative;
+}
+.stone-image-frame img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.stone-block:hover img { transform: scale(1.05); }
+
+/* Badge Logic */
+.product-badge {
+    position: absolute; top: 1rem; left: 1rem;
+    background: var(--accent-gold); color: white;
+    padding: 4px 10px;
+    font-family: var(--font-ui); font-size: 0.7rem;
+    font-weight: bold; text-transform: uppercase;
+    border-radius: 4px;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* --- COMPONENT: MOBILE DRAWER (Extracted & Adapted) --- */
 .drawer-backdrop {
     position: fixed; inset: 0;
     background: rgba(9, 44, 35, 0.6); /* Emerald Tint */
@@ -248,39 +270,61 @@ button:hover {
 
 .drawer-panel {
     position: fixed; top: 0; right: 0; bottom: 0;
-    width: 400px; max-width: 90vw;
+    width: 85%; max-width: 350px;
     background: var(--bg-canvas);
     z-index: 2001;
     transform: translateX(100%);
-    transition: 0.3s ease-out;
-    border-left: 4px solid var(--accent-gold);
-    box-shadow: -20px 0 50px rgba(0,0,0,0.2);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -10px 0 40px rgba(0,0,0,0.2);
     display: flex; flex-direction: column;
+    border-left: 4px solid var(--accent-gold);
 }
 
 .drawer-open .drawer-backdrop { opacity: 1; visibility: visible; }
 .drawer-open .drawer-panel { transform: translateX(0); }
 
-.drawer-header { padding: 2rem; background: var(--bg-card); border-bottom: 1px solid rgba(0,0,0,0.1); }
-.drawer-body { padding: 2rem; flex: 1; overflow-y: auto; }
-.drawer-footer { padding: 2rem; background: var(--bg-card); border-top: 1px solid rgba(0,0,0,0.1); }
-
-/* --- INPUTS --- */
-input {
-    width: 100%;
-    padding: 1rem;
+.drawer-header {
+    padding: 2rem;
     background: var(--bg-card);
-    border: 1px solid var(--ink-muted);
-    font-family: var(--font-ui);
-    color: var(--ink-display);
-    outline: none;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex; justify-content: space-between; align-items: center;
 }
-input:focus { border-color: var(--accent-red); }
+.drawer-body { padding: 2rem; overflow-y: auto; flex: 1; }
+.drawer-footer { padding: 2rem; background: var(--bg-card); border-top: 1px solid rgba(0,0,0,0.05); }
 
-/* --- MOBILE OPTIMIZATION --- */
+
+/* --- UTILITIES & LOADING --- */
+.loading-overlay {
+    position: fixed; inset: 0;
+    background: rgba(240, 242, 243, 0.9);
+    backdrop-filter: blur(5px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 99999;
+    opacity: 0; visibility: hidden;
+    transition: 0.3s;
+}
+.loading-overlay.is-visible { opacity: 1; visibility: visible; }
+
+.spinner {
+    width: 40px; height: 40px;
+    border: 3px solid rgba(197, 160, 89, 0.2);
+    border-top-color: var(--accent-gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- RESPONSIVE OPTIMIZATIONS --- */
 @media (max-width: 768px) {
-    .nav-links { display: none; } /* Would need a hamburger menu script for full mobile nav */
-    .text-display { font-size: 3rem; }
-    .product-grid { grid-template-columns: 1fr; }
-    .forge-container { padding: 0 1.5rem; }
+    .nav-links { display: none; } /* Hide desktop nav */
+    .custom-burger { display: flex; } /* Show mobile burger */
+    
+    .text-display { font-size: 2.5rem; }
+    
+    .product-grid { 
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 1.5rem;
+    }
+    
+    .btn { width: 100%; } /* Full width buttons on mobile */
 }
