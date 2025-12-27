@@ -5,37 +5,37 @@
 
 /*--- 1. MATERIAL VARIABLES ---*/
 :root {
-    /* PALETTE: Limestone & Ink */
-    --bg-paper: #FDFDFB;        /* Warm White (Base) */
-    --bg-stone: #F2F2F0;        /* Pale Limestone (Cards) */
-    --bg-stone-deep: #EAEAE6;   /* Hover State */
+    /* --- 1. THE PALETTE (Alabaster Day) --- */
     
-    --ink-primary: #222220;     /* Charcoal (Main Text) */
-    --ink-secondary: #666660;   /* Warm Grey (Body) */
-    --ink-faint: #B0B0A8;       /* Meta Data */
+    /* Backgrounds: Warm, natural whites, not harsh #FFF */
+    --bg-paper: #F9F8F6;  /* The main page background (Cloud White) */
+    --bg-stone: #EFECE8;  /* Cards/Headers (Raw Limestone) */
+    --bg-stone-deep: #E0DBD5; /* Inputs/Active states */
+
+    /* Ink: Dark Charcoal, never pure black */
+    --ink-primary: #1A1A1A; /* Headings */
+    --ink-secondary: #5C5855; /* Body text / Meta */
+    --ink-faint: #A8A4A0; /* Borders / Inactive */
+
+    /* Accents: The "Kynar" Blue/Grey */
+    --accent-core: #2C3E50; 
+    --focus-line: #000000;
+
+    /* Glass Effects */
+    --glass-surface: rgba(249, 248, 246, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.06);
+
+    /* --- 2. THE RHYTHM --- */
+    --rhythm-pause: 15vh;
+    --rhythm-flow: 8vh;
+    --gutter: clamp(1rem, 5vw, 4rem);
+    --max-width: 1400px;
     
-    --glass-surface: rgba(253, 253, 251, 0.95); /* Sticky Nav */
-    --focus-line: #222220;      /* Input focus */
-
-    /* RHYTHM: Directional Whitespace */
-    --rhythm-pause: 15vh;       /* Major section break */
-    --rhythm-flow: 6vh;         /* Minor section break */
-    --rhythm-breath: 1.5rem;    /* Content gap */
-    --gutter: clamp(1.5rem, 5vw, 4rem); /* Page margins */
-
-    /* TYPOGRAPHY */
-    --font-display: 'Bantayog', serif; 
-    --font-body: 'Glacial Indifference', sans-serif; 
-    
-    --fs-display: clamp(2.5rem, 6vw, 5rem); 
-    --fs-heading: clamp(1.25rem, 2.5vw, 2rem);
-    --fs-body: 1.05rem;
-    --fs-small: 0.85rem;
-
-    /* PHYSICS */
-    --ease-forge: cubic-bezier(0.2, 0.0, 0.2, 1); 
-    --radius-stone: 4px; 
+    /* --- 3. THE PHYSICS --- */
+    --radius-stone: 4px; /* Sharp but safe */
+    --ease-forge: cubic-bezier(0.2, 0.0, 0.0, 1.0); /* Sharp snap */
 }
+
 
 @media (prefers-color-scheme: dark) {
     :root {
@@ -114,6 +114,17 @@ a { text-decoration: none; color: inherit; cursor: pointer; transition: opacity 
     background: var(--bg-stone-deep);
     transform: translateY(-2px);
 }
+
+/* Hardens the edges for light mode visibility */
+.stone-block, .nav-forge, .drawer-panel {
+    border: 1px solid var(--glass-border);
+}
+
+/* Invert button text color for high contrast */
+.ink-link {
+    font-weight: 500;
+}
+
 
 /* Inputs (Forms) */
 .ink-input {
@@ -318,40 +329,42 @@ a { text-decoration: none; color: inherit; cursor: pointer; transition: opacity 
     border-top: 1px solid rgba(0,0,0,0.05);
 }
 
-/*--- 8. MAGIC TRICK: CIRCADIAN RHYTHMS ---*/
+/* --- 8. MAGIC TRICK: CIRCADIAN RHYTHMS (Recalibrated) --- */
 
-/* Base Transition (The "Breathing" Effect) */
-body, .stone-block, .nav-forge, .drawer-panel {
-    transition: background-color 2s ease, color 2s ease, border-color 2s ease;
+/* Base Transition */
+body, .stone-block, .nav-forge, .drawer-panel, input {
+    transition: background-color 1.5s ease, color 1.5s ease, border-color 1.5s ease;
 }
 
-/* MORNING (06:00 - 11:00): Crisp, Cool White (The Fresh Page) */
+/* MORNING (06:00 - 17:00): crisp white light */
 body[data-time="morning"] {
     --bg-paper: #FFFFFF;
-    --bg-stone: #F7F9FA; /* Cool grey tint */
-    --ink-primary: #111111;
-    --ink-secondary: #5A6A70;
+    --bg-stone: #F4F4F4;
+    --ink-primary: #000000;
+    --ink-secondary: #444444;
 }
 
-/* EVENING (17:00 - 20:00): Golden Hour (The Warm Study) */
+/* EVENING (17:00 - 20:00): Warm "Gallery" light */
 body[data-time="evening"] {
-    --bg-paper: #F5F2EB; /* Warm Parchment */
-    --bg-stone: #EBE5D9;
-    --ink-primary: #332E28;
-    --ink-secondary: #8A8070;
+    --bg-paper: #F0EBE5; /* Warmer Beige */
+    --bg-stone: #E6DFD6;
+    --ink-primary: #2B2620;
+    --ink-secondary: #6B6359;
 }
 
-/* NIGHT (20:00 - 06:00): Deep Focus (The Obsidian Forge) */
+/* NIGHT (20:00 - 06:00): The "Dark Mode" you had before */
+/* This is essential so users aren't blinded at night */
 body[data-time="night"] {
     --bg-paper: #121212;
     --bg-stone: #1E1E1E;
     --bg-stone-deep: #2A2A2A;
     --ink-primary: #E0E0E0;
     --ink-secondary: #888888;
-    --ink-faint: #555555;
+    --ink-faint: #444444;
     --glass-surface: rgba(18, 18, 18, 0.9);
+    --glass-border: rgba(255, 255, 255, 0.08);
 }
-/* Note: "Day" (11:00 - 17:00) uses your default :root variables. */
+
 
 
 /*--- 9. MAGIC TRICK: INSPECTION LENS ---*/
