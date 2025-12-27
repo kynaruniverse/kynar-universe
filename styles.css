@@ -376,3 +376,24 @@ section {
     }
 }
 
+
+/* --- Missing Grid Styles --- */
+.twin-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 600px) {
+    .twin-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Ensure images in cards don't overflow */
+img {
+    max-width: 100%;
+    display: block;
+}
+
