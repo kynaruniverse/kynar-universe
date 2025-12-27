@@ -1,3 +1,37 @@
+/* ═══════════════════════════════════════
+   0. FONT LOADING PROTOCOL
+   ═══════════════════════════════════════ */
+
+/* Display Font (Headings) */
+@font-face {
+    font-family: 'Bantayog';
+    src: url('assets/fonts/Bantayog-Regular.otf') format('opentype'),
+         url('assets/fonts/Bantayog-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Body Font (Standard Text) */
+@font-face {
+    font-family: 'Glacial Indifference';
+    src: url('assets/fonts/GlacialIndifference-Regular.otf') format('opentype'),
+         url('assets/fonts/GlacialIndifference-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Body Font (Bold) */
+@font-face {
+    font-family: 'Glacial Indifference';
+    src: url('assets/fonts/GlacialIndifference-Bold.otf') format('opentype'),
+         url('assets/fonts/GlacialIndifference-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* SOFT ROYAL ENGINE V6.0 - GLOBAL STYLES
    Role: Layout, Typography, Drawers, and Theme Variables
 */
@@ -349,33 +383,15 @@ section {
   width: 100%;
 }
 
+/* Ensure images in cards don't overflow */
+img {
+    max-width: 100%;
+    display: block;
+}
+
 /* ═══════════════════════════════════════
    10. RESPONSIVE GRIDS
    ═══════════════════════════════════════ */
-
-@media (min-width: 600px) {
-  #artifact-grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-}
-
-
-/* Add this to styles.css */
-.twin-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-@media (max-width: 480px) {
-    .twin-grid {
-        grid-template-columns: 1fr; /* Stack on very small phones */
-    }
-}
-
 
 /* --- Missing Grid Styles --- */
 .twin-grid {
@@ -386,14 +402,13 @@ section {
 }
 
 @media (min-width: 600px) {
-    .twin-grid {
-        grid-template-columns: 1fr 1fr;
-    }
+  #artifact-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  .twin-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
-
-/* Ensure images in cards don't overflow */
-img {
-    max-width: 100%;
-    display: block;
-}
-
