@@ -454,3 +454,136 @@ p.text-body, .article-content {
         transform: translateX(0); /* Disable slide on mobile */
     }
 }
+
+
+/* --- COMPONENT: HEADER 10X (Hybrid) --- */
+
+/* 1. TOP SYSTEM BAR */
+.header-top-bar {
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 0.5rem 0;
+    font-size: 0.8rem;
+}
+
+.top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem; /* Align with container */
+}
+
+/* Slogan & Stars */
+.slogan-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stars {
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+}
+
+.slogan-text {
+    font-family: var(--font-accent); /* Jimmy Flashcard */
+    color: var(--ink-muted);
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+/* Top Account Link */
+.top-account-link {
+    display: flex; align-items: center; gap: 0.5rem;
+    text-decoration: none;
+    color: var(--ink-body);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    transition: color 0.2s;
+}
+.top-account-link:hover { color: var(--accent-red); }
+
+/* 2. MAIN NAV UPDATES */
+.nav-forge {
+    /* Ensure sticky works perfectly */
+    position: sticky; top: 0; z-index: 1000;
+}
+
+.nav-content {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto; /* Logo | Search | Links | Satchel */
+    align-items: center;
+    gap: 2rem;
+}
+
+/* 3. INTEGRATED SEARCH BAR */
+.nav-search {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--ink-muted);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 1rem;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto; /* Center it */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.nav-search:focus-within {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
+}
+
+.nav-search input {
+    border: none; background: none; padding: 0;
+    font-size: 0.9rem; flex: 1;
+    color: var(--ink-body);
+}
+.nav-search input:focus { outline: none; border: none; }
+
+.nav-search button {
+    background: none; border: none; padding: 0;
+    color: var(--ink-muted); cursor: pointer;
+    display: flex; align-items: center;
+    margin: 0; width: auto; /* Reset generic button styles */
+}
+.nav-search button:hover { color: var(--accent-red); transform: none; }
+
+
+/* 4. SATCHEL BUTTON */
+.satchel-btn {
+    background: none; border: none;
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-display);
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--accent-red);
+    cursor: pointer;
+    padding: 0;
+    margin: 0; width: auto;
+}
+.satchel-btn:hover { background: none; transform: translateY(-1px); }
+
+.satchel-badge {
+    background: var(--accent-red);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    opacity: 0; /* Hidden if empty */
+    transition: opacity 0.3s;
+}
+
+/* RESPONSIVE TWEAKS */
+@media (max-width: 900px) {
+    .nav-search { display: none; } /* Hide search on tablets/mobile to save space */
+    .header-top-bar { display: none; } /* Optional: Hide top bar on mobile for cleanliness */
+    
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+    }
+}
