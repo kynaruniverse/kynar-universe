@@ -401,3 +401,39 @@ body[data-time="night"] {
     margin-top: 0.25rem;
     display: block;
 }
+
+/* --- EMERGENCY OVERRIDE: FORCE ALABASTER --- */
+
+:root {
+    /* FORCE LIGHT PALETTE */
+    --bg-paper: #F9F8F6 !important;
+    --bg-stone: #EFECE8 !important;
+    --bg-stone-deep: #E0DBD5 !important;
+    --ink-primary: #1A1A1A !important;
+    --ink-secondary: #5C5855 !important;
+    --glass-surface: rgba(249, 248, 246, 0.95) !important;
+    --glass-border: rgba(0, 0, 0, 0.08) !important;
+}
+
+body {
+    background-color: var(--bg-paper) !important;
+    color: var(--ink-primary) !important;
+}
+
+.stone-block, .nav-forge, .drawer-panel {
+    background-color: var(--bg-stone) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03) !important; /* Subtle shadow for depth */
+}
+
+/* Fix Inputs to be visible on light background */
+input, textarea {
+    background: #FFFFFF !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--ink-primary) !important;
+}
+
+/* Fix Headings */
+h1, h2, h3, h4, .text-display, .text-heading {
+    color: var(--ink-primary) !important;
+}
