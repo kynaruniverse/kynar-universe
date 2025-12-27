@@ -587,3 +587,170 @@ p.text-body, .article-content {
         justify-content: space-between;
     }
 }
+
+
+/* --- PAGE: HOME (THE SANCTUARY) --- */
+
+/* 1. HERO FORGE */
+.hero-section {
+    text-align: center;
+    padding: 6rem 0 4rem;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-text {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    color: var(--ink-body);
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Animation Keyframes */
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 2. CATEGORY MATRIX */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.category-card {
+    position: relative;
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    text-decoration: none;
+    color: var(--ink-display);
+    border: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 240px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* Specific Card Colors (Subtle Tints) */
+.prod-card { background: #F4F1EA; }    /* Warm Paper */
+.creative-card { background: #EAEFEC; } /* Mint Tint */
+.knowledge-card { background: #F2EFEF; } /* Rose Tint */
+.tech-card { background: #E8EBEB; }     /* Cool Grey */
+
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(9, 44, 35, 0.1);
+    border-color: var(--accent-gold);
+}
+
+.card-number {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    opacity: 0.1;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    transition: 0.3s;
+}
+
+.category-card:hover .card-number {
+    opacity: 0.2;
+    transform: scale(1.1);
+}
+
+.card-icon {
+    align-self: flex-end;
+    font-size: 1.5rem;
+    color: var(--accent-red);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: 0.3s;
+}
+
+.category-card:hover .card-icon {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 3. SOLE CREATOR SEAL (Ported from Old Design) */
+.sole-creator-slogan {
+    background-color: var(--bg-card);
+    border: 1px solid var(--accent-gold);
+    border-radius: 20px;
+    max-width: 600px;
+    margin: 4rem auto;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 
+        0 10px 30px rgba(197, 160, 89, 0.15), /* Gold Glow */
+        inset 0 0 0 4px rgba(240, 242, 243, 0.5); /* Inner Ring */
+}
+
+.slogan-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    text-transform: uppercase;
+    color: var(--ink-display);
+}
+
+.slogan-title span { color: var(--accent-gold); }
+
+.slogan-tagline {
+    font-family: var(--font-ui);
+    font-weight: bold;
+    color: var(--accent-red);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+}
+
+/* 4. FEATURED GRID */
+.featured-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    background: var(--bg-card);
+    padding: 3rem;
+    border-radius: var(--radius-card);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.feature-list {
+    list-style: none;
+    margin: 2rem 0;
+    font-family: var(--font-ui);
+    color: var(--ink-body);
+}
+.feature-list li { margin-bottom: 0.5rem; }
+
+/* Mobile Response */
+@media (max-width: 768px) {
+    .hero-text { font-size: 1rem; }
+    .hero-actions { flex-direction: column; }
+    
+    .featured-grid {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+        gap: 2rem;
+    }
+    
+    .category-grid { grid-template-columns: 1fr; }
+    
+    .sole-creator-slogan { margin: 2rem auto; padding: 2rem 1.5rem; }
+}
