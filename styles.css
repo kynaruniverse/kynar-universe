@@ -259,3 +259,132 @@ a { text-decoration: none; color: inherit; cursor: pointer; transition: opacity 
     :root { --rhythm-pause: 15vh; }
     .nav-forge { position: relative; } /* Unstick nav to save vertical space */
 }
+
+
+/*--- 7. ENHANCEMENT: THE GHOST DRAWER ---*/
+
+/* The Overlay (Darkens the background) */
+.drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(34, 34, 32, 0.4); /* Ink Primary at 40% */
+    backdrop-filter: blur(4px);
+    z-index: 800;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s var(--ease-forge), visibility 0.4s;
+}
+
+/* The Drawer (Slide-out Panel) */
+.drawer-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 400px;
+    background: var(--bg-paper);
+    border-left: 1px solid rgba(0,0,0,0.05);
+    z-index: 850;
+    transform: translateX(100%);
+    transition: transform 0.4s var(--ease-forge);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+}
+
+/* Active State */
+.drawer-open .drawer-backdrop { opacity: 1; visibility: visible; }
+.drawer-open .drawer-panel { transform: translateX(0); }
+
+/* Drawer Content */
+.drawer-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.drawer-footer {
+    padding: 2rem;
+    background: var(--bg-stone);
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+/*--- 8. MAGIC TRICK: CIRCADIAN RHYTHMS ---*/
+
+/* Base Transition (The "Breathing" Effect) */
+body, .stone-block, .nav-forge, .drawer-panel {
+    transition: background-color 2s ease, color 2s ease, border-color 2s ease;
+}
+
+/* MORNING (06:00 - 11:00): Crisp, Cool White (The Fresh Page) */
+body[data-time="morning"] {
+    --bg-paper: #FFFFFF;
+    --bg-stone: #F7F9FA; /* Cool grey tint */
+    --ink-primary: #111111;
+    --ink-secondary: #5A6A70;
+}
+
+/* EVENING (17:00 - 20:00): Golden Hour (The Warm Study) */
+body[data-time="evening"] {
+    --bg-paper: #F5F2EB; /* Warm Parchment */
+    --bg-stone: #EBE5D9;
+    --ink-primary: #332E28;
+    --ink-secondary: #8A8070;
+}
+
+/* NIGHT (20:00 - 06:00): Deep Focus (The Obsidian Forge) */
+body[data-time="night"] {
+    --bg-paper: #121212;
+    --bg-stone: #1E1E1E;
+    --bg-stone-deep: #2A2A2A;
+    --ink-primary: #E0E0E0;
+    --ink-secondary: #888888;
+    --ink-faint: #555555;
+    --glass-surface: rgba(18, 18, 18, 0.9);
+}
+/* Note: "Day" (11:00 - 17:00) uses your default :root variables. */
+
+
+/*--- 9. MAGIC TRICK: INSPECTION LENS ---*/
+
+.stone-image-frame {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: #E6E6E2;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    cursor: crosshair; /* Indicates inspection */
+}
+
+.stone-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.1s linear; /* Fast response for mouse tracking */
+    transform-origin: center center;
+}
+
+/* When inspecting (class added by JS) */
+.stone-image-frame.inspecting img {
+    transform: scale(2); /* 2x Zoom */
+}
+
+/* Social Proof Text */
+.stone-proof {
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-top: 0.25rem;
+    display: block;
+}
