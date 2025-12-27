@@ -123,11 +123,17 @@ const AccessSystem = (() => {
         btn.textContent = 'Processing...';
         
         setTimeout(() => {
-            // Mock Success
+                        // Mock Success
             const user = { name: type === 'login' ? 'Traveler' : 'New Soul' };
-            localStorage.setItem('kynar_user_token', JSON.stringify(user));
             
+            // SAVE TOKENS
+            localStorage.setItem('kynar_user_token', JSON.stringify(user));
+            localStorage.setItem('kynar_signal_token', 'active'); // Unlocks free downloads
+            
+            if (window.Haptics) window.Haptics.success();
+
             btn.textContent = originalText;
+
             closeGate();
             updateIdentityPage(user);
             

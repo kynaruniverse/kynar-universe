@@ -11,52 +11,80 @@
 
     <div data-include="components/header.html"></div>
 
-    <main class="forge-container" style="max-width: 800px;"> <section class="forge-section">
+        <main class="forge-container">
+        
+        <section class="forge-section" style="padding-bottom: 2rem;">
             <a href="library.html" class="ink-link" style="font-size: 0.85rem; color: var(--ink-secondary); margin-bottom: 1.5rem; display: inline-block;">&larr; Return to Library</a>
             
-            <span class="stone-meta">Getting Started</span>
-            <h1 class="text-display" style="font-size: clamp(2rem, 5vw, 3.5rem);">The First Step</h1>
-            <p class="stone-meta" style="margin-top: 1rem;">Reading Time: 3 Minutes</p>
+            <div style="margin-top: 1rem;">
+                <span class="stone-meta">Productivity System</span>
+                <h1 class="text-display" style="font-size: clamp(2.5rem, 5vw, 4rem);">Deep Focus OS</h1>
+                <p class="text-body" style="font-size: 1.25rem; max-width: 60ch;">
+                    A complete operating system for Notion designed to strip away noise and highlight the signal.
+                </p>
+            </div>
         </section>
 
         <section class="forge-section" style="padding-top: 0;">
-            <div class="text-body" style="max-width: 100%; font-size: 1.15rem; line-height: 1.8;">
-                <p style="margin-bottom: 2rem;">
-                    Welcome to the Quiet Forge. You have acquired a digital artifact designed to clarify your workflow. This manual will guide you through the initial configuration.
-                </p>
-
-                <h3 class="text-heading" style="margin: 3rem 0 1rem 0;">1. Unpacking the Archive</h3>
-                <p style="margin-bottom: 2rem;">
-                    Your artifact arrives as a compressed ZIP file. We recommend creating a dedicated folder on your device named "Kynar Assets" before extracting the contents. This ensures a clean workspace from day one.
-                </p>
-
-                <h3 class="text-heading" style="margin: 3rem 0 1rem 0;">2. Installation</h3>
-                <p style="margin-bottom: 2rem;">
-                    For PDF planners, import the file directly into your annotation app (GoodNotes, Notability, or Xodo). For Notion systems, open the link provided in the text file and select "Duplicate" in the top right corner.
-                </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem; align-items: start;">
                 
-                <div class="stone-block" style="margin: 3rem 0; padding: 1.5rem; border-left: 2px solid var(--ink-primary);">
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--ink-secondary);">
-                        <strong>Note:</strong> Do not edit the original master file. Always create a copy for your daily use to preserve the template structure.
+                <article>
+                    <div class="stone-block" style="padding: 0; background: transparent; margin-bottom: 2rem;">
+                        <div style="width: 100%; aspect-ratio: 16/9; background: #E6E6E2; border-radius: var(--radius-stone);"></div>
+                    </div>
+                    
+                    <h3 class="text-heading">The Philosophy</h3>
+                    <p class="text-body">
+                        Most planners ask you to do more. This system asks you to do less. 
+                        By utilizing the "Daily Three" methodology, Deep Focus OS forces you to prioritize 
+                        before you execute.
                     </p>
-                </div>
+                    
+                    <h3 class="text-heading" style="margin-top: 2rem;">How it Works</h3>
+                    <p class="text-body">
+                        1. <strong>Capture:</strong> A unified inbox for all inputs.<br>
+                        2. <strong>Process:</strong> Weekly reviews to clear the clutter.<br>
+                        3. <strong>Execute:</strong> A dashboard that shows only today's tasks.
+                    </p>
+                </article>
 
-                <h3 class="text-heading" style="margin: 3rem 0 1rem 0;">3. The First Entry</h3>
-                <p style="margin-bottom: 2rem;">
-                    Do not try to fill every page immediately. Start with today's date. Write one intention. Complexity will build naturally over time; do not force it.
-                </p>
-            </div>
-            
-            <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.05);">
-                <span class="stone-meta">Was this helpful?</span>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <button class="ink-link" style="background: none; border: none; cursor: pointer;">Yes</button>
-                    <button class="ink-link" style="background: none; border: none; cursor: pointer; color: var(--ink-secondary);">No</button>
-                </div>
+                <aside class="stone-block" style="position: sticky; top: 120px;">
+                    <h4 class="stone-meta" style="color: var(--ink-primary); border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                        Technical Specifications
+                    </h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
+                        <div>
+                            <span class="stone-meta">Format</span>
+                            <span style="display:block;">Notion Template</span>
+                        </div>
+                        <div>
+                            <span class="stone-meta">Version</span>
+                            <span style="display:block;">v2.4 (2025)</span>
+                        </div>
+                        <div>
+                            <span class="stone-meta">File Size</span>
+                            <span style="display:block;">~15KB (Cloud)</span>
+                        </div>
+                        <div>
+                            <span class="stone-meta">Device</span>
+                            <span style="display:block;">Desktop / Mobile</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.1);">
+                        <span class="text-heading" style="display: block; margin-bottom: 1rem;">£24.00</span>
+                        <button onclick="window.Satchel.add({id: 'art_001', title: 'Deep Focus OS', price: 24.00, image: '', collection: 'productivity'})" class="ink-link" style="width: 100%; text-align: center; background: var(--ink-primary); color: var(--bg-paper); padding: 1rem; border: none; cursor: pointer;">
+                            Acquire Artifact
+                        </button>
+                    </div>
+                </aside>
+
             </div>
         </section>
 
     </main>
+
 
     <div data-include="components/footer.html"></div>
     <div data-include="components/access-modals.html"></div>
@@ -66,5 +94,8 @@
         import './firebase-config.js';
         import './access-ui.js';
     </script>
+    <script src="circadian.js"></script>
+    <script src="haptics.js"></script>
+
 </body>
 </html>

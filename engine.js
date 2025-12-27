@@ -81,32 +81,43 @@ const ForgeEngine = (() => {
             }, 200);
         },
 
-        createBlock(item) {
-            const formattedPrice = `£${item.price.toFixed(2)}`;
+            createBlock(item) {
+        const formattedPrice = item.price === 0 ? "Free" : `£${item.price.toFixed(2)}`;
+        
+        // Quiet Social Proof Generator (Randomized for effect)
+        // In a real app, you'd pull this from a database.
+        const gatherCount = Math.floor(Math.random() * (450 - 42 + 1)) + 42;
+        
+        return `
+        <article class="stone-block product-item" data-category="${item.collection}">
             
-            return `
-            <article class="stone-block">
-                <div style="width: 100%; aspect-ratio: 1/1; background: #E6E6E2; margin-bottom: 1.5rem; border-radius: 2px; display:flex; align-items:center; justify-content:center;">
-                    ${item.image 
-    ? `<img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit: cover; transition: opacity 0.5s ease;">` 
-    : `<span style="color:#B0B0A8; font-size:0.8rem; letter-spacing:0.1em;">ARTIFACT</span>`
-}
+            <div class="stone-image-frame" onmousemove="ForgeEngine.inspect(event, this)" onmouseleave="ForgeEngine.resetInspect(this)">
+                ${item.image 
+                    ? `<img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async">` 
+                    : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#B0B0A8; font-size:0.8rem; letter-spacing:0.1em;">ARTIFACT</div>`
+                }
+            </div>
+            
+            <div style="margin-bottom: 0.5rem;">
+                <span class="stone-meta" style="margin-bottom:0;">${item.tag}</span>
+                <span class="stone-proof">Gathered by ${gatherCount} Architects</span>
+            </div>
 
-                </div>
+            <h3 class="text-heading" style="font-size: 1.25rem; margin-bottom: 0.5rem;">${item.title}</h3>
+            
+                        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
+                <span class="text-body" style="margin:0; font-weight:bold;">${formattedPrice}</span>
                 
-                <span class="stone-meta">${item.tag}</span>
-                <h3 class="text-heading" style="font-size: 1.25rem; margin-bottom: 0.5rem;">${item.title}</h3>
-                
-                <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; width: 100%; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
-                    <span class="text-body" style="margin:0; font-weight:bold;">${formattedPrice}</span>
-                    
-                    <button onclick="ForgeEngine.addToSatchel('${item.id}')" class="ink-link" style="background:none; border:none; border-bottom:1px solid transparent; cursor:pointer; padding:0;">
-                        Gather
-                    </button>
-                </div>
-            </article>
-            `;
-        }
+                ${item.price === 0 
+                    ? `<button onclick="window.Satchel.requireSignal(() => window.location.href='${item.downloadLink}')" class="ink-link" style="background:none; border:none; border-bottom:1px solid transparent; cursor:pointer; padding:0;">Download</button>`
+                    : `<button onclick="window.Satchel.add({id: '${item.id}', title: '${item.title}', price: ${item.price}, image: '${item.image}', collection: '${item.collection}'})" class="ink-link" style="background:none; border:none; border-bottom:1px solid transparent; cursor:pointer; padding:0;">Gather</button>`
+                }
+            </div>
+
+        </article>
+        `;
+    },
+
     };
 
     // --- 3. SATCHEL LOGIC (Cart) ---
@@ -134,6 +145,30 @@ const ForgeEngine = (() => {
 
     // --- 4. CONTROLLER ---
     const Controller = {
+            // --- LENS LOGIC ---
+    inspect(e, container) {
+        const img = container.querySelector('img');
+        if (!img) return;
+
+        container.classList.add('inspecting');
+
+        // Calculate mouse position %
+        const rect = container.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        // Move image origin to follow mouse
+        img.style.transformOrigin = `${x}% ${y}%`;
+    },
+
+    resetInspect(container) {
+        const img = container.querySelector('img');
+        if (!img) return;
+
+        container.classList.remove('inspecting');
+        img.style.transformOrigin = 'center center';
+    },
+
         init() {
             // Archive Logic
             if (DOM.grid) {
@@ -191,10 +226,14 @@ const ForgeEngine = (() => {
         }
     };
 
-    return {
+        return {
         init: Controller.init,
-        addToSatchel: Satchel.add
+        addToSatchel: Satchel.add,
+        // EXPOSE LENS FUNCTIONS:
+        inspect: Controller.inspect,
+        resetInspect: Controller.resetInspect
     };
+
 
 })();
 
