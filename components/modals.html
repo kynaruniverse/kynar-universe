@@ -36,14 +36,14 @@
   >
         
     <div style="margin-bottom: 2rem; text-align: center;">
-      <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔐</div>
+      <div style="font-size: 3rem; margin-bottom: 0.5rem;">👤</div>
       
       <h2
         class="text-display"
         id="access-title"
         style="font-size: 1.8rem; margin-bottom: 0.25rem;"
       >
-        Identity
+        Welcome Back
       </h2>
       
       <p
@@ -51,7 +51,7 @@
         id="access-subtitle"
         style="margin-bottom: 0;"
       >
-        Authenticate to access your ledger.
+        Sign in to access your downloads.
       </p>
     </div>
 
@@ -79,7 +79,7 @@
           height: 36px;
         "
       >
-        Login
+        Sign In
       </button>
 
       <button
@@ -153,7 +153,7 @@
         "
         type="submit"
       >
-        Connect Identity
+        Sign In
       </button>
     </form>
 
@@ -166,7 +166,7 @@
       <div style="margin-bottom: 1rem;">
         <input
           id="reg-name"
-          placeholder="Architect Name"
+          placeholder="Full Name"
           required
           style="
             border-radius: 99px;
@@ -202,7 +202,7 @@
       <div style="margin-bottom: 2rem;">
         <input
           id="reg-pass"
-          placeholder="Set Password"
+          placeholder="Create Password"
           required
           style="
             border-radius: 99px;
@@ -229,7 +229,7 @@
         "
         type="submit"
       >
-        Create Ledger
+        Create Account
       </button>
     </form>
 
@@ -256,7 +256,9 @@
       &times;
     </button>
 
-  </div> </div> <script>
+  </div> </div> 
+
+<script>
   const ModalUI = {
     switchMode(mode) {
       const loginForm = document.getElementById("login-form");
@@ -278,8 +280,8 @@
         tabReg.style.boxShadow = "none";
 
         // Update Text
-        title.innerText = "Identity";
-        sub.innerText = "Authenticate to access your ledger.";
+        title.innerText = "Welcome Back";
+        sub.innerText = "Sign in to access your downloads.";
       } else {
         // --- State: Register ---
         loginForm.style.display = "none";
@@ -292,8 +294,8 @@
         tabLogin.style.boxShadow = "none";
 
         // Update Text
-        title.innerText = "Register";
-        sub.innerText = "Begin your architectural journey.";
+        title.innerText = "Create Account";
+        sub.innerText = "Join to track your orders.";
       }
     },
   };

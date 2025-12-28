@@ -7,9 +7,9 @@
       name="viewport"
     />
 
-    <title>Kynar Universe / Identity</title>
+    <title>Kynar / My Account</title>
     <meta
-      content="Your personal ledger and digital passport within the Kynar Universe."
+      content="Manage your digital downloads, order history, and account settings."
       name="description"
     />
     <link href="assets/favicon.png" rel="icon" type="image/png" />
@@ -18,6 +18,7 @@
   </head>
 
   <body>
+    
     <div data-include="components/header.html"></div>
 
     <main class="app-container">
@@ -30,10 +31,10 @@
         "
       >
         <h1 class="text-display">
-          Identity<br />Ledger
+          My Account
         </h1>
         <p class="text-sub">
-          The record of your journey and acquired artifacts.
+          Manage your orders and access your downloads.
         </p>
       </section>
 
@@ -60,7 +61,7 @@
             margin-bottom: 0.5rem;
           "
         >
-          Identity Required
+          Sign In Required
         </h3>
 
         <p
@@ -71,15 +72,15 @@
             max-width: 400px;
           "
         >
-          Authenticate your identity to view your acquired artifacts, access secure
-          downloads, and manage your ledger.
+          Please sign in to view your purchase history, access secure
+          downloads, and manage your profile.
         </p>
 
         <button
           class="trigger-access dock-btn"
           style="height: 50px; max-width: 280px; width: 100%;"
         >
-          Authenticate
+          Sign In / Register
         </button>
       </div>
 
@@ -118,7 +119,7 @@
                 text-transform: uppercase;
               "
             >
-              Verified Architect
+              Verified Member
             </div>
             
             <h2
@@ -130,7 +131,7 @@
                 margin-bottom: 0.25rem;
               "
             >
-              Traveler
+              Welcome
             </h2>
             
             <div
@@ -140,7 +141,7 @@
                 opacity: 0.8;
               "
             >
-              ID: <span id="user-email-display">...</span>
+              Email: <span id="user-email-display">...</span>
             </div>
           </div>
 
@@ -162,7 +163,7 @@
               transition: background 0.2s;
             "
           >
-            Disconnect
+            Sign Out
           </button>
         </div>
 
@@ -183,7 +184,7 @@
               padding: 0 1.5rem;
             "
           >
-            Artifacts
+            My Products
           </button>
           
           <button
@@ -240,26 +241,27 @@
             
             <div>
               <div class="stream-title" style="color: var(--ink-muted);">
-                Ledger Empty
+                Library Empty
               </div>
-              <div class="stream-meta">Explore the archive to begin.</div>
+              <div class="stream-meta">You haven't purchased any products yet.</div>
             </div>
           </div>
         </div>
 
         <div style="margin-top: 3rem; text-align: center;">
-          <a class="dock-btn" href="archive.html">
-            <span>Acquire Artifacts</span>
+          <a class="dock-btn" href="shop.html">
+            <span>Browse Shop</span>
           </a>
         </div>
 
-      </div> </main>
+      </div> 
+    </main>
 
     <div data-include="components/footer.html"></div>
     <div data-include="components/modals.html"></div>
 
     <script src="core.js"></script>
-    <script src=ledger.js"></script>
+    <script src="ledger.js"></script>
     <script src="cart.js"></script>
     
     <script type="module">

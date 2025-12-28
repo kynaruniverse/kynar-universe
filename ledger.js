@@ -1,25 +1,22 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: SOFT ROYAL LEDGER SYSTEM
+ * MODULE: KYNAR PRODUCT LIBRARY (V1.0)
  * ══════════════════════════════════════════════════════════════════════════
- * @description Responsible for rendering acquired artifacts (the user's library)
- * on the Identity Page. Reads from local storage history.
- * @module Ledger
+ * @description Renders purchased products in the user's account dashboard.
+ * Reads from local storage and prepares for future Firestore integration.
  */
 
 const Ledger = {
   // #region [ 1. INITIALIZATION ]
 
   /**
-   * Initializes the Ledger system.
-   * checks if the current page has the artifact list container.
+   * Initializes the Library display.
    */
   init() {
-    // Only run if we are on the Identity page and the list exists
     const listContainer = document.getElementById("artifact-list");
     if (!listContainer) return;
 
-    this.renderPurchases(listContainer);
+    this.renderLibrary(listContainer);
   },
 
   // #endregion
@@ -27,10 +24,7 @@ const Ledger = {
   // #region [ 2. DATA ACCESS ]
 
   /**
-   * Retrieves the list of purchased items.
-   * Currently reads from LocalStorage ('kynar_library').
-   * Future V7.0 upgrade path: Fetch from Firestore (users/{uid}/purchases).
-   * @returns {Array<Object>} List of purchased artifacts.
+   * Retrieves purchased products from local storage.
    */
   getPurchases() {
     return JSON.parse(localStorage.getItem("kynar_library") || "[]");
@@ -41,14 +35,12 @@ const Ledger = {
   // #region [ 3. RENDERING ENGINE ]
 
   /**
-   * Renders the list of purchases into the DOM.
-   * Handles both Empty State and Populated State.
-   * @param {HTMLElement} container - The target container element.
+   * Renders the product list or the empty state into the account page.
    */
-  renderPurchases(container) {
+  renderLibrary(container) {
     const items = this.getPurchases();
 
-    // --- State: Empty Ledger ---
+    // --- State: Empty Library ---
     if (items.length === 0) {
       container.innerHTML = `
                 <div class="stream-card" style="
@@ -61,24 +53,24 @@ const Ledger = {
                     text-align: center; 
                     width: 100%;
                 ">
-                    <div style="font-size: 2.5rem; opacity: 0.5;">📓</div>
+                    <div style="font-size: 2.5rem; opacity: 0.5;">🛍️</div>
                     <div>
-                        <div class="stream-title">Ledger Empty</div>
-                        <div class="stream-meta">You have not acquired any artifacts yet.</div>
+                        <div class="stream-title">Library Empty</div>
+                        <div class="stream-meta">You haven't purchased any products yet.</div>
                     </div>
-                    <a href="archive.html" class="dock-btn" style="
+                    <a href="shop.html" class="dock-btn" style="
                         font-size: 0.8rem; 
                         height: 36px; 
                         margin-top: 1rem;
                     ">
-                        Visit Archive
+                        Go to Shop
                     </a>
                 </div>
             `;
       return;
     }
 
-    // --- State: Populated (Glass Tickets) ---
+    // --- State: Populated Library ---
     container.innerHTML = items
       .map(
         (item) => `
@@ -101,7 +93,7 @@ const Ledger = {
                     justify-content: center; 
                     width: 50px;
                 ">
-                    ${item.icon || "✦"}
+                    ${item.icon || "📦"}
                 </div>
 
                 <div style="flex: 1;">
@@ -109,7 +101,7 @@ const Ledger = {
                         ${item.title}
                     </div>
                     <div class="stream-meta">
-                        Acquired: ${item.acquiredDate || "Recently"}
+                        Purchased: ${item.acquiredDate || "Recently"}
                     </div>
                 </div>
 
@@ -123,6 +115,7 @@ const Ledger = {
                         font-size: 0.75rem; 
                         height: 32px; 
                         padding: 0 1rem;
+                        color: var(--ink-display);
                     "
                 >
                     Download
@@ -137,9 +130,5 @@ const Ledger = {
   // #endregion
 };
 
-// #region [ 4. BOOT SEQUENCE ]
-
-// Init on Load
+// Start Sequence
 document.addEventListener("DOMContentLoaded", () => Ledger.init());
-
-// #endregion

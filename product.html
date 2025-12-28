@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    
+    <title>Kynar / Product Details</title>
+    <meta name="description" content="Deep Focus OS. A complete operating system for Notion designed to strip away noise.">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div data-include="components/header.html"></div>
+
+    <main class="app-container">
+        
+        <div style="margin-bottom: 2rem;">
+            <a href="shop.html" class="dock-btn" style="display: inline-flex; height: 40px; padding: 0 1.5rem; width: auto; background: white; color: var(--ink-muted); box-shadow: var(--shadow-soft);">
+                &larr; Back to Shop
+            </a>
+        </div>
+
+        <div class="product-grid"> 
+            
+            <article>
+                
+                <div class="feature-card" style="height: 300px; background: var(--grad-emerald); margin-bottom: 2rem; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                    <div style="font-size: 8rem; opacity: 0.2; filter: blur(10px);">⚡</div>
+                    <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; background: rgba(255,255,255,0.9); padding: 0.5rem 1rem; border-radius: 99px; font-weight: bold; font-size: 0.8rem; color: var(--ink-display);">
+                        Productivity System
+                    </div>
+                </div>
+
+                <h1 class="text-display" style="text-align: left; margin-bottom: 1rem;">Deep Focus OS</h1>
+                <p class="text-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--ink-body); margin-bottom: 3rem;">
+                    Most planners ask you to do more. This system asks you to do less. 
+                    By utilizing the "Daily Three" methodology, Deep Focus OS forces you to prioritize 
+                    before you execute. It is a complete operating system for Notion designed to strip away noise and highlight the signal.
+                </p>
+                
+                <h3 style="font-family: 'Bantayog'; font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--ink-display);">Key Features</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 4rem;">
+                    
+                    <div class="stream-card" style="height: auto; min-height: 150px; background: white; align-items: flex-start; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📥</div>
+                        <div style="font-weight: bold; margin-bottom: 0.5rem;">Capture</div>
+                        <div style="font-size: 0.85rem; color: var(--ink-muted);">A unified inbox for every thought, ensuring nothing is lost.</div>
+                    </div>
+
+                    <div class="stream-card" style="height: auto; min-height: 150px; background: white; align-items: flex-start; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">⚙️</div>
+                        <div style="font-weight: bold; margin-bottom: 0.5rem;">Process</div>
+                        <div style="font-size: 0.85rem; color: var(--ink-muted);">Weekly review protocols to clear the mental clutter.</div>
+                    </div>
+
+                    <div class="stream-card" style="height: auto; min-height: 150px; background: white; align-items: flex-start; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">🚀</div>
+                        <div style="font-weight: bold; margin-bottom: 0.5rem;">Execute</div>
+                        <div style="font-size: 0.85rem; color: var(--ink-muted);">A dashboard that hides everything except today's mission.</div>
+                    </div>
+
+                </div>
+
+            </article>
+
+            <div class="sidebar-wrapper"> 
+                <div class="feature-card" style="height: auto; padding: 2rem; background: white; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-float); position: sticky; top: 100px;">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 1.5rem;">
+                        <div>
+                            <span class="meta-label">Format</span>
+                            <span class="meta-value">Notion Template</span>
+                        </div>
+                        <div>
+                            <span class="meta-label">Version</span>
+                            <span class="meta-value">v2.4 (2025)</span>
+                        </div>
+                        <div>
+                            <span class="meta-label">File Size</span>
+                            <span class="meta-value">~15KB</span>
+                        </div>
+                        <div>
+                            <span class="meta-label">License</span>
+                            <span class="meta-value">Personal Use</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem;">
+                        <span class="meta-label">Price</span>
+                        <span style="font-family: 'Bantayog'; font-size: 2.5rem; color: var(--ink-display); line-height: 1;">£24.00</span>
+                    </div>
+
+                    <button onclick="window.Satchel.add({id: 'art_001', title: 'Deep Focus OS', price: 24.00, collection: 'productivity', icon: '⚡'})" class="dock-btn" style="width: 100%; border: none; background: var(--grad-gold); color: white; font-weight: bold; margin-bottom: 1rem; box-shadow: var(--shadow-soft);">
+                        Add to Cart
+                    </button>
+
+                    <p style="text-align: center; font-size: 0.8rem; color: var(--ink-muted);">
+                        Instant digital delivery via email.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+    
+    <div data-include="components/footer.html"></div>
+    <div data-include="components/modals.html"></div>
+
+    <style>
+        /* Layout Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* Sidebar Sticky Wrapper */
+        .sidebar-wrapper {
+            position: relative;
+        }
+
+        /* Typography Helpers */
+        .meta-label {
+            display: block;
+            font-size: 0.75rem; 
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.2rem;
+        }
+        .meta-value {
+            display: block;
+            font-weight: bold; 
+            font-size: 0.9rem;
+            color: var(--ink-body);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr; /* Stack vertically */
+                gap: 2rem;
+            }
+            
+            .sidebar-wrapper {
+                order: -1; /* Move price card to top on mobile */
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+
+    <script src="core.js"></script>
+    <script src="haptics.js"></script>
+    <script src="cart.js"></script>
+    
+    <script type="module">
+        import './firebase-config.js';
+        import './auth.js';
+    </script>
+
+</body>
+</html>

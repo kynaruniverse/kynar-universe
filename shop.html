@@ -8,9 +8,9 @@
       name="viewport"
     />
 
-    <title>Kynar Universe / The Archive</title>
+    <title>Kynar / Digital Shop</title>
     <meta
-      content="A curated archive of high-value digital artifacts. Tools for focus, productivity, and architectural thinking."
+      content="Browse premium digital products. Notion templates, worksheets, and creative assets."
       name="description"
     />
     <link href="assets/favicon.png" rel="icon" type="image/png" />
@@ -31,9 +31,9 @@
           text-align: center;
         "
       >
-        <h1 class="text-display">The Archive</h1>
+        <h1 class="text-display">Digital Shop</h1>
         <p class="text-sub">
-          Browse the complete collection of digital artifacts.
+          Browse our collection of templates, guides, and tools.
         </p>
       </section>
         
@@ -49,28 +49,29 @@
         <div style="margin-bottom: 1rem; position: relative;">
           <input
             id="archive-search"
-            placeholder="Search the collection..."
+            placeholder="Search products..."
             style="
-              background: rgba(255, 255, 255, 0.9);
-              backdrop-filter: blur(10px);
+              background: white;
+              border: 1px solid rgba(0, 0, 0, 0.1);
               border-radius: 99px;
-              border: 1px solid rgba(0, 0, 0, 0.05);
               box-shadow: var(--shadow-soft);
-              color: var(--ink-display);
               font-family: 'Glacial Indifference';
               font-size: 1rem;
+              height: 50px;
               outline: none;
-              padding: 1rem 3rem 1rem 1.5rem;
+              padding: 0 1.5rem;
+              padding-left: 3rem;
+              transition: box-shadow 0.2s;
               width: 100%;
             "
             type="text"
           />
-          
           <span
             style="
+              color: var(--ink-muted);
+              left: 1.2rem;
               opacity: 0.5;
               position: absolute;
-              right: 1.5rem;
               top: 50%;
               transform: translateY(-50%);
             "
@@ -78,92 +79,102 @@
             🔍
           </span>
         </div>
-            
+
         <div
           class="scroll-stream"
           id="filter-stream"
           style="
-            justify-content: flex-start;
-            margin: 0 -1.5rem;
+            background: rgba(248, 248, 246, 0.95);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin: 0 -1.5rem; /* Bleed to edge */
             padding: 0.5rem 1.5rem;
-            padding-bottom: 0.5rem;
+            padding-bottom: 1rem;
           "
         >
           <button
             class="dock-btn active-filter"
             data-filter="all"
             style="
-              background: var(--grad-gold);
-              border: none;
+              background: var(--ink-display);
               border-radius: 99px;
+              border: none;
               color: white;
               flex: 0 0 auto;
               font-size: 0.8rem;
-              height: 40px;
+              height: 36px;
               padding: 0 1.5rem;
             "
           >
-            All
+            All Items
           </button>
           
           <button
             class="dock-btn"
             data-filter="productivity"
             style="
+              background: white;
               border-radius: 99px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              color: var(--ink-body);
               flex: 0 0 auto;
               font-size: 0.8rem;
-              height: 40px;
-              opacity: 0.7;
+              height: 36px;
               padding: 0 1.5rem;
             "
           >
-            Systems
+            Business & Notion
           </button>
           
           <button
             class="dock-btn"
-            data-filter="homeschool"
+            data-filter="family"
             style="
+              background: white;
               border-radius: 99px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              color: var(--ink-body);
               flex: 0 0 auto;
               font-size: 0.8rem;
-              height: 40px;
-              opacity: 0.7;
+              height: 36px;
               padding: 0 1.5rem;
             "
           >
-            Knowledge
+            Family & Kids
           </button>
           
           <button
             class="dock-btn"
             data-filter="creative"
             style="
+              background: white;
               border-radius: 99px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              color: var(--ink-body);
               flex: 0 0 auto;
               font-size: 0.8rem;
-              height: 40px;
-              opacity: 0.7;
+              height: 36px;
               padding: 0 1.5rem;
             "
           >
-            Expression
+            Creative Assets
           </button>
           
           <button
             class="dock-btn"
-            data-filter="automation"
+            data-filter="ai"
             style="
+              background: white;
               border-radius: 99px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              color: var(--ink-body);
               flex: 0 0 auto;
               font-size: 0.8rem;
-              height: 40px;
-              opacity: 0.7;
+              height: 36px;
               padding: 0 1.5rem;
             "
           >
-            Code
+            AI Prompts
           </button>
         </div>
       </section>
@@ -172,12 +183,11 @@
         id="artifact-grid"
         style="
           display: grid;
-          gap: 1rem;
-          grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+          gap: 1.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Improved Grid Width */
           min-height: 50vh;
         "
       >
-            
         <div
           class="stream-card"
           style="
@@ -197,7 +207,7 @@
             "
           ></div>
           <div style="font-size: 0.8rem; margin-top: 1rem;">
-            Accessing Vault...
+            Loading Products...
           </div>
         </div>
             
@@ -209,14 +219,15 @@
     <div data-include="components/modals.html"></div>
     
     <script src="core.js"></script>
-    <script src="archive.js"></script>
     <script src="cart.js"></script>
     <script src="haptics.js"></script>
     
-    <script type="module">
-      import './firebase-config.js';
-      import './auth.js';
-    </script>
+    <script src="shop.js"></script> 
     
+    <script type="module">
+      import "./firebase-config.js";
+      import "./auth.js";
+    </script>
+
   </body>
 </html>
