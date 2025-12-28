@@ -1,30 +1,28 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: KYNAR CART SYSTEM (V1.0)
+ * MODULE: KYNAR COMMERCE ENGINE (V1.1)
  * ══════════════════════════════════════════════════════════════════════════
  * @description Luxury commerce engine for the Kynar Marketplace.
  * Handles local storage persistence, drawer UI, and haptic feedback.
  */
 
 const KynarCart = {
-  // 0. CONFIGURATION
-  getKey() {
-    return "kynar_cart_v1";
-  },
+  // 1. DATA CORE
+  getKey: () => "kynar_cart_v1",
 
-  // 1. DATA MANAGEMENT
   getContents() {
-    return JSON.parse(localStorage.getItem(this.getKey()) || "[]");
+    try {
+      return JSON.parse(localStorage.getItem(this.getKey()) || "[]");
+    } catch (e) {
+      return [];
+    }
   },
 
-  /**
-   * Adds a product to the cart.
-   * @param {Object|string} productOrId - The product object or its ID string.
-   */
+  // 2. ADD TO CART LOGIC (Fixed for Multiple Items)
   add(productOrId) {
     let product = productOrId;
 
-    // Fetch from ShopSystem if only an ID is provided
+    // Fetch from ShopSystem if only an ID is passed
     if (typeof productOrId === "string") {
       if (window.ShopSystem) {
         const db = window.ShopSystem.getDb();
@@ -33,22 +31,30 @@ const KynarCart = {
     }
 
     if (!product) {
-      console.error("Kynar: Product data missing.");
+      console.error("Kynar: Product initialization failed.");
       return;
     }
 
     const contents = this.getContents();
-    const exists = contents.find((item) => item.id === product.id);
+    
+    // Check if item already exists to prevent duplicates
+    const isDuplicate = contents.some((item) => item.id === product.id);
 
-    if (!exists) {
+    if (!isDuplicate) {
+      // PUSH new item to the existing array
       contents.push(product);
       this.save(contents);
-      this.openDrawer();
+      
+      // Feedback Sequence
       this.bumpCart();
       if (window.Haptics) window.Haptics.success();
+      
+      // Auto-reveal the update
+      this.openDrawer();
       return true;
     } else {
-      this.openDrawer(); 
+      // If already in cart, just show the drawer
+      this.openDrawer();
       return false;
     }
   },
@@ -60,15 +66,9 @@ const KynarCart = {
     if (window.Haptics) window.Haptics.light();
   },
 
-  clear() {
-    localStorage.removeItem(this.getKey());
-    this.updateUI();
-    this.renderDrawer();
-  },
-
   save(contents) {
     localStorage.setItem(this.getKey(), JSON.stringify(contents));
-    this.updateUI();
+    this.syncUI();
     this.renderDrawer();
   },
 
@@ -76,19 +76,19 @@ const KynarCart = {
     return this.getContents().reduce((sum, item) => sum + item.price, 0);
   },
 
-  // 2. UI & TACTILE FEEDBACK
+  // 3. UI SYNC & PHYSICS
   bumpCart() {
     const trigger = document.getElementById("cart-trigger");
     if (trigger) {
-      trigger.style.transition = "transform 0.3s var(--transition-tactile)";
-      trigger.style.transform = "scale(1.3) rotate(5deg)";
+      trigger.style.transition = "transform 0.4s var(--transition-tactile)";
+      trigger.style.transform = "scale(1.4) rotate(8deg)";
       setTimeout(() => {
         trigger.style.transform = "scale(1) rotate(0deg)";
-      }, 300);
+      }, 400);
     }
   },
 
-  updateUI() {
+  syncUI() {
     const count = this.getContents().length;
     const badge = document.getElementById("cart-count");
 
@@ -102,23 +102,26 @@ const KynarCart = {
     }
   },
 
-  // 3. DRAWER CONTROLLER
-  initDrawer() {
-    const trigger = document.getElementById("cart-trigger");
-    const backdrop = document.getElementById("cart-drawer-backdrop");
-    const closeBtn = document.getElementById("close-drawer");
+  // 4. DRAWER CONTROLLER (Fixed Trigger Logic)
+  init() {
+    // We use Body Delegation so it works even if the header loads late
+    document.body.addEventListener("click", (e) => {
+      const trigger = e.target.closest("#cart-trigger");
+      const closeBtn = e.target.closest("#close-drawer");
+      const backdrop = e.target.closest("#cart-drawer-backdrop");
 
-    if (trigger) {
-      trigger.addEventListener("click", (e) => {
+      if (trigger) {
         e.preventDefault();
         this.openDrawer();
-      });
-    }
+      }
+      if (closeBtn || backdrop) {
+        this.closeDrawer();
+      }
+    });
 
-    if (backdrop) backdrop.addEventListener("click", () => this.closeDrawer());
-    if (closeBtn) closeBtn.addEventListener("click", () => this.closeDrawer());
-
-    this.updateUI();
+    this.syncUI();
+    this.renderDrawer();
+    console.log("Kynar Cart: Online");
   },
 
   openDrawer() {
@@ -129,7 +132,8 @@ const KynarCart = {
     if (drawer && backdrop) {
       drawer.classList.add("is-open");
       backdrop.classList.add("is-visible");
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden"; // Scroll Lock
+      if (window.Haptics) window.Haptics.medium();
     }
   },
 
@@ -140,11 +144,11 @@ const KynarCart = {
     if (drawer && backdrop) {
       drawer.classList.remove("is-open");
       backdrop.classList.remove("is-visible");
-      document.body.style.overflow = "";
+      document.body.style.overflow = ""; // Release Lock
     }
   },
 
-  // 4. DRAWER RENDERING
+  // 5. DRAWER RENDERING
   renderDrawer() {
     const container = document.getElementById("drawer-items");
     const totalEl = document.getElementById("drawer-total");
@@ -155,55 +159,36 @@ const KynarCart = {
 
     if (items.length === 0) {
       container.innerHTML = `
-        <div style="text-align: center; padding: 5rem 1rem; opacity: 0.5;">
+        <div style="text-align: center; padding: 4rem 1.5rem; opacity: 0.4;">
           <div style="font-size: 3rem; margin-bottom: 1rem;">🛒</div>
-          <p style="font-weight: 700; color: var(--ink-display);">Your cart is empty.</p>
-          <button onclick="KynarCart.closeDrawer()" style="background:none; border:none; color:var(--accent-gold); font-weight:800; margin-top:1rem; cursor:pointer;">Continue Browsing</button>
+          <p style="font-family: var(--font-display); font-size: 1.1rem; color: var(--ink-display);">Empty Vault</p>
+          <p style="font-size: 0.8rem; margin-top: 0.5rem;">Your selected assets will appear here.</p>
         </div>`;
       return;
     }
 
     container.innerHTML = items.map(item => `
-      <div class="nav-item" style="margin: 0.75rem 0; padding: 1rem; border: 1px solid var(--ink-border); background: var(--bg-paper);">
-        <div class="nav-icon" style="background: var(--grad-emerald); color: white;">
+      <div class="nav-item" style="margin: 0.8rem 1rem; padding: 1.25rem; background: white; border: 1px solid var(--ink-border); box-shadow: var(--shadow-soft);">
+        <div class="nav-icon" style="background: var(--grad-emerald); color: white; width: 44px; height: 44px;">
           ${item.icon || '📦'}
         </div>
         <div class="nav-label">
-          <div style="font-size: 0.9rem; font-weight: 800; color: var(--ink-display);">${item.title}</div>
-          <div style="font-size: 0.8rem; color: var(--ink-muted);">£${item.price.toFixed(2)}</div>
+          <div style="font-size: 0.95rem; font-weight: 800; color: var(--ink-display);">${item.title}</div>
+          <div style="font-size: 0.8rem; color: var(--accent-gold); font-weight: 700;">£${item.price.toFixed(2)}</div>
         </div>
         <button onclick="KynarCart.remove('${item.id}')" 
-                style="background: var(--bg-canvas); border:none; width:32px; height:32px; border-radius:50%; color:var(--accent-red); cursor:pointer; font-weight:bold;">
+                style="background: var(--bg-canvas); border:none; width:34px; height:34px; border-radius:50%; color:var(--ink-muted); cursor:pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">
           &times;
         </button>
       </div>
     `).join("");
-  },
-
-  // 5. DOWNLOAD LOGIC
-  directDownload(url) {
-    const hasAuth = localStorage.getItem("kynar_auth_token");
-
-    if (hasAuth || true) { // Demo bypass
-      if (window.Haptics) window.Haptics.success();
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } else {
-      if (window.KynarCore) window.KynarCore.openAuthModal();
-    }
   }
 };
 
-// Global Bridge
+// GLOBAL ACCESS
 window.KynarCart = KynarCart;
-window.Satchel = KynarCart; // Legacy support for pending audits
 
-// 6. INITIALIZATION
-document.addEventListener("DOMContentLoaded", () => {
-  document.addEventListener("KynarHeaderLoaded", () => KynarCart.initDrawer());
-  if (document.getElementById("cart-trigger")) KynarCart.initDrawer();
-});
+// INITIALIZE ON LOAD
+document.addEventListener("DOMContentLoaded", () => KynarCart.init());
+// Sync again when components are injected
+document.addEventListener("KynarHeaderLoaded", () => KynarCart.syncUI());

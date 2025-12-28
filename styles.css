@@ -651,3 +651,71 @@ img.lazy-load.loaded {
 #modal-overlay.is-visible #modal-card {
     transform: translateY(0) scale(1);
 }
+
+
+/* ═══════════════════════════════════════
+   12. COMMERCE DRAWER (CART LAYER)
+   ═══════════════════════════════════════ */
+
+/* The Dark Backdrop for the Cart */
+#cart-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 44, 35, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2400; /* Sits below the drawer but above the page */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+#cart-drawer-backdrop.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+/* The Cart Drawer Panel */
+#cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Hidden off-screen to the right */
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    background: var(--bg-paper);
+    box-shadow: -15px 0 45px rgba(0, 0, 0, 0.1);
+    z-index: 2500;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.5s cubic-bezier(0.32, 1, 0.23, 1);
+}
+
+/* The Entrance Physics */
+#cart-drawer.is-open {
+    transform: translateX(-100%); /* Slides in from the right */
+}
+
+/* Custom Scrollbar for the Drawer Items */
+#drawer-items::-webkit-scrollbar {
+    width: 4px;
+}
+
+#drawer-items::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#drawer-items::-webkit-scrollbar-thumb {
+    background: var(--ink-border);
+    border-radius: 10px;
+}
+
+/* Ensure the drawer is glassmorphic on high-end devices */
+@supports (backdrop-filter: blur(1px)) {
+    #cart-drawer {
+        background: rgba(248, 248, 246, 0.95);
+        backdrop-filter: blur(20px) saturate(160%);
+    }
+}
