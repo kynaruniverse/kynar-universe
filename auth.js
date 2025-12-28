@@ -26,7 +26,7 @@ const AuthSystem = (() => {
    */
   function init() {
     // Listen for the global "Modals Loaded" event from core.js
-    document.addEventListener("ForgeModalsLoaded", () => {
+    document.addEventListener("KynarModalsLoaded", () => {
       setupListeners();
     });
 
@@ -132,7 +132,7 @@ const AuthSystem = (() => {
   function monitorAuthState() {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        localStorage.setItem("kynar_signal_token", "active");
+        localStorage.setItem("kynar_auth_token", "active");
         updateAccountUI(user);
       } else {
         localStorage.removeItem("kynar_signal_token");
