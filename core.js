@@ -1,7 +1,8 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: KYNAR MARKETPLACE CORE (V1.0)
+ * MODULE: KYNAR MARKETPLACE CORE (V1.1)
  * ══════════════════════════════════════════════════════════════════════════
+ * @updates Fix for Modal Stacking Context & Interaction Lock
  */
 
 const KynarCore = {
@@ -50,23 +51,18 @@ const KynarCore = {
       drawer.classList.add("is-open");
       if (backdrop) backdrop.classList.add("is-visible");
       document.body.style.overflow = "hidden";
-      const progress = document.getElementById('scroll-indicator');
-      if (progress) progress.style.opacity = '0';
     };
 
     const closeMenu = () => {
       drawer.classList.remove("is-open");
       if (backdrop) backdrop.classList.remove("is-visible");
       document.body.style.overflow = "";
-      const progress = document.getElementById('scroll-indicator');
-      if (progress) progress.style.opacity = '1';
     };
 
     trigger.addEventListener("click", openMenu);
     if (closeBtn) closeBtn.addEventListener("click", closeMenu);
     if (backdrop) backdrop.addEventListener("click", closeMenu);
     
-    // Smart Header Logic
     let lastScrollY = window.scrollY;
     window.addEventListener('scroll', () => {
       const header = document.querySelector('.app-header');
@@ -80,33 +76,40 @@ const KynarCore = {
     }, { passive: true });
   },
 
-  // 3. ACCOUNT MODALS
+  // 3. ACCOUNT MODALS (FIXED DELEGATION)
   initModals() {
+    // We use a single Body listener to handle clicks on elements 
+    // that might not be loaded yet when the script starts.
     document.body.addEventListener("click", (e) => {
+      const overlay = document.getElementById("modal-overlay");
+
+      // TRIGGER OPEN
       if (e.target.closest(".trigger-access")) {
         e.preventDefault();
         this.openAuthModal();
       }
+
+      // TRIGGER CLOSE (Clicking backdrop or the Close X)
+      if (e.target === overlay || e.target.id === "close-access") {
+        this.closeAuthModal();
+      }
     });
-
-    const overlay = document.getElementById("modal-overlay");
-    const closeBtn = document.getElementById("close-access");
-
-    if (overlay) {
-      const closeModal = () => {
-        overlay.style.opacity = "0";
-        overlay.style.visibility = "hidden";
-      };
-      if (closeBtn) closeBtn.addEventListener("click", closeModal);
-      overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
-    }
   },
 
   openAuthModal() {
     const overlay = document.getElementById("modal-overlay");
     if (overlay) {
-      overlay.style.visibility = "visible";
-      overlay.style.opacity = "1";
+      overlay.classList.add("is-visible");
+      document.body.style.overflow = "hidden"; // Physics: Scroll Lock
+      if (window.Haptics) window.Haptics.medium();
+    }
+  },
+
+  closeAuthModal() {
+    const overlay = document.getElementById("modal-overlay");
+    if (overlay) {
+      overlay.classList.remove("is-visible");
+      document.body.style.overflow = ""; // Physics: Release Lock
     }
   }
 };
@@ -137,4 +140,3 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 window.KynarCore = KynarCore;
-window.ForgeCore = KynarCore; // Bridge

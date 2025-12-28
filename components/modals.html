@@ -1,111 +1,24 @@
-<style>
-  #modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(9, 44, 35, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-
-  /* When the modal is active (Triggered by core.js) */
-  #modal-overlay[style*="visible"] #modal-card {
-    transform: translateY(0);
-  }
-
-  #modal-card {
-    position: relative;
-    width: 90%;
-    max-width: 400px;
-    background: white;
-    padding: 3rem 2rem 2.5rem;
-    border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: var(--shadow-float);
-    transform: translateY(30px);
-    transition: transform 0.4s var(--transition-tactile);
-  }
-
-  .auth-tab-group {
-    display: flex;
-    background: var(--bg-canvas);
-    padding: 5px;
-    border-radius: 99px;
-    margin-bottom: 2rem;
-  }
-
-  .auth-tab {
-    flex: 1;
-    height: 38px;
-    border: none;
-    border-radius: 99px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: transparent;
-    color: var(--ink-muted);
-  }
-
-  .auth-tab.active {
-    background: white;
-    color: var(--ink-display);
-    box-shadow: var(--shadow-soft);
-  }
-
-  .kynar-input {
-    width: 100%;
-    height: 52px;
-    padding: 0 1.5rem;
-    border-radius: 99px;
-    border: 1px solid var(--ink-border);
-    background: var(--bg-paper);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    outline: none;
-    transition: all 0.3s var(--transition-smooth);
-    margin-bottom: 1rem;
-  }
-
-  .kynar-input:focus {
-    background: white;
-    border-color: var(--accent-gold);
-    box-shadow: 0 8px 20px rgba(197, 160, 89, 0.12);
-    transform: translateY(-2px);
-  }
-
-  #close-access {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: var(--bg-canvas);
-    color: var(--ink-display);
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s var(--transition-tactile);
-  }
-
-  #close-access:active { transform: scale(0.9); }
-</style>
-
 <div aria-hidden="true" id="modal-overlay">
-  <div id="modal-card">
+  <div id="modal-card" style="position: relative; z-index: 3001;">
     
-    <button id="close-access" aria-label="Close Modal">&times;</button>
+    <button id="close-access" aria-label="Close Modal" style="
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg-canvas);
+      color: var(--ink-display);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s var(--transition-tactile);
+      z-index: 10;
+    ">&times;</button>
 
     <div style="text-align: center; margin-bottom: 2rem;">
       <div style="
@@ -124,7 +37,13 @@
       <p class="text-sub" id="access-subtitle" style="font-size: 0.9rem;">Access your Kynar Library.</p>
     </div>
 
-    <div class="auth-tab-group">
+    <div class="auth-tab-group" style="
+      display: flex;
+      background: var(--bg-canvas);
+      padding: 5px;
+      border-radius: 99px;
+      margin-bottom: 2rem;
+    ">
       <button class="auth-tab active" id="tab-login" onclick="KynarModal.switch('login')">Sign In</button>
       <button class="auth-tab" id="tab-register" onclick="KynarModal.switch('register')">Join Kynar</button>
     </div>
@@ -158,17 +77,27 @@
     switch(mode) {
       const isLogin = mode === 'login';
       
+      const loginForm = document.getElementById('login-form');
+      const regForm = document.getElementById('register-form');
+      const tabLogin = document.getElementById('tab-login');
+      const tabReg = document.getElementById('tab-register');
+
+      if (!loginForm || !regForm) return;
+
       // Toggle Forms
-      document.getElementById('login-form').style.display = isLogin ? 'block' : 'none';
-      document.getElementById('register-form').style.display = isLogin ? 'none' : 'block';
+      loginForm.style.display = isLogin ? 'block' : 'none';
+      regForm.style.display = isLogin ? 'none' : 'block';
 
       // Toggle Tabs
-      document.getElementById('tab-login').classList.toggle('active', isLogin);
-      document.getElementById('tab-register').classList.toggle('active', !isLogin);
+      if (tabLogin) tabLogin.classList.toggle('active', isLogin);
+      if (tabReg) tabReg.classList.toggle('active', !isLogin);
 
-      // Update Text with Kynar branding
-      document.getElementById('access-title').innerText = isLogin ? 'Welcome Back' : 'Create Account';
-      document.getElementById('access-subtitle').innerText = isLogin 
+      // Update Text
+      const title = document.getElementById('access-title');
+      const sub = document.getElementById('access-subtitle');
+      
+      if (title) title.innerText = isLogin ? 'Welcome Back' : 'Create Account';
+      if (sub) sub.innerText = isLogin 
         ? 'Sign in to access your library.' 
         : 'Join to track your digital assets.';
 
@@ -177,3 +106,48 @@
     }
   };
 </script>
+
+<style>
+  /* Localized styles that don't conflict with global overlay physics */
+  .auth-tab {
+    flex: 1;
+    height: 38px;
+    border: none;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    color: var(--ink-muted);
+  }
+
+  .auth-tab.active {
+    background: white;
+    color: var(--ink-display);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .kynar-input {
+    width: 100%;
+    height: 52px;
+    padding: 0 1.5rem;
+    border-radius: 99px;
+    border: 1px solid var(--ink-border);
+    background: var(--bg-paper);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s var(--transition-smooth);
+    margin-bottom: 1rem;
+  }
+
+  #modal-card {
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    padding: 3rem 2rem 2.5rem;
+    border-radius: 28px;
+    box-shadow: var(--shadow-float);
+  }
+</style>
