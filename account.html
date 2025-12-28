@@ -1,278 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
-      name="viewport"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Kynar / Member Account</title>
+  <meta name="description" content="Access your Kynar Vault and manage your digital systems." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-    <title>Kynar / My Account</title>
-    <meta
-      content="Manage your digital downloads, order history, and account settings."
-      name="description"
-    />
-    <link href="assets/favicon.png" rel="icon" type="image/png" />
+<body>
+  <div data-include="components/header.html"></div>
 
-    <link href="styles.css" rel="stylesheet" />
-  </head>
-
-  <body>
+  <main class="app-container">
     
-    <div data-include="components/header.html"></div>
+    <section style="margin-top: 1.5rem; margin-bottom: 3rem; text-align: center;">
+      <h1 class="text-display glass-title">Private Vault</h1>
+      <p class="text-sub">Manage your authorized assets and system configurations.</p>
+    </section>
 
-    <main class="app-container">
+    <div 
+      id="state-guest" 
+      class="feature-card" 
+      style="
+        padding: 4rem 2rem; 
+        background: var(--bg-canvas); 
+        border: 1px solid var(--ink-border); 
+        text-align: center;
+      "
+    >
+      <div style="font-size: 3.5rem; margin-bottom: 1.5rem; opacity: 0.3;">🔒</div>
+      <h3 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 0.75rem;">Authorization Required</h3>
+      <p style="color: var(--ink-muted); margin-bottom: 2.5rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+        Access to digital assets is restricted to verified members. Please sign in to unlock your vault.
+      </p>
+      <button 
+        class="trigger-access dock-btn" 
+        style="height: 56px; padding: 0 3rem; background: var(--grad-gold); border: none;"
+      >Sign In / Register</button>
+    </div>
+
+    <div id="state-user" style="display: none;">
       
-      <section
+      <div 
+        class="feature-card" 
         style="
-          margin-top: 1rem;
-          margin-bottom: 2rem;
-          text-align: center;
+          background: var(--grad-emerald); 
+          color: white; 
+          padding: 2.5rem; 
+          border: none; 
+          margin-bottom: 2.5rem; 
+          position: relative; 
+          overflow: hidden; 
+          box-shadow: var(--shadow-float);
         "
       >
-        <h1 class="text-display">
-          My Account
-        </h1>
-        <p class="text-sub">
-          Manage your orders and access your downloads.
-        </p>
-      </section>
+        <div 
+          style="
+            position: absolute; 
+            right: -20px; 
+            top: -20px; 
+            font-family: var(--font-display); 
+            font-size: 12rem; 
+            opacity: 0.05; 
+            pointer-events: none;
+          "
+        >K</div>
 
-      <div
-        class="feature-card"
-        id="state-guest"
-        style="
-          align-items: center;
-          background: var(--grad-silver);
-          border: 1px solid rgba(0, 0, 0, 0.05);
-          height: auto;
-          padding: 3rem 1.5rem;
-          text-align: center;
-        "
-      >
-        <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">
-          🔒
+        <div style="position: relative; z-index: 2;">
+          <div 
+            style="
+              font-size: 0.65rem; 
+              font-weight: 900; 
+              text-transform: uppercase; 
+              letter-spacing: 0.2em; 
+              margin-bottom: 0.75rem; 
+              color: var(--accent-gold);
+            "
+          >Verified Member Access</div>
+          
+          <h2 id="user-greeting" style="font-family: var(--font-display); font-size: 2.4rem; margin-bottom: 0.5rem;">Welcome</h2>
+          <p id="user-email-display" style="font-size: 0.9rem; opacity: 0.7; font-weight: 400;">Member ID: ...</p>
         </div>
 
-        <h3
+        <button 
+          id="btn-logout" 
           style="
-            font-family: 'Bantayog';
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            position: absolute; 
+            bottom: 2rem; 
+            right: 2rem; 
+            background: rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,255,255,0.2); 
+            color: white; 
+            padding: 0.6rem 1.25rem; 
+            border-radius: 99px; 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            cursor: pointer; 
+            backdrop-filter: blur(5px);
           "
-        >
-          Sign In Required
-        </h3>
-
-        <p
-          style="
-            color: var(--ink-body);
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-            max-width: 400px;
-          "
-        >
-          Please sign in to view your purchase history, access secure
-          downloads, and manage your profile.
-        </p>
-
-        <button
-          class="trigger-access dock-btn"
-          style="height: 50px; max-width: 280px; width: 100%;"
-        >
-          Sign In / Register
-        </button>
+        >Sign Out</button>
       </div>
 
-      <div id="state-user" style="display: none;">
-        
-        <div
-          class="feature-card card-bg-emerald"
-          style="
-            height: auto;
-            margin-bottom: 2rem;
-            min-height: 200px;
-            overflow: hidden;
-            position: relative;
-          "
-        >
-          <div
-            style="
-              font-family: 'Bantayog';
-              font-size: 10rem;
-              opacity: 0.05;
-              position: absolute;
-              right: -20px;
-              top: -20px;
-            "
-          >
-            K
-          </div>
+      <div 
+        class="scroll-stream" 
+        style="
+          gap: 0.75rem; 
+          margin-bottom: 2.5rem; 
+          padding-bottom: 0.5rem;
+          margin-left: -0.5rem;
+        "
+      >
+        <button class="dock-btn" style="background: var(--grad-gold); color: white; border: none; height: 40px; font-size: 0.75rem;">Member Vault</button>
+        <button class="dock-btn" style="background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 40px; font-size: 0.75rem; opacity: 0.6;">Account Settings</button>
+       <a 
+  href="contact.html" 
+  class="dock-btn" 
+  style="
+    background: white; 
+    color: var(--ink-display); 
+    border: 1px solid var(--ink-border); 
+    height: 40px; 
+    font-size: 0.75rem; 
+    text-decoration: none; 
+    display: flex; 
+    align-items: center;
+  "
+>Direct Support</a>
+      </div>
 
-          <div style="position: relative; z-index: 2;">
-            <div
-              style="
-                font-size: 0.8rem;
-                letter-spacing: 0.15em;
-                margin-bottom: 0.5rem;
-                opacity: 0.8;
-                text-transform: uppercase;
-              "
-            >
-              Verified Member
-            </div>
-            
-            <h2
-              id="user-greeting"
-              style="
-                color: white;
-                font-family: 'Bantayog';
-                font-size: 2.2rem;
-                margin-bottom: 0.25rem;
-              "
-            >
-              Welcome
-            </h2>
-            
-            <div
-              style="
-                font-family: 'Glacial Indifference';
-                font-size: 0.85rem;
-                opacity: 0.8;
-              "
-            >
-              Email: <span id="user-email-display">...</span>
-            </div>
-          </div>
-
-          <button
-            id="btn-logout"
-            style="
-              backdrop-filter: blur(4px);
-              background: rgba(0, 0, 0, 0.25);
-              border-radius: 99px;
-              border: 1px solid rgba(255, 255, 255, 0.1);
-              bottom: 1.5rem;
-              color: white;
-              cursor: pointer;
-              font-size: 0.75rem;
-              font-weight: bold;
-              padding: 0.5rem 1.2rem;
-              position: absolute;
-              right: 1.5rem;
-              transition: background 0.2s;
-            "
-          >
-            Sign Out
-          </button>
+      <div id="vault-list" style="display: grid; gap: 1.25rem;">
+        <div style="text-align: center; padding: 4rem 0; opacity: 0.4;">
+          <div class="spinner" style="margin: 0 auto 1rem;"></div>
+          <p style="font-size: 0.85rem;">Syncing Authorized Assets...</p>
         </div>
+      </div>
 
-        <div
-          class="scroll-stream"
-          style="gap: 0.8rem; margin-bottom: 2rem; padding-bottom: 0.5rem;"
-        >
-          <button
-            class="dock-btn"
-            style="
-              background: var(--grad-gold);
-              border-radius: 99px;
-              border: none;
-              color: white;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 40px;
-              padding: 0 1.5rem;
-            "
-          >
-            My Products
-          </button>
-          
-          <button
-            class="dock-btn"
-            style="
-              border-radius: 99px;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 40px;
-              opacity: 0.6;
-              padding: 0 1.5rem;
-            "
-          >
-            Settings
-          </button>
-          
-          <button
-            class="dock-btn"
-            style="
-              border-radius: 99px;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 40px;
-              opacity: 0.6;
-              padding: 0 1.5rem;
-            "
-          >
-            Support
-          </button>
-        </div>
+      <div style="margin-top: 4rem; text-align: center;">
+        <a class="dock-btn" href="shop.html" style="background: transparent; color: var(--accent-gold); border: none; font-weight: 800; font-size: 0.9rem;">
+          Explore New Systems →
+        </a>
+      </div>
 
-        <div id="artifact-list" style="display: grid; gap: 1rem;">
-          
-          <div
-            class="stream-card"
-            style="
-              align-items: center;
-              background: transparent;
-              border: 1px dashed rgba(0, 0, 0, 0.1);
-              box-shadow: none;
-              flex-direction: row;
-              gap: 1.5rem;
-              height: auto;
-              opacity: 0.7;
-              width: 100%;
-            "
-          >
-            <div
-              class="stream-visual visual-silver"
-              style="background: rgba(0, 0, 0, 0.05); color: var(--ink-muted);"
-            >
-              ∅
-            </div>
-            
-            <div>
-              <div class="stream-title" style="color: var(--ink-muted);">
-                Library Empty
-              </div>
-              <div class="stream-meta">You haven't purchased any products yet.</div>
-            </div>
-          </div>
-        </div>
+    </div> 
+  </main>
 
-        <div style="margin-top: 3rem; text-align: center;">
-          <a class="dock-btn" href="shop.html">
-            <span>Browse Shop</span>
-          </a>
-        </div>
+  <div data-include="components/footer.html"></div>
+  <div data-include="components/modals.html"></div>
 
-      </div> 
-    </main>
-
-    <div data-include="components/footer.html"></div>
-    <div data-include="components/modals.html"></div>
-
-    <script src="core.js"></script>
-    <script src="ledger.js"></script>
-    <script src="cart.js"></script>
-    
-    <script type="module">
-      import "./firebase-config.js";
-      import "./auth.js";
-    </script>
-
-    <style>
-      #btn-logout:hover {
-        background: rgba(0, 0, 0, 0.4) !important;
-      }
-    </style>
-  </body>
+  <script src="core.js"></script>
+  <script src="vault.js"></script>
+  <script src="cart.js"></script>
+  <script src="haptics.js"></script>
+  
+  <script type="module">
+    import "./firebase-config.js";
+    import "./auth.js";
+  </script>
+</body>
 </html>

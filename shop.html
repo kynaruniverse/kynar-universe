@@ -1,233 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Kynar / Digital Shop</title>
+  <meta name="description" content="Browse premium digital products. Notion templates, worksheets, and creative assets." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div data-include="components/header.html"></div>
   
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
-      name="viewport"
-    />
-
-    <title>Kynar / Digital Shop</title>
-    <meta
-      content="Browse premium digital products. Notion templates, worksheets, and creative assets."
-      name="description"
-    />
-    <link href="assets/favicon.png" rel="icon" type="image/png" />
-
-    <link href="styles.css" rel="stylesheet" />
-  </head>
-
-  <body>
-    
-    <div data-include="components/header.html"></div>
-    
-    <main class="app-container">
-        
-      <section
-        style="
-          margin-bottom: 2rem;
-          margin-top: 1rem;
-          text-align: center;
-        "
-      >
-        <h1 class="text-display">Digital Shop</h1>
-        <p class="text-sub">
-          Browse our collection of templates, guides, and tools.
-        </p>
-      </section>
-        
-      <section
-        style="
-          margin-bottom: 2rem;
-          position: sticky;
-          top: 70px;
-          z-index: 900;
-        "
-      >
-            
-        <div style="margin-bottom: 1rem; position: relative;">
-          <input
-            id="archive-search"
-            placeholder="Search products..."
-            style="
-              background: white;
-              border: 1px solid rgba(0, 0, 0, 0.1);
-              border-radius: 99px;
-              box-shadow: var(--shadow-soft);
-              font-family: 'Glacial Indifference';
-              font-size: 1rem;
-              height: 50px;
-              outline: none;
-              padding: 0 1.5rem;
-              padding-left: 3rem;
-              transition: box-shadow 0.2s;
-              width: 100%;
-            "
-            type="text"
-          />
-          <span
-            style="
-              color: var(--ink-muted);
-              left: 1.2rem;
-              opacity: 0.5;
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-            "
-          >
-            🔍
-          </span>
-        </div>
-
-        <div
-          class="scroll-stream"
-          id="filter-stream"
+  <main class="app-container">
+      
+    <section 
+      style="
+        margin-top: 1.5rem; 
+        margin-bottom: 3rem; 
+        text-align: center;
+      "
+    >
+      <h1 class="text-display glass-title">Digital Shop</h1>
+      <p class="text-sub">Premium templates, systems, and creative resources for your digital workflow.</p>
+    </section>
+      
+    <section 
+      style="
+        margin-bottom: 2.5rem; 
+        position: sticky; 
+        top: 75px; 
+        z-index: 900;
+        background: var(--bg-paper);
+      "
+    >
+      <div style="margin-bottom: 1.25rem; position: relative;">
+        <input
+          id="shop-search"
+          type="text"
+          placeholder="Search the marketplace..."
           style="
-            background: rgba(248, 248, 246, 0.95);
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            margin: 0 -1.5rem; /* Bleed to edge */
-            padding: 0.5rem 1.5rem;
-            padding-bottom: 1rem;
-          "
-        >
-          <button
-            class="dock-btn active-filter"
-            data-filter="all"
-            style="
-              background: var(--ink-display);
-              border-radius: 99px;
-              border: none;
-              color: white;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 36px;
-              padding: 0 1.5rem;
-            "
-          >
-            All Items
-          </button>
-          
-          <button
-            class="dock-btn"
-            data-filter="productivity"
-            style="
-              background: white;
-              border-radius: 99px;
-              border: 1px solid rgba(0, 0, 0, 0.1);
-              color: var(--ink-body);
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 36px;
-              padding: 0 1.5rem;
-            "
-          >
-            Business & Notion
-          </button>
-          
-          <button
-            class="dock-btn"
-            data-filter="family"
-            style="
-              background: white;
-              border-radius: 99px;
-              border: 1px solid rgba(0, 0, 0, 0.1);
-              color: var(--ink-body);
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 36px;
-              padding: 0 1.5rem;
-            "
-          >
-            Family & Kids
-          </button>
-          
-          <button
-            class="dock-btn"
-            data-filter="creative"
-            style="
-              background: white;
-              border-radius: 99px;
-              border: 1px solid rgba(0, 0, 0, 0.1);
-              color: var(--ink-body);
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 36px;
-              padding: 0 1.5rem;
-            "
-          >
-            Creative Assets
-          </button>
-          
-          <button
-            class="dock-btn"
-            data-filter="ai"
-            style="
-              background: white;
-              border-radius: 99px;
-              border: 1px solid rgba(0, 0, 0, 0.1);
-              color: var(--ink-body);
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 36px;
-              padding: 0 1.5rem;
-            "
-          >
-            AI Prompts
-          </button>
-        </div>
-      </section>
-        
-      <section
-        id="artifact-grid"
-        style="
-          display: grid;
-          gap: 1.5rem;
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Improved Grid Width */
-          min-height: 50vh;
-        "
-      >
-        <div
-          class="stream-card"
-          style="
-            align-items: center;
-            grid-column: 1 / -1;
-            height: 200px;
-            justify-content: center;
-            opacity: 0.5;
             width: 100%;
+            height: 54px;
+            padding: 0 1.5rem 0 3.5rem;
+            border-radius: 99px;
+            border: 1px solid var(--ink-border);
+            background: white;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s var(--transition-smooth);
           "
-        >
-          <div
-            class="spinner"
-            style="
-              border-color: var(--accent-gold);
-              border-right-color: transparent;
-            "
-          ></div>
-          <div style="font-size: 0.8rem; margin-top: 1rem;">
-            Loading Products...
-          </div>
-        </div>
-            
-      </section>
-        
-    </main>
-    
-    <div data-include="components/footer.html"></div>
-    <div data-include="components/modals.html"></div>
-    
-    <script src="core.js"></script>
-    <script src="cart.js"></script>
-    <script src="haptics.js"></script>
-    
-    <script src="shop.js"></script> 
-    
-    <script type="module">
-      import "./firebase-config.js";
-      import "./auth.js";
-    </script>
+        />
+        <span 
+          style="
+            position: absolute; 
+            left: 1.5rem; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            font-size: 1.2rem; 
+            opacity: 0.4;
+          "
+        >🔍</span>
+      </div>
 
-  </body>
+      <div 
+        class="scroll-stream" 
+        id="filter-stream"
+        style="
+          margin: 0 -1.25rem;
+          padding: 0.5rem 1.25rem 1.25rem;
+          display: flex;
+          gap: 0.75rem;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        "
+      >
+        <button class="dock-btn" data-filter="all" style="flex: 0 0 auto; background: var(--grad-gold); color: white; border: none; height: 38px; font-size: 0.8rem;">
+          All Products
+        </button>
+        <button class="dock-btn" data-filter="productivity" style="flex: 0 0 auto; background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 38px; font-size: 0.8rem;">
+          Systems & Notion
+        </button>
+        <button class="dock-btn" data-filter="creative" style="flex: 0 0 auto; background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 38px; font-size: 0.8rem;">
+          Creative
+        </button>
+        <button class="dock-btn" data-filter="family" style="flex: 0 0 auto; background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 38px; font-size: 0.8rem;">
+          Family
+        </button>
+      </div>
+    </section>
+      
+    <section id="product-grid" class="twin-grid" style="min-height: 60vh;">
+      <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 0;">
+        <div class="spinner" style="margin: 0 auto;"></div>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--ink-muted);">Initializing Marketplace...</p>
+      </div>
+    </section>
+      
+  </main>
+  
+  <div data-include="components/footer.html"></div>
+  <div data-include="components/modals.html"></div>
+  
+  <script src="core.js"></script>
+  <script src="cart.js"></script>
+  <script src="haptics.js"></script>
+  <script src="shop.js"></script> 
+  
+  <script type="module">
+    import "./firebase-config.js";
+    import "./auth.js";
+  </script>
+</body>
 </html>

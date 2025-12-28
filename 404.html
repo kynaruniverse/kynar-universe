@@ -1,106 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
-      name="viewport"
-    />
-    
-    <title>404 / Page Not Found</title>
-    <link href="assets/favicon.png" rel="icon" type="image/png" />
-    
-    <link href="styles.css" rel="stylesheet" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Kynar / System Calibration (404)</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-  <body>
+<body>
+  <div data-include="components/header.html"></div>
 
-    <div data-include="components/header.html"></div>
-
-    <main
-      class="app-container"
+  <main 
+    class="app-container" 
+    style="
+      align-items: center; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      min-height: 80vh; 
+      text-align: center;
+      position: relative;
+    "
+  >
+    <div 
       style="
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        min-height: 70vh;
-        text-align: center;
+        font-family: var(--font-display);
+        font-size: clamp(10rem, 30vw, 20rem);
+        font-weight: 900;
+        margin-bottom: -4rem;
+        opacity: 0.03;
+        line-height: 1;
+        position: absolute;
+        z-index: -1;
+        user-select: none;
+        animation: float 6s ease-in-out infinite;
+      "
+    >404</div>
+    
+    <div 
+      style="
+        display: inline-flex; 
+        align-items: center; 
+        background: var(--bg-canvas); 
+        padding: 6px 16px; 
+        border-radius: 99px; 
+        margin-bottom: 2rem;
+        border: 1px solid var(--ink-border);
       "
     >
-        
-      <div
+      <span 
         style="
-          font-size: 8rem;
-          font-weight: bold;
-          margin-bottom: 0rem;
-          opacity: 0.05;
-          line-height: 1;
+          font-size: 0.65rem; 
+          font-weight: 900; 
+          color: var(--accent-gold); 
+          text-transform: uppercase; 
+          letter-spacing: 0.15em;
         "
-      >
-        404
-      </div>
-      
-      <h1
-        class="text-display"
-        style="margin-bottom: 1rem;"
-      >
-        Looking for something?
-      </h1>
-      
-      <p
-        class="text-sub"
-        style="
-          margin-bottom: 3rem;
-          max-width: 450px;
-        "
-      >
-        The product or page you are looking for might have been moved, renamed, or is temporarily unavailable.
-      </p>
+      >Signal Interrupted</span>
+    </div>
 
-      <div
-        style="
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1rem;
-          justify-content: center;
-        "
-      >
-        <a
-          class="dock-btn"
-          href="index.html"
-          style="
-            background: var(--ink-display);
-            color: white;
-            min-width: 160px;
-          "
-        >
-          Return Home
-        </a>
-        
-        <a
-          class="dock-btn"
-          href="shop.html"
-          style="
-            background: white;
-            border: 1px solid var(--ink-border);
-            color: var(--ink-display);
-            min-width: 160px;
-          "
-        >
-          Browse Shop
-        </a>
-      </div>
-
-    </main>
-
-    <div data-include="components/footer.html"></div>
-    <div data-include="components/modals.html"></div>
-
-    <script src="core.js"></script>
-    <script src="cart.js"></script>
-    <script src="haptics.js"></script>
+    <h1 class="text-display glass-title" style="margin-bottom: 1.5rem;">System Calibration</h1>
     
-  </body>
+    <p 
+      class="text-sub" 
+      style="
+        margin-bottom: 3.5rem; 
+        max-width: 480px; 
+        line-height: 1.8;
+      "
+    >
+      The specific asset or coordination you are seeking is currently outside the authorized network. 
+      Please recalibrate via the navigation below.
+    </p>
+
+    <div 
+      style="
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 1.25rem; 
+        justify-content: center;
+        width: 100%;
+        max-width: 440px;
+      "
+    >
+      <a 
+        class="dock-btn" 
+        href="shop.html" 
+        style="
+          background: var(--grad-gold); 
+          color: white; 
+          border: none;
+          flex: 1;
+          min-width: 180px;
+          height: 56px;
+          font-weight: 800;
+        "
+      >Explore Catalog</a>
+      
+      <a 
+        class="dock-btn" 
+        href="index.html" 
+        style="
+          background: white; 
+          border: 1px solid var(--ink-border); 
+          color: var(--ink-display); 
+          flex: 1;
+          min-width: 180px;
+          height: 56px;
+          font-weight: 800;
+        "
+      >Storefront</a>
+      
+      <a 
+  class="dock-btn" 
+  href="contact.html" 
+  style="
+    background: white; 
+    border: 1px solid var(--ink-border); 
+    color: var(--ink-display); 
+    flex: 1;
+    min-width: 180px;
+    height: 56px;
+    font-weight: 800;
+  "
+>Contact Support</a>
+
+    </div>
+
+  </main>
+
+  <div data-include="components/footer.html"></div>
+  <div data-include="components/modals.html"></div>
+
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+  </style>
+
+  <script src="core.js"></script>
+  <script src="cart.js"></script>
+  <script src="haptics.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Subtle haptic warning on load
+      if (window.Haptics) {
+        setTimeout(() => window.Haptics.heavy(), 500);
+      }
+    });
+  </script>
+</body>
 </html>

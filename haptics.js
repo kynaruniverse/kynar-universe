@@ -2,92 +2,79 @@
  * ══════════════════════════════════════════════════════════════════════════
  * MODULE: KYNAR HAPTIC INTERFACE (V1.0)
  * ══════════════════════════════════════════════════════════════════════════
- * @description Provides subtle haptic feedback for mobile interactions.
- * Uses the Web Vibration API to enhance the "Premium App" feel.
+ * @description Tactile feedback engine for the Kynar Marketplace. 
+ * Translates digital actions into physical sensations for a premium feel.
  */
 
-const Haptics = {
-  // #region [ 1. SETTINGS ]
-
+const KynarHaptics = {
+  // 1. CONFIGURATION
   enabled: true,
+  lastFired: 0,
+  cooldown: 100, // Milliseconds to prevent "buzzing" overload
 
-  // #endregion
-
-  // #region [ 2. FEEDBACK PATTERNS ]
-
-  /**
-   * LIGHT TICK
-   * Use: Scroll snaps, light hover.
-   */
+  // 2. TACTILE PATTERNS
   light: () => {
-    if (Haptics.enabled && navigator.vibrate) navigator.vibrate(5);
+    KynarHaptics.trigger(8);
   },
 
-  /**
-   * MEDIUM TAP
-   * Use: Standard button clicks and menu toggles.
-   */
   medium: () => {
-    if (Haptics.enabled && navigator.vibrate) navigator.vibrate(12);
+    KynarHaptics.trigger(15);
   },
 
-  /**
-   * HEAVY IMPACT
-   * Use: Errors, warnings, or deletions.
-   */
   heavy: () => {
-    if (Haptics.enabled && navigator.vibrate) navigator.vibrate(30);
+    // Pattern: Short, Gap, Long (Error/Impact)
+    KynarHaptics.trigger([10, 50, 35]);
   },
 
-  /**
-   * SUCCESS CONFIRMATION
-   * Use: Completed purchase, successful sign-in.
-   */
   success: () => {
-    if (Haptics.enabled && navigator.vibrate) navigator.vibrate([10, 40, 20]);
+    // Pattern: Light, Gap, Medium (Confirmation)
+    KynarHaptics.trigger([10, 30, 20]);
   },
 
-  // #endregion
+  // 3. CORE TRIGGER ENGINE
+  trigger(pattern) {
+    const now = Date.now();
+    if (!this.enabled || !navigator.vibrate) return;
+    
+    // Check cooldown for sensory clarity
+    if (now - this.lastFired < this.cooldown) return;
 
-  // #region [ 3. AUTO-BINDER ]
+    navigator.vibrate(pattern);
+    this.lastFired = now;
+  },
 
-  /**
-   * Detects mobile capability and binds haptics to UI elements.
-   */
+  // 4. AUTO-BINDER ENGINE
   init() {
     const isMobile = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (!isMobile) return;
 
-    if (isMobile) {
-      // Marketplace UI Target Classes
-      const interactiveElements = [
-        ".dock-btn",         // Main CTA Buttons
-        ".stream-card",      // Product Cards
-        ".feature-card",     // Hero/Category Cards
-        "#satchel-trigger",  // Cart Button
-        "#nav-toggle",       // Menu Button
-        "button",            // Standard Buttons
-        "a"                  // All Links
-      ];
+    // Marketplace Interaction Targets
+    const targets = [
+      ".dock-btn",        // Main CTAs
+      ".nav-item",        // Drawer Links
+      ".stream-card",     // Product Interaction
+      "#cart-trigger",    // Updated Cart Selector
+      "#nav-toggle",      // Menu Selector
+      ".auth-tab",        // Modal Toggles
+      "#close-drawer"     // Close Buttons
+    ];
 
-      document.body.addEventListener(
-        "touchstart",
-        (e) => {
-          if (e.target.closest(interactiveElements.join(","))) {
-            Haptics.light();
-          }
-        },
-        { passive: true }
-      );
-    }
+    document.body.addEventListener(
+      "touchstart",
+      (e) => {
+        if (e.target.closest(targets.join(","))) {
+          this.light();
+        }
+      },
+      { passive: true }
+    );
 
-    console.log("Kynar Haptics: Initialized");
-  },
-
-  // #endregion
+    console.log("Kynar Haptics: Optimized Interface Active");
+  }
 };
 
-// Start Interface
-document.addEventListener("DOMContentLoaded", Haptics.init);
+// Global Exposure
+window.Haptics = KynarHaptics;
 
-// Global Access
-window.Haptics = Haptics;
+// Start Sequence
+document.addEventListener("DOMContentLoaded", () => KynarHaptics.init());

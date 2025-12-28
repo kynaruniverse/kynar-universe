@@ -1,244 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
-      name="viewport"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Kynar / Join The Network</title>
+  <meta name="description" content="Join the Kynar Network. Get system updates, free resources, and professional insights." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-    <title>Kynar / Newsletter</title>
-    <meta
-      content="Join the Kynar community. Get product updates, free resources, and tips delivered to your inbox."
-      name="description"
-    />
-    <link href="assets/favicon.png" rel="icon" type="image/png" />
+<body>
+  <div data-include="components/header.html"></div>
 
-    <link href="styles.css" rel="stylesheet" />
-  </head>
-
-  <body>
-
-    <div data-include="components/header.html"></div>
-
-    <main class="app-container">
-        
-      <section
-        style="
-          margin-bottom: 3rem;
-          margin-top: 2rem;
-          text-align: center;
-        "
-      >
-        <div class="signal-orb">
-          <div class="orb-core"></div>
-          <div class="orb-wave"></div>
-        </div>
-        
-        <h1 class="text-display">Weekly Updates</h1>
-        <p class="text-sub">
-          Join
-          <span
-            id="signal-strength"
-            style="color: var(--accent-red); font-weight: bold;"
-          >
-            ...
-          </span>
-          subscribers receiving our weekly digest.
-          <br>
-          Get exclusive discounts, new product drops, and free resources.
-        </p>
-      </section>
-
-      <div
-        class="feature-card"
-        style="
-          background: white;
-          border: 1px solid rgba(0, 0, 0, 0.05);
-          box-shadow: var(--shadow-float);
-          height: auto;
-          margin-bottom: 4rem;
-          padding: 2.5rem 2rem;
-        "
-      >
-            
-        <form
-          id="signal-form"
-          style="display: flex; flex-direction: column; gap: 1.5rem;"
-        >
-          
-          <div style="text-align: left;">
-            <label
-              for="email"
-              style="
-                color: var(--ink-muted);
-                display: block;
-                font-size: 0.8rem;
-                font-weight: bold;
-                margin-bottom: 0.5rem;
-                margin-left: 0.5rem;
-              "
-            >
-              EMAIL ADDRESS
-            </label>
-            
-            <input
-              id="email"
-              placeholder="you@example.com"
-              required
-              style="
-                background: var(--bg-canvas);
-                border-radius: 99px;
-                border: 1px solid rgba(0, 0, 0, 0.05);
-                color: var(--ink-display);
-                font-family: 'Glacial Indifference';
-                font-size: 1rem;
-                outline: none;
-                padding: 1rem 1.5rem;
-                transition: all 0.2s;
-                width: 100%;
-              "
-              type="email"
-            />
-          </div>
-          
-          <button
-            class="dock-btn"
-            id="btn-signal"
-            style="
-              background: var(--grad-emerald);
-              border: none;
-              color: white;
-              cursor: pointer;
-              font-weight: bold;
-              width: 100%;
-            "
-            type="submit"
-          >
-            Subscribe
-          </button>
-
-          <div
-            style="
-              align-items: center;
-              color: var(--ink-muted);
-              display: flex;
-              font-size: 0.75rem;
-              gap: 0.5rem;
-              justify-content: center;
-              text-align: center;
-            "
-          >
-            <span>🔒 No Spam</span>
-            <span>•</span>
-            <span>Unlocks Free Downloads</span>
-          </div>
-
-        </form>
+  <main class="app-container">
+    <section 
+      style="
+        margin-top: 2rem; 
+        margin-bottom: 3.5rem; 
+        text-align: center;
+      "
+    >
+      <div class="network-beacon">
+        <div class="beacon-core"></div>
+        <div class="beacon-wave"></div>
       </div>
-
-      <section>
-        <div class="section-header">Recent Emails</div>
-        
-        <div class="scroll-stream">
-          
-          <a class="stream-card" href="#">
-            <div
-              class="stream-visual"
-              style="background: var(--grad-burgundy);"
-            >
-              #42
-            </div>
-            <div>
-              <div class="stream-title">New Notion Systems</div>
-              <div class="stream-meta">Product Update</div>
-            </div>
-          </a>
-
-          <a class="stream-card" href="#">
-            <div class="stream-visual" style="background: var(--grad-gold);">
-              #41
-            </div>
-            <div>
-              <div class="stream-title">Free Worksheets</div>
-              <div class="stream-meta">Education</div>
-            </div>
-          </a>
-
-          <a class="stream-card" href="#">
-            <div class="stream-visual visual-silver">#40</div>
-            <div>
-              <div class="stream-title">Creator Toolkit</div>
-              <div class="stream-meta">Guide</div>
-            </div>
-          </a>
-
-        </div>
-      </section>
-
-    </main>
-
-    <div data-include="components/footer.html"></div>
-    <div data-include="components/modals.html"></div>
-
-    <style>
-      /* --- Pulse Animation Styles (Preserved) --- */
-      .signal-orb {
-        align-items: center;
-        display: flex;
-        height: 80px;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
-        position: relative;
-        width: 80px;
-      }
       
-      .orb-core {
-        background: var(--grad-emerald);
-        border-radius: 50%;
-        box-shadow: 0 10px 30px rgba(9, 44, 35, 0.3);
-        height: 100%;
-        position: relative;
-        width: 100%;
-        z-index: 2;
-      }
+      <h1 class="text-display glass-title">The Kynar Network</h1>
+      <p class="text-sub" style="margin: 0 auto;">
+        Join 
+        <span id="subscriber-count" style="color: var(--accent-gold); font-weight: 800;">12,400+</span> 
+        members receiving weekly systems intelligence.
+        <br>
+        Access exclusive assets, early drops, and free marketplace credits.
+      </p>
+    </section>
 
-      .orb-wave {
-        animation: radarPing 3s infinite;
-        border-radius: 50%;
-        border: 2px solid #092c23;
-        height: 100%;
-        left: 50%;
-        opacity: 0;
-        position: absolute;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-        z-index: 1;
-      }
+    <div 
+      class="feature-card" 
+      style="
+        background: white; 
+        border: 1px solid var(--ink-border); 
+        box-shadow: var(--shadow-float); 
+        padding: 3rem 2rem; 
+        margin-bottom: 4rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      "
+    >
+      <form id="newsletter-form">
+        <div style="margin-bottom: 1.5rem;">
+          <label 
+            for="email" 
+            style="
+              display: block; 
+              font-size: 0.7rem; 
+              font-weight: 900; 
+              color: var(--ink-muted); 
+              text-transform: uppercase; 
+              letter-spacing: 0.1em; 
+              margin-bottom: 0.75rem; 
+              padding-left: 1rem;
+            "
+          >Email Authorization</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="enter your email address"
+            required
+            style="
+              width: 100%;
+              height: 56px;
+              padding: 0 1.5rem;
+              border-radius: 99px;
+              border: 1px solid var(--ink-border);
+              background: var(--bg-paper);
+              font-family: var(--font-body);
+              font-size: 1rem;
+              outline: none;
+              transition: all 0.3s var(--transition-smooth);
+            "
+          />
+        </div>
+        
+        <button 
+          id="btn-subscribe" 
+          type="submit" 
+          class="dock-btn" 
+          style="
+            width: 100%; 
+            height: 60px; 
+            background: var(--grad-emerald); 
+            border: none; 
+            color: white; 
+            font-weight: 800; 
+            letter-spacing: 0.05em;
+          "
+        >AUTHORIZE JOIN</button>
 
-      @keyframes radarPing {
-        0% { height: 100%; opacity: 0.8; width: 100%; }
-        100% { height: 250%; opacity: 0; width: 250%; }
-      }
+        <div 
+          style="
+            margin-top: 1.5rem; 
+            display: flex; 
+            justify-content: center; 
+            gap: 1rem; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            color: var(--ink-muted);
+            text-transform: uppercase;
+          "
+        >
+          <span>🔒 Secured</span>
+          <span>•</span>
+          <span>Free Asset Access</span>
+        </div>
+      </form>
+    </div>
 
-      input:focus {
-        background: white !important;
-        border-color: var(--accent-gold) !important;
-        box-shadow: 0 0 0 3px rgba(9, 44, 35, 0.1);
-      }
-    </style>
+    <section>
+      <div 
+        style="
+          font-family: var(--font-display); 
+          font-size: 1.4rem; 
+          margin-bottom: 1.5rem; 
+          color: var(--ink-display);
+        "
+      >Network Archive</div>
+      
+      <div class="scroll-stream" style="padding-bottom: 2rem;">
+        <a class="stream-card" href="#" style="min-width: 220px;">
+          <div class="stream-visual" style="background: var(--grad-emerald);">#42</div>
+          <div style="padding: 1rem;">
+            <div class="stream-title" style="font-size: 1rem;">System Update</div>
+            <div class="stream-meta">V1.0 Launch Intelligence</div>
+          </div>
+        </a>
 
-    <script src="core.js"></script>
-    <script src="signals.js"></script> 
-    <script src="haptics.js"></script>
-    <script src="cart.js"></script>
+        <a class="stream-card" href="#" style="min-width: 220px;">
+          <div class="stream-visual" style="background: var(--grad-gold);">#41</div>
+          <div style="padding: 1rem;">
+            <div class="stream-title" style="font-size: 1rem;">Free Education</div>
+            <div class="stream-meta">Weekly Resource Drop</div>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
 
-    <script type="module">
-      import './firebase-config.js';
-      import './auth.js';
-    </script>
+  <div data-include="components/footer.html"></div>
+  <div data-include="components/modals.html"></div>
 
-  </body>
+  <style>
+    /* --- Network Beacon Physics --- */
+    .network-beacon {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .beacon-core {
+      width: 100%;
+      height: 100%;
+      background: var(--grad-emerald);
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: var(--shadow-float);
+    }
+
+    .beacon-wave {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--ink-display);
+      border-radius: 50%;
+      animation: beaconPulse 3s infinite;
+      z-index: 1;
+      opacity: 0;
+    }
+
+    @keyframes beaconPulse {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    input:focus {
+      background: white !important;
+      border-color: var(--accent-gold) !important;
+      box-shadow: 0 10px 25px rgba(197, 160, 89, 0.1);
+      transform: translateY(-2px);
+    }
+  </style>
+
+  <script src="core.js"></script>
+  <script src="newsletter.js"></script> 
+  <script src="haptics.js"></script>
+  <script src="cart.js"></script>
+  <script type="module">
+    import './firebase-config.js';
+    import './auth.js';
+  </script>
+</body>
 </html>

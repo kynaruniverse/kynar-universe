@@ -1,98 +1,78 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: CLEARVIEW NEWSLETTER LOGIC (V1.0)
+ * MODULE: KYNAR NETWORK INTELLIGENCE (V1.0)
  * ══════════════════════════════════════════════════════════════════════════
- * @description Manages newsletter subscriptions, simulates social proof 
- * subscriber activity, and unlocks free product downloads.
+ * @description Handles network subscriptions, manages the real-time member 
+ * counter, and authorizes access to free marketplace assets.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // #region [ 1. SUBSCRIBER COUNTER (SOCIAL PROOF) ]
+  // 1. LIVE MEMBER COUNTER (SOCIAL PROOF)
+  const counterEl = document.getElementById("subscriber-count");
+  let memberCount = 12420;
 
-  /**
-   * Simulates a live counter of members currently active.
-   */
-  const strengthEl = document.getElementById("signal-strength");
-  let subscribers = 1420;
+  if (counterEl) {
+    // Initial Sync
+    counterEl.textContent = memberCount.toLocaleString() + "+";
 
-  if (strengthEl) {
-    strengthEl.textContent = subscribers.toLocaleString();
-
-    // Dynamic update loop
+    // Intelligence Loop: Subtle fluctuation for realism
     setInterval(() => {
-      if (Math.random() > 0.7) {
-        subscribers++;
+      const fluctuation = Math.floor(Math.random() * 3) - 1; // -1, 0, or +1
+      memberCount += fluctuation;
 
-        strengthEl.style.opacity = "0";
-        setTimeout(() => {
-          strengthEl.textContent = subscribers.toLocaleString();
-          strengthEl.style.opacity = "1";
-        }, 200);
-      }
-    }, 5000);
+      counterEl.style.transition = "opacity 0.3s ease";
+      counterEl.style.opacity = "0.7";
+      
+      setTimeout(() => {
+        counterEl.textContent = memberCount.toLocaleString() + "+";
+        counterEl.style.opacity = "1";
+      }, 300);
+    }, 4500);
   }
 
-  // #endregion
-
-  // #region [ 2. SUBSCRIPTION HANDLER ]
-
-  const form = document.getElementById("signal-form");
-  const btn = document.getElementById("btn-signal");
+  // 2. SUBSCRIPTION ENGINE
+  const form = document.getElementById("newsletter-form");
+  const btn = document.getElementById("btn-subscribe");
   const emailInput = document.getElementById("email");
 
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // --- UI: Loading State ---
+      // --- UI: Transition to Loading ---
+      if (window.Haptics) window.Haptics.light();
+      
       btn.disabled = true;
+      btn.style.opacity = "0.8";
       btn.innerHTML = `
         <span class="spinner" style="
-            width:16px; 
-            height:16px; 
-            border:2px solid white; 
-            border-top-color:transparent; 
-            border-radius:50%; 
-            display:inline-block; 
-            animation:spin 1s linear infinite; 
-            margin-right:8px; 
-            vertical-align:middle;">
-        </span> Joining Newsletter...`;
-      btn.style.opacity = "0.8";
+          width: 18px; 
+          height: 18px; 
+          border-top-color: var(--ink-display);
+          margin-right: 12px;">
+        </span> AUTHORIZING...`;
 
-      // --- Logic: Simulate Network Request ---
+      // --- Logic: Secure Handshake Simulation ---
       setTimeout(() => {
         const email = emailInput.value;
 
-        // Unlock Free Products
-        localStorage.setItem("kynar_signal_token", "active");
+        // Authorize Access: Sync with Kynar Commerce Engine
+        localStorage.setItem("kynar_auth_token", "active");
 
         // --- UI: Success State ---
-        btn.innerHTML = `✔ Subscription Active`;
         btn.style.background = "#10B981"; 
         btn.style.color = "white";
+        btn.innerHTML = `✔ ACCESS GRANTED`;
 
         if (window.Haptics) window.Haptics.success();
 
-        // --- Logic: Success Flow ---
+        // --- Redirect: Move user to the Shop to use their new access ---
         setTimeout(() => {
-          alert(
-            `Welcome, ${email}. Your free downloads are now unlocked.`
-          );
+          // Visual confirmation before jump
+          console.log(`Kynar: Network authorization successful for ${email}`);
           window.location.href = "shop.html";
-        }, 800);
-      }, 1500);
+        }, 1200);
+      }, 2000);
     });
   }
-
-  // #endregion
-
-  // #region [ 3. SPINNER ANIMATION ]
-  if (!document.getElementById("signal-css")) {
-    const style = document.createElement("style");
-    style.id = "signal-css";
-    style.innerHTML = `@keyframes spin { to { transform: rotate(360deg); } }`;
-    document.head.appendChild(style);
-  }
-  // #endregion
 });

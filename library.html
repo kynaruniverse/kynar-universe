@@ -1,101 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
-      name="viewport"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Kynar / System Manuals</title>
+  <meta name="description" content="Deployment manuals, configuration guides, and system walkthroughs." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-    <title>Kynar / Resource Library</title>
-    <meta
-      content="Setup guides, tutorials, and tips for your digital products."
-      name="description"
-    />
-    <link href="assets/favicon.png" rel="icon" type="image/png" />
+<body>
+  <div data-include="components/header.html"></div>
 
-    <link href="styles.css" rel="stylesheet" />
-  </head>
+  <main class="app-container">
+    <section 
+      style="
+        margin-top: 1.5rem; 
+        margin-bottom: 3.5rem; 
+        text-align: center;
+      "
+    >
+      <div 
+        style="
+          display: inline-flex; 
+          align-items: center; 
+          background: var(--bg-canvas); 
+          padding: 6px 16px; 
+          border-radius: 99px; 
+          margin-bottom: 1.5rem;
+          border: 1px solid var(--ink-border);
+        "
+      >
+        <span 
+          style="
+            font-size: 0.65rem; 
+            font-weight: 900; 
+            color: var(--ink-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 0.15em;
+          "
+        >Intelligence Hub V1.0</span>
+      </div>
+      <h1 class="text-display glass-title">System Manuals</h1>
+      <p class="text-sub">Master your digital infrastructure with professional deployment guides.</p>
+    </section>
 
-  <body>
+    <section style="margin-bottom: 3rem;">
+      <div 
+        class="scroll-stream" 
+        style="
+          justify-content: center; 
+          gap: 0.75rem;
+          margin: 0 -1.25rem;
+          padding: 0 1.25rem;
+        "
+      >
+        <button class="dock-btn" style="background: var(--grad-gold); height: 40px; font-size: 0.75rem;">All Manuals</button>
+        <button class="dock-btn" style="background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 40px; font-size: 0.75rem;">Deployment</button>
+        <button class="dock-btn" style="background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 40px; font-size: 0.75rem;">Optimization</button>
+      </div>
+    </section>
 
-    <div data-include="components/header.html"></div>
-
-    <main class="app-container">
+    <section style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 5rem;">
+      
+      <a 
+        class="feature-card glimmer-card" 
+        href="#" 
+        style="
+          background: var(--grad-emerald); 
+          min-height: 220px; 
+          text-decoration: none; 
+          display: flex; 
+          flex-direction: column; 
+          justify-content: center;
+          padding: 2.5rem; 
+          border: none; 
+          position: relative;
+        "
+      >
+        <div 
+          class="nav-icon" 
+          style="
+            position: absolute; 
+            right: 2rem; 
+            top: 2rem; 
+            width: 64px; 
+            height: 64px; 
+            font-size: 2rem; 
+            background: rgba(255,255,255,0.1); 
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            margin: 0;
+          "
+        >📁</div>
         
-            <section style="margin-top: 1.5rem; margin-bottom: 3rem; text-align: center;">
-        <div style="display: inline-flex; align-items: center; background: var(--bg-canvas); padding: 4px 12px; border-radius: 99px; margin-bottom: 1rem;">
-          <span style="font-size: 0.65rem; font-weight: 800; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.1em;">Knowledge Base V1.0</span>
-        </div>
-        <h1 class="text-display glass-title">Resource Library</h1>
-        <p class="text-sub">Master your digital tools with our curated guides and system walkthroughs.</p>
-      </section>
-
-      <section style="margin-bottom: 2.5rem;">
-        <div class="scroll-stream" style="justify-content: center; gap: 0.8rem;">
-          <button class="dock-btn" style="background: var(--grad-gold); color: white; border: none; height: 42px; font-size: 0.8rem; padding: 0 1.8rem;">All Resources</button>
-          <button class="dock-btn" style="background: white; border: 1px solid var(--ink-border); color: var(--ink-display); height: 42px; font-size: 0.8rem; padding: 0 1.8rem;">Setup Guides</button>
-          <button class="dock-btn" style="background: white; border: 1px solid var(--ink-border); color: var(--ink-display); height: 42px; font-size: 0.8rem; padding: 0 1.8rem;">Workflow Tips</button>
-        </div>
-      </section>
-
-
-            <section style="display: flex; flex-direction: column; gap: 1.25rem;">
-            
-        <a class="feature-card glimmer-card" href="#" style="background: var(--grad-emerald); min-height: 200px; text-decoration: none; align-items: flex-start; text-align: left; padding: 2rem; border: none; position: relative;">
-          <div class="nav-icon" style="position: absolute; right: 1.5rem; top: 1.5rem; width: 60px; height: 60px; font-size: 2rem; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); margin: 0;">📁</div>
+        <div style="position: relative; z-index: 2; width: 100%;">
+          <div 
+            style="
+              font-size: 0.65rem; 
+              font-weight: 900; 
+              color: var(--accent-gold); 
+              text-transform: uppercase; 
+              letter-spacing: 0.15em; 
+              margin-bottom: 0.5rem;
+            "
+          >Deployment Guide / 01</div>
+          <h2 style="color: white; font-family: var(--font-display); font-size: 2rem; margin-bottom: 1rem;">Quick Start Protocol</h2>
+          <p 
+            style="
+              font-size: 0.95rem; 
+              color: rgba(255,255,255,0.7); 
+              line-height: 1.7; 
+              max-width: 480px; 
+              margin-bottom: 2rem;
+            "
+          >A high-level walkthrough on authorizing, downloading, and deploying Kynar assets across your workstation.</p>
           
-          <div style="position: relative; z-index: 2; width: 100%;">
-            <div style="font-size: 0.7rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">System Guide / 01</div>
-            <h2 style="color: white; font-family: 'Bantayog'; font-size: 1.8rem; margin-bottom: 0.8rem;">Quick Start Manual</h2>
-            <p style="font-size: 0.95rem; color: rgba(255,255,255,0.8); line-height: 1.6; max-width: 450px; margin-bottom: 1.5rem;">Complete walkthrough on downloading, unzipping, and deploying your assets across all devices.</p>
-            
-            <div class="dock-btn" style="background: white; color: var(--ink-display); height: 40px; font-size: 0.75rem; padding: 0 1.5rem;">
-              Open Guide <span style="margin-left: 8px;">→</span>
-            </div>
+          <div 
+            class="dock-btn" 
+            style="
+              background: white; 
+              color: var(--ink-display); 
+              height: 44px; 
+              font-size: 0.8rem; 
+              font-weight: 800; 
+              padding: 0 1.8rem;
+            "
+          >
+            INITIALIZE GUIDE <span style="margin-left: 10px;">→</span>
           </div>
-        </a>
-
-        <div class="nav-item" style="margin: 0; padding: 1.25rem; background: white; border: 1px solid var(--ink-border); box-shadow: var(--shadow-soft); opacity: 0.8;">
-            <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">📝</div>
-            <div class="nav-label">
-                <div style="font-size: 0.65rem; color: var(--ink-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">Tutorial / 02</div>
-                <div style="font-size: 1.1rem; color: var(--ink-display); font-weight: 600;">Notion Mastering</div>
-                <div style="font-size: 0.85rem; color: var(--ink-muted); font-weight: 400;">Workspace duplication and custom setup.</div>
-            </div>
-            <div style="background: var(--bg-canvas); padding: 6px 12px; border-radius: 8px; font-size: 0.65rem; font-weight: 800; color: var(--ink-muted);">LOCKED</div>
         </div>
+      </a>
 
-        <div class="nav-item" style="margin: 0; padding: 1.25rem; background: white; border: 1px solid var(--ink-border); box-shadow: var(--shadow-soft);">
-            <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">🤖</div>
-            <div class="nav-label">
-                <div style="font-size: 0.65rem; color: var(--ink-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">Tutorial / 03</div>
-                <div style="font-size: 1.1rem; color: var(--ink-display); font-weight: 600;">AI Prompt Secrets</div>
-                <div style="font-size: 0.85rem; color: var(--ink-muted); font-weight: 400;">How to get 10x better results from your prompts.</div>
-            </div>
-            <a href="newsletter.html" class="dock-btn" style="height: 36px; padding: 0 1rem; font-size: 0.7rem; background: var(--grad-gold);">Unlock</a>
+      <div 
+        class="nav-item" 
+        style="
+          margin: 0; 
+          padding: 1.5rem; 
+          background: white; 
+          border: 1px solid var(--ink-border); 
+          box-shadow: var(--shadow-soft); 
+          opacity: 0.7;
+        "
+      >
+        <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">🔒</div>
+        <div class="nav-label" style="margin-left: 0.5rem;">
+          <div style="font-size: 0.6rem; color: var(--ink-muted); text-transform: uppercase; font-weight: 900; letter-spacing: 0.1em; margin-bottom: 4px;">Tutorial / 02</div>
+          <div style="font-family: var(--font-display); font-size: 1.2rem; color: var(--ink-display); font-weight: 800;">Notion Architecture</div>
+          <div style="font-size: 0.8rem; color: var(--ink-muted);">Deep duplication and custom system setup.</div>
         </div>
+        <div 
+          style="
+            background: var(--bg-canvas); 
+            padding: 8px 14px; 
+            border-radius: 10px; 
+            font-size: 0.6rem; 
+            font-weight: 900; 
+            color: var(--ink-muted);
+            letter-spacing: 0.05em;
+          "
+        >RESTRICTED</div>
+      </div>
 
-        <div style="text-align: center; padding: 3rem 1rem; border: 2px dashed var(--ink-border); border-radius: 20px; opacity: 0.5;">
-            <p style="font-size: 0.9rem; font-weight: 600;">More resources currently in production...</p>
+      <div 
+        class="nav-item" 
+        style="
+          margin: 0; 
+          padding: 1.5rem; 
+          background: white; 
+          border: 1px solid var(--ink-border); 
+          box-shadow: var(--shadow-soft);
+        "
+      >
+        <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">🤖</div>
+        <div class="nav-label" style="margin-left: 0.5rem;">
+          <div style="font-size: 0.6rem; color: var(--ink-muted); text-transform: uppercase; font-weight: 900; letter-spacing: 0.1em; margin-bottom: 4px;">Tutorial / 03</div>
+          <div style="font-family: var(--font-display); font-size: 1.2rem; color: var(--ink-display); font-weight: 800;">AI Prompt Logic</div>
+          <div style="font-size: 0.8rem; color: var(--ink-muted);">Advanced prompt-chaining for 10x output.</div>
         </div>
-      </section>
+        <a 
+          href="newsletter.html" 
+          class="dock-btn" 
+          style="
+            height: 40px; 
+            padding: 0 1.25rem; 
+            font-size: 0.75rem; 
+            background: var(--grad-gold); 
+            border: none;
+            font-weight: 800;
+          "
+        >Authorize Access</a>
+      </div>
 
+      <div 
+        style="
+          text-align: center; 
+          padding: 4rem 1rem; 
+          border: 1px dashed var(--ink-border); 
+          border-radius: 24px; 
+          opacity: 0.4;
+        "
+      >
+        <p style="font-size: 0.85rem; font-weight: 800; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.1em;">
+          System expansion in progress...
+        </p>
+      </div>
+    </section>
+  </main>
+  
+  <div data-include="components/footer.html"></div>
+  <div data-include="components/modals.html"></div>
 
-    </main>
-    
-    <div data-include="components/footer.html"></div>
-    <div data-include="components/modals.html"></div>
-
-    <script src="core.js"></script>
-    <script src="cart.js"></script>
-    <script src="haptics.js"></script>
-    
-    <script type="module">
-      import './firebase-config.js';
-      import './auth.js';
-    </script>
-    
-  </body>
+  <script src="core.js"></script>
+  <script src="cart.js"></script>
+  <script src="haptics.js"></script>
+  
+  <script type="module">
+    import './firebase-config.js';
+    import './auth.js';
+  </script>
+</body>
 </html>
