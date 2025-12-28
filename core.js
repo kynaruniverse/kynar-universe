@@ -1,8 +1,7 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: KYNAR MARKETPLACE CORE (V1.2)
+ * MODULE: KYNAR MARKETPLACE CORE (V1.3 - MASTER SYNC)
  * ══════════════════════════════════════════════════════════════════════════
- * @updates Consolidated Event Delegation for Cart, Nav, and Auth Modals.
  */
 
 const KynarCore = {
@@ -17,8 +16,7 @@ const KynarCore = {
           const html = await response.text();
           el.innerHTML = html;
           this.executeScripts(el);
-
-          // Dispatch events for other modules to sync
+          
           if (file.includes("header")) document.dispatchEvent(new Event("KynarHeaderLoaded"));
           if (file.includes("modals")) document.dispatchEvent(new Event("KynarModalsLoaded"));
         }
@@ -39,10 +37,11 @@ const KynarCore = {
     });
   },
 
-  // 2. GLOBAL INTERACTION ENGINE (The "Brain")
+  // 2. GLOBAL INTERACTION ENGINE
   initInteractions() {
     document.body.addEventListener("click", (e) => {
-      // --- A. Main Navigation Drawer ---
+      
+      // --- A. NAVIGATION DRAWER ---
       if (e.target.closest("#nav-toggle")) {
         this.toggleMenu(true);
       }
@@ -50,9 +49,10 @@ const KynarCore = {
         this.toggleMenu(false);
       }
 
-      // --- B. Auth Modals ---
+      // --- B. AUTH MODALS ---
       if (e.target.closest(".trigger-access")) {
         e.preventDefault();
+        this.toggleMenu(false); // Close nav if open
         this.openAuthModal();
       }
       const overlay = document.getElementById("modal-overlay");
@@ -60,19 +60,24 @@ const KynarCore = {
         this.closeAuthModal();
       }
 
-      // --- C. Cart Drawer (Redirects to KynarCart) ---
+      // --- C. CART DRAWER (Master Sync) ---
       if (e.target.closest("#cart-trigger")) {
         e.preventDefault();
+        this.toggleMenu(false); // Close nav if open
         if (window.KynarCart) window.KynarCart.openDrawer();
+      }
+      
+      // FIXED: Specifically listen for the Cart Close Button and Backdrop
+      if (e.target.closest("#close-drawer") || e.target.id === "cart-drawer-backdrop") {
+        if (window.KynarCart) window.KynarCart.closeDrawer();
       }
     });
 
-    // Smart Header Scroll Logic
+    // Smart Header Logic
     let lastScrollY = window.scrollY;
     window.addEventListener('scroll', () => {
       const header = document.querySelector('.app-header');
       if (!header || document.body.style.overflow === "hidden") return;
-      
       if (window.scrollY > lastScrollY && window.scrollY > 100) {
         header.classList.add('header-hidden');
       } else {
@@ -117,15 +122,12 @@ const KynarCore = {
   }
 };
 
-// 4. INITIALIZATION SEQUENCE
+// 4. INITIALIZATION
 document.addEventListener("DOMContentLoaded", async () => {
-  // Load HTML fragments first
   await KynarCore.loadComponents();
-  
-  // Initialize all click listeners
   KynarCore.initInteractions();
 
-  // Setup Progress Bar
+  // Scroll Indicator
   const progressBar = document.createElement('div');
   progressBar.id = 'scroll-indicator';
   document.body.appendChild(progressBar);
@@ -134,7 +136,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (winScroll / height) * 100;
-    progressBar.style.width = scrolled + "%";
+    if (progressBar) progressBar.style.width = scrolled + "%";
   }, { passive: true });
 });
 

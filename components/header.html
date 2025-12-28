@@ -35,6 +35,7 @@
         text-decoration: none; 
         color: var(--ink-display); 
         font-weight: 800;
+        margin-left: 44px; /* Balances the flex-space for the 1-icon right side */
       "
     >
       KYNAR
@@ -75,118 +76,8 @@
             font-weight: bold; 
             border: 2px solid var(--bg-paper);
           "
-        ></span>
+        >0</span>
       </button>
     </div>
   </div>
 </header>
-
-<div class="drawer-backdrop" id="nav-backdrop"></div>
-<div class="drawer-backdrop" id="cart-drawer-backdrop"></div>
-
-<aside class="drawer" id="nav-drawer">
-  <div 
-    class="drawer-header" 
-    style="
-      padding: 2.5rem 1.25rem 1rem; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-    "
-  >
-    <span class="text-display" style="font-size: 1.4rem; margin: 0;">Navigation</span>
-    <button 
-      id="close-nav" 
-      style="
-        background: var(--bg-canvas); 
-        border: none; 
-        width: 40px; 
-        height: 40px; 
-        border-radius: 50%; 
-        font-size: 1.4rem;
-      "
-    >&times;</button>
-  </div>
-
-  <div class="drawer-content">
-    <nav style="display: flex; flex-direction: column;">
-      <a href="index.html" class="nav-item">
-        <div class="nav-icon">🏠</div>
-        <span class="nav-label">Home</span>
-        <span class="nav-arrow">❯</span>
-      </a>
-      <a href="shop.html" class="nav-item">
-        <div class="nav-icon">🛍️</div>
-        <span class="nav-label">Shop Products</span>
-        <span class="nav-arrow">❯</span>
-      </a>
-      <a href="library.html" class="nav-item">
-        <div class="nav-icon">📖</div>
-        <span class="nav-label">Resource Library</span>
-        <span class="nav-arrow">❯</span>
-      </a>
-
-      <div style="margin: 2rem 1.25rem 0.5rem; font-size: 0.7rem; font-weight: 800; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.15em;">
-        Account
-      </div>
-      <a href="account.html" class="nav-item trigger-access" style="background: var(--bg-paper); border: 1px solid var(--ink-border);">
-        <div class="nav-icon">👤</div>
-        <span class="nav-label">Sign In / Profile</span>
-        <span class="nav-arrow">❯</span>
-      </a>
-    </nav>
-  </div>
-</aside>
-
-<aside class="drawer" id="cart-drawer">
-  <div 
-    class="drawer-header" 
-    style="
-      padding: 2.5rem 1.25rem 1rem; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-    "
-  >
-    <span class="text-display" style="font-size: 1.4rem; margin: 0;">Your Cart</span>
-    <button 
-      id="close-drawer" 
-      style="
-        background: var(--bg-canvas); 
-        border: none; 
-        width: 40px; 
-        height: 40px; 
-        border-radius: 50%; 
-        font-size: 1.4rem;
-      "
-    >&times;</button>
-  </div>
-
-  <div id="drawer-items" style="padding: 0 1rem; flex: 1; overflow-y: auto;"></div>
-
-  <div 
-    style="
-      padding: 1.5rem; 
-      background: white; 
-      border-top: 1px solid var(--ink-border); 
-      border-radius: 24px 24px 0 0;
-    "
-  >
-    <div style="display: flex; justify-content: space-between; margin-bottom: 1.2rem;">
-      <span style="color: var(--ink-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Subtotal</span>
-      <span id="drawer-total" style="font-family: var(--font-display); font-size: 1.6rem; color: var(--ink-display);">£0.00</span>
-    </div>
-    <a 
-      href="checkout.html" 
-      class="dock-btn" 
-      style="
-        width: 100%; 
-        height: 56px; 
-        background: var(--grad-gold); 
-        border: none;
-      "
-    >
-      Secure Checkout
-    </a>
-  </div>
-</aside>
