@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 4. Clear and Redirect after user sees the "Verified" screen
       setTimeout(() => {
         window.Satchel.clear();
-        window.location.href = "account.html"; 
+        window.location.href = "success.html"; 
       }, 2000); // 2 seconds of visual "Success" confirmation
     }, 1800);
   }

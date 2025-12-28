@@ -27,10 +27,10 @@ const KynarCore = {
 
           // Component-Specific Signals
           if (file.includes("header")) {
-            document.dispatchEvent(new Event("ForgeHeaderLoaded"));
+            document.dispatchEvent(new Event("KynarHeaderLoaded"));
           }
           if (file.includes("modals")) {
-            document.dispatchEvent(new Event("ForgeModalsLoaded"));
+            document.dispatchEvent(new Event("KynarModalsLoaded"));
           }
         } else {
           console.error(`Kynar: Missing component ${file}`);
