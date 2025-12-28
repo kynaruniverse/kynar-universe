@@ -1,29 +1,28 @@
 # ══════════════════════════════════════════════════════════════════════════
-# MODULE: KYNAR ROBOTS CONFIGURATION
+# MODULE: CLEARVIEW ROBOTS CONFIGURATION (V1.0)
 # ══════════════════════════════════════════════════════════════════════════
-# Description: Controls search engine crawler access.
-# Strategy: Open by default, protecting system includes and private user pages.
+# Brand: Kynar Digital
+# Strategy: Allow discovery of products while protecting system/user paths.
 # ══════════════════════════════════════════════════════════════════════════
 
-# [ 1. GLOBAL ACCESS RULES ]
+# [ 1. GLOBAL ACCESS ]
+# Allow all search engines to crawl the shop and homepage
 User-agent: *
 Allow: /
 
-# [ 2. SYSTEM RESTRICTIONS ]
-
-# Block component fragments (headers, footers, modals)
+# [ 2. PROTECTED SYSTEM PATHS ]
+# Do not index partial HTML components used for injection
 Disallow: /components/
 
-# Block raw assets and direct download paths
+# Prevent direct indexing of raw download assets
 Disallow: /assets/
 
-# [ 3. PRIVATE USER PAGES ]
-
-# Transaction success page (Post-purchase)
+# [ 3. PRIVATE CUSTOMER PATHS ]
+# Do not index sensitive or post-purchase pages
 Disallow: /success.html
+Disallow: /account.html
+Disallow: /checkout.html
 
-# User Profile & Identity Ledger
-Disallow: /identity.html
-
-# [ 4. DISCOVERY ]
+# [ 4. SITEMAP ]
+# Helps Google find your product.html and shop.html faster
 Sitemap: https://kynaruniverse.co.uk/sitemap.xml

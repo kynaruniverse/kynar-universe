@@ -8,9 +8,9 @@
       name="viewport"
     />
 
-    <title>Kynar Universe / Acquisition Complete</title>
+    <title>Kynar / Order Confirmed</title>
     <meta
-      content="Artifact secured. Access your download securely."
+      content="Payment successful. Access your digital downloads."
       name="description"
     />
     <link href="assets/favicon.png" rel="icon" type="image/png" />
@@ -45,11 +45,10 @@
         </div>
 
         <h1 class="text-display" style="margin-bottom: 0.5rem;">
-          Artifact Secured
+          Payment Successful
         </h1>
         <p class="text-sub">
-          The transaction was successful. This artifact has been permanently added
-          to your Identity Ledger.
+          Thank you for your purchase. Your digital products have been added to your account and are ready for download.
         </p>
       </div>
 
@@ -99,10 +98,10 @@
                 font-size: 1.25rem;
               "
             >
-              Deep Focus OS
+              Ultimate Notion OS
             </div>
             <div style="color: var(--ink-muted); font-size: 0.85rem;">
-              v2.4 • ZIP Archive • 12MB
+              v2.0 • Notion Template
             </div>
           </div>
         </div>
@@ -121,12 +120,12 @@
             width: 100%;
           "
         >
-          Initiate Download
+          Download Now
         </a>
 
         <a
           class="dock-btn"
-          href="artifact.html"
+          href="product.html"
           style="
             background: transparent;
             border: 1px solid rgba(0, 0, 0, 0.05);
@@ -134,20 +133,20 @@
             width: 100%;
           "
         >
-          Read Setup Guide
+          View Product Guide
         </a>
 
       </div>
 
       <a
-        href="identity.html"
+        href="account.html"
         style="
           color: var(--ink-muted);
           font-size: 0.9rem;
           text-decoration: underline !important;
         "
       >
-        Return to Identity Ledger
+        Manage Downloads in My Account
       </a>
 
     </main>
@@ -187,6 +186,7 @@
     </script>
     
     <script>
+      // Haptic Feedback on load
       document.addEventListener('DOMContentLoaded', () => {
         if (window.Haptics) {
           setTimeout(() => window.Haptics.success(), 300);

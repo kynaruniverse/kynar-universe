@@ -1,20 +1,16 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: SOFT ROYAL CORE SYSTEM
+ * MODULE: KYNAR MARKETPLACE CORE (V1.0)
  * ══════════════════════════════════════════════════════════════════════════
- * @description Central system controller. Handles dynamic HTML component loading
- * (Header/Footer injection), global navigation state, and system-wide modals.
- * @module ForgeCore
+ * @description Central system controller. Handles dynamic HTML component 
+ * injection (Header/Footer), global navigation, and modal management.
  */
 
-const ForgeCore = {
+const KynarCore = {
   // #region [ 1. COMPONENT LOADER ]
 
   /**
-   * Scans the DOM for elements with `data-include`.
-   * Fetches the target HTML file, injects it, and re-hydrates any scripts.
-   * Dispatches events when specific critical components (Header, Modals) load.
-   * @returns {Promise<void>}
+   * Injects HTML components (Header, Footer, Modals) into the page.
    */
   async loadComponents() {
     const elements = document.querySelectorAll("[data-include]");
@@ -27,23 +23,20 @@ const ForgeCore = {
           const html = await response.text();
           el.innerHTML = html;
 
-          // Re-hydrate scripts found in the injected HTML
           this.executeScripts(el);
 
-          // SIGNAL: Header Ready
+          // Component-Specific Signals
           if (file.includes("header")) {
             document.dispatchEvent(new Event("ForgeHeaderLoaded"));
           }
-
-          // SIGNAL: Modals Ready
           if (file.includes("modals")) {
             document.dispatchEvent(new Event("ForgeModalsLoaded"));
           }
         } else {
-          console.error(`Forge: Failed to load ${file}`);
+          console.error(`Kynar: Missing component ${file}`);
         }
       } catch (err) {
-        console.error(`Forge: System Error loading ${file}`, err);
+        console.error(`Kynar: System Error loading ${file}`, err);
       }
     });
 
@@ -51,9 +44,7 @@ const ForgeCore = {
   },
 
   /**
-   * Helper to execute JavaScript found inside dynamically injected HTML.
-   * Browsers do not execute <script> tags in innerHTML by default.
-   * @param {HTMLElement} container - The container with the injected HTML.
+   * Re-hydrates scripts within injected HTML.
    */
   executeScripts(container) {
     const scripts = container.querySelectorAll("script");
@@ -69,11 +60,10 @@ const ForgeCore = {
 
   // #endregion
 
-  // #region [ 2. NAVIGATION CONTROLLER (MAIN MENU) ]
+  // #region [ 2. NAVIGATION CONTROLLER ]
 
   /**
-   * Initializes the global navigation drawer logic.
-   * Binds click listeners to the hamburger menu and backdrop.
+   * Manages the mobile side-menu logic.
    */
   initNavigation() {
     const trigger = document.getElementById("nav-toggle");
@@ -86,13 +76,13 @@ const ForgeCore = {
     const openMenu = () => {
       drawer.classList.add("is-open");
       if (backdrop) backdrop.classList.add("is-visible");
-      document.body.style.overflow = "hidden"; // Lock Scroll
+      document.body.style.overflow = "hidden"; // Premium UI: Lock Background
     };
 
     const closeMenu = () => {
       drawer.classList.remove("is-open");
       if (backdrop) backdrop.classList.remove("is-visible");
-      document.body.style.overflow = ""; // Unlock Scroll
+      document.body.style.overflow = ""; // Unlock Background
     };
 
     trigger.addEventListener("click", openMenu);
@@ -102,15 +92,12 @@ const ForgeCore = {
 
   // #endregion
 
-  // #region [ 3. GLOBAL MODAL CONTROLLER ]
+  // #region [ 3. ACCOUNT MODAL CONTROLLER ]
 
   /**
-   * Initializes global modal listeners.
-   * Uses event delegation to allow any button with `.trigger-access` to open the auth modal.
+   * Handles the global Sign-In/Register modal popups.
    */
   initModals() {
-    // Listen for any button with class .trigger-access
-    // This allows buttons anywhere (Header, Identity page, Library) to open the auth modal
     document.body.addEventListener("click", (e) => {
       if (e.target.closest(".trigger-access")) {
         e.preventDefault();
@@ -118,7 +105,6 @@ const ForgeCore = {
       }
     });
 
-    // Modal Close Logic
     const overlay = document.getElementById("modal-overlay");
     const closeBtn = document.getElementById("close-access");
 
@@ -129,46 +115,36 @@ const ForgeCore = {
       };
 
       if (closeBtn) closeBtn.addEventListener("click", closeModal);
-      // Close on background click
       overlay.addEventListener("click", (e) => {
         if (e.target === overlay) closeModal();
       });
     }
   },
 
-  /**
-   * Programmatically opens the Authentication Modal.
-   */
   openAuthModal() {
     const overlay = document.getElementById("modal-overlay");
     if (overlay) {
       overlay.style.visibility = "visible";
       overlay.style.opacity = "1";
-    } else {
-      console.warn(
-        "Forge: Modal overlay not found. Ensure components/modals.html is loaded."
-      );
     }
   },
 
   // #endregion
 };
 
-// #region [ 4. SYSTEM BOOT SEQUENCE ]
+// #region [ 4. INITIALIZATION ]
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // 1. Load Shell (Header, Footer, Modals)
-  await ForgeCore.loadComponents();
+  // Load UI Shell
+  await KynarCore.loadComponents();
 
-  // 2. Initialize Subsystems
-  ForgeCore.initNavigation();
-  ForgeCore.initModals();
+  // Initialize Core Logic
+  KynarCore.initNavigation();
+  KynarCore.initModals();
 
-  // 3. Log Status
-  console.log("Soft Royal Engine: Online");
+  console.log("Kynar Digital Marketplace: Production Ready");
 });
 
-// Expose for external access if needed
-window.ForgeCore = ForgeCore;
+window.ForgeCore = KynarCore;
 
 // #endregion

@@ -1,19 +1,14 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: SOFT ROYAL CART LOGIC (SATCHEL)
+ * MODULE: CLEARVIEW CART LOGIC (V1.0)
  * ══════════════════════════════════════════════════════════════════════════
- * @description Manages the shopping cart state (Satchel), local storage persistence,
- * and the visual logic for the side drawer UI.
- * @module Satchel
+ * @description Manages the shopping cart state, local storage persistence,
+ * and the visual logic for the cart drawer UI.
  */
 
 const Satchel = {
   // #region [ 0. CONFIGURATION ]
 
-  /**
-   * Returns the LocalStorage key for the cart.
-   * @returns {string} The storage key.
-   */
   getKey() {
     return "kynar_cart";
   },
@@ -23,39 +18,34 @@ const Satchel = {
   // #region [ 1. DATA MANAGEMENT ]
 
   /**
-   * Retrieves the current cart contents from LocalStorage.
-   * @returns {Array<Object>} Array of artifact objects.
+   * Retrieves the current cart contents.
    */
   getContents() {
     return JSON.parse(localStorage.getItem(this.getKey()) || "[]");
   },
 
   /**
-   * Adds an item to the Satchel.
-   * Handles both full objects (from Artifact pages) and ID strings (from Archive).
-   * @param {Object|string} artifactOrId - The item object or its ID string.
-   * @returns {boolean} True if added, false if already existed.
+   * Adds a product to the cart.
    */
-  add(artifactOrId) {
-    // Handle both ID string (from Archive) and Object (from Artifact page)
-    let artifact = artifactOrId;
+  add(productOrId) {
+    let product = productOrId;
 
-    // If string, fetch full object from global Archive DB if possible, or fail gracefully
-    if (typeof artifactOrId === "string") {
+    // Handle ID string (from Shop) vs Object (from Product page)
+    if (typeof productOrId === "string") {
       if (window.ArchiveSystem) {
         const db = window.ArchiveSystem.getDb();
-        artifact = db.find((i) => i.id === artifactOrId);
+        product = db.find((i) => i.id === productOrId);
       }
     }
 
-    if (!artifact) {
-      console.error("Artifact data missing.");
+    if (!product) {
+      console.error("Product data missing.");
       return;
     }
 
     const contents = this.getContents();
-    if (!contents.find((item) => item.id === artifact.id)) {
-      contents.push(artifact);
+    if (!contents.find((item) => item.id === product.id)) {
+      contents.push(product);
       this.save(contents);
       this.openDrawer(); // Auto-open to confirm add
 
@@ -68,25 +58,16 @@ const Satchel = {
   },
 
   /**
-   * Removes an item from the Satchel by ID.
-   * @param {string} artifactId - The ID of the item to remove.
+   * Removes an item from the cart.
    */
-  remove(artifactId) {
+  remove(productId) {
     let contents = this.getContents();
-    contents = contents.filter((item) => item.id !== artifactId);
+    contents = contents.filter((item) => item.id !== productId);
     this.save(contents);
-    // If on checkout page, refresh that list too
-    if (
-      window.removeItem &&
-      typeof window.removeItem === "function" &&
-      document.getElementById("manifest-list")
-    ) {
-      // Let checkout.js handle its own render if active
-    }
   },
 
   /**
-   * Clears the entire Satchel and updates UI.
+   * Clears the entire cart.
    */
   clear() {
     localStorage.removeItem(this.getKey());
@@ -95,8 +76,7 @@ const Satchel = {
   },
 
   /**
-   * Persists the cart contents to LocalStorage and triggers UI updates.
-   * @param {Array<Object>} contents - The new cart array.
+   * Persists to LocalStorage and triggers UI updates.
    */
   save(contents) {
     localStorage.setItem(this.getKey(), JSON.stringify(contents));
@@ -105,8 +85,7 @@ const Satchel = {
   },
 
   /**
-   * Calculates the total price of items in the Satchel.
-   * @returns {number} Total price.
+   * Calculates total price.
    */
   total() {
     return this.getContents().reduce((sum, item) => sum + item.price, 0);
@@ -117,7 +96,7 @@ const Satchel = {
   // #region [ 2. UI & BADGE UPDATES ]
 
   /**
-   * Updates the red notification dot on the header icon.
+   * Updates the notification dot on the header icon.
    */
   updateUI() {
     const count = this.getContents().length;
@@ -125,8 +104,8 @@ const Satchel = {
 
     if (badge) {
       if (count > 0) {
-        badge.style.display = "block";
-        // Optional: badge.textContent = count;
+        badge.style.display = "flex";
+        badge.textContent = count;
       } else {
         badge.style.display = "none";
       }
@@ -137,12 +116,7 @@ const Satchel = {
 
   // #region [ 3. DRAWER INTERACTION ]
 
-  /**
-   * Initializes event listeners for the Satchel drawer.
-   * Waits for DOM elements to exist.
-   */
   initDrawer() {
-    // Target the new button ID from header.html
     const trigger = document.getElementById("satchel-trigger");
     const backdrop = document.getElementById("satchel-drawer-backdrop");
     const closeBtn = document.getElementById("close-drawer");
@@ -157,13 +131,9 @@ const Satchel = {
     if (backdrop) backdrop.addEventListener("click", () => this.closeDrawer());
     if (closeBtn) closeBtn.addEventListener("click", () => this.closeDrawer());
 
-    // Initial render check
     this.updateUI();
   },
 
-  /**
-   * Opens the side drawer and shows the backdrop.
-   */
   openDrawer() {
     this.renderDrawer();
     const drawer = document.getElementById("satchel-drawer");
@@ -175,9 +145,6 @@ const Satchel = {
     }
   },
 
-  /**
-   * Closes the side drawer and hides the backdrop.
-   */
   closeDrawer() {
     const drawer = document.getElementById("satchel-drawer");
     const backdrop = document.getElementById("satchel-drawer-backdrop");
@@ -192,10 +159,6 @@ const Satchel = {
 
   // #region [ 4. DRAWER RENDERING ]
 
-  /**
-   * Renders the HTML list of items inside the side drawer.
-   * Handles empty states and dynamic item injection.
-   */
   renderDrawer() {
     const container = document.getElementById("drawer-items");
     const totalEl = document.getElementById("drawer-total");
@@ -204,18 +167,16 @@ const Satchel = {
     if (totalEl) totalEl.textContent = `£${this.total().toFixed(2)}`;
     if (!container) return;
 
-    // --- State: Empty ---
     if (items.length === 0) {
       container.innerHTML = `
                 <div class="empty-state" style="text-align: center; margin-top: 3rem; opacity: 0.6;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🍂</div>
-                    <p>Your satchel is empty.</p>
-                    <a href="archive.html" onclick="Satchel.closeDrawer()" style="display: inline-block; margin-top: 1rem; color: var(--accent-gold); font-weight: bold; font-size: 0.9rem; cursor: pointer;">Discover Artifacts →</a>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🛍️</div>
+                    <p>Your cart is empty.</p>
+                    <a href="shop.html" onclick="Satchel.closeDrawer()" style="display: inline-block; margin-top: 1rem; color: var(--accent-gold); font-weight: bold; font-size: 0.9rem;">Shop Products →</a>
                 </div>`;
       return;
     }
 
-    // --- State: Populated ---
     container.innerHTML = items
       .map(
         (item) => `
@@ -228,7 +189,7 @@ const Satchel = {
                         : ""
                     }
                     <span style="${item.image ? "display:none;" : ""}">${
-          item.icon || "✦"
+          item.icon || "📦"
         }</span>
                 </div>
 
@@ -237,12 +198,12 @@ const Satchel = {
                       item.title
                     }</h4>
                     <span style="font-size: 0.75rem; color: var(--ink-muted); text-transform: uppercase;">${
-                      item.collection || "Artifact"
+                      item.collection || "Digital Product"
                     }</span>
                 </div>
 
                 <div style="text-align: right;">
-                    <div style="font-weight: bold; font-size: 0.9rem; font-family: 'Glacial Indifference'; margin-bottom: 4px;">£${item.price.toFixed(
+                    <div style="font-weight: bold; font-size: 0.9rem; margin-bottom: 4px;">£${item.price.toFixed(
                       2
                     )}</div>
                     <button onclick="Satchel.remove('${
@@ -261,53 +222,36 @@ const Satchel = {
 
   // #region [ 5. DOWNLOAD GATEKEEPER ]
 
-  /**
-   * Handles direct file downloads with authentication checks.
-   * @param {string} url - The file URL to download.
-   */
   directDownload(url) {
-    // In a real app, check for email/auth here first
     const hasAuth = localStorage.getItem("kynar_signal_token");
 
-    if (hasAuth || true) {
-      // Bypassing for demo purposes
+    if (hasAuth) {
       if (window.Haptics) window.Haptics.success();
 
-      // Create temporary link to trigger download
       const a = document.createElement("a");
       a.href = url;
       a.download = "";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-
-      alert("Download starting...");
     } else {
-      alert("Please join The Signal to unlock free downloads.");
-      window.location.href = "signals.html";
+      alert("Please join our newsletter to unlock free downloads.");
+      window.location.href = "newsletter.html";
     }
   },
 
   // #endregion
 };
 
-// Global Exposure
 window.Satchel = Satchel;
 
-// #region [ 6. INITIALIZATION ]
-
-// Init Listener (Wait for Header Injection)
+// Initialization
 document.addEventListener("DOMContentLoaded", () => {
-  // Check every 100ms for the header to be injected by the component loader
   const checkHeader = setInterval(() => {
     if (document.getElementById("satchel-trigger")) {
       Satchel.initDrawer();
       clearInterval(checkHeader);
     }
   }, 100);
-
-  // Fallback stop after 3 seconds to prevent infinite polling
   setTimeout(() => clearInterval(checkHeader), 3000);
 });
-
-// #endregion

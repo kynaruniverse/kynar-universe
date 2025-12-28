@@ -8,9 +8,9 @@
       name="viewport"
     />
 
-    <title>Kynar Universe / The Signal</title>
+    <title>Kynar / Newsletter</title>
     <meta
-      content="Join the Kynar Frequency. High-value architectural updates and deep focus digests."
+      content="Join the Kynar community. Get product updates, free resources, and tips delivered to your inbox."
       name="description"
     />
     <link href="assets/favicon.png" rel="icon" type="image/png" />
@@ -36,7 +36,7 @@
           <div class="orb-wave"></div>
         </div>
         
-        <h1 class="text-display">The Signal</h1>
+        <h1 class="text-display">Weekly Updates</h1>
         <p class="text-sub">
           Join
           <span
@@ -45,7 +45,9 @@
           >
             ...
           </span>
-          architects receiving the weekly Deep Focus digest.
+          subscribers receiving our weekly digest.
+          <br>
+          Get exclusive discounts, new product drops, and free resources.
         </p>
       </section>
 
@@ -78,12 +80,12 @@
                 margin-left: 0.5rem;
               "
             >
-              YOUR FREQUENCY (EMAIL)
+              EMAIL ADDRESS
             </label>
             
             <input
               id="email"
-              placeholder="architect@example.com"
+              placeholder="you@example.com"
               required
               style="
                 background: var(--bg-canvas);
@@ -114,7 +116,7 @@
             "
             type="submit"
           >
-            Establish Connection
+            Subscribe
           </button>
 
           <div
@@ -128,16 +130,16 @@
               text-align: center;
             "
           >
-            <span>🔒 Secure Channel</span>
+            <span>🔒 No Spam</span>
             <span>•</span>
-            <span>Unlocks Free Artifacts</span>
+            <span>Unlocks Free Downloads</span>
           </div>
 
         </form>
       </div>
 
       <section>
-        <div class="section-header">Recent Transmissions</div>
+        <div class="section-header">Recent Emails</div>
         
         <div class="scroll-stream">
           
@@ -149,8 +151,8 @@
               #42
             </div>
             <div>
-              <div class="stream-title">The Art of Subtraction</div>
-              <div class="stream-meta">Digest</div>
+              <div class="stream-title">New Notion Systems</div>
+              <div class="stream-meta">Product Update</div>
             </div>
           </a>
 
@@ -159,15 +161,15 @@
               #41
             </div>
             <div>
-              <div class="stream-title">Building a Second Brain</div>
-              <div class="stream-meta">System</div>
+              <div class="stream-title">Free Worksheets</div>
+              <div class="stream-meta">Education</div>
             </div>
           </a>
 
           <a class="stream-card" href="#">
             <div class="stream-visual visual-silver">#40</div>
             <div>
-              <div class="stream-title">Digital Minimalism</div>
+              <div class="stream-title">Creator Toolkit</div>
               <div class="stream-meta">Guide</div>
             </div>
           </a>
@@ -181,7 +183,7 @@
     <div data-include="components/modals.html"></div>
 
     <style>
-      /* --- Signal Orb Container --- */
+      /* --- Pulse Animation Styles (Preserved) --- */
       .signal-orb {
         align-items: center;
         display: flex;
@@ -192,7 +194,6 @@
         width: 80px;
       }
       
-      /* --- Core Circle --- */
       .orb-core {
         background: var(--grad-emerald);
         border-radius: 50%;
@@ -203,7 +204,6 @@
         z-index: 2;
       }
 
-      /* --- Radar Ping Effect --- */
       .orb-wave {
         animation: radarPing 3s infinite;
         border-radius: 50%;
@@ -219,19 +219,10 @@
       }
 
       @keyframes radarPing {
-        0% {
-          height: 100%;
-          opacity: 0.8;
-          width: 100%;
-        }
-        100% {
-          height: 250%;
-          opacity: 0;
-          width: 250%;
-        }
+        0% { height: 100%; opacity: 0.8; width: 100%; }
+        100% { height: 250%; opacity: 0; width: 250%; }
       }
 
-      /* --- Form Input Focus States --- */
       input:focus {
         background: white !important;
         border-color: var(--accent-gold) !important;

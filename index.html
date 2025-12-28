@@ -1,252 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" name="viewport" />
   
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
-      name="viewport"
-    />
+  <title>Kynar / Digital Product Marketplace</title>
+  <meta content="Premium digital tools, templates, and resources for creators, parents, and entrepreneurs." name="description" />
+  <link href="assets/favicon.png" rel="icon" type="image/png" />
+  
+  <meta content="website" property="og:type" />
+  <meta content="https://kynaruniverse.co.uk/" property="og:url" />
+  <meta content="Kynar Marketplace" property="og:title" />
+  <meta content="Shop high-quality digital products. Templates, systems, and creative assets." property="og:description" />
+  <meta content="https://kynaruniverse.co.uk/assets/social-card.jpg" property="og:image" />
+  
+  <link href="styles.css" rel="stylesheet" />
+</head>
 
-    <title>Kynar Universe / The Digital Sanctuary</title>
-    <meta
-      content="A curated archive of high-value digital artifacts. Tools for focus, productivity, and architectural thinking."
-      name="description"
-    />
-    <link href="assets/favicon.png" rel="icon" type="image/png" />
-
-    <meta content="website" property="og:type" />
-    <meta content="https://kynaruniverse.co.uk/" property="og:url" />
-    <meta content="Kynar Universe" property="og:title" />
-    <meta
-      content="Acquire the tools of the new digital architect. Focus. Build. Transcend."
-      property="og:description"
-    />
-    <meta
-      content="https://kynaruniverse.co.uk/assets/social-card.jpg"
-      property="og:image"
-    />
-
-    <link href="styles.css" rel="stylesheet" />
-  </head>
-
-  <body>
-
-    <div data-include="components/header.html"></div>
-
-    <main class="app-container">
+<body>
+  
+  <div data-include="components/header.html"></div>
+  
+  <main class="app-container">
+    
+    <section style="margin-top: 1rem; margin-bottom: 2rem;">
+      <h1 class="text-display">
+        The World of<br />Digital Products
+      </h1>
+      <p class="text-sub">
+        A curated marketplace for everyone. <br>
+        Find Notion templates, homeschooling worksheets, AI prompts, and creative assets to level up your life and work.
+      </p>
+    </section>
+    
+    <section class="twin-grid">
       
-      <section style="margin-top: 1rem; margin-bottom: 2rem;">
-        <h1 class="text-display">
-          The Architect's<br />Toolkit
-        </h1>
-        <p class="text-sub">
-          Curated digital artifacts to elevate your mind and workspace.
-        </p>
-      </section>
-
-      <section class="twin-grid">
+      <a class="feature-card card-bg-emerald" href="shop.html?filter=productivity">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-text-box">
+          <div class="feature-title">Productivity</div>
+          <div class="feature-desc">Planners, Systems & Notion</div>
+        </div>
+      </a>
+      
+      <a class="feature-card card-bg-burgundy" href="shop.html?filter=family">
+        <div class="feature-icon">🏠</div>
+        <div class="feature-text-box">
+          <div class="feature-title">Family & Education</div>
+          <div class="feature-desc">Worksheets & Activities</div>
+        </div>
+      </a>
+    </section>
+    
+    <section style="margin-bottom: 2rem;">
+      <div class="section-header" style="font-size: 1rem; margin-bottom: 0.5rem;">Browse by Category</div>
+      
+      <div class="scroll-stream" style="gap: 0.8rem; padding-bottom: 0.5rem;">
+        <a class="dock-btn" href="shop.html" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">View All</a>
+        <a class="dock-btn" href="shop.html?tag=business" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">Business</a>
+        <a class="dock-btn" href="shop.html?tag=education" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">Education</a>
+        <a class="dock-btn" href="shop.html?tag=creative" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">Creative</a>
+        <a class="dock-btn" href="shop.html?tag=ai" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">AI Tools</a>
+      </div>
+    </section>
+    
+    <section>
+      <div class="section-header" style="margin-bottom: 1rem;">Trending Now</div>
+      
+      <div class="scroll-stream" style="padding-bottom: 1.5rem;">
         
-        <a
-          class="feature-card card-bg-emerald"
-          href="archive.html?filter=systems"
-        >
-          <div class="feature-icon">✦</div>
-          <div class="feature-text-box">
-            <div class="feature-title">Systems</div>
-            <div class="feature-desc">Notion & Planning</div>
+        <a class="stream-card" href="product.html?id=art_001" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div class="stream-visual" style="background: var(--grad-gold); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">★</div>
+            <span style="font-size: 0.75rem; color: var(--ink-muted); background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 4px;">Best Seller</span>
+          </div>
+          <div>
+            <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Ultimate Notion OS</div>
+            <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Productivity System</div>
           </div>
         </a>
-
-        <a
-          class="feature-card card-bg-burgundy"
-          href="archive.html?filter=creative"
-        >
-          <div class="feature-icon">✎</div>
-          <div class="feature-text-box">
-            <div class="feature-title">Studio</div>
-            <div class="feature-desc">Design & Assets</div>
+        
+        <a class="stream-card" href="product.html?id=art_002" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div class="stream-visual visual-silver" style="background: var(--bg-canvas); color: var(--ink-display); width: 48px; height: 48px; font-size: 1.5rem; margin-bottom: 0;">🎨</div>
+          </div>
+          <div>
+            <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Kids Activity Pack</div>
+            <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Printable PDF</div>
           </div>
         </a>
-      </section>
-
-      <section style="margin-bottom: 2rem;">
-        <div
-          class="section-header"
-          style="font-size: 1rem; margin-bottom: 0.5rem;"
-        >
-          Quick Filter
-        </div>
-
-        <div
-          class="scroll-stream"
-          style="gap: 0.8rem; padding-bottom: 0.5rem;"
-        >
-          <a
-            class="dock-btn"
-            href="archive.html"
-            style="
-              border-radius: 99px;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 40px;
-              padding: 0 1.5rem;
-            "
-          >
-            All
-          </a>
-
-          <a
-            class="dock-btn"
-            href="archive.html?tag=code"
-            style="
-              border-radius: 99px;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 40px;
-              padding: 0 1.5rem;
-            "
-          >
-            Code
-          </a>
-
-          <a
-            class="dock-btn"
-            href="archive.html?tag=audio"
-            style="
-              border-radius: 99px;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 40px;
-              padding: 0 1.5rem;
-            "
-          >
-            Audio
-          </a>
-
-          <a
-            class="dock-btn"
-            href="archive.html?tag=print"
-            style="
-              border-radius: 99px;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 40px;
-              padding: 0 1.5rem;
-            "
-          >
-            Paper
-          </a>
-
-          <a
-            class="dock-btn"
-            href="archive.html?tag=guide"
-            style="
-              border-radius: 99px;
-              flex: 0 0 auto;
-              font-size: 0.8rem;
-              height: 40px;
-              padding: 0 1.5rem;
-            "
-          >
-            Guides
-          </a>
-        </div>
-      </section>
-
-            <section>
-        <div class="section-header" style="margin-bottom: 1rem;">Trending Artifacts</div>
-
-        <div class="scroll-stream" style="padding-bottom: 1.5rem;">
-          
-          <a class="stream-card" href="#" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-              <div class="stream-visual" style="background: var(--grad-gold); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">
-                ★
-              </div>
-              <span style="font-size: 0.75rem; color: var(--ink-muted); background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 4px;">#1</span>
-            </div>
-            
-            <div>
-              <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Deep Focus OS</div>
-              <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">System • Notion</div>
-            </div>
-          </a>
-
-          <a class="stream-card" href="#" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
-             <div style="display: flex; justify-content: space-between; align-items: start;">
-              <div class="stream-visual visual-silver" style="background: var(--bg-canvas); color: var(--ink-display); width: 48px; height: 48px; font-size: 1.5rem; margin-bottom: 0;">
-                ∞
-              </div>
-            </div>
-
-            <div>
-              <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Python Cheats</div>
-              <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Code • Reference</div>
-            </div>
-          </a>
-
-          <a class="stream-card" href="#" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
-             <div style="display: flex; justify-content: space-between; align-items: start;">
-              <div class="stream-visual" style="background: var(--grad-emerald); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">
-                ↹
-              </div>
-            </div>
-
-            <div>
-              <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Habit Engine</div>
-              <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Notion • Tracking</div>
-            </div>
-          </a>
-
-          <a class="stream-card" href="#" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
-             <div style="display: flex; justify-content: space-between; align-items: start;">
-              <div class="stream-visual visual-silver" style="background: var(--bg-canvas); color: var(--ink-display); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">
-                ♫
-              </div>
-            </div>
-
-            <div>
-              <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Lofi Focus</div>
-              <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Audio • mp3</div>
-            </div>
-          </a>
-
-        </div>
-      </section>
-
-
-            <section class="action-dock" style="margin-top: 3rem; margin-bottom: 4rem;">
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
-          
-          <a class="dock-btn" href="archive.html" style="width: 100%; justify-content: center; gap: 0.8rem; height: 56px; box-shadow: var(--shadow-soft);">
-            <span style="font-size: 1.2rem; opacity: 0.8;">▦</span>
-            <span style="letter-spacing: 0.05em;">ENTER ARCHIVE</span>
-          </a>
-          
-          <a class="dock-btn" href="signals.html" style="width: 100%; justify-content: center; gap: 0.8rem; height: 56px; background: white; color: var(--ink-display); border: 1px solid var(--ink-border); box-shadow: var(--shadow-soft);">
-            <span style="font-size: 1.2rem; color: var(--accent-gold);">◎</span>
-            <span style="letter-spacing: 0.05em;">VIEW SIGNALS</span>
-          </a>
+        <a class="stream-card" href="product.html?id=art_003" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div class="stream-visual" style="background: var(--grad-emerald); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">🚀</div>
+          </div>
+          <div>
+            <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Startup Launch Kit</div>
+            <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Business Guides</div>
+          </div>
+        </a>
+        
+      </div>
+    </section>
+    
+    <section class="action-dock" style="margin-top: 3rem; margin-bottom: 4rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+        
+        <a class="dock-btn" href="shop.html" style="width: 100%; justify-content: center; gap: 0.8rem; height: 56px; box-shadow: var(--shadow-soft);">
+          <span style="font-size: 1.2rem; opacity: 0.8;">🛍️</span>
+          <span style="letter-spacing: 0.05em;">SHOP ALL PRODUCTS</span>
+        </a>
+        
+        <a class="dock-btn" href="newsletter.html" style="width: 100%; justify-content: center; gap: 0.8rem; height: 56px; background: white; color: var(--ink-display); border: 1px solid var(--ink-border); box-shadow: var(--shadow-soft);">
+          <span style="font-size: 1.2rem; color: var(--accent-gold);">📩</span>
+          <span style="letter-spacing: 0.05em;">JOIN NEWSLETTER</span>
+        </a>
+        
+      </div>
+    </section>
+    
+  </main>
+  
+  <div data-include="components/footer.html"></div>
+  <div data-include="components/modals.html"></div>
+  
+  <script src="core.js"></script>
+  <script src="haptics.js"></script>
+  <script src="cart.js"></script>
+  
+  <script type="module">
+    import "./firebase-config.js";
+    import "./auth.js";
+  </script>
+</body>
 
-        </div>
-
-      </section>
-
-
-    </main>
-
-    <div data-include="components/footer.html"></div>
-    <div data-include="components/modals.html"></div>
-
-    <script src="core.js"></script>
-    <script src="haptics.js"></script>
-    <script src="cart.js"></script>
-
-    <script type="module">
-      import "./firebase-config.js";
-      import "./auth.js";
-    </script>
-  </body>
 </html>
