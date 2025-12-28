@@ -17,49 +17,55 @@
 
     <main class="app-container">
         
-        <div style="margin-bottom: 2rem;">
-            <a href="shop.html" class="dock-btn" style="display: inline-flex; height: 40px; padding: 0 1.5rem; width: auto; background: white; color: var(--ink-muted); box-shadow: var(--shadow-soft);">
-                &larr; Back to Shop
+                <div style="margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between;">
+            <a href="shop.html" class="nav-item" style="margin: 0; padding: 0.5rem 1rem; border-radius: 99px; background: white;">
+                <span style="font-size: 0.8rem; margin-right: 0.5rem;">←</span>
+                <span style="font-size: 0.8rem; font-weight: bold;">Browse Shop</span>
             </a>
+            <div style="font-size: 0.7rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800;">Product Detail</div>
         </div>
 
         <div class="product-grid"> 
             
             <article>
-                
-                <div class="feature-card" style="height: 300px; background: var(--grad-emerald); margin-bottom: 2rem; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                    <div style="font-size: 8rem; opacity: 0.2; filter: blur(10px);">⚡</div>
-                    <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; background: rgba(255,255,255,0.9); padding: 0.5rem 1rem; border-radius: 99px; font-weight: bold; font-size: 0.8rem; color: var(--ink-display);">
-                        Productivity System
+                <div class="product-hero-container" style="height: 340px; background: var(--grad-emerald); margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: center;">
+                    <div style="font-size: 10rem; opacity: 0.15; filter: blur(8px);" id="hero-icon">⚡</div>
+                    <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; background: rgba(255,255,255,0.95); padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; color: var(--ink-display); text-transform: uppercase; letter-spacing: 0.05em; box-shadow: var(--shadow-soft);">
+                        Featured System
                     </div>
                 </div>
 
-                <h1 class="text-display" style="text-align: left; margin-bottom: 1rem;">Deep Focus OS</h1>
-                <p class="text-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--ink-body); margin-bottom: 3rem;">
+                <h1 class="text-display" style="text-align: left; margin-bottom: 1.5rem;">Deep Focus OS</h1>
+                
+                <p class="text-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--ink-body); margin-bottom: 3rem; opacity: 0.9;">
                     Most planners ask you to do more. This system asks you to do less. 
                     By utilizing the "Daily Three" methodology, Deep Focus OS forces you to prioritize 
                     before you execute. It is a complete operating system for Notion designed to strip away noise and highlight the signal.
                 </p>
                 
-                <h3 style="font-family: 'Bantayog'; font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--ink-display);">Key Features</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 4rem;">
+                <h3 style="font-family: 'Bantayog'; font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--ink-display); display: flex; align-items: center; gap: 10px;">
+                    <span style="width: 20px; height: 2px; background: var(--accent-gold);"></span>
+                    Core Capabilities
+                </h3>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 4rem;">
                     
-                    <div class="stream-card" style="height: auto; min-height: 150px; background: white; align-items: flex-start; padding: 1.5rem;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">📥</div>
-                        <div style="font-weight: bold; margin-bottom: 0.5rem;">Capture</div>
-                        <div style="font-size: 0.85rem; color: var(--ink-muted);">A unified inbox for every thought, ensuring nothing is lost.</div>
+                    <div class="value-tile">
+                        <div class="nav-icon" style="margin: 0;">📥</div>
+                        <div style="font-weight: 800; font-size: 1rem; color: var(--ink-display);">Unified Capture</div>
+                        <div style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.4;">A singular inbox for every fleeting thought, ensuring zero mental leak.</div>
                     </div>
 
-                    <div class="stream-card" style="height: auto; min-height: 150px; background: white; align-items: flex-start; padding: 1.5rem;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">⚙️</div>
-                        <div style="font-weight: bold; margin-bottom: 0.5rem;">Process</div>
-                        <div style="font-size: 0.85rem; color: var(--ink-muted);">Weekly review protocols to clear the mental clutter.</div>
+                    <div class="value-tile">
+                        <div class="nav-icon" style="margin: 0;">⚙️</div>
+                        <div style="font-weight: 800; font-size: 1rem; color: var(--ink-display);">Review Protocols</div>
+                        <div style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.4;">Weekly guided audits to clear the clutter and reset your focus.</div>
                     </div>
 
-                    <div class="stream-card" style="height: auto; min-height: 150px; background: white; align-items: flex-start; padding: 1.5rem;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">🚀</div>
-                        <div style="font-weight: bold; margin-bottom: 0.5rem;">Execute</div>
-                        <div style="font-size: 0.85rem; color: var(--ink-muted);">A dashboard that hides everything except today's mission.</div>
+                    <div class="value-tile">
+                        <div class="nav-icon" style="margin: 0;">🚀</div>
+                        <div style="font-weight: 800; font-size: 1rem; color: var(--ink-display);">Zen Dashboard</div>
+                        <div style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.4;">The interface hides everything except your current active mission.</div>
                     </div>
 
                 </div>
@@ -67,41 +73,57 @@
             </article>
 
             <div class="sidebar-wrapper"> 
-                <div class="feature-card" style="height: auto; padding: 2rem; background: white; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-float); position: sticky; top: 100px;">
+                <div class="feature-card" style="height: auto; padding: 2.5rem; background: white; border: 1px solid rgba(0,0,0,0.03); box-shadow: var(--shadow-float); position: sticky; top: 100px;">
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--ink-border); padding-bottom: 1.5rem;">
                         <div>
-                            <span class="meta-label">Format</span>
-                            <span class="meta-value">Notion Template</span>
+                            <span class="meta-label">Environment</span>
+                            <span class="meta-value">Notion OS</span>
                         </div>
                         <div>
-                            <span class="meta-label">Version</span>
+                            <span class="meta-label">Release</span>
                             <span class="meta-value">v2.4 (2025)</span>
                         </div>
                         <div>
-                            <span class="meta-label">File Size</span>
-                            <span class="meta-value">~15KB</span>
+                            <span class="meta-label">Access</span>
+                            <span class="meta-value">Lifetime</span>
                         </div>
                         <div>
-                            <span class="meta-label">License</span>
-                            <span class="meta-value">Personal Use</span>
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">System</span>
                         </div>
                     </div>
 
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem;">
-                        <span class="meta-label">Price</span>
-                        <span style="font-family: 'Bantayog'; font-size: 2.5rem; color: var(--ink-display); line-height: 1;">£24.00</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span class="meta-label">Investment</span>
+                            <span style="font-family: 'Bantayog'; font-size: 2.5rem; color: var(--ink-display); line-height: 1;">£24.00</span>
+                        </div>
+                        <div class="nav-icon" style="width: 50px; height: 50px; background: var(--bg-canvas); font-size: 1.5rem;">💎</div>
                     </div>
 
-                    <button onclick="window.Satchel.add({id: 'art_001', title: 'Deep Focus OS', price: 24.00, collection: 'productivity', icon: '⚡'})" class="dock-btn" style="width: 100%; border: none; background: var(--grad-gold); color: white; font-weight: bold; margin-bottom: 1rem; box-shadow: var(--shadow-soft);">
+                    <button onclick="window.Satchel.add({id: 'art_001', title: 'Deep Focus OS', price: 24.00, collection: 'productivity', icon: '⚡'})" class="dock-btn" style="width: 100%; border: none; background: var(--grad-gold); color: white; font-weight: 800; height: 60px; box-shadow: var(--shadow-soft);">
                         Add to Cart
                     </button>
 
-                    <p style="text-align: center; font-size: 0.8rem; color: var(--ink-muted);">
-                        Instant digital delivery via email.
-                    </p>
+                    <div style="margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0.6;">
+                        <span class="live-beacon" style="margin: 0;"></span>
+                        <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Digital Delivery Active</span>
+                    </div>
 
                 </div>
+            </div>
+        </div>
+
+        <div class="mobile-purchase-bar">
+            <div style="display: flex; flex-direction: column;">
+                <span style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase;">Deep Focus OS</span>
+                <span style="font-family: 'Bantayog'; font-size: 1.2rem; color: var(--ink-display);">£24.00</span>
+            </div>
+            <button onclick="window.Satchel.add({id: 'art_001', title: 'Deep Focus OS', price: 24.00, collection: 'productivity', icon: '⚡'})" class="dock-btn" style="height: 48px; padding: 0 1.5rem; font-size: 0.8rem; background: var(--grad-gold);">
+                Add to Cart
+            </button>
+        </div>
             </div>
 
         </div>
@@ -162,6 +184,19 @@
     <script type="module">
         import './firebase-config.js';
         import './auth.js';
+            // Phase 6: Immersive Product Visual Parallax
+    const heroIcon = document.getElementById('hero-icon');
+    
+    window.addEventListener('mousemove', (e) => {
+        if (!heroIcon || window.innerWidth < 768) return;
+        
+        const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+        const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+        
+        heroIcon.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.1)`;
+        heroIcon.style.filter = `blur(${Math.abs(moveX) + 8}px)`;
+    });
+
     </script>
 
 </body>

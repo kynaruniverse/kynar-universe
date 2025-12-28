@@ -103,8 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (DOM.btn) {
       DOM.btn.style.opacity = "1";
       DOM.btn.style.pointerEvents = "all";
-      DOM.btn.innerHTML =
-        '<span style="color: var(--accent-red);">🔒</span> Confirm Purchase';
+      DOM.btn.innerHTML = 'Confirm & Pay';
+
     }
   }
 
@@ -125,20 +125,30 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * Processes the mock transaction.
    */
+    /**
+   * Processes the transaction with a high-end success transition.
+   */
   function processPurchase() {
     const btn = document.getElementById("btn-acquire");
+    const successScreen = document.getElementById("payment-success-screen");
 
-    btn.innerHTML = '<span class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></span> Processing Order...';
-    btn.style.opacity = "0.8";
+    // 1. Initiate Haptic "Heavy" Tap for confirmation start
+    if (window.Haptics) window.Haptics.heavy();
+
+    // 2. Loading State: Transform button into a progress terminal
+    btn.innerHTML = '<span class="spinner" style="width: 18px; height: 18px; border-width: 2px; margin-right: 10px;"></span> Verifying with Stripe...';
+    btn.style.opacity = "0.7";
     btn.style.pointerEvents = "none";
+    btn.style.transform = "scale(0.98)";
 
-    // Simulate Payment Gateway
+    // Simulate Payment Gateway Security Check
     setTimeout(() => {
       const newItems = window.Satchel.getContents();
       const currentLibrary = JSON.parse(
         localStorage.getItem("kynar_library") || "[]"
       );
 
+      // Save to Library logic
       newItems.forEach((newItem) => {
         if (!currentLibrary.find((owned) => owned.id === newItem.id)) {
           newItem.acquiredDate = new Date().toLocaleDateString();
@@ -148,18 +158,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
       localStorage.setItem("kynar_library", JSON.stringify(currentLibrary));
 
-      btn.innerHTML = "✔ Purchase Complete";
-      btn.style.background = "#10B981"; 
-      btn.style.color = "white";
-
+      // 3. Trigger Success Sequence
       if (window.Haptics) window.Haptics.success();
+      
+      // Activate the full-screen success overlay from checkout.html
+      if (successScreen) {
+          successScreen.classList.add('active');
+      }
 
+      // 4. Clear and Redirect after user sees the "Verified" screen
       setTimeout(() => {
         window.Satchel.clear();
         window.location.href = "account.html"; 
-      }, 800);
-    }, 1500);
+      }, 2000); // 2 seconds of visual "Success" confirmation
+    }, 1800);
   }
+
 
   // #endregion
 

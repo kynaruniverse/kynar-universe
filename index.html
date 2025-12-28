@@ -24,15 +24,26 @@
   
   <main class="app-container">
     
-    <section style="margin-top: 1rem; margin-bottom: 2rem;">
-      <h1 class="text-display">
-        The World of<br />Digital Products
-      </h1>
-      <p class="text-sub">
-        A curated marketplace for everyone. <br>
-        Find Notion templates, homeschooling worksheets, AI prompts, and creative assets to level up your life and work.
-      </p>
+        <section class="hero-depth" style="margin-top: 1.5rem; margin-bottom: 3.5rem;">
+      <div class="hero-content" id="hero-trigger">
+        
+        <div style="display: inline-flex; align-items: center; background: white; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--ink-border); margin-bottom: 1.5rem; box-shadow: var(--shadow-soft);">
+          <span class="live-beacon"></span>
+          <span style="font-size: 0.7rem; font-weight: 800; color: var(--ink-display); letter-spacing: 0.05em; text-transform: uppercase;">
+            <span id="live-count">1,420</span> Creators Active
+          </span>
+        </div>
+
+        <h1 class="text-display glass-title">
+          The World of<br />Digital Products
+        </h1>
+        
+        <p class="text-sub" style="margin: 0; opacity: 0.9;">
+          A curated marketplace for everyone. Find Notion templates, worksheets, and creative assets to level up your life.
+        </p>
+      </div>
     </section>
+
     
     <section class="twin-grid">
       
@@ -132,6 +143,28 @@
   <script type="module">
     import "./firebase-config.js";
     import "./auth.js";
+        // --- Phase 4: Hero Parallax & Live Counter Logic ---
+    const hero = document.getElementById('hero-trigger');
+    const liveCount = document.getElementById('live-count');
+
+    // 1. Subtle Scroll Parallax
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      if (hero && window.innerWidth > 768) {
+        hero.style.transform = `translateY(${scrolled * 0.15}px) rotateX(${scrolled * 0.02}deg)`;
+        hero.style.opacity = 1 - (scrolled / 500);
+      }
+    });
+
+    // 2. Dynamic Live Counter (Subtle fluctuation)
+    setInterval(() => {
+      if (liveCount) {
+        let current = parseInt(liveCount.innerText.replace(',', ''));
+        let change = Math.floor(Math.random() * 3) - 1; // -1, 0, or +1
+        liveCount.innerText = (current + change).toLocaleString();
+      }
+    }, 4000);
+
   </script>
 </body>
 
