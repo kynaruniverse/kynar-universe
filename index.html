@@ -1,133 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" name="viewport" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
   <title>Kynar / Digital Product Marketplace</title>
-  <meta content="Premium digital tools, templates, and resources for creators, parents, and entrepreneurs." name="description" />
-  <link href="assets/favicon.png" rel="icon" type="image/png" />
-  
-  <meta content="website" property="og:type" />
-  <meta content="https://kynaruniverse.co.uk/" property="og:url" />
-  <meta content="Kynar Marketplace" property="og:title" />
-  <meta content="Shop high-quality digital products. Templates, systems, and creative assets." property="og:description" />
-  <meta content="https://kynaruniverse.co.uk/assets/social-card.jpg" property="og:image" />
-  
-  <link href="styles.css" rel="stylesheet" />
+  <meta name="description" content="Premium digital tools, templates, and systems for creators and entrepreneurs." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kynaruniverse.co.uk/" />
+  <meta property="og:title" content="Kynar Marketplace" />
+  <meta property="og:description" content="Shop high-quality digital systems and creative assets." />
+  <meta property="og:image" content="https://kynaruniverse.co.uk/assets/social-card.jpg" />
 </head>
 
 <body>
-  
   <div data-include="components/header.html"></div>
   
   <main class="app-container">
     
-        <section class="hero-depth" style="margin-top: 1.5rem; margin-bottom: 3.5rem;">
+    <section class="hero-depth" style="margin-top: 1.5rem; margin-bottom: 4rem;">
       <div class="hero-content" id="hero-trigger">
         
-        <div style="display: inline-flex; align-items: center; background: white; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--ink-border); margin-bottom: 1.5rem; box-shadow: var(--shadow-soft);">
+        <div 
+          style="
+            display: inline-flex; 
+            align-items: center; 
+            background: white; 
+            padding: 6px 14px; 
+            border-radius: 99px; 
+            border: 1px solid var(--ink-border); 
+            margin-bottom: 2rem; 
+            box-shadow: var(--shadow-soft);
+          "
+        >
           <span class="live-beacon"></span>
-          <span style="font-size: 0.7rem; font-weight: 800; color: var(--ink-display); letter-spacing: 0.05em; text-transform: uppercase;">
-            <span id="live-count">1,420</span> Creators Active
+          <span 
+            style="
+              font-size: 0.65rem; 
+              font-weight: 900; 
+              color: var(--ink-display); 
+              letter-spacing: 0.1em; 
+              text-transform: uppercase;
+            "
+          >
+            <span id="live-count">1,420</span> Systems Active
           </span>
         </div>
 
         <h1 class="text-display glass-title">
-          The World of<br />Digital Products
+          The Future of<br />Digital Systems
         </h1>
         
-        <p class="text-sub" style="margin: 0; opacity: 0.9;">
-          A curated marketplace for everyone. Find Notion templates, worksheets, and creative assets to level up your life.
+        <p class="text-sub" style="margin-top: 1rem; opacity: 0.85; line-height: 1.6;">
+          A curated destination for high-performance assets. Discover Notion architectures, 
+          professional guides, and creative toolkits.
         </p>
       </div>
     </section>
 
-    
-    <section class="twin-grid">
-      
-      <a class="feature-card card-bg-emerald" href="shop.html?filter=productivity">
-        <div class="feature-icon">⚡</div>
-        <div class="feature-text-box">
-          <div class="feature-title">Productivity</div>
-          <div class="feature-desc">Planners, Systems & Notion</div>
+    <section class="twin-grid" style="margin-bottom: 3.5rem;">
+      <a class="feature-card glimmer-card" href="shop.html?filter=productivity" style="background: var(--grad-emerald); border: none; text-align: left; padding: 2.5rem 2rem;">
+        <div class="feature-icon" style="font-size: 2.5rem; margin-bottom: 1.5rem;">⚡</div>
+        <div>
+          <h2 style="font-family: var(--font-display); color: white; font-size: 1.8rem; margin-bottom: 0.5rem;">Productivity</h2>
+          <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">Master your workflow with Notion OS.</p>
         </div>
       </a>
       
-      <a class="feature-card card-bg-burgundy" href="shop.html?filter=family">
-        <div class="feature-icon">🏠</div>
-        <div class="feature-text-box">
-          <div class="feature-title">Family & Education</div>
-          <div class="feature-desc">Worksheets & Activities</div>
+      <a class="feature-card" href="shop.html?filter=creative" style="background: white; border: 1px solid var(--ink-border); text-align: left; padding: 2.5rem 2rem;">
+        <div class="feature-icon" style="font-size: 2.5rem; margin-bottom: 1.5rem;">🎨</div>
+        <div>
+          <h2 style="font-family: var(--font-display); color: var(--ink-display); font-size: 1.8rem; margin-bottom: 0.5rem;">Creative</h2>
+          <p style="color: var(--ink-muted); font-size: 0.95rem;">Professional assets for digital creators.</p>
         </div>
       </a>
     </section>
-    
-    <section style="margin-bottom: 2rem;">
-      <div class="section-header" style="font-size: 1rem; margin-bottom: 0.5rem;">Browse by Category</div>
-      
-      <div class="scroll-stream" style="gap: 0.8rem; padding-bottom: 0.5rem;">
-        <a class="dock-btn" href="shop.html" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">View All</a>
-        <a class="dock-btn" href="shop.html?tag=business" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">Business</a>
-        <a class="dock-btn" href="shop.html?tag=education" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">Education</a>
-        <a class="dock-btn" href="shop.html?tag=creative" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">Creative</a>
-        <a class="dock-btn" href="shop.html?tag=ai" style="border-radius: 99px; flex: 0 0 auto; font-size: 0.8rem; height: 40px; padding: 0 1.5rem;">AI Tools</a>
+
+    <section style="margin-bottom: 3.5rem;">
+      <div 
+        class="scroll-stream" 
+        style="
+          gap: 0.75rem; 
+          padding-bottom: 1rem;
+          margin: 0 -1.25rem;
+          padding-left: 1.25rem;
+        "
+      >
+        <a class="dock-btn" href="shop.html" style="background: var(--grad-gold); height: 42px; font-size: 0.75rem;">Explore Catalog</a>
+        <a class="dock-btn" href="shop.html?tag=business" style="background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 42px; font-size: 0.75rem;">Business</a>
+        <a class="dock-btn" href="shop.html?tag=education" style="background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 42px; font-size: 0.75rem;">Education</a>
+        <a class="dock-btn" href="shop.html?tag=ai" style="background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 42px; font-size: 0.75rem;">AI Tools</a>
       </div>
     </section>
     
-    <section>
-      <div class="section-header" style="margin-bottom: 1rem;">Trending Now</div>
+    <section style="margin-bottom: 4rem;">
+      <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--ink-display);">Trending Systems</h3>
       
-      <div class="scroll-stream" style="padding-bottom: 1.5rem;">
+      <div class="scroll-stream" style="padding-bottom: 1.5rem; gap: 1.25rem;">
         
-        <a class="stream-card" href="product.html?id=art_001" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: start;">
-            <div class="stream-visual" style="background: var(--grad-gold); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">★</div>
-            <span style="font-size: 0.75rem; color: var(--ink-muted); background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 4px;">Best Seller</span>
-          </div>
-          <div>
-            <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Ultimate Notion OS</div>
-            <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Productivity System</div>
+        <a class="stream-card product-card-reveal" href="product.html?id=prod_001" style="min-width: 260px; padding: 0; background: white; border: 1px solid var(--ink-border);">
+          <div style="height: 140px; background: var(--grad-gold); display: flex; align-items: center; justify-content: center; font-size: 2rem;">⚡</div>
+          <div style="padding: 1.25rem;">
+            <div style="font-size: 0.65rem; color: var(--accent-gold); font-weight: 900; text-transform: uppercase; margin-bottom: 4px;">Top Seller</div>
+            <div style="font-family: var(--font-display); font-size: 1.15rem; color: var(--ink-display);">Ultimate Notion OS</div>
           </div>
         </a>
         
-        <a class="stream-card" href="product.html?id=art_002" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: start;">
-            <div class="stream-visual visual-silver" style="background: var(--bg-canvas); color: var(--ink-display); width: 48px; height: 48px; font-size: 1.5rem; margin-bottom: 0;">🎨</div>
-          </div>
-          <div>
-            <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Kids Activity Pack</div>
-            <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Printable PDF</div>
-          </div>
-        </a>
-        
-        <a class="stream-card" href="product.html?id=art_003" style="min-width: 210px; padding: 1.25rem; gap: 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: start;">
-            <div class="stream-visual" style="background: var(--grad-emerald); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">🚀</div>
-          </div>
-          <div>
-            <div class="stream-title" style="font-family: 'Bantayog'; font-size: 1.1rem; margin-bottom: 0.2rem;">Startup Launch Kit</div>
-            <div class="stream-meta" style="font-size: 0.8rem; opacity: 0.7;">Business Guides</div>
+        <a class="stream-card product-card-reveal" href="product.html?id=prod_002" style="min-width: 260px; padding: 0; background: white; border: 1px solid var(--ink-border);">
+          <div style="height: 140px; background: var(--bg-canvas); display: flex; align-items: center; justify-content: center; font-size: 2rem;">🎨</div>
+          <div style="padding: 1.25rem;">
+            <div style="font-size: 0.65rem; color: var(--ink-muted); font-weight: 800; text-transform: uppercase; margin-bottom: 4px;">Printable Asset</div>
+            <div style="font-family: var(--font-display); font-size: 1.15rem; color: var(--ink-display);">Kids Activity Pack</div>
           </div>
         </a>
         
       </div>
     </section>
     
-    <section class="action-dock" style="margin-top: 3rem; margin-bottom: 4rem;">
+    <section style="margin-top: 2rem; margin-bottom: 5rem;">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
-        
-        <a class="dock-btn" href="shop.html" style="width: 100%; justify-content: center; gap: 0.8rem; height: 56px; box-shadow: var(--shadow-soft);">
-          <span style="font-size: 1.2rem; opacity: 0.8;">🛍️</span>
-          <span style="letter-spacing: 0.05em;">SHOP ALL PRODUCTS</span>
+        <a class="dock-btn" href="shop.html" style="height: 60px; font-weight: 800; letter-spacing: 0.05em; background: var(--grad-emerald);">
+          VIEW ALL PRODUCTS
         </a>
-        
-        <a class="dock-btn" href="newsletter.html" style="width: 100%; justify-content: center; gap: 0.8rem; height: 56px; background: white; color: var(--ink-display); border: 1px solid var(--ink-border); box-shadow: var(--shadow-soft);">
-          <span style="font-size: 1.2rem; color: var(--accent-gold);">📩</span>
-          <span style="letter-spacing: 0.05em;">JOIN NEWSLETTER</span>
+        <a class="dock-btn" href="newsletter.html" style="height: 60px; font-weight: 800; letter-spacing: 0.05em; background: white; color: var(--ink-display); border: 1px solid var(--ink-border);">
+          JOIN THE NETWORK
         </a>
-        
       </div>
     </section>
     
@@ -143,29 +142,28 @@
   <script type="module">
     import "./firebase-config.js";
     import "./auth.js";
-        // --- Phase 4: Hero Parallax & Live Counter Logic ---
+
     const hero = document.getElementById('hero-trigger');
     const liveCount = document.getElementById('live-count');
 
-    // 1. Subtle Scroll Parallax
+    // 1. Optimized Scroll Parallax
     window.addEventListener('scroll', () => {
+      if (!hero || window.innerWidth < 768) return;
       const scrolled = window.pageYOffset;
-      if (hero && window.innerWidth > 768) {
-        hero.style.transform = `translateY(${scrolled * 0.15}px) rotateX(${scrolled * 0.02}deg)`;
-        hero.style.opacity = 1 - (scrolled / 500);
-      }
-    });
+      requestAnimationFrame(() => {
+        hero.style.transform = `translateY(${scrolled * 0.1}px)`;
+        hero.style.opacity = 1 - (scrolled / 600);
+      });
+    }, { passive: true });
 
-    // 2. Dynamic Live Counter (Subtle fluctuation)
+    // 2. Dynamic Counter Logic
     setInterval(() => {
       if (liveCount) {
         let current = parseInt(liveCount.innerText.replace(',', ''));
-        let change = Math.floor(Math.random() * 3) - 1; // -1, 0, or +1
+        let change = Math.floor(Math.random() * 3) - 1;
         liveCount.innerText = (current + change).toLocaleString();
       }
-    }, 4000);
-
+    }, 4500);
   </script>
 </body>
-
 </html>

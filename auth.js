@@ -1,9 +1,9 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: CLEARVIEW AUTH SYSTEM (V1.0)
+ * MODULE: KYNAR IDENTITY SERVICE (V1.0)
  * ══════════════════════════════════════════════════════════════════════════
- * @description Manages Firebase authentication, account persistence,
- * and reactive UI updates for the customer dashboard.
+ * @description Manages secure Firebase authentication, account persistence,
+ * and real-time UI synchronization for the member dashboard.
  */
 
 import { auth, db } from "./firebase-config.js";
@@ -19,31 +19,20 @@ import {
   setDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const AuthSystem = (() => {
+const KynarAuth = (() => {
   
-  /**
-   * Initializes the Auth System.
-   */
+  // 1. INITIALIZATION
   function init() {
-    // Listen for the global "Modals Loaded" event from core.js
-    document.addEventListener("KynarModalsLoaded", () => {
-      setupListeners();
-    });
+    // Sync with KynarCore's dynamic loading
+    document.addEventListener("KynarModalsLoaded", () => setupListeners());
 
-    // Fallback: Run if modals are already present
-    if (document.getElementById("modal-overlay")) {
-      setupListeners();
-    }
+    // Instant check for static pages
+    if (document.getElementById("modal-overlay")) setupListeners();
 
-    // Start Firebase Listener
     monitorAuthState();
-
-    console.log("Kynar Auth: Online");
+    console.log("Kynar Identity: System Active");
   }
 
-  /**
-   * Binds DOM event listeners to the sign-in/register forms.
-   */
   function setupListeners() {
     const loginForm = document.getElementById("login-form");
     const regForm = document.getElementById("register-form");
@@ -54,31 +43,26 @@ const AuthSystem = (() => {
     if (logoutBtn) logoutBtn.addEventListener("click", handleLogout);
   }
 
-  /**
-   * Handles user sign-in.
-   */
+  // 2. AUTHENTICATION LOGIC
   async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById("login-email").value;
     const pass = document.getElementById("login-pass").value;
     const btn = e.target.querySelector("button");
 
-    setLoading(btn, true, "Signing In...");
+    setLoading(btn, true, "Authorizing...");
 
     try {
       await signInWithEmailAndPassword(auth, email, pass);
       closeModal();
       if (window.Haptics) window.Haptics.success();
     } catch (error) {
-      console.error(error);
-      alert("Sign In Failed: " + error.message);
+      console.error("Kynar Auth Error:", error);
+      alert("Authorization Failed: " + error.message);
       setLoading(btn, false, "Sign In");
     }
   }
 
-  /**
-   * Handles new account registration.
-   */
   async function handleRegister(e) {
     e.preventDefault();
     const name = document.getElementById("reg-name").value;
@@ -86,7 +70,7 @@ const AuthSystem = (() => {
     const pass = document.getElementById("reg-pass").value;
     const btn = e.target.querySelector("button");
 
-    setLoading(btn, true, "Creating Account...");
+    setLoading(btn, true, "Verifying...");
 
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, pass);
@@ -94,56 +78,49 @@ const AuthSystem = (() => {
 
       await updateProfile(user, { displayName: name });
 
-      // Create Database Entry
+      // Create Merchant-Standard Database Entry
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         name: name,
         email: email,
-        tier: "member", 
-        createdAt: new Date().toISOString(),
+        status: "verified", 
+        joinedDate: new Date().toISOString(),
       });
 
       closeModal();
       if (window.Haptics) window.Haptics.success();
     } catch (error) {
-      console.error(error);
+      console.error("Kynar Registration Error:", error);
       alert("Registration Failed: " + error.message);
       setLoading(btn, false, "Create Account");
     }
   }
 
-  /**
-   * Handles Sign Out.
-   */
   async function handleLogout() {
-    if (confirm("Sign out of your account?")) {
+    if (confirm("Terminate secure session?")) {
       try {
         await signOut(auth);
+        localStorage.removeItem("kynar_auth_token");
         window.location.reload();
       } catch (error) {
-        console.error(error);
+        console.error("Logout Error:", error);
       }
     }
   }
 
-  /**
-   * Monitors Auth State.
-   */
+  // 3. REACTIVE UI ENGINE
   function monitorAuthState() {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         localStorage.setItem("kynar_auth_token", "active");
         updateAccountUI(user);
       } else {
-        localStorage.removeItem("kynar_signal_token");
+        localStorage.removeItem("kynar_auth_token");
         resetAccountUI();
       }
     });
   }
 
-  /**
-   * Updates UI for logged-in users.
-   */
   function updateAccountUI(user) {
     const guestState = document.getElementById("state-guest");
     const userState = document.getElementById("state-user");
@@ -153,16 +130,12 @@ const AuthSystem = (() => {
     if (guestState && userState) {
       guestState.style.display = "none";
       userState.style.display = "block";
-      setTimeout(() => { userState.style.opacity = "1"; }, 50);
     }
 
-    if (greeting) greeting.textContent = user.displayName || "Member";
-    if (emailDisplay) emailDisplay.textContent = user.email;
+    if (greeting) greeting.textContent = user.displayName || "Verified Member";
+    if (emailDisplay) emailDisplay.textContent = `Member ID: ${user.email}`;
   }
 
-  /**
-   * Resets UI for guests.
-   */
   function resetAccountUI() {
     const guestState = document.getElementById("state-guest");
     const userState = document.getElementById("state-user");
@@ -173,19 +146,22 @@ const AuthSystem = (() => {
     }
   }
 
+  // 4. UTILITIES
   function closeModal() {
-    const overlay = document.getElementById("modal-overlay");
-    if (overlay) {
-      overlay.style.opacity = "0";
-      overlay.style.visibility = "hidden";
+    if (window.KynarCore) {
+      const overlay = document.getElementById("modal-overlay");
+      if (overlay) {
+        overlay.style.opacity = "0";
+        overlay.style.visibility = "hidden";
+      }
     }
   }
 
   function setLoading(btn, isLoading, text) {
     if (isLoading) {
       btn.disabled = true;
-      btn.innerHTML = `<span class="spinner"></span> ${text}`;
-      btn.style.opacity = "0.7";
+      btn.innerHTML = `<span class="spinner" style="width:16px; height:16px; border-top-color:white; margin-right:8px;"></span> ${text}`;
+      btn.style.opacity = "0.8";
     } else {
       btn.disabled = false;
       btn.textContent = text;
@@ -196,4 +172,4 @@ const AuthSystem = (() => {
   return { init };
 })();
 
-AuthSystem.init();
+KynarAuth.init();

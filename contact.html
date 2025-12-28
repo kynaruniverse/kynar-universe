@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Kynar / Support Concierge</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div data-include="components/header.html"></div>
+
+  <main class="app-container">
+    <section style="margin-top: 1.5rem; margin-bottom: 3.5rem; text-align: center;">
+      <div style="display: inline-flex; align-items: center; background: var(--bg-canvas); padding: 6px 16px; border-radius: 99px; margin-bottom: 1.5rem; border: 1px solid var(--ink-border);">
+        <span style="font-size: 0.65rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.15em;">Technical Authorization</span>
+      </div>
+      <h1 class="text-display glass-title">Support Concierge</h1>
+      <p class="text-sub">Connect with our intelligence team for system assistance or partnership inquiries.</p>
+    </section>
+
+    <div class="contact-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-bottom: 5rem;">
+      
+      <div class="feature-card" style="padding: 2.5rem; background: white; border: 1px solid var(--ink-border); box-shadow: var(--shadow-float);">
+        <form id="contact-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div>
+            <label style="display: block; font-size: 0.7rem; font-weight: 900; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Full Name</label>
+            <input type="text" required style="width: 100%; height: 50px; border-radius: 12px; border: 1px solid var(--ink-border); padding: 0 1.25rem; font-family: var(--font-body); outline: none;" placeholder="Identity">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.7rem; font-weight: 900; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Email Address</label>
+            <input type="email" required style="width: 100%; height: 50px; border-radius: 12px; border: 1px solid var(--ink-border); padding: 0 1.25rem; font-family: var(--font-body); outline: none;" placeholder="Authorization Email">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.7rem; font-weight: 900; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Message</label>
+            <textarea required style="width: 100%; min-height: 120px; border-radius: 12px; border: 1px solid var(--ink-border); padding: 1.25rem; font-family: var(--font-body); outline: none; resize: none;" placeholder="Inquiry details..."></textarea>
+          </div>
+          <button type="submit" class="dock-btn" style="width: 100%; height: 56px; background: var(--grad-emerald); border: none; font-weight: 800;">SEND MESSAGE</button>
+        </form>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div class="nav-item" style="padding: 1.5rem; background: var(--bg-paper); border: 1px solid var(--ink-border);">
+          <div class="nav-icon" style="background: var(--grad-gold); color: white;">📧</div>
+          <div class="nav-label">
+            <div style="font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase;">Direct Channel</div>
+            <div style="font-weight: 800; font-size: 1.1rem;">support@kynar.co</div>
+          </div>
+        </div>
+        <div class="nav-item" style="padding: 1.5rem; background: var(--bg-paper); border: 1px solid var(--ink-border);">
+          <div class="nav-icon" style="background: var(--ink-display); color: white;">💬</div>
+          <div class="nav-label">
+            <div style="font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase;">Member Response</div>
+            <div style="font-weight: 800; font-size: 1.1rem;">Under 12 Hours</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div data-include="components/footer.html"></div>
+  <div data-include="components/modals.html"></div>
+  <script src="core.js"></script>
+  <script src="haptics.js"></script>
+  
+  <script>
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const originalText = btn.innerText;
+
+    // 1. Tactile Feedback
+    if (window.Haptics) window.Haptics.medium();
+
+    // 2. Loading State
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner" style="width:16px; height:16px; border-top-color:white; margin-right:8px;"></span> SENDING...`;
+
+    // 3. Simulate Secure Transmission
+    setTimeout(() => {
+      if (window.Haptics) window.Haptics.success();
+      
+      btn.style.background = '#10B981'; // Success Emerald
+      btn.innerText = 'MESSAGE AUTHORIZED';
+
+      // 4. Reset form
+      e.target.reset();
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.style.background = 'var(--grad-emerald)';
+        btn.innerText = originalText;
+      }, 3000);
+    }, 1500);
+  });
+</script>
+
+</body>
+</html>

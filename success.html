@@ -1,130 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
-      name="viewport"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <title>Kynar / Order Authorized</title>
+  <meta name="description" content="Transaction authorized. Access your Kynar digital assets." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-    <title>Kynar / Order Confirmed</title>
-    <meta
-      content="Payment successful. Access your digital downloads."
-      name="description"
-    />
-    <link href="assets/favicon.png" rel="icon" type="image/png" />
+<body>
+  <div data-include="components/header.html"></div>
 
-    <link href="styles.css" rel="stylesheet" />
-  </head>
+  <main 
+    class="app-container" 
+    style="
+      align-items: center; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      min-height: 80vh;
+    "
+  >
+    <div 
+      style="
+        margin-bottom: 3.5rem; 
+        max-width: 550px; 
+        text-align: center; 
+        position: relative;
+      "
+    >
+      <div 
+        class="success-orb" 
+        id="celebration-trigger"
+        style="
+          background: var(--grad-emerald);
+          box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
+        "
+      >
+        <div style="color: white; font-size: 3rem; font-weight: bold;">✦</div>
+      </div>
 
-  <body>
+      <h1 class="text-display glass-title" style="margin-bottom: 1.5rem;">Order Authorized</h1>
+      <p class="text-sub" style="opacity: 0.85; margin: 0 auto;">
+        Your digital systems have been securely transferred to your member vault. 
+        Authorization is complete.
+      </p>
+    </div>
 
-    <div data-include="components/header.html"></div>
-
-        <main class="app-container" style="align-items: center; display: flex; flex-direction: column; justify-content: center; min-height: 75vh;">
-        
-      <div style="margin-bottom: 3rem; max-width: 550px; text-align: center; position: relative;">
-        <div class="success-orb" id="celebration-trigger">
-          <div style="color: white; font-size: 3rem; font-weight: bold;">✦</div>
+    <div 
+      style="
+        display: flex; 
+        flex-direction: column; 
+        gap: 1rem; 
+        width: 100%; 
+        max-width: 420px;
+      "
+    >
+      <a 
+        href="account.html" 
+        class="nav-item" 
+        style="
+          margin: 0; 
+          padding: 1.5rem; 
+          background: white; 
+          border: 1px solid var(--ink-border); 
+          box-shadow: var(--shadow-float);
+        "
+      >
+        <div class="nav-icon" style="background: var(--grad-emerald); color: white;">🛡️</div>
+        <div class="nav-label">
+          <div style="font-size: 1.1rem; color: var(--ink-display); font-weight: 800;">Unlock Assets</div>
+          <div style="font-size: 0.8rem; color: var(--ink-muted);">Enter your private vault</div>
         </div>
+        <span class="nav-arrow">❯</span>
+      </a>
 
-        <h1 class="text-display glass-title" style="margin-bottom: 1rem;">Transaction Complete</h1>
-        <p class="text-sub" style="opacity: 0.9;">
-          Your digital assets have been securely moved to your private library. Your journey starts now.
-        </p>
-      </div>
+      <a 
+        href="library.html" 
+        class="nav-item" 
+        style="
+          margin: 0; 
+          padding: 1.5rem; 
+          background: white; 
+          border: 1px solid var(--ink-border); 
+          opacity: 0.9;
+        "
+      >
+        <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">📖</div>
+        <div class="nav-label">
+          <div style="font-size: 1rem; color: var(--ink-display); font-weight: 700;">System Manuals</div>
+          <div style="font-size: 0.8rem; color: var(--ink-muted);">Configuration & setup guides</div>
+        </div>
+        <span class="nav-arrow">❯</span>
+      </a>
 
-      <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 400px;">
-        
-        <a href="account.html" class="nav-item" style="margin: 0; padding: 1.5rem; background: white; border: 1px solid var(--ink-border); box-shadow: var(--shadow-float);">
-            <div class="nav-icon" style="background: var(--grad-emerald); color: white;">📂</div>
-            <div class="nav-label">
-                <div style="font-size: 1.1rem; color: var(--ink-display); font-weight: 800;">Access Downloads</div>
-                <div style="font-size: 0.8rem; color: var(--ink-muted);">View your new products</div>
-            </div>
-            <span class="nav-arrow">❯</span>
-        </a>
+      <a 
+        href="index.html" 
+        class="dock-btn" 
+        style="
+          background: transparent; 
+          border: 1px solid var(--ink-border); 
+          color: var(--ink-muted); 
+          height: 52px; 
+          margin-top: 1.5rem;
+          font-weight: 800;
+        "
+      >
+        Return to Storefront
+      </a>
+    </div>
+  </main>
 
-        <a href="library.html" class="nav-item" style="margin: 0; padding: 1.5rem; background: white; border: 1px solid var(--ink-border); opacity: 0.9;">
-            <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">📖</div>
-            <div class="nav-label">
-                <div style="font-size: 1rem; color: var(--ink-display); font-weight: 700;">Setup Guides</div>
-                <div style="font-size: 0.8rem; color: var(--ink-muted);">How to use your systems</div>
-            </div>
-            <span class="nav-arrow">❯</span>
-        </a>
+  <div data-include="components/footer.html"></div>
+  <div data-include="components/modals.html"></div>
 
-        <a href="index.html" class="dock-btn" style="background: transparent; border: 1px solid var(--ink-border); color: var(--ink-muted); height: 50px; margin-top: 1rem;">
-          Return to Home
-        </a>
-      </div>
-
-    </main>
-
-
-    <div data-include="components/footer.html"></div>
-    <div data-include="components/modals.html"></div>
-
-    <style>
-      .success-orb {
-        align-items: center;
-        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        background: #10b981; /* Emerald Success */
-        border-radius: 50%;
-        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
-        display: flex;
-        height: 80px;
-        justify-content: center;
-        margin: 0 auto 2rem;
-        transform: scale(0);
-        width: 80px;
+  <script src="core.js"></script>
+  <script src="cart.js"></script>
+  <script src="haptics.js"></script>
+  
+  <script type="module">
+    import './firebase-config.js';
+    import './auth.js';
+  </script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Tactile Success Haptics
+      if (window.Haptics) {
+        setTimeout(() => window.Haptics.success(), 400);
       }
 
-      @keyframes popIn {
-        to {
-          transform: scale(1);
+      // 2. Branded Confetti Physics
+      const launchConfetti = () => {
+        const colors = [
+          getComputedStyle(document.documentElement).getPropertyValue('--accent-gold').trim(),
+          getComputedStyle(document.documentElement).getPropertyValue('--ink-display').trim(),
+          '#10B981'
+        ];
+
+        for(let i = 0; i < 60; i++) {
+          const piece = document.createElement('div');
+          piece.className = 'confetti-piece';
+          piece.style.left = Math.random() * 100 + 'vw';
+          piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          piece.style.animationDelay = Math.random() * 2 + 's';
+          piece.style.width = (Math.random() * 8 + 4) + 'px';
+          piece.style.height = piece.style.width;
+          piece.style.opacity = Math.random() + 0.5;
+          document.body.appendChild(piece);
+          
+          setTimeout(() => piece.remove(), 4000);
         }
-      }
-    </style>
+      };
 
-    <script src="core.js"></script>
-    <script src="cart.js"></script>
-    <script src="haptics.js"></script>
-    
-    <script type="module">
-      import './firebase-config.js';
-      import './auth.js';
-    </script>
-    
-        <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        // 1. Tactile Success Haptics
-        if (window.Haptics) {
-          setTimeout(() => window.Haptics.success(), 300);
-        }
-
-        // 2. Confetti Cannon Physics
-        const createConfetti = () => {
-          for(let i = 0; i < 50; i++) {
-            const piece = document.createElement('div');
-            piece.className = 'confetti-piece';
-            piece.style.left = Math.random() * 100 + 'vw';
-            piece.style.backgroundColor = ['#C5A059', '#092C23', '#10B981'][Math.floor(Math.random() * 3)];
-            piece.style.animationDelay = Math.random() * 2 + 's';
-            piece.style.width = Math.random() * 10 + 5 + 'px';
-            piece.style.height = piece.style.width;
-            document.body.appendChild(piece);
-            
-            // Cleanup
-            setTimeout(() => piece.remove(), 3000);
-          }
-        };
-
-        createConfetti();
-      });
-    </script>
-
-
-  </body>
+      launchConfetti();
+    });
+  </script>
+</body>
 </html>

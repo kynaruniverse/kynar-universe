@@ -1,31 +1,114 @@
 <header class="app-header">
-  <div class="header-actions" style="width: 100%; justify-content: space-between;">
-    
-    <button aria-label="Open Menu" class="dock-btn" id="nav-toggle" style="background: transparent; color: var(--ink-display); padding: 0; width: 42px; height: 42px; border: 1px solid var(--ink-border); font-size: 1.2rem;">
+  <div 
+    class="header-actions" 
+    style="
+      width: 100%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+    "
+  >
+    <button 
+      aria-label="Open Menu" 
+      class="dock-btn" 
+      id="nav-toggle" 
+      style="
+        background: transparent; 
+        color: var(--ink-display); 
+        padding: 0; 
+        width: 44px; 
+        height: 44px; 
+        border: 1px solid var(--ink-border); 
+        font-size: 1.2rem;
+      "
+    >
       ☰
     </button>
 
-    <a class="brand-logo" href="index.html" style="font-size: 1.4rem; letter-spacing: 0.15em;">KYNAR</a>
+    <a 
+      class="brand-logo" 
+      href="index.html" 
+      style="
+        font-family: var(--font-display); 
+        font-size: 1.5rem; 
+        letter-spacing: 0.2em; 
+        text-decoration: none; 
+        color: var(--ink-display); 
+        font-weight: 800;
+      "
+    >
+      KYNAR
+    </a>
 
     <div style="display: flex; gap: 0.5rem;">
-      <button aria-label="Open Cart" class="dock-btn" id="satchel-trigger" style="background: transparent; color: var(--ink-display); padding: 0; width: 42px; height: 42px; border: 1px solid var(--ink-border); position: relative; font-size: 1.2rem;">
+      <button 
+        aria-label="Open Cart" 
+        class="dock-btn" 
+        id="cart-trigger" 
+        style="
+          background: transparent; 
+          color: var(--ink-display); 
+          padding: 0; 
+          width: 44px; 
+          height: 44px; 
+          border: 1px solid var(--ink-border); 
+          position: relative; 
+          font-size: 1.2rem;
+        "
+      >
         🛍️
-        <span id="satchel-count" style="position: absolute; top: -4px; right: -4px; background: var(--accent-red); color: white; font-size: 0.7rem; width: 20px; height: 20px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--bg-paper);"></span>
+        <span 
+          id="cart-count" 
+          style="
+            position: absolute; 
+            top: -4px; 
+            right: -4px; 
+            background: var(--accent-red); 
+            color: white; 
+            font-size: 0.7rem; 
+            width: 20px; 
+            height: 20px; 
+            border-radius: 50%; 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            border: 2px solid var(--bg-paper);
+          "
+        ></span>
       </button>
     </div>
   </div>
 </header>
 
 <div class="drawer-backdrop" id="nav-backdrop"></div>
-<div class="drawer-backdrop" id="satchel-drawer-backdrop"></div>
+<div class="drawer-backdrop" id="cart-drawer-backdrop"></div>
 
 <aside class="drawer" id="nav-drawer">
-  <div class="drawer-header" style="padding: 1.5rem 1.25rem; border: none;">
-    <span class="text-display" style="font-size: 1.4rem; margin: 0;">Menu</span>
-    <button id="close-nav" style="background: rgba(0,0,0,0.05); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+  <div 
+    class="drawer-header" 
+    style="
+      padding: 2.5rem 1.25rem 1rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+    "
+  >
+    <span class="text-display" style="font-size: 1.4rem; margin: 0;">Navigation</span>
+    <button 
+      id="close-nav" 
+      style="
+        background: var(--bg-canvas); 
+        border: none; 
+        width: 40px; 
+        height: 40px; 
+        border-radius: 50%; 
+        font-size: 1.4rem;
+      "
+    >&times;</button>
   </div>
 
-  <div class="drawer-content" style="padding-top: 0;">
+  <div class="drawer-content">
     <nav style="display: flex; flex-direction: column;">
       <a href="index.html" class="nav-item">
         <div class="nav-icon">🏠</div>
@@ -42,40 +125,68 @@
         <span class="nav-label">Resource Library</span>
         <span class="nav-arrow">❯</span>
       </a>
-      <a href="newsletter.html" class="nav-item">
-        <div class="nav-icon">📩</div>
-        <span class="nav-label">Newsletter</span>
-        <span class="nav-arrow">❯</span>
-      </a>
 
-      <div style="margin: 1.5rem 1.25rem 0.5rem; font-size: 0.75rem; font-weight: bold; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.1em;">
+      <div style="margin: 2rem 1.25rem 0.5rem; font-size: 0.7rem; font-weight: 800; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.15em;">
         Account
       </div>
-      <a href="account.html" class="nav-item" style="background: var(--grad-silver);">
+      <a href="account.html" class="nav-item trigger-access" style="background: var(--bg-paper); border: 1px solid var(--ink-border);">
         <div class="nav-icon">👤</div>
-        <span class="nav-label">My Profile</span>
+        <span class="nav-label">Sign In / Profile</span>
         <span class="nav-arrow">❯</span>
       </a>
     </nav>
   </div>
 </aside>
 
-<aside class="drawer" id="satchel-drawer">
-  <div class="drawer-header" style="padding: 1.5rem 1.25rem; border: none;">
+<aside class="drawer" id="cart-drawer">
+  <div 
+    class="drawer-header" 
+    style="
+      padding: 2.5rem 1.25rem 1rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+    "
+  >
     <span class="text-display" style="font-size: 1.4rem; margin: 0;">Your Cart</span>
-    <button id="close-drawer" style="background: rgba(0,0,0,0.05); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+    <button 
+      id="close-drawer" 
+      style="
+        background: var(--bg-canvas); 
+        border: none; 
+        width: 40px; 
+        height: 40px; 
+        border-radius: 50%; 
+        font-size: 1.4rem;
+      "
+    >&times;</button>
   </div>
 
-  <div class="drawer-content" id="drawer-items" style="padding: 0 1rem;">
-    </div>
+  <div id="drawer-items" style="padding: 0 1rem; flex: 1; overflow-y: auto;"></div>
 
-  <div style="padding: 1.5rem; background: white; border-top: 1px solid var(--ink-border); border-radius: 20px 0 0 0;">
+  <div 
+    style="
+      padding: 1.5rem; 
+      background: white; 
+      border-top: 1px solid var(--ink-border); 
+      border-radius: 24px 24px 0 0;
+    "
+  >
     <div style="display: flex; justify-content: space-between; margin-bottom: 1.2rem;">
-      <span style="color: var(--ink-muted); font-weight: 600;">Subtotal</span>
-      <span id="drawer-total" style="font-family: var(--font-display); font-size: 1.4rem; color: var(--ink-display);">£0.00</span>
+      <span style="color: var(--ink-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Subtotal</span>
+      <span id="drawer-total" style="font-family: var(--font-display); font-size: 1.6rem; color: var(--ink-display);">£0.00</span>
     </div>
-    <a href="checkout.html" class="dock-btn" style="width: 100%; height: 54px; box-shadow: var(--shadow-soft);">
-      Checkout Now
+    <a 
+      href="checkout.html" 
+      class="dock-btn" 
+      style="
+        width: 100%; 
+        height: 56px; 
+        background: var(--grad-gold); 
+        border: none;
+      "
+    >
+      Secure Checkout
     </a>
   </div>
 </aside>

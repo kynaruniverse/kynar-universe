@@ -3,129 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    
     <title>Kynar / Product Details</title>
-    <meta name="description" content="Deep Focus OS. A complete operating system for Notion designed to strip away noise.">
+    <meta name="description" content="Premium Digital Systems for high-performance workflows.">
     <link rel="icon" type="image/png" href="assets/favicon.png">
-
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-
     <div data-include="components/header.html"></div>
 
     <main class="app-container">
-        
-                <div style="margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between;">
-            <a href="shop.html" class="nav-item" style="margin: 0; padding: 0.5rem 1rem; border-radius: 99px; background: white;">
+        <div 
+            style="
+                margin-bottom: 2.5rem; 
+                display: flex; 
+                align-items: center; 
+                justify-content: space-between;
+            "
+        >
+            <a 
+                href="shop.html" 
+                class="nav-item" 
+                style="margin: 0; padding: 0.6rem 1.2rem; border-radius: 99px; background: white;"
+            >
                 <span style="font-size: 0.8rem; margin-right: 0.5rem;">←</span>
-                <span style="font-size: 0.8rem; font-weight: bold;">Browse Shop</span>
+                <span style="font-size: 0.8rem; font-weight: 800;">Back to Shop</span>
             </a>
-            <div style="font-size: 0.7rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800;">Product Detail</div>
+            <div 
+                style="
+                    font-size: 0.65rem; 
+                    color: var(--ink-muted); 
+                    text-transform: uppercase; 
+                    letter-spacing: 0.15em; 
+                    font-weight: 800;
+                "
+            >System Specifications</div>
         </div>
 
-        <div class="product-grid"> 
+        <div class="product-layout"> 
             
             <article>
-                <div class="product-hero-container" style="height: 340px; background: var(--grad-emerald); margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: center;">
-                    <div style="font-size: 10rem; opacity: 0.15; filter: blur(8px);" id="hero-icon">⚡</div>
-                    <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; background: rgba(255,255,255,0.95); padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 0.7rem; color: var(--ink-display); text-transform: uppercase; letter-spacing: 0.05em; box-shadow: var(--shadow-soft);">
-                        Featured System
-                    </div>
+                <div 
+                    class="product-hero-container" 
+                    style="
+                        height: 380px; 
+                        background: var(--grad-emerald); 
+                        margin-bottom: 3rem; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center;
+                        position: relative;
+                    "
+                >
+                    <div 
+                        id="hero-icon"
+                        style="
+                            font-size: 10rem; 
+                            opacity: 0.15; 
+                            filter: blur(8px);
+                            transition: transform 0.2s ease-out;
+                        " 
+                    >⚡</div>
+                    <div 
+                        style="
+                            position: absolute; 
+                            bottom: 1.5rem; 
+                            left: 1.5rem; 
+                            background: rgba(255,255,255,0.95); 
+                            padding: 8px 16px; 
+                            border-radius: 10px; 
+                            font-weight: 900; 
+                            font-size: 0.65rem; 
+                            color: var(--ink-display); 
+                            text-transform: uppercase; 
+                            letter-spacing: 0.1em; 
+                            box-shadow: var(--shadow-soft);
+                        "
+                    >Verified Kynar Asset</div>
                 </div>
 
-                <h1 class="text-display" style="text-align: left; margin-bottom: 1.5rem;">Deep Focus OS</h1>
+                <h1 class="text-display glass-title" style="text-align: left; margin-bottom: 1.5rem;">Deep Focus OS</h1>
                 
-                <p class="text-body" style="font-size: 1.1rem; line-height: 1.8; color: var(--ink-body); margin-bottom: 3rem; opacity: 0.9;">
-                    Most planners ask you to do more. This system asks you to do less. 
-                    By utilizing the "Daily Three" methodology, Deep Focus OS forces you to prioritize 
-                    before you execute. It is a complete operating system for Notion designed to strip away noise and highlight the signal.
+                <p 
+                    style="
+                        font-size: 1.15rem; 
+                        line-height: 1.8; 
+                        color: var(--ink-body); 
+                        margin-bottom: 3.5rem; 
+                        opacity: 0.85;
+                    "
+                >
+                    A minimalist powerhouse designed for creators who demand clarity. 
+                    Deep Focus OS eliminates traditional productivity friction by automating 
+                    priority management. Built on the Kynar V1.0 architecture for Notion.
                 </p>
                 
-                <h3 style="font-family: 'Bantayog'; font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--ink-display); display: flex; align-items: center; gap: 10px;">
-                    <span style="width: 20px; height: 2px; background: var(--accent-gold);"></span>
-                    Core Capabilities
+                <h3 
+                    style="
+                        font-family: var(--font-display); 
+                        font-size: 1.4rem; 
+                        margin-bottom: 2rem; 
+                        color: var(--ink-display); 
+                        display: flex; 
+                        align-items: center; 
+                        gap: 12px;
+                    "
+                >
+                    <span style="width: 24px; height: 3px; background: var(--accent-gold); border-radius: 2px;"></span>
+                    Technical Capabilities
                 </h3>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 4rem;">
-                    
+                <div 
+                    style="
+                        display: grid; 
+                        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+                        gap: 1.5rem; 
+                        margin-bottom: 5rem;
+                    "
+                >
                     <div class="value-tile">
-                        <div class="nav-icon" style="margin: 0;">📥</div>
-                        <div style="font-weight: 800; font-size: 1rem; color: var(--ink-display);">Unified Capture</div>
-                        <div style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.4;">A singular inbox for every fleeting thought, ensuring zero mental leak.</div>
+                        <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">📥</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--ink-display);">Zero-Leak Capture</div>
+                        <p style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.6;">Automated sorting for every thought, link, and file you encounter.</p>
                     </div>
 
                     <div class="value-tile">
-                        <div class="nav-icon" style="margin: 0;">⚙️</div>
-                        <div style="font-weight: 800; font-size: 1rem; color: var(--ink-display);">Review Protocols</div>
-                        <div style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.4;">Weekly guided audits to clear the clutter and reset your focus.</div>
+                        <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">⚙️</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--ink-display);">Dynamic Dashboard</div>
+                        <p style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.6;">Interface adapts to your current time of day and energy levels.</p>
                     </div>
-
-                    <div class="value-tile">
-                        <div class="nav-icon" style="margin: 0;">🚀</div>
-                        <div style="font-weight: 800; font-size: 1rem; color: var(--ink-display);">Zen Dashboard</div>
-                        <div style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.4;">The interface hides everything except your current active mission.</div>
-                    </div>
-
                 </div>
-
             </article>
 
-            <div class="sidebar-wrapper"> 
-                <div class="feature-card" style="height: auto; padding: 2.5rem; background: white; border: 1px solid rgba(0,0,0,0.03); box-shadow: var(--shadow-float); position: sticky; top: 100px;">
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--ink-border); padding-bottom: 1.5rem;">
+            <aside class="sidebar-wrapper"> 
+                <div 
+                    class="feature-card" 
+                    style="
+                        padding: 2.5rem; 
+                        background: white; 
+                        border: 1px solid var(--ink-border); 
+                        box-shadow: var(--shadow-float); 
+                        position: sticky; 
+                        top: 100px;
+                    "
+                >
+                    <div 
+                        style="
+                            display: grid; 
+                            grid-template-columns: 1fr 1fr; 
+                            gap: 1.5rem; 
+                            margin-bottom: 2rem; 
+                            border-bottom: 1px solid var(--ink-border); 
+                            padding-bottom: 1.5rem;
+                        "
+                    >
                         <div>
-                            <span class="meta-label">Environment</span>
+                            <span class="meta-label">Platform</span>
                             <span class="meta-value">Notion OS</span>
                         </div>
                         <div>
-                            <span class="meta-label">Release</span>
-                            <span class="meta-value">v2.4 (2025)</span>
+                            <span class="meta-label">Version</span>
+                            <span class="meta-value">2.4.1</span>
                         </div>
                         <div>
-                            <span class="meta-label">Access</span>
+                            <span class="meta-label">License</span>
                             <span class="meta-value">Lifetime</span>
                         </div>
                         <div>
-                            <span class="meta-label">Type</span>
-                            <span class="meta-value">System</span>
+                            <span class="meta-label">Delivery</span>
+                            <span class="meta-value">Instant</span>
                         </div>
                     </div>
 
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                         <div style="display: flex; flex-direction: column;">
-                            <span class="meta-label">Investment</span>
-                            <span style="font-family: 'Bantayog'; font-size: 2.5rem; color: var(--ink-display); line-height: 1;">£24.00</span>
+                            <span class="meta-label">Total Investment</span>
+                            <span style="font-family: var(--font-display); font-size: 2.5rem; color: var(--ink-display); line-height: 1;">£24.00</span>
                         </div>
-                        <div class="nav-icon" style="width: 50px; height: 50px; background: var(--bg-canvas); font-size: 1.5rem;">💎</div>
                     </div>
 
-                    <button onclick="window.Satchel.add({id: 'art_001', title: 'Deep Focus OS', price: 24.00, collection: 'productivity', icon: '⚡'})" class="dock-btn" style="width: 100%; border: none; background: var(--grad-gold); color: white; font-weight: 800; height: 60px; box-shadow: var(--shadow-soft);">
+                    <button 
+                        onclick="window.KynarCart.add({id: 'prod_001', title: 'Deep Focus OS', price: 24.00, collection: 'productivity', icon: '⚡'})" 
+                        class="dock-btn" 
+                        style="
+                            width: 100%; 
+                            border: none; 
+                            background: var(--grad-gold); 
+                            color: white; 
+                            font-weight: 800; 
+                            height: 60px; 
+                            box-shadow: var(--shadow-soft);
+                        "
+                    >
                         Add to Cart
                     </button>
 
                     <div style="margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 8px; opacity: 0.6;">
                         <span class="live-beacon" style="margin: 0;"></span>
-                        <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Digital Delivery Active</span>
+                        <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Payment Gateway Secured</span>
                     </div>
-
                 </div>
-            </div>
+            </aside>
         </div>
 
         <div class="mobile-purchase-bar">
             <div style="display: flex; flex-direction: column;">
-                <span style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase;">Deep Focus OS</span>
-                <span style="font-family: 'Bantayog'; font-size: 1.2rem; color: var(--ink-display);">£24.00</span>
+                <span style="font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase;">Investment</span>
+                <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--ink-display);">£24.00</span>
             </div>
-            <button onclick="window.Satchel.add({id: 'art_001', title: 'Deep Focus OS', price: 24.00, collection: 'productivity', icon: '⚡'})" class="dock-btn" style="height: 48px; padding: 0 1.5rem; font-size: 0.8rem; background: var(--grad-gold);">
-                Add to Cart
-            </button>
-        </div>
-            </div>
-
+            <button 
+                onclick="window.KynarCart.add({id: 'prod_001', title: 'Deep Focus OS', price: 24.00, collection: 'productivity', icon: '⚡'})" 
+                class="dock-btn" 
+                style="height: 50px; padding: 0 1.5rem; font-size: 0.8rem; background: var(--grad-gold); border: none; font-weight: 800;"
+            >Add to Cart</button>
         </div>
 
     </main>
@@ -134,46 +224,37 @@
     <div data-include="components/modals.html"></div>
 
     <style>
-        /* Layout Grid */
-        .product-grid {
+        .product-layout {
             display: grid;
             grid-template-columns: 1.5fr 1fr;
-            gap: 3rem;
+            gap: 4rem;
             align-items: start;
         }
 
-        /* Sidebar Sticky Wrapper */
-        .sidebar-wrapper {
-            position: relative;
-        }
-
-        /* Typography Helpers */
         .meta-label {
             display: block;
-            font-size: 0.75rem; 
+            font-size: 0.7rem; 
             color: var(--ink-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.2rem;
-        }
-        .meta-value {
-            display: block;
-            font-weight: bold; 
-            font-size: 0.9rem;
-            color: var(--ink-body);
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.3rem;
         }
 
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .product-grid {
-                grid-template-columns: 1fr; /* Stack vertically */
+        .meta-value {
+            display: block;
+            font-weight: 700; 
+            font-size: 1rem;
+            color: var(--ink-display);
+        }
+
+        @media (max-width: 850px) {
+            .product-layout {
+                grid-template-columns: 1fr;
                 gap: 2rem;
             }
-            
-            .sidebar-wrapper {
-                order: -1; /* Move price card to top on mobile */
-                margin-bottom: 1rem;
-            }
+            .sidebar-wrapper { order: -1; margin-bottom: 1.5rem; }
+            .sidebar-wrapper .feature-card { position: relative; top: 0; padding: 1.5rem; }
         }
     </style>
 
@@ -181,23 +262,14 @@
     <script src="haptics.js"></script>
     <script src="cart.js"></script>
     
-    <script type="module">
-        import './firebase-config.js';
-        import './auth.js';
-            // Phase 6: Immersive Product Visual Parallax
-    const heroIcon = document.getElementById('hero-icon');
-    
-    window.addEventListener('mousemove', (e) => {
-        if (!heroIcon || window.innerWidth < 768) return;
-        
-        const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-        const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-        
-        heroIcon.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.1)`;
-        heroIcon.style.filter = `blur(${Math.abs(moveX) + 8}px)`;
-    });
-
+    <script>
+        const heroIcon = document.getElementById('hero-icon');
+        window.addEventListener('mousemove', (e) => {
+            if (!heroIcon || window.innerWidth < 768) return;
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.015;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.015;
+            heroIcon.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+        });
     </script>
-
 </body>
 </html>

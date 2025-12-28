@@ -1,310 +1,179 @@
-<div
-  aria-hidden="true"
-  id="modal-overlay"
-  style="
+<style>
+  #modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
     align-items: center;
+    justify-content: center;
     background: rgba(9, 44, 35, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    display: flex;
-    inset: 0;
-    justify-content: center;
     opacity: 0;
-    pointer-events: none;
-    position: fixed;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
     visibility: hidden;
-    z-index: 2000;
-  "
->
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  /* When the modal is active (Triggered by core.js) */
+  #modal-overlay[style*="visible"] #modal-card {
+    transform: translateY(0);
+  }
+
+  #modal-card {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    padding: 3rem 2rem 2.5rem;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-float);
+    transform: translateY(30px);
+    transition: transform 0.4s var(--transition-tactile);
+  }
+
+  .auth-tab-group {
+    display: flex;
+    background: var(--bg-canvas);
+    padding: 5px;
+    border-radius: 99px;
+    margin-bottom: 2rem;
+  }
+
+  .auth-tab {
+    flex: 1;
+    height: 38px;
+    border: none;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    color: var(--ink-muted);
+  }
+
+  .auth-tab.active {
+    background: white;
+    color: var(--ink-display);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .kynar-input {
+    width: 100%;
+    height: 52px;
+    padding: 0 1.5rem;
+    border-radius: 99px;
+    border: 1px solid var(--ink-border);
+    background: var(--bg-paper);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s var(--transition-smooth);
+    margin-bottom: 1rem;
+  }
+
+  .kynar-input:focus {
+    background: white;
+    border-color: var(--accent-gold);
+    box-shadow: 0 8px 20px rgba(197, 160, 89, 0.12);
+    transform: translateY(-2px);
+  }
+
+  #close-access {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg-canvas);
+    color: var(--ink-display);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s var(--transition-tactile);
+  }
+
+  #close-access:active { transform: scale(0.9); }
+</style>
+
+<div aria-hidden="true" id="modal-overlay">
+  <div id="modal-card">
     
-  <div
-    class="feature-card"
-    id="modal-card"
-    style="
-      background: white;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      box-shadow: var(--shadow-float);
-      height: auto;
-      max-width: 380px;
-      padding: 2.5rem 2rem;
-      position: relative;
-      transform: translateY(20px);
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      width: 90%;
-    "
-  >
-        
-        <div style="margin-bottom: 2rem; text-align: center;">
+    <button id="close-access" aria-label="Close Modal">&times;</button>
+
+    <div style="text-align: center; margin-bottom: 2rem;">
       <div style="
-        width: 64px; 
-        height: 64px; 
-        background: var(--bg-canvas); 
-        border-radius: 20px; 
+        width: 72px; 
+        height: 72px; 
+        background: var(--grad-silver); 
+        border-radius: 22px; 
         display: flex; 
         align-items: center; 
         justify-content: center; 
-        font-size: 2rem; 
-        margin: 0 auto 1rem;
-        box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        font-size: 2.2rem; 
+        margin: 0 auto 1.25rem;
+        box-shadow: var(--shadow-soft);
       ">👤</div>
-      
-      <h2 class="text-display" id="access-title" style="font-size: 1.6rem; margin-bottom: 0.25rem;">Sign In</h2>
-      <p class="text-sub" id="access-subtitle" style="font-size: 0.85rem; margin-bottom: 0;">Access your Kynar Digital assets.</p>
+      <h2 class="text-display" id="access-title" style="font-size: 1.75rem; margin-bottom: 0.5rem;">Sign In</h2>
+      <p class="text-sub" id="access-subtitle" style="font-size: 0.9rem;">Access your Kynar Library.</p>
     </div>
 
-
-    <div
-      style="
-        background: var(--bg-canvas);
-        border-radius: 99px;
-        display: flex;
-        margin-bottom: 2rem;
-        padding: 4px;
-      "
-    >
-      <button
-        class="dock-btn"
-        id="tab-login"
-        onclick="ModalUI.switchMode('login')"
-        style="
-          background: white;
-          border-radius: 99px;
-          border: none;
-          box-shadow: var(--shadow-soft);
-          color: var(--ink-display);
-          flex: 1;
-          font-size: 0.8rem;
-          height: 36px;
-        "
-      >
-        Sign In
-      </button>
-
-      <button
-        class="dock-btn"
-        id="tab-register"
-        onclick="ModalUI.switchMode('register')"
-        style="
-          background: transparent;
-          border-radius: 99px;
-          border: none;
-          box-shadow: none;
-          color: var(--ink-muted);
-          flex: 1;
-          font-size: 0.8rem;
-          height: 36px;
-        "
-      >
-        Register
-      </button>
+    <div class="auth-tab-group">
+      <button class="auth-tab active" id="tab-login" onclick="KynarModal.switch('login')">Sign In</button>
+      <button class="auth-tab" id="tab-register" onclick="KynarModal.switch('register')">Join Kynar</button>
     </div>
 
     <form class="access-form" id="login-form">
-      
-      <div style="margin-bottom: 1rem;">
-        <input
-          id="login-email"
-          placeholder="Email Address"
-          required
-          style="
-            border-radius: 99px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            font-family: 'Glacial Indifference';
-            font-size: 1rem;
-            outline: none;
-            padding: 0.8rem 1.2rem;
-            transition: 0.2s;
-            width: 100%;
-          "
-          type="email"
-        />
-      </div>
-      
-      <div style="margin-bottom: 2rem;">
-        <input
-          id="login-pass"
-          placeholder="Password"
-          required
-          style="
-            border-radius: 99px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            font-family: 'Glacial Indifference';
-            font-size: 1rem;
-            outline: none;
-            padding: 0.8rem 1.2rem;
-            transition: 0.2s;
-            width: 100%;
-          "
-          type="password"
-        />
-      </div>
-      
-      <button
-        class="dock-btn"
-        style="
-          background: var(--grad-emerald);
-          border: none;
-          box-shadow: var(--shadow-soft);
-          color: white;
-          font-weight: bold;
-          width: 100%;
-        "
-        type="submit"
-      >
+      <input type="email" id="login-email" class="kynar-input" placeholder="Email Address" required>
+      <input type="password" id="login-pass" class="kynar-input" placeholder="Password" required>
+      <button type="submit" class="dock-btn" style="width: 100%; height: 54px; background: var(--grad-emerald); border: none; margin-top: 0.5rem;">
         Sign In
       </button>
     </form>
 
-    <form
-      class="access-form"
-      id="register-form"
-      style="display: none;"
-    >
-      
-      <div style="margin-bottom: 1rem;">
-        <input
-          id="reg-name"
-          placeholder="Full Name"
-          required
-          style="
-            border-radius: 99px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            font-family: 'Glacial Indifference';
-            font-size: 1rem;
-            outline: none;
-            padding: 0.8rem 1.2rem;
-            width: 100%;
-          "
-          type="text"
-        />
-      </div>
-      
-      <div style="margin-bottom: 1rem;">
-        <input
-          id="reg-email"
-          placeholder="Email Address"
-          required
-          style="
-            border-radius: 99px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            font-family: 'Glacial Indifference';
-            font-size: 1rem;
-            outline: none;
-            padding: 0.8rem 1.2rem;
-            width: 100%;
-          "
-          type="email"
-        />
-      </div>
-      
-      <div style="margin-bottom: 2rem;">
-        <input
-          id="reg-pass"
-          placeholder="Create Password"
-          required
-          style="
-            border-radius: 99px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            font-family: 'Glacial Indifference';
-            font-size: 1rem;
-            outline: none;
-            padding: 0.8rem 1.2rem;
-            width: 100%;
-          "
-          type="password"
-        />
-      </div>
-      
-      <button
-        class="dock-btn"
-        style="
-          background: var(--grad-gold);
-          border: none;
-          box-shadow: var(--shadow-soft);
-          color: white;
-          font-weight: bold;
-          width: 100%;
-        "
-        type="submit"
-      >
+    <form class="access-form" id="register-form" style="display: none;">
+      <input type="text" id="reg-name" class="kynar-input" placeholder="Full Name" required>
+      <input type="email" id="reg-email" class="kynar-input" placeholder="Email Address" required>
+      <input type="password" id="reg-pass" class="kynar-input" placeholder="Create Password" required>
+      <button type="submit" class="dock-btn" style="width: 100%; height: 54px; background: var(--grad-gold); border: none; margin-top: 0.5rem;">
         Create Account
       </button>
     </form>
 
-    <button
-      id="close-access"
-      style="
-        align-items: center;
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: 50%;
-        border: none;
-        color: var(--ink-muted);
-        cursor: pointer;
-        display: flex;
-        font-size: 1.2rem;
-        height: 32px;
-        justify-content: center;
-        line-height: 1;
-        position: absolute;
-        right: 1rem;
-        top: 1rem;
-        width: 32px;
-      "
-    >
-      &times;
-    </button>
-
-  </div> </div> 
+  </div>
+</div>
 
 <script>
-  const ModalUI = {
-    switchMode(mode) {
-      const loginForm = document.getElementById("login-form");
-      const regForm = document.getElementById("register-form");
-      const tabLogin = document.getElementById("tab-login");
-      const tabReg = document.getElementById("tab-register");
-      const title = document.getElementById("access-title");
-      const sub = document.getElementById("access-subtitle");
+  /**
+   * KynarModal Controller
+   * Handles UI transitions for Auth states.
+   */
+  const KynarModal = {
+    switch(mode) {
+      const isLogin = mode === 'login';
+      
+      // Toggle Forms
+      document.getElementById('login-form').style.display = isLogin ? 'block' : 'none';
+      document.getElementById('register-form').style.display = isLogin ? 'none' : 'block';
 
-      if (mode === "login") {
-        // --- State: Login ---
-        loginForm.style.display = "block";
-        regForm.style.display = "none";
+      // Toggle Tabs
+      document.getElementById('tab-login').classList.toggle('active', isLogin);
+      document.getElementById('tab-register').classList.toggle('active', !isLogin);
 
-        // Reset Tab Styles
-        tabLogin.style.background = "white";
-        tabLogin.style.boxShadow = "var(--shadow-soft)";
-        tabReg.style.background = "transparent";
-        tabReg.style.boxShadow = "none";
+      // Update Text with Kynar branding
+      document.getElementById('access-title').innerText = isLogin ? 'Welcome Back' : 'Create Account';
+      document.getElementById('access-subtitle').innerText = isLogin 
+        ? 'Sign in to access your library.' 
+        : 'Join to track your digital assets.';
 
-        // Update Text
-        title.innerText = "Welcome Back";
-        sub.innerText = "Sign in to access your downloads.";
-      } else {
-        // --- State: Register ---
-        loginForm.style.display = "none";
-        regForm.style.display = "block";
-
-        // Reset Tab Styles
-        tabReg.style.background = "white";
-        tabReg.style.boxShadow = "var(--shadow-soft)";
-        tabLogin.style.background = "transparent";
-        tabLogin.style.boxShadow = "none";
-
-        // Update Text
-        title.innerText = "Create Account";
-        sub.innerText = "Join to track your orders.";
-      }
-    },
+      // Haptic Feedback
+      if (window.Haptics) window.Haptics.light();
+    }
   };
 </script>
-
-<style>
-  /* --- Input Focus States --- */
-  .access-form input:focus {
-    background: white !important;
-    border-color: var(--accent-gold) !important;
-    box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
-  }
-</style>
