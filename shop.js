@@ -136,9 +136,10 @@ const ShopSystem = (() => {
            </a>`
         : `<a href="${detailLink}" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: var(--grad-silver); text-decoration:none;">${item.icon || "📦"}</a>`;
 
-      const actionBtn = isFree
-          ? `<button onclick="window.KynarCart.directDownload('${item.downloadLink}')" class="dock-btn" style="height: 34px; padding: 0 1.25rem; font-size: 0.75rem; background: var(--bg-canvas); color: var(--ink-display); border: 1px solid var(--ink-border);">Get Free</button>`
-          : `<button onclick="window.KynarCart.add('${item.id}')" class="dock-btn" style="height: 34px; padding: 0 1.25rem; font-size: 0.75rem; background: var(--grad-gold); color: white; border: none;">+ Add to Cart</button>`;
+            const actionBtn = isFree
+          ? `<button onclick="KynarCart.directDownload('${item.downloadLink}')" class="dock-btn" style="height: 34px; padding: 0 1.25rem; font-size: 0.75rem; background: var(--bg-canvas); color: var(--ink-display); border: 1px solid var(--ink-border);">Get Free</button>`
+          : `<button onclick="KynarCart.add('${item.id}')" class="dock-btn" style="height: 34px; padding: 0 1.25rem; font-size: 0.75rem; background: var(--grad-gold); color: white; border: none;">+ Add to Cart</button>`;
+
 
       return `
         <div class="stream-card ${!isFree ? 'glimmer-card' : ''}" style="height: auto; min-height: 290px; padding: 0;">
