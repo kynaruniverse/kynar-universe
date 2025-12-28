@@ -1,56 +1,52 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: KYNAR COMMERCE ENGINE (V1.2 - ULTRA ROBUST)
+ * MODULE: KYNAR COMMERCE ENGINE (V1.3 - MASTER SYNC)
  * ══════════════════════════════════════════════════════════════════════════
  */
 
 const KynarCart = {
   getKey: () => "kynar_cart_v1",
 
+  // Ensures we ALWAYS get an array, never null or an object
   getContents() {
     try {
       const data = localStorage.getItem(this.getKey());
-      return data ? JSON.parse(data) : [];
+      const parsed = data ? JSON.parse(data) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
-      console.error("Cart: Storage corrupted, resetting.");
       return [];
     }
   },
 
   add(productId) {
+    console.log("Kynar: Adding Product ID:", productId);
     try {
-      // 1. Find the product in the shop database
-      let product = null;
-      if (window.ShopSystem) {
-        product = window.ShopSystem.getDb().find(p => p.id === productId);
-      }
-
-      if (!product) {
-        console.error("Cart: Product not found in DB.");
+      // 1. Safeguard: Wait for ShopSystem database
+      if (!window.ShopSystem) {
+        console.warn("Kynar: ShopSystem not ready.");
         return;
       }
 
-      // 2. Get current cart and add item
-      const contents = this.getContents();
-      
-      // Check if already in cart
+      const product = window.ShopSystem.getDb().find(p => p.id === productId);
+      if (!product) return;
+
+      // 2. Load and Update
+      let contents = this.getContents();
       const exists = contents.some(item => item.id === productId);
       
       if (!exists) {
         contents.push(product);
         localStorage.setItem(this.getKey(), JSON.stringify(contents));
-        
-        // 3. Feedback effects
         this.bumpCart();
         if (window.Haptics) window.Haptics.success();
       }
 
-      // 4. Update UI & Open Drawer
+      // 3. UI Synchronization
       this.syncUI();
       this.openDrawer();
       
     } catch (err) {
-      console.error("Cart Add Error:", err);
+      console.error("Kynar: Cart Add Exception:", err);
     }
   },
 
@@ -63,21 +59,17 @@ const KynarCart = {
   },
 
   syncUI() {
-    try {
-      const items = this.getContents();
-      const badge = document.getElementById("cart-count");
-      
-      // Update Badge count safely
-      if (badge) {
-        badge.textContent = items.length;
-        badge.style.display = items.length > 0 ? "flex" : "none";
-      }
-
-      // Update Total and Item List in Drawer
-      this.renderDrawer(items);
-    } catch (err) {
-      console.warn("Cart UI Sync: Some elements missing on this page.");
+    const items = this.getContents();
+    
+    // Update Badge
+    const badge = document.getElementById("cart-count");
+    if (badge) {
+      badge.textContent = items.length;
+      badge.style.display = items.length > 0 ? "flex" : "none";
     }
+
+    // Update Drawer Content
+    this.renderDrawer(items);
   },
 
   renderDrawer(items) {
@@ -91,18 +83,22 @@ const KynarCart = {
 
     if (container) {
       if (items.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:4rem; opacity:0.5;">Empty Vault</div>`;
+        container.innerHTML = `
+          <div style="text-align:center; padding:5rem 2rem; opacity:0.3;">
+            <p style="font-weight:800;">VAULT EMPTY</p>
+            <p style="font-size:0.7rem; margin-top:0.5rem;">Select assets to begin.</p>
+          </div>`;
         return;
       }
 
       container.innerHTML = items.map(item => `
-        <div class="nav-item" style="margin: 0.8rem; padding: 1rem; background: white; border: 1px solid var(--ink-border);">
-          <div class="nav-icon" style="background: var(--grad-emerald); color: white;">${item.icon || '📦'}</div>
-          <div class="nav-label">
-            <div style="font-weight: 800;">${item.title}</div>
-            <div style="font-size: 0.8rem; color: var(--accent-gold);">£${(item.price || 0).toFixed(2)}</div>
+        <div class="nav-item" style="margin:0.5rem 1rem; padding:1rem; background:white; border:1px solid var(--ink-border); display:flex; align-items:center;">
+          <div class="nav-icon" style="background:var(--grad-emerald); color:white; min-width:36px;">${item.icon || '📦'}</div>
+          <div class="nav-label" style="margin-left:1rem; flex:1;">
+            <div style="font-weight:800; font-size:0.9rem; color:var(--ink-display);">${item.title}</div>
+            <div style="font-size:0.8rem; color:var(--accent-gold); font-weight:700;">£${(item.price || 0).toFixed(2)}</div>
           </div>
-          <button onclick="KynarCart.remove('${item.id}')" style="background:none; border:none; color:var(--ink-muted); cursor:pointer; font-size:1.2rem;">&times;</button>
+          <button onclick="KynarCart.remove('${item.id}')" style="background:var(--bg-canvas); border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; color:var(--ink-muted); font-weight:bold;">&times;</button>
         </div>
       `).join("");
     }
@@ -131,18 +127,15 @@ const KynarCart = {
   bumpCart() {
     const trigger = document.getElementById("cart-trigger");
     if (trigger) {
+      trigger.style.transition = "transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
       trigger.style.transform = "scale(1.3) rotate(8deg)";
       setTimeout(() => trigger.style.transform = "scale(1) rotate(0deg)", 300);
     }
   }
 };
 
-// Initialize
-document.addEventListener("DOMContentLoaded", () => {
-  KynarCart.syncUI();
-  
-  // Listen for Header Loading to re-sync badge
-  document.addEventListener("KynarHeaderLoaded", () => KynarCart.syncUI());
-});
-
 window.KynarCart = KynarCart;
+
+// Re-Sync when the page finishes loading components
+document.addEventListener("DOMContentLoaded", () => KynarCart.syncUI());
+document.addEventListener("KynarHeaderLoaded", () => KynarCart.syncUI());
