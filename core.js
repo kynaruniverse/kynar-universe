@@ -1,8 +1,8 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: KYNAR MARKETPLACE CORE (V1.1)
+ * MODULE: KYNAR MARKETPLACE CORE (V1.2)
  * ══════════════════════════════════════════════════════════════════════════
- * @updates Fix for Modal Stacking Context & Interaction Lock
+ * @updates Consolidated Event Delegation for Cart, Nav, and Auth Modals.
  */
 
 const KynarCore = {
@@ -18,6 +18,7 @@ const KynarCore = {
           el.innerHTML = html;
           this.executeScripts(el);
 
+          // Dispatch events for other modules to sync
           if (file.includes("header")) document.dispatchEvent(new Event("KynarHeaderLoaded"));
           if (file.includes("modals")) document.dispatchEvent(new Event("KynarModalsLoaded"));
         }
@@ -38,35 +39,40 @@ const KynarCore = {
     });
   },
 
-  // 2. NAVIGATION & SMART HEADER
-  initNavigation() {
-    const trigger = document.getElementById("nav-toggle");
-    const drawer = document.getElementById("nav-drawer");
-    const backdrop = document.getElementById("nav-backdrop");
-    const closeBtn = document.getElementById("close-nav");
+  // 2. GLOBAL INTERACTION ENGINE (The "Brain")
+  initInteractions() {
+    document.body.addEventListener("click", (e) => {
+      // --- A. Main Navigation Drawer ---
+      if (e.target.closest("#nav-toggle")) {
+        this.toggleMenu(true);
+      }
+      if (e.target.closest("#close-nav") || e.target.id === "nav-backdrop") {
+        this.toggleMenu(false);
+      }
 
-    if (!trigger || !drawer) return;
+      // --- B. Auth Modals ---
+      if (e.target.closest(".trigger-access")) {
+        e.preventDefault();
+        this.openAuthModal();
+      }
+      const overlay = document.getElementById("modal-overlay");
+      if (e.target === overlay || e.target.id === "close-access") {
+        this.closeAuthModal();
+      }
 
-    const openMenu = () => {
-      drawer.classList.add("is-open");
-      if (backdrop) backdrop.classList.add("is-visible");
-      document.body.style.overflow = "hidden";
-    };
+      // --- C. Cart Drawer (Redirects to KynarCart) ---
+      if (e.target.closest("#cart-trigger")) {
+        e.preventDefault();
+        if (window.KynarCart) window.KynarCart.openDrawer();
+      }
+    });
 
-    const closeMenu = () => {
-      drawer.classList.remove("is-open");
-      if (backdrop) backdrop.classList.remove("is-visible");
-      document.body.style.overflow = "";
-    };
-
-    trigger.addEventListener("click", openMenu);
-    if (closeBtn) closeBtn.addEventListener("click", closeMenu);
-    if (backdrop) backdrop.addEventListener("click", closeMenu);
-    
+    // Smart Header Scroll Logic
     let lastScrollY = window.scrollY;
     window.addEventListener('scroll', () => {
       const header = document.querySelector('.app-header');
-      if (!header) return;
+      if (!header || document.body.style.overflow === "hidden") return;
+      
       if (window.scrollY > lastScrollY && window.scrollY > 100) {
         header.classList.add('header-hidden');
       } else {
@@ -76,31 +82,28 @@ const KynarCore = {
     }, { passive: true });
   },
 
-  // 3. ACCOUNT MODALS (FIXED DELEGATION)
-  initModals() {
-    // We use a single Body listener to handle clicks on elements 
-    // that might not be loaded yet when the script starts.
-    document.body.addEventListener("click", (e) => {
-      const overlay = document.getElementById("modal-overlay");
+  // 3. UI STATE CONTROLLERS
+  toggleMenu(isOpen) {
+    const drawer = document.getElementById("nav-drawer");
+    const backdrop = document.getElementById("nav-backdrop");
+    if (!drawer) return;
 
-      // TRIGGER OPEN
-      if (e.target.closest(".trigger-access")) {
-        e.preventDefault();
-        this.openAuthModal();
-      }
-
-      // TRIGGER CLOSE (Clicking backdrop or the Close X)
-      if (e.target === overlay || e.target.id === "close-access") {
-        this.closeAuthModal();
-      }
-    });
+    if (isOpen) {
+      drawer.classList.add("is-open");
+      if (backdrop) backdrop.classList.add("is-visible");
+      document.body.style.overflow = "hidden";
+    } else {
+      drawer.classList.remove("is-open");
+      if (backdrop) backdrop.classList.remove("is-visible");
+      document.body.style.overflow = "";
+    }
   },
 
   openAuthModal() {
     const overlay = document.getElementById("modal-overlay");
     if (overlay) {
       overlay.classList.add("is-visible");
-      document.body.style.overflow = "hidden"; // Physics: Scroll Lock
+      document.body.style.overflow = "hidden";
       if (window.Haptics) window.Haptics.medium();
     }
   },
@@ -109,33 +112,29 @@ const KynarCore = {
     const overlay = document.getElementById("modal-overlay");
     if (overlay) {
       overlay.classList.remove("is-visible");
-      document.body.style.overflow = ""; // Physics: Release Lock
+      document.body.style.overflow = "";
     }
   }
 };
 
-// 4. INITIALIZATION
+// 4. INITIALIZATION SEQUENCE
 document.addEventListener("DOMContentLoaded", async () => {
+  // Load HTML fragments first
   await KynarCore.loadComponents();
-  KynarCore.initNavigation();
-  KynarCore.initModals();
+  
+  // Initialize all click listeners
+  KynarCore.initInteractions();
 
+  // Setup Progress Bar
   const progressBar = document.createElement('div');
   progressBar.id = 'scroll-indicator';
   document.body.appendChild(progressBar);
 
-  let scrollTicking = false;
   window.addEventListener('scroll', () => {
-    if (!scrollTicking) {
-      window.requestAnimationFrame(() => {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        progressBar.style.width = scrolled + "%";
-        scrollTicking = false;
-      });
-      scrollTicking = true;
-    }
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    progressBar.style.width = scrolled + "%";
   }, { passive: true });
 });
 
