@@ -612,3 +612,42 @@ img.lazy-load.loaded {
 .app-header.header-hidden {
     transform: translateY(-100%);
 }
+
+/* ═══════════════════════════════════════
+   11. MODAL SYSTEM (IDENTITY LAYER)
+   ═══════════════════════════════════════ */
+
+#modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 44, 35, 0.7); /* Deep Kynar Green Overlay */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000; /* Higher than headers and drawers */
+    
+    /* Start hidden */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The "Wake Up" State */
+#modal-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+#modal-card {
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.5s var(--transition-tactile);
+}
+
+#modal-overlay.is-visible #modal-card {
+    transform: translateY(0) scale(1);
+}
