@@ -143,6 +143,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   KynarCore.initModals();
 
   console.log("Kynar Digital Marketplace: Production Ready");
+  
+    // --- Phase 7: Global Scroll Progress Logic ---
+  const progressBar = document.createElement('div');
+  progressBar.id = 'scroll-indicator';
+  document.body.appendChild(progressBar);
+
+  window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    progressBar.style.width = scrolled + "%";
+  });
+
 });
 
 window.ForgeCore = KynarCore;

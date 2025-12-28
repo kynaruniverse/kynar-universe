@@ -71,38 +71,19 @@ const Ledger = {
     }
 
     // --- State: Populated Library ---
-    container.innerHTML = items
+        container.innerHTML = items
       .map(
         (item) => `
-            <div class="stream-card" style="
-                align-items: center; 
-                gap: 1rem; 
-                height: auto; 
-                padding: 1rem;
-            ">
+            <div class="nav-item" style="margin: 0.8rem 0; padding: 1rem; background: white; border: 1px solid rgba(0,0,0,0.03); box-shadow: var(--shadow-soft); display: flex; align-items: center; cursor: default;">
                 
-                <div class="stream-visual" style="
-                    align-items: center; 
-                    background: var(--grad-emerald); 
-                    border-radius: 12px; 
-                    color: white; 
-                    display: flex; 
-                    flex-shrink: 0; 
-                    font-size: 1.2rem; 
-                    height: 50px; 
-                    justify-content: center; 
-                    width: 50px;
-                ">
+                <div class="nav-icon" style="background: var(--grad-emerald); color: white; flex-shrink: 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);">
                     ${item.icon || "📦"}
                 </div>
 
-                <div style="flex: 1;">
-                    <div class="stream-title" style="font-size: 1rem;">
-                        ${item.title}
-                    </div>
-                    <div class="stream-meta">
-                        Purchased: ${item.acquiredDate || "Recently"}
-                    </div>
+                <div class="nav-label" style="margin-left: 0.2rem;">
+                    <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-gold); font-weight: bold; margin-bottom: 2px;">Ready for Download</div>
+                    <div style="font-size: 1rem; line-height: 1.2; color: var(--ink-display); font-weight: 600;">${item.title}</div>
+                    <div style="font-size: 0.75rem; color: var(--ink-muted); font-weight: 400; margin-top: 2px;">Purchased: ${item.acquiredDate || "Recently"}</div>
                 </div>
 
                 <a 
@@ -110,21 +91,29 @@ const Ledger = {
                     download 
                     href="${item.downloadLink || "#"}" 
                     style="
-                        background: transparent; 
-                        border: 1px solid rgba(0,0,0,0.1); 
-                        font-size: 0.75rem; 
-                        height: 32px; 
-                        padding: 0 1rem;
+                        background: var(--bg-canvas); 
+                        border: 1px solid rgba(0,0,0,0.05); 
                         color: var(--ink-display);
+                        width: 44px; 
+                        height: 44px; 
+                        border-radius: 12px; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        font-size: 1.1rem; 
+                        transition: all 0.2s;
+                        flex-shrink: 0;
                     "
+                    onmousedown="this.style.transform='scale(0.92)'; this.style.background='var(--ink-border)';"
+                    onmouseup="this.style.transform='scale(1)'; this.style.background='var(--bg-canvas)';"
                 >
-                    Download
+                    ↓
                 </a>
-
             </div>
         `
       )
       .join("");
+
   },
 
   // #endregion

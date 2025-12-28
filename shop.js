@@ -83,23 +83,53 @@ const ArchiveSystem = (() => {
       setTimeout(() => {
         DOM.grid.innerHTML = "";
 
+                // --- Phase 8: Perceived Performance (Skeletons) ---
         if (items.length === 0) {
           DOM.grid.innerHTML = `
                 <div class="stream-card" style="width: 100%; height: 200px; grid-column: 1 / -1; align-items: center; justify-content: center; opacity: 0.7; pointer-events: none;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🌫️</div>
                     <div style="font-family: 'Bantayog'; font-size: 1.2rem;">No Products Found</div>
-                    <div style="font-size: 0.9rem;">Try a different search term or category.</div>
                 </div>`;
         } else {
-          items.forEach((item) => {
-            const html = this.createCard(item);
-            DOM.grid.insertAdjacentHTML("beforeend", html);
-          });
+          // Render Skeletons first for 400ms to ensure visual stability
+          DOM.grid.innerHTML = Array(3).fill(0).map(() => `
+            <div class="skeleton-card">
+              <div class="skeleton" style="height: 160px; border-radius: 0;"></div>
+              <div style="padding: 1.25rem;">
+                <div class="skeleton" style="height: 12px; width: 40%; margin-bottom: 10px;"></div>
+                <div class="skeleton" style="height: 20px; width: 80%; margin-bottom: 20px;"></div>
+                <div style="display: flex; justify-content: space-between;">
+                  <div class="skeleton" style="height: 24px; width: 30%;"></div>
+                  <div class="skeleton" style="height: 32px; width: 40%; border-radius: 99px;"></div>
+                </div>
+              </div>
+            </div>
+          `).join('');
+
+          // Smoothly replace skeletons with real products
+          setTimeout(() => {
+            DOM.grid.innerHTML = "";
+            items.forEach((item, index) => {
+              const html = this.createCard(item);
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = html;
+              const cardElement = tempDiv.firstElementChild;
+              
+              cardElement.classList.add('artifact-card-reveal');
+              cardElement.style.animationDelay = `${index * 0.08}s`;
+              
+              DOM.grid.appendChild(cardElement);
+            });
+          }, 400);
         }
 
-        DOM.grid.style.opacity = "1";
-        DOM.grid.style.transform = "translateY(0)";
+
       }, 300);
+      
+      // Ensure the grid container itself is visible once the skeletons appear
+      DOM.grid.style.opacity = "1";
+      DOM.grid.style.transform = "translateY(0)";
+
     },
 
     createCard(item) {
@@ -110,7 +140,13 @@ const ArchiveSystem = (() => {
 
       const visualBlock = item.image
         ? `<a href="${detailLink}" style="display:block; width:100%; height:100%;">
-             <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+             <img src="${item.image}" 
+     alt="${item.title}" 
+     loading="lazy" 
+     class="lazy-load" 
+     style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" 
+     onload="this.classList.add('loaded')"
+     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
              <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 3rem; background: var(--grad-silver); color: var(--ink-muted);">${item.icon || "📦"}</div>
            </a>`
         : `<a href="${detailLink}" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: var(--grad-silver); color: var(--ink-muted); text-decoration:none;">${item.icon || "📦"}</a>`;
@@ -119,23 +155,35 @@ const ArchiveSystem = (() => {
           ? `<button onclick="window.Satchel.directDownload('${item.downloadLink}')" class="dock-btn" style="height: 32px; padding: 0 1rem; font-size: 0.75rem; border: 1px solid var(--ink-muted); background: transparent; color: var(--ink-body);">Download</button>`
           : `<button onclick="window.Satchel.add('${item.id}')" class="dock-btn" style="height: 32px; padding: 0 1rem; font-size: 0.75rem; background: var(--grad-gold); color: white; border: none;">+ Add to Cart</button>`;
 
+            // Add 'glimmer-card' class if product is a paid asset
+      const luxuryClass = item.price > 0 ? "glimmer-card" : "";
+
       return `
-            <div class="stream-card" style="height: auto; min-height: 260px; overflow: hidden; padding: 0;">
-                <div class="stream-visual" style="width: 100%; height: 140px; border-radius: 0; margin-bottom: 0; position: relative; overflow: hidden;">
+            <div class="stream-card ${luxuryClass}" style="height: auto; min-height: 280px; padding: 0; border: 1px solid rgba(0,0,0,0.05);">
+                
+                <div class="stream-visual" style="width: 100%; height: 160px; border-radius: 0; margin-bottom: 0; position: relative; overflow: hidden; background: #f0f0f0;">
                     ${visualBlock}
-                    <span style="position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; color: var(--ink-display);">
-                        ${item.collection}
-                    </span>
+                    <div style="position: absolute; top: 12px; left: 12px; display: flex; gap: 6px;">
+                        <span style="background: rgba(255,255,255,0.95); backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; color: var(--ink-display); letter-spacing: 0.05em; box-shadow: var(--shadow-soft);">
+                            ${item.collection}
+                        </span>
+                    </div>
                 </div>
-                <div style="padding: 1rem; display: flex; flex-direction: column; flex: 1;">
-                    <div class="stream-title" style="font-size: 1rem; margin-bottom: 0.25rem;">${item.title}</div>
-                    <div class="stream-meta" style="margin-bottom: 1rem;">${item.tag}</div>
-                    <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: bold; color: var(--ink-display); font-family: 'Glacial Indifference';">${formattedPrice}</span>
+
+                <div style="padding: 1.25rem; display: flex; flex-direction: column; flex: 1;">
+                    <div style="font-size: 0.7rem; color: var(--accent-gold); font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">${item.tag}</div>
+                    <div class="stream-title" style="font-size: 1.1rem; margin-bottom: 1rem; line-height: 1.3;">${item.title}</div>
+                    
+                    <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.03);">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 0.65rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.05em;">Price</span>
+                            <span style="font-weight: 800; color: var(--ink-display); font-family: 'Glacial Indifference'; font-size: 1.1rem;">${formattedPrice}</span>
+                        </div>
                         ${actionBtn}
                     </div>
                 </div>
             </div>`;
+
     },
   };
 
