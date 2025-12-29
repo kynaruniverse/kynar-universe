@@ -860,3 +860,192 @@ img.lazy-load.loaded { filter: blur(0); }
     border-top: 1px dashed var(--ink-border);
   }
 }
+
+/* ═══════════════════════════════════════
+   VISUALFORGE: MARKETPLACE MATRIX
+   ═══════════════════════════════════════ */
+
+/* 1. The Sticky Glass Header */
+.shop-header-sticky {
+    position: sticky;
+    top: 64px; /* Adjust if your main header height differs */
+    z-index: 800;
+    background: rgba(248, 248, 246, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1rem 1.25rem;
+    margin: 0 -1.25rem 2rem -1.25rem; /* Negative margins to span full width */
+    border-bottom: 1px solid var(--ink-border);
+    transition: all 0.3s ease;
+}
+
+.search-wrapper {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border-radius: 99px;
+    border: 1px solid var(--ink-border);
+    background: white;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 4px 20px rgba(197, 160, 89, 0.15);
+}
+
+.search-icon-place {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-muted);
+    pointer-events: none;
+}
+
+/* 2. Filter Pills Stream */
+.filter-stream {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none; /* Firefox */
+}
+.filter-stream::-webkit-scrollbar { display: none; }
+
+.filter-pill {
+    white-space: nowrap;
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid var(--ink-border);
+    background: white;
+    color: var(--ink-muted);
+    transition: all 0.2s ease;
+}
+
+.filter-pill.active {
+    background: var(--ink-display);
+    color: white;
+    border-color: var(--ink-display);
+}
+
+/* 3. The 2-Column Grid System */
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Forces 2 columns on mobile */
+    gap: 12px; /* Tighter gap for cohesion */
+    margin-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+    .shop-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 24px;
+    }
+}
+
+/* 4. The Product Node (New Card Style) */
+.product-node {
+    background: white;
+    border: 1px solid var(--ink-border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s var(--transition-tactile), box-shadow 0.3s ease;
+}
+
+.product-node:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.node-preview {
+    aspect-ratio: 1 / 1; /* Square for uniform grid */
+    background: var(--bg-canvas);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.node-tag {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(4px);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: var(--ink-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 2;
+}
+
+.node-details {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.node-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    color: var(--ink-display);
+    
+    /* Truncate text after 2 lines to keep grid even */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.node-price {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+}
+
+/* 5. Minimal Action Button */
+.node-btn {
+    margin-top: auto; /* Pushes button to bottom */
+    width: 100%;
+    padding: 8px 0;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.btn-gold {
+    background: var(--grad-gold);
+    color: white;
+}
+
+.btn-ghost {
+    background: var(--bg-paper);
+    color: var(--ink-display);
+}
+
+.btn-gold:active, .btn-ghost:active { transform: scale(0.96); }
