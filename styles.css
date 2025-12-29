@@ -608,3 +608,255 @@ img.lazy-load.loaded { filter: blur(0); }
     position: relative;
     z-index: 2; /* Ensures text stays sharp above any potential overflows */
 }
+
+
+/* ═══════════════════════════════════════
+   VISUALFORGE UPGRADE: QUICK VIEW OVERLAY
+   ═══════════════════════════════════════ */
+
+.qv-overlay {
+  position: absolute;
+  inset: 0; /* Snaps to all 4 corners of the image container */
+  background: rgba(0, 0, 0, 0.1); /* Very subtle dim */
+  backdrop-filter: blur(3px); /* Blurs the icon behind it */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  pointer-events: none; /* Allows click to pass through to the main link */
+}
+
+.qv-btn {
+  background: white;
+  color: var(--ink-display);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 8px 18px;
+  border-radius: 99px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(12px); /* Start slightly lower */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* DESKTOP ONLY: Trigger animation on hover */
+@media (hover: hover) {
+  .stream-card:hover .qv-overlay {
+    opacity: 1;
+  }
+  .stream-card:hover .qv-btn {
+    transform: translateY(0); /* Float up into place */
+  }
+}
+
+/* ═══════════════════════════════════════
+   VISUALFORGE UPGRADE: TERMINAL FOOTER
+   ═══════════════════════════════════════ */
+
+.app-footer {
+  background: var(--bg-paper);
+  border-top: 1px solid var(--ink-border);
+  padding: 4rem 1.5rem 3rem;
+  margin-top: 6rem;
+  position: relative;
+}
+
+/* Gradient Top Border Decoration */
+.app-footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 50%, transparent 100%);
+  opacity: 0.3;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 0.8fr; /* Optimized width balance */
+  gap: 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* BRAND COLUMN & LOGO */
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--ink-display);
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  font-weight: 800;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.footer-desc {
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+}
+
+/* SUBSCRIBE FORM STYLES */
+.sub-form {
+  margin-bottom: 2rem;
+  max-width: 320px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--ink-border);
+  transition: border-color 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+  border-bottom-color: var(--accent-gold);
+}
+
+.sub-input {
+  width: 100%;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink-display);
+  outline: none;
+}
+
+.sub-input::placeholder { color: var(--ink-muted); opacity: 0.5; }
+
+.sub-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-display);
+  cursor: pointer;
+  padding: 8px;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.sub-btn:hover {
+  opacity: 1;
+  color: var(--accent-gold);
+  transform: translateX(3px);
+}
+
+.sub-note {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  opacity: 0.6;
+}
+
+/* SOCIAL GHOST ICONS */
+.social-row { display: flex; gap: 0.5rem; }
+
+.social-btn {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  color: var(--ink-display);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: transparent; /* Ghost style */
+}
+
+.social-btn:hover {
+  background: rgba(0,0,0,0.05);
+  transform: translateY(-2px);
+}
+
+/* NAVIGATION COLUMN */
+.footer-heading {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--accent-gold);
+  letter-spacing: 0.15em;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.footer-links-grid {
+  display: grid;
+  grid-template-columns: 1fr; 
+  gap: 0.8rem;
+}
+
+.footer-links-grid a {
+  font-size: 0.95rem;
+  color: var(--ink-body);
+  opacity: 0.6;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.footer-links-grid a:hover {
+  opacity: 1;
+  color: var(--ink-display);
+  transform: translateX(3px);
+}
+
+/* SYSTEM STATUS & LEGAL */
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+  font-family: var(--font-body);
+}
+
+.status-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-display);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.legal-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  opacity: 0.6;
+}
+
+.legal-links { display: flex; gap: 0.5rem; }
+.separator { opacity: 0.5; }
+.legal-links a { color: inherit; text-decoration: none; }
+.legal-links a:hover { text-decoration: underline; }
+
+/* 📱 MOBILE RESPONSIVENESS */
+@media (max-width: 800px) {
+  .footer-inner {
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: 3rem;
+    text-align: left; /* Keep left alignment for clean list look */
+  }
+
+  /* 2-Column Grid for links on mobile (Side-by-Side) */
+  .footer-links-grid {
+    grid-template-columns: 1fr 1fr; 
+  }
+
+  .footer-desc, .sub-form { max-width: 100%; }
+  
+  .legal-block {
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--ink-border);
+  }
+}
