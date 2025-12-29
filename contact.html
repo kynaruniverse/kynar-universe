@@ -12,49 +12,64 @@
   <div data-include="components/header.html"></div>
 
   <main class="app-container">
-    <section style="margin-top: 1.5rem; margin-bottom: 3.5rem; text-align: center;">
-      <div style="display: inline-flex; align-items: center; background: var(--bg-canvas); padding: 6px 16px; border-radius: 99px; margin-bottom: 1.5rem; border: 1px solid var(--ink-border);">
-        <span style="font-size: 0.65rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.15em;">Technical Authorization</span>
-      </div>
+    
+    <section class="contact-hero">
+      <div class="status-chip">Technical Authorization</div>
       <h1 class="text-display glass-title">Support Concierge</h1>
       <p class="text-sub">Connect with our intelligence team for system assistance or partnership inquiries.</p>
     </section>
 
-    <div class="contact-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-bottom: 5rem;">
+    <div class="contact-layout">
       
-      <div class="feature-card" style="padding: 2.5rem; background: white; border: 1px solid var(--ink-border); box-shadow: var(--shadow-float);">
-        <form id="contact-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
-          <div>
-            <label style="display: block; font-size: 0.7rem; font-weight: 900; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Full Name</label>
-            <input type="text" required style="width: 100%; height: 50px; border-radius: 12px; border: 1px solid var(--ink-border); padding: 0 1.25rem; font-family: var(--font-body); outline: none;" placeholder="Identity">
+      <div class="feature-card form-card">
+        <form id="contact-form">
+          <div class="input-group">
+            <label class="input-label">Identity (Full Name)</label>
+            <input type="text" required class="contact-input" placeholder="Enter your name">
           </div>
-          <div>
-            <label style="display: block; font-size: 0.7rem; font-weight: 900; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Email Address</label>
-            <input type="email" required style="width: 100%; height: 50px; border-radius: 12px; border: 1px solid var(--ink-border); padding: 0 1.25rem; font-family: var(--font-body); outline: none;" placeholder="Authorization Email">
+          
+          <div class="input-group">
+            <label class="input-label">Communication Channel</label>
+            <input type="email" required class="contact-input" placeholder="Enter your email">
           </div>
-          <div>
-            <label style="display: block; font-size: 0.7rem; font-weight: 900; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Message</label>
-            <textarea required style="width: 100%; min-height: 120px; border-radius: 12px; border: 1px solid var(--ink-border); padding: 1.25rem; font-family: var(--font-body); outline: none; resize: none;" placeholder="Inquiry details..."></textarea>
+          
+          <div class="input-group">
+            <label class="input-label">Transmission Details</label>
+            <textarea required class="contact-input contact-area" placeholder="Describe your inquiry..."></textarea>
           </div>
-          <button type="submit" class="dock-btn" style="width: 100%; height: 56px; background: var(--grad-emerald); border: none; font-weight: 800;">SEND MESSAGE</button>
+          
+          <button type="submit" class="dock-btn btn-emerald" style="width: 100%; margin-top: 1rem;">
+            Initialize Transmission
+          </button>
         </form>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-        <div class="nav-item" style="padding: 1.5rem; background: var(--bg-paper); border: 1px solid var(--ink-border);">
-          <div class="nav-icon" style="background: var(--grad-gold); color: white;">📧</div>
-          <div class="nav-label">
-            <div style="font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase;">Direct Channel</div>
-            <div style="font-weight: 800; font-size: 1.1rem;">support@kynar.co</div>
+      <div class="info-stack">
+        
+        <div class="info-card">
+          <div class="info-icon gold">📧</div>
+          <div class="info-text">
+            <div class="info-label">Direct Channel</div>
+            <div class="info-val">support@kynar.co</div>
           </div>
         </div>
-        <div class="nav-item" style="padding: 1.5rem; background: var(--bg-paper); border: 1px solid var(--ink-border);">
-          <div class="nav-icon" style="background: var(--ink-display); color: white;">💬</div>
-          <div class="nav-label">
-            <div style="font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase;">Member Response</div>
-            <div style="font-weight: 800; font-size: 1.1rem;">Under 12 Hours</div>
+
+        <div class="info-card">
+          <div class="info-icon dark">💬</div>
+          <div class="info-text">
+            <div class="info-label">Member Response</div>
+            <div class="info-val">Under 12 Hours</div>
           </div>
         </div>
+
+        <a href="library.html" class="info-card link">
+           <div class="info-icon">📖</div>
+           <div class="info-text">
+             <div class="info-label">Self Service</div>
+             <div class="info-val">Browse Manuals →</div>
+           </div>
+        </a>
+
       </div>
 
     </div>
@@ -62,40 +77,110 @@
 
   <div data-include="components/footer.html"></div>
   <div data-include="components/modals.html"></div>
+  <div id="interface-overlay"></div>
+
+  <aside id="nav-drawer" class="drawer-panel drawer-left">
+      <div class="drawer-header"><span class="drawer-title">Menu</span><button class="close-btn" onclick="toggleNav()">✕</button></div>
+      <nav class="drawer-content">
+          <a href="shop.html" class="drawer-link">Marketplace</a>
+          <a href="library.html" class="drawer-link">Manuals</a>
+          <a href="newsletter.html" class="drawer-link">The Network</a>
+          <a href="account.html" class="drawer-link">Member Vault</a>
+      </nav>
+  </aside>
+
+  <aside id="cart-drawer" class="drawer-panel drawer-right">
+      <div class="drawer-header"><span class="drawer-title">Cart</span><button class="close-btn" onclick="toggleCart()">✕</button></div>
+      <div class="drawer-content"></div>
+  </aside>
+
   <script src="core.js"></script>
+  <script src="cart.js"></script>
   <script src="haptics.js"></script>
   
+  <script type="module">
+    import './firebase-config.js';
+    import './auth.js';
+  </script>
+  
   <script>
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    const originalText = btn.innerText;
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      const originalText = btn.innerText;
 
-    // 1. Tactile Feedback
-    if (window.Haptics) window.Haptics.medium();
+      // 1. Tactile Feedback
+      if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(50);
 
-    // 2. Loading State
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner" style="width:16px; height:16px; border-top-color:white; margin-right:8px;"></span> SENDING...`;
+      // 2. Loading State
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner" style="width:16px; height:16px; border-top-color:white; border-left-color:rgba(255,255,255,0.3); margin-right:8px; display:inline-block;"></span> SENDING...`;
+      btn.style.opacity = '0.8';
 
-    // 3. Simulate Secure Transmission
-    setTimeout(() => {
-      if (window.Haptics) window.Haptics.success();
-      
-      btn.style.background = '#10B981'; // Success Emerald
-      btn.innerText = 'MESSAGE AUTHORIZED';
-
-      // 4. Reset form
-      e.target.reset();
-
+      // 3. Simulate Secure Transmission
       setTimeout(() => {
-        btn.disabled = false;
-        btn.style.background = 'var(--grad-emerald)';
-        btn.innerText = originalText;
-      }, 3000);
-    }, 1500);
-  });
-</script>
+        if (window.navigator && window.navigator.vibrate) window.navigator.vibrate([50, 50, 100]);
+        
+        btn.style.background = '#10B981'; // Success Emerald
+        btn.innerText = 'TRANSMISSION SENT';
+        btn.style.opacity = '1';
 
+        // 4. Reset form
+        e.target.reset();
+
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.style.background = ''; // Revert to CSS class
+          btn.innerText = originalText;
+        }, 3000);
+      }, 1500);
+    });
+  </script>
+
+  <style>
+    .contact-hero { text-align: center; margin-top: 2rem; margin-bottom: 3.5rem; display: flex; flex-direction: column; align-items: center; }
+    
+    .contact-layout { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-bottom: 5rem; }
+    @media (min-width: 800px) { .contact-layout { grid-template-columns: 1.5fr 1fr; } }
+
+    /* Form Styles */
+    .form-card { background: white; border: 1px solid var(--ink-border); padding: 2.5rem; border-radius: 24px; box-shadow: var(--shadow-float); }
+    .input-group { margin-bottom: 1.5rem; }
+    .input-label { display: block; font-size: 0.7rem; font-weight: 900; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+    
+    .contact-input {
+        width: 100%; height: 50px; border-radius: 12px; border: 1px solid var(--ink-border);
+        padding: 0 1.25rem; font-family: var(--font-body); outline: none; background: var(--bg-paper);
+        transition: all 0.2s var(--transition-tactile); font-size: 0.95rem;
+    }
+    .contact-area { height: auto; min-height: 140px; padding: 1.25rem; resize: vertical; }
+    
+    .contact-input:focus {
+        background: white; border-color: var(--accent-gold);
+        box-shadow: 0 4px 15px rgba(197, 160, 89, 0.15); transform: translateY(-2px);
+    }
+
+    /* Info Stack */
+    .info-stack { display: flex; flex-direction: column; gap: 1.5rem; }
+    
+    .info-card {
+        padding: 1.5rem; background: white; border: 1px solid var(--ink-border);
+        border-radius: 16px; display: flex; align-items: center; gap: 1rem;
+        transition: transform 0.2s;
+    }
+    .info-card.link { text-decoration: none; cursor: pointer; }
+    .info-card.link:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+
+    .info-icon {
+        width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; background: var(--bg-canvas); color: var(--ink-display); flex-shrink: 0;
+    }
+    .info-icon.gold { background: var(--grad-gold); color: white; }
+    .info-icon.dark { background: var(--ink-display); color: white; }
+
+    .info-text { flex-grow: 1; }
+    .info-label { font-size: 0.65rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 2px; }
+    .info-val { font-weight: 800; font-size: 1.1rem; color: var(--ink-display); }
+  </style>
 </body>
 </html>
