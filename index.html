@@ -208,5 +208,113 @@
   });
 </script>
 
+<div id="interface-overlay"></div>
+
+<aside id="nav-drawer" class="drawer-panel drawer-left">
+    <div class="drawer-header">
+        <span class="drawer-title">Menu</span>
+        <button class="close-btn" onclick="toggleNav()">✕</button>
+    </div>
+    <nav class="drawer-content">
+        <a href="shop.html" class="drawer-link">Marketplace</a>
+        <a href="library.html" class="drawer-link">Manuals</a>
+        <a href="newsletter.html" class="drawer-link">The Network</a>
+        <a href="account.html" class="drawer-link">Member Vault</a>
+    </nav>
+    <div class="drawer-footer">
+        <div class="status-chip">
+            <span class="live-beacon"></span> Systems Active
+        </div>
+    </div>
+</aside>
+
+<aside id="cart-drawer" class="drawer-panel drawer-right">
+    <div class="drawer-header">
+        <span class="drawer-title">Cart (2)</span>
+        <button class="close-btn" onclick="toggleCart()">✕</button>
+    </div>
+    
+    <div class="drawer-content">
+        <div class="cart-item">
+            <div class="cart-thumb" style="background: var(--grad-gold);">⚡</div>
+            <div class="cart-details">
+                <div class="cart-name">Ultimate Notion OS</div>
+                <div class="cart-meta">System Architecture</div>
+                <div class="cart-price">£24.00</div>
+            </div>
+            <button class="cart-remove">×</button>
+        </div>
+        
+        <div class="cart-item">
+            <div class="cart-thumb" style="background: var(--bg-canvas);">🎨</div>
+            <div class="cart-details">
+                <div class="cart-name">Kids Activity Pack</div>
+                <div class="cart-meta">Digital Asset</div>
+                <div class="cart-price">Free</div>
+            </div>
+            <button class="cart-remove">×</button>
+        </div>
+    </div>
+
+    <div class="drawer-footer">
+        <div class="cart-total-row">
+            <span>Subtotal</span>
+            <span style="font-weight: 800; color: var(--ink-display);">£24.00</span>
+        </div>
+        <button class="dock-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">
+            Secure Checkout
+        </button>
+    </div>
+</aside>
+
+<script>
+  const overlay = document.getElementById('interface-overlay');
+  const navDrawer = document.getElementById('nav-drawer');
+  const cartDrawer = document.getElementById('cart-drawer');
+
+  // 1. Toggle Functions (Global Scope for onclick events)
+  window.toggleNav = function() {
+    const isActive = navDrawer.classList.contains('active');
+    closeAllDrawers();
+    if (!isActive) {
+      navDrawer.classList.add('active');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Stop background scrolling
+    }
+  };
+
+  window.toggleCart = function() {
+    const isActive = cartDrawer.classList.contains('active');
+    closeAllDrawers();
+    if (!isActive) {
+      cartDrawer.classList.add('active');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  window.closeAllDrawers = function() {
+    if(navDrawer) navDrawer.classList.remove('active');
+    if(cartDrawer) cartDrawer.classList.remove('active');
+    if(overlay) overlay.classList.remove('active');
+    document.body.style.overflow = ''; // Restore scrolling
+  };
+
+  // 2. Event Listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    // Connect Header Buttons (if they exist in loaded header)
+    // Note: Since header is loaded via data-include, we might need to delegate or wait.
+    // For now, these listeners handle the drawer internal close buttons.
+    
+    if(overlay) overlay.addEventListener('click', closeAllDrawers);
+    
+    // Optional: Close on Escape Key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAllDrawers();
+    });
+  });
+</script>
+
+
 </body>
 </html>

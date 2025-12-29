@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
-  <title>Kynar / System Manuals</title>
+  <title>Kynar / Intelligence Hub</title>
   <meta name="description" content="Deployment manuals, configuration guides, and system walkthroughs." />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="stylesheet" href="styles.css" />
@@ -13,199 +13,83 @@
   <div data-include="components/header.html"></div>
 
   <main class="app-container">
-    <section 
-      style="
-        margin-top: 1.5rem; 
-        margin-bottom: 3.5rem; 
-        text-align: center;
-      "
-    >
-      <div 
-        style="
-          display: inline-flex; 
-          align-items: center; 
-          background: var(--bg-canvas); 
-          padding: 6px 16px; 
-          border-radius: 99px; 
-          margin-bottom: 1.5rem;
-          border: 1px solid var(--ink-border);
-        "
-      >
-        <span 
-          style="
-            font-size: 0.65rem; 
-            font-weight: 900; 
-            color: var(--ink-muted); 
-            text-transform: uppercase; 
-            letter-spacing: 0.15em;
-          "
-        >Intelligence Hub V1.0</span>
+    
+    <section class="library-header">
+      <div class="tech-badge">
+        <span class="live-beacon"></span>
+        <span>Kynar Intelligence Hub V1.0</span>
       </div>
       <h1 class="text-display glass-title">System Manuals</h1>
-      <p class="text-sub">Master your digital infrastructure with professional deployment guides.</p>
-    </section>
+      <p class="text-sub">
+        Master your digital infrastructure. Access deployment guides, optimization protocols, and architecture blueprints.
+      </p>
 
-    <section style="margin-bottom: 3rem;">
-      <div 
-        class="scroll-stream" 
-        style="
-          justify-content: center; 
-          gap: 0.75rem;
-          margin: 0 -1.25rem;
-          padding: 0 1.25rem;
-        "
-      >
-        <button class="dock-btn" style="background: var(--grad-gold); height: 40px; font-size: 0.75rem;">All Manuals</button>
-        <button class="dock-btn" style="background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 40px; font-size: 0.75rem;">Deployment</button>
-        <button class="dock-btn" style="background: white; color: var(--ink-display); border: 1px solid var(--ink-border); height: 40px; font-size: 0.75rem;">Optimization</button>
+      <div class="library-search">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="Search documentation..." class="search-input-field">
       </div>
     </section>
 
-    <section style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 5rem;">
+    <section class="filter-row">
+      <button class="filter-tab active">All Manuals</button>
+      <button class="filter-tab">Deployment</button>
+      <button class="filter-tab">Optimization</button>
+      <button class="filter-tab">Security</button>
+    </section>
+
+    <section class="manual-grid">
       
-      <a 
-        class="feature-card glimmer-card" 
-        href="#" 
-        style="
-          background: var(--grad-emerald); 
-          min-height: 220px; 
-          text-decoration: none; 
-          display: flex; 
-          flex-direction: column; 
-          justify-content: center;
-          padding: 2.5rem; 
-          border: none; 
-          position: relative;
-        "
-      >
-        <div 
-          class="nav-icon" 
-          style="
-            position: absolute; 
-            right: 2rem; 
-            top: 2rem; 
-            width: 64px; 
-            height: 64px; 
-            font-size: 2rem; 
-            background: rgba(255,255,255,0.1); 
-            color: white; 
-            border: 1px solid rgba(255,255,255,0.2); 
-            margin: 0;
-          "
-        >📁</div>
-        
-        <div style="position: relative; z-index: 2; width: 100%;">
-          <div 
-            style="
-              font-size: 0.65rem; 
-              font-weight: 900; 
-              color: var(--accent-gold); 
-              text-transform: uppercase; 
-              letter-spacing: 0.15em; 
-              margin-bottom: 0.5rem;
-            "
-          >Deployment Guide / 01</div>
-          <h2 style="color: white; font-family: var(--font-display); font-size: 2rem; margin-bottom: 1rem;">Quick Start Protocol</h2>
-          <p 
-            style="
-              font-size: 0.95rem; 
-              color: rgba(255,255,255,0.7); 
-              line-height: 1.7; 
-              max-width: 480px; 
-              margin-bottom: 2rem;
-            "
-          >A high-level walkthrough on authorizing, downloading, and deploying Kynar assets across your workstation.</p>
-          
-          <div 
-            class="dock-btn" 
-            style="
-              background: white; 
-              color: var(--ink-display); 
-              height: 44px; 
-              font-size: 0.8rem; 
-              font-weight: 800; 
-              padding: 0 1.8rem;
-            "
-          >
-            INITIALIZE GUIDE <span style="margin-left: 10px;">→</span>
-          </div>
+      <a href="#" class="manual-card featured-manual">
+        <div class="manual-status public">Public Access</div>
+        <div class="manual-icon">📁</div>
+        <div class="manual-content">
+          <span class="manual-id">DOC-001</span>
+          <h2 class="manual-title">Quick Start Protocol</h2>
+          <p class="manual-desc">The essential guide to authorizing, downloading, and deploying Kynar assets across your workstation.</p>
+          <span class="read-link">Initialize Guide →</span>
         </div>
       </a>
 
-      <div 
-        class="nav-item" 
-        style="
-          margin: 0; 
-          padding: 1.5rem; 
-          background: white; 
-          border: 1px solid var(--ink-border); 
-          box-shadow: var(--shadow-soft); 
-          opacity: 0.7;
-        "
-      >
-        <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">🔒</div>
-        <div class="nav-label" style="margin-left: 0.5rem;">
-          <div style="font-size: 0.6rem; color: var(--ink-muted); text-transform: uppercase; font-weight: 900; letter-spacing: 0.1em; margin-bottom: 4px;">Tutorial / 02</div>
-          <div style="font-family: var(--font-display); font-size: 1.2rem; color: var(--ink-display); font-weight: 800;">Notion Architecture</div>
-          <div style="font-size: 0.8rem; color: var(--ink-muted);">Deep duplication and custom system setup.</div>
+      <a href="#" class="manual-card">
+        <div class="manual-status locked">Member Only</div>
+        <div class="manual-icon">🔒</div>
+        <div class="manual-content">
+          <span class="manual-id">DOC-002</span>
+          <h2 class="manual-title">Notion Architecture</h2>
+          <p class="manual-desc">Deep duplication and custom system setup for advanced users.</p>
+          <span class="read-link locked-link">Unlock Access</span>
         </div>
-        <div 
-          style="
-            background: var(--bg-canvas); 
-            padding: 8px 14px; 
-            border-radius: 10px; 
-            font-size: 0.6rem; 
-            font-weight: 900; 
-            color: var(--ink-muted);
-            letter-spacing: 0.05em;
-          "
-        >RESTRICTED</div>
-      </div>
+      </a>
 
-      <div 
-        class="nav-item" 
-        style="
-          margin: 0; 
-          padding: 1.5rem; 
-          background: white; 
-          border: 1px solid var(--ink-border); 
-          box-shadow: var(--shadow-soft);
-        "
-      >
-        <div class="nav-icon" style="background: var(--bg-canvas); color: var(--ink-display);">🤖</div>
-        <div class="nav-label" style="margin-left: 0.5rem;">
-          <div style="font-size: 0.6rem; color: var(--ink-muted); text-transform: uppercase; font-weight: 900; letter-spacing: 0.1em; margin-bottom: 4px;">Tutorial / 03</div>
-          <div style="font-family: var(--font-display); font-size: 1.2rem; color: var(--ink-display); font-weight: 800;">AI Prompt Logic</div>
-          <div style="font-size: 0.8rem; color: var(--ink-muted);">Advanced prompt-chaining for 10x output.</div>
+      <a href="#" class="manual-card">
+        <div class="manual-status public">Public Access</div>
+        <div class="manual-icon">🤖</div>
+        <div class="manual-content">
+          <span class="manual-id">DOC-003</span>
+          <h2 class="manual-title">AI Prompt Logic</h2>
+          <p class="manual-desc">Advanced prompt-chaining techniques to 10x your output.</p>
+          <span class="read-link">Read Guide →</span>
         </div>
-        <a 
-          href="newsletter.html" 
-          class="dock-btn" 
-          style="
-            height: 40px; 
-            padding: 0 1.25rem; 
-            font-size: 0.75rem; 
-            background: var(--grad-gold); 
-            border: none;
-            font-weight: 800;
-          "
-        >Authorize Access</a>
-      </div>
+      </a>
 
-      <div 
-        style="
-          text-align: center; 
-          padding: 4rem 1rem; 
-          border: 1px dashed var(--ink-border); 
-          border-radius: 24px; 
-          opacity: 0.4;
-        "
-      >
-        <p style="font-size: 0.85rem; font-weight: 800; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.1em;">
-          System expansion in progress...
-        </p>
-      </div>
+      <a href="#" class="manual-card">
+        <div class="manual-status locked">Member Only</div>
+        <div class="manual-icon">⚡</div>
+        <div class="manual-content">
+          <span class="manual-id">DOC-004</span>
+          <h2 class="manual-title">Workflow Automation</h2>
+          <p class="manual-desc">Connecting APIs and setting up Zapier bridges.</p>
+          <span class="read-link locked-link">Unlock Access</span>
+        </div>
+      </a>
+
     </section>
+
+    <div class="expansion-note">
+      <div class="spinner"></div>
+      <span>System expansion in progress... New modules arriving soon.</span>
+    </div>
+
   </main>
   
   <div data-include="components/footer.html"></div>
@@ -215,9 +99,196 @@
   <script src="cart.js"></script>
   <script src="haptics.js"></script>
   
-  <script type="module">
-    import './firebase-config.js';
-    import './auth.js';
+  <style>
+    /* HEADER SECTION */
+    .library-header {
+      text-align: center;
+      margin: 2rem 0 3rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    .tech-badge {
+      display: inline-flex; align-items: center;
+      background: var(--bg-canvas);
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--ink-border);
+      margin-bottom: 1.5rem;
+      font-size: 0.65rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--ink-muted);
+    }
+
+    .library-search {
+      margin-top: 2rem;
+      position: relative;
+      width: 100%; max-width: 400px;
+    }
+
+    .search-input-field {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      border-radius: 99px;
+      border: 1px solid var(--ink-border);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      background: white;
+    }
+
+    .search-input-field:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.15);
+      outline: none;
+    }
+
+    .search-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--ink-muted); opacity: 0.7;
+    }
+
+    /* FILTERS */
+    .filter-row {
+      display: flex; gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center; /* Center on Desktop */
+    }
+    
+    @media (max-width: 600px) {
+        .filter-row { justify-content: flex-start; padding-left: 1.25rem; padding-right: 1.25rem; }
+    }
+
+    .filter-tab {
+      background: white;
+      border: 1px solid var(--ink-border);
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--ink-muted);
+      cursor: pointer; transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .filter-tab.active {
+      background: var(--ink-display);
+      color: white; border-color: var(--ink-display);
+    }
+
+    /* GRID SYSTEM */
+    .manual-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    @media (min-width: 700px) {
+      .manual-grid { grid-template-columns: repeat(2, 1fr); }
+      .featured-manual { grid-column: span 2; }
+    }
+
+    /* MANUAL CARD DESIGN */
+    .manual-card {
+      background: white;
+      border: 1px solid var(--ink-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex; flex-direction: column;
+      position: relative;
+      text-decoration: none;
+      transition: transform 0.3s var(--transition-tactile), box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+
+    .manual-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border-color: var(--accent-gold);
+    }
+
+    .featured-manual {
+      background: var(--grad-emerald);
+      color: white; border: none;
+    }
+
+    .manual-status {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 0.6rem; font-weight: 800; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    .manual-status.public { background: rgba(16, 185, 129, 0.1); color: #059669; }
+    .featured-manual .manual-status.public { background: rgba(255,255,255,0.2); color: white; }
+    
+    .manual-status.locked { background: rgba(0,0,0,0.05); color: var(--ink-muted); }
+
+    .manual-icon {
+      font-size: 2rem; margin-bottom: 1rem;
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-canvas);
+      border-radius: 12px;
+    }
+    
+    .featured-manual .manual-icon {
+        background: rgba(255,255,255,0.1); color: white;
+    }
+
+    .manual-id {
+      display: block; font-size: 0.65rem; font-weight: 900;
+      color: var(--accent-gold); margin-bottom: 6px;
+      letter-spacing: 0.1em;
+    }
+    
+    .featured-manual .manual-id { color: rgba(255,255,255,0.8); }
+
+    .manual-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem; color: var(--ink-display);
+      margin-bottom: 0.5rem; line-height: 1.2;
+    }
+    
+    .featured-manual .manual-title { color: white; font-size: 1.8rem; }
+
+    .manual-desc {
+      font-size: 0.9rem; color: var(--ink-muted);
+      margin-bottom: 1.5rem; line-height: 1.5; flex-grow: 1;
+    }
+    
+    .featured-manual .manual-desc { color: rgba(255,255,255,0.8); max-width: 500px; }
+
+    .read-link {
+      font-size: 0.8rem; font-weight: 800;
+      color: var(--ink-display); text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .featured-manual .read-link {
+        background: white; color: var(--ink-display);
+        padding: 10px 20px; border-radius: 99px;
+        align-self: flex-start;
+    }
+
+    .locked-link { color: var(--ink-muted); opacity: 0.7; }
+
+    /* EXPANSION NOTE */
+    .expansion-note {
+      text-align: center; padding: 4rem 1rem;
+      border: 1px dashed var(--ink-border);
+      border-radius: 24px; opacity: 0.6;
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      font-size: 0.85rem; font-weight: 700; color: var(--ink-muted); text-transform: uppercase;
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Any specific Library Page logic can go here
+      // Core.js handles the rest
+    });
   </script>
 </body>
 </html>

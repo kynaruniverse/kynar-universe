@@ -31,78 +31,20 @@
             <a href="#" class="filter-pill active">All Products</a>
             <a href="#" class="filter-pill">Systems</a>
             <a href="#" class="filter-pill">Creative</a>
-            <a href="#" class="filter-pill">Finance</a>
+            <a href="#" class="filter-pill">Business</a>
             <a href="#" class="filter-pill">Education</a>
         </div>
     </div>
 
     <div class="shop-grid">
-        
-        <div class="product-node">
-            <div class="node-preview">
-                <div style="font-size: 2rem;">⚡</div>
-                <span class="node-tag">System</span>
-            </div>
-            <div class="node-details">
-                <h3 class="node-title">Ultimate Notion OS</h3>
-                <div class="node-price">£24.00</div>
-                <button class="node-btn btn-gold">Add to Cart</button>
-            </div>
+        <div style="grid-column: 1/-1; padding: 4rem; text-align: center; opacity: 0.5;">
+            <div class="spinner" style="margin: 0 auto 1rem auto;"></div>
+            <div style="font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;">Loading Catalog...</div>
         </div>
-
-        <div class="product-node">
-            <div class="node-preview">
-                <div style="font-size: 2rem;">🎨</div>
-                <span class="node-tag">Family</span>
-            </div>
-            <div class="node-details">
-                <h3 class="node-title">Kids Activity Pack</h3>
-                <div class="node-price">Free</div>
-                <button class="node-btn btn-ghost">Download</button>
-            </div>
-        </div>
-
-        <div class="product-node">
-            <div class="node-preview">
-                <div style="font-size: 2rem;">🚀</div>
-                <span class="node-tag">Business</span>
-            </div>
-            <div class="node-details">
-                <h3 class="node-title">Startup Launch Kit</h3>
-                <div class="node-price">£15.00</div>
-                <button class="node-btn btn-gold">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-node">
-            <div class="node-preview">
-                <div style="font-size: 2rem;">🤖</div>
-                <span class="node-tag">AI Tool</span>
-            </div>
-            <div class="node-details">
-                <h3 class="node-title">AI Master Prompts</h3>
-                <div class="node-price">Free</div>
-                <button class="node-btn btn-ghost">Download</button>
-            </div>
-        </div>
-
-        <div class="product-node">
-            <div class="node-preview">
-                <div style="font-size: 2rem;">📅</div>
-                <span class="node-tag">Planner</span>
-            </div>
-            <div class="node-details">
-                <h3 class="node-title">Home School Planner</h3>
-                <div class="node-price">£12.00</div>
-                <button class="node-btn btn-gold">Add to Cart</button>
-            </div>
-        </div>
-
     </div>
 
-</main>
+  </main>
 
-  
   <div data-include="components/footer.html"></div>
   <div data-include="components/modals.html"></div>
   
@@ -115,5 +57,45 @@
     import "./firebase-config.js";
     import "./auth.js";
   </script>
+  
+  <div id="interface-overlay"></div>
+
+  <aside id="nav-drawer" class="drawer-panel drawer-left">
+      <div class="drawer-header">
+          <span class="drawer-title">Menu</span>
+          <button class="close-btn" onclick="toggleNav()">✕</button>
+      </div>
+      <nav class="drawer-content">
+          <a href="shop.html" class="drawer-link" style="color: var(--accent-gold);">Marketplace</a>
+          <a href="library.html" class="drawer-link">Manuals</a>
+          <a href="newsletter.html" class="drawer-link">The Network</a>
+          <a href="account.html" class="drawer-link">Member Vault</a>
+      </nav>
+      <div class="drawer-footer">
+          <div class="status-chip">
+              <span class="live-beacon"></span> Systems Active
+          </div>
+      </div>
+  </aside>
+
+  <aside id="cart-drawer" class="drawer-panel drawer-right">
+      <div class="drawer-header">
+          <span class="drawer-title">Cart</span>
+          <button class="close-btn" onclick="toggleCart()">✕</button>
+      </div>
+      
+      <div class="drawer-content"></div>
+
+      <div class="drawer-footer">
+          <div class="cart-total-row">
+              <span>Subtotal</span>
+              <span style="font-weight: 800; color: var(--ink-display);">£0.00</span>
+          </div>
+          <a href="checkout.html" class="dock-btn" style="width: 100%; justify-content: center; margin-top: 1rem; text-decoration: none;">
+              Secure Checkout
+          </a>
+      </div>
+  </aside>
+
 </body>
 </html>

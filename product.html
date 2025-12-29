@@ -113,35 +113,134 @@
       }
     };
 
-    // 2. THE LOGIC
+        // 2. THE LOGIC
     document.addEventListener('DOMContentLoaded', () => {
-      // Get ID from URL (e.g. product.html?id=prod_001)
       const params = new URLSearchParams(window.location.search);
-      const id = params.get('id') || 'prod_001'; // Default to 001 if no ID
-
+      const id = params.get('id') || 'prod_001'; 
       const data = productDB[id];
 
       if (data) {
-        // Inject Text
+        // Inject Text & Visuals (Existing logic...)
         document.getElementById('p-title').innerText = data.title;
         document.getElementById('p-price').innerText = data.price;
         document.getElementById('p-price-sticky').innerText = data.price;
         document.getElementById('p-desc').innerText = data.desc;
         document.getElementById('p-tag').innerText = data.tag;
         document.getElementById('p-icon').innerText = data.icon;
-        
-        // Inject Visuals
         document.getElementById('p-bg').style.background = data.bg;
         
-        // Inject Features List
         const listContainer = document.getElementById('p-features');
         listContainer.innerHTML = data.features.map(feat => `<li>${feat}</li>`).join('');
 
-        // Desktop Price Injector
-        document.getElementById('desktop-wrapper').setAttribute('data-price-desktop', data.price);
+        // NEW: ATTACH CART LISTENERS
+        // We find both buttons (Sticky Mobile & Desktop)
+        const buttons = document.querySelectorAll('.action-btn');
+        
+        buttons.forEach(btn => {
+            btn.onclick = () => {
+                // Call the new Cart Engine
+                if (window.KynarCart) {
+                    window.KynarCart.add({
+                        id: id,
+                        title: data.title,
+                        price: data.price,
+                        meta: data.tag,
+                        icon: data.icon,
+                        bg: data.bg
+                    });
+                }
+            };
+        });
+
+        // Desktop Button Injection (CSS Pseudo-element can't click, so we need a real button if we want desktop click)
+        // Correction from previous step: CSS ::after cannot be clicked.
+        // Let's inject a REAL button for Desktop into the Intel wrapper.
+        const desktopBtn = document.createElement('button');
+        desktopBtn.className = 'action-btn'; // Reuse class
+        desktopBtn.style.marginTop = '2rem';
+        desktopBtn.style.width = '100%';
+        desktopBtn.innerText = `Add to Cart • ${data.price}`;
+        desktopBtn.onclick = () => {
+             if (window.KynarCart) {
+                window.KynarCart.add({
+                    id: id,
+                    title: data.title,
+                    price: data.price,
+                    meta: data.tag,
+                    icon: data.icon,
+                    bg: data.bg
+                });
+            }
+        };
+        
+        // Only append if screen is wide (or just append and let CSS handle display)
+        if(window.innerWidth > 800) {
+            document.querySelector('.product-intel').appendChild(desktopBtn);
+        }
       }
     });
+
   </script>
+  
+  <div id="interface-overlay"></div>
+
+<aside id="nav-drawer" class="drawer-panel drawer-left">
+    <div class="drawer-header">
+        <span class="drawer-title">Menu</span>
+        <button class="close-btn" onclick="toggleNav()">✕</button>
+    </div>
+    <nav class="drawer-content">
+        <a href="shop.html" class="drawer-link">Marketplace</a>
+        <a href="library.html" class="drawer-link">Manuals</a>
+        <a href="newsletter.html" class="drawer-link">The Network</a>
+        <a href="account.html" class="drawer-link">Member Vault</a>
+    </nav>
+    <div class="drawer-footer">
+        <div class="status-chip">
+            <span class="live-beacon"></span> Systems Active
+        </div>
+    </div>
+</aside>
+
+<aside id="cart-drawer" class="drawer-panel drawer-right">
+    <div class="drawer-header">
+        <span class="drawer-title">Cart (2)</span>
+        <button class="close-btn" onclick="toggleCart()">✕</button>
+    </div>
+    
+    <div class="drawer-content">
+        <div class="cart-item">
+            <div class="cart-thumb" style="background: var(--grad-gold);">⚡</div>
+            <div class="cart-details">
+                <div class="cart-name">Ultimate Notion OS</div>
+                <div class="cart-meta">System Architecture</div>
+                <div class="cart-price">£24.00</div>
+            </div>
+            <button class="cart-remove">×</button>
+        </div>
+        
+        <div class="cart-item">
+            <div class="cart-thumb" style="background: var(--bg-canvas);">🎨</div>
+            <div class="cart-details">
+                <div class="cart-name">Kids Activity Pack</div>
+                <div class="cart-meta">Digital Asset</div>
+                <div class="cart-price">Free</div>
+            </div>
+            <button class="cart-remove">×</button>
+        </div>
+    </div>
+
+    <div class="drawer-footer">
+        <div class="cart-total-row">
+            <span>Subtotal</span>
+            <span style="font-weight: 800; color: var(--ink-display);">£24.00</span>
+        </div>
+        <button class="dock-btn" style="width: 100%; justify-content: center; margin-top: 1rem;">
+            Secure Checkout
+        </button>
+    </div>
+</aside>
+
 
 </body>
 </html>

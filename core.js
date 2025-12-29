@@ -1,13 +1,14 @@
 /**
  * ══════════════════════════════════════════════════════════════════════════
- * MODULE: KYNAR MARKETPLACE CORE (V1.4 - MASTER SYNC)
+ * MODULE: KYNAR MARKETPLACE CORE (V2.0 - VISUALFORGE SYNC)
  * ══════════════════════════════════════════════════════════════════════════
- * @description The central brain of Kynar. Manages component loading, 
- * left/right drawer exclusivity, and global event delegation.
+ * @description The central nervous system. Manages component injection,
+ * global drawer physics, and scroll interactions.
  */
 
 const KynarCore = {
-  // 1. COMPONENT LOADER: Fetches HTML fragments (header, modals, etc.)
+  
+  // 1. COMPONENT LOADER: Fetches HTML fragments (header, footer, etc.)
   async loadComponents() {
     const elements = document.querySelectorAll("[data-include]");
     const promises = Array.from(elements).map(async (el) => {
@@ -17,11 +18,10 @@ const KynarCore = {
         if (response.ok) {
           const html = await response.text();
           el.innerHTML = html;
-          this.executeScripts(el);
+          this.executeScripts(el); // Re-run any scripts inside the fetched HTML
           
-          // Dispatch signals for other modules (like Cart) to sync
+          // Dispatch Signal: "Header is ready, attach listeners now"
           if (file.includes("header")) document.dispatchEvent(new Event("KynarHeaderLoaded"));
-          if (file.includes("modals")) document.dispatchEvent(new Event("KynarModalsLoaded"));
         }
       } catch (err) {
         console.error(`Kynar Core: Error loading ${file}`, err);
@@ -30,7 +30,7 @@ const KynarCore = {
     await Promise.all(promises);
   },
 
-  // Re-initializes <script> tags found inside loaded HTML fragments
+  // Helper: Re-initializes <script> tags found inside loaded HTML
   executeScripts(container) {
     const scripts = container.querySelectorAll("script");
     scripts.forEach((oldScript) => {
@@ -41,118 +41,105 @@ const KynarCore = {
     });
   },
 
-  // 2. GLOBAL INTERACTION ENGINE: Listens for all clicks on the document
-  initInteractions() {
-    document.body.addEventListener("click", (e) => {
-      
-      // --- A. NAVIGATION DRAWER (LEFT SIDE) ---
-      if (e.target.closest("#nav-toggle")) {
-        // Ensure the Cart is closed before opening Menu
-        if (window.KynarCart) window.KynarCart.closeDrawer();
-        this.toggleMenu(true);
-      }
-      if (e.target.closest("#close-nav") || e.target.id === "nav-backdrop") {
-        this.toggleMenu(false);
-      }
+  // 2. DRAWER & INTERFACE PHYSICS
+  initInterface() {
+    const overlay = document.getElementById('interface-overlay');
+    const navDrawer = document.getElementById('nav-drawer');
+    const cartDrawer = document.getElementById('cart-drawer');
 
-      // --- B. AUTHENTICATION MODALS ---
-      if (e.target.closest(".trigger-access")) {
-        e.preventDefault();
-        // Close all drawers before opening Auth Modal
-        this.toggleMenu(false); 
-        if (window.KynarCart) window.KynarCart.closeDrawer();
-        this.openAuthModal();
-      }
-      const overlay = document.getElementById("modal-overlay");
-      if (e.target === overlay || e.target.id === "close-access") {
-        this.closeAuthModal();
-      }
+    // -- DEFINE GLOBAL FUNCTIONS (Accessible by HTML onclick="") --
 
-      // --- C. CART DRAWER (RIGHT SIDE) ---
-      if (e.target.closest("#cart-trigger")) {
-        e.preventDefault();
-        // Ensure the Nav Menu is closed before opening Cart
-        this.toggleMenu(false); 
-        if (window.KynarCart) window.KynarCart.openDrawer();
-      }
+    // A. Toggle Navigation
+    window.toggleNav = function() {
+      if (!navDrawer) return;
+      const isActive = navDrawer.classList.contains('active');
+      window.closeAllDrawers(); // Close Cart if open
       
-      // Specifically listen for the Cart Close elements in modals.html
-      if (e.target.closest("#close-drawer") || e.target.id === "cart-drawer-backdrop") {
-        if (window.KynarCart) window.KynarCart.closeDrawer();
+      if (!isActive) {
+        navDrawer.classList.add('active');
+        if(overlay) overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Lock Scroll
       }
+    };
+
+    // B. Toggle Cart
+    window.toggleCart = function() {
+      if (!cartDrawer) return;
+      const isActive = cartDrawer.classList.contains('active');
+      window.closeAllDrawers(); // Close Nav if open
+      
+      if (!isActive) {
+        cartDrawer.classList.add('active');
+        if(overlay) overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Lock Scroll
+      }
+    };
+
+    // C. Master Close
+    window.closeAllDrawers = function() {
+      if(navDrawer) navDrawer.classList.remove('active');
+      if(cartDrawer) cartDrawer.classList.remove('active');
+      if(overlay) overlay.classList.remove('active');
+      document.body.style.overflow = ''; // Release Scroll
+    };
+
+    // -- EVENT LISTENERS --
+    
+    // Close when clicking the dark overlay
+    if(overlay) {
+      overlay.addEventListener('click', window.closeAllDrawers);
+    }
+
+    // Close on Escape Key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') window.closeAllDrawers();
     });
+  },
 
-    // Smart Header Logic: Hides on scroll down, reveals on scroll up
+  // 3. SCROLL INTELLIGENCE
+  initScrollEffects() {
+    // A. Scroll Progress Bar
+    const progressBar = document.createElement('div');
+    progressBar.id = 'scroll-indicator';
+    document.body.appendChild(progressBar);
+
+    // B. Header Hide/Show Logic
     let lastScrollY = window.scrollY;
+    
     window.addEventListener('scroll', () => {
+      // 1. Update Progress Bar
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (progressBar) progressBar.style.width = scrolled + "%";
+
+      // 2. Smart Header (Hide on Scroll Down)
       const header = document.querySelector('.app-header');
-      // Do not hide the header if any drawer or modal is open (Scroll Lock active)
       if (!header || document.body.style.overflow === "hidden") return;
-      
+
       if (window.scrollY > lastScrollY && window.scrollY > 100) {
-        header.classList.add('header-hidden');
+        header.classList.add('header-hidden'); // CSS class needed in styles
       } else {
         header.classList.remove('header-hidden');
       }
       lastScrollY = window.scrollY;
     }, { passive: true });
-  },
-
-  // 3. UI STATE CONTROLLERS
-  toggleMenu(isOpen) {
-    const drawer = document.getElementById("nav-drawer");
-    const backdrop = document.getElementById("nav-backdrop");
-    if (!drawer) return;
-
-    if (isOpen) {
-      drawer.classList.add("is-open");
-      if (backdrop) backdrop.classList.add("is-visible");
-      document.body.style.overflow = "hidden"; // Lock page scroll
-    } else {
-      drawer.classList.remove("is-open");
-      if (backdrop) backdrop.classList.remove("is-visible");
-      document.body.style.overflow = ""; // Release page scroll
-    }
-  },
-
-  openAuthModal() {
-    const overlay = document.getElementById("modal-overlay");
-    if (overlay) {
-      overlay.classList.add("is-visible");
-      document.body.style.overflow = "hidden";
-      if (window.Haptics) window.Haptics.medium();
-    }
-  },
-
-  closeAuthModal() {
-    const overlay = document.getElementById("modal-overlay");
-    if (overlay) {
-      overlay.classList.remove("is-visible");
-      document.body.style.overflow = "";
-    }
   }
 };
 
-// 4. INITIALIZATION SEQUENCE
+// 4. IGNITION SEQUENCE
 document.addEventListener("DOMContentLoaded", async () => {
-  // First, fetch and inject HTML fragments
+  // Step 1: inject the HTML (Header, Footer)
   await KynarCore.loadComponents();
   
-  // Second, activate the global interaction listeners
-  KynarCore.initInteractions();
+  // Step 2: Initialize the Drawers (Now that elements exist)
+  KynarCore.initInterface();
 
-  // Create and initialize the visual scroll progress indicator
-  const progressBar = document.createElement('div');
-  progressBar.id = 'scroll-indicator';
-  document.body.appendChild(progressBar);
-
-  window.addEventListener('scroll', () => {
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
-    if (progressBar) progressBar.style.width = scrolled + "%";
-  }, { passive: true });
+  // Step 3: Start Scroll Effects
+  KynarCore.initScrollEffects();
+  
+  console.log("VisualForge System: Kynar Core V2 Online");
 });
 
-// Export to Global Window Object
+// Export
 window.KynarCore = KynarCore;

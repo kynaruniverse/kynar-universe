@@ -1,31 +1,83 @@
-# 🏺 Operation Kynar Prime: Digital Marketplace V1.0
+# 🏺 Kynar Universe – Digital Marketplace V1.0
 
-## 1. Vision & Branding
-**Kynar Digital** is a boutique marketplace for high-performance systems. The brand identity is built on **Institutional Luxury**, utilizing a palette of Emerald, Gold, and Paper textures.
+Kynar Universe is a boutique digital marketplace engineered for high-performance delivery of creator-owned products. The platform blends institutional-grade design with a mobile-first, zero-friction shopping experience.
 
-- **Typography:** Bantayog (Display), Glacial Indifference (Body).
-- **Core Principle:** Visual Perfection through Multi-Line Formatting.
+---
 
-## 2. Technical Infrastructure
-The marketplace operates as a High-Performance SPA-lite (Single Page Application) using component injection.
+## 1. Brand Vision & Identity
 
-- **Frontend:** HTML5, CSS3 (Custom Variables), Vanilla JavaScript.
-- **Identity:** Firebase Auth (Identity Service).
-- **Database:** Firebase Firestore (Merchant Records).
-- **Storage:** LocalStorage persistence via `kynar_vault` and `kynar_cart_v1`.
-- **UX:** Integrated Haptic Interface for mobile tactile feedback.
+**Kynar Digital** positions itself as a curated, high-end ecosystem for digital systems, tools, and assets owned and operated by a single creator.
 
-## 3. Directory Mapping
-| File | System Role |
-| :--- | :--- |
-| `core.js` | Component Loader & Navigation |
-| `styles.css` | Global Physics & Brand Palette |
-| `shop.js` | Product Rendering & Skeletons |
-| `cart.js` | Commerce Engine |
-| `vault.js` | Digital Asset Delivery |
-| `auth.js` | Secure Identity Management |
+- **Brand Theme:** Institutional Luxury – structured, confident, and precise.
+- **Core Palette:** Emerald (value, depth), Gold (prestige, highlight), Paper (tactile neutrality).
+- **Typography Stack:**
+  - **Display:** Bantayog – for logos, headings, and key brand statements.
+  - **Body:** Glacial Indifference – for running text and UI labels.
+- **Design Principle:** Visual perfection through disciplined multi-line formatting, consistent spacing, and strict layout hierarchy across all components.
 
-## 4. Deployment Protocol
-1. Initialize Firebase project `kynar-universe-official`.
-2. Ensure `robots.txt` disallows `/components/` and `/vault.js`.
-3. Optimize all `.webp` assets in `/images/` for < 100kb per item.
+---
+
+## 2. Technical Architecture
+
+Kynar Universe is implemented as a **SPA-lite** experience: a multi-page structure with dynamic component injection to keep navigation fluid and performant.
+
+- **Frontend Stack:**
+  - HTML5 for semantic structure.
+  - CSS3 with custom properties (CSS variables) for theme and layout tokens.
+  - Vanilla JavaScript for routing, component lifecycle, and state handling.
+- **Identity & Security:**
+  - Firebase Authentication for user identity, sign-in, and session management.
+- **Data Layer:**
+  - Firebase Firestore for merchant and product records.
+- **Client-Side Persistence:**
+  - `localStorage` for lightweight state:
+    - `kynar_vault` – digital asset access and delivery metadata.
+    - `kynar_cart_v1` – cart state and session continuity.
+- **User Experience:**
+  - Haptic feedback integration on supported mobile devices to reinforce key interactions (add-to-cart, checkout milestones, and critical actions).
+
+---
+
+## 3. Codebase Overview
+
+The project is organized into focused, responsibility-driven modules to keep the marketplace maintainable and extensible.
+
+| File        | Role Description                                                                |
+|------------|----------------------------------------------------------------------------------|
+| `core.js`  | Application shell, component loader, and navigation controller.                 |
+| `styles.css` | Global design system: layout rules, physics, brand palette, and typography tokens. |
+| `shop.js`  | Product gallery logic, listing rendering, loading skeletons, and state transitions. |
+| `cart.js`  | Commerce engine: cart state, totals, validation, and checkout flow orchestration. |
+| `vault.js` | Digital asset delivery and entitlement logic for purchased products.            |
+| `auth.js`  | Authentication flows, session handling, and secure identity management.         |
+
+---
+
+## 4. Deployment & Optimization
+
+Kynar Universe is designed to be lightweight, secure, and search-aware while protecting internal components.
+
+1. **Firebase Project**
+   - Create and configure a Firebase project named `kynar-universe-official`.
+   - Enable Authentication and Firestore as required by the app.
+
+2. **Robots & Security**
+   - Configure `robots.txt` to disallow crawling of internal implementation paths:
+     - `Disallow: /components/`
+     - `Disallow: /vault.js`
+
+3. **Asset Optimization**
+   - Store all visual assets under `/images/` using `.webp` format where possible.
+   - Target **< 100KB per asset** to support fast mobile loading and smooth transitions.
+
+4. **Performance Focus**
+   - Prioritize mobile-first responsiveness and Lighthouse-friendly practices.
+   - Keep dependencies minimal to preserve a fast, SPA-lite experience.
+
+---
+
+## 5. Roadmap (Planned Enhancements)
+
+- Multi-step checkout flows with richer status feedback.
+- Extended analytics around cart behavior and product performance.
+- Additional visual themes and seasonal brand modes while preserving core identity.
