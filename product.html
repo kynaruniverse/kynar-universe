@@ -134,7 +134,7 @@
         const PRODUCT_DB = {
             'universe-os': {
                 title: "Universe OS",
-                price: "$29.00",
+                price: "£29.00",
                 desc: "The ultimate Notion system for organizing your entire life. Includes project management, habit tracking, and financial review dashboards.",
                 features: ["All-in-one Dashboard", "Financial Tracker 2.0", "Mobile Optimized Views", "Lifetime Updates"],
                 bg: "var(--pastel-sage)",
@@ -143,7 +143,7 @@
             },
             'creator-bundle': {
                 title: "Creator Bundle",
-                price: "$45.00",
+                price: "£45.00",
                 desc: "A massive library of 200+ high-resolution textures, gradients, and mockups designed for the modern content creator.",
                 features: ["4K Textures", "PSD Mockups", "Commercial License", "Figma Files Included"],
                 bg: "var(--pastel-clay)",
@@ -152,7 +152,7 @@
             },
             'saas-starter': {
                 title: "SaaS Starter Kit",
-                price: "$69.00",
+                price: "£69.00",
                 desc: "Stop rebuilding auth and payments. This Next.js boilerplate comes with Stripe, Supabase, and Tailwind pre-configured.",
                 features: ["Next.js 14 App Router", "Supabase Auth", "Stripe Webhooks", "SEO Optimized"],
                 bg: "var(--pastel-sky)",
@@ -161,7 +161,7 @@
             },
             'finance-tracker': {
                 title: "Finance Tracker",
-                price: "$15.00",
+                price: "£15.00",
                 desc: "Automated Google Sheets template to track income, expenses, and investments with beautiful visualization.",
                 features: ["Auto-categorization", "Investment Portfolio", "Monthly Reports", "Video Guide"],
                 bg: "var(--pastel-sage)",
@@ -179,7 +179,7 @@
 
             if (data) {
                 // 2. Inject Data
-                document.title = `${data.title} | Kynaruniverse`;
+                document.title = `£{data.title} | Kynaruniverse`;
                 document.getElementById('productTitle').innerText = data.title;
                 document.getElementById('productPrice').innerText = data.price;
                 document.getElementById('mobilePrice').innerText = data.price;
