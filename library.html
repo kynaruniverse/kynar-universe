@@ -46,7 +46,13 @@
           <span class="manual-id">DOC-001</span>
           <h2 class="manual-title">Quick Start Protocol</h2>
           <p class="manual-desc">The essential guide to authorizing, downloading, and deploying Kynar assets across your workstation.</p>
-          <span class="read-link">Initialize Guide →</span>
+          <button 
+   class="read-link" 
+   style="background:none; border:none; padding:0; cursor:pointer;"
+   onclick="downloadProduct('kynar-daily-planner.pdf')">
+   Initialize Guide →
+</button>
+
         </div>
       </a>
 
@@ -98,6 +104,8 @@
   <script src="core.js"></script>
   <script src="cart.js"></script>
   <script src="haptics.js"></script>
+  <script type="module" src="vault.js"></script>
+
   
   <style>
     /* HEADER SECTION */
