@@ -51,74 +51,74 @@
         
         <div class="reveal-up" style="margin-top: 40px;">
             <h1>Archive</h1>
-            <p>Select a category to filter.</p>
+            <p>Select a category to filter the launch collection.</p>
         </div>
 
         <div class="filter-bar reveal-up" id="filterContainer">
             <button class="filter-chip active" onclick="filterGrid('all', this)">View All</button>
             <button class="filter-chip" onclick="filterGrid('planner', this)">Planners</button>
-            <button class="filter-chip" onclick="filterGrid('code', this)">Code</button>
-            <button class="filter-chip" onclick="filterGrid('creative', this)">Creative</button>
+            <button class="filter-chip" onclick="filterGrid('creative', this)">Visuals</button>
+            <button class="filter-chip" onclick="filterGrid('code', this)">AI & Tech</button>
         </div>
 
         <div class="gallery-grid" id="productGrid">
             
             <article class="product-card reveal-up" data-category="planner">
                 <span class="tag">Notion</span>
-                <a href="product.html?id=universe-os" class="card-image" style="background-color: var(--pastel-sage); text-decoration: none;">
-                    <img src="assets/images/planner-mockup.png" alt="Universe OS" onerror="this.style.opacity='0.1'">
+                <a href="product.html?id=finance-architect" class="card-image" style="background-color: var(--pastel-sage); text-decoration: none;">
+                    <img src="assets/images/finance-mockup.png" alt="The Finance Architect" onerror="this.style.opacity='0.1'">
                 </a>
                 <div class="card-info">
-                    <h3 class="card-title">Universe OS</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 12px;">Life Operating System.</p>
+                    <h3 class="card-title">The Finance Architect</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 12px;">Premium wealth tracking system.</p>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="card-price">£29.00</span>
-                        <a href="product.html?id=universe-os" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
+                        <span class="card-price">£24.00</span>
+                        <a href="product.html?id=finance-architect" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
                     </div>
                 </div>
             </article>
 
             <article class="product-card reveal-up" data-category="creative">
-                <span class="tag">Asset Pack</span>
-                <a href="product.html?id=creator-bundle" class="card-image" style="background-color: var(--pastel-clay); text-decoration: none;">
-                    <img src="assets/images/creative-mockup.png" alt="Creator Bundle" onerror="this.style.opacity='0.1'">
+                <span class="tag">Canva</span>
+                <a href="product.html?id=influence-suite" class="card-image" style="background-color: var(--pastel-clay); text-decoration: none;">
+                    <img src="assets/images/creative-mockup.png" alt="The Influence Suite" onerror="this.style.opacity='0.1'">
                 </a>
                 <div class="card-info">
-                    <h3 class="card-title">Creator Bundle</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 12px;">200+ High-res assets.</p>
+                    <h3 class="card-title">The Influence Suite</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 12px;">High-conversion social assets.</p>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="card-price">£45.00</span>
-                        <a href="product.html?id=creator-bundle" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
+                        <span class="card-price">£35.00</span>
+                        <a href="product.html?id=influence-suite" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="product-card reveal-up" data-category="creative">
+                <span class="tag">Lightroom</span>
+                <a href="product.html?id=aura-presets" class="card-image" style="background-color: var(--pastel-sky); text-decoration: none;">
+                    <img src="assets/images/visual-mockup.png" alt="Aura Presets" onerror="this.style.opacity='0.1'">
+                </a>
+                <div class="card-info">
+                    <h3 class="card-title">Aura Presets</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 12px;">Cinematic lifestyle filters.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="card-price">£19.00</span>
+                        <a href="product.html?id=aura-presets" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
                     </div>
                 </div>
             </article>
 
             <article class="product-card reveal-up" data-category="code">
-                <span class="tag">Next.js</span>
-                <a href="product.html?id=saas-starter" class="card-image" style="background-color: var(--pastel-sky); text-decoration: none;">
-                    <img src="assets/images/code-mockup.png" alt="SaaS Starter" onerror="this.style.opacity='0.1'">
+                <span class="tag">AI Prompts</span>
+                <a href="product.html?id=scribe-vault" class="card-image" style="background-color: var(--pastel-sage); text-decoration: none;">
+                    <img src="assets/images/code-mockup.png" alt="The Scribe Vault" onerror="this.style.opacity='0.1'">
                 </a>
                 <div class="card-info">
-                    <h3 class="card-title">SaaS Starter</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 12px;">Boilerplate for founders.</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="card-price">£69.00</span>
-                        <a href="product.html?id=saas-starter" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
-                    </div>
-                </div>
-            </article>
-
-             <article class="product-card reveal-up" data-category="planner">
-                <span class="tag">PDF</span>
-                <a href="product.html?id=finance-tracker" class="card-image" style="background-color: var(--pastel-sage); text-decoration: none;">
-                    <img src="assets/images/finance-mockup.png" alt="Finance Tracker" onerror="this.style.opacity='0.1'">
-                </a>
-                <div class="card-info">
-                    <h3 class="card-title">Finance Tracker</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 12px;">Spreadsheet automation.</p>
+                    <h3 class="card-title">The Scribe Vault</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 12px;">Master library for ChatGPT.</p>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span class="card-price">£15.00</span>
-                        <a href="product.html?id=finance-tracker" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
+                        <a href="product.html?id=scribe-vault" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
                     </div>
                 </div>
             </article>
@@ -132,13 +132,10 @@
 
     <script src="ui-core.js"></script>
     <script>
-        // Simple client-side filtering logic
         function filterGrid(category, btn) {
-            // 1. Update Buttons
             document.querySelectorAll('.filter-chip').forEach(el => el.classList.remove('active'));
             btn.classList.add('active');
 
-            // 2. Filter Cards
             const cards = document.querySelectorAll('.product-card');
             let visibleCount = 0;
 
@@ -146,7 +143,6 @@
                 if (category === 'all' || card.dataset.category === category) {
                     card.style.display = 'flex';
                     visibleCount++;
-                    // Re-trigger animation
                     card.classList.remove('reveal-visible');
                     setTimeout(() => card.classList.add('reveal-visible'), 50);
                 } else {
@@ -154,7 +150,6 @@
                 }
             });
 
-            // 3. Toggle Empty State
             const empty = document.getElementById('emptyState');
             if (visibleCount === 0) {
                 empty.style.display = 'block';
