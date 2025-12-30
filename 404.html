@@ -11,31 +11,30 @@
 </head>
 <body>
 
-    <header class="app-header" style="justify-content: center;">
-        <a href="index.html" style="font-family: 'Bantayog'; font-size: 1.5rem; color: var(--ink-deep); text-decoration: none;">KYNAR.</a>
-    </header>
+    <header class="app-header" id="global-header">
+        </header>
 
     <main class="container" style="display: flex; align-items: center; justify-content: center; min-height: 85vh; text-align: center; position: relative; overflow: hidden;">
         
-        <div style="position: absolute; font-family: 'Bantayog'; font-size: clamp(10rem, 40vw, 25rem); opacity: 0.03; z-index: -1; user-select: none; pointer-events: none;">
+        <div style="position: absolute; font-family: 'Bantayog'; font-size: clamp(10rem, 40vw, 25rem); color: var(--ink-deep); opacity: 0.05; z-index: -1; user-select: none; pointer-events: none; transition: color var(--transition-main);">
             404
         </div>
 
-        <div class="reveal-up" style="max-width: 500px; padding: 20px;">
+        <div class="reveal-up" style="max-width: 500px; padding: 20px; width: 100%;">
             <span style="font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-gold); font-weight: 700; display: block; margin-bottom: 20px;">Signal Interrupted</span>
             
-            <h1 style="margin-bottom: 20px;">Coordinates <br><span style="color: var(--ink-medium);">Misaligned.</span></h1>
+            <h1 style="color: var(--ink-deep); margin-bottom: 20px;">Coordinates <br><span style="color: var(--ink-medium);">Misaligned.</span></h1>
             
-            <p style="margin-bottom: 40px; font-size: 1.1rem; line-height: 1.6; opacity: 0.7;">
+            <p style="margin-bottom: 40px; font-size: 1.1rem; line-height: 1.6; color: var(--ink-medium); opacity: 0.8;">
                 The asset you are seeking is currently outside our authorized network. Please recalibrate your navigation to the main archive.
             </p>
 
             <div style="display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%;">
-                <a href="shop.html" class="btn-primary">Explore Collection</a>
+                <a href="shop.html" class="btn-primary" style="justify-content: center;">Explore Collection</a>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <a href="index.html" class="btn-ghost" style="padding: 12px; font-size: 0.85rem; border: 1px solid rgba(0,0,0,0.1);">Storefront</a>
-                    <a href="contact.html" class="btn-ghost" style="padding: 12px; font-size: 0.85rem; border: 1px solid rgba(0,0,0,0.1);">Concierge</a>
+                    <a href="index.html" class="btn-ghost" style="padding: 12px; font-size: 0.85rem; border: 1px solid var(--ink-medium); text-align: center; justify-content: center; display: flex;">Storefront</a>
+                    <a href="contact.html" class="btn-ghost" style="padding: 12px; font-size: 0.85rem; border: 1px solid var(--ink-medium); text-align: center; justify-content: center; display: flex;">Concierge</a>
                 </div>
             </div>
         </div>
@@ -47,8 +46,8 @@
         // HAPTIC RECALIBRATION
         document.addEventListener('DOMContentLoaded', () => {
             if (window.navigator && window.navigator.vibrate) {
-                // Subtle "error" pulse
-                setTimeout(() => window.navigator.vibrate([30, 50, 30]), 500);
+                // Subtle triple-pulse error signal
+                setTimeout(() => window.navigator.vibrate([30, 50, 30, 50, 30]), 800);
             }
         });
     </script>

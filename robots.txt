@@ -1,13 +1,22 @@
 # ══════════════════════════════════════════════════════════════════════════
-# KYNARUNIVERSE ROBOTS.TXT
+# KYNARUNIVERSE ROBOTS.TXT (V4.1)
 # ══════════════════════════════════════════════════════════════════════════
 
 User-agent: *
+
+# Allow crawling of the main architecture
 Allow: /
 
-# Block access to any potential private component folders
+# Block modular puzzle pieces
 Disallow: /components/
-Disallow: /private/
 
-# Link to your Sitemap
+# Block Lead Magnet & Success pages to prevent funnel-jumping
+Disallow: /claim-archived.html
+Disallow: /success.html
+
+# Block any private development directories
+Disallow: /private/
+Disallow: /assets/fonts/
+
+# Global Sitemap Reference
 Sitemap: https://kynaruniverse.co.uk/sitemap.xml

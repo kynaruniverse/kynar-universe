@@ -11,20 +11,16 @@
 </head>
 <body>
 
-    <header class="app-header">
-        <button class="nav-icon" onclick="window.location.href='index.html'" aria-label="Back">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        </button>
-        <span style="font-family: 'Bantayog'; font-size: 1.5rem; color: var(--ink-deep);">CONCIERGE</span>
-        <div style="width: 44px;"></div> </header>
+    <header class="app-header" id="global-header">
+        </header>
 
     <main class="container">
         
         <section style="margin-top: 40px; text-align: center;">
             <div class="reveal-up">
                 <span style="font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-gold); font-weight: 700; display: block; margin-bottom: 20px;">Direct Channel</span>
-                <h1>How can we <br><span style="color: var(--ink-medium);">assist you?</span></h1>
-                <p style="margin: 20px auto; font-size: 1.1rem; max-width: 500px;">
+                <h1 style="color: var(--ink-deep);">How can we <br><span style="color: var(--ink-medium);">assist you?</span></h1>
+                <p style="margin: 20px auto; font-size: 1.1rem; max-width: 500px; color: var(--ink-medium);">
                     Whether it's a technical query regarding an asset or a partnership inquiry, our team is ready to respond.
                 </p>
             </div>
@@ -32,62 +28,54 @@
 
         <div class="gallery-grid" style="align-items: start; margin-top: 60px;">
             
-            <div class="product-card reveal-up" style="padding: 30px;">
-                <h3 class="card-title" style="margin-bottom: 24px;">Send Transmission</h3>
-                <form action="https://formspree.io/f/mlgekbwb" method="POST" id="contactForm"
-                <input type="hidden" name="_next" value="https://kynaruniverse.co.uk/success.html">
->
+            <div class="product-card reveal-up" style="padding: 30px; background: var(--bg-surface);">
+                <h3 class="card-title" style="margin-bottom: 24px; color: var(--ink-deep);">Send Transmission</h3>
+                <form action="https://formspree.io/f/mlgekbwb" method="POST" id="contactForm">
+                    <input type="hidden" name="_next" value="https://kynaruniverse.co.uk/success.html">
+                    <input type="hidden" name="_subject" value="Concierge Inquiry - Kynaruniverse">
                     
                     <div style="margin-bottom: 20px;">
-                        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; opacity: 0.6;">Identity</label>
-                        <input type="text" name="name" required placeholder="Full name" style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-family: var(--font-body); font-size: 1rem; background: #fff;">
+                        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; color: var(--ink-deep); opacity: 0.6;">Identity</label>
+                        <input type="text" name="name" required placeholder="Full name" style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid rgba(15, 61, 48, 0.1); font-family: var(--font-body); font-size: 1rem; background: var(--bg-bone); color: var(--ink-deep); outline: none;">
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; opacity: 0.6;">Communication Channel</label>
-                        <input type="email" name="email" required placeholder="email@address.com" style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-family: var(--font-body); font-size: 1rem; background: #fff;">
+                        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; color: var(--ink-deep); opacity: 0.6;">Communication Channel</label>
+                        <input type="email" name="email" required placeholder="email@address.com" style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid rgba(15, 61, 48, 0.1); font-family: var(--font-body); font-size: 1rem; background: var(--bg-bone); color: var(--ink-deep); outline: none;">
                     </div>
 
                     <div style="margin-bottom: 30px;">
-                        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; opacity: 0.6;">Inquiry Details</label>
-                        <textarea name="message" required placeholder="How can we help?" style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-family: var(--font-body); min-height: 140px; font-size: 1rem; background: #fff; resize: none;"></textarea>
+                        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; color: var(--ink-deep); opacity: 0.6;">Inquiry Details</label>
+                        <textarea name="message" required placeholder="How can we help?" style="width: 100%; padding: 14px; border-radius: 8px; border: 1px solid rgba(15, 61, 48, 0.1); font-family: var(--font-body); min-height: 140px; font-size: 1rem; background: var(--bg-bone); color: var(--ink-deep); resize: none; outline: none;"></textarea>
                     </div>
 
-                    <button type="submit" class="btn-primary" style="width: 100%; cursor: pointer;">Initialize Transmission</button>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Initialize Transmission</button>
                 </form>
             </div>
 
             <div class="reveal-up" style="display: flex; flex-direction: column; gap: 20px;">
                 
-                <div class="product-card" style="padding: 24px; flex-direction: row; align-items: center; gap: 20px; background: #fff;">
+                <div class="product-card" style="padding: 24px; flex-direction: row; align-items: center; gap: 20px; background: var(--bg-surface);">
                     <div style="font-size: 1.5rem;">📧</div>
                     <div>
-                        <div style="font-size: 0.7rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase;">Direct Mail</div>
-                        <div style="font-weight: 600;">support@kynar.co.uk</div>
+                        <div style="font-size: 0.7rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em;">Direct Mail</div>
+                        <div style="font-weight: 600; color: var(--ink-deep);">support@kynar.co.uk</div>
                     </div>
                 </div>
 
-                <div class="product-card" style="padding: 24px; flex-direction: row; align-items: center; gap: 20px; background: #fff;">
+                <div class="product-card" style="padding: 24px; flex-direction: row; align-items: center; gap: 20px; background: var(--bg-surface);">
                     <div style="font-size: 1.5rem;">💬</div>
                     <div>
-                        <div style="font-size: 0.7rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase;">Averaged Response</div>
-                        <div style="font-weight: 600;">Within 12 Hours</div>
+                        <div style="font-size: 0.7rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em;">Averaged Response</div>
+                        <div style="font-weight: 600; color: var(--ink-deep);">Within 12 Hours</div>
                     </div>
                 </div>
 
                 <div class="product-card" style="padding: 24px; flex-direction: row; align-items: center; gap: 20px; background: var(--pastel-sage);">
                     <div style="font-size: 1.5rem;">📍</div>
                     <div>
-                        <div style="font-size: 0.7rem; font-weight: 700; color: var(--ink-deep); text-transform: uppercase;">Operational Base</div>
-                        <div style="font-weight: 600;">Clacton-on-Sea, Essex</div>
-                    </div>
-                </div>
-
-                <div class="product-card" style="padding: 24px; flex-direction: row; align-items: center; gap: 20px; background: #fff;">
-                    <div style="font-size: 1.5rem;">📖</div>
-                    <div>
-                        <div style="font-size: 0.7rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase;">Self-Service</div>
-                        <a href="shop.html" style="font-weight: 600; color: var(--ink-deep); text-decoration: none;">Browse Archive →</a>
+                        <div style="font-size: 0.7rem; font-weight: 700; color: var(--ink-deep); text-transform: uppercase; letter-spacing: 0.1em;">Operational Base</div>
+                        <div style="font-weight: 600; color: var(--ink-deep);">Clacton-on-Sea, Essex</div>
                     </div>
                 </div>
 
@@ -96,15 +84,8 @@
 
     </main>
 
-    <footer style="margin-top: 100px; padding: 60px 20px; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
-    <div style="font-family: 'Bantayog'; font-size: 1.8rem; color: var(--ink-deep); margin-bottom: 10px;">KYNAR.</div>
-    <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px;">© 2025 Kynaruniverse. <br>Clacton-on-Sea • London</p>
-    <div style="display: flex; gap: 20px; justify-content: center; font-size: 0.9rem;">
-        <a href="index.html" style="color: var(--ink-medium); text-decoration: none;">Home</a>
-        <a href="shop.html" style="color: var(--ink-medium); text-decoration: none;">Archive</a>
-        <a href="newsletter.html" style="color: var(--ink-medium); text-decoration: none;">Network</a>
-    </div>
-</footer>
+    <footer class="app-footer" id="global-footer" style="margin-top: 100px; padding: 60px 20px; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
+    </footer>
 
 
     <script src="ui-core.js"></script>

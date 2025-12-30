@@ -4,40 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Download Your Kit | Kynaruniverse</title>
+    
     <link rel="stylesheet" href="styles.css">
+    
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 </head>
 <body>
 
-    <header class="app-header">
-        <a href="index.html" style="font-family: 'Bantayog'; font-size: 1.5rem; color: var(--ink-deep); text-decoration: none; margin: 0 auto;">KYNAR.</a>
-    </header>
+    <header class="app-header" id="global-header">
+        </header>
 
     <main class="container" style="display: flex; align-items: center; justify-content: center; min-height: 80vh; text-align: center;">
-        <div class="reveal-up" style="max-width: 500px;">
+        
+        <div class="reveal-up" style="max-width: 500px; width: 100%;">
             <div style="font-size: 4rem; margin-bottom: 20px;">📦</div>
             <span style="font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-gold); font-weight: 700; display: block; margin-bottom: 20px;">Identity Verified</span>
             
-            <h1>Ready for <br><span style="color: var(--ink-medium);">Transfer.</span></h1>
+            <h1 style="color: var(--ink-deep);">Ready for <br><span style="color: var(--ink-medium);">Transfer.</span></h1>
             
-            <p style="margin: 20px 0 40px 0; font-size: 1.1rem; line-height: 1.6;">
-                The **Starter Architect Kit** is ready. This zip file contains your Notion components and creative presets.
+            <p style="margin: 20px 0 40px 0; font-size: 1.1rem; line-height: 1.6; color: var(--ink-medium);">
+                The <strong>Starter Architect Kit</strong> is ready. This archive contains your curated Notion components and creative assets.
             </p>
 
-            <a href="#" class="btn-primary" style="width: 100%;" download>Initialize Download</a>
+            <a href="#" class="btn-primary" id="downloadBtn" style="width: 100%; justify-content: center;" download>Initialize Download</a>
             
-            <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">
-                Having trouble? <a href="contact.html" style="color: var(--ink-deep); font-weight: 600;">Contact Concierge</a>.
+            <p style="margin-top: 40px; font-size: 0.85rem; color: var(--ink-medium); opacity: 0.7;">
+                Having trouble? <a href="contact.html" style="color: var(--ink-deep); font-weight: 700; text-decoration: underline;">Contact Concierge</a>.
             </p>
         </div>
+
     </main>
 
     <script src="ui-core.js"></script>
-    
     <script>
-    document.querySelector('.btn-primary').addEventListener('click', () => {
-        if (navigator.vibrate) navigator.vibrate([100, 30, 100]); // A "Heavy" confirming pulse
-    });
-</script>
-
+        // CUSTOM DOWNLOAD HAPTIC
+        document.addEventListener('DOMContentLoaded', () => {
+            const dlBtn = document.getElementById('downloadBtn');
+            if (dlBtn) {
+                dlBtn.addEventListener('click', () => {
+                    if (navigator.vibrate) {
+                        // A heavier, distinct sequence for successful acquisition
+                        navigator.vibrate([100, 30, 100]); 
+                    }
+                    console.log("Asset Transfer Initiated.");
+                });
+            }
+        });
+    </script>
 </body>
 </html>
