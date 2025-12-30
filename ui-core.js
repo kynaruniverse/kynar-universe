@@ -3,8 +3,9 @@
    ══════════════════════════════════════════════════════════════════════════ */
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. THE INJECTOR: Load header first, then boot dependent systems
+    // 1. THE INJECTOR: Load components first
     loadHeader(); 
+    loadFooter();
     
     // 2. THE PHYSICS: Independent systems
     initSmoothScroll();
@@ -16,8 +17,28 @@ document.addEventListener("DOMContentLoaded", () => {
     // 3. PERSISTENCE: Restore session state
     syncCartBadge();
     
+    // 4. SOCIAL PROOF: Initial trigger
+    setTimeout(triggerActivityToast, 3000); 
+
     console.log("Kynar Atelier: Core System Online");
 });
+
+// 0.1 FOOTER INJECTOR
+async function loadFooter() {
+    const footerEl = document.getElementById('global-footer');
+    if (!footerEl) return;
+
+    try {
+        const response = await fetch('components/footer.html');
+        if (!response.ok) throw new Error('Footer not found');
+        const html = await response.text();
+        footerEl.innerHTML = html;
+        console.log("Kynar Atelier: Footer Synchronized");
+    } catch (err) {
+        console.error("Footer injection failed:", err);
+    }
+}
+
 
 
 // 0. COMPONENT LOADER (The Injector)
@@ -256,8 +277,3 @@ function triggerActivityToast() {
 
     }, 15000); // Trigger every 15 seconds
 }
-
-// Initialize on load
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(triggerActivityToast, 3000); // First toast after 3 seconds
-});
