@@ -12,17 +12,8 @@
 </head>
 <body>
 
-    <header class="app-header">
-        <button class="nav-icon" aria-label="Menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-        </button>
-
-        <a href="index.html" style="font-family: 'Bantayog'; font-size: 1.5rem; color: var(--ink-deep); text-decoration: none;">KYNAR.</a>
-
-        <button class="nav-icon cart-trigger" aria-label="Cart">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-        </button>
-    </header>
+    <header class="app-header" id="global-header">
+        </header>
 
     <main class="container">
         
@@ -30,14 +21,14 @@
             <div class="reveal-up">
                 <span style="font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-gold); font-weight: 700; display: block; margin-bottom: 20px;">Digital Atelier</span>
                 
-                <h1>The Art of <br><span style="color: var(--ink-medium);">Organization.</span></h1>
+                <h1 style="color: var(--ink-deep);">The Art of <br><span style="color: var(--ink-medium);">Organization.</span></h1>
                 
-                <p style="margin-top: 20px; font-size: 1.1rem; line-height: 1.6;">
+                <p style="margin-top: 20px; font-size: 1.1rem; line-height: 1.6; color: var(--ink-medium);">
                     Premium digital tools for the modern architect of life. 
                     Elevate your workflow with curated Notion templates and creative assets.
                 </p>
 
-                <div style="margin-top: 40px; display: flex; gap: 16px;">
+                <div style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 16px;">
                     <a href="shop.html" class="btn-primary">Explore Collection</a>
                     <a href="freebie.html" class="btn-ghost">Claim Starter Kit</a>
                 </div>
@@ -46,7 +37,7 @@
 
         <section id="shop">
             <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;">
-                <h2 class="reveal-up">Latest Arrivals</h2>
+                <h2 class="reveal-up" style="color: var(--ink-deep);">Latest Arrivals</h2>
             </div>
 
             <div class="gallery-grid">
@@ -57,8 +48,8 @@
                         <img src="assets/images/finance-mockup.png" alt="The Finance Architect" onerror="this.style.opacity='0.1'">
                     </a>
                     <div class="card-info">
-                        <h3 class="card-title">The Finance Architect</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 12px;">Premium wealth tracking system.</p>
+                        <h3 class="card-title" style="color: var(--ink-deep);">The Finance Architect</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 12px; color: var(--ink-medium);">Premium wealth tracking system.</p>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span class="card-price">£24.00</span>
                             <a href="product.html?id=finance-architect" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
@@ -72,8 +63,8 @@
                         <img src="assets/images/creative-mockup.png" alt="The Influence Suite" onerror="this.style.opacity='0.1'">
                     </a>
                     <div class="card-info">
-                        <h3 class="card-title">The Influence Suite</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 12px;">High-conversion social assets.</p>
+                        <h3 class="card-title" style="color: var(--ink-deep);">The Influence Suite</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 12px; color: var(--ink-medium);">High-conversion social assets.</p>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span class="card-price">£35.00</span>
                             <a href="product.html?id=influence-suite" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
@@ -87,8 +78,8 @@
                         <img src="assets/images/visual-mockup.png" alt="Aura Presets" onerror="this.style.opacity='0.1'">
                     </a>
                     <div class="card-info">
-                        <h3 class="card-title">Aura Presets</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 12px;">Cinematic lifestyle filters.</p>
+                        <h3 class="card-title" style="color: var(--ink-deep);">Aura Presets</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 12px; color: var(--ink-medium);">Cinematic lifestyle filters.</p>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span class="card-price">£19.00</span>
                             <a href="product.html?id=aura-presets" class="btn-ghost" style="padding: 8px 16px; font-size: 0.8rem;">View</a>
@@ -99,15 +90,8 @@
             </div>
         </section>
 
-        <footer style="margin-top: 100px; padding: 60px 20px; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
-    <div style="font-family: 'Bantayog'; font-size: 1.8rem; color: var(--ink-deep); margin-bottom: 10px;">KYNAR.</div>
-    <p style="font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px;">© 2025 Kynaruniverse. <br>Clacton-on-Sea • London</p>
-    <div style="display: flex; gap: 20px; justify-content: center; font-size: 0.9rem;">
-        <a href="index.html" style="color: var(--ink-medium); text-decoration: none;">Home</a>
-        <a href="shop.html" style="color: var(--ink-medium); text-decoration: none;">Archive</a>
-        <a href="newsletter.html" style="color: var(--ink-medium); text-decoration: none;">Network</a>
-    </div>
-</footer>
+        <footer class="app-footer" id="global-footer" style="margin-top: 100px; padding: 60px 20px; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
+    </footer>
 
 
     </main>

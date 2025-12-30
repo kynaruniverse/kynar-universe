@@ -8,16 +8,35 @@
     <link rel="stylesheet" href="styles.css">
     
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    
+    <style>
+        @keyframes ripple {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        /* Ensure the cards adapt to Obsidian Mode */
+        .status-card {
+            padding: 20px; 
+            flex-direction: row !important; 
+            align-items: center; 
+            text-align: left; 
+            gap: 20px; 
+            background: var(--bg-surface);
+            border-radius: var(--radius-soft);
+            box-shadow: var(--shadow-float);
+            display: flex;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 
-    <header class="app-header" style="justify-content: center;">
-        <a href="index.html" style="font-family: 'Bantayog'; font-size: 1.5rem; color: var(--ink-deep); text-decoration: none;">KYNAR.</a>
-    </header>
+    <header class="app-header" id="global-header">
+        </header>
 
     <main class="container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85vh; text-align: center;">
         
-        <div class="reveal-up" style="max-width: 500px;">
+        <div class="reveal-up" style="max-width: 500px; width: 100%;">
             <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 30px auto;">
                 <div style="position: absolute; inset: 0; border: 2px solid var(--accent-gold); border-radius: 50%; opacity: 0.2; animation: ripple 2s infinite;"></div>
                 <div style="font-size: 4rem; line-height: 100px;">✨</div>
@@ -25,49 +44,45 @@
             
             <span style="font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-gold); font-weight: 700; display: block; margin-bottom: 20px;">Asset Unlocked</span>
             
-            <h1 style="margin-bottom: 20px;">Thank you for <br><span style="color: var(--ink-medium);">your order.</span></h1>
+            <h1 style="margin-bottom: 20px;">Order <br><span style="color: var(--ink-medium);">Confirmed.</span></h1>
             
-            <p style="margin-bottom: 40px; font-size: 1.15rem; line-height: 1.6; opacity: 0.8;">
-                Your digital assets are being prepared. You will receive an automated email from **Lemon Squeezy** within minutes containing your secure download link and receipt.
+            <p style="margin-bottom: 40px; font-size: 1.15rem; line-height: 1.6; color: var(--ink-medium);">
+                Your digital archive is ready. You will receive an automated email from **Lemon Squeezy** within minutes containing your secure download link.
             </p>
 
             <div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
-                <div class="product-card" style="padding: 20px; flex-direction: row; align-items: center; text-align: left; gap: 20px; background: #fff;">
+                <div class="status-card">
                     <div style="font-size: 1.5rem;">📥</div>
                     <div>
-                        <div style="font-size: 0.7rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase;">Check Inbox</div>
-                        <div style="font-weight: 600; font-size: 0.9rem;">Look for "Your Kynar Download"</div>
+                        <div style="font-size: 0.7rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em;">Check Inbox</div>
+                        <div style="font-weight: 600; font-size: 0.9rem; color: var(--ink-deep);">Look for "Your Kynar Download"</div>
                     </div>
                 </div>
 
-                <div class="product-card" style="padding: 20px; flex-direction: row; align-items: center; text-align: left; gap: 20px; background: #fff;">
+                <div class="status-card">
                     <div style="font-size: 1.5rem;">🛠️</div>
                     <div>
-                        <div style="font-size: 0.7rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase;">Technical Support</div>
-                        <a href="contact.html" style="font-weight: 600; font-size: 0.9rem; color: var(--ink-deep); text-decoration: none;">Contact Concierge →</a>
+                        <div style="font-size: 0.7rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em;">Technical Support</div>
+                        <a href="contact.html" style="font-weight: 600; font-size: 0.9rem; color: var(--ink-deep); text-decoration: underline;">Contact Concierge →</a>
                     </div>
                 </div>
             </div>
 
-            <a href="index.html" class="btn-primary" style="margin-top: 40px; width: 100%;">Return to Home</a>
+            <a href="index.html" class="btn-primary" style="margin-top: 40px; width: 100%; justify-content: center;">Return to Home</a>
         </div>
 
     </main>
 
-    <style>
-        @keyframes ripple {
-            0% { transform: scale(0.8); opacity: 0.8; }
-            100% { transform: scale(1.6); opacity: 0; }
-        }
-    </style>
-
     <script src="ui-core.js"></script>
     <script>
-        // TACTILE SUCCESS
+        // TACTILE SUCCESS HAPTIC
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate([50, 50, 100]);
-            }
+            // Wait slightly for the reveal animation to hit peak
+            setTimeout(() => {
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.navigator.vibrate([50, 50, 100]);
+                }
+            }, 500);
         });
     </script>
 </body>
