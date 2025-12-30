@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════════════
-   KYNAR UI CORE (V3.2)
-   Mobile-First Intelligence, Physics, Tactile Feedback & Menu Engine
+   KYNAR UI CORE (V3.5)
+   Fixes: Path Detection, Menu Logic, and Cart Synchronization
    ══════════════════════════════════════════════════════════════════════════ */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -113,9 +113,8 @@ function initAtelierHaptics() {
     }, { passive: true });
 }
 
-// 6. GLOBAL MENU ENGINE (Dynamic Overlay Navigation)
+// 6. GLOBAL MENU ENGINE
 function initMenuEngine() {
-    // 1. Create Overlay if missing
     if (!document.querySelector('.nav-overlay')) {
         const menuHTML = `
             <div class="nav-overlay">
@@ -130,98 +129,6 @@ function initMenuEngine() {
         `;
         document.body.insertAdjacentHTML('beforeend', menuHTML);
     }
-    
-    // 7. CART BADGE ENGINE
-function initCartBadge() {
-    const cartBtn = document.querySelector('.nav-icon[aria-label="Cart"]');
-    if (!cartBtn) return;
-
-    // Wrap the button in a div to hold the badge
-    const wrapper = document.createElement('div');
-    wrapper.className = 'cart-wrapper';
-    cartBtn.parentNode.insertBefore(wrapper, cartBtn);
-    wrapper.appendChild(cartBtn);
-
-    // Create the badge
-    const badge = document.createElement('span');
-    badge.className = 'cart-count-badge';
-    badge.innerText = '0';
-    wrapper.appendChild(badge);
-
-    // Listen for Lemon Squeezy Events
-    window.createLemonSqueezy = function() {
-        window.LemonSqueezy.Setup({
-            eventHandler: (event) => {
-                if (event.event === 'Checkout.Success') {
-                    // Reset cart count on success
-                    updateBadge(0);
-                }
-            }
-        });
-    };
-
-    // Since Lemon Squeezy doesn't provide a "item added" callback for simple overlays,
-    // we trigger a visual "pulse" whenever the buy buttons are clicked.
-    document.body.addEventListener('click', (e) => {
-        if (e.target.closest('.btn-primary') || e.target.closest('.btn-ghost')) {
-            // This is a placeholder for your product addition logic
-            // For now, it provides visual feedback that the system is working
-            badge.classList.add('visible');
-            let current = parseInt(badge.innerText);
-            badge.innerText = current + 1;
-            
-            // Haptic feedback for "Added to Cart"
-            if (navigator.vibrate) navigator.vibrate([10, 30, 10]);
-        }
-    });
-}
-
-// 8. THE NETWORK POPUP ENGINE
-function initNetworkPopup() {
-    const isMainPage = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('shop.html') || window.location.pathname === '/';
-    if (!isMainPage || sessionStorage.getItem('kynar_popup_seen')) return;
-
-    const popupHTML = `
-        <div class="network-popup-overlay" id="networkPopup">
-            <div class="network-popup-card">
-                <button class="close-popup" aria-label="Dismiss">✕</button>
-                
-                <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.25em;">The Network</span>
-                
-                <h2 class="popup-title">Acquire <br><span style="color: var(--ink-medium);">Fresh Coordinates.</span></h2>
-                
-                <p style="font-size: 1rem; margin-bottom: 30px; line-height: 1.5;">
-                    Join the inner circle for weekly archive transmissions, free asset drops, and system updates.
-                </p>
-                
-                <form action="https://formspree.io/f/mlgekbwb" method="POST">
-                    <input type="email" name="email" required placeholder="Enter your email" class="popup-input">
-                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Authorize Access</button>
-                </form>
-                
-                <p style="margin-top: 20px; font-size: 0.75rem; opacity: 0.4; font-weight: 600;">
-                    NO SPAM. ZERO FRICTION. ONE CLICK OPT-OUT.
-                </p>
-            </div>
-        </div>
-    `;
-
-    setTimeout(() => {
-        document.body.insertAdjacentHTML('beforeend', popupHTML);
-        const popup = document.getElementById('networkPopup');
-        const closeBtn = popup.querySelector('.close-popup');
-
-        popup.classList.add('active');
-
-        closeBtn.onclick = () => {
-            popup.classList.remove('active');
-            sessionStorage.setItem('kynar_popup_seen', 'true');
-        };
-    }, 6000); // 6 seconds gives the user more time to absorb the main brand first
-}
-
-
-
 
     const burgerBtn = document.querySelector('.nav-icon[aria-label="Menu"]');
     const overlay = document.querySelector('.nav-overlay');
@@ -241,11 +148,88 @@ function initNetworkPopup() {
         });
     }
 
-    // Close menu when clicking a link
     document.querySelectorAll('.nav-menu-link').forEach(link => {
         link.addEventListener('click', () => {
-            overlay.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
             document.body.style.overflow = '';
         });
     });
+}
+
+// 7. CART BADGE ENGINE
+function initCartBadge() {
+    const cartBtn = document.querySelector('.nav-icon.cart-trigger') || document.querySelector('.nav-icon[aria-label="Cart"]');
+    if (!cartBtn) return;
+
+    // Check if wrapper already exists to prevent duplication
+    if (document.querySelector('.cart-wrapper')) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'cart-wrapper';
+    cartBtn.parentNode.insertBefore(wrapper, cartBtn);
+    wrapper.appendChild(cartBtn);
+
+    const badge = document.createElement('span');
+    badge.className = 'cart-count-badge';
+    badge.innerText = '0';
+    wrapper.appendChild(badge);
+
+    // Click listener for badge feedback
+    document.body.addEventListener('click', (e) => {
+        const target = e.target.closest('.btn-primary, .btn-ghost, .product-card');
+        if (target) {
+            // If it's the "Acquire Asset" button, we increment. 
+            // If it's a "View" button, we show the badge but keep count at 1 for visual interest
+            badge.classList.add('visible');
+            let current = parseInt(badge.innerText);
+            badge.innerText = current + 1;
+            
+            if (navigator.vibrate) navigator.vibrate([10, 30, 10]);
+        }
+    });
+}
+
+// 8. THE NETWORK POPUP ENGINE
+function initNetworkPopup() {
+    const path = window.location.pathname;
+    // Fix: Allow for root domain, index, and shop paths
+    const isMainPage = path === '/' || path.includes('index') || path.includes('shop');
+    
+    if (!isMainPage || sessionStorage.getItem('kynar_popup_seen')) return;
+
+    const popupHTML = `
+        <div class="network-popup-overlay" id="networkPopup">
+            <div class="network-popup-card">
+                <button class="close-popup" aria-label="Dismiss">✕</button>
+                <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.25em;">The Network</span>
+                <h2 class="popup-title">Acquire <br><span style="color: var(--ink-medium);">Fresh Coordinates.</span></h2>
+                <p style="font-size: 1rem; margin-bottom: 30px; line-height: 1.5;">
+                    Join the inner circle for weekly archive transmissions and system updates.
+                </p>
+                <form action="https://formspree.io/f/mlgekbwb" method="POST">
+                    <input type="email" name="email" required placeholder="Enter your email" class="popup-input">
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Authorize Access</button>
+                </form>
+                <p style="margin-top: 20px; font-size: 0.75rem; opacity: 0.4; font-weight: 600;">
+                    NO SPAM. ZERO FRICTION. ONE CLICK OPT-OUT.
+                </p>
+            </div>
+        </div>
+    `;
+
+    setTimeout(() => {
+        if (document.getElementById('networkPopup')) return;
+        
+        document.body.insertAdjacentHTML('beforeend', popupHTML);
+        const popup = document.getElementById('networkPopup');
+        const closeBtn = popup.querySelector('.close-popup');
+
+        if (popup) {
+            popup.classList.add('active');
+            closeBtn.onclick = () => {
+                popup.classList.remove('active');
+                sessionStorage.setItem('kynar_popup_seen', 'true');
+            };
+        }
+    }, 6000); 
 }
