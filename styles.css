@@ -116,13 +116,16 @@ p { color: var(--ink-medium); max-width: 60ch; transition: color var(--transitio
 
 .product-card {
     background: var(--bg-surface);
-    border-radius: var(--radius-soft);
+    border-radius: 20px; /* Slightly rounder for a more premium feel */
     overflow: hidden;
     box-shadow: var(--shadow-float);
     position: relative;
-    display: flex; flex-direction: column;
-    transition: background-color var(--transition-main), transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; 
+    flex-direction: column;
+    border: 1px solid rgba(15, 61, 48, 0.03); /* Subtle border for definition */
+    transition: background-color var(--transition-main), transform 0.4s var(--transition-main), box-shadow 0.4s var(--transition-main);
 }
+
 
 /* 8. CART & INTERACTION */
 .cart-wrapper { position: relative; display: inline-flex; }
@@ -211,27 +214,65 @@ p { color: var(--ink-medium); max-width: 60ch; transition: color var(--transitio
     letter-spacing: 0.02em;
 }
 
-/* --- PRODUCT IMAGE SIZING --- */
+/* --- REFINED PRODUCT CARD ARCHITECTURE --- */
 .card-image {
-    aspect-ratio: 16/9; /* Compact landscape ratio for mobile */
-    background: var(--pastel-sage);
+    aspect-ratio: 16/9; 
+    background: var(--bg-bone);
     display: flex; 
     align-items: center; 
     justify-content: center;
     position: relative; 
     overflow: hidden;
     width: 100%;
+    padding: 15px; /* Creates internal "breathing room" for the image */
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+    object-fit: contain; /* Ensures the FULL image is visible without cropping */
+    transition: transform 0.5s var(--transition-main);
+    filter: drop-shadow(0 10px 20px rgba(15, 61, 48, 0.1)); /* Adds depth to the asset */
 }
 
-@media (min-width: 768px) {
-    .card-image {
-        aspect-ratio: 4/5; /* Premium portrait ratio for tablet/desktop */
-    }
+.card-info { 
+    padding: 24px; /* Increased from 20px for better inner spacing */
+}
+
+/* --- REFINED TAGS --- */
+.tag {
+    position: absolute; 
+    top: 15px; 
+    left: 15px;
+    padding: 6px 14px; 
+    border-radius: 6px;
+    font-size: 0.65rem; 
+    font-weight: 800; 
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--bg-surface); 
+    color: var(--ink-deep);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid rgba(15, 61, 48, 0.05);
+    z-index: 10;
+}
+
+/* --- REFINED VIEW BUTTONS --- */
+.btn-ghost {
+    background: transparent; 
+    color: var(--ink-deep);
+    padding: 10px 24px; 
+    border: 1.5px solid var(--ink-deep);
+    border-radius: var(--radius-pill); 
+    text-decoration: none; 
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s var(--transition-main);
+}
+
+.btn-ghost:hover {
+    background: var(--ink-deep);
+    color: var(--bg-bone);
 }
