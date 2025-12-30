@@ -127,78 +127,47 @@
     </div>
 
     <script src="ui-core.js"></script>
+        <script src="vault.js"></script>
+    <script src="ui-core.js"></script>
+    
     <script>
         /* ══════════════════════════════════════════════════════════════════════════
-           THE PRODUCT VAULT (No Database Required)
+           THE INJECTOR ENGINE (V3.1 - Creator Collection Sync)
            ══════════════════════════════════════════════════════════════════════════ */
-        const PRODUCT_DB = {
-            'universe-os': {
-                title: "Universe OS",
-                price: "£29.00",
-                desc: "The ultimate Notion system for organizing your entire life. Includes project management, habit tracking, and financial review dashboards.",
-                features: ["All-in-one Dashboard", "Financial Tracker 2.0", "Mobile Optimized Views", "Lifetime Updates"],
-                bg: "var(--pastel-sage)",
-                image: "assets/images/planner-mockup.png",
-                checkoutUrl: "https://store.kynaruniverse.com/checkout/buy/YOUR-VARIANT-ID-1"
-            },
-            'creator-bundle': {
-                title: "Creator Bundle",
-                price: "£45.00",
-                desc: "A massive library of 200+ high-resolution textures, gradients, and mockups designed for the modern content creator.",
-                features: ["4K Textures", "PSD Mockups", "Commercial License", "Figma Files Included"],
-                bg: "var(--pastel-clay)",
-                image: "assets/images/creative-mockup.png",
-                checkoutUrl: "https://store.kynaruniverse.com/checkout/buy/YOUR-VARIANT-ID-2"
-            },
-            'saas-starter': {
-                title: "SaaS Starter Kit",
-                price: "£69.00",
-                desc: "Stop rebuilding auth and payments. This Next.js boilerplate comes with Stripe, Supabase, and Tailwind pre-configured.",
-                features: ["Next.js 14 App Router", "Supabase Auth", "Stripe Webhooks", "SEO Optimized"],
-                bg: "var(--pastel-sky)",
-                image: "assets/images/code-mockup.png",
-                checkoutUrl: "https://store.kynaruniverse.com/checkout/buy/YOUR-VARIANT-ID-3"
-            },
-            'finance-tracker': {
-                title: "Finance Tracker",
-                price: "£15.00",
-                desc: "Automated Google Sheets template to track income, expenses, and investments with beautiful visualization.",
-                features: ["Auto-categorization", "Investment Portfolio", "Monthly Reports", "Video Guide"],
-                bg: "var(--pastel-sage)",
-                image: "assets/images/finance-mockup.png",
-                checkoutUrl: "https://store.kynaruniverse.com/checkout/buy/YOUR-VARIANT-ID-4"
-            }
-        };
-
-        /* THE INJECTOR LOGIC */
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. Get ID from URL (e.g., ?id=universe-os)
+            // 1. Get ID from URL (e.g., ?id=finance-architect)
             const params = new URLSearchParams(window.location.search);
             const productId = params.get('id');
-            const data = PRODUCT_DB[productId];
+            
+            // 2. Fetch from VAULT (Using the global array from vault.js)
+            const data = VAULT.find(p => p.id === productId);
 
             if (data) {
-                // 2. Inject Data
-                document.title = `£{data.title} | Kynaruniverse`;
+                // 3. Inject Brand Identity & Metadata
+                document.title = `${data.title} | Kynaruniverse`;
+                document.getElementById('categoryLabel').innerText = data.tag;
                 document.getElementById('productTitle').innerText = data.title;
                 document.getElementById('productPrice').innerText = data.price;
                 document.getElementById('mobilePrice').innerText = data.price;
                 document.getElementById('productDesc').innerText = data.desc;
+                
+                // 4. Inject Visuals
                 document.getElementById('productBg').style.backgroundColor = data.bg;
                 document.getElementById('productImage').src = data.image;
+                document.getElementById('productImage').alt = data.title;
 
-                // 3. Inject Features
+                // 5. Inject Features
                 const list = document.getElementById('featureList');
+                list.innerHTML = ''; // Clear placeholder
                 data.features.forEach(feat => {
                     const li = document.createElement('li');
                     li.innerText = feat;
                     list.appendChild(li);
                 });
 
-                // 4. Activate Buttons (Lemon Squeezy)
-                // Note: We use the class 'lemonsqueezy-button' to trigger overlay
+                // 6. Activate Checkout Buttons (Lemon Squeezy Overlay)
                 const setupButton = (btn) => {
-                    btn.href = data.checkoutUrl;
+                    btn.href = data.checkout;
                     btn.classList.add('lemonsqueezy-button'); 
                 };
                 
@@ -206,10 +175,17 @@
                 setupButton(document.getElementById('buyButtonMobile'));
 
             } else {
-                // Handle 404
-                document.querySelector('.container').innerHTML = "<h2 style='text-align:center; margin-top:100px;'>Product Not Found</h2><p style='text-align:center;'><a href='shop.html'>Return to Shop</a></p>";
+                // Handle 404 / Missing Product
+                document.querySelector('.container').innerHTML = `
+                    <div style="text-align:center; padding:100px 20px;">
+                        <h2 style="font-family:'Bantayog';">Asset Not Found</h2>
+                        <p style="margin: 20px 0;">This item may have been moved or archived.</p>
+                        <a href="shop.html" class="btn-ghost">Return to Collection</a>
+                    </div>
+                `;
             }
         });
     </script>
+
 </body>
 </html>

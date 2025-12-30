@@ -1,55 +1,55 @@
 /* ══════════════════════════════════════════════════════════════════════════
-   THE KYNAR VAULT (UK Edition)
+   THE KYNAR VAULT (Creator Edition)
    Currency: GBP (£)
    ══════════════════════════════════════════════════════════════════════════ */
 
 const VAULT = [
     {
-        id: 'universe-os',
+        id: 'finance-architect',
         category: 'planner',
-        title: "Universe OS",
-        price: "£29.00",
+        title: "The Finance Architect",
+        price: "£24.00",
         tag: "Notion",
-        desc: "The complete life operating system. Organize projects, habits, and finances in one unified dashboard.",
-        features: ["All-in-one Dashboard", "Financial Tracker 2.0", "Mobile Optimized", "Lifetime Updates"],
+        desc: "A master system for wealth. Track income, automate budget categories, and visualize your net worth growth in one premium Notion dashboard.",
+        features: ["Automated Income Tracking", "Subscription Manager", "50/30/20 Rule Built-in", "Mobile-First View"],
         bg: "var(--pastel-sage)",
-        image: "assets/images/planner-mockup.png",
+        image: "assets/images/finance-mockup.png",
         checkout: "https://store.kynaruniverse.com/checkout/buy/VARIANT-ID-1"
     },
     {
-        id: 'creator-bundle',
+        id: 'influence-suite',
         category: 'creative',
-        title: "Creator Bundle",
-        price: "£45.00",
-        tag: "Assets",
-        desc: "A massive library of 200+ high-resolution textures, gradients, and mockups for modern creators.",
-        features: ["4K Textures", "PSD Mockups", "Commercial License", "Figma Files"],
+        title: "The Influence Suite",
+        price: "£35.00",
+        tag: "Canva",
+        desc: "Stop designing from scratch. 50+ high-conversion Instagram carousels and highlight covers designed to stop the scroll.",
+        features: ["50+ Carousel Slides", "10 Highlight Icons", "Fully Editable in Canva", "Free Font Pairings"],
         bg: "var(--pastel-clay)",
         image: "assets/images/creative-mockup.png",
         checkout: "https://store.kynaruniverse.com/checkout/buy/VARIANT-ID-2"
     },
     {
-        id: 'saas-starter',
-        category: 'code',
-        title: "SaaS Starter",
-        price: "£69.00",
-        tag: "Next.js",
-        desc: "Stop rebuilding auth and payments. The ultimate boilerplate for founders who want to ship fast.",
-        features: ["Next.js 14 App Router", "Supabase Auth", "Stripe Integration", "SEO Optimized"],
+        id: 'aura-presets',
+        category: 'creative',
+        title: "Aura Presets",
+        price: "£19.00",
+        tag: "Lightroom",
+        desc: "The 'Old Money' aesthetic in one click. A collection of 10 mobile Lightroom presets for creating warm, cinematic travel and lifestyle photos.",
+        features: ["10 Mobile DNG Files", "Non-Destructive Editing", "Installation Guide", "Skin Tone Protection"],
         bg: "var(--pastel-sky)",
-        image: "assets/images/code-mockup.png",
+        image: "assets/images/visual-mockup.png",
         checkout: "https://store.kynaruniverse.com/checkout/buy/VARIANT-ID-3"
     },
     {
-        id: 'finance-tracker',
-        category: 'planner',
-        title: "Finance Tracker",
+        id: 'scribe-vault',
+        category: 'code',
+        title: "The Scribe Vault",
         price: "£15.00",
-        tag: "Sheets",
-        desc: "Automated Google Sheets template to track income, expenses, and investments visually.",
-        features: ["Auto-categorization", "Investment Portfolio", "Monthly Reports", "Video Guide"],
+        tag: "AI Prompts",
+        desc: "Unlock the full power of ChatGPT. A library of 100+ 'fill-in-the-blank' prompts for marketers, copywriters, and content creators.",
+        features: ["100+ Tested Prompts", "Email Sequence Builders", "Blog Outline Generators", "Notion & PDF Format"],
         bg: "var(--pastel-sage)",
-        image: "assets/images/finance-mockup.png",
+        image: "assets/images/code-mockup.png",
         checkout: "https://store.kynaruniverse.com/checkout/buy/VARIANT-ID-4"
     }
 ];
