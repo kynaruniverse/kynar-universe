@@ -316,3 +316,29 @@ function handleUrlFilters() {
 
 // Update the main DOMContentLoaded listener to include this check
 
+// --- MOBILE MENU LOGIC ---
+const menuBtn = document.querySelector('.nav-icon[aria-label="Menu"]');
+const closeBtn = document.getElementById('closeMenu');
+const navOverlay = document.getElementById('navOverlay');
+
+if (menuBtn && navOverlay) {
+    menuBtn.addEventListener('click', () => {
+        navOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevents scrolling behind menu
+    });
+}
+
+if (closeBtn && navOverlay) {
+    closeBtn.addEventListener('click', () => {
+        navOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restores scrolling
+    });
+}
+
+// Close menu if a link is clicked
+document.querySelectorAll('.nav-menu-link').forEach(link => {
+    link.addEventListener('click', () => {
+        navOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+});

@@ -12,6 +12,32 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 </head>
 <body>
+    
+        <div class="nav-overlay" id="navOverlay">
+        <button class="nav-icon" id="closeMenu" aria-label="Close Menu" style="position: absolute; top: 20px; left: 20px; color: var(--ink-deep);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <nav style="display: flex; flex-direction: column; align-items: center; gap: 30px;">
+            <a href="index.html" class="nav-menu-link">Home</a>
+            <a href="shop.html" class="nav-menu-link">Marketplace</a>
+            <a href="newsletter.html" class="nav-menu-link">Community</a>
+            <a href="contact.html" class="nav-menu-link">Support</a>
+        </nav>
+
+        <div style="position: absolute; bottom: 40px; text-align: center;">
+            <p style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.5; margin-bottom: 20px;">Kynar Studio</p>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <span style="font-size: 0.8rem; font-weight: 700;">IG</span>
+                <span style="font-size: 0.8rem; font-weight: 700;">TW</span>
+                <span style="font-size: 0.8rem; font-weight: 700;">TK</span>
+            </div>
+        </div>
+    </div>
+
 
     <header class="app-header" id="global-header">
         </header>
@@ -128,6 +154,57 @@
 
             </div>
         </section>
+        
+        <section id="faq" style="padding: 80px 0; border-top: 1px solid rgba(0,0,0,0.05);">
+    <div style="margin-bottom: 40px; text-align: center;">
+        <h2 class="reveal-up" style="color: var(--ink-deep); font-size: 2rem;">Common Questions</h2>
+        <div style="width: 40px; height: 3px; background: var(--accent-gold); margin: 12px auto; border-radius: 2px;"></div>
+    </div>
+
+    <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px;">
+        
+        <details class="faq-item reveal-up">
+            <summary class="faq-question">How do I receive my digital assets?</summary>
+            <div class="faq-answer">
+                Immediately after purchase, you'll receive an email from Lemon Squeezy with a secure download link. You can also access your files via the confirmation page.
+            </div>
+        </details>
+
+        <details class="faq-item reveal-up" style="transition-delay: 0.1s;">
+            <summary class="faq-question">What software do I need to use these tools?</summary>
+            <div class="faq-answer">
+                It depends on the product! Our organization tools typically use Notion, creative templates use Canva, and photo filters work with the free Lightroom Mobile app. Check the product page for specifics.
+            </div>
+        </details>
+
+        <details class="faq-item reveal-up" style="transition-delay: 0.2s;">
+            <summary class="faq-question">Do you offer refunds on digital products?</summary>
+            <div class="faq-answer">
+                Due to the nature of digital downloads, we generally don't offer refunds once a file has been accessed. However, if you have any technical issues, please contact our support team and we'll make it right.
+            </div>
+        </details>
+
+                <details class="faq-item reveal-up" style="transition-delay: 0.3s;">
+            <summary class="faq-question">Can I use these for my business?</summary>
+            <div class="faq-answer">
+                Yes! All Kynar Studio assets come with a standard license that allows for personal and commercial use in your own business or social media projects.
+            </div>
+        </details>
+
+        <div class="reveal-up" style="margin-top: 50px; text-align: center; background: var(--bg-bone); padding: 40px; border-radius: 20px; border: 1px dashed rgba(15, 61, 48, 0.2);">
+            <h3 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--ink-deep);">Still have questions?</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 25px; margin-inline: auto;">
+                Our team is available to help you find the perfect asset for your needs.
+            </p>
+            <a href="contact.html" class="btn-ghost" style="font-size: 0.8rem; padding: 10px 30px;">
+                Get in Touch
+            </a>
+        </div>
+
+
+    </div>
+</section>
+
 
         <footer class="app-footer" id="global-footer" style="margin-top: 100px; padding: 60px 20px; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
     </footer>
