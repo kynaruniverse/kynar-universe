@@ -64,6 +64,42 @@ body.dark-mode .tag {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* --- OBSIDIAN MODE REFINEMENTS --- */
+body.dark-mode .faq-item {
+    background: var(--bg-surface);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .faq-answer {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .nav-overlay {
+    background: var(--bg-bone); /* Uses the Obsidian Black variable */
+}
+
+body.dark-mode .nav-menu-link {
+    color: var(--ink-deep); /* Uses the Bone White variable */
+}
+
+/* Make the "Arriving Soon" badge pop more in dark mode */
+body.dark-mode .product-card[data-status="coming-soon"]::after {
+    background: var(--accent-gold);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Ensure the contact CTA box looks distinct */
+body.dark-mode div[style*="border: 1px dashed"] {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+body.dark-mode .product-card[data-status="coming-soon"] .card-image {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+
+
 
 /* 3. GLOBAL RESET */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }

@@ -20,11 +20,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // 4. SOCIAL PROOF: Initial trigger
     setTimeout(triggerActivityToast, 3000); 
 
-    // 5. DEEP LINKING: Check for URL filters
+        // 5. DEEP LINKING: Check for URL filters
     handleUrlFilters();
+    
+    // 6. PRE-LAUNCH MODE
+    applyPreLaunchStatus();
 
     console.log("Kynar Studio: Core System Online");
 });
+
 
 
 
@@ -59,7 +63,6 @@ async function loadHeader() {
         headerEl.innerHTML = html;
         
         // 🔥 CRITICAL: These only work AFTER header is injected
-        initMenuEngine();
         initCartBadge();
         initThemeEngine();
         initSmartHeader(); 
@@ -106,40 +109,6 @@ function initThemeEngine() {
         localStorage.setItem('kynar_theme', isDark ? 'dark' : 'light');
         if (navigator.vibrate) navigator.vibrate(10); 
     };
-}
-
-// 4. GLOBAL MENU ENGINE
-function initMenuEngine() {
-    if (!document.querySelector('.nav-overlay')) {
-        const menuHTML = `
-            <div class="nav-overlay">
-                <button class="close-menu nav-icon">✕</button>
-                <ul class="nav-menu-list">
-                    <li class="nav-menu-item" style="--i:1"><a href="index.html" class="nav-menu-link">Home</a></li>
-                    <li class="nav-menu-item" style="--i:2"><a href="shop.html" class="nav-menu-link">Collection</a></li>
-                    <li class="nav-menu-item" style="--i:3"><a href="newsletter.html" class="nav-menu-link">Network</a></li>
-                    <li class="nav-menu-item" style="--i:4"><a href="contact.html" class="nav-menu-link">Concierge</a></li>
-                </ul>
-            </div>`;
-        document.body.insertAdjacentHTML('beforeend', menuHTML);
-    }
-
-    const burger = document.querySelector('.nav-icon[aria-label="Menu"]');
-    const overlay = document.querySelector('.nav-overlay');
-    const close = document.querySelector('.close-menu');
-
-    if (burger) {
-        burger.onclick = () => { 
-            overlay.classList.add('active'); 
-            document.body.style.overflow = 'hidden'; 
-        };
-    }
-    if (close) {
-        close.onclick = () => { 
-            overlay.classList.remove('active'); 
-            document.body.style.overflow = ''; 
-        };
-    }
 }
 
 // 5. CART BADGE ENGINE
@@ -199,13 +168,13 @@ function initNetworkPopup() {
             <div class="network-popup-overlay" id="networkPopup">
                 <div class="network-popup-card">
                     <button class="close-popup">✕</button>
-                    <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.25em;">The Network</span>
+                    <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.25em;">Kynar Studio</span>
                     <h2 class="popup-title">Join the <br><span style="color: var(--ink-medium);">Kynar Community.</span></h2>
 <p style="font-size: 1rem; margin-bottom: 30px; line-height: 1.5;">Get the latest product drops, free templates, and creative tips delivered to you.</p>
 
                     <form action="https://formspree.io/f/mlgekbwb" method="POST">
                         <input type="email" name="email" required placeholder="Enter your email" class="popup-input">
-                        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Authorize Access</button>
+                        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Join Community</button>
                     </form>
                 </div>
             </div>`;
@@ -251,12 +220,13 @@ function initStudioHaptics() {
 
 // --- HONEST SOCIAL PROOF ENGINE ---
 const activityLog = [
-    "New Product Acquired: Finance Tracker",
+    "New Product Acquired: The Finance Tracker",
     "Someone joined the Kynar Community",
     "New Product Acquired: Aura Photo Filters",
     "Essential Starter Pack Claimed",
     "New Product Acquired: The Social Suite"
 ];
+
 
 
 function triggerActivityToast() {
@@ -315,30 +285,40 @@ function handleUrlFilters() {
 }
 
 // Update the main DOMContentLoaded listener to include this check
-
 // --- MOBILE MENU LOGIC ---
 const menuBtn = document.querySelector('.nav-icon[aria-label="Menu"]');
 const closeBtn = document.getElementById('closeMenu');
 const navOverlay = document.getElementById('navOverlay');
 
 if (menuBtn && navOverlay) {
-    menuBtn.addEventListener('click', () => {
+    menuBtn.onclick = () => {
         navOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevents scrolling behind menu
-    });
+        document.body.style.overflow = 'hidden';
+    };
 }
 
 if (closeBtn && navOverlay) {
-    closeBtn.addEventListener('click', () => {
-        navOverlay.classList.remove('active');
-        document.body.style.overflow = ''; // Restores scrolling
-    });
-}
-
-// Close menu if a link is clicked
-document.querySelectorAll('.nav-menu-link').forEach(link => {
-    link.addEventListener('click', () => {
+    closeBtn.onclick = () => {
         navOverlay.classList.remove('active');
         document.body.style.overflow = '';
+    };
+}
+
+
+// --- AUTOMATIC PRE-LAUNCH SYSTEM ---
+function applyPreLaunchStatus() {
+    // This finds every product card on the page (Home or Shop)
+    const cards = document.querySelectorAll('.product-card');
+    
+    cards.forEach(card => {
+        // Automatically adds the status attribute to every card found
+        card.setAttribute('data-status', 'coming-soon');
     });
-});
+    
+    console.log(`Kynar Studio: ${cards.length} assets set to Arriving Soon.`);
+}
+
+// Add this line to your DOMContentLoaded listener at the top of ui-core.js
+// so it runs as soon as the page loads:
+// applyPreLaunchStatus();
+

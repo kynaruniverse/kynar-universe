@@ -1,12 +1,14 @@
 /* ══════════════════════════════════════════════════════════════════════════
    THE KYNAR VAULT (V4.1 - Modular Sync)
    Currency: GBP (£)
+   Status: Pre-Launch Mode
    ══════════════════════════════════════════════════════════════════════════ */
 
 const VAULT = [
     {
         id: 'finance-architect',
         category: 'personal',
+        status: 'coming-soon',
         title: "The Finance Tracker",
         shortDesc: "Complete wealth management",
         price: "£24.00",
@@ -20,6 +22,7 @@ const VAULT = [
     {
         id: 'influence-suite',
         category: 'creative',
+        status: 'coming-soon',
         title: "The Social Suite",
         shortDesc: "Ready-to-use creative templates",
         price: "£35.00",
@@ -33,6 +36,7 @@ const VAULT = [
     {
         id: 'aura-presets',
         category: 'creative',
+        status: 'coming-soon',
         title: "Aura Photo Filters",
         shortDesc: "Cinematic lifestyle presets",
         price: "£19.00",
@@ -46,6 +50,7 @@ const VAULT = [
     {
         id: 'scribe-vault',
         category: 'work',
+        status: 'coming-soon',
         title: "The Prompt Library",
         shortDesc: "AI prompts for every task",
         price: "£15.00",
