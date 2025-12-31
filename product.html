@@ -104,11 +104,24 @@
                             </ul>
                         </div>
 
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px;">
-                            <span style="font-size: 2.2rem; font-family: 'Bantayog'; color: var(--ink-deep);">${p.price}</span>
-                            <a href="${p.checkout}" class="btn-primary" style="flex-grow: 1; min-width: 200px; justify-content: center;">Purchase Now →</a>
+                        // Dynamic CTA based on status
+const ctaSection = p.status === 'coming-soon' ? `
+    <div style="width: 100%; background: var(--bg-bone); padding: 30px; border-radius: 15px; border: 2px dashed var(--accent-gold);">
+        <h4 style="margin-bottom: 10px; color: var(--ink-deep);">Coming Next Week</h4>
+        <p style="font-size: 0.9rem; margin-bottom: 20px;">Join the waitlist to get an exclusive 20% launch discount.</p>
+        <form action="https://formspree.io/f/mlgekbwb" method="POST" style="display: flex; gap: 10px;">
+            <input type="hidden" name="interest" value="${p.title}">
+            <input type="email" name="email" placeholder="email@address.com" required style="flex-grow: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1);">
+            <button type="submit" class="btn-primary" style="padding: 12px 24px;">Notify Me</button>
+        </form>
+    </div>
+` : `
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px;">
+        <span style="font-size: 2.2rem; font-family: 'Bantayog'; color: var(--ink-deep);">${p.price}</span>
+        <a href="${p.checkout}" class="btn-primary" style="flex-grow: 1; min-width: 200px; justify-content: center;">Purchase Now →</a>
+    </div>
+`;
 
-                        </div>
                     </div>
                 </div>
             `;

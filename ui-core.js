@@ -212,12 +212,13 @@ function initStudioHaptics() {
 
 // --- SOCIAL PROOF & FILTERS ---
 const activityLog = [
-    "New Product Acquired: The Finance Tracker",
-    "Someone joined the Kynar Community",
-    "New Product Acquired: Aura Photo Filters",
-    "Essential Starter Pack Claimed",
-    "New Product Acquired: The Social Suite"
+    "3 people just joined the Finance Tracker waitlist",
+    "New Member joined the Kynar Community",
+    "Waitlist growing: Aura Photo Filters",
+    "Someone just claimed the Essential Starter Pack",
+    "Social Suite launching in 7 days"
 ];
+
 
 function triggerActivityToast() {
     let toast = document.querySelector('.activity-toast') || document.createElement('div');
