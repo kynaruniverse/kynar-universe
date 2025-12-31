@@ -272,10 +272,20 @@ if (closeBtn && navOverlay) {
     };
 }
 
+// MODIFIED: Only applies 'coming-soon' if the vault data explicitly says so
 function applyPreLaunchStatus() {
     const cards = document.querySelectorAll('.product-card');
-    cards.forEach(card => card.setAttribute('data-status', 'coming-soon'));
+    cards.forEach(card => {
+        const id = card.querySelector('a')?.href.split('id=')[1];
+        if (id) {
+            const product = VAULT.find(p => p.id === id);
+            if (product && product.status === 'coming-soon') {
+                card.setAttribute('data-status', 'coming-soon');
+            }
+        }
+    });
 }
+
 // Close menu automatically when a link is clicked
 document.querySelectorAll('.nav-menu-link').forEach(link => {
     link.addEventListener('click', () => {
