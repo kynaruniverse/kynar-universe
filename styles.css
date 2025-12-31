@@ -196,6 +196,52 @@ p { color: var(--ink-medium); max-width: 60ch; transition: color var(--transitio
     transition: background-color var(--transition-main), transform 0.4s var(--transition-main), box-shadow 0.4s var(--transition-main);
 }
 
+/* --- FAQ ACCORDION --- */
+.faq-item {
+    background: var(--bg-surface);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(15, 61, 48, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.faq-item[open] {
+    border-color: var(--accent-gold);
+    box-shadow: var(--shadow-float);
+}
+
+.faq-question {
+    font-weight: 700;
+    color: var(--ink-deep);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-question::after {
+    content: '+';
+    font-family: var(--font-display);
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.faq-item[open] .faq-question::after {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    margin-top: 15px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-medium);
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 15px;
+}
+
+
 
 /* 8. CART & INTERACTION */
 .cart-wrapper { position: relative; display: inline-flex; }
@@ -217,7 +263,19 @@ p { color: var(--ink-medium); max-width: 60ch; transition: color var(--transitio
     transform: translateY(-100%); transition: transform 0.6s var(--transition-main);
 }
 .nav-overlay.active { transform: translateY(0); }
-.nav-menu-link { font-family: var(--font-display); font-size: 2.5rem; color: var(--ink-deep); text-decoration: none; }
+.nav-menu-link { 
+    font-family: var(--font-display); 
+    font-size: 2.8rem; 
+    color: var(--ink-deep); 
+    text-decoration: none; 
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-menu-link:hover {
+    color: var(--accent-gold);
+    transform: scale(1.05);
+}
+
 
 /* 10. NETWORK POPUP */
 .network-popup-overlay {
