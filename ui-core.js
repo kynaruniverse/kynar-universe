@@ -192,9 +192,18 @@ function initSearchEngine() {
 function initStudioHaptics() {
   if (!("ontouchstart" in window) || !navigator.vibrate) return;
   document.body.addEventListener("touchstart", (e) => {
-    if (e.target.closest(".btn-primary, .btn-ghost, .nav-icon, .filter-chip, .product-card")) navigator.vibrate(8);
+    const target = e.target.closest(".btn-primary, .btn-ghost, .nav-icon, .filter-chip, .product-card");
+    if (target) {
+      // Distinct haptic for "Save" vs "General Taps"
+      if (target.id === 'save-btn') {
+        navigator.vibrate([10, 30, 10]);
+      } else {
+        navigator.vibrate(8);
+      }
+    }
   }, { passive: true });
 }
+
 
 function initSmoothScroll() {
   if (typeof Lenis !== "undefined") {
@@ -267,3 +276,17 @@ function initThemeEngine() {
     if (navigator.vibrate) navigator.vibrate(10);
   };
 }
+
+window.saveToArchive = (id) => {
+  // Logic to add to cart without jumping to checkout
+  if (typeof addToCart === 'function') {
+    addToCart(id);
+    const btn = document.getElementById('save-btn');
+    if (btn) {
+      btn.textContent = "Saved to Archive";
+      btn.style.borderColor = "var(--accent-gold)";
+      btn.style.color = "var(--accent-gold)";
+    }
+  }
+};
+
