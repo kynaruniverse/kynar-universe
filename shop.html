@@ -89,26 +89,30 @@
 
         emptyState.style.display = 'none';
         grid.innerHTML = filtered.map((p, i) => `
-          <article class="product-card reveal-up" data-status="${p.status}" style="transition-delay: ${i * 0.05}s">
-            <span class="tag">${p.tag}</span>
-            <a class="card-image" href="product.html?id=${p.id}" style="background-color: ${p.bg}; min-height: 200px; display: flex; align-items: center; justify-content: center;">
-              <img class="product-img" 
-                   src="${p.image}" 
-                   alt="${p.title}" 
-                   loading="lazy"
-                   onload="this.style.opacity='1'"
-                   onerror="this.src='assets/images/placeholder.webp'; this.style.opacity='0.2';">
-            </a>
-            <div class="card-info">
-              <h3 class="card-title">${p.title}</h3>
-              <p style="font-size: 0.85rem; line-height: 1.4; color: var(--ink-medium);">${p.shortDesc}</p>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-top:20px;">
-                <span class="card-price" style="font-family: var(--font-display); font-size: 1.2rem;">${p.price}</span>
-                <a class="btn-ghost" href="product.html?id=${p.id}" aria-label="View details for ${p.title}">View Details</a>
-              </div>
-            </div>
-          </article>
-        `).join('');
+  <article class="product-card reveal-up" data-status="${p.status}" style="transition-delay: ${i * 0.05}s">
+    <div class="tag">${p.tag}</div>
+    <a class="card-image" href="product.html?id=${p.id}" style="background-color: ${p.bg};">
+      <img class="product-img" 
+           src="${p.image}" 
+           alt="${p.title}" 
+           loading="lazy"
+           onload="this.style.opacity='1'">
+    </a>
+    <div class="card-info">
+      <h3 class="card-title">${p.title}</h3>
+      <p style="font-size: 0.9rem; line-height: 1.5; opacity: 0.7;">${p.shortDesc}</p>
+      
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding-top: 25px;">
+        <div>
+          <span style="display: block; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; opacity: 0.4; margin-bottom: 4px;">INVESTMENT</span>
+          <span class="card-price">${p.price}</span>
+        </div>
+        <a class="btn-ghost" href="product.html?id=${p.id}" style="padding: 8px 16px; font-size: 0.65rem;">View Archive</a>
+      </div>
+    </div>
+  </article>
+`).join('');
+
 
         // Trigger animations
         setTimeout(() => {

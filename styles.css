@@ -163,31 +163,77 @@ p { color: var(--ink-medium); max-width: 60ch; }
 .nav-menu-link { font-family: var(--font-display); font-size: 2.8rem; color: var(--ink-deep); text-decoration: none; margin: 15px 0; transition: 0.3s; }
 
 /* 8. LAYOUT ARCHITECTURE */
-.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: clamp(80px, 10vw, 120px) 20px 40px 20px; }
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+/* ══════════════════════════════════════════════════════════════════════════
+   V7.0 MASTER UPGRADE: FLUID ARCHITECTURE
+   ══════════════════════════════════════════════════════════════════════════ */
 
-/* 9. PRODUCT CARDS & GALLERY */
+/* Fluid Typography Engine */
+h1 { font-size: clamp(2.5rem, 10vw, 4.5rem); }
+h2 { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+h3 { font-size: clamp(1.2rem, 4vw, 1.5rem); }
+
+/* The Master Container - Fluid Spacing */
+.container { 
+  width: 100%; 
+  max-width: 1300px; 
+  margin: 0 auto; 
+  padding: clamp(100px, 15vh, 140px) 5vw 80px 5vw; 
+}
+
+/* Boutique Gallery Grid - Smart Responsiveness */
+.gallery-grid { 
+  display: grid; 
+  /* This creates a 2-column grid on mobile that feels expensive, shifting to 3 or 4 on desktop */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); 
+  gap: clamp(16px, 3vw, 32px); 
+}
+
+/* Master Product Card - Tactile Physics */
 .product-card {
-  background: var(--bg-surface); border-radius: 20px; overflow: hidden;
-  box-shadow: var(--shadow-float); position: relative; display: flex;
-  flex-direction: column; border: 1px solid rgba(15, 61, 48, 0.03);
-  transition: transform var(--transition-main), box-shadow var(--transition-main);
+  background: var(--bg-surface); 
+  border-radius: 24px; /* Softer, high-end radius */
+  overflow: hidden;
+  box-shadow: var(--shadow-float);
+  border: 1px solid rgba(15, 61, 48, 0.04);
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-.product-card:active { transform: scale(0.98); }
 
-.card-image { aspect-ratio: 16/9; background: var(--bg-bone); display: flex; align-items: center; justify-content: center; padding: 15px; }
-.card-image img { width: 100%; height: 100%; object-fit: contain; transition: 0.5s; }
-
-.card-info { padding: 24px; flex-grow: 1; display: flex; flex-direction: column; }
-.card-title { font-size: 1.1rem; margin-bottom: 8px; }
-.card-price { font-family: var(--font-display); font-size: 1.2rem; }
-
-.tag {
-  position: absolute; top: 15px; left: 15px; padding: 6px 14px;
-  background: var(--bg-surface); color: var(--ink-deep);
-  font-size: 0.7rem; font-weight: 800; border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); z-index: 10;
+/* Mobile-Specific Interaction */
+@media (hover: hover) {
+  .product-card:hover { 
+    transform: translateY(-8px) scale(1.01); 
+    box-shadow: var(--shadow-depth); 
+  }
 }
+
+.card-image { 
+  aspect-ratio: 1 / 1; /* Square images look more "boutique" on mobile */
+  background: var(--bg-bone); 
+  padding: 10%; 
+  position: relative;
+}
+
+.card-image img { 
+  width: 100%; height: 100%; 
+  object-fit: contain; 
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.08));
+}
+
+/* Card Info - Typographic Hierarchy */
+.card-info { 
+  padding: clamp(20px, 5vw, 28px); 
+  flex-grow: 1; 
+}
+
+.card-title { 
+  font-weight: 800; 
+  letter-spacing: -0.01em; 
+  margin-bottom: 12px;
+}
+
 
 /* 11. FAQ ACCORDION */
 .faq-item { background: var(--bg-surface); border-radius: 15px; padding: 20px; border: 1px solid rgba(15, 61, 48, 0.05); margin-bottom: 12px; }
@@ -245,3 +291,47 @@ p { color: var(--ink-medium); max-width: 60ch; }
 .reveal-visible { opacity: 1; transform: translateY(0); }
 
 .empty-state { grid-column: 1 / -1; text-align: center; padding: 100px 0; color: var(--ink-medium); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MASTER CART UPGRADE: COMMAND CENTER PHYSICS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.cart-sidebar {
+  position: fixed; top: 0; right: 0;
+  width: min(100%, 450px); height: 100%;
+  background: var(--bg-glass); backdrop-filter: blur(25px);
+  z-index: 10000; padding: 40px 30px;
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: -20px 0 60px rgba(0,0,0,0.15);
+  border-left: 1px solid rgba(255,255,255,0.1);
+}
+
+.cart-sidebar.active { transform: translateX(0); }
+
+.cart-item {
+  display: flex; gap: 20px; align-items: center;
+  padding: 20px 0; border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.cart-item-img {
+  width: 70px; height: 70px; border-radius: 12px;
+  background: var(--bg-bone); padding: 8px;
+}
+
+.cart-footer {
+  margin-top: auto; padding-top: 30px;
+  border-top: 2px solid var(--ink-deep);
+}
+
+.checkout-btn {
+  width: 100%; height: 65px; border-radius: 50px;
+  background: var(--ink-deep); color: var(--bg-bone);
+  font-weight: 800; font-size: 1rem; letter-spacing: 0.1em;
+  border: none; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; gap: 15px;
+  transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.checkout-btn:active { transform: scale(0.96); }
