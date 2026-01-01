@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 4. Engine Boot Sequence
   initSmoothScroll();
   initStudioHaptics();
-  initSearchEngine(); 
   initCartEngine();
 
   // 5. Layout & Experience Services
@@ -41,14 +40,16 @@ async function loadHeader() {
   if (!headerEl) return;
   try {
     const response = await fetch("components/header.html");
-    headerEl.innerHTML = await response.text();
+    const html = await response.text();
+    headerEl.innerHTML = html;
     
-    // Bind logic specifically after HTML injection
+    // Binding listeners specifically after injection
     initMenuLogic();
-    initSearchEngine(); 
     initThemeEngine();
   } catch (err) { console.error("Header Fault:", err); }
 }
+
+
 
 
 async function loadFooter() {
@@ -67,7 +68,7 @@ async function loadCartSidebar() {
     <div id="cartSidebar" class="cart-sidebar">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
         <h2 style="font-family: var(--font-display); font-size: 1.5rem;">Command Center</h2>
-        <button onclick="toggleCart('close')" class="nav-icon" style="font-size: 1.5rem;">✕</button>
+        <button onclick="toggleCart('close')" class="nav-icon" style="font-size: 1.5rem; background: transparent; border: none; padding: 0;">✕</button>
       </div>
       <div id="cartList" style="flex-grow: 1; overflow-y: auto;"></div>
       <div class="cart-footer">
@@ -91,7 +92,14 @@ function initCartEngine() {
     if (!sidebar) return;
     const isActive = state === 'open';
     sidebar.classList.toggle('active', isActive);
-    document.body.style.overflow = isActive ? 'hidden' : '';
+        if (isActive) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+
     if (isActive && navigator.vibrate) navigator.vibrate(10);
   };
 
@@ -121,8 +129,16 @@ function initCartEngine() {
     const totalEl = document.getElementById('cartTotal');
     if (!list) return;
 
-    badge.textContent = window.KYNAR_STATE.cart.length;
-    badge.classList.toggle('visible', window.KYNAR_STATE.cart.length > 0);
+        const count = window.KYNAR_STATE.cart.length;
+    badge.textContent = count;
+    if (count > 0) {
+      badge.classList.add('visible');
+      badge.style.visibility = 'visible';
+    } else {
+      badge.classList.remove('visible');
+      badge.style.visibility = 'hidden';
+    }
+
 
     list.innerHTML = window.KYNAR_STATE.cart.length === 0 
       ? '<p style="text-align: center; margin-top: 100px; opacity: 0.4;">Archive is empty.</p>'
@@ -136,7 +152,7 @@ function initCartEngine() {
           <button onclick="removeFromCart('${item.id}')" style="background:none; border:none; color:var(--accent-gold); font-weight:800; cursor:pointer;">✕</button>
         </div>`).join('');
 
-    const total = window.KYNAR_STATE.cart.reduce((acc, item) => acc + parseFloat(item.price.replace('£', '')), 0);
+    const total = window.KYNAR_STATE.cart.reduce((acc, item) => acc + parseFloat(item.price.replace(/[£,]/g, '')), 0);
     totalEl.textContent = `£${total.toFixed(2)}`;
   }
 
@@ -153,17 +169,18 @@ function initSearchEngine() {
 
   trigger.onclick = () => {
     if (navigator.vibrate) navigator.vibrate(10);
-    const searchHTML = `
-      <div id="searchOverlay" class="nav-overlay active" style="padding: 20px; background: var(--bg-bone);">
+        const searchHTML = `
+      <div id="searchOverlay" class="nav-overlay active" style="padding: 20px; background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; width: 100%; max-width: 800px; margin: 0 auto 40px auto;">
-          <span style="font-family: var(--font-display); font-size: 1.2rem; color: var(--accent-gold);">Archive Index</span>
+          <span style="font-family: var(--font-display); font-size: 1.2rem; color: var(--accent-gold); letter-spacing: 0.1em;">Archive Index</span>
           <button id="closeSearch" class="nav-icon" style="font-size: 1.5rem;">✕</button>
         </div>
         <div style="width: 100%; max-width: 800px; margin: 0 auto;">
-          <input type="text" id="searchInput" placeholder="Search the archive..." style="width: 100%; padding: 25px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.1); background: var(--bg-surface); font-size: 1.2rem; outline: none; box-shadow: var(--shadow-float);">
-          <div id="searchResults" style="margin-top: 30px; display: grid; gap: 15px; overflow-y: auto; max-height: 60vh;"></div>
+          <input type="text" id="searchInput" placeholder="Search the archive..." style="width: 100%; padding: 20px 0; background: transparent; border: none; border-bottom: 2px solid var(--ink-deep); font-size: 1.8rem; font-family: var(--font-display); color: var(--ink-deep); outline: none;">
+          <div id="searchResults" style="margin-top: 40px; display: grid; gap: 20px; overflow-y: auto; max-height: 70vh;"></div>
         </div>
       </div>`;
+
 
     document.body.insertAdjacentHTML('beforeend', searchHTML);
     document.body.style.overflow = 'hidden';
@@ -177,7 +194,7 @@ function initSearchEngine() {
       const matches = VAULT.filter(p => p.title.toLowerCase().includes(query) || p.tag.toLowerCase().includes(query));
       results.innerHTML = matches.map(p => `
         <a href="product.html?id=${p.id}" class="product-card" style="flex-direction: row; padding: 15px; align-items: center; gap: 20px; text-decoration: none;">
-          <div style="width: 60px; height: 60px; background: ${p.bg}; border-radius: 12px; padding: 10px;"><img src="${p.image}" style="width:100%; height:100%; object-fit:contain;"></div>
+          <div style="width: 60px; height: 60px; background: var(--bg-bone); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center;"><img src="${p.image}" style="width:100%; height:100%; object-fit:contain;"></div>
           <div><h4 style="color:var(--ink-deep); margin:0;">${p.title}</h4><span style="font-size:0.7rem; color:var(--accent-gold); font-weight:800; text-transform:uppercase;">${p.tag}</span></div>
         </a>`).join('');
     };
