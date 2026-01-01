@@ -67,78 +67,67 @@
       });
 
       function renderProduct(p) {
-        const container = document.getElementById("product-content");
-        
-        // 1. Dynamic Meta & Title
-        document.title = `${p.title} | Kynar Studio`;
-        let meta = document.querySelector('meta[name="description"]') || document.createElement('meta');
-        meta.name = "description";
-        meta.content = p.shortDesc;
-        document.head.appendChild(meta);
+  const container = document.getElementById("product-content");
+  document.title = `${p.title} | Kynar Studio`;
 
-        // 2. Action Component Logic
-        const previewBtn = p.previewUrl && p.previewUrl !== "#" 
-          ? `<a href="${p.previewUrl}" target="_blank" class="btn-ghost" style="width:100%; margin-top:10px; justify-content:center;">Live Preview</a>` 
-          : '';
+  // Master Layout Injection
+  container.innerHTML = `
+    <div class="product-master-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr)); gap: clamp(40px, 8vw, 80px); align-items: start;">
+      
+      <div class="reveal-up" style="position: sticky; top: 100px;">
+        <div style="background: ${p.bg}; border-radius: clamp(24px, 5vw, 40px); padding: 12%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: var(--shadow-depth);">
+          <img src="${p.image}" alt="${p.title}" class="product-hero-img" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 30px 50px rgba(0,0,0,0.12));" onload="this.style.opacity='1'">
+        </div>
+      </div>
+      
+      <div class="reveal-up" style="padding-bottom: 120px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+           <span style="height: 1px; width: 30px; background: var(--accent-gold);"></span>
+           <span style="font-size: 0.75rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.3em;">${p.tag}</span>
+        </div>
         
-        let ctaHtml = p.status === "coming-soon" ? `
-          <div class="waitlist-card" style="background: var(--bg-bone); padding: 30px; border-radius: 20px; border: 2px dashed var(--accent-gold); animation: pulse-border 3s infinite;">
-            <h3 style="font-family: var(--font-display); margin-bottom: 10px;">Arriving Shortly</h3>
-            <p style="font-size: 0.95rem; margin-bottom: 20px; color: var(--ink-medium); line-height: 1.5;">Secure your place in the archive. Members get early access.</p>
-            <form action="https://formspree.io/f/mlgekbwb" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
-              <input type="hidden" name="interest" value="${p.title}">
-              <input type="email" name="email" required placeholder="Enter email" style="width:100%; padding:14px; border-radius:10px; border:1px solid rgba(0,0,0,0.1); background: var(--bg-surface); outline:none;">
-              <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Notify Me</button>
-            </form>
-            ${previewBtn}
-          </div>` : `
-          <div class="purchase-actions" style="display: flex; flex-direction: column; gap: 15px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 2.2rem; font-family: 'Bantayog'; color: var(--ink-deep);">${p.price}</span>
-              <span style="font-size:0.6rem; opacity:0.6; font-weight:800; letter-spacing:0.15em; text-transform: uppercase;">Digital Asset</span>
-            </div>
-            <a href="${p.checkout}" class="btn-primary" style="width: 100%; justify-content: center;">Get Access Now →</a>
-            ${previewBtn}
-          </div>`;
+        <h1 style="margin-bottom: 24px;">${p.title}</h1>
+        <p style="font-size: clamp(1.1rem, 3vw, 1.25rem); line-height: 1.6; margin-bottom: 40px; color: var(--ink-medium);">${p.desc}</p>
+        
+        <div style="margin-bottom: 48px; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 32px;">
+          <h4 style="font-family: var(--font-display); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 24px;">Included in Archive:</h4>
+          <ul style="list-style: none; display: grid; gap: 20px;">
+            ${p.features.map(f => `
+              <li style="display: flex; align-items: center; gap: 16px; font-size: 1rem; color: var(--ink-deep); font-weight: 500;">
+                <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold);"></div>
+                ${f}
+              </li>
+            `).join('')}
+          </ul>
+        </div>
 
-        // 3. Main Injection
-        container.innerHTML = `
-          <div class="gallery-grid" style="align-items: start; margin-top: 20px; gap: 40px;">
-            <div class="reveal-up img-skeleton" style="border-radius: 24px; overflow: hidden; box-shadow: var(--shadow-depth); background: ${p.bg}; position: sticky; top: 100px;">
-              <img src="${p.image}" 
-                   alt="${p.title}" 
-                   class="product-hero-img" 
-                   onload="this.style.opacity='0.95'"
-                   onerror="this.src='assets/images/placeholder.webp'; this.style.mixBlendMode='normal';">
-            </div>
-            
-            <div class="reveal-up" style="transition-delay: 0.2s; padding-bottom: 140px;">
-              <span style="font-size: 0.8rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.2em;">${p.tag}</span>
-              <h1 style="margin: 12px 0 24px 0; line-height: 1.1; font-size: clamp(2.2rem, 5vw, 3.5rem);">${p.title}</h1>
-              <p style="font-size: 1.15rem; line-height: 1.6; margin-bottom: 30px; color: var(--ink-medium);">${p.desc}</p>
-              
-              <div style="margin-bottom: 40px; background: var(--bg-surface); padding: 25px; border-radius: 18px; border: 1px solid rgba(0,0,0,0.04);">
-                <h4 style="font-family: 'Bantayog'; margin-bottom: 15px; font-size: 0.8rem; opacity: 0.7; text-transform: uppercase;">Technical Specs:</h4>
-                <ul style="list-style: none; display: grid; gap: 14px;">
-                  ${p.features.map(f => `<li style="display: flex; gap: 12px; font-size: 0.95rem; font-weight: 500;">
-                    <svg fill="none" height="18" stroke="var(--accent-gold)" stroke-width="3" viewBox="0 0 24 24" width="18" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    <span style="color: var(--ink-deep);">${f}</span>
-                  </li>`).join('')}
-                </ul>
+        <div style="background: var(--bg-surface); padding: clamp(24px, 5vw, 40px); border-radius: 32px; border: 1px solid rgba(0,0,0,0.04); box-shadow: var(--shadow-float);">
+           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px;">
+              <div>
+                <span style="display: block; font-size: 0.65rem; font-weight: 800; opacity: 0.4; letter-spacing: 0.1em; margin-bottom: 4px;">SINGLE USER LICENSE</span>
+                <span style="font-family: var(--font-display); font-size: 2.2rem;">${p.price}</span>
               </div>
-              ${ctaHtml}
-            </div>
-          </div>
+              <span style="font-size: 0.7rem; color: var(--accent-gold); font-weight: 800; border: 1px solid var(--accent-gold); padding: 4px 10px; border-radius: 4px;">V6.5 READY</span>
+           </div>
+           
+           ${p.status === 'coming-soon' ? renderWaitlist(p) : `
+              <a href="${p.checkout}" class="btn-primary" style="width: 100%; height: 64px; font-size: 1rem;">Authorize Download</a>
+              ${p.previewUrl && p.previewUrl !== "#" ? `<a href="${p.previewUrl}" target="_blank" class="btn-ghost" style="width: 100%; margin-top: 16px; height: 56px;">Interactive Preview</a>` : ''}
+           `}
+        </div>
+      </div>
+    </div>
 
-          <div class="mobile-sticky-cta">
-            <div style="display: flex; flex-direction: column; justify-content: center;">
-              <span style="font-size: 0.6rem; opacity: 0.6; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">${p.title}</span>
-              <span style="font-family: 'Bantayog'; font-size: 1.1rem; color: var(--ink-deep);">${p.price}</span>
-            </div>
-            <a href="${p.status === 'coming-soon' ? '#' : p.checkout}" class="btn-primary" style="flex-grow: 1; padding: 12px; font-size: 0.85rem; justify-content: center;">
-              ${p.status === 'coming-soon' ? 'Notify Me' : 'Get Access'}
-            </a>
-          </div>`;
+    <div class="mobile-sticky-cta" style="padding: 16px 24px; background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 16px; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000; transform: translateY(100%); transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);">
+       <div style="flex-shrink: 0;">
+          <span style="display: block; font-size: 0.55rem; font-weight: 800; opacity: 0.5;">${p.title}</span>
+          <span style="font-family: var(--font-display); font-size: 1.1rem;">${p.price}</span>
+       </div>
+       <a href="${p.checkout}" class="btn-primary" style="flex-grow: 1; height: 50px; font-size: 0.8rem; justify-content: center;">Authorize</a>
+    </div>
+  `;
+}
+
 
         // 4. Re-init Reveal Observer
         setTimeout(() => {
