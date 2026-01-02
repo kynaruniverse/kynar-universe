@@ -39,6 +39,8 @@
   --font-display: "Bantayog", serif;
   --font-body: "Outfit", sans-serif;
   --logo-brightness: 0;
+  --grain-opacity: 0.12;
+
 }
 
 /* 3. OBSIDIAN MODE (Dark Theme) */
@@ -52,6 +54,8 @@ body.dark-mode {
   --shadow-float: 0 10px 40px rgba(0, 0, 0, 0.5);
   --shadow-depth: 0 30px 60px rgba(0, 0, 0, 0.8);
   --logo-brightness: 5;
+  --grain-opacity: 0.04;
+
 }
 
 /* 4. STATES & ANIMATIONS */
@@ -103,7 +107,8 @@ body::before {
   content: "";
   position: fixed; inset: -100%; width: 300%; height: 300%;
   background-image: url("https://www.transparenttextures.com/patterns/p6.png");
-  opacity: 0.12; pointer-events: none; z-index: 9999;
+    opacity: var(--grain-opacity, 0.12); pointer-events: none; z-index: 9999;
+
   animation: grain-dance 1s steps(2) infinite;
   will-change: transform;
 }
@@ -137,15 +142,42 @@ p { color: var(--ink-medium); max-width: 60ch; }
 
 .btn-ghost:hover { background: var(--ink-deep); color: var(--bg-bone); transform: translateY(-2px); }
 
-.nav-icon { background: none; border: none; cursor: pointer; color: var(--ink-deep); display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+.nav-icon { 
+  background: transparent !important; 
+  border: none !important; 
+  outline: none;
+  cursor: pointer; 
+  color: var(--ink-deep); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
+  padding: 0;
+  box-shadow: none !important;
+}
+
+.nav-icon:active { transform: scale(0.85); }
+
+#searchOverlay {
+  position: fixed; inset: 0; z-index: 11000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  visibility: hidden; opacity: 0;
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#searchOverlay.active { visibility: visible; opacity: 1; }
+
 
 /* 7. HEADER & NAVIGATION (V6 ARCHITECTURE) */
 .app-header {
   position: fixed; top: 0; left: 0; width: 100%; height: 70px;
   background: var(--bg-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 20px; z-index: 1000; border-bottom: 1px solid rgba(15, 61, 48, 0.05);
+    padding: 0 20px; z-index: 1000; border-bottom: 1px solid rgba(15, 61, 48, 0.05);
+  transition: background var(--transition-main), border var(--transition-main);
 }
+
 
 .brand-logo { 
   position: absolute; left: 50%; transform: translateX(-50%); 
@@ -159,12 +191,22 @@ p { color: var(--ink-medium); max-width: 60ch; }
 .nav-overlay {
   position: fixed; inset: 0; background: var(--bg-bone); z-index: 9999;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transform: translateY(-100%); transition: transform 0.6s var(--transition-main), visibility 0.6s;
+    transform: scale(1.1);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease, visibility 0.6s;
   visibility: hidden;
   pointer-events: none;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
-.nav-overlay.active { transform: translateY(0); }
+.nav-overlay.active { 
+  transform: scale(1); 
+  opacity: 1; 
+  visibility: visible; 
+  pointer-events: all; 
+}
+
 .nav-menu-link { font-family: var(--font-display); font-size: 2.8rem; color: var(--ink-deep); text-decoration: none; margin: 15px 0; transition: 0.3s; }
 
 /* 8. LAYOUT ARCHITECTURE */
@@ -196,10 +238,42 @@ p { color: var(--ink-medium); max-width: 60ch; }
 
 /* 11. FAQ ACCORDION */
 .faq-item { background: var(--bg-surface); border-radius: 15px; padding: 20px; border: 1px solid rgba(15, 61, 48, 0.05); margin-bottom: 12px; }
-.faq-question { font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.faq-question { 
+  font-weight: 700; display: flex; justify-content: space-between; 
+  align-items: center; cursor: pointer; list-style: none; outline: none;
+}
+.faq-question::-webkit-details-marker { display: none; }
+
 .faq-answer { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); }
 
 /* 12. CARTS & NOTIFICATIONS */
+.cart-sidebar {
+  position: fixed; top: 0; right: 0; width: 100%; max-width: 400px; height: 100%;
+  background: var(--bg-bone); color: var(--ink-deep); z-index: 10000; padding: 40px;
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: -20px 0 60px rgba(0,0,0,0.15);
+  border-left: 1px solid rgba(15, 61, 48, 0.05);
+}
+
+
+.cart-sidebar.active { transform: translateX(0); }
+
+.cart-item {
+  display: flex; gap: 20px; align-items: center; padding: 20px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.cart-item-img { width: 60px; height: 60px; border-radius: 12px; padding: 8px; }
+
+.checkout-btn {
+  width: 100%; padding: 20px; border-radius: var(--radius-pill);
+  background: var(--ink-deep); color: var(--bg-bone);
+  border: none; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; gap: 12px;
+}
+
 .cart-wrapper { position: relative; display: inline-flex; }
 .cart-count-badge {
   position: absolute; top: -5px; right: -5px;
@@ -222,6 +296,9 @@ p { color: var(--ink-medium); max-width: 60ch; }
 .activity-toast.visible { transform: translateY(0); }
 
 /* 13. FILTERS & SEARCH */
+#searchInput::placeholder { color: var(--ink-medium); opacity: 0.5; }
+#searchResults::-webkit-scrollbar { width: 0; }
+
 .filter-bar {
   display: flex; 
   gap: 12px; 
@@ -231,8 +308,10 @@ p { color: var(--ink-medium); max-width: 60ch; }
   scrollbar-width: none; 
   -webkit-overflow-scrolling: touch;
   position: sticky; 
-  top: 69px; background: 
-  var(--bg-bone); 
+  top: 70px; 
+  background: var(--bg-bone); 
+  margin-top: -1px;
+ 
   z-index: 100;
   scroll-snap-type: x mandatory;
   scroll-padding: 20px;
@@ -242,8 +321,13 @@ p { color: var(--ink-medium); max-width: 60ch; }
 .filter-chip {
   padding: 10px 24px; border-radius: 50px; border: 1.5px solid var(--ink-medium);
   background: transparent; color: var(--ink-deep); font-weight: 600;
-  white-space: nowrap; transition: 0.3s; opacity: 0.6; cursor: pointer;
+  white-space: nowrap; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
+  opacity: 0.6; cursor: pointer;
+  -webkit-user-select: none; user-select: none;
 }
+
+.filter-chip:active { transform: scale(0.92); }
+
 .filter-chip.active { background: var(--ink-deep); color: var(--bg-bone); opacity: 1; border-color: var(--ink-deep); }
 
 /* 14. MOBILE STICKY FOOTER */
@@ -258,7 +342,13 @@ p { color: var(--ink-medium); max-width: 60ch; }
 }
 
 /* Scroll Reveal */
-.reveal-up { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+.reveal-up { 
+  opacity: 0; 
+  transform: translateY(30px) translateZ(0); 
+  will-change: transform, opacity;
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease-out; 
+}
+
 .reveal-visible { opacity: 1; transform: translateY(0); }
 
 .empty-state { grid-column: 1 / -1; text-align: center; padding: 100px 0; color: var(--ink-medium); }

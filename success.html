@@ -7,10 +7,16 @@
     <link href="styles.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <style>
-      @keyframes ripple { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+      @keyframes ripple { 
+        0% { transform: scale(0.8); opacity: var(--ripple-opacity, 0.4); } 
+        100% { transform: scale(1.8); opacity: 0; } 
+      }
+
       .status-card { padding: 24px; background: var(--bg-surface); border: 1px solid rgba(0, 0, 0, 0.04); border-radius: 20px; display: flex; align-items: center; gap: 20px; width: 100%; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
       .status-card:hover { transform: translateY(-4px); border-color: var(--accent-gold); }
       .success-icon-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 30px auto; display: flex; align-items: center; justify-content: center; }
+      body.dark-mode { --ripple-opacity: 0.15; }
+
     </style>
   </head>
 
@@ -55,15 +61,16 @@
           </a>
         </div>
 
-        <a class="btn-primary" href="shop.html" style="margin-top: 40px; width: 100%; justify-content: center">
-          Return to Marketplace
-        </a>
+        <a class="btn-primary" href="shop.html" onclick="if(localStorage.getItem('kynar_cart')) localStorage.removeItem('kynar_cart');" style="margin-top: 40px; width: 100%; justify-content: center">
+  Initialize New Session
+</a>
+
       </div>
     </main>
 
     <footer class="app-footer" id="global-footer"></footer>
 
-    <script src="ui-core.js"></script>
+    <script src="ui-core.js" defer></script>
     <script type="module">
       import { getProduct } from './vault.js';
 
@@ -97,6 +104,10 @@
         // Kynar "Success Sequence" Haptic
         if (navigator.vibrate) {
           setTimeout(() => navigator.vibrate([40, 40, 150]), 600);
+                  // Self-Correcting Visibility Heartbeat
+        requestAnimationFrame(() => {
+          document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('reveal-visible'));
+        });
         }
       });
     </script>

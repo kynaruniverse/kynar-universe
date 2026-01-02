@@ -7,6 +7,18 @@
     <link href="styles.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script src="ui-core.js" defer></script>
+    
+    <meta property="og:title" content="The Community Archive | Kynar Studio">
+    <meta property="og:description" content="Join the network for high-fidelity creative dispatches.">
+    <meta property="og:url" content="https://www.kynaruniverse.co.uk/newsletter.html">
+    <meta property="og:image" content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp">
+   
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@kynarstudio">
+    <meta name="twitter:title" content="The Community Archive">
+    <meta name="twitter:description" content="Access elite creative strategies.">
+    <meta name="twitter:image" content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp">
+    
   </head>
 
   <body>
@@ -26,15 +38,20 @@
           Access high-fidelity insights, exclusive asset drops, and creative strategies delivered weekly to your inbox.
         </p>
 
-        <div class="product-card" style="padding: 8px; flex-direction: row; border-radius: 50px; background: var(--bg-surface); border: 1.5px solid var(--ink-deep); overflow: visible;">
+        <div class="product-card" style="padding: 8px; flex-direction: row; border-radius: 50px; background: var(--bg-surface); border: 1.5px solid var(--ink-deep); overflow: visible; min-height: 64px;">
+
           <form action="https://formspree.io/f/mlgekbwb" method="POST" style="display: flex; width: 100%; align-items: center;">
-            <input name="_next" type="hidden" value="https://kynaruniverse.co.uk/success.html?type=newsletter" />
+            <input name="_next" type="hidden" value="https://www.kynaruniverse.co.uk/success.html/?type=newsletter" />
+
+
             
             <input name="email" placeholder="Archive access email..." required 
-                   style="flex-grow: 1; background: transparent; border: none; padding: 0 25px; font-family: var(--font-body); font-size: 1rem; outline: none; color: var(--ink-deep);"
+                   style="flex-grow: 1; background: transparent; border: none; padding: 0 25px; font-family: var(--font-body); font-size: 1rem; outline: none; color: var(--ink-deep); caret-color: var(--accent-gold);"
+
                    type="email" />
             
-            <button class="btn-primary" style="padding: 14px 30px; font-size: 0.8rem; border-radius: 40px; white-space: nowrap;" type="submit">
+            <button class="btn-primary" onclick="if(navigator.vibrate) navigator.vibrate([20, 40]);" style="padding: 14px 30px; font-size: 0.8rem; border-radius: 40px; white-space: nowrap;" type="submit">
+
               Join Now
             </button>
           </form>
@@ -54,13 +71,15 @@
 
         <div class="gallery-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
           
-          <article class="product-card" style="padding: 30px; text-align: left; border-left: 6px solid var(--pastel-sage); display: block;">
+          <article class="product-card" style="padding: 30px; text-align: left; border-left: 4px solid var(--accent-gold); display: block; transition: var(--transition-main); cursor: default;">
+
             <span style="font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em;">Dispatch #02</span>
             <h4 style="margin: 12px 0; font-family: var(--font-display); font-size: 1.2rem; color: var(--ink-deep);">The 2026 Asset Economy</h4>
             <p style="font-size: 0.9rem; color: var(--ink-medium); line-height: 1.5;">Analyzing the shift toward minimalist, high-utility digital products in the creative space.</p>
           </article>
 
-          <article class="product-card" style="padding: 30px; text-align: left; border-left: 6px solid var(--pastel-clay); display: block;">
+          <article class="product-card" style="padding: 30px; text-align: left; border-left: 4px solid var(--accent-gold); display: block; transition: var(--transition-main); cursor: default;">
+
             <span style="font-size: 0.6rem; font-weight: 900; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em;">Dispatch #01</span>
             <h4 style="margin: 12px 0; font-family: var(--font-display); font-size: 1.2rem; color: var(--ink-deep);">Design as a Service</h4>
             <p style="font-size: 0.9rem; color: var(--ink-medium); line-height: 1.5;">How template creators are moving from one-off sales to recurring community memberships.</p>
