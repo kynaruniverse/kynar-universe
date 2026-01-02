@@ -6,6 +6,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
   // 1. Initialise State
   window.KYNAR_STATE = { cart: JSON.parse(localStorage.getItem('kynar_cart')) || [] };
+  window.scrollTo(0, 0);
+
 
   // 2. Critical Component Load & Handshake
   await Promise.all([loadHeader(), loadFooter(), loadCartSidebar()]);
@@ -46,6 +48,8 @@ async function loadHeader() {
     // Binding listeners specifically after injection
     initMenuLogic();
     initThemeEngine();
+    initSearchEngine();
+
   } catch (err) { console.error("Header Fault:", err); }
 }
 
@@ -58,6 +62,8 @@ async function loadFooter() {
   try {
     const response = await fetch("components/footer.html");
     footerEl.innerHTML = await response.text();
+      console.log("Footer Index Handshake: Verified");
+
   } catch (err) { console.error("Footer Fault:", err); }
 }
 
@@ -92,13 +98,17 @@ function initCartEngine() {
     if (!sidebar) return;
     const isActive = state === 'open';
     sidebar.classList.toggle('active', isActive);
-        if (isActive) {
+            const lenisInstance = window.lenis || null;
+    if (isActive) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
+      if (lenisInstance) lenisInstance.stop();
     } else {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+      if (lenisInstance) lenisInstance.start();
     }
+
 
     if (isActive && navigator.vibrate) navigator.vibrate(10);
   };
@@ -140,19 +150,27 @@ function initCartEngine() {
     }
 
 
-    list.innerHTML = window.KYNAR_STATE.cart.length === 0 
-      ? '<p style="text-align: center; margin-top: 100px; opacity: 0.4;">Archive is empty.</p>'
-      : window.KYNAR_STATE.cart.map(item => `
-        <div class="cart-item">
-          <div class="cart-item-img" style="background:${item.bg}"><img src="${item.image}" style="width:100%; height:100%; object-fit:contain;"></div>
-          <div style="flex-grow:1;">
-            <h4 style="font-size:0.9rem; margin-bottom:4px;">${item.title}</h4>
-            <span style="font-family:var(--font-display); font-size:1rem;">${item.price}</span>
+        if (window.KYNAR_STATE.cart.length === 0) {
+      list.innerHTML = '<div class="reveal-up reveal-visible" style="text-align: center; margin-top: 100px; opacity: 0.4; font-family: var(--font-display);">Archive Index Empty</div>';
+    } else {
+      list.innerHTML = window.KYNAR_STATE.cart.map(item => `
+        <div class="cart-item reveal-up reveal-visible">
+          <div class="cart-item-img" style="background: var(--bg-surface); border: 1px solid rgba(0,0,0,0.05);">
+            <img src="${item.image}" style="width:100%; height:100%; object-fit:contain;" loading="lazy">
           </div>
-          <button onclick="removeFromCart('${item.id}')" style="background:none; border:none; color:var(--accent-gold); font-weight:800; cursor:pointer;">✕</button>
+          <div style="flex-grow:1;">
+            <h4 style="font-size:0.85rem; margin-bottom:4px; font-weight:700;">${item.title}</h4>
+            <span style="font-family:var(--font-display); font-size:0.9rem; color: var(--accent-gold);">${item.price}</span>
+          </div>
+          <button onclick="removeFromCart('${item.id}')" class="nav-icon" style="font-size: 1rem; opacity: 0.5;">✕</button>
         </div>`).join('');
+    }
 
-    const total = window.KYNAR_STATE.cart.reduce((acc, item) => acc + parseFloat(item.price.replace(/[£,]/g, '')), 0);
+
+        const total = window.KYNAR_STATE.cart.reduce((acc, item) => {
+      const numericPrice = parseFloat(item.price.replace(/[^\d.]/g, ''));
+      return acc + (isNaN(numericPrice) ? 0 : numericPrice);
+    }, 0);
     totalEl.textContent = `£${total.toFixed(2)}`;
   }
 
@@ -194,14 +212,19 @@ function initSearchEngine() {
       const matches = VAULT.filter(p => p.title.toLowerCase().includes(query) || p.tag.toLowerCase().includes(query));
       results.innerHTML = matches.map(p => `
         <a href="product.html?id=${p.id}" class="product-card" style="flex-direction: row; padding: 15px; align-items: center; gap: 20px; text-decoration: none;">
-          <div style="width: 60px; height: 60px; background: var(--bg-bone); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center;"><img src="${p.image}" style="width:100%; height:100%; object-fit:contain;"></div>
+          <div style="width: 60px; height: 60px; background: var(--bg-surface); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 8px; display: flex; align-items: center; justify-content: center;"><img src="${p.image}" style="width:100%; height:100%; object-fit:contain;"></div>
+
           <div><h4 style="color:var(--ink-deep); margin:0;">${p.title}</h4><span style="font-size:0.7rem; color:var(--accent-gold); font-weight:800; text-transform:uppercase;">${p.tag}</span></div>
         </a>`).join('');
     };
 
-    document.getElementById('closeSearch').onclick = () => {
-      document.getElementById('searchOverlay').remove();
+        document.getElementById('closeSearch').onclick = () => {
+      const overlay = document.getElementById('searchOverlay');
+      const lenisInstance = window.lenis || null;
+      overlay.classList.remove('active');
+      setTimeout(() => overlay.remove(), 500);
       document.body.style.overflow = '';
+      if (lenisInstance) lenisInstance.start();
     };
   };
 }
@@ -224,7 +247,9 @@ function initStudioHaptics() {
 
 function initSmoothScroll() {
   if (typeof Lenis !== "undefined") {
-    const lenis = new Lenis({ duration: 1.4, lerp: 0.08, smoothWheel: true });
+        window.lenis = new Lenis({ duration: 1.4, lerp: 0.08, smoothWheel: true });
+    const lenis = window.lenis;
+
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
   }
@@ -251,11 +276,26 @@ function handleSuccessLogic() {
 function initMenuLogic() {
   const trigger = document.getElementById("menuTrigger");
   const nav = document.getElementById("navOverlay");
+  const close = document.getElementById("closeMenu");
+  const lenisInstance = window.lenis || null;
+
   if (trigger && nav) {
-    trigger.onclick = () => { nav.classList.add("active"); document.body.style.overflow = "hidden"; };
-    document.getElementById("closeMenu").onclick = () => { nav.classList.remove("active"); document.body.style.overflow = ""; };
+    trigger.onclick = () => { 
+      nav.classList.add("active"); 
+      document.body.style.overflow = "hidden";
+      if (lenisInstance) lenisInstance.stop();
+      if (navigator.vibrate) navigator.vibrate(10);
+    };
+    if (close) {
+      close.onclick = () => { 
+        nav.classList.remove("active"); 
+        document.body.style.overflow = ""; 
+        if (lenisInstance) lenisInstance.start();
+      };
+    }
   }
 }
+
 
 function applyPreLaunchStatus() {
   document.querySelectorAll(".product-card").forEach((card) => {

@@ -14,11 +14,12 @@
       .product-hero-img {
         width: 100%;
         display: block;
-        mix-blend-mode: multiply;
         opacity: 0;
         transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         will-change: opacity;
       }
+      body:not(.dark-mode) .product-hero-img { mix-blend-mode: multiply; }
+
       .img-skeleton {
         min-height: 300px;
         display: flex;
@@ -30,6 +31,12 @@
         transform: translateY(0) !important;
       }
     </style>
+  
+    <meta property="og:type" content="product">
+    <meta property="og:title" content="Archive Entry | Kynar Studio">
+    <meta property="og:description" content="Secure access to Kynar Studio high-fidelity digital assets.">
+    <meta property="og:url" content="https://www.kynaruniverse.co.uk/product.html">
+  
   </head>
 
   <body>
@@ -37,7 +44,8 @@
 
     <main class="container" id="product-content">
       <div class="reveal-up" style="text-align: center; padding: 120px 0;">
-        <p style="font-family: 'Bantayog'; letter-spacing: 0.1em; font-size: 0.9rem; opacity: 0.5;">Accessing Archive...</p>
+        <p style="font-family: var(--font-display); letter-spacing: 0.2em; font-size: 0.8rem; opacity: 0.5; text-transform: uppercase;">System Handshake: Initializing...</p>
+
       </div>
     </main>
 
@@ -95,10 +103,11 @@
               <div style="background: var(--bg-surface); padding: clamp(24px, 5vw, 40px); border-radius: 32px; border: 1px solid rgba(0,0,0,0.04); box-shadow: var(--shadow-float);">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px;">
                   <div>
-                    <div class="live-signal" style="margin-bottom: 12px;">
-                      <div class="pulse-dot"></div>
-                      3 CREATORS VIEWING
-                    </div>
+                    <div class="live-signal" style="margin-bottom: 12px; font-size: 0.6rem; font-weight: 900; letter-spacing: 0.15em; color: var(--accent-gold); display: flex; align-items: center; gap: 8px;">
+                <div style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent-gold); animation: pulse-border 2s infinite;"></div>
+                ARCHIVE SIGNAL: ACTIVE
+              </div>
+
                     <span style="display: block; font-size: 0.65rem; font-weight: 800; opacity: 0.4; letter-spacing: 0.1em; margin-bottom: 4px;">SINGLE USER LICENSE</span>
                     <span style="font-family: var(--font-display); font-size: 2.2rem;">${p.price}</span>
                   </div>
@@ -107,7 +116,7 @@
                 
                 ${p.status === 'coming-soon' ? renderWaitlist(p) : `
                   <div style="display: grid; gap: 12px;">
-                    <a href="${p.checkout}" class="btn-primary" style="height: 64px; font-size: 1rem;">Authorize Download</a>
+                    <a href="${p.checkout}" class="btn-primary" style="height: 64px; font-size: 1rem;">${p.actionLabel || 'Authorize Download'}</a>
                     <button id="save-btn" onclick="saveToArchive('${p.id}')" class="btn-ghost" style="height: 56px; width: 100%;">Save to Archive</button>
                     ${p.previewUrl && p.previewUrl !== "#" ? `<a href="${p.previewUrl}" target="_blank" style="text-align: center; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--ink-medium); text-decoration: none; margin-top: 10px; letter-spacing: 0.1em;">Launch Interactive Preview →</a>` : ''}
                   </div>
@@ -116,12 +125,15 @@
             </div>
           </div>
 
-          <div class="mobile-sticky-cta" id="sticky-anchor" style="padding: 16px 24px; background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 16px; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000; transform: translateY(100%); transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);">
+          <div class="mobile-sticky-cta" id="sticky-anchor" style="padding: 16px 24px; background: var(--bg-glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid rgba(15, 61, 48, 0.08); display: flex; align-items: center; gap: 16px; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2000; transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);">
+
              <div style="flex-shrink: 0;">
                 <span style="display: block; font-size: 0.55rem; font-weight: 800; opacity: 0.5;">${p.title}</span>
                 <span style="font-family: var(--font-display); font-size: 1.1rem;">${p.price}</span>
              </div>
-             <a href="${p.checkout}" class="btn-primary" style="flex-grow: 1; height: 50px; font-size: 0.8rem; justify-content: center;">Authorize</a>
+             <a href="${p.checkout}" onclick="if(navigator.vibrate) navigator.vibrate([15, 30]);" class="btn-primary" style="flex-grow: 1; height: 50px; font-size: 0.8rem; justify-content: center;">${p.status === 'coming-soon' ? 'Notify Me' : (p.actionLabel || 'Authorize')}</a>
+
+
           </div>
         `;
 
@@ -133,14 +145,15 @@
       }
 
 
-      function renderWaitlist(p) {
+            function renderWaitlist(p) {
         return `
-          <div style="background: var(--bg-bone); padding: 20px; border-radius: 12px; text-align: center;">
-            <p style="font-weight: 800; font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 10px;">PRE-RELEASE ENROLLMENT</p>
-            <p style="font-size: 0.9rem; opacity: 0.6;">This asset is currently in engineering. Access is restricted until launch.</p>
+          <div style="background: var(--bg-surface); padding: 32px; border-radius: 24px; text-align: center; border: 1.5px solid var(--accent-gold); animation: pulse-border 3s infinite;">
+            <p style="font-weight: 900; font-size: 0.7rem; color: var(--accent-gold); letter-spacing: 0.2em; margin-bottom: 12px; text-transform: uppercase;">${p.actionLabel || 'Engineering Mode'}</p>
+            <p style="font-size: 0.9rem; opacity: 0.6; color: var(--ink-deep); font-weight: 500;">Secure encryption in progress. This archive is currently being populated.</p>
           </div>
         `;
       }
+
     </script>
   </body>
 </html>
