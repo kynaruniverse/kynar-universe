@@ -24,6 +24,15 @@
     <meta content="The Community Archive" name="twitter:title">
     <meta content="Access elite creative strategies." name="twitter:description">
     <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" name="twitter:image">
+    <style>
+      @media (max-width: 480px) {
+        .newsletter-form-wrap { border-radius: 24px !important; }
+        .newsletter-form-wrap form { flex-direction: column !important; gap: 10px; }
+        .newsletter-form-wrap button { width: 100% !important; }
+        .newsletter-form-wrap input { padding: 15px !important; text-align: center; }
+      }
+    </style>
+    
   </head>
 
   <body>
@@ -87,17 +96,18 @@
         </p>
 
         <div 
-          class="product-card" 
+          class="product-card newsletter-form-wrap" 
           style="
             background: var(--bg-surface); 
             border: 1.5px solid var(--ink-deep); 
             border-radius: 50px; 
-            flex-direction: row; 
             min-height: 64px;
             overflow: visible; 
             padding: 8px; 
+            transition: var(--transition-main);
           "
         >
+
           <form 
             action="https://formspree.io/f/mlgekbwb" 
             method="POST" 
@@ -114,7 +124,7 @@
               placeholder="Archive access email..." 
               required 
               style="
-                background: transparent; 
+                background: var(--bg-surface); 
                 border: none; 
                 caret-color: var(--accent-gold);
                 color: var(--ink-deep); 
@@ -185,7 +195,8 @@
         </h3>
 
         <div 
-          class="gallery-grid" 
+          class="gallery-grid reveal-up" 
+          style="transition-delay: 0.2s;"
           style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));"
         >
           

@@ -143,7 +143,7 @@ export const VAULT = [
       "Mobile Setup",
       "Natural Look",
     ],
-    bg: "var(--bg-surface)",
+    bg: "var(--pastel-sky)",
     image: "assets/images/visual-mockup.webp",
     previewUrl: "#",
     checkout: "#",

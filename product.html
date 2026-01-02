@@ -51,6 +51,9 @@
         document.title = `${p.title} | Kynar Studio Archive`;
         const metaDesc = document.querySelector('meta[property="og:description"]');
         if (metaDesc) metaDesc.setAttribute('content', p.shortDesc);
+        const metaImg = document.querySelector('meta[property="og:image"]');
+        if (metaImg) metaImg.setAttribute('content', p.image);
+        
       }
     </script>
 
@@ -143,7 +146,6 @@
                   width: 100%; 
                 "
               >
-                <img 
                 <img 
                   alt="${p.title}" 
                   class="product-hero-img" 

@@ -25,6 +25,14 @@
         box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1); 
         transform: translateY(-2px);
       }
+      input, textarea {
+        transition: transform var(--transition-main), border-color var(--transition-main);
+      }
+      body.dark-mode input, body.dark-mode textarea {
+        background: var(--bg-bone) !important;
+        border-color: rgba(255, 255, 255, 0.05) !important;
+      }
+      
     </style>
   </head>
 
@@ -212,7 +220,8 @@
 
             <button 
               class="btn-primary" 
-              onclick="if(navigator.vibrate) navigator.vibrate(20);" 
+              onclick="if(navigator.vibrate) navigator.vibrate([15, 30]);" 
+ 
               style="
                 justify-content: center; 
                 letter-spacing: 0.15em;

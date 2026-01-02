@@ -105,8 +105,9 @@
        * @param {string} filter - The category ID or 'all'.
        */
       async function renderGallery(filter = 'all') {
-        grid.style.opacity = '0.5';
-        showSkeletons();
+        grid.style.opacity = '0'; 
+        
+        const skeletonTimeout = setTimeout(() => showSkeletons(), 50);
 
         requestAnimationFrame(() => {
           const filtered = filter === 'all' ? VAULT : VAULT.filter(p => p.category === filter);
@@ -188,7 +189,9 @@
           }
 
           // Animation Reveal
+          clearTimeout(skeletonTimeout);
           grid.style.opacity = '1';
+
           document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('reveal-visible'));
         });
       }
@@ -220,7 +223,8 @@
       document.getElementById('filterContainer').addEventListener('click', (e) => {
         const chip = e.target.closest('.filter-chip');
         if (chip) {
-          if (navigator.vibrate) navigator.vibrate(8);
+          if (window.initStudioHaptics) window.initStudioHaptics();
+
           document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
           chip.classList.add('active');
           renderGallery(chip.dataset.cat);

@@ -37,6 +37,8 @@
       body.dark-mode h1 { color: var(--ink-deep); }
       body.dark-mode p { color: var(--ink-medium); opacity: 0.8; }
     </style>
+    
+    <link rel="canonical" href="https://www.kynaruniverse.co.uk/" />
   </head>
 
   <body 
@@ -93,7 +95,7 @@
       <a 
         class="btn-primary" 
         href="index.html" 
-        onclick="if(navigator.vibrate) navigator.vibrate(20);" 
+        onclick="if(navigator.vibrate) navigator.vibrate([15, 30]); window.location.reload();" 
         style="
           display: flex; 
           justify-content: center; 
@@ -106,17 +108,5 @@
       </a>
 
     </div>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Animation Trigger
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('reveal-visible'));
-          }, 150);
-        });
-      });
-    </script>
-    
   </body>
 </html>

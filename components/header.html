@@ -4,7 +4,6 @@
     aria-label="Menu" 
     class="nav-icon" 
     id="menuTrigger" 
-    onclick="if(navigator.vibrate) navigator.vibrate(15);"
   >
     <svg 
       fill="none" 
@@ -24,7 +23,7 @@
     aria-label="Search Marketplace" 
     class="nav-icon" 
     id="searchTrigger" 
-    onclick="if(navigator.vibrate) navigator.vibrate(10);"
+    
   >
     <svg 
       fill="none" 
@@ -43,7 +42,7 @@
 <a 
   class="brand-logo" 
   href="index.html" 
-  onclick="if(navigator.vibrate) navigator.vibrate(10);"
+  
 >
   KYNAR.
 </a>
@@ -54,7 +53,7 @@
     aria-label="Toggle Obsidian Mode" 
     class="theme-toggle" 
     id="themeToggle" 
-    onclick="if(navigator.vibrate) navigator.vibrate(10);"
+    
   >
     <svg 
       class="sun-icon" 
@@ -97,7 +96,7 @@
     <button 
       aria-label="Cart" 
       class="nav-icon cart-trigger" 
-      onclick="if(navigator.vibrate) navigator.vibrate(20); toggleCart('open');"
+      toggleCart('open');"
     >
       <svg 
         fill="none" 
@@ -113,11 +112,8 @@
       </svg>
     </button>
     
-    <span 
-      class="cart-count-badge" 
-      id="globalCartBadge" 
-      style="display: none;"
-    >0</span>
+    <span class="cart-count-badge" style="visibility: hidden;">0</span>
+
   </div>
 </div>
 
@@ -127,12 +123,12 @@
     aria-label="Close Menu" 
     class="nav-icon" 
     id="closeMenu" 
-    onclick="if(navigator.vibrate) navigator.vibrate(15);" 
     style="
       left: 20px; 
       position: absolute; 
-      top: 20px;
+      top: env(safe-area-inset-top, 20px);
     "
+
   >
     <svg 
       fill="none" 

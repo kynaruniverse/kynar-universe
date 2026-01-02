@@ -140,17 +140,18 @@
           </a>
         </div>
 
-        <div 
-          class="security-box verifying" 
-          id="security-box" 
-          style="
-            background: var(--bg-surface); 
-            border: 1.5px dashed rgba(15, 61, 48, 0.1);
-            border-radius: 20px; 
-            margin-top: 50px; 
-            padding: 25px; 
-          "
-        >
+      <div 
+      class="product-card security-box verifying" 
+      id="security-box" 
+      style="
+      background: var(--bg-surface); 
+      border: 1.5px dashed rgba(15, 61, 48, 0.15); 
+      border-radius: 20px; 
+      margin-top: 50px; 
+      padding: 25px; 
+      transition: var(--transition-main);"
+      >
+
            <p 
              style="
                font-size: 0.75rem; 
@@ -224,6 +225,13 @@
             securityLabel.style.color = "var(--accent-gold)";
             claimTitle.innerHTML = `Your Assets Are <br /><span style="color: var(--ink-medium)">Ready.</span>`;
             metaText.innerHTML = `The <strong>${productName}</strong> archive is now decrypted and prepared for download.`;
+            // Visual Physics: Reveal Sequence
+            icon.style.opacity = '0';
+            setTimeout(() => {
+              icon.style.opacity = '1';
+              icon.style.transform = 'scale(1.1)';
+            }, 300);
+            
             icon.textContent = "🔓";
             
             // Visual Physics: Success State
@@ -248,7 +256,7 @@
             // Bind Haptic Download Event
             if (dlBtn) {
               dlBtn.onclick = () => {
-                if (navigator.vibrate) navigator.vibrate([100, 30, 100]);
+                if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
                 dlBtn.style.pointerEvents = "none";
                 dlBtn.textContent = "Download Initialized";
                 // Reset button state after 3s

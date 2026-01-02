@@ -281,7 +281,7 @@
                 color: var(--ink-deep);
                 font-family: var(--font-display); 
                 font-size: 10rem; 
-                opacity: 0.1; 
+                opacity: 0.05; 
                 position: absolute; 
                 right: -20px; 
                 top: 40px; 
@@ -470,19 +470,20 @@
             </div>
           </article>
         `).join('');
+        
         // #endregion
-
-        // #region [ 3. CINEMATIC REVEAL ]
-        // Execute only after DOM injection
-        requestAnimationFrame(() => {
-          const elements = document.querySelectorAll('.reveal-up:not(.reveal-visible)');
-          elements.forEach((el, index) => {
-            setTimeout(() => {
-              el.classList.add('reveal-visible');
-            }, (index + 1) * 150);
-          });
-        });
-        // #endregion
+        
+        // KYNAR MASTER HANDSHAKE: Hand off reveal to ui-core.js
+        if (typeof window.initRevealEngine === 'function') {
+            window.initRevealEngine();
+        } else {
+            // Fallback for isolated local testing
+            requestAnimationFrame(() => {
+              document.querySelectorAll('.reveal-up').forEach((el, i) => {
+                setTimeout(() => el.classList.add('reveal-visible'), i * 150);
+              });
+            });
+        }
 
       });
     </script>
