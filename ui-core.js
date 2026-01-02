@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 4. Engine Boot Sequence
   initSmoothScroll();
   initStudioHaptics();
-  await loadCartSidebar(); 
   initCartEngine();
 
   // 5. Layout & Experience Services
@@ -178,7 +177,7 @@ function initCartEngine() {
       window.location.href = `product.html?id=${cart[0].id}`;
     }
     
-    if (navigator.vibrate) navigator.vibrate([30, 50]);
+    if (navigator.vibrate) navigator.vibrate([15, 30]);
   };
 
 

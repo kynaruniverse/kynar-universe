@@ -59,6 +59,8 @@ body.dark-mode {
   --shadow-depth: 0 30px 60px rgba(0, 0, 0, 0.8);
   --logo-brightness: 5;
   --grain-opacity: 0.04;
+  --logo-invert: 1;
+
 }
 
 /* Dark Mode Toggles */
@@ -261,7 +263,7 @@ p { color: var(--ink-medium); max-width: 60ch; }
 
 /* --- Fullscreen Nav --- */
 .nav-overlay {
-  position: fixed; inset: 0; background: var(--bg-bone); z-index: 9999;
+  position: fixed; inset: 0; background: var(--bg-bone); 
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   transform: scale(1.1); opacity: 0;
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease, visibility 0.6s;
@@ -298,22 +300,34 @@ p { color: var(--ink-medium); max-width: 60ch; }
   scroll-snap-type: x mandatory; 
   scroll-padding-left: 20px;
 }
-.filter-chip {
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
 
 .filter-bar::-webkit-scrollbar { display: none; }
 
 .filter-chip {
-  padding: 10px 24px; border-radius: 50px; border: 1.5px solid var(--ink-medium);
-  background: transparent; color: var(--ink-deep); font-weight: 600;
-  white-space: nowrap; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
-  opacity: 0.6; cursor: pointer;
-  -webkit-user-select: none; user-select: none;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  padding: 10px 24px; 
+  border-radius: 50px; 
+  border: 1.5px solid var(--ink-medium);
+  background: transparent; 
+  color: var(--ink-deep); 
+  font-weight: 600;
+  white-space: nowrap; 
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
+  opacity: 0.6; 
+  cursor: pointer;
+  -webkit-user-select: none; 
+  user-select: none;
 }
-.filter-chip:active { transform: scale(0.92); }
-.filter-chip.active { background: var(--ink-deep); color: var(--bg-bone); opacity: 1; border-color: var(--ink-deep); }
+.filter-chip:active { 
+  transform: scale(0.92); 
+}
+.filter-chip.active { 
+  background: var(--ink-deep); 
+  color: var(--bg-bone); 
+  opacity: 1; 
+  border-color: var(--ink-deep); 
+}
 
 /* --- FAQ Accordion --- */
 .faq-item { background: var(--bg-surface); border-radius: 15px; padding: 20px; border: 1px solid rgba(15, 61, 48, 0.05); margin-bottom: 12px; }

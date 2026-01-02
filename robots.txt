@@ -22,7 +22,7 @@ Crawl-delay: 1
 
 User-agent: *
 Allow: /
-Crawl-delay: 10
+Crawl-delay: 5
 
 # Explicit 4-Pillar Discovery
 Allow: /shop.html?cat=personal
@@ -41,6 +41,10 @@ Disallow: /footer.html
 Disallow: /claim-archived.html*
 Disallow: /success.html*
 Disallow: /assets/downloads/
+
+# Shield maintenance and error states
+Disallow: /maintenance.html
+Disallow: /404.html
 
 # Temporary State Parameters
 Disallow: /*?search=

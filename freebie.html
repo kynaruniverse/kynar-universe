@@ -37,6 +37,15 @@
       }
     </style>
     
+    <script>
+      // KYNAR ENGINE: Auto-focus first input for faster mobilization
+      document.addEventListener("DOMContentLoaded", () => {
+        const emailInput = document.querySelector('input[name="email"]');
+        if (emailInput && window.innerWidth > 1024) emailInput.focus();
+      });
+    </script>
+    
+    
     <meta content="Free Starter Pack | Kynar Studio" property="og:title">
     <meta content="https://www.kynaruniverse.co.uk/freebie.html" property="og:url">
     <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
@@ -170,14 +179,17 @@
         </div>
 
         <div 
+          class="product-card"
           style="
             background: var(--bg-surface); 
-            border: 1px solid rgba(15, 61, 48, 0.05); 
-            border-radius: 15px; 
+            border: 1px solid rgba(15, 61, 48, 0.08); 
+            border-radius: 18px; 
             margin-top: 40px; 
-            padding: 20px; 
+            padding: 24px; 
+            transition: var(--transition-main);
           "
         >
+
             <p 
               style="
                 color: var(--ink-medium); 
