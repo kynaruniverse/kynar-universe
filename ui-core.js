@@ -1,518 +1,113 @@
-/**
- * ══════════════════════════════════════════════════════════════════════════
- * MODULE: KYNAR UI CORE (V7.0 - MASTERPIECE LOGIC)
- * ══════════════════════════════════════════════════════════════════════════
- * @description Central controller for the Kynar UI.
- * Handles state management, component injection, cart logic, and experience services.
- * @module UiCore
- */
+/* ==========================================================================
+   CORE | MAIN CONTROLLER
+   Description: Initializes State, Event Listeners, and Global Services.
+   ========================================================================== */
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // #region [ 1. INITIALIZATION ]
+import { EventBus, EVENTS } from './core/events.js';
+import { VAULT, getProduct } from './vault.js';
 
-  // 1. Initialise State
-  window.KYNAR_STATE = {
-    cart: JSON.parse(localStorage.getItem("kynar_cart")) || [],
-  };
-  window.scrollTo(0, 0);
+/* --- STATE MANAGEMENT --- */
+const STATE = {
+  cart: JSON.parse(localStorage.getItem('kynar_cart')) || [],
+  theme: localStorage.getItem('kynar_theme') || 'light'
+};
 
-  // 2. Critical Component Load & Handshake
-  await Promise.all([loadHeader(), loadFooter(), loadCartSidebar()]);
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("System: Initializing...");
 
-  // 3. Data Handshake (Global Vault Check)
-  if (typeof VAULT === "undefined") {
-    try {
-      const module = await import("./vault.js");
-      window.VAULT = module.VAULT;
-    } catch (e) {
-      console.warn("Vault Offline: Running in isolated mode.");
-    }
-  }
+  // 1. Initialize Global Services
+  initTheme();
+  initHaptics();
+  
+  // 2. Load Layout Components (Async)
+  loadComponent('global-header', 'components/header.html');
+  loadComponent('global-footer', 'components/footer.html');
 
-  // 4. Engine Boot Sequence
-  initSmoothScroll();
-  initStudioHaptics();
-  initCartEngine();
-
-  // 5. Layout & Experience Services
-  initMobileStickyCTA();
-  applyPreLaunchStatus();
-  handleSuccessLogic();
-
-  console.log("Kynar Engine V7.0: Masterpiece Mode Active");
-
-  // #endregion
+  // 3. Emit Boot Signal
+  EventBus.emit(EVENTS.APP_INIT, STATE);
 });
 
-/* ══════════════════════════════════════════════════════════════════════════
-   COMPONENT INJECTORS
-   ══════════════════════════════════════════════════════════════════════════ */
+/* ==========================================================================
+   EVENT LISTENERS (THE LOGIC)
+   ========================================================================== */
 
-// #region [ 2. COMPONENT LOADERS ]
+// --- CART LOGIC ---
+EventBus.on(EVENTS.CART_ADD, (productId) => {
+  const product = getProduct(productId);
+  const exists = STATE.cart.find(p => p.id === productId);
 
-/**
- * Fetches and injects the global header.
- * Initializes menu, theme, and search logic after injection.
- */
-async function loadHeader() {
-  const headerEl = document.getElementById("global-header");
-  if (!headerEl) return;
-  try {
-    const response = await fetch("components/header.html");
-    const html = await response.text();
-    headerEl.innerHTML = html;
-
-    // Binding listeners specifically after injection
-    initMenuLogic();
-    initThemeEngine();
-    initSearchEngine();
-  } catch (err) {
-    console.error("Header Fault:", err);
-    headerEl.innerHTML =
-      '<div style="padding:20px; text-align:center;">Handshake Interrupted. <a href="index.html">Reload Shop</a></div>';
-  }
-}
-
-/**
- * Fetches and injects the global footer.
- */
-async function loadFooter() {
-  const footerEl = document.getElementById("global-footer");
-  if (!footerEl) return;
-  try {
-    const response = await fetch("components/footer.html");
-    footerEl.innerHTML = await response.text();
-    console.log("Footer Index Handshake: Verified");
-  } catch (err) {
-    console.error("Footer Fault:", err);
-  }
-}
-
-/**
- * Injects the Master Cart Sidebar HTML into the DOM if missing.
- */
-async function loadCartSidebar() {
-  if (document.getElementById("cartSidebar")) return;
-  const cartHTML = `
-    <div id="cartSidebar" class="cart-sidebar">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-        <h2 style="font-family: var(--font-display); font-size: 1.5rem;">Your Cart</h2>
-        <button onclick="toggleCart('close')" class="nav-icon" style="font-size: 1.5rem; background: transparent; border: none; padding: 0;">✕</button>
-      </div>
-      <div id="cartList" style="flex-grow: 1; overflow-y: auto;"></div>
-      <div class="cart-footer">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-          <span style="opacity: 0.5; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.1em;">TOTAL INVESTMENT</span>
-          <span id="cartTotal" style="font-family: var(--font-display); font-size: 1.4rem;">£0.00</span>
-        </div>
-        <button class="checkout-btn" onclick="initiateCheckout()">Authorize Download <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-      </div>
-    </div>`;
-  document.body.insertAdjacentHTML("beforeend", cartHTML);
-}
-
-// #endregion
-
-/* ══════════════════════════════════════════════════════════════════════════
-   MASTER CART LOGIC
-   ══════════════════════════════════════════════════════════════════════════ */
-
-// #region [ 3. CART ENGINE ]
-
-function initCartEngine() {
-  /**
-   * Toggles the visibility of the cart sidebar.
-   * Manages body scroll lock and Lenis scroll state.
-   */
-  window.toggleCart = (state) => {
-    const sidebar = document.getElementById("cartSidebar");
-    if (!sidebar) return;
-    const isActive = state === "open";
-    sidebar.classList.toggle("active", isActive);
-    const lenisInstance = window.lenis || null;
-    if (isActive) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-      if (lenisInstance) lenisInstance.stop();
-    } else {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-      if (lenisInstance) lenisInstance.start();
-    }
-
-    if (isActive && navigator.vibrate) navigator.vibrate(10);
-  };
-
-  /**
-   * Adds a product to the cart state and triggers a UI sync.
-   */
-  window.addToCart = (productId) => {
-    const item = VAULT.find((p) => p.id === productId);
-    if (item && !window.KYNAR_STATE.cart.find((c) => c.id === productId)) {
-      window.KYNAR_STATE.cart.push(item);
-      syncCart();
-      window.toggleCart("open");
-      if (navigator.vibrate) navigator.vibrate([20, 50, 20]);
-    }
-  };
-
-  window.removeFromCart = (id) => {
-    window.KYNAR_STATE.cart = window.KYNAR_STATE.cart.filter(
-      (item) => item.id !== id
-    );
+  if (product && !exists) {
+    STATE.cart.push(product);
     syncCart();
-  };
+    triggerHaptic([15, 30]);
+    // Note: We will render the cart UI in the next phase
+    console.log(`Cart: Added ${product.title}`);
+  }
   
-  window.initiateCheckout = () => {
-    const cart = window.KYNAR_STATE.cart;
-    if (cart.length === 0) return;
-    
-    // Handshake with Lemon Squeezy Overlay
-    const target = cart[0].checkout;
-    if (target && target !== "#") {
-      LemonSqueezy.Url.Open(target);
-    } else {
-      // Recovery for "Coming Soon" or Missing Links
-      window.location.href = `product.html?id=${cart[0].id}`;
-    }
-    
-    if (navigator.vibrate) navigator.vibrate([15, 30]);
-  };
+  // Open Cart Sidebar
+  EventBus.emit(EVENTS.CART_TOGGLE, 'open');
+});
 
+EventBus.on(EVENTS.CART_REMOVE, (productId) => {
+  STATE.cart = STATE.cart.filter(p => p.id !== productId);
+  syncCart();
+});
 
-  function syncCart() {
-    localStorage.setItem(
-      "kynar_cart",
-      JSON.stringify(window.KYNAR_STATE.cart)
-    );
-    renderCartUI();
+// --- UI LOGIC ---
+EventBus.on(EVENTS.MODAL_OPEN, (productId) => {
+  const product = getProduct(productId);
+  if (product) {
+    // Logic to open modal (Will be implemented in Phase 4)
+    console.log(`Modal: Opening ${product.title}`);
   }
+});
 
-  function renderCartUI() {
-    const list = document.getElementById("cartList");
-    const badge = document.querySelector(".cart-count-badge");
-    const totalEl = document.getElementById("cartTotal");
-    if (!list) return;
+/* ==========================================================================
+   CORE SERVICES
+   ========================================================================== */
 
-    const count = window.KYNAR_STATE.cart.length;
-    badge.textContent = count;
-    if (count > 0) {
-      badge.classList.add("visible");
-      badge.style.visibility = "visible";
-    } else {
-      badge.classList.remove("visible");
-      badge.style.visibility = "hidden";
-    }
-
-    // --- Empty State ---
-    if (window.KYNAR_STATE.cart.length === 0) {
-      list.innerHTML =
-        '<div class="reveal-up reveal-visible" style="text-align: center; margin-top: 100px; opacity: 0.4; font-family: var(--font-display);">Shop Cart Empty</div>';
-    } else {
-      // --- Populated State ---
-      list.innerHTML = window.KYNAR_STATE.cart
-        .map(
-          (item) => `
-        <div class="cart-item reveal-up reveal-visible">
-          <div class="cart-item-img" style="background: ${item.accentColor || 'var(--bg-surface)'}; border: 1px solid rgba(0,0,0,0.05);">
-          <img src="${item.image}" onerror="this.src='assets/images/placeholder.png'" style="width:100%; height:100%; object-fit:contain;" loading="lazy">
-
-          </div>
-          <div style="flex-grow:1;">
-            <h4 style="font-size:0.85rem; margin-bottom:4px; font-weight:700;">${item.title}</h4>
-            <span style="font-family:var(--font-display); font-size:0.9rem; color: var(--accent-gold);">${item.price}</span>
-          </div>
-          <button onclick="removeFromCart('${item.id}')" class="nav-icon" style="font-size: 1rem; opacity: 0.5;">✕</button>
-        </div>`
-        )
-        .join("");
-    }
-
-    // --- Total Calculation ---
-    const total = window.KYNAR_STATE.cart.reduce((acc, item) => {
-      const numericPrice = parseFloat(item.price.replace(/[^\d.]/g, ""));
-      return acc + (isNaN(numericPrice) ? 0 : numericPrice);
-    }, 0);
-    totalEl.textContent = `£${total.toFixed(2)}`;
-  }
-
-  renderCartUI();
+function syncCart() {
+  localStorage.setItem('kynar_cart', JSON.stringify(STATE.cart));
+  // Emit update signal for UI components to redraw
+  EventBus.emit('state:updated', STATE);
 }
 
-// #endregion
-
-/* ══════════════════════════════════════════════════════════════════════════
-   EXPERIENCE & SEARCH
-   ══════════════════════════════════════════════════════════════════════════ */
-
-// #region [ 4. EXPERIENCE LOGIC ]
-
-function initSearchEngine() {
-  const trigger = document.getElementById("searchTrigger");
-  if (!trigger || document.getElementById("searchOverlay")) return;
-
-  trigger.onclick = () => {
-    if (navigator.vibrate) navigator.vibrate(10);
-    const searchHTML = `
-      <div id="searchOverlay" class="nav-overlay active" style="padding: 20px; background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; width: 100%; max-width: 800px; margin: 0 auto 40px auto;">
-          <span style="font-family: var(--font-display); font-size: 1.2rem; color: var(--accent-gold); letter-spacing: 0.1em;">Shop Index</span>
-          <button id="closeSearch" class="nav-icon" style="font-size: 1.5rem;">✕</button>
-        </div>
-        <div style="width: 100%; max-width: 800px; margin: 0 auto;">
-          <input type="text" id="searchInput" placeholder="Search the shop..." style="width: 100%; padding: 20px 0; background: transparent; border: none; border-bottom: 2px solid var(--ink-deep); font-size: 1.8rem; font-family: var(--font-display); color: var(--ink-deep); outline: none;">
-          <div id="searchResults" style="margin-top: 40px; display: grid; gap: 20px; overflow-y: auto; max-height: 70vh;"></div>
-        </div>
-      </div>`;
-
-    document.body.insertAdjacentHTML("beforeend", searchHTML);
-    document.body.style.overflow = "hidden";
-    const input = document.getElementById("searchInput");
-    input.focus();
-
-    input.oninput = (e) => {
-      const query = e.target.value.toLowerCase();
-      const results = document.getElementById("searchResults");
-      if (query.length < 2) {
-        results.innerHTML = "";
-        return;
-      }
-      const matches = VAULT.filter(
-        (p) =>
-          p.title.toLowerCase().includes(query) ||
-          p.tag.toLowerCase().includes(query)
-      );
-      results.innerHTML = matches
-  .map(
-    (p) => `
-  <a href="product.html?id=${p.id}" class="product-card" style="display: grid; grid-template-columns: 80px 1fr; padding: 15px; align-items: center; gap: 20px; text-decoration: none; border-radius: 15px;">
-    <div style="width: 80px; height: 80px; background: ${p.accentColor || 'var(--bg-bone)'}; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 10px;">
-        <img src="${p.image}" style="width:100%; height:100%; object-fit:contain;">
-    </div>
-    <div>
-        <h4 style="color:var(--ink-deep); margin:0; font-size: 1rem;">${p.title}</h4>
-        <div style="display: flex; gap: 8px; margin-top: 5px;">
-            <span style="font-size:0.6rem; color:var(--accent-gold); font-weight:800; text-transform:uppercase; letter-spacing: 0.1em;">${p.tag}</span>
-            <span style="font-size:0.6rem; opacity: 0.4; font-weight:800;">${p.price}</span>
-        </div>
-    </div>
-  </a>`
-  )
-  .join("");
-
-    };
-
-    document.getElementById("closeSearch").onclick = () => {
-      const overlay = document.getElementById("searchOverlay");
-      const lenisInstance = window.lenis || null;
-      overlay.classList.remove("active");
-      setTimeout(() => overlay.remove(), 500);
-      document.body.style.overflow = "";
-      if (lenisInstance) lenisInstance.start();
-    };
-  };
-}
-
-function initStudioHaptics() {
-  if (!("ontouchstart" in window) || !navigator.vibrate) return;
-  document.body.addEventListener(
-    "touchstart",
-    (e) => {
-      const target = e.target.closest(
-        ".btn-primary, .btn-ghost, .nav-icon, .filter-chip, .product-card"
-      );
-      if (target) {
-        // Distinct haptic for "Save" vs "General Taps"
-        if (target.id === "save-btn") {
-          navigator.vibrate([10, 30, 10]);
-        } else {
-          navigator.vibrate(8);
-        }
-      }
-    },
-    { passive: true }
-  );
-}
-
-function initSmoothScroll() {
-  if (typeof Lenis !== "undefined") {
-    window.lenis = new Lenis({
-      duration: 1.4,
-      lerp: 0.08,
-      smoothWheel: true,
-    });
-    const lenis = window.lenis;
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-  }
-}
-
-function handleSuccessLogic() {
-  const params = new URLSearchParams(window.location.search);
-  const type = params.get("type");
-  const label = document.getElementById("success-label");
-  if (!label || !type) return;
-
-  const dictionary = {
-    newsletter: "Signal Verified",
-    support: "Dispatch Received",
-    legal: "Protocol Accepted",
-  };
-
-  if (dictionary[type]) {
-    label.textContent = dictionary[type];
-    if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
-  }
-}
-
-function initMenuLogic() {
-  const trigger = document.getElementById("menuTrigger");
-  const nav = document.getElementById("navOverlay");
-  const close = document.getElementById("closeMenu");
-
-  if (trigger && nav) {
-    trigger.onclick = () => {
-      nav.classList.add("active");
-      document.body.style.overflow = "hidden"; // Lock scroll
-      if (window.lenis) window.lenis.stop();
-      if (navigator.vibrate) navigator.vibrate(12);
-    };
-
-    if (close) {
-      close.onclick = () => {
-        nav.classList.remove("active");
-        document.body.style.overflow = ""; // Unlock scroll
-        if (window.lenis) window.lenis.start();
-        if (navigator.vibrate) navigator.vibrate(8);
-      };
-    }
-  }
-}
-
-
-function applyPreLaunchStatus() {
-  document.querySelectorAll(".product-card").forEach((card) => {
-    const link = card.querySelector("a")?.href;
-    if (!link || typeof VAULT === "undefined") return;
-    const pid = new URLSearchParams(link.split("?")[1]).get("id");
-    const p = VAULT.find((item) => item.id === pid);
-    if (p?.status === "coming-soon") {
-      card.setAttribute("data-status", "coming-soon");
-      card.onclick = (e) => {
-        e.preventDefault();
-        window.location.href = `product.html?id=${pid}`;
-      };
-    }
-  });
-}
-
-function initMobileStickyCTA() {
-  const title = document.querySelector("h1");
-  const bar = document.querySelector(".mobile-sticky-cta");
-  if (!title || !bar) return;
-  new IntersectionObserver(([e]) =>
-    bar.classList.toggle("visible", !e.isIntersecting)
-  ).observe(title);
-}
-
-function initThemeEngine() {
-  const themeBtn = document.getElementById("themeToggle");
-  if (!themeBtn) return;
-
-  // 1. Initial Sync (Ensuring the UI matches the body class)
-  const isDark = document.body.classList.contains("dark-mode");
-  console.log(`Kynar Theme Handshake: ${isDark ? 'Obsidian' : 'Bone'}`);
-
-  themeBtn.onclick = () => {
-    // 2. Trigger Haptic Pulse
-    if (navigator.vibrate) navigator.vibrate(12);
-
-    // 3. Toggle Class
-    document.body.classList.toggle("dark-mode");
-    const activeDark = document.body.classList.contains("dark-mode");
-    
-    // 4. Persistence
-    localStorage.setItem("kynar_theme", activeDark ? "dark" : "light");
-
-    // 5. 2026 Micro-interaction: Temporary 'switching' state to disable clicks during animation
-    themeBtn.style.pointerEvents = 'none';
-    setTimeout(() => themeBtn.style.pointerEvents = 'all', 500);
-  };
-}
-
-
-window.saveToShop = (id) => {
-  if (typeof addToCart === "function") {
-    addToCart(id);
-    
-    // Target the specific button for this product
-    const btn = document.getElementById(`add-btn-${id}`);
-    if (btn) {
-      const originalText = btn.textContent;
-      btn.textContent = "✓ Added";
-      btn.classList.add('success');
-      
-      if (navigator.vibrate) navigator.vibrate(15); // Tactical Haptics
-      
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.classList.remove('success');
-      }, 2000);
-    }
-  }
-};
-
-
-// #endregion
-
-window.openProductModal = (id) => {
-  const p = VAULT.find(item => item.id === id);
-  if (!p) return;
-
-  const modal = document.getElementById('productModal');
-  const content = document.getElementById('modalContent');
-
-  content.innerHTML = `
-    <div class="modal-grid-responsive" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; align-items: start;">
-
-      <div class="card-image" style="background: ${p.accentColor}; padding: 20px;">
-        <img src="${p.image}" style="width: 100%;">
-      </div>
-      <div>
-        <h2 style="font-family: var(--font-display); margin-bottom: 10px;">${p.title}</h2>
-        <span class="horizontal-tag">${p.tag}</span>
-        <p style="margin-top: 20px; line-height: 1.8; color: var(--ink-medium);">${p.longDesc}</p>
-        <div style="margin-top: 30px; display: flex; align-items: center; justify-content: space-between;">
-           <span class="card-price" style="font-size: 2rem;">${p.price}</span>
-           <button class="btn-add" onclick="saveToShop('${p.id}')">Add To Selection</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  modal.classList.add('active');
-  if (navigator.vibrate) navigator.vibrate(10);
-};
-
-// Safer Close Listener
-const closeBtn = document.getElementById('closeModal');
-if (closeBtn) {
-  closeBtn.onclick = () => {
-    const modal = document.getElementById('productModal');
-    if (modal) modal.classList.remove('active');
-  };
+function initTheme() {
+  const isDark = STATE.theme === 'dark';
+  if (isDark) document.body.classList.add('dark-mode');
   
-window.initRevealEngine = () => {
-  requestAnimationFrame(() => {
-    const elements = document.querySelectorAll(".reveal-up");
-    elements.forEach((el, i) => {
-      setTimeout(() => el.classList.add("reveal-visible"), i * 100);
-    });
-  });
-};
+  // Listen for toggle button (handled by header component later)
+  window.toggleTheme = () => {
+    document.body.classList.toggle('dark-mode');
+    const current = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem('kynar_theme', current);
+    triggerHaptic(10);
+  };
 }
 
+function initHaptics() {
+  // Global helper for tactile feedback
+  window.triggerHaptic = (pattern) => {
+    if (navigator.vibrate) navigator.vibrate(pattern);
+  };
+}
+
+/**
+ * Simple HTML Injector for static parts (Header/Footer)
+ */
+async function loadComponent(elementId, path) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  try {
+    const res = await fetch(path);
+    if (res.ok) el.innerHTML = await res.text();
+  } catch (err) {
+    console.error(`Failed to load ${path}`, err);
+  }
+}
+
+// Expose EventBus for inline HTML clicks (temporary bridge)
+window.KynarEvents = {
+  emit: EventBus.emit.bind(EventBus),
+  EVENTS: EVENTS
+};

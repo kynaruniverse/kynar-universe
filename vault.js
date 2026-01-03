@@ -1,221 +1,118 @@
+/* ==========================================================================
+   DATA LAYER | SINGLE SOURCE OF TRUTH
+   ========================================================================== */
+
 /**
- * ══════════════════════════════════════════════════════════════════════════
- * MODULE: KYNAR DATA VAULT (PRODUCT DATABASE)
- * ══════════════════════════════════════════════════════════════════════════
- * @description The central source of truth for all digital assets.
- * Contains metadata, pricing, status flags, and file mapping.
- * @version 6.0 - Secure Asset Mapping
- * @module DataVault
+ * @typedef {Object} Product
+ * @property {string} id - Unique identifier (kebab-case)
+ * @property {string} title - Display title
+ * @property {string} price - Formatted price string (e.g., "£24.00")
+ * @property {string} image - Relative path to image asset
+ * @property {string} category - Primary category (Personal, Work, Creative, Education)
+ * @property {string} tag - Secondary descriptive tag
+ * @property {string} shortDesc - One-line summary for cards
+ * @property {string} longDesc - Full description for modals
+ * @property {string} status - 'active' | 'coming-soon' | 'sold-out'
+ * @property {string} accentColor - Hex code or var() for background accents
+ * @property {string} checkout - External checkout URL
  */
 
-// #region [ 1. DATA REPOSITORY ]
-
+/** * The immutable product inventory.
+ * @type {Product[]} 
+ */
 export const VAULT = [
-  // --- PERSONAL (Life & Flow) ---
+  // --- PERSONAL ---
   {
     id: "finance-tracker",
-    category: "personal",
-    status: "coming-soon",
-    actionLabel: "Arriving Soon",
     title: "The Finance Tracker",
-    shortDesc: "Complete wealth management",
-    longDesc: "A high-fidelity wealth management system designed to track income, automate budgeting, and visualize long-term savings in one clinical dashboard.",
     price: "£24.00",
-    tag: "Finance",
-    accentColor: "var(--pastel-sage)",
     image: "assets/images/finance-mockup.webp",
-    checkout: "#",
-    file: "#",
-    features: [
-      "Income Tracking",
-      "Budget Automation",
-      "Savings Visualization",
-      "Mobile Optimized"
-    ]
+    category: "Personal",
+    tag: "Finance",
+    shortDesc: "Complete wealth management system.",
+    longDesc: "A high-fidelity wealth management system designed to track income, automate budgeting, and visualize long-term savings in one clinical dashboard.",
+    status: "active",
+    accentColor: "var(--color-sage)",
+    checkout: "https://shop.kynaruniverse.co.uk/buy/finance-tracker"
   },
   {
     id: "life-os",
-    category: "personal",
-    status: "coming-soon",
-    actionLabel: "Arriving Soon",
-    title: "Life OS Dashboard",
-    shortDesc: "The ultimate Notion system",
-    longDesc: "A complete central nervous system for your life. Manage tasks, habits, journals, and projects within a professional, connected ecosystem.",
-    price: "£45.00",
-    tag: "Notion",
-    accentColor: "var(--pastel-clay)",
+    title: "Life Operating System",
+    price: "£32.00",
     image: "assets/images/visual-mockup.webp",
-    checkout: "#",
-    file: "#",
-    features: [
-      "Task Management",
-      "Habit Tracking",
-      "Project Roadmap",
-      "Journaling Suite"
-    ]
+    category: "Personal",
+    tag: "Organization",
+    shortDesc: "The ultimate Notion workspace for life management.",
+    longDesc: "Centralize your tasks, goals, habits, and knowledge in one interconnected operating system. Built for peak productivity.",
+    status: "active",
+    accentColor: "var(--color-clay)",
+    checkout: "https://shop.kynaruniverse.co.uk/buy/life-os"
   },
+  
+  // --- WORK ---
   {
-    id: "self-care-planner",
-    category: "personal",
-    status: "coming-soon",
-    actionLabel: "Arriving Soon",
-    title: "Self-Care Planner",
-    shortDesc: "Prioritize your well-being",
-    longDesc: "A digital sanctuary for mental health and routine building. Features mood tracking, wellness audits, and guided reflection templates.",
-    price: "£15.00",
-    tag: "Wellness",
-    accentColor: "var(--pastel-sky)",
-    image: "assets/images/creative-mockup.webp",
-    checkout: "#",
-    file: "#",
-    features: [
-      "Mood Tracker",
-      "Routine Builder",
-      "Wellness Audits",
-      "Reflection Journal"
-    ]
-  },
-
-  // --- WORK (Business & Growth) ---
-  {
-    id: "ai-prompt-pack",
-    category: "work",
-    status: "coming-soon",
-    actionLabel: "Arriving Soon",
-    title: "AI Prompt Pack",
-    shortDesc: "Engineered AI commands",
-    longDesc: "A collection of high-performance prompts designed to turn AI into a full-time assistant for writing, coding, and strategic planning.",
-    price: "£19.00",
-    tag: "AI Tools",
-    accentColor: "var(--pastel-sage)",
+    id: "saas-starter-kit",
+    title: "SaaS Starter Kit",
+    price: "£45.00",
     image: "assets/images/code-mockup.webp",
-    checkout: "#",
-    file: "#",
-    features: [
-      "100+ Pro Prompts",
-      "Coding Assistants",
-      "Writing Frameworks",
-      "Strategy Templates"
-    ]
+    category: "Work",
+    tag: "Development",
+    shortDesc: "Production-ready boilerplate for your next startup.",
+    longDesc: "Launch faster with a pre-configured stack including Auth, Database, and Stripe integration. Clean code, ready to scale.",
+    status: "active",
+    accentColor: "var(--color-sky)",
+    checkout: "https://shop.kynaruniverse.co.uk/buy/saas-starter"
   },
   {
-    id: "etsy-starter-kit",
-    category: "work",
-    status: "coming-soon",
-    actionLabel: "Arriving Soon",
-    title: "Etsy Seller Starter Kit",
-    shortDesc: "Launch your digital shop",
-    longDesc: "Everything you need to dominate the Etsy marketplace. Includes SEO checklists, shop banner templates, and listing strategies.",
-    price: "£35.00",
-    tag: "Business",
-    accentColor: "var(--pastel-clay)",
-    image: "assets/images/finance-mockup.webp",
-    checkout: "#",
-    file: "#",
-    features: [
-      "SEO Checklists",
-      "Shop Banners",
-      "Listing Templates",
-      "Launch Guide"
-    ]
+    id: "influence-suite",
+    title: "Influence Suite",
+    price: "£28.00",
+    image: "assets/images/social-share.webp",
+    category: "Work",
+    tag: "Marketing",
+    shortDesc: "Content planning and analytics system.",
+    longDesc: "Plan, schedule, and analyze your content strategy across all platforms. Includes templates for high-conversion posts.",
+    status: "active",
+    accentColor: "#E0E0E0",
+    checkout: "https://shop.kynaruniverse.co.uk/buy/influence-suite"
   },
 
-  // --- CREATIVE (Content & Style) ---
+  // --- CREATIVE ---
   {
-    id: "social-content-system",
-    category: "creative",
-    status: "coming-soon",
-    actionLabel: "Arriving Soon",
-    title: "Social Media Content System",
-    shortDesc: "Scale your digital presence",
-    longDesc: "A professional framework for content creators. Plan, schedule, and execute high-fidelity social campaigns across all platforms.",
-    price: "£29.00",
-    tag: "Content",
-    accentColor: "var(--pastel-sky)",
+    id: "aura-presets",
+    title: "Aura Presets",
+    price: "£18.00",
     image: "assets/images/creative-mockup.webp",
-    checkout: "#",
-    file: "#",
-    features: [
-      "Content Calendar",
-      "Platform Strategies",
-      "Visual Planner",
-      "Analytics Tracker"
-    ]
-  },
-  {
-    id: "file-finder-remover",
-    category: "creative",
+    category: "Creative",
+    tag: "Photography",
+    shortDesc: "Professional grading for Lightroom.",
+    longDesc: "A collection of 12 high-fidelity presets designed to give your photos a timeless, cinematic look.",
     status: "coming-soon",
-    actionLabel: "Arriving Soon",
-    title: "Duplicate File Finder",
-    shortDesc: "Clean your digital workspace",
-    longDesc: "An elite utility script designed to scan, identify, and remove redundant files, optimizing your storage and workflow speed.",
-    price: "£10.00",
-    tag: "Utility",
-    accentColor: "var(--pastel-sage)",
-    image: "assets/images/code-mockup.webp",
-    checkout: "#",
-    file: "#",
-    features: [
-      "Deep Scan Logic",
-      "Safety Backup",
-      "One-Click Clean",
-      "Storage Report"
-    ]
+    accentColor: "#D4C5C5",
+    checkout: "#"
   },
-
+  
   // --- EDUCATION ---
   {
     id: "homeschool-planner",
-    category: "education",
+    title: "Homeschool Planner",
+    price: "£15.00",
+    image: "assets/images/log-in-icon.webp",
+    category: "Education",
+    tag: "Planning",
+    shortDesc: "Curriculum and schedule management.",
+    longDesc: "Keep your students on track with lesson planning, grade tracking, and attendance logs.",
     status: "coming-soon",
-    actionLabel: "Arriving Soon",
-    title: "Homeschool Curriculum Planner",
-    shortDesc: "Structured learning systems",
-    longDesc: "A comprehensive planner for modern educators. Track lesson plans, student progress, and curriculum requirements in one place.",
-    price: "£20.00",
-    tag: "Education",
-    accentColor: "var(--pastel-clay)",
-    image: "assets/images/visual-mockup.webp",
-    checkout: "#",
-    file: "#",
-    features: [
-      "Lesson Scheduling",
-      "Student Tracking",
-      "Grade Book",
-      "Resource Library"
-    ]
+    accentColor: "#DEDEE0",
+    checkout: "#"
   }
 ];
 
-// #endregion
-
-// #region [ 2. SECURITY & IMMUTABILITY ]
-
-// High-Fidelity Data Lock: Prevents runtime modification of product data
-VAULT.forEach(Object.freeze);
-Object.freeze(VAULT);
-
-// #endregion
-
-// #region [ 3. ACCESSORS ]
-
 /**
- * Retrieves a specific product by its unique ID.
- * @param {string} id - The product ID (e.g., 'notion-life-os').
- * @returns {Object|null} The product object or null if not found.
+ * Helper: Find product by ID
+ * @param {string} id 
+ * @returns {Product | undefined}
  */
 export function getProduct(id) {
-  return VAULT.find((p) => p.id === id) || null;
+  return VAULT.find(p => p.id === id);
 }
-
-/**
- * Retrieves all products belonging to a specific category.
- * @param {string} cat - The category key (e.g., 'personal', 'work').
- * @returns {Array} Array of matching product objects.
- */
-export function getByCategory(cat) {
-  return VAULT.filter((p) => p.category === cat);
-}
-
-// #endregion
