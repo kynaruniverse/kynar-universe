@@ -2,40 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <url>
-    <loc>https://www.kynaruniverse.co.uk</loc>
-    <lastmod>2026-01-02</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.kynaruniverse.co.uk/</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/index.html</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.kynaruniverse.co.uk/shop.html</loc>
-    <lastmod>2026-01-02</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.kynaruniverse.co.uk/newsletter.html</loc>
-    <lastmod>2026-01-02</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-    <url>
+  <url>
     <loc>https://www.kynaruniverse.co.uk/freebie.html</loc>
-    <lastmod>2026-01-02</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.kynaruniverse.co.uk/contact.html</loc>
-    <lastmod>2026-01-02</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-
-
   <url>
     <loc>https://www.kynaruniverse.co.uk/legal.html</loc>
-    <lastmod>2026-01-02</lastmod>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -58,57 +62,59 @@
   <url>
     <loc>https://www.kynaruniverse.co.uk/shop.html?cat=education</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.kynaruniverse.co.uk/product.html?id=notion-life-os</loc>
-    <lastmod>2026-01-02</lastmod>
+    <loc>https://www.kynaruniverse.co.uk/product.html?id=finance-tracker</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.kynaruniverse.co.uk/product.html?id=scribe-vault</loc>
-    <lastmod>2026-01-02</lastmod>
+    <loc>https://www.kynaruniverse.co.uk/product.html?id=life-os</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.kynaruniverse.co.uk/product.html?id=saas-starter-kit</loc>
-    <lastmod>2026-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.kynaruniverse.co.uk/product.html?id=influence-suite</loc>
-    <lastmod>2026-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.kynaruniverse.co.uk/product.html?id=aura-presets</loc>
-    <lastmod>2026-01-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.kynaruniverse.co.uk/product.html?id=icon-system-v1</loc>
-    <lastmod>2026-01-02</lastmod>
+    <loc>https://www.kynaruniverse.co.uk/product.html?id=self-care-planner</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.kynaruniverse.co.uk/product.html?id=finance-architect</loc>
-    <lastmod>2026-01-02</lastmod>
+    <loc>https://www.kynaruniverse.co.uk/product.html?id=ai-prompt-pack</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.kynaruniverse.co.uk/product.html?id=homeschool-pack-v1</loc>
-    <lastmod>2026-01-02</lastmod>
+    <loc>https://www.kynaruniverse.co.uk/product.html?id=etsy-starter-kit</loc>
+    <lastmod>2026-01-03</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/product.html?id=social-content-system</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/product.html?id=file-finder-remover</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/product.html?id=homeschool-planner</loc>
+    <lastmod>2026-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 
 </urlset>

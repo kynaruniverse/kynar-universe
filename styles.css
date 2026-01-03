@@ -218,7 +218,10 @@ p { color: var(--ink-medium); max-width: 60ch; }
 /* #region [ 5. LAYOUT & HEADER ] */
 
 .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: clamp(80px, 10vw, 120px) 20px 40px 20px; }
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+.gallery-grid { 
+  display: grid; 
+  grid-template-columns: 1fr;
+  gap: 32px; }
 
 /* --- Header V6 Architecture --- */
 .app-header { 
@@ -255,115 +258,130 @@ p { color: var(--ink-medium); max-width: 60ch; }
 
 /* #endregion */
 
-/* #region [ 6. PRODUCT CARD SYSTEM - 2026 AURA EVOLUTION ] */
+/* #region 6 [ NEW HORIZONTAL PRODUCT SYSTEM ] */
 
 .product-card {
   background: var(--bg-surface);
-  border-radius: var(--radius-soft);
+  border-radius: 30px; /* More aggressive rounding from mockup */
   overflow: hidden;
-  box-shadow: var(--shadow-float);
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 200px 1fr; /* Image on left, Info on right */
+  gap: 30px;
+  border: 1.5px solid rgba(15, 61, 48, 0.05);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  align-items: center;
+}
+
+/* On Mobile, stack them back up for readability */
+@media (max-width: 600px) {
+  .product-card {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+}
+
+.card-left {
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(15, 61, 48, 0.05);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
-  isolation: isolate;
-}
-
-/* 2026 Light Sweep Effect */
-.product-card::before {
-  content: "";
-  position: absolute;
-  top: 0; left: -150%;
-  width: 50%; height: 100%;
-  background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
-  transform: skewX(-25deg);
-  transition: 0.75s;
-  z-index: 5;
-}
-
-.product-card:hover::before { left: 150%; }
-
-.product-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: var(--shadow-depth);
-  border-color: var(--accent-gold);
+  align-items: center;
+  gap: 20px;
 }
 
 .card-image {
+  width: 100%;
   aspect-ratio: 1 / 1;
-  background: var(--bg-bone);
+  background: var(--pastel-sage); /* Dynamic color will go here */
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-  border-top-left-radius: var(--radius-soft);
-  border-top-right-radius: var(--radius-soft);
+  padding: 15%;
 }
 
 .card-image img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.card-category-tag {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.7); /* Translucent frosted look */
-  backdrop-filter: blur(10px); /* 2026 Glassmorphism */
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.6rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--ink-deep);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  pointer-events: none; /* User clicks through to the product */
-}
-
-
-.product-card:hover .card-image img { transform: scale(1.1); }
-
-.card-info {
-  padding: 25px 20px;
-  background: var(--bg-surface);
-  border-top: none;
-  text-align: center;
-}
-
-.card-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 12px;
-  color: var(--ink-deep);
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
 }
 
 .card-price {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.8rem; /* Large price as seen in mockup */
   color: var(--accent-gold);
-  margin-bottom: 15px;
-  display: block;
+  font-weight: 700;
 }
 
-/* Floating Action Trigger */
-.product-card .btn-ghost {
-  width: 100%;
-  padding: 12px;
-  font-size: 0.7rem;
-  border-radius: 8px;
+.card-right {
+  display: flex;
+  flex-direction: column;
 }
+
+.card-title {
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+  color: var(--ink-deep);
+}
+
+.card-subtitle {
+  font-size: 1rem;
+  color: var(--ink-medium);
+  opacity: 0.6;
+  margin-bottom: 15px;
+}
+
+.tag-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.horizontal-tag {
+  background: var(--bg-bone);
+  border: 1px solid var(--accent-gold);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: var(--ink-medium);
+}
+
+.card-description {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--ink-medium);
+  margin-bottom: 25px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Mockup specific button styles */
+.btn-details, .btn-add {
+  flex: 1;
+  padding: 12px;
+  border-radius: 50px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  border: 1.5px solid var(--ink-deep);
+  transition: 0.3s;
+}
+
+.btn-details { background: transparent; color: var(--ink-deep); }
+.btn-add { background: var(--ink-deep); color: #fff; }
 
 /* #endregion */
+
 
 
 /* #region [ 7. SPECIAL STATES ] */
@@ -577,3 +595,26 @@ p { color: var(--ink-medium); max-width: 60ch; }
 }
 
 /* #endregion */
+
+
+/* Mockup Specific Styling */
+.read-more-link {
+  color: var(--accent-gold);
+  cursor: pointer;
+  font-weight: 700;
+  margin-left: 5px;
+  text-decoration: underline;
+}
+
+/* Button Success State */
+.btn-add.success {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  pointer-events: none;
+}
+
+/* Hover Physics */
+.btn-details:hover {
+  background: var(--ink-deep);
+  color: #fff;
+}
