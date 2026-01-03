@@ -621,54 +621,48 @@ p { color: var(--ink-medium); max-width: 60ch; }
 
 
 /* ══════════════════════════════════════════════════════════════════════════
-   PROTOCOL D12: HORIZONTAL PRODUCT CARD
+   PROTOCOL D12: HORIZONTAL PRODUCT CARD (FINAL FIX)
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* The Card Container - Horizontal Layout */
+/* Force horizontal layout on Desktop */
 .product-card.horizontal {
   display: grid !important;
-  /* Left Column (Image) | Right Column (Text) */
-  grid-template-columns: 220px 1fr !important; 
-  gap: 32px;
-  align-items: center; /* Centers text vertically */
-  padding: 24px;
-  min-height: auto !important; /* Removes the huge height */
+  grid-template-columns: 220px 1fr !important; /* Image Width | Content Width */
+  gap: 32px !important;
+  align-items: center !important;
+  padding: 24px !important;
+  min-height: auto !important; /* Kills the vertical height */
+  height: auto !important;
 }
 
-/* The Image Container */
+/* Ensure image container is compact */
 .product-card.horizontal .card-image {
-  width: 100%;
-  aspect-ratio: 4/3; /* Slightly rectangular, not square */
-  background: var(--pastel-sage); /* Fallback */
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100% !important;
+  aspect-ratio: 4/3 !important; /* Rectangular ticket shape */
+  padding: 0 !important; /* Remove huge padding */
+  background: var(--pastel-sage);
 }
 
 .product-card.horizontal .card-image img {
-  width: 85%;
-  height: auto;
-  object-fit: contain;
-  mix-blend-mode: multiply;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures image doesn't get cut off */
+  padding: 15px; /* Internal breathing room for the icon */
 }
 
-/* The Right Side Content */
+/* Align text to the left */
+.product-card.horizontal .card-right,
 .product-card.horizontal .card-content {
+  text-align: left !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  text-align: left; /* Ensures text is left-aligned */
 }
 
-/* Mobile: Stack them back to vertical ONLY on tiny screens */
-@media (max-width: 650px) {
+/* Mobile: Switch back to vertical stack */
+@media (max-width: 768px) {
   .product-card.horizontal {
-    grid-template-columns: 1fr !important; /* Stack vertically */
-    gap: 20px;
-  }
-  .product-card.horizontal .card-image {
-    aspect-ratio: 16/9; /* Wider banner style on mobile */
+    grid-template-columns: 1fr !important;
+    text-align: center !important;
   }
 }

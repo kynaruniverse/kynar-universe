@@ -99,7 +99,8 @@
             emptyState.style.display = 'none';
             // NEW HORIZONTAL LAYOUT IMPLEMENTATION
             grid.innerHTML = filtered.map((p, i) => `
-              <article class="product-card reveal-up" style="transition-delay: ${i * 0.05}s">
+              <article class="product-card horizontal reveal-up" style="transition-delay: ${i * 0.05}s">
+
                 
                 <div class="card-left">
                   <div class="card-image" style="background: ${p.accentColor || 'var(--pastel-sage)'};">
