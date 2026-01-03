@@ -388,27 +388,78 @@
         }
 
         featuredGrid.innerHTML = latest.map((p, i) => `
-    <article class="product-card reveal-up" style="transition-delay: ${i * 0.1}s; display: grid; grid-template-columns: clamp(100px, 30%, 180px) 1fr; gap: 30px; align-items: center; padding: 30px;">
-
-    <div class="card-left" style="text-align: center;">
-      <div class="card-image" style="background: ${p.accentColor || 'var(--pastel-sage)'}; border-radius: 20px; aspect-ratio: 1/1; display: flex; align-items: center; padding: 20px;">
-        <img src="${p.image}" alt="${p.title}" style="width: 100%; object-fit: contain;">
-      </div>
-      <span class="card-price" style="display: block; margin-top: 15px; font-size: 1.4rem; color: var(--accent-gold); font-family: var(--font-display);">${p.price}</span>
+  <article 
+    class="product-card horizontal reveal-up" 
+    style="transition-delay: ${i * 0.1}s;"
+  >
+    <div 
+      class="card-image" 
+      style="background: ${p.accentColor || 'var(--pastel-sage)'};"
+    >
+      <img src="${p.image}" alt="${p.title}">
     </div>
-    <div class="card-right">
-      <h3 class="card-title" style="font-size: 1.3rem; margin-bottom: 5px;">${p.title}</h3>
-      <div class="tag-container" style="display: flex; gap: 8px; margin-bottom: 15px;">
-        <span class="horizontal-tag">${p.tag}</span>
+
+    <div class="card-content">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+        <span 
+          style="
+            color: var(--accent-gold); 
+            font-size: 0.65rem; 
+            font-weight: 800; 
+            letter-spacing: 0.15em; 
+            text-transform: uppercase;
+          "
+        >${p.tag}</span>
+        
+        <span 
+          style="
+            font-family: var(--font-display); 
+            font-size: 1.25rem; 
+            color: var(--ink-deep);
+          "
+        >${p.price}</span>
       </div>
-      <p style="font-size: 0.9rem; margin-bottom: 20px; opacity: 0.7;">${p.shortDesc}</p>
-      <div class="card-actions" style="display: flex; gap: 10px;">
-        <button onclick="openProductModal('${p.id}')" class="btn-ghost" style="flex: 1; font-size: 0.6rem;">Details</button>
-        <button id="add-btn-${p.id}" onclick="saveToShop('${p.id}')" class="btn-primary" style="flex: 1; font-size: 0.6rem; padding: 10px;">Add to Selection</button>
+
+      <h3 
+        style="
+          font-size: 1.4rem; 
+          margin-bottom: 10px; 
+          line-height: 1.2;
+        "
+      >${p.title}</h3>
+      
+      <p 
+        style="
+          color: var(--ink-medium); 
+          font-size: 0.95rem; 
+          margin-bottom: 24px; 
+          opacity: 0.8;
+          max-width: 90%;
+        "
+      >${p.shortDesc}</p>
+
+      <div style="display: flex; gap: 12px;">
+        <button 
+          id="add-btn-${p.id}" 
+          onclick="saveToShop('${p.id}')" 
+          class="btn-primary" 
+          style="padding: 12px 24px; font-size: 0.8rem;"
+        >
+          Add to Selection
+        </button>
+        
+        <button 
+          onclick="openProductModal('${p.id}')" 
+          class="btn-ghost" 
+          style="padding: 12px 20px; font-size: 0.8rem;"
+        >
+          Details
+        </button>
       </div>
     </div>
   </article>
 `).join('');
+
 
 
         

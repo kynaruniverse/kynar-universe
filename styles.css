@@ -618,3 +618,57 @@ p { color: var(--ink-medium); max-width: 60ch; }
   background: var(--ink-deep);
   color: #fff;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PROTOCOL D12: HORIZONTAL PRODUCT CARD
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* The Card Container - Horizontal Layout */
+.product-card.horizontal {
+  display: grid !important;
+  /* Left Column (Image) | Right Column (Text) */
+  grid-template-columns: 220px 1fr !important; 
+  gap: 32px;
+  align-items: center; /* Centers text vertically */
+  padding: 24px;
+  min-height: auto !important; /* Removes the huge height */
+}
+
+/* The Image Container */
+.product-card.horizontal .card-image {
+  width: 100%;
+  aspect-ratio: 4/3; /* Slightly rectangular, not square */
+  background: var(--pastel-sage); /* Fallback */
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-card.horizontal .card-image img {
+  width: 85%;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+/* The Right Side Content */
+.product-card.horizontal .card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left; /* Ensures text is left-aligned */
+}
+
+/* Mobile: Stack them back to vertical ONLY on tiny screens */
+@media (max-width: 650px) {
+  .product-card.horizontal {
+    grid-template-columns: 1fr !important; /* Stack vertically */
+    gap: 20px;
+  }
+  .product-card.horizontal .card-image {
+    aspect-ratio: 16/9; /* Wider banner style on mobile */
+  }
+}
