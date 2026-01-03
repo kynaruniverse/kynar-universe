@@ -1,209 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
     <meta charset="UTF-8" />
-    <meta 
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" 
-      name="viewport" 
-    />
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Free Starter Pack | Kynar Studio</title>
-    
     <link href="styles.css" rel="stylesheet" />
+    <script defer src="ui-core.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    <script src="ui-core.js" defer></script>
-    
-    <style>
-      /* Input Focus State (Haptic Visual) */
-      input:focus { 
-        border-color: var(--accent-gold) !important; 
-        box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1); 
-        transform: translateY(-2px);
-      }
-      
-      /* Dark Mode Overrides */
-      body.dark-mode strong { color: var(--accent-gold); }
-      body.dark-mode .container > div > div p { color: rgba(255, 255, 255, 0.5); }
-      body.dark-mode .container > div > p { color: var(--ink-medium); }
-      
-      /* Webkit Autofill Physics Override */
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover,
-      input:-webkit-autofill:focus {
-        -webkit-text-fill-color: var(--ink-deep);
-        -webkit-box-shadow: 0 0 0px 1000px var(--bg-surface) inset;
-        transition: background-color 5000s ease-in-out 0s;
-      }
-    </style>
-    
-    <script>
-      // KYNAR ENGINE: Auto-focus first input for faster mobilization
-      document.addEventListener("DOMContentLoaded", () => {
-        const emailInput = document.querySelector('input[name="email"]');
-        if (emailInput && window.innerWidth > 1024) emailInput.focus();
-      });
-    </script>
-    
-    
-    <meta content="Free Starter Pack | Kynar Studio" property="og:title">
-    <meta content="https://www.kynaruniverse.co.uk/freebie.html" property="og:url">
-    <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
-    
-    <meta content="summary_large_image" name="twitter:card">
-    <meta content="Free Starter Pack | Kynar Studio" name="twitter:title">
-    <meta content="Access the high-fidelity starter kit." name="twitter:description">
   </head>
 
   <body>
-
     <header class="app-header" id="global-header"></header>
 
-    <main 
-      class="container" 
-      style="
-        align-items: center; 
-        display: flex; 
-        justify-content: center; 
-        min-height: 85vh;
-      "
-    >
-      
-      <div 
-        class="reveal-up" 
-        style="
-          max-width: 600px; 
-          text-align: center;
-        "
-      >
+    <main class="container flex-col flex-center text-center" style="min-height: 85vh;">
+      <div class="reveal-up" style="max-width: 600px;">
         
-        <span 
-          style="
-            color: var(--accent-gold); 
-            display: block; 
-            font-size: 0.75rem; 
-            font-weight: 800; 
-            letter-spacing: 0.25em; 
-            margin-bottom: 20px;
-            text-transform: uppercase; 
-          "
-        >
-          The Welcome Signal
-        </span>
+        <span class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.25em; display: block; margin-bottom: 20px;">The Welcome Signal</span>
 
-        <h1 
-          style="
-            color: var(--ink-deep); 
-            line-height: 1.1;
-          "
-        >
-          The Essential <br /><span style="color: var(--ink-medium)">Starter Pack.</span>
+        <h1 style="margin-bottom: 25px;">
+          The Essential <br /><span class="text-faded">Starter Pack.</span>
         </h1>
 
-        <p 
-          style="
-            color: var(--ink-medium);
-            font-size: 1.15rem; 
-            line-height: 1.6; 
-            margin: 25px 0 45px 0; 
-          "
-        >
-          Experience the high-fidelity quality of our collection. Claim your free selection of 
-          organization frameworks and creative systems to start your journey.
+        <p class="text-sm" style="margin-bottom: 45px;">
+          Experience the high-fidelity quality of our collection. Claim your free selection of organization frameworks.
         </p>
 
-        <div 
-          class="product-card" 
-          style="
-            background: var(--bg-surface); 
-            border-left: 6px solid var(--accent-gold); 
-            border-radius: 24px; 
-            box-shadow: var(--shadow-depth);
-            padding: 40px; 
-            text-align: left; 
-          "
-        >
+        <div class="card text-left" style="border-left: 6px solid var(--color-accent); padding: 40px;">
           <form action="https://formspree.io/f/mlgekbwb" method="POST">
-            <input name="_captcha" type="hidden" value="false" />
             <input name="_next" type="hidden" value="https://www.kynaruniverse.co.uk/claim-archived.html/?id=starter-pack" />
-            <input name="_subject" type="hidden" value="Freebie Authorization - Starter Kit" />
+            <input name="_subject" type="hidden" value="Freebie Authorization" />
 
-            <label 
-              style="
-                color: var(--accent-gold); 
-                display: block; 
-                font-size: 0.65rem; 
-                font-weight: 900; 
-                letter-spacing: 0.15em;
-                margin-bottom: 12px; 
-                text-transform: uppercase; 
-              "
-            >
-              Authorization Email
-            </label>
+            <div class="form-group">
+              <label class="form-label">Authorization Email</label>
+              <input class="form-input" name="email" placeholder="Enter your email address..." required type="email" />
+            </div>
 
-            <input 
-              name="email" 
-              placeholder="Enter your email address..." 
-              required 
-              style="
-                background: var(--bg-surface); 
-                border: 1.5px solid rgba(15, 61, 48, 0.08); 
-                border-radius: 12px; 
-                caret-color: var(--accent-gold); 
-                color: var(--ink-deep); 
-                font-family: var(--font-body); 
-                font-size: 1rem; 
-                margin-bottom: 25px; 
-                outline: none; 
-                padding: 18px; 
-                transition: var(--transition-main); 
-                width: 100%; 
-              " 
-              type="email" 
-            />
-
-            <button 
-              class="btn-primary" 
-              onclick="if(navigator.vibrate) navigator.vibrate([15, 30]);" 
-              style="
-                justify-content: center; 
-                letter-spacing: 0.1em;
-                width: 100%; 
-              " 
-              type="submit"
-            >
-              Initialize Download →
-            </button>
+            <button class="btn btn--primary w-full" type="submit">Initialize Download →</button>
           </form>
         </div>
 
-        <div 
-          class="product-card"
-          style="
-            background: var(--bg-surface); 
-            border: 1px solid rgba(15, 61, 48, 0.08); 
-            border-radius: 18px; 
-            margin-top: 40px; 
-            padding: 24px; 
-            transition: var(--transition-main);
-          "
-        >
-
-            <p 
-              style="
-                color: var(--ink-medium); 
-                font-size: 0.8rem; 
-                line-height: 1.4;
-              "
-            >
+        <div class="card" style="margin-top: 40px; padding: 20px;">
+            <p class="text-xs">
                 🔒 <strong>Encryption Verified:</strong> By claiming this pack, you join the 
-                <strong>Kynar Network</strong> for curated marketplace updates and exclusive inventory drops.
+                <strong>Kynar Network</strong> for curated marketplace updates.
             </p>
         </div>
       </div>
     </main>
 
     <footer id="global-footer"></footer>
-    </body>
+  </body>
 </html>

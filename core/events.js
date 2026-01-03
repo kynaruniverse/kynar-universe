@@ -34,14 +34,13 @@ export const EventBus = {
 };
 
 /* --- STANDARD EVENT DICTIONARY --- */
-/* Use these constants to prevent typos */
 export const EVENTS = {
   APP_INIT:      'app:init',
   CART_ADD:      'cart:add',
   CART_REMOVE:   'cart:remove',
   CART_TOGGLE:   'cart:toggle',
   FILTER_CHANGE: 'shop:filter',
-  SEARCH_QUERY:  'search:query',
   MODAL_OPEN:    'modal:open',
-  MODAL_CLOSE:   'modal:close'
+  MODAL_CLOSE:   'modal:close',
+  THEME_TOGGLE:  'theme:toggle'
 };
