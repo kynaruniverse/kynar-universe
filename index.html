@@ -387,82 +387,54 @@
           return;
         }
 
-        featuredGrid.innerHTML = latest.map((p, i) => `
-  <article 
-    class="product-card horizontal reveal-up" 
-    style="transition-delay: ${i * 0.1}s;"
-  >
-    <div 
-      class="card-image" 
-      style="background: ${p.accentColor || 'var(--pastel-sage)'};"
-    >
-      <img src="${p.image}" alt="${p.title}">
-    </div>
+                featuredGrid.innerHTML = latest.map((p, i) => `
+          <article 
+            class="product-card horizontal reveal-up" 
+            style="transition-delay: ${i * 0.1}s;"
+            data-status="${p.status === 'coming-soon' ? 'coming-soon' : 'active'}"
+          >
+            <div class="card-left">
+              <div 
+                class="card-image" 
+                style="background: ${p.accentColor || 'var(--pastel-sage)'};"
+              >
+                <img src="${p.image}" alt="${p.title}">
+              </div>
+              <span class="card-price">${p.price}</span>
+            </div>
 
-    <div class="card-content">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-        <span 
-          style="
-            color: var(--accent-gold); 
-            font-size: 0.65rem; 
-            font-weight: 800; 
-            letter-spacing: 0.15em; 
-            text-transform: uppercase;
-          "
-        >${p.tag}</span>
-        
-        <span 
-          style="
-            font-family: var(--font-display); 
-            font-size: 1.25rem; 
-            color: var(--ink-deep);
-          "
-        >${p.price}</span>
-      </div>
+            <div class="card-right">
+              <h3 class="card-title">${p.title}</h3>
+              <p class="card-subtitle">${p.shortDesc}</p>
+              
+              <div class="tag-container">
+                <span class="horizontal-tag">${p.tag}</span>
+              </div>
 
-      <h3 
-        style="
-          font-size: 1.4rem; 
-          margin-bottom: 10px; 
-          line-height: 1.2;
-        "
-      >${p.title}</h3>
-      
-      <p 
-        style="
-          color: var(--ink-medium); 
-          font-size: 0.95rem; 
-          margin-bottom: 24px; 
-          opacity: 0.8;
-          max-width: 90%;
-        "
-      >${p.shortDesc}</p>
+              <p class="card-description">
+                ${p.longDesc ? p.longDesc.substring(0, 100) + '...' : 'Premium digital asset.'}
+              </p>
 
-      <div style="display: flex; gap: 12px;">
-        <button 
-          id="add-btn-${p.id}" 
-          onclick="saveToShop('${p.id}')" 
-          class="btn-primary" 
-          style="padding: 12px 24px; font-size: 0.8rem;"
-        >
-          Add to Selection
-        </button>
-        
-        <button 
-          onclick="openProductModal('${p.id}')" 
-          class="btn-ghost" 
-          style="padding: 12px 20px; font-size: 0.8rem;"
-        >
-          Details
-        </button>
-      </div>
-    </div>
-  </article>
-`).join('');
+              <div class="card-actions">
+                <button 
+                  onclick="openProductModal('${p.id}')" 
+                  class="btn-details"
+                >
+                  Details
+                </button>
+                
+                <button 
+                  id="add-btn-${p.id}" 
+                  onclick="saveToShop('${p.id}')" 
+                  class="btn-add"
+                >
+                  ${p.status === 'coming-soon' ? 'Locked' : 'Add'}
+                </button>
+              </div>
+            </div>
+          </article>
+        `).join('');
 
-
-
-        
         // #endregion
         
         // KYNAR MASTER HANDSHAKE: Hand off reveal to ui-core.js
