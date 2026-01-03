@@ -1,7 +1,7 @@
 # ══════════════════════════════════════════════════════════════════════════
 # MODULE: KYNAR ROBOTS PROTOCOL
 # ══════════════════════════════════════════════════════════════════════════
-# Description: Kynar Studio Archive Indexing Protocol 2026.
+# Description: Kynar Studio Indexing Protocol 2026.
 # Version: 6.5 - 4-Pillar Synchronized
 # Canonical: https://www.kynaruniverse.co.uk
 # ══════════════════════════════════════════════════════════════════════════

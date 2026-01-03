@@ -69,7 +69,7 @@ async function loadHeader() {
   } catch (err) {
     console.error("Header Fault:", err);
     headerEl.innerHTML =
-      '<div style="padding:20px; text-align:center;">Handshake Interrupted. <a href="index.html">Reload Archive</a></div>';
+      '<div style="padding:20px; text-align:center;">Handshake Interrupted. <a href="index.html">Reload Shop</a></div>';
   }
 }
 
@@ -208,7 +208,7 @@ function initCartEngine() {
     // --- Empty State ---
     if (window.KYNAR_STATE.cart.length === 0) {
       list.innerHTML =
-        '<div class="reveal-up reveal-visible" style="text-align: center; margin-top: 100px; opacity: 0.4; font-family: var(--font-display);">Archive Index Empty</div>';
+        '<div class="reveal-up reveal-visible" style="text-align: center; margin-top: 100px; opacity: 0.4; font-family: var(--font-display);">Shop Index Empty</div>';
     } else {
       // --- Populated State ---
       list.innerHTML = window.KYNAR_STATE.cart
@@ -257,11 +257,11 @@ function initSearchEngine() {
     const searchHTML = `
       <div id="searchOverlay" class="nav-overlay active" style="padding: 20px; background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; width: 100%; max-width: 800px; margin: 0 auto 40px auto;">
-          <span style="font-family: var(--font-display); font-size: 1.2rem; color: var(--accent-gold); letter-spacing: 0.1em;">Archive Index</span>
+          <span style="font-family: var(--font-display); font-size: 1.2rem; color: var(--accent-gold); letter-spacing: 0.1em;">Shop Index</span>
           <button id="closeSearch" class="nav-icon" style="font-size: 1.5rem;">✕</button>
         </div>
         <div style="width: 100%; max-width: 800px; margin: 0 auto;">
-          <input type="text" id="searchInput" placeholder="Search the archive..." style="width: 100%; padding: 20px 0; background: transparent; border: none; border-bottom: 2px solid var(--ink-deep); font-size: 1.8rem; font-family: var(--font-display); color: var(--ink-deep); outline: none;">
+          <input type="text" id="searchInput" placeholder="Search the shop..." style="width: 100%; padding: 20px 0; background: transparent; border: none; border-bottom: 2px solid var(--ink-deep); font-size: 1.8rem; font-family: var(--font-display); color: var(--ink-deep); outline: none;">
           <div id="searchResults" style="margin-top: 40px; display: grid; gap: 20px; overflow-y: auto; max-height: 70vh;"></div>
         </div>
       </div>`;
@@ -438,13 +438,13 @@ function initThemeEngine() {
 }
 
 
-window.saveToArchive = (id) => {
+window.saveToShop = (id) => {
   // Logic to add to cart without jumping to checkout
   if (typeof addToCart === "function") {
     addToCart(id);
     const btn = document.getElementById("save-btn");
     if (btn) {
-      btn.textContent = "Saved to Archive";
+      btn.textContent = "Saved to Shop";
       btn.style.borderColor = "var(--accent-gold)";
       btn.style.color = "var(--accent-gold)";
     }

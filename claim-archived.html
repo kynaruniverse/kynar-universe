@@ -8,7 +8,7 @@
       name="viewport" 
     />
     
-    <title>Archive Decryption | Kynar Studio</title>
+    <title>Access Gateway | Kynar Studio</title>
     
     <link href="styles.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
@@ -16,8 +16,8 @@
     
     <meta content="noindex, nofollow" name="robots">
     
-    <meta content="Archive Entry Verified | Kynar Studio" property="og:title">
-    <meta content="Secure decryption gateway for the Kynar Archive." property="og:description">
+    <meta content="Purchase Entry Verified | Kynar Studio" property="og:title">
+    <meta content="Secure decryption gateway for the Kynar Shop." property="og:description">
     <meta content="https://www.kynaruniverse.co.uk/claim-archived.html" property="og:url">
     <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
 
@@ -88,7 +88,7 @@
         </span>
 
         <h1 id="claim-title">
-          Preparing Your <br /><span style="color: var(--ink-medium)">Archive.</span>
+          Preparing Your <br /><span style="color: var(--ink-medium)">Assets.</span>
         </h1>
 
         <p 
@@ -205,7 +205,7 @@
             if (!product && productId !== 'starter-pack') {
                 securityLabel.textContent = "Access Denied";
                 securityLabel.style.color = "#e63946";
-                claimTitle.innerHTML = `Archive Link <br /><span style="color: var(--ink-medium)">Invalid.</span>`;
+                claimTitle.innerHTML = `Access Link <br /><span style="color: var(--ink-medium)">Invalid.</span>`;
                 metaText.textContent = "Security certificates could not be verified for this session.";
                 icon.textContent = "🚫";
                 
@@ -224,7 +224,7 @@
             securityLabel.textContent = "Security Verified";
             securityLabel.style.color = "var(--accent-gold)";
             claimTitle.innerHTML = `Your Assets Are <br /><span style="color: var(--ink-medium)">Ready.</span>`;
-            metaText.innerHTML = `The <strong>${productName}</strong> archive is now decrypted and prepared for download.`;
+            metaText.innerHTML = `The <strong>${productName}</strong> package is now decrypted and prepared for download.`;
             // Visual Physics: Reveal Sequence
             icon.style.opacity = '0';
             setTimeout(() => {
@@ -249,7 +249,7 @@
                 dlBtn.setAttribute('download', activeProduct.file);
             } else {
                 dlBtn.style.display = 'none';
-                metaText.textContent = "Archive file path not found. Please contact support.";
+                metaText.textContent = "Product file path not found. Please contact support.";
             }
 
 
