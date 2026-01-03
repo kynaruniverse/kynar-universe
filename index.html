@@ -146,27 +146,9 @@
                 color: var(--ink-deep); 
               "
             >01</div>
-            <span 
-              style="
-                color: var(--ink-deep); 
-                display: block; 
-                font-size: 0.7rem;
-                font-weight: 900; 
-                letter-spacing: 0.3em; 
-                margin-bottom: 20px; 
-                text-transform: uppercase;
-                isolation: isolate;
-              "
-            >Shop / 01</span>
-            <h3 style="font-size: 2.2rem; margin-bottom: 16px;">Life & Flow</h3>
-            <p 
-              style="
-                color: var(--ink-deep); 
-                font-size: 1rem; 
-                max-width: 280px;
-                opacity: 0.7; 
-              "
-            >Deep organization systems for the modern individual.</p>
+            <span style="color: var(--ink-deep); display: block; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.3em; margin-bottom: 20px; text-transform: uppercase; isolation: isolate;">01 // PERSONAL</span>
+            <h3 style="font-size: 2.2rem; margin-bottom: 16px;">Personal & Flow</h3>
+            <p style="color: var(--ink-deep); font-size: 1rem; max-width: 280px; opacity: 0.7;">Organization systems and wellness planners for the modern individual.</p>
           </a>
 
           <a 
@@ -198,27 +180,9 @@
                 color: var(--ink-deep); 
               "
             >02</div>
-            <span 
-              style="
-                color: var(--ink-deep); 
-                display: block; 
-                font-size: 0.7rem; 
-                font-weight: 900; 
-                letter-spacing: 0.3em; 
-                margin-bottom: 20px; 
-                text-transform: uppercase; 
-                isolation: isolate;
-              "
-            >Shop / 02</span>
+            <span style="color: var(--ink-deep); display: block; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.3em; margin-bottom: 20px; text-transform: uppercase; isolation: isolate;">02 // WORK</span>
             <h3 style="font-size: 2.2rem; margin-bottom: 16px;">Business & Growth</h3>
-            <p 
-              style="
-                color: var(--ink-deep); 
-                font-size: 1rem; 
-                max-width: 280px;
-                opacity: 0.7; 
-              "
-            >Professional frameworks for high-stakes productivity.</p>
+            <p style="color: var(--ink-deep); font-size: 1rem; max-width: 280px; opacity: 0.7;">AI prompt packs and professional frameworks for high-stakes productivity.</p>
           </a>
 
           <a 
@@ -250,27 +214,9 @@
                 color: var(--ink-deep); 
               "
             >03</div>
-            <span 
-              style="
-                color: var(--ink-deep); 
-                display: block; 
-                font-size: 0.7rem; 
-                font-weight: 900; 
-                letter-spacing: 0.3em; 
-                margin-bottom: 20px; 
-                text-transform: uppercase; 
-                isolation: isolate;
-              "
-            >Shop / 03</span>
+            <span style="color: var(--ink-deep); display: block; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.3em; margin-bottom: 20px; text-transform: uppercase; isolation: isolate;">03 // CREATIVE</span>
             <h3 style="font-size: 2.2rem; margin-bottom: 16px;">Content & Style</h3>
-            <p 
-              style="
-                color: var(--ink-deep); 
-                font-size: 1rem; 
-                max-width: 280px;
-                opacity: 0.7; 
-              "
-            >Cinematic visual assets for elite digital storytelling.</p>
+            <p style="color: var(--ink-deep); font-size: 1rem; max-width: 280px; opacity: 0.7;">Cinematic visual systems and content creation frameworks.</p>
           </a>
 
           <a 
@@ -303,27 +249,9 @@
                 color: var(--ink-deep); 
               "
             >04</div>
-            <span 
-              style="
-                color: var(--ink-deep); 
-                display: block; 
-                font-size: 0.7rem; 
-                font-weight: 900; 
-                letter-spacing: 0.3em; 
-                margin-bottom: 20px; 
-                text-transform: uppercase;
-                isolation: isolate;
-              "
-            >Shop / 04</span>
-            <h3 style="font-size: 2.2rem; margin-bottom: 16px;">Learning & Dev</h3>
-            <p 
-              style="
-                color: var(--ink-deep); 
-                font-size: 1rem; 
-                max-width: 280px;
-                opacity: 0.7; 
-              "
-            >Educational frameworks for the next generation of thinkers.</p>
+            <span style="color: var(--ink-deep); display: block; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.3em; margin-bottom: 20px; text-transform: uppercase; isolation: isolate;">04 // EDUCATION</span>
+            <h3 style="font-size: 2.2rem; margin-bottom: 16px;">Education & Dev</h3>
+            <p style="color: var(--ink-deep); font-size: 1rem; max-width: 280px; opacity: 0.7;">Educational curriculum planners for the next generation of thinkers.</p>
           </a>
 
         </div>
@@ -369,7 +297,7 @@
           >View Full Shop →</a>
         </div>
 
-        <div class="gallery-grid" id="featured-grid"></div>
+        <div class="gallery-grid" id="featured-grid" style="grid-template-columns: 1fr;"></div>
       </section>
 
       <section 
@@ -414,7 +342,13 @@
       </section>
     </main>
 
-    <footer class="app-footer" id="global-footer"></footer>
+    <footer id="global-footer"></footer> 
+    <div id="productModal" class="nav-overlay" style="justify-content: center; padding: 20px;">
+        <div class="product-card" style="max-width: 800px; width: 100%; grid-template-columns: 1fr; position: relative; background: var(--bg-surface); padding: 40px;">
+          <button id="closeModal" class="nav-icon" style="position: absolute; top: 20px; right: 20px;">✕</button>
+          <div id="modalContent"></div>
+        </div>
+    </div>
 
     <script type="module">
       import { VAULT } from './vault.js';
@@ -428,6 +362,12 @@
           });
         });
         // #endregion
+        // #region [ 0. MODAL LOGIC ]
+        window.closeProductModal = () => {
+          document.getElementById('productModal').classList.remove('active');
+        };
+        document.getElementById('closeModal').onclick = closeProductModal;
+        // #endregion
 
         // #region [ 2. LATEST ARRIVALS LOGIC ]
         const featuredGrid = document.getElementById('featured-grid');
@@ -435,7 +375,7 @@
         let latest = [];
         try {
           // Take only the 3 most recent ACTIVE products
-          latest = VAULT.filter(p => p.status === 'active').slice(-3).reverse();
+          latest = VAULT.slice(0, 3);
         } catch (e) {
           console.error("Vault Handshake Failed");
           featuredGrid.innerHTML = '<div class="empty-state">Shop connectivity interrupted. Please refresh.</div>';
@@ -448,34 +388,28 @@
         }
 
         featuredGrid.innerHTML = latest.map((p, i) => `
-  <article class="product-card reveal-up" style="transition-delay: ${i * 0.1}s">
-    <a 
-      class="card-image" 
-      href="product.html?id=${p.id}" 
-      style="background-color: ${p.bg || 'var(--bg-bone)'}"
-    >
-      <div class="card-category-tag">${p.tag}</div> 
-      <img 
-        alt="${p.title}" 
-        class="product-img" 
-        onload="this.style.opacity='1'"
-        src="${p.image}" 
-        style="opacity: 0; transition: opacity 0.8s ease;" 
-      >
-    </a>
-    <div class="card-info">
-      <h3 class="card-title">${p.title}</h3>
-      <p style="color: var(--ink-medium); font-size: 0.85rem; line-height: 1.4;">
-        ${p.shortDesc}
-      </p>
-      
-      <div style="align-items: center; display: flex; justify-content: space-between; margin-top: 15px;">
-        <span class="card-price">${p.price}</span>
-        <a class="btn-ghost" href="product.html?id=${p.id}">View Details</a>
+    <article class="product-card reveal-up" style="transition-delay: ${i * 0.1}s; display: grid; grid-template-columns: clamp(100px, 30%, 180px) 1fr; gap: 30px; align-items: center; padding: 30px;">
+
+    <div class="card-left" style="text-align: center;">
+      <div class="card-image" style="background: ${p.accentColor || 'var(--pastel-sage)'}; border-radius: 20px; aspect-ratio: 1/1; display: flex; align-items: center; padding: 20px;">
+        <img src="${p.image}" alt="${p.title}" style="width: 100%; object-fit: contain;">
+      </div>
+      <span class="card-price" style="display: block; margin-top: 15px; font-size: 1.4rem; color: var(--accent-gold); font-family: var(--font-display);">${p.price}</span>
+    </div>
+    <div class="card-right">
+      <h3 class="card-title" style="font-size: 1.3rem; margin-bottom: 5px;">${p.title}</h3>
+      <div class="tag-container" style="display: flex; gap: 8px; margin-bottom: 15px;">
+        <span class="horizontal-tag">${p.tag}</span>
+      </div>
+      <p style="font-size: 0.9rem; margin-bottom: 20px; opacity: 0.7;">${p.shortDesc}</p>
+      <div class="card-actions" style="display: flex; gap: 10px;">
+        <button onclick="openProductModal('${p.id}')" class="btn-ghost" style="flex: 1; font-size: 0.6rem;">Details</button>
+        <button id="add-btn-${p.id}" onclick="saveToShop('${p.id}')" class="btn-primary" style="flex: 1; font-size: 0.6rem; padding: 10px;">Add to Selection</button>
       </div>
     </div>
   </article>
 `).join('');
+
 
         
         // #endregion
@@ -494,24 +428,5 @@
 
       });
     </script>
-    
-    <div class="nav-overlay" id="navOverlay">
-  <button aria-label="Close Menu" class="nav-icon" id="closeMenu">
-    <svg fill="none" height="32" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="32">
-      <line x1="18" x2="6" y1="6" y2="18"></line>
-      <line x1="6" x2="18" y1="6" y2="18"></line>
-    </svg>
-  </button>
-
-  <nav class="kinetic-nav">
-    <a class="nav-menu-link" href="index.html" data-index="01">Home</a>
-    <a class="nav-menu-link" href="shop.html" data-index="02">Shop</a>
-    <a class="nav-menu-link" href="newsletter.html" data-index="03">Community</a>
-    <a class="nav-menu-link" href="legal.html" data-index="04">Protocol</a>
-    <a class="nav-menu-link" href="contact.html" data-index="05">Support</a>
-
-  </nav>
-</div>
-
   </body>
 </html>

@@ -225,8 +225,8 @@
       </div>
     </main>
 
-    <footer class="app-footer" id="global-footer"></footer>
-
+    <footer id="global-footer"></footer>
+    
     <script defer src="ui-core.js"></script>
     
     <script type="module">
@@ -243,7 +243,7 @@
 
         // #region [ 2. DYNAMIC CONTENT LOGIC ]
         
-        if (type === "order") {
+                if (type === "order") {
           const product = getProduct(productId);
           const pName = product ? product.title : "Digital Assets";
           
@@ -251,24 +251,29 @@
           document.getElementById("success-title").innerHTML = `${pName} <br><span style='color: var(--ink-medium);'>Are Ready.</span>`;
           document.getElementById("success-text").textContent = "Your payment was successful. A unique download key has been generated and dispatched to your email.";
           document.getElementById("action-text").textContent = "Check email for secure download link";
+          
           setTimeout(() => {
-            document.getElementById("action-text").innerHTML = "Secure Link Dispatched <span style='color:var(--accent-gold);'>●</span>";
+            const actionText = document.getElementById("action-text");
+            if(actionText) actionText.innerHTML = "Secure Link Dispatched <span style='color:var(--accent-gold);'>●</span>";
           }, 2500);
-
 
           // PROACTIVE EVOLUTION: Add immediate access button if ID is present
           if (productId) {
             localStorage.removeItem('kynar_cart');
-          if (!document.getElementById('portal-link')) {
-            const gatewayBtn = document.createElement('a');
-            gatewayBtn.id = 'portal-link';
-            gatewayBtn.href = `claim-archived.html?id=${productId}`;
-            gatewayBtn.className = "btn-ghost reveal-up";
-            gatewayBtn.style.cssText = "margin-top: 20px; width: 100%; justify-content: center; display: flex;";
-            gatewayBtn.textContent = "Access Portal Directly →";
-                document.getElementById("action-stack").after(gatewayBtn);
+            if (!document.getElementById('portal-link')) {
+              const gatewayBtn = document.createElement('a');
+              gatewayBtn.id = 'portal-link';
+              gatewayBtn.href = "#"; // Placeholder since real download comes from email
+              gatewayBtn.className = "btn-ghost reveal-up";
+              gatewayBtn.style.cssText = "margin-top: 20px; width: 100%; justify-content: center; display: flex;";
+              gatewayBtn.textContent = "Return to Dashboard →";
+              gatewayBtn.onclick = (e) => { e.preventDefault(); window.location.href = 'index.html'; };
+              
+              const stack = document.getElementById("action-stack");
+              if(stack) stack.after(gatewayBtn);
             }
           }
+        } 
         
         // #endregion
 

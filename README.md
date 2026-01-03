@@ -4,7 +4,7 @@ Kynar Studio is a high-performance, boutique digital marketplace engineered for 
 
 ---
 
-## 💎 The V6.5 Philosophy
+## 💎 The V7.0 Philosophy
 Unlike traditional template-based stores, Kynar Studio operates on a **Data-Driven Architecture**. Every product interaction is controlled by a centralized Vault, ensuring that the interface remains lean while the inventory grows.
 
 ### **Key Technical Features**

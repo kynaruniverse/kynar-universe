@@ -92,12 +92,11 @@ async function loadFooter() {
  * Injects the Master Cart Sidebar HTML into the DOM if missing.
  */
 async function loadCartSidebar() {
-  // Inject the Master Cart Sidebar if it doesn't exist
   if (document.getElementById("cartSidebar")) return;
   const cartHTML = `
     <div id="cartSidebar" class="cart-sidebar">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-        <h2 style="font-family: var(--font-display); font-size: 1.5rem;">Command Center</h2>
+        <h2 style="font-family: var(--font-display); font-size: 1.5rem;">Your Cart</h2>
         <button onclick="toggleCart('close')" class="nav-icon" style="font-size: 1.5rem; background: transparent; border: none; padding: 0;">✕</button>
       </div>
       <div id="cartList" style="flex-grow: 1; overflow-y: auto;"></div>
@@ -208,15 +207,15 @@ function initCartEngine() {
     // --- Empty State ---
     if (window.KYNAR_STATE.cart.length === 0) {
       list.innerHTML =
-        '<div class="reveal-up reveal-visible" style="text-align: center; margin-top: 100px; opacity: 0.4; font-family: var(--font-display);">Shop Index Empty</div>';
+        '<div class="reveal-up reveal-visible" style="text-align: center; margin-top: 100px; opacity: 0.4; font-family: var(--font-display);">Shop Cart Empty</div>';
     } else {
       // --- Populated State ---
       list.innerHTML = window.KYNAR_STATE.cart
         .map(
           (item) => `
         <div class="cart-item reveal-up reveal-visible">
-          <div class="cart-item-img" style="background: var(--bg-surface); border: 1px solid rgba(0,0,0,0.05);">
-            <img src="${item.image}" onerror="this.src='assets/images/placeholder.png'" style="width:100%; height:100%; object-fit:contain;" loading="lazy">
+          <div class="cart-item-img" style="background: ${item.accentColor || 'var(--bg-surface)'}; border: 1px solid rgba(0,0,0,0.05);">
+          <img src="${item.image}" onerror="this.src='assets/images/placeholder.png'" style="width:100%; height:100%; object-fit:contain;" loading="lazy">
 
           </div>
           <div style="flex-grow:1;">
@@ -284,15 +283,23 @@ function initSearchEngine() {
           p.tag.toLowerCase().includes(query)
       );
       results.innerHTML = matches
-        .map(
-          (p) => `
-        <a href="product.html?id=${p.id}" class="product-card" style="flex-direction: row; padding: 15px; align-items: center; gap: 20px; text-decoration: none;">
-          <div style="width: 60px; height: 60px; background: var(--bg-surface); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 8px; display: flex; align-items: center; justify-content: center;"><img src="${p.image}" style="width:100%; height:100%; object-fit:contain;"></div>
+  .map(
+    (p) => `
+  <a href="product.html?id=${p.id}" class="product-card" style="display: grid; grid-template-columns: 80px 1fr; padding: 15px; align-items: center; gap: 20px; text-decoration: none; border-radius: 15px;">
+    <div style="width: 80px; height: 80px; background: ${p.accentColor || 'var(--bg-bone)'}; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 10px;">
+        <img src="${p.image}" style="width:100%; height:100%; object-fit:contain;">
+    </div>
+    <div>
+        <h4 style="color:var(--ink-deep); margin:0; font-size: 1rem;">${p.title}</h4>
+        <div style="display: flex; gap: 8px; margin-top: 5px;">
+            <span style="font-size:0.6rem; color:var(--accent-gold); font-weight:800; text-transform:uppercase; letter-spacing: 0.1em;">${p.tag}</span>
+            <span style="font-size:0.6rem; opacity: 0.4; font-weight:800;">${p.price}</span>
+        </div>
+    </div>
+  </a>`
+  )
+  .join("");
 
-          <div><h4 style="color:var(--ink-deep); margin:0;">${p.title}</h4><span style="font-size:0.7rem; color:var(--accent-gold); font-weight:800; text-transform:uppercase;">${p.tag}</span></div>
-        </a>`
-        )
-        .join("");
     };
 
     document.getElementById("closeSearch").onclick = () => {
@@ -439,16 +446,64 @@ function initThemeEngine() {
 
 
 window.saveToShop = (id) => {
-  // Logic to add to cart without jumping to checkout
   if (typeof addToCart === "function") {
     addToCart(id);
-    const btn = document.getElementById("save-btn");
+    
+    // Target the specific button for this product
+    const btn = document.getElementById(`add-btn-${id}`);
     if (btn) {
-      btn.textContent = "Saved to Shop";
-      btn.style.borderColor = "var(--accent-gold)";
-      btn.style.color = "var(--accent-gold)";
+      const originalText = btn.textContent;
+      btn.textContent = "✓ Added";
+      btn.classList.add('success');
+      
+      if (navigator.vibrate) navigator.vibrate(15); // Tactical Haptics
+      
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('success');
+      }, 2000);
     }
   }
 };
 
+
 // #endregion
+
+window.openProductModal = (id) => {
+  const p = VAULT.find(item => item.id === id);
+  if (!p) return;
+
+  const modal = document.getElementById('productModal');
+  const content = document.getElementById('modalContent');
+
+  content.innerHTML = `
+    <div class="modal-grid-responsive" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; align-items: start;">
+
+      <div class="card-image" style="background: ${p.accentColor}; padding: 20px;">
+        <img src="${p.image}" style="width: 100%;">
+      </div>
+      <div>
+        <h2 style="font-family: var(--font-display); margin-bottom: 10px;">${p.title}</h2>
+        <span class="horizontal-tag">${p.tag}</span>
+        <p style="margin-top: 20px; line-height: 1.8; color: var(--ink-medium);">${p.longDesc}</p>
+        <div style="margin-top: 30px; display: flex; align-items: center; justify-content: space-between;">
+           <span class="card-price" style="font-size: 2rem;">${p.price}</span>
+           <button class="btn-add" onclick="saveToShop('${p.id}')">Add To Selection</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('active');
+  if (navigator.vibrate) navigator.vibrate(10);
+};
+
+// Safer Close Listener
+const closeBtn = document.getElementById('closeModal');
+if (closeBtn) {
+  closeBtn.onclick = () => {
+    const modal = document.getElementById('productModal');
+    if (modal) modal.classList.remove('active');
+  };
+}
+
