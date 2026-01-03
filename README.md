@@ -16,7 +16,7 @@ Unlike traditional template-based stores, Kynar Studio operates on a **Data-Driv
 ---
 
 ## 🛠️ Maintenance Protocol
-To preserve the **High-Fidelity Handshake**, all additions to the archive must follow these rules:
+To preserve the **High-Fidelity Handshake**, all additions to the shop must follow these rules:
 1. **Geometric Integrity:** New product IDs in `vault.js` must be kebab-case and mirrored in `sitemap.xml`.
 2. **Haptic Sync:** All new interactive triggers must include the `navigator.vibrate` handshake.
 3. **Temporal Physics:** Update the `<lastmod>` tag in `sitemap.xml` after every inventory injection.
@@ -43,12 +43,12 @@ To preserve the **High-Fidelity Handshake**, all additions to the archive must f
 ├── styles.css              # Master Design System (Grain, Obsidian Mode)
 │
 ├── index.html              # Dynamic Showroom (Showcase)
-├── shop.html               # The Archive Grid (Marketplace)
+├── shop.html               # The Shop Grid (Marketplace)
 ├── product.html            # Detail Page (Boutique SEO)
 ├── success.html            # Success Handshake (Signal Verified)
 ├── claim-archived.html     # Decryption Gateway (Fulfillment)
 ├── freebie.html            # The Welcome Signal (Lead Magnet)
-├── newsletter.html         # Community Archive (The Network)
+├── newsletter.html         # Community Shop (The Network)
 ├── contact.html            # Support Concierge (HQ Dispatch)
 ├── legal.html              # Operational Protocols (Terms)
 ├── maintenance.html        # System Shield (Updating)

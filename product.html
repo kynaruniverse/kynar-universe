@@ -39,7 +39,7 @@
     </style>
   
     <meta content="product" property="og:type">
-    <meta content="Archive Entry | Kynar Studio" property="og:title">
+    <meta content="Shop Entry | Kynar Studio" property="og:title">
     <meta content="Secure access to Kynar Studio high-fidelity digital assets." property="og:description">
     <meta content="https://www.kynaruniverse.co.uk/product.html" property="og:url">
     
@@ -48,7 +48,7 @@
       const params = new URLSearchParams(window.location.search);
       const p = getProduct(params.get("id"));
       if (p) {
-        document.title = `${p.title} | Kynar Studio Archive`;
+        document.title = `${p.title} | Kynar Studio Shop`;
         const metaDesc = document.querySelector('meta[property="og:description"]');
         if (metaDesc) metaDesc.setAttribute('content', p.shortDesc);
         const metaImg = document.querySelector('meta[property="og:image"]');
@@ -212,7 +212,7 @@
                     opacity: 0.5; 
                     text-transform: uppercase; 
                   "
-                >Included in Archive:</h4>
+                >Included in Shop:</h4>
                 <ul style="display: grid; gap: 20px; list-style: none;">
                   ${p.features.map(f => `
                     <li 
@@ -264,7 +264,7 @@
                       "
                     >
                       <div style="animation: pulse-border 2s infinite; background: var(--accent-gold); border-radius: 50%; height: 6px; width: 6px;"></div>
-                      ARCHIVE SIGNAL: ACTIVE
+                      SHOP SIGNAL: ACTIVE
                     </div>
                     <span 
                       style="
@@ -301,9 +301,9 @@
                     <button 
                       class="btn-ghost" 
                       id="save-btn" 
-                      onclick="saveToArchive('${p.id}')" 
+                      onclick="saveToShop('${p.id}')" 
                       style="height: 56px; width: 100%;"
-                    >Save to Archive</button>
+                    >Save to Shop</button>
                     
                     ${p.previewUrl && p.previewUrl !== "#" ? `
                       <a 
@@ -403,7 +403,7 @@
                 font-weight: 500;
                 opacity: 0.6; 
               "
-            >Secure encryption in progress. This archive is currently being populated.</p>
+            >Secure encryption in progress. This shop is currently being populated.</p>
           </div>
         `;
       }
