@@ -505,5 +505,14 @@ if (closeBtn) {
     const modal = document.getElementById('productModal');
     if (modal) modal.classList.remove('active');
   };
+  
+window.initRevealEngine = () => {
+  requestAnimationFrame(() => {
+    const elements = document.querySelectorAll(".reveal-up");
+    elements.forEach((el, i) => {
+      setTimeout(() => el.classList.add("reveal-visible"), i * 100);
+    });
+  });
+};
 }
 
