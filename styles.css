@@ -364,21 +364,70 @@ p { color: var(--ink-medium); max-width: 60ch; }
 
 /* #region [ 8. OVERLAYS & INTERACTIONS ] */
 
-/* --- Fullscreen Nav --- */
+/* --- 2026 Kinetic Overlay --- */
 .nav-overlay {
-  position: fixed; inset: 0; background: var(--bg-bone); 
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transform: scale(1.1); opacity: 0;
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease, visibility 0.6s;
-  visibility: hidden; pointer-events: none;
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  position: fixed;
+  inset: 0;
+  background: var(--bg-glass);
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  z-index: 11000;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Asymmetric right-alignment */
+  padding: clamp(40px, 10vw, 100px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.nav-overlay.active { transform: scale(1); opacity: 1; visibility: visible; pointer-events: all; }
 
-.nav-menu-link { 
-  font-family: var(--font-display); font-size: 2.8rem; color: var(--ink-deep); 
-  text-decoration: none; margin: 15px 0; transition: 0.3s; 
+.nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
+
+#closeMenu {
+  position: absolute;
+  top: 30px;
+  right: 30px; /* Ergonomic Right-side position */
+  color: var(--ink-deep);
+}
+
+.kinetic-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: right;
+}
+
+.nav-menu-link {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 12vw, 5.5rem); 
+  color: var(--ink-deep);
+  text-decoration: none;
+  line-height: 0.85;
+  transform: translateY(60px) skewY(6deg);
+  opacity: 0;
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Kinetic Staggered Entry */
+.nav-overlay.active .nav-menu-link {
+  transform: translateY(0) skewY(0);
+  opacity: 1;
+}
+
+.nav-menu-link:nth-child(1) { transition-delay: 0.1s; }
+.nav-menu-link:nth-child(2) { transition-delay: 0.18s; }
+.nav-menu-link:nth-child(3) { transition-delay: 0.26s; }
+.nav-menu-link:nth-child(4) { transition-delay: 0.34s; }
+.nav-menu-link:nth-child(5) { transition-delay: 0.42s; }
+
+.nav-menu-link:hover {
+  color: var(--accent-gold);
+  transform: translateX(-15px);
+}
+
 
 /* --- Search Overlay --- */
 #searchOverlay {

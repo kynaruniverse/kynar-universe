@@ -1,179 +1,48 @@
 <div class="header-controls left">
-  
-  <button 
-    aria-label="Menu" 
-    class="nav-icon" 
-    id="menuTrigger" 
-  >
-    <svg 
-      fill="none" 
-      height="24" 
-      stroke="currentColor" 
-      stroke-width="2" 
-      viewBox="0 0 24 24" 
-      width="24"
-    >
+  <button aria-label="Menu" class="nav-icon" id="menuTrigger">
+    <svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24">
       <line x1="3" x2="21" y1="12" y2="12"></line>
       <line x1="3" x2="21" y1="6" y2="6"></line>
       <line x1="3" x2="21" y1="18" y2="18"></line>
     </svg>
   </button>
 
-  <button 
-    aria-label="Search Marketplace" 
-    class="nav-icon" 
-    id="searchTrigger" 
-    
-  >
-    <svg 
-      fill="none" 
-      height="20" 
-      stroke="currentColor" 
-      stroke-width="2" 
-      viewBox="0 0 24 24" 
-      width="20"
-    >
+  <button aria-label="Search Marketplace" class="nav-icon" id="searchTrigger">
+    <svg fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20">
       <circle cx="11" cy="11" r="8"></circle>
       <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
     </svg>
   </button>
 </div>
 
-<a 
-  class="brand-logo" 
-  href="index.html" 
-  
->
-  KYNAR.
-</a>
+<a class="brand-logo" href="index.html">KYNAR.</a>
 
 <div class="header-controls right">
-    
   <button aria-label="Toggle Obsidian Mode" class="theme-toggle" id="themeToggle">
-  <svg class="sun-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20">
-    <circle cx="12" cy="12" r="5"></circle>
-    <line x1="12" x2="12" y1="1" y2="3"></line>
-    <line x1="12" x2="12" y1="21" y2="23"></line>
-    <line x1="4.22" x2="5.64" y1="4.22" y2="5.64"></line>
-    <line x1="18.36" x2="19.78" y1="18.36" y2="19.78"></line>
-    <line x1="1" x2="3" y1="12" y2="12"></line>
-    <line x1="21" x2="23" y1="12" y2="12"></line>
-    <line x1="4.22" x2="5.64" y1="19.78" y2="18.36"></line>
-    <line x1="18.36" x2="19.78" y1="5.64" y2="4.22"></line>
-  </svg>
-  
-  <svg class="moon-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20">
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-  </svg>
-</button>
-
+    <svg class="sun-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" x2="12" y1="1" y2="3"></line>
+      <line x1="12" x2="12" y1="21" y2="23"></line>
+      <line x1="4.22" x2="5.64" y1="4.22" y2="5.64"></line>
+      <line x1="18.36" x2="19.78" y1="18.36" y2="19.78"></line>
+      <line x1="1" x2="3" y1="12" y2="12"></line>
+      <line x1="21" x2="23" y1="12" y2="12"></line>
+      <line x1="4.22" x2="5.64" y1="19.78" y2="18.36"></line>
+      <line x1="18.36" x2="19.78" y1="5.64" y2="4.22"></line>
+    </svg>
+    <svg class="moon-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+  </button>
 
   <div class="cart-wrapper">
-    <button 
-      aria-label="Cart" 
-      class="nav-icon cart-trigger" 
-      toggleCart('open');"
-    >
-      <svg 
-        fill="none" 
-        height="22" 
-        stroke="currentColor" 
-        stroke-width="2" 
-        viewBox="0 0 24 24" 
-        width="22"
-      >
+    <button aria-label="Cart" class="nav-icon cart-trigger" onclick="toggleCart('open');">
+      <svg fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22">
         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
         <line x1="3" x2="21" y1="6" y2="6"></line>
         <path d="M16 10a4 4 0 0 1-8 0"></path>
       </svg>
     </button>
-    
     <span class="cart-count-badge" style="visibility: hidden;">0</span>
-
-  </div>
-</div>
-
-<div class="nav-overlay" id="navOverlay">
-  
-  <button 
-    aria-label="Close Menu" 
-    class="nav-icon" 
-    id="closeMenu" 
-    style="
-      left: 20px; 
-      position: absolute; 
-      top: env(safe-area-inset-top, 20px);
-    "
-
-  >
-    <svg 
-      fill="none" 
-      height="24" 
-      stroke="currentColor" 
-      stroke-width="2" 
-      viewBox="0 0 24 24" 
-      width="24"
-    >
-      <line x1="18" x2="6" y1="6" y2="18"></line>
-      <line x1="6" x2="18" y1="6" y2="18"></line>
-    </svg>
-  </button>
-
-  <nav 
-    style="
-      align-items: center; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 35px;
-    "
-  >
-    <a 
-      class="nav-menu-link reveal-up" 
-      href="index.html" 
-      style="transition-delay: 0.1s"
-    >Home</a>
-    
-    <a 
-      class="nav-menu-link reveal-up" 
-      href="shop.html" 
-      style="transition-delay: 0.2s"
-    >Archive</a>
-    
-    <a 
-      class="nav-menu-link reveal-up" 
-      href="newsletter.html" 
-      style="transition-delay: 0.3s"
-    >Community</a>
-    
-    <a 
-      class="nav-menu-link reveal-up" 
-      href="legal.html" 
-      style="transition-delay: 0.4s"
-    >Protocol</a>
-    
-    <a 
-      class="nav-menu-link reveal-up" 
-      href="contact.html" 
-      style="transition-delay: 0.5s"
-    >Support</a>
-  </nav>
-
-  <div 
-    style="
-      bottom: 50px; 
-      position: absolute; 
-      text-align: center; 
-      width: 100%;
-    "
-  >
-    <p 
-      style="
-        font-size: 0.6rem; 
-        letter-spacing: 0.3em; 
-        margin-bottom: 20px; 
-        opacity: 0.4; 
-        text-transform: uppercase;
-      "
-    >Kynar Studio • 2026</p>
   </div>
 </div>
