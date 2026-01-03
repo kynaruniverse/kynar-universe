@@ -1,274 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
     <meta charset="UTF-8" />
-    <meta 
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" 
-      name="viewport" 
-    />
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Access Gateway | Kynar Studio</title>
-    
     <link href="styles.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script defer src="ui-core.js"></script>
-    
-    <meta content="noindex, nofollow" name="robots">
-    
-    <meta content="Purchase Entry Verified | Kynar Studio" property="og:title">
-    <meta content="Secure decryption gateway for the Kynar Shop." property="og:description">
-    <meta content="https://www.kynaruniverse.co.uk/claim-archived.html" property="og:url">
-    <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
-
     <style>
-      .vault-icon {
-        animation: float 3s ease-in-out infinite;
-        display: inline-block;
-        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05));
-        font-size: 4rem; 
-        margin-bottom: 25px; 
-      }
-
-      @keyframes border-march {
-        to { stroke-dashoffset: -20; }
-      }
-
-      .security-box.verifying {
-        animation: pulse-border 2s infinite;
-        border-style: dashed;
-      }
-      
-      .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-      }
+      .vault-icon { font-size: 4rem; margin-bottom: 25px; animation: float 3s ease-in-out infinite; display: inline-block; }
+      .verifying { border-style: dashed !important; animation: pulse-border 2s infinite; }
     </style>
   </head>
 
   <body>
-
     <header class="app-header" id="global-header"></header>
 
-    <main 
-      class="container" 
-      style="
-        align-items: center; 
-        display: flex; 
-        justify-content: center; 
-        min-height: 85vh; 
-        text-align: center;
-      "
-    >
-      <div 
-        class="reveal-up" 
-        style="
-          max-width: 500px; 
-          width: 100%;
-        "
-      >
+    <main class="container flex-col flex-center text-center" style="min-height: 85vh;">
+      <div class="reveal-up" style="max-width: 500px; width: 100%;">
         
         <div class="vault-icon" id="status-icon">📦</div>
 
-        <span 
-          id="security-label" 
-          style="
-            color: var(--accent-gold); 
-            display: block; 
-            font-size: 0.75rem; 
-            font-weight: 800; 
-            letter-spacing: 0.25em; 
-            margin-bottom: 20px;
-            text-transform: uppercase; 
-          "
-        >
-          Initialising Gateway
-        </span>
+        <span id="security-label" class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.25em; display: block; margin-bottom: 20px;">Initialising Gateway</span>
 
         <h1 id="claim-title">
-          Preparing Your <br /><span style="color: var(--ink-medium)">Assets.</span>
+          Preparing Your <br /><span class="text-faded">Assets.</span>
         </h1>
 
-        <p 
-          id="download-meta" 
-          style="
-            color: var(--ink-medium);
-            font-size: 1.1rem; 
-            line-height: 1.6; 
-            margin: 25px 0 45px 0; 
-          "
-        >
+        <p id="download-meta" class="text-sm" style="margin-bottom: 45px;">
           Verifying security certificates and generating your unique access token...
         </p>
 
-        <div 
-          id="action-cluster" 
-          style="
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 0.5s ease;
-          "
-        >
-          <a 
-            class="btn-primary" 
-            download 
-            href="#" 
-            id="downloadBtn" 
-            style="
-              justify-content: center; 
-              letter-spacing: 0.1em;
-              width: 100%; 
-            "
-          >
-            Download Package Now
-          </a>
-          
-          <a 
-            class="btn-ghost" 
-            href="shop.html" 
-            style="
-              justify-content: center;
-              width: 100%; 
-            "
-          >
-            Return to Marketplace
-          </a>
+        <div id="action-cluster" class="flex-col gap-sm" style="opacity: 0; pointer-events: none; transition: opacity 0.5s ease;">
+          <a class="btn btn--primary w-full" id="downloadBtn" href="#">Download Package Now</a>
+          <a class="btn btn--ghost w-full" href="shop.html">Return to Marketplace</a>
         </div>
 
-      <div 
-      class="product-card security-box verifying" 
-      id="security-box" 
-      style="
-      background: var(--bg-surface); 
-      border: 1.5px dashed rgba(15, 61, 48, 0.15); 
-      border-radius: 20px; 
-      margin-top: 50px; 
-      padding: 25px; 
-      transition: var(--transition-main);"
-      >
-
-           <p 
-             style="
-               font-size: 0.75rem; 
-               line-height: 1.5;
-               opacity: 0.6; 
-             "
-           >
-            🔒 <strong>Security Protocol:</strong> Access links are valid for 24 hours. <br> 
-            For technical assistance, 
-            <a 
-              href="contact.html" 
-              style="
-                color: var(--ink-deep); 
-                font-weight: 700; 
-                text-decoration: underline;
-              "
-            >Connect with Support</a>
+        <div id="security-box" class="card verifying" style="margin-top: 50px; padding: 25px;">
+           <p class="text-xs text-faded">
+            🔒 <strong>Security Protocol:</strong> Access links are valid for 24 hours.
           </p>
         </div>
 
       </div>
     </main>
 
-    <<footer id="global-footer"></footer>
+    <footer id="global-footer"></footer>
     
     <script type="module">
       import { getProduct } from './vault.js';
 
       document.addEventListener("DOMContentLoaded", () => {
-        // #region [ 1. DOM BINDINGS ]
         const params = new URLSearchParams(window.location.search);
         const productId = params.get("id");
         
-        const metaText = document.getElementById("download-meta");
-        const securityLabel = document.getElementById("security-label");
-        const claimTitle = document.getElementById("claim-title");
-        const actionCluster = document.getElementById("action-cluster");
-        const dlBtn = document.getElementById("downloadBtn");
-        const icon = document.getElementById("status-icon");
-        const securityBox = document.getElementById("security-box"); 
-        // #endregion
-
-        // #region [ 2. GATEWAY SEQUENCE ]
-        // Simulated server verification delay (1800ms)
         setTimeout(() => {
-
-            // --- A. VALIDATION CHECK ---
             const product = getProduct(productId);
-            
-            // Allow override for "Starter Pack" manual ID
-            if (!product && productId !== 'starter-pack') {
-                securityLabel.textContent = "Access Denied";
-                securityLabel.style.color = "#e63946";
-                claimTitle.innerHTML = `Access Link <br /><span style="color: var(--ink-medium)">Invalid.</span>`;
-                metaText.textContent = "Security certificates could not be verified for this session.";
-                icon.textContent = "🚫";
-                
-                // Visual Physics: Error State
-                securityBox.classList.remove('verifying');
-                securityBox.style.borderStyle = "solid";
-                securityBox.style.borderColor = "#e63946";
-                return;
-            }
-
-            // --- B. SUCCESS STATE ---
+            // Default to starter pack if no ID
             const activeProduct = product || { title: "Starter Pack", file: "kynar-starter-pack.zip" };
-            const productName = activeProduct.title;
 
-            // Update UI Elements
-            securityLabel.textContent = "Security Verified";
-            securityLabel.style.color = "var(--accent-gold)";
-            claimTitle.innerHTML = `Your Assets Are <br /><span style="color: var(--ink-medium)">Ready.</span>`;
-            metaText.innerHTML = `The <strong>${productName}</strong> package is now decrypted and prepared for download.`;
-            // Visual Physics: Reveal Sequence
-            icon.style.opacity = '0';
-            setTimeout(() => {
-              icon.style.opacity = '1';
-              icon.style.transform = 'scale(1.1)';
-            }, 300);
+            // Success State
+            document.getElementById("security-label").textContent = "Security Verified";
+            document.getElementById("claim-title").innerHTML = `Your Assets Are <br /><span class="text-faded">Ready.</span>`;
+            document.getElementById("download-meta").innerHTML = `The <strong>${activeProduct.title}</strong> package is decrypted.`;
+            document.getElementById("status-icon").textContent = "🔓";
             
-            icon.textContent = "🔓";
-            
-            // Visual Physics: Success State
-            securityBox.classList.remove('verifying');
-            securityBox.style.borderStyle = "solid";
-            securityBox.style.borderColor = "var(--accent-gold)";
+            const box = document.getElementById("security-box");
+            box.classList.remove('verifying');
+            box.style.borderStyle = "solid";
+            box.style.borderColor = "var(--color-accent)";
 
-            // Reveal Actions
-            actionCluster.style.opacity = "1";
-            actionCluster.style.pointerEvents = "all";
+            const actions = document.getElementById("action-cluster");
+            actions.style.opacity = "1";
+            actions.style.pointerEvents = "all";
 
-            // Inject File Path
+            const btn = document.getElementById("downloadBtn");
             if (activeProduct.file) {
-                dlBtn.href = `./assets/downloads/${activeProduct.file}`;
-                dlBtn.setAttribute('download', activeProduct.file);
-            } else {
-                dlBtn.style.display = 'none';
-                metaText.textContent = "Product file path not found. Please contact support.";
+                btn.href = `./assets/downloads/${activeProduct.file}`;
+                btn.setAttribute('download', activeProduct.file);
             }
-
-
-            // Bind Haptic Download Event
-            if (dlBtn) {
-              dlBtn.onclick = () => {
-                if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
-                dlBtn.style.pointerEvents = "none";
-                dlBtn.textContent = "Download Initialized";
-                // Reset button state after 3s
-                setTimeout(() => { 
-                  dlBtn.style.pointerEvents = "all";
-                  dlBtn.textContent = "Download Package Now"; 
-                }, 3000);
-              };
-            }
-
+            
+            if(navigator.vibrate) navigator.vibrate([20, 40]);
         }, 1800); 
-        // #endregion
+        
+        setTimeout(() => document.querySelector('.reveal-up').classList.add('reveal-visible'), 100);
       });
     </script>
   </body>

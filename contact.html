@@ -1,342 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
     <meta charset="UTF-8" />
-    <meta 
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" 
-      name="viewport" 
-    />
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Support Concierge | Kynar Studio</title>
     
     <link href="styles.css" rel="stylesheet" />
+    <script defer src="ui-core.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    <script src="ui-core.js" defer></script>
-    
-    <meta content="Support Concierge | Kynar Studio" property="og:title">
-    <meta content="Reach out to the Kynar Studio support team for technical assistance." property="og:description">
-    <meta content="https://www.kynaruniverse.co.uk/contact.html" property="og:url">
-    <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
-
-    <style>
-      input:focus, textarea:focus { 
-        border-color: var(--accent-gold) !important; 
-        box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1); 
-        transform: translateY(-2px);
-      }
-      input, textarea {
-        transition: transform var(--transition-main), border-color var(--transition-main);
-      }
-      body.dark-mode input, body.dark-mode textarea {
-        background: var(--bg-bone) !important;
-        border-color: rgba(255, 255, 255, 0.05) !important;
-      }
-      
-    </style>
   </head>
 
   <body>
-
     <header class="app-header" id="global-header"></header>
 
     <main class="container">
       
-      <section 
-        style="
-          margin-top: 40px; 
-          text-align: center;
-        "
-      >
-        <div class="reveal-up">
-          <span 
-            style="
-              color: var(--accent-gold); 
-              display: block; 
-              font-size: 0.75rem; 
-              font-weight: 800; 
-              letter-spacing: 0.25em; 
-              margin-bottom: 20px;
-              text-transform: uppercase; 
-            "
-          >
-            Support Channel
-          </span>
+      <section class="text-center reveal-up" style="margin-top: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <span class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.25em; display: block; margin-bottom: 20px;">Support Channel</span>
+        
+        <h1 style="margin-bottom: 25px;">
+          We're here <br /><span class="text-faded">to help.</span>
+        </h1>
 
-          <h1 
-            style="
-              color: var(--ink-deep); 
-              line-height: 1.1;
-            "
-          >
-            We're here <br /><span style="color: var(--ink-medium)">to help.</span>
-          </h1>
-
-          <p 
-            style="
-              color: var(--ink-medium); 
-              font-size: 1.15rem; 
-              line-height: 1.6;
-              margin: 25px auto; 
-              max-width: 500px; 
-            "
-          >
-            Have a technical inquiry or a question about the Kynar Shop? 
-            Reach out to our Support team.
-          </p>
-        </div>
+        <p class="text-sm" style="margin: 0 auto;">
+          Have a technical inquiry or a question about the Kynar Shop? 
+          Reach out to our Support team.
+        </p>
       </section>
 
-      <div class="gallery-grid" style="align-items: start; margin-top: 80px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+      <div class="category-grid" style="align-items: start; margin-top: 80px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
         
-        <div 
-          class="product-card reveal-up" 
-          style="
-            background: var(--bg-surface); 
-            border: 1.5px solid rgba(15, 61, 48, 0.05);
-            padding: 40px; 
-          "
-        >
-          <h3 
-            class="card-title" 
-            style="
-              font-family: var(--font-display); 
-              font-size: 1.4rem;
-              margin-bottom: 30px; 
-            "
-          >
-            Send a Message
-          </h3>
+        <div class="card reveal-up">
+          <h3 class="text-display" style="font-size: 1.4rem; margin-bottom: 30px;">Send a Message</h3>
 
-          <form action="https://formspree.io/f/mlgekbwb" id="contactForm" method="POST">
+          <form action="https://formspree.io/f/mlgekbwb" method="POST">
             <input name="_next" type="hidden" value="https://www.kynaruniverse.co.uk/success.html/?type=support" />
             <input name="_subject" type="hidden" value="Concierge Inquiry - Kynar Studio" />
 
-            <div style="margin-bottom: 25px">
-              <label 
-                style="
-                  color: var(--accent-gold); 
-                  display: block; 
-                  font-size: 0.65rem; 
-                  font-weight: 900; 
-                  letter-spacing: 0.1em;
-                  margin-bottom: 10px; 
-                  text-transform: uppercase; 
-                "
-              >Your Name</label>
-              <input 
-                name="name" 
-                placeholder="Full name..." 
-                required 
-                style="
-                  background: var(--bg-surface); 
-                  border: 1px solid rgba(15, 61, 48, 0.08); 
-                  border-radius: 12px; 
-                  caret-color: var(--accent-gold); 
-                  color: var(--ink-deep); 
-                  font-family: var(--font-body); 
-                  font-size: 1rem; 
-                  outline: none; 
-                  padding: 16px; 
-                  transition: var(--transition-main);
-                  width: 100%; 
-                " 
-                type="text" 
-              />
+            <div class="form-group">
+              <label class="form-label">Your Name</label>
+              <input class="form-input" name="name" placeholder="Full name..." required type="text" />
             </div>
 
-            <div style="margin-bottom: 25px">
-              <label 
-                style="
-                  color: var(--accent-gold); 
-                  display: block; 
-                  font-size: 0.65rem; 
-                  font-weight: 900; 
-                  letter-spacing: 0.1em;
-                  margin-bottom: 10px; 
-                  text-transform: uppercase; 
-                "
-              >Email Address</label>
-              <input 
-                name="email" 
-                placeholder="email@address.com" 
-                required 
-                style="
-                  background: var(--bg-surface); 
-                  border: 1px solid rgba(15, 61, 48, 0.08); 
-                  border-radius: 12px; 
-                  caret-color: var(--accent-gold); 
-                  color: var(--ink-deep); 
-                  font-family: var(--font-body); 
-                  font-size: 1rem; 
-                  outline: none; 
-                  padding: 16px; 
-                  transition: var(--transition-main);
-                  width: 100%; 
-                " 
-                type="email" 
-              />
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input class="form-input" name="email" placeholder="email@address.com" required type="email" />
             </div>
 
-            <div style="margin-bottom: 35px">
-              <label 
-                style="
-                  color: var(--accent-gold); 
-                  display: block; 
-                  font-size: 0.65rem; 
-                  font-weight: 900; 
-                  letter-spacing: 0.1em;
-                  margin-bottom: 10px; 
-                  text-transform: uppercase; 
-                "
-              >Inquiry Details</label>
-              <textarea 
-                name="message" 
-                placeholder="How can our team assist you today?" 
-                required 
-                style="
-                  background: var(--bg-surface); 
-                  border: 1px solid rgba(15, 61, 48, 0.08); 
-                  border-radius: 12px; 
-                  caret-color: var(--accent-gold); 
-                  color: var(--ink-deep); 
-                  font-family: var(--font-body); 
-                  font-size: 1rem; 
-                  min-height: 160px; 
-                  outline: none; 
-                  padding: 16px; 
-                  resize: none; 
-                  transition: var(--transition-main);
-                  width: 100%; 
-                "
-              ></textarea>
+            <div class="form-group">
+              <label class="form-label">Inquiry Details</label>
+              <textarea class="form-input" name="message" placeholder="How can our team assist you today?" required></textarea>
             </div>
 
-            <button 
-              class="btn-primary" 
-              onclick="if(navigator.vibrate) navigator.vibrate([15, 30]);" 
- 
-              style="
-                justify-content: center; 
-                letter-spacing: 0.15em;
-                width: 100%; 
-              " 
-              type="submit"
-            >
-              Dispatch Message →
-            </button>
+            <button class="btn btn--primary w-full" type="submit">Dispatch Message →</button>
           </form>
         </div>
 
-        <div 
-          class="reveal-up" 
-          style="
-            display: flex; 
-            flex-direction: column; 
-            gap: 24px;
-          "
-        >
+        <div class="flex-col gap-lg reveal-up" style="transition-delay: 0.2s;">
           
-          <div 
-            class="product-card" 
-            style="
-              align-items: center; 
-              background: var(--bg-surface); 
-              border: 1px solid rgba(15, 61, 48, 0.05); 
-              flex-direction: row; 
-              gap: 24px; 
-              padding: 30px; 
-              transition: var(--transition-main);
-            "
-          >
-            <div style="filter: drop-shadow(0 5px 10px rgba(0,0,0,0.05)); font-size: 1.8rem;">📧</div>
+          <div class="card flex-row gap-lg" style="align-items: center;">
+            <div style="font-size: 1.8rem;">📧</div>
             <div>
-              <div 
-                style="
-                  color: var(--accent-gold); 
-                  font-size: 0.65rem; 
-                  font-weight: 900; 
-                  letter-spacing: 0.15em; 
-                  margin-bottom: 4px;
-                  text-transform: uppercase; 
-                "
-              >Direct Mail</div>
-              <div 
-                style="
-                  color: var(--ink-deep); 
-                  font-size: 1rem; 
-                  font-weight: 700; 
-                "
-              >support@kynar.co.uk</div>
+              <div class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.15em; margin-bottom: 4px;">Direct Mail</div>
+              <div class="text-bold">support@kynar.co.uk</div>
             </div>
           </div>
 
-          <div 
-            class="product-card" 
-            style="
-              align-items: center; 
-              background: var(--bg-surface); 
-              border: 1px solid rgba(15, 61, 48, 0.05); 
-              flex-direction: row; 
-              gap: 24px; 
-              padding: 30px; 
-              transition: var(--transition-main);
-            "
-          >
-            <div style="filter: drop-shadow(0 5px 10px rgba(0,0,0,0.05)); font-size: 1.8rem;">💬</div>
+          <div class="card flex-row gap-lg" style="align-items: center;">
+            <div style="font-size: 1.8rem;">💬</div>
             <div>
-              <div 
-                style="
-                  color: var(--accent-gold); 
-                  font-size: 0.65rem; 
-                  font-weight: 900; 
-                  letter-spacing: 0.15em; 
-                  margin-bottom: 4px;
-                  text-transform: uppercase; 
-                "
-              >Response Time</div>
-              <div 
-                style="
-                  color: var(--ink-deep); 
-                  font-size: 1rem; 
-                  font-weight: 700; 
-                "
-              >Within 12 Hours</div>
+              <div class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.15em; margin-bottom: 4px;">Response Time</div>
+              <div class="text-bold">Within 12 Hours</div>
             </div>
           </div>
 
-          <div 
-            class="product-card" 
-            style="
-              align-items: center; 
-              background: var(--bg-surface); 
-              border: 1px solid rgba(15, 61, 48, 0.05); 
-              flex-direction: row; 
-              gap: 24px; 
-              padding: 30px; 
-              transition: var(--transition-main);
-            "
-          >
-            <div style="filter: drop-shadow(0 5px 10px rgba(0,0,0,0.05)); font-size: 1.8rem;">📍</div>
+          <div class="card flex-row gap-lg" style="align-items: center;">
+            <div style="font-size: 1.8rem;">📍</div>
             <div>
-              <div 
-                style="
-                  color: var(--ink-deep); 
-                  font-size: 0.65rem; 
-                  font-weight: 900; 
-                  letter-spacing: 0.15em; 
-                  margin-bottom: 4px; 
-                  opacity: 0.6;
-                  text-transform: uppercase; 
-                "
-              >HQ Location</div>
-              <div 
-                style="
-                  color: var(--ink-deep); 
-                  font-size: 1rem; 
-                  font-weight: 700; 
-                "
-              >Essex, United Kingdom</div>
+              <div class="text-upper text-bold text-xs text-faded" style="letter-spacing: 0.15em; margin-bottom: 4px;">HQ Location</div>
+              <div class="text-bold">Essex, United Kingdom</div>
             </div>
           </div>
 

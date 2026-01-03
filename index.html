@@ -9,9 +9,9 @@
     />
     
     <title>Kynar Studio | High-Fidelity Digital Marketplace</title>
+    
     <link href="https://www.kynaruniverse.co.uk/" rel="canonical" />
     <link href="assets/images/favicon.png" rel="icon" type="image/png" />
-    
     <link href="styles.css" rel="stylesheet" />
     
     <script>
@@ -24,7 +24,6 @@
     </script>
 
     <script defer src="ui-core.js"></script>
-    <script defer src="https://assets.lemonsqueezy.com/lemon.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     
     <meta content="website" property="og:type">
@@ -32,7 +31,6 @@
     <meta content="Kynar Studio | Digital Marketplace" property="og:title">
     <meta content="Premium digital assets for the creative elite. Explore the shop." property="og:description">
     <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
-    <meta content="summary_large_image" property="twitter:card">
   </head>
 
   <body>
@@ -104,7 +102,7 @@
           </a>
         </div>
 
-        <div id="featured-grid" style="display: grid; gap: 32px;"></div>
+        <div id="featured-grid" class="grid-col-1 gap-xl"></div>
       </section>
 
       <section id="faq" style="border-top: 1px solid var(--color-border); padding: 100px 0;">
@@ -116,30 +114,23 @@
         <div class="faq-list">
           <details class="faq-item reveal-up">
             <summary class="faq-question">How is the access delivered?</summary>
-            <div class="faq-answer">Immediately following authorization, a secure link is dispatched to your email via Lemon Squeezy. Direct portal access is also available on the success page.</div>
+            <div class="faq-answer">Immediately following authorization, a secure link is dispatched to your email via Lemon Squeezy.</div>
           </details>
 
           <details class="faq-item reveal-up" style="transition-delay: 0.1s">
             <summary class="faq-question">Software requirements?</summary>
-            <div class="faq-answer">Kynar assets are platform-optimized. Our organization systems typically run on Notion, while creative assets utilize Canva or Lightroom. Check specific product specs for details.</div>
+            <div class="faq-answer">Kynar assets are platform-optimized. Check specific product specs for details on Notion, Canva, or Lightroom compatibility.</div>
           </details>
 
           <details class="faq-item reveal-up" style="transition-delay: 0.2s">
             <summary class="faq-question">Commercial licensing?</summary>
-            <div class="faq-answer">All Kynar Studio assets include a standard license for personal and individual commercial use. For agency-wide distribution, please contact our support team.</div>
+            <div class="faq-answer">All Kynar Studio assets include a standard license for personal and individual commercial use.</div>
           </details>
         </div>
       </section>
     </main>
 
     <footer id="global-footer"></footer> 
-
-    <div id="productModal" class="nav-overlay flex-center" style="padding: 20px; display: none;">
-        <div class="card" style="max-width: 800px; width: 100%; grid-template-columns: 1fr; position: relative; padding: 40px;">
-          <button id="closeModal" class="nav-icon" style="position: absolute; top: 20px; right: 20px;">✕</button>
-          <div id="modalContent"></div>
-        </div>
-    </div>
 
     <script type="module">
       import { VAULT } from './vault.js';
@@ -149,13 +140,13 @@
         const grid = document.getElementById('featured-grid');
         if (!grid) return;
 
-        // Get Top 3 Items
+        // Fetch Data: Top 3 Items from Vault
         const latest = VAULT.slice(0, 3);
 
-        // Render using the Shared Component
+        // Render Components
         grid.innerHTML = latest.map(p => renderCard(p)).join('');
 
-        // Trigger Animation
+        // Trigger Animations
         setTimeout(() => {
           document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('reveal-visible'));
         }, 100);

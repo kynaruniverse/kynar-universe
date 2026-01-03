@@ -1,188 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
     <meta charset="UTF-8" />
-    <meta 
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" 
-      name="viewport" 
-    />
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shop Lost | Kynar Studio</title>
     
     <link href="styles.css" rel="stylesheet" />
     <script defer src="ui-core.js"></script>
-
     <style>
-      .error-bg-text {
-        animation: ghost-fade-in 1.5s ease-out forwards;
-        color: var(--ink-medium);
-        font-family: var(--font-display);
-        font-size: clamp(12rem, 45vw, 25rem);
-        left: 50%;
-        letter-spacing: -0.05em;
-        line-height: 1;
-        opacity: 0.08;
-        pointer-events: none;
-        position: absolute;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        transition: var(--transition-main);
-        user-select: none;
-        z-index: 0;
-      }
-
-      @keyframes ghost-fade-in {
-        from { opacity: 0; transform: translate(-50%, -45%); }
-        to { opacity: 0.08; transform: translate(-50%, -50%); }
-      }
-
-      .error-nav-grid {
-        display: grid;
-        gap: 12px;
-        grid-template-columns: 1fr 1fr;
-        width: 100%;
-      }
-
-      @media (max-width: 480px) {
-        .error-nav-grid { grid-template-columns: 1fr; }
-      }
+      .error-bg { font-family: var(--font-display); font-size: clamp(12rem, 45vw, 25rem); opacity: 0.05; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: -1; }
     </style>
-    
-    <meta content="noindex, follow" name="robots">
-    
-    <meta content="Shop Lost | Kynar Studio" property="og:title">
-    <meta content="The requested coordinate is missing. Return to the Kynar marketplace." property="og:description">
-    <meta content="https://www.kynaruniverse.co.uk/404.html" property="og:url">
   </head>
 
   <body>
-
     <header class="app-header" id="global-header"></header>
 
-    <main 
-      class="container" 
-      style="
-        align-items: center; 
-        display: flex; 
-        justify-content: center; 
-        min-height: 85vh; 
-        overflow: hidden; 
-        position: relative; 
-        text-align: center; 
-      "
-    >
+    <main class="container flex-col flex-center text-center" style="min-height: 85vh; position: relative; overflow: hidden;">
       
-      <div class="error-bg-text">404</div>
+      <div class="error-bg">404</div>
 
-      <div 
-        class="reveal-up" 
-        style="
-          max-width: 500px; 
-          width: 100%; 
-          z-index: 10;
-        "
-      >
-        <span 
-          style="
-            color: var(--accent-gold); 
-            display: block; 
-            font-size: 0.75rem; 
-            font-weight: 800; 
-            letter-spacing: 0.25em; 
-            margin-bottom: 25px;
-            text-transform: uppercase; 
-          "
-        >
-          Signal Interrupted
-        </span>
+      <div class="reveal-up" style="max-width: 500px; width: 100%;">
+        <span class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.25em; display: block; margin-bottom: 25px;">Signal Interrupted</span>
 
-        <h1 
-          style="
-            color: var(--ink-deep); 
-            font-size: clamp(2.5rem, 10vw, 4rem); 
-            line-height: 1.1; 
-            margin-bottom: 20px;
-          "
-        >
-          Shop <br /><span style="color: var(--ink-medium)">Not Found.</span>
+        <h1 style="font-size: clamp(2.5rem, 10vw, 4rem); margin-bottom: 20px;">
+          Shop <br /><span class="text-faded">Not Found.</span>
         </h1>
 
-        <p 
-          style="
-            color: var(--ink-medium);
-            font-size: 1.15rem; 
-            line-height: 1.6; 
-            margin-bottom: 45px; 
-          "
-        >
-          The requested coordinate is missing or has been re-indexed. 
-          Let's restore your connection to the marketplace.
+        <p class="text-sm" style="margin-bottom: 45px;">
+          The requested coordinate is missing or has been re-indexed. Let's restore your connection.
         </p>
 
-        <div 
-          style="
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            width: 100%;
-          "
-        >
-          <a 
-            class="btn-primary" 
-            href="shop.html" 
-            style="
-              align-items: center; 
-              display: flex; 
-              justify-content: center; 
-              letter-spacing: 0.1em; 
-              text-decoration: none;
-              width: 100%; 
-            "
-          >
-            Return to Marketplace
-          </a>
-
-          <div class="error-nav-grid">
-            <a 
-              class="btn-ghost" 
-              href="index.html" 
-              onclick="if(navigator.vibrate) navigator.vibrate(10);" 
-              style="
-                font-size: 0.8rem; 
-                justify-content: center; 
-                padding: 14px; 
-                transition: var(--transition-main);
-              "
-            >Main Store
-            </a>
-            
-            <a 
-              class="btn-ghost" 
-              href="contact.html" 
-              onclick="if(navigator.vibrate) navigator.vibrate(10);" 
-              style="
-                font-size: 0.8rem; 
-                justify-content: center; 
-                padding: 14px; 
-                transition: var(--transition-main);
-              "
-            > Support Desk
-            </a>
+        <div class="flex-col gap-sm w-full">
+          <a class="btn btn--primary w-full" href="shop.html">Return to Marketplace</a>
+          
+          <div class="grid-col-1 gap-sm" style="grid-template-columns: 1fr 1fr;">
+            <a class="btn btn--ghost" href="index.html">Main Store</a>
+            <a class="btn btn--ghost" href="contact.html">Support</a>
           </div>
         </div>
       </div>
     </main>
 
-    <<footer id="global-footer"></footer>
-    
+    <footer id="global-footer"></footer>
     <script>
-      // KYNAR ERROR PULSE
       document.addEventListener("DOMContentLoaded", () => {
-        if (navigator.vibrate) {
-          // Subtle triple-pulse error signal
-          setTimeout(() => navigator.vibrate([40, 60, 40, 60, 80]), 1200);
-        }
+        setTimeout(() => document.querySelector('.reveal-up').classList.add('reveal-visible'), 100);
+        if (navigator.vibrate) setTimeout(() => navigator.vibrate([40, 60]), 1000);
       });
     </script>
   </body>

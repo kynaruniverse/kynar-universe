@@ -4,7 +4,7 @@
    ========================================================================== */
 
 import { EventBus, EVENTS } from './core/events.js';
-import { VAULT, getProduct } from './vault.js';
+import { getProduct } from './vault.js';
 
 /* --- STATE MANAGEMENT --- */
 const STATE = {
@@ -40,11 +40,13 @@ EventBus.on(EVENTS.CART_ADD, (productId) => {
     STATE.cart.push(product);
     syncCart();
     triggerHaptic([15, 30]);
-    // Note: We will render the cart UI in the next phase
     console.log(`Cart: Added ${product.title}`);
+  } else if (exists) {
+    console.log(`Cart: ${product.title} already in cart`);
+    triggerHaptic([10, 10]); // Error haptic
   }
   
-  // Open Cart Sidebar
+  // Open Cart Sidebar (Signal handled by legacy UI or future Cart Module)
   EventBus.emit(EVENTS.CART_TOGGLE, 'open');
 });
 
@@ -55,11 +57,8 @@ EventBus.on(EVENTS.CART_REMOVE, (productId) => {
 
 // --- UI LOGIC ---
 EventBus.on(EVENTS.MODAL_OPEN, (productId) => {
-  const product = getProduct(productId);
-  if (product) {
-    // Logic to open modal (Will be implemented in Phase 4)
-    console.log(`Modal: Opening ${product.title}`);
-  }
+  // Redirect to Product Page for now (Phase 1)
+  window.location.href = `product.html?id=${productId}`;
 });
 
 /* ==========================================================================
@@ -68,7 +67,6 @@ EventBus.on(EVENTS.MODAL_OPEN, (productId) => {
 
 function syncCart() {
   localStorage.setItem('kynar_cart', JSON.stringify(STATE.cart));
-  // Emit update signal for UI components to redraw
   EventBus.emit('state:updated', STATE);
 }
 
@@ -76,7 +74,7 @@ function initTheme() {
   const isDark = STATE.theme === 'dark';
   if (isDark) document.body.classList.add('dark-mode');
   
-  // Listen for toggle button (handled by header component later)
+  // Global Toggle (Exposed for Header Button)
   window.toggleTheme = () => {
     document.body.classList.toggle('dark-mode');
     const current = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
@@ -86,15 +84,11 @@ function initTheme() {
 }
 
 function initHaptics() {
-  // Global helper for tactile feedback
   window.triggerHaptic = (pattern) => {
     if (navigator.vibrate) navigator.vibrate(pattern);
   };
 }
 
-/**
- * Simple HTML Injector for static parts (Header/Footer)
- */
 async function loadComponent(elementId, path) {
   const el = document.getElementById(elementId);
   if (!el) return;
@@ -106,7 +100,7 @@ async function loadComponent(elementId, path) {
   }
 }
 
-// Expose EventBus for inline HTML clicks (temporary bridge)
+// --- GLOBAL BRIDGE (Crucial for HTML onclicks) ---
 window.KynarEvents = {
   emit: EventBus.emit.bind(EventBus),
   EVENTS: EVENTS

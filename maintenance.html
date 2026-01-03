@@ -1,113 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
     <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>System Update | Kynar Studio</title>
-    
-    <meta content="noindex, follow" name="robots">
-    
-    <meta content="Shop Maintenance | Kynar Studio" property="og:title">
-    <meta content="Kynar Shop is currently re-indexing. Connection will be restored shortly." property="og:description">
-    <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
-    
     <link href="styles.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script defer src="ui-core.js"></script>
-    
-    <style>
-      .maintenance-icon {
-        animation: rotate-haptic 4s ease-in-out infinite;
-        display: inline-block;
-        font-size: 4rem; 
-        margin-bottom: 25px; 
-      }
-      
-      @keyframes rotate-haptic {
-        0% { transform: rotate(0deg); }
-        20% { transform: rotate(90deg); }
-        40% { transform: rotate(90deg); }
-        60% { transform: rotate(180deg); }
-        80% { transform: rotate(180deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      body.dark-mode h1 { color: var(--ink-deep); }
-      body.dark-mode p { color: var(--ink-medium); opacity: 0.8; }
-    </style>
-    
-    <link rel="canonical" href="https://www.kynaruniverse.co.uk/" />
   </head>
 
-  <body 
-    style="
-      align-items: center; 
-      background: var(--bg-surface); 
-      color: var(--ink-deep); 
-      display: flex; 
-      justify-content: center; 
-      min-height: 100vh; 
-      overflow: hidden; 
-      text-align: center; 
-    "
-  >
-
-    <div 
-      class="reveal-up" 
-      style="
-        max-width: 450px; 
-        padding: 20px;
-      "
-    >
-        
-      <div class="maintenance-icon">⚙️</div>
-
-      <span 
-        style="
-          color: var(--accent-gold); 
-          display: block; 
-          font-size: 0.8rem; 
-          font-weight: 800; 
-          letter-spacing: 0.2em; 
-          margin-bottom: 15px;
-          text-transform: uppercase; 
-        "
-      >
-        Maintenance Mode
-      </span>
-
-      <h1>
-        Shop <br><span style="color: var(--ink-medium)">Updating.</span>
-      </h1>
-      
-      <p 
-        style="
-          color: var(--ink-medium); 
-          line-height: 1.6;
-          margin-top: 20px; 
-        "
-      >
-        We are currently re-indexing the marketplace for a better experience. We will be back online shortly.
-      </p>
-      
-      <a 
-        class="btn-primary" 
-        href="index.html" 
-        onclick="if(navigator.vibrate) navigator.vibrate([15, 30]); window.location.reload();" 
-        style="
-          display: flex; 
-          justify-content: center; 
-          margin-top: 40px; 
-          text-decoration: none;
-          width: 100%; 
-        "
-      >
-        Refresh Connection
-      </a>
-
+  <body style="background: var(--color-bg-card); display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center;">
+    <div class="reveal-up" style="max-width: 450px; padding: 20px;">
+      <div class="status-icon">⚙️</div>
+      <span class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.2em; display: block; margin-bottom: 15px;">Maintenance Mode</span>
+      <h1>Shop <br><span class="text-faded">Updating.</span></h1>
+      <p class="text-sm" style="margin-top: 20px;">We are currently re-indexing the marketplace. We will be back online shortly.</p>
+      <a class="btn btn--primary w-full" href="index.html" style="margin-top: 40px;">Refresh Connection</a>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => document.querySelector('.reveal-up').classList.add('reveal-visible'), 100);
+      });
+    </script>
   </body>
 </html>
-

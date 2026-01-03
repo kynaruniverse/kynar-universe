@@ -13,28 +13,28 @@ export function renderCard(p) {
   const buttonLabel = isLocked ? 'Locked' : 'Add To Cart';
   
   // Logic for locked state modifier
-  const modifierClass = isLocked ? 'card--locked' : '';
+  const modifierClass = isLocked ? 'product-card--locked' : '';
 
   return `
-    <article class="card ${modifierClass} reveal-up" data-id="${p.id}">
+    <article class="product-card ${modifierClass} reveal-up" data-id="${p.id}">
       
-      <div class="card__media">
-        <div class="card__image-container" style="background: ${p.accentColor || 'var(--color-sage)'}">
+      <div class="product-card__media">
+        <div class="product-card__image-box" style="background: ${p.accentColor || 'var(--color-sage)'}">
           <img src="${p.image}" alt="${p.title}" loading="lazy">
         </div>
-        <span class="card__price">${p.price}</span>
+        <span class="product-card__price">${p.price}</span>
       </div>
 
-      <div class="card__body">
+      <div class="product-card__body">
         
-        <div class="card__header">
-          <h3 class="card__title">${p.title}</h3>
-          <span class="card__tag">${p.tag}</span>
+        <div class="product-card__header">
+          <h3 class="product-card__title">${p.title}</h3>
+          <span class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.1em;">${p.tag}</span>
         </div>
 
-        <p class="card__desc">${p.shortDesc}</p>
+        <p class="card__desc" style="opacity: 0.7; font-size: 0.95rem; margin-bottom: 20px;">${p.shortDesc}</p>
 
-        <div class="card__actions">
+        <div class="product-card__actions">
           <button 
             class="btn btn--ghost" 
             onclick="KynarEvents.emit(KynarEvents.EVENTS.MODAL_OPEN, '${p.id}')"

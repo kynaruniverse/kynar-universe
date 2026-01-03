@@ -25,7 +25,6 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     
     <meta content="website" property="og:type">
-    <meta content="https://www.kynaruniverse.co.uk/" property="og:url">
     <meta content="The Marketplace | Kynar Studio" property="og:title">
     <meta content="Premium digital assets for the creative elite." property="og:description">
     <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
@@ -43,17 +42,17 @@
         <p style="margin-top: 10px;">High-fidelity assets for digital creators.</p>
       </div>
 
-      <nav class="flex-wrap gap-sm reveal-up" id="filterContainer" style="margin: 40px 0;">
-        <button class="btn btn--primary active" data-cat="all">All Assets</button>
-        <button class="btn btn--ghost" data-cat="personal">Life & Flow</button>
-        <button class="btn btn--ghost" data-cat="work">Business & Growth</button>
-        <button class="btn btn--ghost" data-cat="creative">Content & Style</button>
-        <button class="btn btn--ghost" data-cat="education">Learning & Dev</button>
+      <nav class="filter-bar reveal-up" id="filterContainer">
+        <button class="filter-chip active" data-cat="all">All Assets</button>
+        <button class="filter-chip" data-cat="personal">Life & Flow</button>
+        <button class="filter-chip" data-cat="work">Business & Growth</button>
+        <button class="filter-chip" data-cat="creative">Content & Style</button>
+        <button class="filter-chip" data-cat="education">Learning & Dev</button>
       </nav>
 
-      <div id="shop-grid" style="display: grid; gap: 32px; grid-template-columns: 1fr;"></div>
+      <div id="shop-grid" class="grid-col-1 gap-xl"></div>
       
-      <div id="emptyState" style="display: none; text-align: center; padding: 60px; opacity: 0.6;">
+      <div id="emptyState" class="empty-state" style="display: none;">
         <div style="font-size: 3rem; margin-bottom: 20px;">🔭</div>
         <h3 class="text-display">Signal Lost</h3>
         <p>No assets found in this frequency.</p>
@@ -75,14 +74,13 @@
       import { renderCard } from './components/ProductCard.js';
       import { EventBus, EVENTS } from './core/events.js';
 
-      // 1. DOM Elements
       const grid = document.getElementById('shop-grid');
       const emptyState = document.getElementById('emptyState');
-      const filterBtns = document.querySelectorAll('#filterContainer button');
+      const filterBtns = document.querySelectorAll('.filter-chip');
 
-      // 2. The Render Engine
+      // --- RENDER LOGIC ---
       function renderGrid(category = 'all') {
-        // Reset Visuals
+        // Fade Out
         grid.style.opacity = '0';
         
         requestAnimationFrame(() => {
@@ -97,11 +95,11 @@
             grid.innerHTML = '';
           } else {
             emptyState.style.display = 'none';
-            // RENDER: Use the imported Component Module
+            // Render Cards via Component Module
             grid.innerHTML = filtered.map(p => renderCard(p)).join('');
           }
 
-          // Trigger Animations
+          // Fade In & Stagger Reveal
           grid.style.opacity = '1';
           setTimeout(() => {
             document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('reveal-visible'));
@@ -109,40 +107,38 @@
         });
       }
 
-      // 3. Initialization
-      document.addEventListener('DOMContentLoaded', () => {
-        // Check URL Params
-        const params = new URLSearchParams(window.location.search);
-        const cat = params.get('cat') || 'all';
-        
-        // Set Active Button
-        updateActiveButton(cat);
-        
-        // Initial Render
-        renderGrid(cat);
-      });
-
-      // 4. Interaction Logic
-      document.getElementById('filterContainer').addEventListener('click', (e) => {
-        const btn = e.target.closest('button');
-        if (!btn) return;
-        
-        const category = btn.dataset.cat;
-        updateActiveButton(category);
-        renderGrid(category);
-      });
-
-      function updateActiveButton(category) {
+      // --- FILTER LOGIC ---
+      function updateActiveFilter(category) {
         filterBtns.forEach(btn => {
           if (btn.dataset.cat === category) {
-            btn.classList.add('active', 'btn--primary');
-            btn.classList.remove('btn--ghost');
+            btn.classList.add('active');
           } else {
-            btn.classList.remove('active', 'btn--primary');
-            btn.classList.add('btn--ghost');
+            btn.classList.remove('active');
           }
         });
       }
+
+      // --- EVENT HANDLERS ---
+      document.getElementById('filterContainer').addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-chip');
+        if (!btn) return;
+        
+        const category = btn.dataset.cat;
+        updateActiveFilter(category);
+        renderGrid(category);
+        
+        // Haptic Feedback
+        if(navigator.vibrate) navigator.vibrate(10);
+      });
+
+      // --- INITIALIZATION ---
+      document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const cat = params.get('cat') || 'all';
+        
+        updateActiveFilter(cat);
+        renderGrid(cat);
+      });
     </script>
 
   </body>
