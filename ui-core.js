@@ -366,24 +366,26 @@ function initMenuLogic() {
   const trigger = document.getElementById("menuTrigger");
   const nav = document.getElementById("navOverlay");
   const close = document.getElementById("closeMenu");
-  const lenisInstance = window.lenis || null;
 
   if (trigger && nav) {
     trigger.onclick = () => {
       nav.classList.add("active");
-      document.body.style.overflow = "hidden";
-      if (lenisInstance) lenisInstance.stop();
-      if (navigator.vibrate) navigator.vibrate(10);
+      document.body.style.overflow = "hidden"; // Lock scroll
+      if (window.lenis) window.lenis.stop();
+      if (navigator.vibrate) navigator.vibrate(12);
     };
+
     if (close) {
       close.onclick = () => {
         nav.classList.remove("active");
-        document.body.style.overflow = "";
-        if (lenisInstance) lenisInstance.start();
+        document.body.style.overflow = ""; // Unlock scroll
+        if (window.lenis) window.lenis.start();
+        if (navigator.vibrate) navigator.vibrate(8);
       };
     }
   }
 }
+
 
 function applyPreLaunchStatus() {
   document.querySelectorAll(".product-card").forEach((card) => {
