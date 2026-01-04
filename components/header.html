@@ -1,48 +1,41 @@
-<div class="header-inner container flex-between">
-  <div class="header-controls left">
-    <button aria-label="Open navigation menu" aria-expanded="false" aria-controls="navOverlay" class="nav-icon" id="menuTrigger" data-trigger="menu:toggle">
-      <svg class="menu-icon" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" aria-hidden="true">
+<div class="header-container container">
+  
+  <div class="header-top-row flex-between">
+    <button aria-label="Open menu" class="nav-icon" id="menuTrigger" data-trigger="menu:toggle">
+      <svg class="menu-icon" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24">
         <line class="menu-line menu-line-1" x1="3" x2="21" y1="6" y2="6"></line>
         <line class="menu-line menu-line-2" x1="3" x2="21" y1="12" y2="12"></line>
         <line class="menu-line menu-line-3" x1="3" x2="21" y1="18" y2="18"></line>
       </svg>
     </button>
-    <button aria-label="Open search overlay" aria-expanded="false" aria-controls="searchOverlay" class="nav-icon" id="searchTrigger" data-trigger="search:toggle">
-      <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20" aria-hidden="true">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
-      </svg>
-    </button>
-  </div>
 
-  <a class="brand-logo" href="index.html" aria-label="Kynar Studio - Return to homepage">KYNAR.</a>
+    <a class="brand-logo" href="index.html" aria-label="Kynar Home">KYNAR.</a>
 
-  <div class="header-controls right">
-    <button aria-label="Toggle dark mode" aria-pressed="false" class="nav-icon" id="themeToggle" data-trigger="theme:toggle" title="Toggle theme">
-      <svg class="sun-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20" aria-hidden="true">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" x2="12" y1="1" y2="3"></line>
-        <line x1="12" x2="12" y1="21" y2="23"></line>
-        <line x1="4.22" x2="5.64" y1="4.22" y2="5.64"></line>
-        <line x1="18.36" x2="19.78" y1="18.36" y2="19.78"></line>
-        <line x1="1" x2="3" y1="12" y2="12"></line>
-        <line x1="21" x2="23" y1="12" y2="12"></line>
-        <line x1="4.22" x2="5.64" y1="19.78" y2="18.36"></line>
-        <line x1="18.36" x2="19.78" y1="5.64" y2="4.22"></line>
-      </svg>
-      <svg class="moon-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20" aria-hidden="true">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
-    </button>
-    <div class="cart-wrapper">
-      <button aria-label="Open shopping cart" aria-expanded="false" aria-controls="cartSidebar" class="nav-icon cart-trigger" id="cartTrigger" data-trigger="cart:toggle" data-payload="open">
-        <svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="22" aria-hidden="true">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
-          <line x1="3" x2="21" y1="6" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
+    <div class="header-controls right gap-sm">
+      <button class="nav-icon" id="themeToggle" data-trigger="theme:toggle">
+        <svg class="sun-icon" fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><circle cx="12" cy="12" r="5"></circle><line x1="12" x2="12" y1="1" y2="3"></line><line x1="12" x2="12" y1="21" y2="23"></line><line x1="4.22" x2="5.64" y1="4.22" y2="5.64"></line><line x1="18.36" x2="19.78" y1="18.36" y2="19.78"></line><line x1="1" x2="3" y1="12" y2="12"></line><line x1="21" x2="23" y1="12" y2="12"></line><line x1="4.22" x2="5.64" y1="19.78" y2="18.36"></line><line x1="18.36" x2="19.78" y1="5.64" y2="4.22"></line></svg>
+        <svg class="moon-icon" fill="none" height="20" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
       </button>
-      <div id="cart-badge" class="cart-count-badge" aria-live="polite" aria-atomic="true" role="status"><span class="sr-only">Cart items: </span>0</div>
+
+      <div class="cart-wrapper">
+        <button class="nav-icon cart-trigger" id="cartTrigger" data-trigger="cart:toggle" data-payload="open">
+          <svg fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" x2="21" y1="6" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        </button>
+        <div id="cart-badge" class="cart-count-badge"><span class="sr-only">Items: </span>0</div>
+      </div>
     </div>
   </div>
+
+  <div class="header-search-row">
+    <div class="header-search-bar" data-trigger="search:toggle">
+      <input type="text" placeholder="Search assets..." readonly tabindex="-1">
+      <div class="header-search-icon">
+        <svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="18">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
+        </svg>
+      </div>
+    </div>
+  </div>
+
 </div>
