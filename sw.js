@@ -1,5 +1,6 @@
-const CACHE_NAME = 'kynar-v7.5-industrial';
+const CACHE_NAME = 'kynar-v9.1-industrial';
 const ASSETS = [
+  '/',
   '/index.html',
   '/shop.html',
   '/product.html',
@@ -7,8 +8,12 @@ const ASSETS = [
   '/ui-core.js',
   '/src/data/vault.js',
   '/src/core/events.js',
+  '/src/core/logger.js',
   '/src/modules/cart.js',
   '/src/modules/checkout.js',
+  '/components/header.html',
+  '/components/footer.html',
+  '/components/overlays.html',
   '/components/ProductCard.js',
   '/components/ProductDetail.js',
   '/assets/fonts/Bantayog.woff2',
@@ -20,9 +25,13 @@ self.addEventListener('install', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  if (e.request.destination === 'document') {
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-  } else {
-    e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request)));
-  }
+  // Mobile-First Network Strategy: Network First, then Cache (for dynamic content)
+  // But for static assets (fonts, css), use Cache First.
+  
+  // Simple Stale-While-Revalidate for now:
+  e.respondWith(
+    caches.match(e.request).then((cachedResponse) => {
+      return cachedResponse || fetch(e.request);
+    })
+  );
 });
