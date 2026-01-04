@@ -1,23 +1,13 @@
 /* ==========================================================================
    COMPONENT | PRODUCT CARD
-   Description: Pure function to render a BEM-structured product card.
    ========================================================================== */
-
-/**
- * Renders a single product card HTML string.
- * @param {import('../vault.js').Product} p - The product object
- * @returns {string} HTML string
- */
 export function renderCard(p) {
   const isLocked = p.status === 'coming-soon';
   const buttonLabel = isLocked ? 'Locked' : 'Add To Cart';
-  
-  // Logic for locked state modifier
   const modifierClass = isLocked ? 'product-card--locked' : '';
-
+  
   return `
     <article class="product-card ${modifierClass} reveal-up" data-id="${p.id}">
-      
       <div class="product-card__media">
         <div class="product-card__image-box" style="background: ${p.accentColor || 'var(--color-sage)'}">
           <img src="${p.image}" alt="${p.title}" loading="lazy">
@@ -26,31 +16,27 @@ export function renderCard(p) {
       </div>
 
       <div class="product-card__body">
-        
         <div class="product-card__header">
-          <h3 class="product-card__title">${p.title}</h3>
+           <h3 class="product-card__title">${p.title}</h3>
           <span class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.1em;">${p.tag}</span>
         </div>
 
         <p class="card__desc" style="opacity: 0.7; font-size: 0.95rem; margin-bottom: 20px;">${p.shortDesc}</p>
 
         <div class="product-card__actions">
-          <button 
-            class="btn btn--ghost" 
-            onclick="KynarEvents.emit(KynarEvents.EVENTS.MODAL_OPEN, '${p.id}')"
-          >
+          <button class="btn btn--ghost" data-trigger="modal:open" data-payload="${p.id}">
             Details
           </button>
           
           <button 
             class="btn btn--primary" 
-            onclick="KynarEvents.emit(KynarEvents.EVENTS.CART_ADD, '${p.id}')"
+            data-trigger="cart:add" 
+            data-payload="${p.id}"
             ${isLocked ? 'disabled' : ''}
           >
             ${buttonLabel}
           </button>
         </div>
-
       </div>
     </article>
   `;

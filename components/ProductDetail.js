@@ -1,13 +1,10 @@
 /* ==========================================================================
    COMPONENT | PRODUCT DETAIL ENGINE
-   Description: Renders the full product layout + Sticky CTA.
    ========================================================================== */
-
-import { EventBus, EVENTS } from '../core/events.js';
+import { EventBus, EVENTS } from '../src/core/events.js';
 
 export function renderProductDetail(p) {
   const isLocked = p.status === 'coming-soon';
-  // Logic from your original file:
   const btnLabel = isLocked ? 'Notify Me' : (p.actionLabel || 'Authorize Download');
   const featuresHtml = (p.features || []).map(f => `
     <li class="flex-row gap-md text-bold" style="font-size: 1rem;">
@@ -18,7 +15,6 @@ export function renderProductDetail(p) {
 
   return `
     <div class="product-hero reveal-up">
-      
       <div class="product-hero__img-col">
         <div class="product-hero__img-box" style="background: ${p.accentColor || 'var(--color-sage)'}">
           <img src="${p.image}" alt="${p.title}" class="product-hero-img">
@@ -65,7 +61,8 @@ export function renderProductDetail(p) {
               <button 
                 class="btn btn--ghost w-full" 
                 style="height: 56px;"
-                onclick="KynarEvents.emit(KynarEvents.EVENTS.CART_ADD, '${p.id}')"
+                data-trigger="cart:add" 
+                data-payload="${p.id}"
               >
                 Save to Shop
               </button>
