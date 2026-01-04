@@ -204,7 +204,10 @@ input, textarea, button {
   width: 100%; 
   max-width: var(--container-max); 
   margin: 0 auto; 
-  padding: var(--space-section) 20px 40px; 
+  padding-top: calc(var(--header-height) + 50px);
+  padding-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px; 
 }
 
 .flex-center { display: flex; align-items: center; justify-content: center; }
