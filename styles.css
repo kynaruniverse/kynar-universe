@@ -5,6 +5,23 @@
 
 /* #region 1. DESIGN TOKENS */
 :root {
+  @font-face {
+  font-family: "Bantayog";
+  src: url("assets/fonts/Bantayog.woff2") format("woff2"),
+       url("assets/fonts/Bantayog.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Outfit";
+  src: url("assets/fonts/GlacialIndifferenceRegular.woff2") format("woff2"),
+       url("assets/fonts/GlacialIndifferenceRegular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
   /* --- PALETTE --- */
   --color-ink-deep: #0f3d30;
   --color-ink-medium: #4a635d;

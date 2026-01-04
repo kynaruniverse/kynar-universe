@@ -55,7 +55,22 @@ export function initCart() {
     const badge = document.getElementById('cart-badge');
     const itemsContainer = document.getElementById('cart-items');
     const totalEl = document.getElementById('cart-total');
-
+    const checkoutBtn = document.getElementById('cart-checkout-btn');
+  if (checkoutBtn) {
+    if (currentCart.length === 0) {
+      checkoutBtn.disabled = true;
+    } else {
+      checkoutBtn.disabled = false;
+      // For single item, use direct checkout
+      if (currentCart.length === 1) {
+        checkoutBtn.setAttribute('data-trigger', 'checkout:init');
+        checkoutBtn.setAttribute('data-payload', currentCart[0].checkout + '?embed=1');
+      } else {
+        checkoutBtn.setAttribute('data-trigger', 'checkout:init');
+        checkoutBtn.setAttribute('data-payload', 'YOUR_BUNDLE_CHECKOUT_URL?embed=1');
+      }
+    }
+  }
     if (badge) {
       badge.textContent = currentCart.length;
       badge.classList.toggle('visible', currentCart.length > 0);

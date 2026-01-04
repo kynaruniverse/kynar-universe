@@ -14,11 +14,13 @@
     
     <script>
       (function() {
-        const savedTheme = localStorage.getItem("kynar_theme");
-        if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add("dark-mode");
-        }
-      })();
+  try {
+    const savedTheme = localStorage.getItem("kynar_theme");
+    if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.body.classList.add("dark-mode"); // Changed from documentElement
+    }
+  } catch (e) { console.log('Theme access denied'); }
+})();
     </script>
 
     <script type="module" src="ui-core.js"></script>

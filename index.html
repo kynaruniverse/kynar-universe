@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Kynar Studio">
+    <link rel="canonical" href="https://www.kynaruniverse.co.uk/CURRENT_PAGE.html">
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
@@ -8,19 +12,18 @@
     
     <meta name="description" content="Premium digital assets engineered for the creative elite. From deep organization to visual systems, find the exact tool to elevate your workflow.">
     <link href="https://www.kynaruniverse.co.uk/" rel="canonical" />
-    <link href="assets/images/favicon.png" rel="icon" type="image/png" />
     
     <link href="styles.css" rel="stylesheet" />
     
     <script>
       (function() {
-        try {
-          const savedTheme = localStorage.getItem("kynar_theme");
-          if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add("dark-mode");
-          }
-        } catch (e) { console.log('Theme access denied'); }
-      })();
+  try {
+    const savedTheme = localStorage.getItem("kynar_theme");
+    if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.body.classList.add("dark-mode"); // Changed from documentElement
+    }
+  } catch (e) { console.log('Theme access denied'); }
+})();
     </script>
 
     <script type="module" src="ui-core.js"></script>
