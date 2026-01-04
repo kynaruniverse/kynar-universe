@@ -67,23 +67,50 @@
 </aside>
 <div class="cart-backdrop" id="cart-backdrop" aria-hidden="true"></div>
 
-<div class="nav-overlay" id="navOverlay" role="dialog" aria-label="Main navigation" aria-modal="true" aria-hidden="true">
-  <button id="closeMenu" class="nav-icon close-overlay-btn" data-trigger="menu:toggle" aria-label="Close navigation menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <line x1="18" y1="6" x2="6" y2="18"></line>
-      <line x1="6" y1="6" x2="18" y2="18"></line>
+<div id="navOverlay" class="nav-overlay">
+  
+  <button class="close-overlay-btn nav-icon" data-trigger="menu:toggle" aria-label="Close Menu">
+    <svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24">
+      <line x1="18" x2="6" y1="6" y2="18"></line>
+      <line x1="6" x2="18" y1="6" y2="18"></line>
     </svg>
   </button>
-  <nav class="kinetic-nav" role="navigation" aria-label="Main menu">
-    <a class="nav-menu-link" href="index.html" data-nav-item><span class="nav-link-number">01</span><span class="nav-link-text">Index</span></a>
-    <a class="nav-menu-link" href="shop.html" data-nav-item><span class="nav-link-number">02</span><span class="nav-link-text">Shop</span></a>
-    <a class="nav-menu-link" href="newsletter.html" data-nav-item><span class="nav-link-number">03</span><span class="nav-link-text">Community</span></a>
-    <a class="nav-menu-link" href="contact.html" data-nav-item><span class="nav-link-number">04</span><span class="nav-link-text">Concierge</span></a>
+
+  <nav class="kinetic-nav">
+    <div class="nav-label">System Directory</div>
+
+    <a href="index.html" class="nav-menu-link">
+      <span class="nav-link-number">01</span>
+      <span class="nav-link-text">Index</span>
+    </a>
+    <a href="shop.html" class="nav-menu-link">
+      <span class="nav-link-number">02</span>
+      <span class="nav-link-text">Marketplace</span>
+    </a>
+    <a href="newsletter.html" class="nav-menu-link">
+      <span class="nav-link-number">03</span>
+      <span class="nav-link-text">Community</span>
+    </a>
+    <a href="contact.html" class="nav-menu-link">
+      <span class="nav-link-number">04</span>
+      <span class="nav-link-text">Concierge</span>
+    </a>
   </nav>
+
   <div class="nav-overlay-footer">
-    <div class="text-xs text-faded text-upper" style="letter-spacing: 0.15em;">Kynar Studio · 2026</div>
+    <div class="nav-status">
+      <span class="status-dot"></span> Operational
+    </div>
+    
+    <div class="nav-links-secondary">
+      <a href="legal.html">Legal</a>
+      <a href="#">Instagram</a>
+      <a href="#">Twitter</a>
+    </div>
   </div>
+
 </div>
+
 
 <div id="searchOverlay" role="dialog" aria-label="Search products" aria-modal="true" aria-hidden="true">
   <div class="search-overlay-content">
