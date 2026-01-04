@@ -1,12 +1,16 @@
 const CACHE_NAME = 'kynar-v7.5-industrial';
 const ASSETS = [
-  '/',
   '/index.html',
+  '/shop.html',
+  '/product.html',
   '/styles.css',
   '/ui-core.js',
   '/src/data/vault.js',
   '/src/core/events.js',
   '/src/modules/cart.js',
+  '/src/modules/checkout.js',
+  '/components/ProductCard.js',
+  '/components/ProductDetail.js',
   '/assets/fonts/Bantayog.woff2',
   '/assets/fonts/GlacialIndifferenceRegular.woff2'
 ];

@@ -5,27 +5,36 @@
 import { EventBus, EVENTS } from '../core/events.js';
 
 export function initCheckout() {
-  
-  // 1. Listen for Checkout Signal
   EventBus.on(EVENTS.CHECKOUT_INIT, (url) => {
     if (!url || url === '#') {
       console.warn('[CHECKOUT] No valid URL provided');
+      // Show user feedback
+      const toast = document.createElement('div');
+      toast.className = 'activity-toast visible';
+      toast.innerHTML = `
+        <span style="font-size: 1.5rem;">⚠️</span>
+        <span class="text-bold text-xs">Product not yet available</span>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('visible');
+        setTimeout(() => toast.remove(), 600);
+      }, 3000);
       return;
     }
 
     console.log(`[CHECKOUT] Initializing Overlay: ${url}`);
-    
-    // Haptic Feedback
     if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
 
-    // Ensure Library is Loaded, then Open
     loadLemonSqueezy().then(() => {
       if (window.LemonSqueezy) {
         window.LemonSqueezy.Url.Open(url);
       } else {
-        // Fallback if overlay fails
         window.location.href = url;
       }
+    }).catch((err) => {
+      console.error('[CHECKOUT] Failed to load:', err);
+      window.location.href = url; // Fallback
     });
   });
 }
