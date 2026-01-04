@@ -1,41 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
     <meta charset="UTF-8" />
-    <meta 
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" 
-      name="viewport" 
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>Kynar Studio | High-Fidelity Digital Marketplace</title>
     
+    <meta name="description" content="Premium digital assets engineered for the creative elite. From deep organization to visual systems, find the exact tool to elevate your workflow.">
     <link href="https://www.kynaruniverse.co.uk/" rel="canonical" />
     <link href="assets/images/favicon.png" rel="icon" type="image/png" />
+    
     <link href="styles.css" rel="stylesheet" />
     
     <script>
       (function() {
-        const savedTheme = localStorage.getItem("kynar_theme");
-        if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add("dark-mode");
-        }
+        try {
+          const savedTheme = localStorage.getItem("kynar_theme");
+          if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch (e) { console.log('Theme access denied'); }
       })();
     </script>
 
     <script defer src="ui-core.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     
-    <meta content="website" property="og:type">
-    <meta content="https://www.kynaruniverse.co.uk/" property="og:url">
-    <meta content="Kynar Studio | Digital Marketplace" property="og:title">
-    <meta content="Premium digital assets for the creative elite. Explore the shop." property="og:description">
-    <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.kynaruniverse.co.uk/">
+    <meta property="og:title" content="Kynar Studio | Digital Marketplace">
+    <meta property="og:description" content="Premium digital assets for the creative elite. Explore the shop.">
+    <meta property="og:image" content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Kynar Studio | Digital Marketplace">
+    <meta name="twitter:description" content="Premium digital assets for the creative elite.">
+    <meta name="twitter:image" content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp">
   </head>
 
   <body>
 
-    <header class="app-header" id="global-header"></header>
+    <header class="app-header" id="global-header" style="min-height: 80px;"></header>
 
     <main class="container">
       
@@ -50,14 +55,14 @@
             Premium digital assets engineered for the creative elite. From deep organization to visual systems, find the exact tool to elevate your workflow.
           </p>
 
-          <div class="flex-wrap gap-md" style="margin-top: 45px;">
+          <div class="flex-wrap gap-md mt-lg">
             <a class="btn btn--primary" href="shop.html">Browse Shop</a>
             <a class="btn btn--ghost" href="newsletter.html">Join Community</a>
           </div>
         </div>
       </section>
 
-      <section class="reveal-up" style="margin-bottom: var(--space-section)">
+      <section class="reveal-up section-spacer">
         <div class="category-grid">
           
           <a class="category-card category-card--personal" href="shop.html?cat=personal">
@@ -91,24 +96,25 @@
         </div>
       </section>
 
-      <section id="latest-arrivals" style="margin-bottom: var(--space-section);">
-        <div class="flex-between" style="margin-bottom: 40px; align-items: flex-end;">
+      <section id="latest-arrivals" class="section-spacer">
+        <div class="flex-between align-end mb-lg">
           <div>
-            <h2 class="reveal-up" style="font-size: 2.2rem;">Latest Arrivals</h2>
-            <div style="background: var(--color-accent); border-radius: 2px; height: 3px; margin-top: 12px; width: 50px;"></div>
+            <h2 class="reveal-up heading-lg">Latest Arrivals</h2>
+            <div class="heading-underline"></div>
           </div>
-          <a href="shop.html" class="text-accent text-upper text-bold text-sm" style="border-bottom: 1.5px solid var(--color-accent); padding-bottom: 4px;">
+          <a href="shop.html" class="link-arrow">
             View Full Shop →
           </a>
         </div>
 
-        <div id="featured-grid" class="grid-col-1 gap-xl"></div>
+        <div id="featured-grid" class="grid-col-1 gap-xl" style="min-height: 300px;">
+            </div>
       </section>
 
-      <section id="faq" style="border-top: 1px solid var(--color-border); padding: 100px 0;">
-        <div class="text-center" style="margin-bottom: 50px;">
-          <h2 class="reveal-up" style="font-size: 2.5rem">Concierge FAQ</h2>
-          <p style="margin-top: 10px; opacity: 0.6;">Common inquiries regarding the Kynar Shop.</p>
+      <section id="faq" class="faq-section">
+        <div class="text-center mb-xl">
+          <h2 class="reveal-up heading-xl">Concierge FAQ</h2>
+          <p class="mt-sm opacity-60">Common inquiries regarding the Kynar Shop.</p>
         </div>
 
         <div class="faq-list">
@@ -117,12 +123,12 @@
             <div class="faq-answer">Immediately following authorization, a secure link is dispatched to your email via Lemon Squeezy.</div>
           </details>
 
-          <details class="faq-item reveal-up" style="transition-delay: 0.1s">
+          <details class="faq-item reveal-up delay-100">
             <summary class="faq-question">Software requirements?</summary>
             <div class="faq-answer">Kynar assets are platform-optimized. Check specific product specs for details on Notion, Canva, or Lightroom compatibility.</div>
           </details>
 
-          <details class="faq-item reveal-up" style="transition-delay: 0.2s">
+          <details class="faq-item reveal-up delay-200">
             <summary class="faq-question">Commercial licensing?</summary>
             <div class="faq-answer">All Kynar Studio assets include a standard license for personal and individual commercial use.</div>
           </details>
@@ -132,13 +138,15 @@
 
     <footer id="global-footer"></footer> 
 
-        <script type="module">
+    <script type="module">
       import { VAULT } from './src/data/vault.js';
       import { renderCard } from './components/ProductCard.js';
 
       document.addEventListener('DOMContentLoaded', () => {
         const grid = document.getElementById('featured-grid');
-        if (!grid) return;
+        
+        // Safety check
+        if (!grid || !VAULT) return;
 
         // Fetch Data: Top 3 Items from Vault
         const latest = VAULT.slice(0, 3);
@@ -146,13 +154,27 @@
         // Render Components
         grid.innerHTML = latest.map(p => renderCard(p)).join('');
 
-        // Trigger Animations
-        setTimeout(() => {
-          document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('reveal-visible'));
-        }, 100);
+        // LOGIC UPGRADE: Use IntersectionObserver instead of setTimeout
+        // This triggers animations only when elements are actually visible
+        const observerOptions = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal-visible');
+              observer.unobserve(entry.target); // Only animate once
+            }
+          });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up').forEach(el => {
+          observer.observe(el);
+        });
       });
     </script>
-
-
   </body>
 </html>
