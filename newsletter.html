@@ -1,76 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Community Access | KYNAR</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-  <div id="header-placeholder"></div>
-
-  <main class="container">
+  
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://assets.lemonsqueezy.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://formspree.io https://*.lemonsqueezy.com;">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Kynar Studio">
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     
-    <div class="newsletter-hero text-center reveal-up">
-      <span class="tag-pill mb-lg">Frequency: Weekly // Status: Open</span>
-      <h1 class="heading-xl text-upper mb-lg">Join the<br>Kynar Union</h1>
-      <p class="text-lg mx-auto" style="max-width: 50ch;">
-        We don't spam. We signal. Secure your place in the creative elite for early asset drops, studio codes, and high-fidelity design protocols.
-      </p>
-    </div>
+    <title>Kynar Union | Access Protocol</title>
+    
+    <link href="styles.css" rel="stylesheet" />
 
-    <div class="newsletter-terminal reveal-up delay-100">
-      <form class="newsletter-form" action="#" method="POST"> <div class="terminal-group">
-          <label for="email" class="sr-only">Email Address</label>
-          <input type="email" id="email" class="terminal-input" placeholder="ENTER_EMAIL_ADDRESS..." required>
-          <button type="submit" class="btn btn--primary terminal-btn">
-            Initiate Uplink
-          </button>
-        </div>
-        <p class="text-xs text-faded mt-sm text-center">
-          *By joining, you accept the creative protocols. Opt-out anytime.
-        </p>
-      </form>
-    </div>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
-    <div class="community-grid reveal-up delay-200">
+    <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem("kynar_theme");
+        if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.body.classList.add("dark-mode");
+        }
+      } catch (e) { console.log('Theme access denied'); }
+    })();
+    </script>
+
+    <script type="module" src="ui-core.js"></script>
+  </head>
+
+  <body>
+
+    <header class="app-header" id="global-header"></header>
+
+    <main class="container">
       
-      <div class="benefit-card">
-        <div class="benefit-icon">01</div>
-        <h3 class="text-upper text-bold">Zero Noise</h3>
-        <p class="text-sm">
-          No fluff. Only highly curated design resources, inspiration, and studio updates. If it's not essential, we don't send it.
+      <div class="newsletter-hero text-center reveal-up">
+        <span class="tag-pill mb-lg">Frequency: Weekly // Status: Open</span>
+        <h1 class="heading-xl text-upper mb-lg">Join the<br>Kynar Union</h1>
+        <p class="text-lg mx-auto" style="max-width: 50ch;">
+          We don't spam. We signal. Secure your place in the creative elite for early asset drops, studio codes, and high-fidelity design protocols.
         </p>
       </div>
 
-      <div class="benefit-card">
-        <div class="benefit-icon">02</div>
-        <h3 class="text-upper text-bold">Early Access</h3>
-        <p class="text-sm">
-          Union members get access to new asset packs 24 hours before the public protocol. Secure the goods first.
-        </p>
+      <div class="newsletter-terminal reveal-up delay-100">
+        <form class="newsletter-form" action="https://formspree.io/f/mlgekbwb" method="POST">
+          
+          <input name="_next" type="hidden" value="https://www.kynaruniverse.co.uk/success.html/?type=newsletter" />
+
+          <div class="terminal-group">
+            <label for="email" class="sr-only">Email Address</label>
+            <input 
+              type="email" 
+              name="email" 
+              id="email" 
+              class="terminal-input" 
+              placeholder="ENTER_EMAIL_ADDRESS..." 
+              required
+            >
+            <button type="submit" class="btn btn--primary terminal-btn">
+              Initiate Uplink
+            </button>
+          </div>
+          <p class="text-xs text-faded mt-sm text-center">
+            *By joining, you accept the creative protocols. Opt-out anytime.
+          </p>
+        </form>
       </div>
 
-      <div class="benefit-card">
-        <div class="benefit-icon">03</div>
-        <h3 class="text-upper text-bold">Studio Codes</h3>
-        <p class="text-sm">
-          Exclusive discount codes and freebie drops that never hit the main shop page. Reserved for the inner circle.
-        </p>
+      <div class="community-grid reveal-up delay-200">
+        
+        <div class="benefit-card">
+          <div class="benefit-icon">01</div>
+          <h3 class="text-upper text-bold">Zero Noise</h3>
+          <p class="text-sm">
+            No fluff. Only highly curated design resources, inspiration, and studio updates. If it's not essential, we don't send it.
+          </p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">02</div>
+          <h3 class="text-upper text-bold">Early Access</h3>
+          <p class="text-sm">
+            Union members get access to new asset packs 24 hours before the public protocol. Secure the goods first.
+          </p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">03</div>
+          <h3 class="text-upper text-bold">Studio Codes</h3>
+          <p class="text-sm">
+            Exclusive discount codes and freebie drops that never hit the main shop page. Reserved for the inner circle.
+          </p>
+        </div>
+
       </div>
 
-    </div>
+    </main>
 
-  </main>
-
-  <div id="footer-placeholder"></div>
-
-  <script src="ui-core.js"></script>
-  <script>
-    // Quick script to handle the header/footer load if you aren't using a static site generator
-    // If you are pasting the header code manually, you can remove this script block.
-    // Ideally, this matches how you are loading header/footer in other pages.
-  </script>
-</body>
+    <footer id="global-footer"></footer>
+    
+  </body>
 </html>
