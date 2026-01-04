@@ -368,29 +368,51 @@ input, textarea, button {
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Theme Toggle Icons */
-#themeToggle .sun-icon { 
-  transition: 0.5s var(--ease-spring); 
-  opacity: 1; 
-  transform: rotate(0); 
+/* --- THEME TOGGLE (The Mechanical Tumbler) --- */
+#themeToggle {
+  /* 1. The Grid Stack: Forces perfect overlap */
+  display: grid;
+  place-items: center;
+  overflow: hidden; /* Masks the icons as they slide out */
+  position: relative;
 }
 
-#themeToggle .moon-icon { 
-  transition: 0.5s var(--ease-spring); 
-  opacity: 0; 
-  transform: rotate(-90deg) scale(0.5); 
-  position: absolute; 
+/* Stack both icons in the same grid cell */
+#themeToggle > svg {
+  grid-area: 1 / 1;
+  transition: all 0.5s var(--ease-spring);
+  transform-origin: center;
 }
 
-body.dark-mode #themeToggle .sun-icon { 
-  opacity: 0; 
-  transform: rotate(90deg) scale(0.5); 
+/* SUN STATE (Light Mode) */
+#themeToggle .sun-icon {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
 }
 
-body.dark-mode #themeToggle .moon-icon { 
-  opacity: 1; 
-  transform: rotate(0) scale(1); 
+#themeToggle .moon-icon {
+  opacity: 0;
+  /* Start position: Waiting below the "horizon" */
+  transform: translateY(150%) rotate(-30deg); 
 }
+
+/* MOON STATE (Dark Mode) */
+body.dark-mode #themeToggle .sun-icon {
+  opacity: 0;
+  /* Exit position: Shoots up above the "horizon" */
+  transform: translateY(-150%) rotate(30deg);
+}
+
+body.dark-mode #themeToggle .moon-icon {
+  opacity: 1;
+  /* Active position: Snaps to center */
+  transform: translateY(0) rotate(0deg);
+}
+
+/* Hover Effect (Optional Micro-interaction) */
+#themeToggle:hover .sun-icon { transform: rotate(15deg); }
+body.dark-mode #themeToggle:hover .moon-icon { transform: rotate(-15deg); }
+
 
 /* Cart Wrapper */
 .cart-wrapper {
