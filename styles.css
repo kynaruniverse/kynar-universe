@@ -431,92 +431,91 @@ textarea.form-input { min-height: 150px; resize: none; }
   .product-card__actions { justify-content: center; }
 }
 
-/* --- FILTER BAR (Premium Matte Ceramic) --- */
+/* --- FILTER BAR (Ceramic Swipe Layout) --- */
 .filter-bar {
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
-  justify-content: center;
-  margin: 40px auto;
-  max-width: 900px;
+  
+  /* LAYOUT LOGIC: Horizontal Scroll */
+  flex-wrap: nowrap; /* Force single row */
+  overflow-x: auto; /* Allow side scrolling */
+  padding: 10px 20px 30px 20px; /* Padding for shadow clearance */
+  margin: 20px -20px 0 -20px; /* Negative margin to span full width on mobile */
+  
+  /* Scroll Physics */
+  -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+  justify-content: flex-start; /* Align start for scrolling */
 }
 
+/* Hide Scrollbar (Chrome/Safari) */
+.filter-bar::-webkit-scrollbar { display: none; }
+
 .filter-chip {
+  flex: 0 0 auto; /* Stop buttons from squishing */
   position: relative;
   appearance: none;
   
-  /* 1. Subtle Border (Glassy Edge) */
-  border: 1px solid rgba(255, 255, 255, 0.6); 
+  /* 1. Ceramic Base */
+  border: 1px solid rgba(255, 255, 255, 0.4); 
   border-radius: 100px;
-  padding: 12px 32px;
+  padding: 10px 24px; /* Slightly tighter sizing */
   
   /* Typography */
   font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-ink-deep);
+  white-space: nowrap; /* Prevent text wrapping */
   
-  /* 2. Volume Gradient (Simulates Curve) */
-  /* We layer a white gradient over the base color to create lighting */
-  background-image: linear-gradient(
-    180deg, 
-    rgba(255, 255, 255, 0.6) 0%, 
-    rgba(255, 255, 255, 0) 100%
-  );
+  /* 2. Volume Gradient */
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%);
   background-color: var(--btn-base);
   
-  /* 3. Colored Shadow (The "Aura") */
+  /* 3. Crisper Shadow */
   box-shadow: 
-    0 4px 12px var(--btn-shadow),
-    inset 0 0 0 1px rgba(255,255,255,0.2); /* Subtle inner ring */
+    0 4px 10px var(--btn-shadow), /* Tighter, cleaner shadow */
+    inset 0 0 0 1px rgba(255,255,255,0.3);
     
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* --- CERAMIC PALETTE (Base + Colored Glow) --- */
-.filter-chip[data-cat="all"] { 
-  --btn-base: #f0f0f0; 
-  --btn-shadow: rgba(0,0,0,0.05); 
-}
-.filter-chip[data-cat="personal"] { 
-  --btn-base: #e6efe8; /* Soft Sage */
-  --btn-shadow: rgba(42, 157, 143, 0.1); /* Green Glow */
-}
-.filter-chip[data-cat="work"] { 
-  --btn-base: #f2e9e9; /* Soft Clay */
-  --btn-shadow: rgba(230, 57, 70, 0.08); /* Red Glow */
-}
-.filter-chip[data-cat="creative"] { 
-  --btn-base: #e8f0f5; /* Soft Sky */
-  --btn-shadow: rgba(74, 144, 226, 0.1); /* Blue Glow */
-}
-.filter-chip[data-cat="education"] { 
-  --btn-base: #fbf7ec; /* Soft Bone */
-  --btn-shadow: rgba(197, 160, 89, 0.1); /* Gold Glow */
-}
-
-/* --- HOVER STATE (Lift & Brighten) --- */
-.filter-chip:hover {
-  transform: translateY(-3px) scale(1.02);
-  border-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 
-    0 10px 25px var(--btn-shadow), /* Deeper Glow */
-    inset 0 0 0 1px rgba(255,255,255,0.5);
-}
+/* --- CERAMIC PALETTE --- */
+.filter-chip[data-cat="all"] { --btn-base: #f0f0f0; --btn-shadow: rgba(0,0,0,0.06); }
+.filter-chip[data-cat="personal"] { --btn-base: #e6efe8; --btn-shadow: rgba(42, 157, 143, 0.12); }
+.filter-chip[data-cat="work"] { --btn-base: #f2e9e9; --btn-shadow: rgba(230, 57, 70, 0.1); }
+.filter-chip[data-cat="creative"] { --btn-base: #e8f0f5; --btn-shadow: rgba(74, 144, 226, 0.12); }
+.filter-chip[data-cat="education"] { --btn-base: #fbf7ec; --btn-shadow: rgba(197, 160, 89, 0.12); }
 
 /* --- ACTIVE STATE (Solid Gold) --- */
 .filter-chip.active {
-  background-image: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(0,0,0,0.05));
   background-color: var(--color-accent);
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(0,0,0,0.05));
   color: var(--color-white);
   border-color: var(--color-accent);
   box-shadow: 
-    0 8px 20px rgba(197, 160, 89, 0.3),
-    inset 0 2px 4px rgba(0,0,0,0.1); /* Deep pressed feel */
+    0 6px 15px rgba(197, 160, 89, 0.35), /* Richer Glow */
+    inset 0 2px 4px rgba(0,0,0,0.15);
   transform: translateY(-1px);
+}
+
+/* --- RESPONSIVE ADJUSTMENT (Desktop) --- */
+@media (min-width: 768px) {
+  .filter-bar {
+    justify-content: center; /* Center on big screens */
+    flex-wrap: wrap; /* Allow wrapping on big screens */
+    overflow-x: visible; /* No scroll needed */
+    margin: 40px auto; /* Reset margins */
+    padding: 0;
+  }
+  
+  .filter-chip:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--btn-shadow);
+  }
 }
 
 
