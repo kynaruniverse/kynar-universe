@@ -1,92 +1,80 @@
 /* ==========================================================================
-   CORE | MAIN CONTROLLER
-   Description: Initializes State, Event Listeners, and Global Services.
+   KYNAR ENGINE v8.0 | INDUSTRIAL CORE
+   Architecture: Modules -> Event Bus -> Global Delegation
    ========================================================================== */
 
-import { EventBus, EVENTS } from './core/events.js';
-import { getProduct } from './vault.js';
+import { EventBus, EVENTS } from './src/core/events.js';
+import { initCart } from './src/modules/cart.js';
 
-/* --- STATE MANAGEMENT --- */
-const STATE = {
-  cart: JSON.parse(localStorage.getItem('kynar_cart')) || [],
-  theme: localStorage.getItem('kynar_theme') || 'light'
-};
-
+/* --- BOOT SEQUENCE --- */
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("System: Initializing...");
+  console.log("System: Engine Online");
 
-  // 1. Initialize Global Services
+  // 1. Initialize Modules
   initTheme();
-  initHaptics();
+  initCart();
+  initUIHandlers();
   
-  // 2. Load Layout Components (Async)
+  // 2. Load Partials (Header/Footer)
   loadComponent('global-header', 'components/header.html');
   loadComponent('global-footer', 'components/footer.html');
 
-  // 3. Emit Boot Signal
-  EventBus.emit(EVENTS.APP_INIT, STATE);
-});
-
-/* ==========================================================================
-   EVENT LISTENERS (THE LOGIC)
-   ========================================================================== */
-
-// --- CART LOGIC ---
-EventBus.on(EVENTS.CART_ADD, (productId) => {
-  const product = getProduct(productId);
-  const exists = STATE.cart.find(p => p.id === productId);
-
-  if (product && !exists) {
-    STATE.cart.push(product);
-    syncCart();
-    triggerHaptic([15, 30]);
-    console.log(`Cart: Added ${product.title}`);
-  } else if (exists) {
-    console.log(`Cart: ${product.title} already in cart`);
-    triggerHaptic([10, 10]); // Error haptic
+  // 3. Register Service Worker (Scale)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('System: Service Worker Secured'))
+      .catch(err => console.log('System: SW Failed', err));
   }
+});
+
+/* --- GLOBAL EVENT DELEGATION (The "Wireless" System) --- */
+document.body.addEventListener('click', (e) => {
+  const trigger = e.target.closest('[data-trigger]');
   
-  // Open Cart Sidebar (Signal handled by legacy UI or future Cart Module)
-  EventBus.emit(EVENTS.CART_TOGGLE, 'open');
+  if (trigger) {
+    if (trigger.tagName !== 'A') e.preventDefault();
+    
+    const action = trigger.dataset.trigger;
+    const payload = trigger.dataset.payload;
+
+    if (navigator.vibrate) navigator.vibrate(10);
+
+    console.log(`[ENGINE] Signal: ${action} >> ${payload || 'void'}`);
+    EventBus.emit(action, payload);
+    return;
+  }
 });
 
-EventBus.on(EVENTS.CART_REMOVE, (productId) => {
-  STATE.cart = STATE.cart.filter(p => p.id !== productId);
-  syncCart();
-});
+/* --- UI HANDLERS --- */
+function initUIHandlers() {
+  EventBus.on(EVENTS.MENU_TOGGLE, () => {
+    const el = document.getElementById('navOverlay');
+    if(el) el.classList.toggle('active');
+  });
 
-// --- UI LOGIC ---
-EventBus.on(EVENTS.MODAL_OPEN, (productId) => {
-  // Redirect to Product Page for now (Phase 1)
-  window.location.href = `product.html?id=${productId}`;
-});
+  EventBus.on(EVENTS.SEARCH_TOGGLE, () => {
+    const el = document.getElementById('searchOverlay');
+    if(el) {
+      el.classList.toggle('active');
+      if (el.classList.contains('active')) el.querySelector('input').focus();
+    }
+  });
 
-/* ==========================================================================
-   CORE SERVICES
-   ========================================================================== */
-
-function syncCart() {
-  localStorage.setItem('kynar_cart', JSON.stringify(STATE.cart));
-  EventBus.emit('state:updated', STATE);
-}
-
-function initTheme() {
-  const isDark = STATE.theme === 'dark';
-  if (isDark) document.body.classList.add('dark-mode');
-  
-  // Global Toggle (Exposed for Header Button)
-  window.toggleTheme = () => {
+  EventBus.on(EVENTS.THEME_TOGGLE, () => {
     document.body.classList.toggle('dark-mode');
     const current = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
     localStorage.setItem('kynar_theme', current);
-    triggerHaptic(10);
-  };
+  });
+  
+  EventBus.on(EVENTS.MODAL_OPEN, (id) => {
+    window.location.href = `product.html?id=${id}`;
+  });
 }
 
-function initHaptics() {
-  window.triggerHaptic = (pattern) => {
-    if (navigator.vibrate) navigator.vibrate(pattern);
-  };
+/* --- UTILITIES --- */
+function initTheme() {
+  const theme = localStorage.getItem('kynar_theme') || 'light';
+  if (theme === 'dark') document.body.classList.add('dark-mode');
 }
 
 async function loadComponent(elementId, path) {
@@ -94,14 +82,11 @@ async function loadComponent(elementId, path) {
   if (!el) return;
   try {
     const res = await fetch(path);
-    if (res.ok) el.innerHTML = await res.text();
+    if (res.ok) {
+      el.innerHTML = await res.text();
+      if(path.includes('header')) EventBus.emit('ui:header_loaded');
+    }
   } catch (err) {
     console.error(`Failed to load ${path}`, err);
   }
 }
-
-// --- GLOBAL BRIDGE (Crucial for HTML onclicks) ---
-window.KynarEvents = {
-  emit: EventBus.emit.bind(EventBus),
-  EVENTS: EVENTS
-};

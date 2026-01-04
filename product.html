@@ -29,10 +29,10 @@
 
     <footer id="global-footer"></footer>
 
-    <script type="module">
-      import { getProduct } from './vault.js';
+        <script type="module">
+      import { getProduct } from './src/data/vault.js';
       import { renderProductDetail } from './components/ProductDetail.js';
-      import { EventBus, EVENTS } from './core/events.js';
+      import { EventBus, EVENTS } from './src/core/events.js';
 
       document.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
@@ -61,5 +61,6 @@
         }
       });
     </script>
+
   </body>
 </html>

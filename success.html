@@ -68,9 +68,8 @@
 
     <footer id="global-footer"></footer>
     
-    <script type="module">
-      import { getProduct } from './vault.js';
-
+        <script type="module">
+      import { getProduct } from './src/data/vault.js';
       document.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
         const type = params.get("type");
@@ -94,5 +93,6 @@
         setTimeout(() => document.querySelector('.reveal-up').classList.add('reveal-visible'), 100);
       });
     </script>
+
   </body>
 </html>

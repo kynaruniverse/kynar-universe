@@ -69,10 +69,10 @@
       </div>
     </div>
 
-    <script type="module">
-      import { VAULT } from './vault.js';
+        <script type="module">
+      import { VAULT } from './src/data/vault.js';
       import { renderCard } from './components/ProductCard.js';
-      import { EventBus, EVENTS } from './core/events.js';
+      import { EventBus, EVENTS } from './src/core/events.js';
 
       const grid = document.getElementById('shop-grid');
       const emptyState = document.getElementById('emptyState');
@@ -80,26 +80,21 @@
 
       // --- RENDER LOGIC ---
       function renderGrid(category = 'all') {
-        // Fade Out
         grid.style.opacity = '0';
         
         requestAnimationFrame(() => {
-          // Filter Data
           const filtered = category === 'all' 
             ? VAULT 
             : VAULT.filter(p => p.category.toLowerCase() === category.toLowerCase());
 
-          // Handle Empty State
           if (filtered.length === 0) {
             emptyState.style.display = 'block';
             grid.innerHTML = '';
           } else {
             emptyState.style.display = 'none';
-            // Render Cards via Component Module
             grid.innerHTML = filtered.map(p => renderCard(p)).join('');
           }
 
-          // Fade In & Stagger Reveal
           grid.style.opacity = '1';
           setTimeout(() => {
             document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('reveal-visible'));
@@ -127,7 +122,6 @@
         updateActiveFilter(category);
         renderGrid(category);
         
-        // Haptic Feedback
         if(navigator.vibrate) navigator.vibrate(10);
       });
 
@@ -140,6 +134,7 @@
         renderGrid(cat);
       });
     </script>
+
 
   </body>
 </html>
