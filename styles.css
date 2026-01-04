@@ -335,16 +335,6 @@ input, textarea, button {
   transform: scale(0.92); 
 }
 
-.brand-logo { 
-  position: absolute; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  font-family: var(--font-display); 
-  font-size: 1.5rem; 
-  letter-spacing: 0.1em; 
-  font-weight: 600;
-}
-
 /* Animated Menu Icon */
 .menu-icon {
   transition: transform 0.3s var(--ease-spring);
@@ -1552,15 +1542,52 @@ body.dark-mode .app-header {
   margin: 0;
 }
 
+/* --- BRAND LOGO (Vertical Lockup) --- */
+/* This is at the bottom to ensure it overrides everything else */
 .brand-logo {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.4rem;
-  /* Ensure logo is optically centered vertically */
-  line-height: 1;
-  margin-top: 2px; 
+  
+  /* FLEX STACK LOGIC */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin-top: 2px;
+}
+
+.logo-main {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-text-main);
+  line-height: 0.85;
+}
+
+.logo-sub {
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: var(--color-accent);
+  font-weight: 700;
+  margin-right: -0.35em;
+  margin-top: 2px;
+}
+
+/* Desktop Override */
+@media (min-width: 769px) {
+  .brand-logo {
+    position: static;
+    transform: none;
+    margin: 0;
+    align-items: flex-start;
+    /* Aligns logo to the left on Desktop */
+  }
 }
 
 /* 4. Bottom Row (Search Bar) */
@@ -1655,5 +1682,6 @@ body.dark-mode .header-search-bar {
     position: static;
     transform: none;
     margin: 0;
+    align-items: flex-start;
   }
 }
