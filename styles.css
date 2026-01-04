@@ -1472,3 +1472,161 @@ details[open] .faq-question::after {
   50% { border-color: rgba(197, 160, 89, 1); box-shadow: 0 0 0 8px rgba(197, 160, 89, 0.05); }
   100% { border-color: rgba(197, 160, 89, 0.2); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
 }
+
+/* ==========================================================================
+   HEADER UPGRADE V9.2 (Stacked Layout)
+   ========================================================================== */
+
+:root {
+  /* Increase header height variable so page content pushes down correctly */
+  --header-height: 140px; 
+}
+
+/* 1. Reset the Header Container */
+.app-header {
+  height: auto;
+  min-height: var(--header-height);
+  padding: 0;
+  background: rgba(242, 240, 233, 0.85); /* Stronger background color */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(15, 61, 48, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+body.dark-mode .app-header {
+  background: rgba(11, 12, 12, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 2. Internal Layout */
+.header-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 10px 20px 16px; /* Reduced top padding, added bottom padding */
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Gap between Nav and Search rows */
+}
+
+/* 3. Top Row (Nav) */
+.header-top-row {
+  width: 100%;
+  height: 44px; /* Standard touch height */
+  position: relative;
+}
+
+/* Fix the gap above icons */
+.nav-icon {
+  padding: 8px; /* Tighter click targets */
+  margin: 0;
+}
+
+.brand-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.4rem;
+  /* Ensure logo is optically centered vertically */
+  line-height: 1;
+  margin-top: 2px; 
+}
+
+/* 4. Bottom Row (Search Bar) */
+.header-search-row {
+  width: 100%;
+}
+
+.header-search-bar {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(15, 61, 48, 0.1);
+  border-radius: 12px; /* Smooth corners */
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  transition: all 0.3s ease;
+  cursor: text;
+}
+
+body.dark-mode .header-search-bar {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-search-bar:active {
+  transform: scale(0.99);
+  background: var(--color-bg-card);
+}
+
+/* The "Fake" Input */
+.header-search-bar input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+  outline: none;
+  pointer-events: none; /* Let the parent div handle the click */
+}
+
+.header-search-bar input::placeholder {
+  color: var(--color-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* The Icon on the Right */
+.header-search-icon {
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+/* 5. Desktop Adjustment */
+@media (min-width: 769px) {
+  :root { --header-height: 90px; }
+  
+  .header-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    padding: 0 30px;
+    height: 100%;
+  }
+  
+  .header-top-row {
+    width: auto;
+    flex-grow: 1;
+    height: auto;
+  }
+  
+  /* On desktop, hide the big bar or style it differently */
+  .header-search-row {
+    width: 300px;
+    order: 2; /* Put search in middle or right */
+    position: absolute;
+    right: 140px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .header-controls.right {
+    margin-left: auto;
+  }
+  
+  .brand-logo {
+    position: static;
+    transform: none;
+    margin: 0;
+  }
+}
