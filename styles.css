@@ -1390,10 +1390,7 @@ details[open] .faq-question::after {
 
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
-  .container {
-    padding: 80px 20px 40px;
-  }
-
+  
   .heading-lg {
     font-size: 1.8rem;
   }
