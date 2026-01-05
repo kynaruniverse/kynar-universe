@@ -27,9 +27,7 @@
         
         <div class="human-note-card mt-lg">
           <span class="text-xs text-upper text-accent text-bold">Operator Note:</span>
-          <p class="text-sm mt-sm italic" id="human-note-text">
-            Loading data...
-          </p>
+          <p class="text-sm mt-sm italic" id="human-note-text">Loading data...</p>
         </div>
       </div>
 
@@ -62,13 +60,15 @@
 
         <div class="payload-section mb-xl">
           <span class="text-xs text-upper text-bold mb-sm display-block">Payload Contents:</span>
-          <ul class="stack-list" id="payload-list">
-            </ul>
+          <ul class="stack-list" id="payload-list"></ul>
         </div>
 
         <div class="action-bar sticky-bottom">
           <div class="text-xl text-display" id="product-price">£---</div>
-          <a href="#" class="btn btn--primary w-full" id="purchase-btn">Secure Asset</a>
+          
+          <button class="btn btn--primary w-full" id="purchase-btn" data-trigger="checkout:init" data-payload="#">
+            Secure Asset
+          </button>
         </div>
 
       </div>
@@ -82,7 +82,7 @@
   <script type="module">
     import { vault } from './vault.js';
 
-    // 1. Get ID from URL (e.g., product.html?id=sys-001)
+    // 1. Get ID from URL
     const params = new URLSearchParams(window.location.search);
     const targetId = params.get('id');
 
@@ -121,7 +121,7 @@
         imgContainer.innerHTML = `<span class="text-display" style="font-size:6rem; opacity:0.1;">${product.title[0]}</span>`;
       }
 
-      // INJECT PAYLOAD (Loop)
+      // INJECT PAYLOAD
       const list = document.getElementById('payload-list');
       product.payload.forEach(item => {
         const li = document.createElement('li');
@@ -129,11 +129,12 @@
         list.appendChild(li);
       });
 
-      // INJECT LINK
-      document.getElementById('purchase-btn').href = product.link;
+      // UPDATE BUTTON (Connects to Checkout Bridge)
+      const btn = document.getElementById('purchase-btn');
+      btn.setAttribute('data-payload', product.link + '?embed=1');
 
     } else {
-      // 404 State (Product not found)
+      // 404 State
       document.getElementById('product-title').innerText = "Asset Not Found";
       document.getElementById('product-objective').innerText = "This ID does not exist in the vault.";
       document.getElementById('purchase-btn').style.display = 'none';

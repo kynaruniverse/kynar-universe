@@ -3,19 +3,24 @@
    Description: Manages Lemon Squeezy Overlay & Dynamic Script Loading
    ========================================================================== */
 import { EventBus, EVENTS } from '../core/events.js';
+import { Logger } from '../core/logger.js'; // FIX: This import was missing
 
 export function initCheckout() {
   EventBus.on(EVENTS.CHECKOUT_INIT, (url) => {
-    if (!url || url === '#') {
-      console.warn('[CHECKOUT] No valid URL provided');
-      // Show user feedback
+    // 1. Validation: Check if URL exists
+    if (!url || url === '#' || url.includes('undefined')) {
+      console.warn('[CHECKOUT] Invalid Asset Link');
+      
+      // Industrial Feedback Toast
       const toast = document.createElement('div');
       toast.className = 'activity-toast visible';
       toast.innerHTML = `
-        <span style="font-size: 1.5rem;">⚠️</span>
-        <span class="text-bold text-xs">Product not yet available</span>
+        <span style="font-size: 1.5rem;">🔒</span>
+        <span class="text-bold text-xs">Asset Locked / Unavailable</span>
       `;
       document.body.appendChild(toast);
+      
+      // Auto-dismiss
       setTimeout(() => {
         toast.classList.remove('visible');
         setTimeout(() => toast.remove(), 600);
@@ -23,18 +28,21 @@ export function initCheckout() {
       return;
     }
 
+    // 2. Execution: Initialize Bridge
     Logger.log(`[CHECKOUT] Initializing Overlay: ${url}`);
-    if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
+    if (navigator.vibrate) navigator.vibrate([10, 50, 10]); // Haptic Click
 
     loadLemonSqueezy().then(() => {
+      // Try Overlay Mode first
       if (window.LemonSqueezy) {
         window.LemonSqueezy.Url.Open(url);
       } else {
+        // Fallback: Direct Link
         window.location.href = url;
       }
     }).catch((err) => {
-      console.error('[CHECKOUT] Failed to load:', err);
-      window.location.href = url; // Fallback
+      console.error('[CHECKOUT] Bridge Failed:', err);
+      window.location.href = url; // Hard Fallback
     });
   });
 }
@@ -44,6 +52,7 @@ let scriptLoaded = false;
 
 function loadLemonSqueezy() {
   return new Promise((resolve, reject) => {
+    // Avoid double loading
     if (scriptLoaded) return resolve();
     if (document.querySelector('script[src*="lemon.js"]')) {
       scriptLoaded = true;
@@ -57,14 +66,19 @@ function loadLemonSqueezy() {
     script.onload = () => {
       Logger.log('[SYSTEM] Lemon Squeezy Secured');
       scriptLoaded = true;
-      // Initialize LS Settings
+      
+      // Initialize LS Global Settings
       if (window.LemonSqueezy) {
         window.LemonSqueezy.Setup({
           eventHandler: (event) => {
-             // Optional: Listen for 'Checkout.Success' here to clear cart
+             // CRITICAL: Redirect to Kynar Success Page on purchase
              if (event.event === 'Checkout.Success') {
-                localStorage.removeItem('kynar_cart');
-                window.location.href = 'success.html?type=order';
+                Logger.log('[CHECKOUT] Payment Verified');
+                localStorage.removeItem('kynar_cart'); // Clear cart
+                
+                // Get the Product ID from the event if possible, or default
+                // This redirects to our new success.html
+                window.location.href = 'success.html?type=order'; 
              }
           }
         });
