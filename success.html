@@ -1,108 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta http-equiv="Content-Security-Policy" content="
-  default-src 'self'; 
-  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://assets.lemonsqueezy.com; 
-  style-src 'self' 'unsafe-inline'; 
-  img-src 'self' data: https:; 
-  font-src 'self';
-  connect-src 'self' https://formspree.io https://*.lemonsqueezy.com;
-">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Kynar Studio">
-    <link rel="canonical" href="https://www.kynaruniverse.co.uk/CURRENT_PAGE.html">
-
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verification Successful | Kynar Studio</title>
-
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://assets.lemonsqueezy.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://formspree.io https://*.lemonsqueezy.com;">
+    <meta name="robots" content="noindex, nofollow"> <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    
+    <title>System Status: Green | Kynar Operations</title>
+    
     <link href="styles.css" rel="stylesheet" />
+    
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script type="module" src="ui-core.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-
     <style>
-      /* Unique Success Animation */
-      @keyframes ripple { 
-        0% { transform: scale(0.8); opacity: 0.4; } 
-        100% { transform: scale(1.8); opacity: 0; } 
+      /* Unique Success Animation (System Pulse) */
+      @keyframes pulse-ring { 
+        0% { transform: scale(0.8); opacity: 0.5; } 
+        100% { transform: scale(2.2); opacity: 0; } 
       }
-      .success-icon-wrap { position: relative; width: 100px; height: 100px; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; }
-      .ripple-ring { border: 2px solid var(--color-accent); border-radius: 50%; inset: 0; opacity: 0.2; position: absolute; animation: ripple 2s infinite; }
+      .success-icon-wrap { 
+        position: relative; 
+        width: 100px; 
+        height: 100px; 
+        margin: 0 auto 30px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        background: var(--color-bg-card);
+        border-radius: 50%;
+        box-shadow: var(--shadow-sm);
+      }
+      .ripple-ring { 
+        border: 2px solid var(--color-success); 
+        border-radius: 50%; 
+        inset: 0; 
+        opacity: 0; 
+        position: absolute; 
+        animation: pulse-ring 2.5s infinite; 
+      }
+      .ripple-ring:nth-child(2) { animation-delay: 0.8s; }
+      
+      .status-emoji { font-size: 3rem; line-height: 1; }
     </style>
   </head>
 
   <body>
     <header class="app-header" id="global-header"></header>
 
-    <main class="container flex-col flex-center text-center" style="min-height: 85vh;">
+    <main class="container flex-col flex-center text-center" style="min-height: 80vh;">
       <div class="reveal-up" style="max-width: 500px; width: 100%;">
         
         <div class="success-icon-wrap">
           <div class="ripple-ring"></div>
-          <div style="font-size: 3.5rem; position: relative; z-index: 2;">✨</div>
+          <div class="ripple-ring"></div>
+          <div class="status-emoji" id="status-icon">📡</div>
         </div>
 
-        <span id="success-label" class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.25em; display: block; margin-bottom: 15px;">Signal Verified</span>
+        <span id="success-label" class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.25em; display: block; margin-bottom: 15px;">
+          Uplink Established
+        </span>
 
-        <h1 id="success-title" style="margin-bottom: 20px;">
-          Welcome to <br><span class="text-faded">The Shop.</span>
+        <h1 id="success-title" class="heading-lg" style="margin-bottom: 20px;">
+          Signal <br><span class="text-faded">Verified.</span>
         </h1>
 
-        <p id="success-text" class="text-sm" style="margin-bottom: 40px;">
-          Authorization successful. Your digital profile has been updated. Check your inbox for your welcome package.
+        <p id="success-text" class="text-sm mx-auto" style="margin-bottom: 40px; max-width: 40ch;">
+          You have successfully connected to the Kynar Union. Check your inbox for the welcome protocol.
         </p>
 
         <div id="action-stack" class="flex-col gap-sm w-full">
           
-          <div class="card flex-row gap-lg" style="padding: 24px; align-items: center;">
+          <div class="card flex-row gap-md" style="padding: 20px; align-items: center;">
             <div style="font-size: 1.5rem">📥</div>
             <div class="text-left">
-              <div class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.1em; margin-bottom: 4px;">Primary Action</div>
-              <div id="action-text" class="text-bold">Initializing delivery...</div>
+              <div class="text-upper text-bold text-xs text-faded" style="letter-spacing: 0.1em; margin-bottom: 4px;">Next Step</div>
+              <div id="action-text" class="text-bold text-sm">Check your email inbox</div>
             </div>
           </div>
 
-          <a class="card flex-row gap-lg" href="contact.html" style="padding: 24px; align-items: center; text-decoration: none;">
-            <div style="font-size: 1.5rem">🤝</div>
+          <a class="card flex-row gap-md" href="contact.html" style="padding: 20px; align-items: center; text-decoration: none;">
+            <div style="font-size: 1.5rem">🛡️</div>
             <div class="text-left">
-              <div class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.1em; margin-bottom: 4px;">Concierge</div>
-              <div class="text-bold">Need technical help? →</div>
+              <div class="text-upper text-bold text-xs text-faded" style="letter-spacing: 0.1em; margin-bottom: 4px;">Support</div>
+              <div class="text-bold text-sm">Open Connect Channel →</div>
             </div>
           </a>
 
         </div>
 
-        <a class="btn btn--primary w-full" href="shop.html" style="margin-top: 40px;" onclick="localStorage.removeItem('kynar_cart');">Initialize New Session</a>
+        <a class="btn btn--primary w-full" href="index.html" style="margin-top: 40px;">
+          Return to Operations
+        </a>
 
       </div>
     </main>
 
     <footer id="global-footer"></footer>
     
-        <script type="module">
-      import { getProduct } from './src/data/vault.js';
+    <script type="module">
+      import { vault } from './vault.js'; // Corrected Path (Root)
+
       document.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
         const type = params.get("type");
         const productId = params.get("id");
 
+        // SCENARIO A: PRODUCT PURCHASE (Order)
         if (type === "order") {
-          const product = getProduct(productId);
-          const pName = product ? product.title : "Digital Assets";
+          // Find product manually in the array
+          const product = vault.find(p => p.id === productId);
+          const pName = product ? product.title : "Digital Asset";
           
-          document.getElementById("success-label").textContent = "Order Confirmed";
-          document.getElementById("success-title").innerHTML = `${pName} <br><span class="text-faded">Are Ready.</span>`;
-          document.getElementById("success-text").textContent = "Your payment was successful. A unique download key has been dispatched to your email.";
+          document.getElementById("status-icon").textContent = "🔒"; // Lock Icon
+          document.getElementById("success-label").textContent = "Asset Secured";
+          document.getElementById("success-label").style.color = "var(--color-success)";
           
+          document.getElementById("success-title").innerHTML = `Transfer <br><span class="text-faded">Complete.</span>`;
+          document.getElementById("success-text").textContent = `The "${pName}" system has been dispatched. Your unique access key is in your email.`;
+          
+          // Clear cart on successful order
+          localStorage.removeItem('kynar_cart');
+
           setTimeout(() => {
-            document.getElementById("action-text").innerHTML = "Secure Link Dispatched <span class='text-accent'>●</span>";
-          }, 2000);
+            document.getElementById("action-text").innerHTML = "Delivery Status: <span style='color:var(--color-success)'>Sent</span>";
+          }, 1500);
         }
 
-        // Haptic & Visuals
-        if (navigator.vibrate) setTimeout(() => navigator.vibrate([40, 40, 150]), 600);
+        // SCENARIO B: NEWSLETTER (Default)
+        // No changes needed, HTML defaults are set for this.
+
+        // SCENARIO C: CONTACT FORM
+        if (type === "contact") {
+           document.getElementById("status-icon").textContent = "📨";
+           document.getElementById("success-label").textContent = "Transmission Sent";
+           document.getElementById("success-title").innerHTML = `Message <br><span class="text-faded">Received.</span>`;
+           document.getElementById("success-text").textContent = "We have received your query. A human agent will respond within 24 hours.";
+        }
+
+        // Haptics
+        if (navigator.vibrate) setTimeout(() => navigator.vibrate([40, 40]), 500);
+        
+        // Force Reveal
         setTimeout(() => document.querySelector('.reveal-up').classList.add('reveal-visible'), 100);
       });
     </script>

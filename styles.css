@@ -1,5 +1,5 @@
 /* ==========================================================================
-   KYNAR DESIGN SYSTEM | V9.0 (PRODUCTION READY)
+   KYNAR DESIGN SYSTEM | V10.0 (CONSTITUTION READY)
    Architecture: Tokens -> Reset -> Utilities -> Components -> Modules -> Responsive
    ========================================================================== */
 
@@ -282,41 +282,7 @@ input, textarea, button {
 
 /* #region 4. COMPONENTS */
 
-/* --- HEADER & NAV --- */
-.app-header {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  height: var(--header-height);
-  background: var(--color-glass); 
-  backdrop-filter: blur(16px); 
-  -webkit-backdrop-filter: blur(16px);
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between;
-  padding: 0 20px; 
-  z-index: 10001; 
-  border-bottom: 1px solid var(--color-glass-border);
-}
-
-.header-inner {
-  height: 100%;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.header-controls { 
-  display: flex; 
-  align-items: center; 
-  gap: 10px; 
-  min-width: 80px; 
-}
-
-.header-controls.right { 
-  justify-content: flex-end; 
-}
-
+/* --- HEADER COMPONENTS (Layout handled in V9.2 Section) --- */
 .nav-icon { 
   background: transparent; 
   border: none; 
@@ -335,7 +301,6 @@ input, textarea, button {
   transform: scale(0.92); 
 }
 
-/* Animated Menu Icon */
 .menu-icon {
   transition: transform 0.3s var(--ease-spring);
 }
@@ -360,21 +325,18 @@ input, textarea, button {
 
 /* --- THEME TOGGLE (The Mechanical Tumbler) --- */
 #themeToggle {
-  /* 1. The Grid Stack: Forces perfect overlap */
   display: grid;
   place-items: center;
-  overflow: hidden; /* Masks the icons as they slide out */
+  overflow: hidden;
   position: relative;
 }
 
-/* Stack both icons in the same grid cell */
 #themeToggle > svg {
   grid-area: 1 / 1;
   transition: all 0.5s var(--ease-spring);
   transform-origin: center;
 }
 
-/* SUN STATE (Light Mode) */
 #themeToggle .sun-icon {
   opacity: 1;
   transform: translateY(0) rotate(0deg);
@@ -382,24 +344,19 @@ input, textarea, button {
 
 #themeToggle .moon-icon {
   opacity: 0;
-  /* Start position: Waiting below the "horizon" */
   transform: translateY(150%) rotate(-30deg); 
 }
 
-/* MOON STATE (Dark Mode) */
 body.dark-mode #themeToggle .sun-icon {
   opacity: 0;
-  /* Exit position: Shoots up above the "horizon" */
   transform: translateY(-150%) rotate(30deg);
 }
 
 body.dark-mode #themeToggle .moon-icon {
   opacity: 1;
-  /* Active position: Snaps to center */
   transform: translateY(0) rotate(0deg);
 }
 
-/* Hover Effect (Optional Micro-interaction) */
 #themeToggle:hover .sun-icon { transform: rotate(15deg); }
 body.dark-mode #themeToggle:hover .moon-icon { transform: rotate(-15deg); }
 
@@ -409,7 +366,6 @@ body.dark-mode #themeToggle:hover .moon-icon { transform: rotate(-15deg); }
   position: relative;
 }
 
-/* Cart Badge Enhanced */
 .cart-count-badge {
   position: absolute;
   top: -5px;
@@ -1117,10 +1073,6 @@ details[open] .faq-question::after {
 }
 
 /* ==========================================================================
-   NAV OVERLAY ENHANCED
-   ========================================================================== */
-
-/* ==========================================================================
    NAV OVERLAY ENHANCED (The Directory v2)
    ========================================================================== */
 
@@ -1289,19 +1241,6 @@ details[open] .faq-question::after {
   opacity: 1;
   color: var(--color-accent);
 }
-
-/* Mobile Adjustments */
-@media (max-width: 480px) {
-  .nav-menu-link {
-    font-size: 1.8rem; /* Even smaller on tiny phones */
-  }
-  
-  .nav-overlay {
-    padding-left: 25px;
-    padding-right: 25px;
-  }
-}
-
 
 /* ==========================================================================
    SEARCH OVERLAY ENHANCED

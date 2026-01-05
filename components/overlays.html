@@ -2,74 +2,67 @@
   class="cart-sidebar" 
   id="cartSidebar"
   role="dialog"
-  aria-label="Shopping cart"
+  aria-label="Requisition List"
   aria-modal="true"
   aria-hidden="true"
 >
   <div class="cart-sidebar__header">
     <div class="flex-between">
       <h2 class="text-accent text-upper text-bold text-xs" style="letter-spacing: 0.2em; margin: 0;">
-        Your Selection
+        Active Requisition
       </h2>
       <button 
         class="nav-icon" 
         data-trigger="cart:toggle" 
         data-payload="close"
-        aria-label="Close cart"
+        aria-label="Close Protocol"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
     </div>
-    <div class="cart-stats" id="cart-stats" style="margin-top: 20px; padding: 12px; background: rgba(197, 160, 89, 0.05); border-radius: 8px; display: none;">
-      <div class="flex-between text-xs">
-        <span class="text-faded">Items</span>
-        <span class="text-bold" id="cart-item-count">0</span>
-      </div>
-    </div>
   </div>
 
-  <div id="cart-items" class="cart-sidebar__body" role="list" aria-label="Cart items">
+  <div id="cart-items" class="cart-sidebar__body" role="list">
     <div class="cart-empty-state" id="cart-empty-state">
-      <div style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;">🛒</div>
-      <p class="text-center text-bold" style="margin-bottom: 8px;">Your cart is empty</p>
-      <p class="text-center text-faded text-sm">Add assets to get started</p>
-      <a href="shop.html" class="btn btn--outline" style="margin-top: 24px; width: 100%;">Browse Shop</a>
+      <div style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;">∅</div>
+      <p class="text-center text-bold text-upper text-xs" style="margin-bottom: 8px;">Requisition List Empty</p>
+      <p class="text-center text-faded text-sm">Select assets from the Archive.</p>
+      <a href="shop.html" class="btn btn--outline" style="margin-top: 24px; width: 100%;">Access Library</a>
     </div>
   </div>
 
   <div class="cart-sidebar__footer">
     <div class="cart-total-section">
-      <div class="flex-between" style="margin-bottom: 12px;">
-        <span class="text-upper text-xs text-faded" style="letter-spacing: 0.1em;">Subtotal</span>
-        <span class="text-bold" id="cart-subtotal">£0.00</span>
-      </div>
       <div class="flex-between" style="padding-top: 12px; border-top: 1px solid var(--color-border); margin-bottom: 24px;">
-        <span class="text-bold">Total</span>
+        <span class="text-bold text-upper text-xs">Total Value</span>
         <span class="text-display text-lg" id="cart-total" style="color: var(--color-accent);">£0.00</span>
       </div>
     </div>
-    <button class="btn btn--primary w-full" id="cart-checkout-btn" disabled aria-label="Proceed to secure checkout"> 
-      <span>Proceed to Checkout</span>
+    
+    <button class="btn btn--primary w-full" id="cart-checkout-btn" disabled> 
+      <span>Initialize Transfer</span>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
         <line x1="5" y1="12" x2="19" y2="12"></line>
         <polyline points="12 5 19 12 12 19"></polyline>
       </svg>
     </button>
+    
     <div class="cart-trust-bar" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--color-border);">
       <div class="flex-center gap-md text-xs text-faded text-upper" style="letter-spacing: 0.05em;">
-        <span>🔒 Secure</span><span>•</span><span>⚡ Instant</span>
+        <span>🔒 Encrypted</span><span>•</span><span>⚡ Instant Delivery</span>
       </div>
     </div>
   </div>
 </aside>
+
 <div class="cart-backdrop" id="cart-backdrop" aria-hidden="true"></div>
 
 <div id="navOverlay" class="nav-overlay">
   
-  <button class="close-overlay-btn nav-icon" data-trigger="menu:toggle" aria-label="Close Menu">
+  <button class="close-overlay-btn nav-icon" data-trigger="menu:toggle" aria-label="Close Directory">
     <svg fill="none" height="24" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="24">
       <line x1="18" x2="6" y1="6" y2="18"></line>
       <line x1="6" x2="18" y1="6" y2="18"></line>
@@ -100,14 +93,13 @@
     </a>
   </nav>
 
-
   <div class="nav-overlay-footer">
     <div class="nav-status">
-      <span class="status-dot"></span> Operational
+      <span class="status-dot"></span> System Online
     </div>
     
     <div class="nav-links-secondary">
-      <a href="legal.html">Legal</a>
+      <a href="legal.html">Protocols</a>
       <a href="#">Instagram</a>
       <a href="#">Twitter</a>
     </div>
@@ -115,21 +107,31 @@
 
 </div>
 
-
-<div id="searchOverlay" role="dialog" aria-label="Search products" aria-modal="true" aria-hidden="true">
+<div id="searchOverlay" role="dialog" aria-label="Search Protocol" aria-modal="true" aria-hidden="true">
   <div class="search-overlay-content">
-    <button class="nav-icon close-overlay-btn" data-trigger="search:toggle" aria-label="Close search">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <button class="nav-icon close-overlay-btn" data-trigger="search:toggle" aria-label="Close Search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
+    
     <div class="search-input-wrapper">
-      <input class="search-input" id="search-input" type="search" placeholder="Search assets..." aria-label="Search for products" autocomplete="off" spellcheck="false">
+      <input 
+        class="search-input" 
+        id="search-input" 
+        type="search" 
+        placeholder="Search Protocol..." 
+        autocomplete="off" 
+        spellcheck="false"
+      >
       <div class="search-input-underline"></div>
     </div>
+    
     <div id="search-results" class="search-results" role="region" aria-live="polite">
-      <div class="search-help text-center text-faded text-sm"><p>Try searching for "finance", "notion", or "planner"</p></div>
+      <div class="search-help text-center text-faded text-sm">
+        <p>Try searching for "Finance", "System", or "Tracker"</p>
+      </div>
     </div>
   </div>
 </div>

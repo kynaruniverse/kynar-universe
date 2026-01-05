@@ -34,20 +34,17 @@
   <footer id="global-footer"></footer>
 
   <script type="module">
-    import { vault } from './vault.js'; // Imports your data
+    import { vault } from './vault.js'; 
 
     const grid = document.getElementById('library-grid');
     const filters = document.querySelectorAll('.filter-chip');
 
-    // FUNCTION: Generate HTML for a Card
     function renderVault(filterType) {
-      grid.innerHTML = ''; // Clear current grid
+      grid.innerHTML = ''; 
 
       vault.forEach(item => {
-        // Filter Logic
         if (filterType !== 'all' && item.category !== filterType) return;
 
-        // Visual Logic: Is it a System or a Tool?
         const isSystem = item.type === 'system';
         const badgeColor = isSystem ? 'var(--color-accent)' : 'var(--color-border)';
         const badgeText = isSystem ? 'SYSTEM' : 'TOOL';
@@ -74,7 +71,7 @@
 
               <div class="product-card__actions mt-auto">
                 <span class="product-card__price">${item.price}</span>
-                <a href="${item.link}" class="btn btn--outline btn--sm w-full">Inspect</a>
+                <a href="product.html?id=${item.id}" class="btn btn--outline btn--sm w-full">Inspect</a>
               </div>
             </div>
           </article>
@@ -84,17 +81,12 @@
       });
     }
 
-    // INITIAL LOAD
     renderVault('all');
 
-    // FILTER CLICK EVENTS
     filters.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        // Remove active class from all
         filters.forEach(f => f.classList.remove('active'));
-        // Add to clicked
         e.target.classList.add('active');
-        // Render new category
         renderVault(e.target.dataset.filter);
       });
     });
