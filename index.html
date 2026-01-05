@@ -1,194 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Security-Policy" content="
-  default-src 'self'; 
-  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://assets.lemonsqueezy.com; 
-  style-src 'self' 'unsafe-inline'; 
-  img-src 'self' data: https:; 
-  font-src 'self';
-  connect-src 'self' https://formspree.io https://*.lemonsqueezy.com;
-">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Kynar Studio">
-    <link rel="canonical" href="https://www.kynaruniverse.co.uk/CURRENT_PAGE.html">
 
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <title>Kynar Studio | High-Fidelity Digital Marketplace</title>
-    
-    <meta name="description" content="Premium digital assets engineered for the creative elite. From deep organization to visual systems, find the exact tool to elevate your workflow.">
-    <link href="https://www.kynaruniverse.co.uk/" rel="canonical" />
-    
-    <link href="styles.css" rel="stylesheet" />
-    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="assets/fonts/GlacialIndifferenceRegular.woff2" as="font" type="font/woff2" crossorigin>
-    
-    <script>
-      (function() {
-  try {
-    const savedTheme = localStorage.getItem("kynar_theme");
-    if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.body.classList.add("dark-mode"); // Changed from documentElement
-    }
-  } catch (e) { Logger.log('Theme access denied'); }
-})();
-    </script>
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://assets.lemonsqueezy.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://formspree.io https://*.lemonsqueezy.com;">
+  <meta name="robots" content="index, follow">
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  
+  <title>Kynar Operations | System Architecture for Daily Life</title>
+  
+  <link href="styles.css" rel="stylesheet" />
+  
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+  <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem("kynar_theme");
+        if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.body.classList.add("dark-mode");
+        }
+      } catch (e) { console.log('Theme access denied'); }
+    })();
+  </script>
+</head>
 
-    <script type="module" src="ui-core.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+<body>
+  
+  <header class="app-header" id="global-header"></header>
+  
+  <main class="container">
     
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.kynaruniverse.co.uk/">
-    <meta property="og:title" content="Kynar Studio | Digital Marketplace">
-    <meta property="og:description" content="Premium digital assets for the creative elite. Explore the shop.">
-    <meta property="og:image" content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp">
-    
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Kynar Studio | Digital Marketplace">
-    <meta name="twitter:description" content="Premium digital assets for the creative elite.">
-    <meta name="twitter:image" content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp">
-  </head>
-
-  <body>
-
-    <header class="app-header" id="global-header" style="min-height: 80px;"></header>
-
-    <main class="container">
+    <div class="text-center reveal-up" style="padding: 60px 0 80px;">
+      <span class="tag-pill mb-lg">Architecture v10.0 // Ready</span>
+      <h1 class="heading-xl text-upper mb-lg">
+        System Architecture<br>For Daily Life.
+      </h1>
+      <p class="text-lg mx-auto text-faded" style="max-width: 50ch; margin-bottom: 40px;">
+        A modular library of high-fidelity digital assets designed to organize chaos, build structure, and create without friction.
+      </p>
       
-      <section class="hero">
-        <div class="reveal-up">
-          <span class="hero__subtitle">Kynar Studio</span>
-          <h1 class="hero__title">
-            Tools for Every <br />
-            <span class="text-faded">Occasion.</span>
-          </h1>
-          <p class="hero__text">
-            Premium digital assets engineered for the creative elite. From deep organization to visual systems, find the exact tool to elevate your workflow.
-          </p>
-
-          <div class="flex-wrap gap-md mt-lg">
-            <a class="btn btn--primary" href="shop.html">Browse Shop</a>
-            <a class="btn btn--ghost" href="newsletter.html">Join Community</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="reveal-up section-spacer">
-        <div class="category-grid">
-          
-          <a class="category-card category-card--personal" href="shop.html?cat=personal">
-            <div class="category-card__number">01</div>
-            <span class="category-card__label">01 // PERSONAL</span>
-            <h3 class="category-card__heading">Personal & Flow</h3>
-            <p class="category-card__desc">Organization systems and wellness planners for the modern individual.</p>
-          </a>
-
-          <a class="category-card category-card--work" href="shop.html?cat=work">
-            <div class="category-card__number">02</div>
-            <span class="category-card__label">02 // WORK</span>
-            <h3 class="category-card__heading">Business & Growth</h3>
-            <p class="category-card__desc">AI prompt packs and professional frameworks for high-stakes productivity.</p>
-          </a>
-
-          <a class="category-card category-card--creative" href="shop.html?cat=creative">
-            <div class="category-card__number">03</div>
-            <span class="category-card__label">03 // CREATIVE</span>
-            <h3 class="category-card__heading">Content & Style</h3>
-            <p class="category-card__desc">Cinematic visual systems and content creation frameworks.</p>
-          </a>
-
-          <a class="category-card category-card--education" href="shop.html?cat=education">
-            <div class="category-card__number">04</div>
-            <span class="category-card__label">04 // EDUCATION</span>
-            <h3 class="category-card__heading">Education & Dev</h3>
-            <p class="category-card__desc">Educational curriculum planners for the next generation of thinkers.</p>
-          </a>
-
-        </div>
-      </section>
-
-      <section id="latest-arrivals" class="section-spacer">
-        <div class="flex-between align-end mb-lg">
-          <div>
-            <h2 class="reveal-up heading-lg">Latest Arrivals</h2>
-            <div class="heading-underline"></div>
-          </div>
-          <a href="shop.html" class="link-arrow">
-            View Full Shop →
-          </a>
-        </div>
-
-        <div id="featured-grid" class="grid-col-1 gap-xl" style="min-height: 300px;">
-            </div>
-      </section>
-
-      <section id="faq" class="faq-section">
-        <div class="text-center mb-xl">
-          <h2 class="reveal-up heading-xl">Concierge FAQ</h2>
-          <p class="mt-sm opacity-60">Common inquiries regarding the Kynar Shop.</p>
-        </div>
-
-        <div class="faq-list">
-          <details class="faq-item reveal-up">
-            <summary class="faq-question">How is the access delivered?</summary>
-            <div class="faq-answer">Immediately following authorization, a secure link is dispatched to your email via Lemon Squeezy.</div>
-          </details>
-
-          <details class="faq-item reveal-up delay-100">
-            <summary class="faq-question">Software requirements?</summary>
-            <div class="faq-answer">Kynar assets are platform-optimized. Check specific product specs for details on Notion, Canva, or Lightroom compatibility.</div>
-          </details>
-
-          <details class="faq-item reveal-up delay-200">
-            <summary class="faq-question">Commercial licensing?</summary>
-            <div class="faq-answer">All Kynar Studio assets include a standard license for personal and individual commercial use.</div>
-          </details>
-        </div>
-      </section>
-    </main>
-
-    <footer id="global-footer"></footer> 
-
-    <script type="module">
-      import { VAULT } from './src/data/vault.js';
-      import { renderCard } from './components/ProductCard.js';
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const grid = document.getElementById('featured-grid');
+      <div class="flex-center gap-md">
+        <a href="shop.html" class="btn btn--primary">Access Library</a>
+        <a href="newsletter.html" class="btn btn--ghost">Dashboard Login</a>
+      </div>
+    </div>
+    
+    <div class="section-spacer reveal-up delay-100">
+      <div class="flex-between align-end mb-lg">
+        <h2 class="heading-lg text-upper">Select Objective</h2>
+        <span class="text-xs text-upper text-faded">Identify Protocol</span>
+      </div>
+      
+      <div class="objective-grid">
         
-        // Safety check
-        if (!grid || !VAULT) return;
+        <a href="shop.html" class="objective-card">
+          <div class="obj-icon">◰</div>
+          <div class="obj-content">
+            <h3 class="text-upper text-bold mb-sm">Organize</h3>
+            <p class="text-sm text-faded">
+              Planners, trackers, and financial calculators to reduce entropy.
+            </p>
+          </div>
+          <div class="link-arrow mt-auto">Deploy System</div>
+        </a>
+        
+        <a href="shop.html" class="objective-card">
+          <div class="obj-icon">✎</div>
+          <div class="obj-content">
+            <h3 class="text-upper text-bold mb-sm">Create</h3>
+            <p class="text-sm text-faded">
+              Prompts, scripts, and asset packs for high-output production.
+            </p>
+          </div>
+          <div class="link-arrow mt-auto">Deploy System</div>
+        </a>
+        
+        <a href="shop.html" class="objective-card">
+          <div class="obj-icon">⚡</div>
+          <div class="obj-content">
+            <h3 class="text-upper text-bold mb-sm">Build</h3>
+            <p class="text-sm text-faded">
+              Business logic, templates, and frameworks for growth.
+            </p>
+          </div>
+          <div class="link-arrow mt-auto">Deploy System</div>
+        </a>
+        
+      </div>
+    </div>
+    
+    <div class="section-spacer reveal-up delay-200">
+      <div class="system-showcase">
+        <div class="system-meta">
+          <span class="tag-pill">Featured System</span>
+          <h2 class="heading-lg text-upper mt-sm">The Founder's<br>Protocol</h2>
+          <p class="text-faded mt-sm mb-lg">
+            A complete operating system for solo founders. Includes financial projection sheets, quarterly planner, and the "Day One" legal checklist.
+          </p>
+          
+          <ul class="stack-list">
+            <li><span class="check">✓</span> 1x Master Dashboard (.Notion)</li>
+            <li><span class="check">✓</span> 2x Finance Trackers (.XLS)</li>
+            <li><span class="check">✓</span> 1x Strategy Guide (.PDF)</li>
+          </ul>
+          
+          <a href="shop.html" class="btn btn--outline mt-lg">Secure Asset • £24.00</a>
+        </div>
+        
+        <div class="system-visual">
+          <div class="stack-visual-box">
+            <span class="text-display" style="font-size: 8rem; opacity: 0.1;">01</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+  
+  <footer id="global-footer"></footer>
+  
+  <script type="module" src="ui-core.js"></script>
+  
+</body>
 
-        // Fetch Data: Top 3 Items from Vault
-        const latest = VAULT.slice(0, 3);
-
-        // Render Components
-        grid.innerHTML = latest.map(p => renderCard(p)).join('');
-
-        // LOGIC UPGRADE: Use IntersectionObserver instead of setTimeout
-        // This triggers animations only when elements are actually visible
-        const observerOptions = {
-          root: null,
-          rootMargin: '0px',
-          threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('reveal-visible');
-              observer.unobserve(entry.target); // Only animate once
-            }
-          });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal-up').forEach(el => {
-          observer.observe(el);
-        });
-      });
-    </script>
-  </body>
 </html>

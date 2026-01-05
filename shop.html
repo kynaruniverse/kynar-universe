@@ -1,156 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-  <head>
-    <meta http-equiv="Content-Security-Policy" content="
-  default-src 'self'; 
-  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://assets.lemonsqueezy.com; 
-  style-src 'self' 'unsafe-inline'; 
-  img-src 'self' data: https:; 
-  font-src 'self';
-  connect-src 'self' https://formspree.io https://*.lemonsqueezy.com;
-">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Kynar Studio">
-    <meta name="keywords" content="digital assets, notion templates, productivity tools, creative resources">
-    <link rel="canonical" href="https://www.kynaruniverse.co.uk/CURRENT_PAGE.html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asset Library | KYNAR</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+  <script type="module" src="ui-core.js"></script>
+</head>
+<body>
 
-    <meta charset="UTF-8" />
-    <meta 
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" 
-      name="viewport" 
-    />
+  <header class="app-header" id="global-header"></header>
+
+  <main class="container">
     
-    <title>The Marketplace | Kynar Studio</title>
-    
-    <link href="styles.css" rel="stylesheet" />
-    
-    <script>
-      (function() {
-  try {
-    const savedTheme = localStorage.getItem("kynar_theme");
-    if (savedTheme === "dark" || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.body.classList.add("dark-mode"); // Changed from documentElement
-    }
-  } catch (e) { Logger.log('Theme access denied'); }
-})();
-    </script>
-
-    <script type="module" src="ui-core.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    
-    <meta content="website" property="og:type">
-    <meta content="The Marketplace | Kynar Studio" property="og:title">
-    <meta content="Premium digital assets for the creative elite." property="og:description">
-    <meta content="https://www.kynaruniverse.co.uk/assets/images/og-preview.webp" property="og:image">
-  </head>
-
-  <body>
-
-    <header class="app-header" id="global-header"></header>
-
-    <main class="container">
+    <div class="text-center" style="padding: 60px 0 40px;">
+      <span class="tag-pill mb-lg">Status: Unrestricted Access</span>
+      <h1 class="heading-lg text-upper">The Archive</h1>
       
-      <div class="reveal-up" style="margin-top: 40px">
-        <span class="text-accent text-upper text-bold text-sm" style="letter-spacing: 0.2em;">Kynar Shop</span>
-        <h1>The Marketplace</h1>
-        <p style="margin-top: 10px;">High-fidelity assets for digital creators.</p>
-      </div>
-
-      <nav class="filter-bar reveal-up" id="filterContainer">
-        <button class="filter-chip active" data-cat="all">All Assets</button>
-        <button class="filter-chip" data-cat="personal">Life & Flow</button>
-        <button class="filter-chip" data-cat="work">Business & Growth</button>
-        <button class="filter-chip" data-cat="creative">Content & Style</button>
-        <button class="filter-chip" data-cat="education">Learning & Dev</button>
-      </nav>
-
-      <div id="shop-grid" class="grid-col-1 gap-xl"></div>
-      
-      <div id="emptyState" class="empty-state" style="display: none;">
-        <div style="font-size: 3rem; margin-bottom: 20px;">🔭</div>
-        <h3 class="text-display">Signal Lost</h3>
-        <p>No assets found in this frequency.</p>
-      </div>
-
-    </main>
-
-    <footer id="global-footer"></footer>
-    
-    <div id="productModal" class="nav-overlay flex-center" style="padding: 20px; display: none;">
-      <div class="card" style="max-width: 800px; width: 100%; grid-template-columns: 1fr; position: relative; padding: 40px;">
-        <button id="closeModal" class="nav-icon" style="position: absolute; top: 20px; right: 20px;">✕</button>
-        <div id="modalContent"></div>
+      <div class="filter-bar mt-lg" id="filter-controls">
+        <button class="filter-chip active" data-filter="all">All Systems</button>
+        <button class="filter-chip" data-filter="business">Business</button>
+        <button class="filter-chip" data-filter="personal">Personal</button>
+        <button class="filter-chip" data-filter="creative">Creative</button>
       </div>
     </div>
 
-        <script type="module">
-      import { VAULT } from './src/data/vault.js';
-      import { renderCard } from './components/ProductCard.js';
-      import { EventBus, EVENTS } from './src/core/events.js';
+    <div class="category-grid" id="library-grid">
+      </div>
 
-      const grid = document.getElementById('shop-grid');
-      const emptyState = document.getElementById('emptyState');
-      const filterBtns = document.querySelectorAll('.filter-chip');
+  </main>
 
-      // --- RENDER LOGIC ---
-      // --- RENDER LOGIC ---
-function renderGrid(category = 'all') {
-  grid.innerHTML = '<div class="flex-center" style="min-height: 300px;"><p class="text-accent">Loading assets...</p></div>';
-  
-  requestAnimationFrame(() => {
-    const filtered = category === 'all' 
-      ? VAULT 
-      : VAULT.filter(p => p.category.toLowerCase() === category.toLowerCase());
+  <footer id="global-footer"></footer>
 
-    if (filtered.length === 0) {
-      emptyState.style.display = 'block';
-      grid.innerHTML = '';
-    } else {
-      emptyState.style.display = 'none';
-      grid.innerHTML = filtered.map(p => renderCard(p)).join('');
+  <script type="module">
+    import { vault } from './vault.js'; // Imports your data
+
+    const grid = document.getElementById('library-grid');
+    const filters = document.querySelectorAll('.filter-chip');
+
+    // FUNCTION: Generate HTML for a Card
+    function renderVault(filterType) {
+      grid.innerHTML = ''; // Clear current grid
+
+      vault.forEach(item => {
+        // Filter Logic
+        if (filterType !== 'all' && item.category !== filterType) return;
+
+        // Visual Logic: Is it a System or a Tool?
+        const isSystem = item.type === 'system';
+        const badgeColor = isSystem ? 'var(--color-accent)' : 'var(--color-border)';
+        const badgeText = isSystem ? 'SYSTEM' : 'TOOL';
+
+        // HTML Construction
+        const cardHTML = `
+          <article class="product-card ${isSystem ? 'highlight-border' : ''}">
+            
+            <div class="product-card__image-box">
+              ${item.image ? `<img src="${item.image}" alt="${item.title}">` : `<span style="font-size:3rem; opacity:0.2;">${item.title[0]}</span>`}
+              <span class="tag-pill" style="position: absolute; top: 15px; left: 15px; border-color: ${badgeColor}; background: var(--color-bg-card);">
+                ${badgeText}
+              </span>
+            </div>
+
+            <div class="product-card__body">
+              <h3 class="product-card__title">${item.title}</h3>
+              <p class="product-card__short-desc">${item.objective}</p>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; padding: 10px; background: rgba(0,0,0,0.02); border-radius: 8px;">
+                <div class="text-xs text-faded text-upper">Time: <span style="color: var(--color-text-main);">${item.specs.deploy_time}</span></div>
+                <div class="text-xs text-faded text-upper">Level: <span style="color: var(--color-text-main);">${item.specs.skill_level}</span></div>
+              </div>
+
+              <div class="product-card__actions mt-auto">
+                <span class="product-card__price">${item.price}</span>
+                <a href="${item.link}" class="btn btn--outline btn--sm w-full">Inspect</a>
+              </div>
+            </div>
+          </article>
+        `;
+        
+        grid.innerHTML += cardHTML;
+      });
     }
 
-    setTimeout(() => {
-      document.querySelectorAll('.reveal-up').forEach(el => el.classList.add('reveal-visible'));
-    }, 50);
-  });
-}
+    // INITIAL LOAD
+    renderVault('all');
 
-
-      // --- FILTER LOGIC ---
-      function updateActiveFilter(category) {
-        filterBtns.forEach(btn => {
-          if (btn.dataset.cat === category) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
-      }
-
-      // --- EVENT HANDLERS ---
-      document.getElementById('filterContainer').addEventListener('click', (e) => {
-        const btn = e.target.closest('.filter-chip');
-        if (!btn) return;
-        
-        const category = btn.dataset.cat;
-        updateActiveFilter(category);
-        renderGrid(category);
-        
-        if(navigator.vibrate) navigator.vibrate(10);
+    // FILTER CLICK EVENTS
+    filters.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // Remove active class from all
+        filters.forEach(f => f.classList.remove('active'));
+        // Add to clicked
+        e.target.classList.add('active');
+        // Render new category
+        renderVault(e.target.dataset.filter);
       });
+    });
+  </script>
 
-      // --- INITIALIZATION ---
-      document.addEventListener('DOMContentLoaded', () => {
-        const params = new URLSearchParams(window.location.search);
-        const cat = params.get('cat') || 'all';
-        
-        updateActiveFilter(cat);
-        renderGrid(cat);
-      });
-    </script>
-
-
-  </body>
+</body>
 </html>
