@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initCodeCopy();
     initFormValidation();
     initFilterChips();
+    initThemeToggle(); // New Feature
 });
 
 /* ---------------------------------------------------------
    1. GLOBAL MOBILE MENU
-   Handles opening/closing the slide-in navigation
    --------------------------------------------------------- */
 function initMobileMenu() {
     const menuToggle = document.querySelectorAll('.menu-toggle');
@@ -23,21 +23,13 @@ function initMobileMenu() {
     
     if (!menuToggle.length || !mobileMenu) return;
 
-    // Open/Close Logic
     const toggleMenu = () => {
         const isClosed = !mobileMenu.classList.contains('is-active');
-        
-        // Toggle State
         mobileMenu.classList.toggle('is-active');
-        document.body.style.overflow = isClosed ? 'hidden' : ''; // Prevent body scroll
-        
-        // Update ARIA for accessibility
-        menuToggle.forEach(btn => {
-            btn.setAttribute('aria-expanded', isClosed);
-        });
+        document.body.style.overflow = isClosed ? 'hidden' : '';
+        menuToggle.forEach(btn => btn.setAttribute('aria-expanded', isClosed));
     };
 
-    // Attach listeners to all toggle buttons (hamburger and close X)
     menuToggle.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -45,7 +37,6 @@ function initMobileMenu() {
         });
     });
 
-    // Close when clicking outside content (optional polish)
     mobileMenu.addEventListener('click', (e) => {
         if (e.target === mobileMenu) {
             toggleMenu();
@@ -54,27 +45,52 @@ function initMobileMenu() {
 }
 
 /* ---------------------------------------------------------
-   2. CODE SNIPPET COPY
-   Uses Clipboard API to copy text from <pre> blocks
+   2. THEME TOGGLE (Light/Dark Mode)
+   --------------------------------------------------------- */
+function initThemeToggle() {
+    const themeBtn = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    
+    // Check saved preference or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Default to light if no preference, unless system is dark
+    // BUT: Business vision prefers Light Mode, so we default to Light if unsaved.
+    if (savedTheme === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+    } else {
+        html.removeAttribute('data-theme'); // Force Light Mode default
+    }
+
+    if (!themeBtn) return;
+
+    themeBtn.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            html.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+        } else {
+            html.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+}
+
+/* ---------------------------------------------------------
+   3. CODE SNIPPET COPY
    --------------------------------------------------------- */
 function initCodeCopy() {
-    // We use event delegation on the body to catch all copy buttons
     document.addEventListener('click', async (e) => {
         const copyBtn = e.target.closest('.code-preview__copy');
         if (!copyBtn) return;
 
-        // Find the associated code block
-        // Assuming structure: Header > Button, Sibling > Content
         const container = copyBtn.closest('.code-preview');
         const codeBlock = container.querySelector('code');
-        
         if (!codeBlock) return;
 
         try {
-            // Write text to clipboard
             await navigator.clipboard.writeText(codeBlock.textContent);
-            
-            // Visual Feedback
             const originalText = copyBtn.innerHTML;
             copyBtn.innerHTML = `
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -83,13 +99,11 @@ function initCodeCopy() {
             copyBtn.style.color = 'var(--color-success)';
             copyBtn.style.borderColor = 'var(--color-success)';
 
-            // Reset after 2 seconds
             setTimeout(() => {
                 copyBtn.innerHTML = originalText;
                 copyBtn.style.color = '';
                 copyBtn.style.borderColor = '';
             }, 2000);
-
         } catch (err) {
             console.error('Failed to copy text: ', err);
             copyBtn.textContent = 'Error';
@@ -98,19 +112,13 @@ function initCodeCopy() {
 }
 
 /* ---------------------------------------------------------
-   3. FORM VALIDATION
-   Applies our .input--error classes based on native validity
+   4. FORM VALIDATION
    --------------------------------------------------------- */
 function initFormValidation() {
     const inputs = document.querySelectorAll('.input');
 
     inputs.forEach(input => {
-        // Validate on blur (when user leaves field)
-        input.addEventListener('blur', () => {
-            validateInput(input);
-        });
-
-        // Clear error as soon as user types
+        input.addEventListener('blur', () => validateInput(input));
         input.addEventListener('input', () => {
             if (input.classList.contains('input--error')) {
                 input.classList.remove('input--error');
@@ -119,27 +127,19 @@ function initFormValidation() {
         });
     });
 
-    // Form Submit Interception
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         form.addEventListener('submit', (e) => {
             let isValid = true;
             const formInputs = form.querySelectorAll('.input[required]');
-            
             formInputs.forEach(input => {
-                if (!validateInput(input)) {
-                    isValid = false;
-                }
+                if (!validateInput(input)) isValid = false;
             });
-
-            if (!isValid) {
-                e.preventDefault(); // Stop submission if errors
-            }
+            if (!isValid) e.preventDefault();
         });
     });
 }
 
-// Helper: Apply visual error state
 function validateInput(input) {
     if (!input.checkValidity()) {
         input.classList.add('input--error');
@@ -152,28 +152,22 @@ function validateInput(input) {
     }
 }
 
-// Helper: Show error message below input
 function showErrorMsg(input) {
     const existingMsg = input.parentNode.querySelector('.input-error-msg');
-    if (existingMsg) return; // Don't duplicate
-
+    if (existingMsg) return;
     const msg = document.createElement('span');
     msg.className = 'input-error-msg';
-    msg.textContent = input.validationMessage; // Uses browser's native error text
+    msg.textContent = input.validationMessage;
     input.parentNode.appendChild(msg);
 }
 
-// Helper: Remove error message
 function removeErrorMsg(input) {
     const msg = input.parentNode.querySelector('.input-error-msg');
-    if (msg) {
-        msg.remove();
-    }
+    if (msg) msg.remove();
 }
 
 /* ---------------------------------------------------------
-   4. FILTER CHIPS (Visual Toggle Only)
-   For Phase 1 prototype, this just toggles the 'is-active' class
+   5. FILTER CHIPS
    --------------------------------------------------------- */
 function initFilterChips() {
     const chipContainer = document.querySelector('.filter-bar');
@@ -182,12 +176,8 @@ function initFilterChips() {
     chipContainer.addEventListener('click', (e) => {
         const chip = e.target.closest('.chip');
         if (!chip) return;
-
-        // Remove active class from siblings
         const siblings = chipContainer.querySelectorAll('.chip');
         siblings.forEach(c => c.classList.remove('is-active'));
-
-        // Activate clicked chip
         chip.classList.add('is-active');
     });
 }

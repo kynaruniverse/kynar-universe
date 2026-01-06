@@ -2,7 +2,7 @@
 
 :root {
   /* ---------------------------------------------------------
-     1. COLOR PALETTE (Earth Tones)
+     1. COLOR PALETTE (Earth Tones - Light Mode Default)
      Source: Implementation Bridge
      --------------------------------------------------------- */
   
@@ -48,29 +48,26 @@
 
   /* ---------------------------------------------------------
      2. SPACING SCALE (8pt System)
-     Source: Implementation Bridge
      --------------------------------------------------------- */
-  --space-1: 4px;  /* Micro separation */
-  --space-2: 8px;  /* Tight grouping */
-  --space-3: 16px; /* Default component padding */
-  --space-4: 24px; /* Section grouping */
-  --space-5: 32px; /* Major separation */
-  --space-6: 48px; /* Page division */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
 
   /* ---------------------------------------------------------
      3. TYPOGRAPHY
-     Source: Implementation Bridge
      --------------------------------------------------------- */
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-code: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
 
-  /* Mobile-First Type Scale */
   --text-xs:   12px;
   --text-sm:   13px;
-  --text-base: 15px; /* Readable body default */
-  --text-lg:   18px; /* H3 */
-  --text-xl:   22px; /* H2 */
-  --text-2xl:  30px; /* H1 */
+  --text-base: 15px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  30px;
 
   --weight-normal:   400;
   --weight-medium:   500;
@@ -83,26 +80,30 @@
 
   /* ---------------------------------------------------------
      4. SHAPE & MOTION
-     Source: Implementation Bridge
      --------------------------------------------------------- */
-  --radius-sm: 8px;  /* Badges/Small elements */
-  --radius-md: 12px; /* Inputs/Buttons */
-  --radius-lg: 16px; /* Cards */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   
-  --transition-fast: 150ms ease-out; /* Hover */
-  --transition-base: 250ms ease-out; /* State change */
+  --transition-fast: 150ms ease-out;
+  --transition-base: 250ms ease-out;
 }
 
-/* Dark Mode Strategy: Semantic Remapping 
-   Source: Implementation Bridge */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg:             #1a1614; /* Deep warm black */
-    --color-surface:        #2b2621; /* Dark warm grey */
-    --color-surface-dark:   #3a342e; /* Elevated surface */
-    --color-border:         #453f38; /* Darker border */
-    
-    --color-text-primary:   #f2f0e9; /* Light cream text */
-    --color-text-secondary: #c7c1b5; /* Muted light grey */
-  }
+/* ---------------------------------------------------------
+   DARK MODE STRATEGY (Updated: Deep Forest/Charcoal)
+   Replaced "Muddy Brown" with "Premium Slate"
+   --------------------------------------------------------- */
+[data-theme="dark"] {
+  --color-bg:             #0d1312; /* Deep Forest/Charcoal - Much cleaner */
+  --color-surface:        #18201e; /* Lighter charcoal */
+  --color-surface-dark:   #232b29; /* Elevated surface */
+  --color-border:         #2a3532; /* Dark teal-grey border */
+  
+  --color-text-primary:   #f2f0e9; /* Light cream text */
+  --color-text-secondary: #9ca3af; /* Cool light grey */
+  --color-text-muted:     #6b7280;
+  
+  /* Adjust Primary for Dark Mode Contrast */
+  --color-primary:        #10b981; /* Brighter Emerald for dark mode visibility */
+  --color-primary-hover:  #059669;
 }
