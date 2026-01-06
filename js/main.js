@@ -1,38 +1,40 @@
 /* js/main.js */
 
-/**
- * DIGITAL MARKETPLACE - MAIN LOGIC
- * Architecture: Vanilla JS, Event Delegation, DOMContentLoaded
- * Budget: < 5KB
- */
-
 document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
-    initThemeToggle(); // Initialize this early to prevent flash
+    initThemeToggle();
     initCodeCopy();
     initFormValidation();
     initFilterChips();
+    highlightCurrentPage(); // NEW: Highlights the active link
 });
 
 /* ---------------------------------------------------------
    1. GLOBAL MOBILE MENU
    --------------------------------------------------------- */
 function initMobileMenu() {
-    // CRITICAL FIX: Exclude the #theme-toggle button so it doesn't trigger the menu
     const allToggles = document.querySelectorAll('.menu-toggle');
     const menuToggles = Array.from(allToggles).filter(btn => btn.id !== 'theme-toggle');
-    
     const mobileMenu = document.getElementById('mobile-menu');
+    // NEW: Select links inside the menu
+    const menuLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
     
     if (!menuToggles.length || !mobileMenu) return;
 
-    const toggleMenu = () => {
+    const toggleMenu = (forceClose = false) => {
         const isClosed = !mobileMenu.classList.contains('is-active');
-        mobileMenu.classList.toggle('is-active');
-        document.body.style.overflow = isClosed ? 'hidden' : '';
-        
-        // Update ARIA only on the menu buttons
-        menuToggles.forEach(btn => btn.setAttribute('aria-expanded', isClosed));
+        if (forceClose && isClosed) return; // Already closed
+
+        if (forceClose) {
+            mobileMenu.classList.remove('is-active');
+            document.body.style.overflow = '';
+            menuToggles.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
+        } else {
+            mobileMenu.classList.toggle('is-active');
+            const newState = mobileMenu.classList.contains('is-active');
+            document.body.style.overflow = newState ? 'hidden' : '';
+            menuToggles.forEach(btn => btn.setAttribute('aria-expanded', newState));
+        }
     };
 
     menuToggles.forEach(btn => {
@@ -45,23 +47,24 @@ function initMobileMenu() {
     // Close when clicking outside content
     mobileMenu.addEventListener('click', (e) => {
         if (e.target === mobileMenu) {
-            toggleMenu();
+            toggleMenu(true);
         }
+    });
+
+    // NEW: Close menu when a link is clicked
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => toggleMenu(true));
     });
 }
 
 /* ---------------------------------------------------------
-   2. THEME TOGGLE (Light/Dark Mode)
+   2. THEME TOGGLE
    --------------------------------------------------------- */
 function initThemeToggle() {
     const themeBtn = document.getElementById('theme-toggle');
     const html = document.documentElement;
-    
-    // Check saved preference
     const savedTheme = localStorage.getItem('theme');
     
-    // STRATEGY: Force "Bone White" Light Mode on first visit (Business Vision)
-    // We only enable dark mode if the user has explicitly saved 'dark' in the past.
     if (savedTheme === 'dark') {
         html.setAttribute('data-theme', 'dark');
     } else {
@@ -71,8 +74,7 @@ function initThemeToggle() {
     if (!themeBtn) return;
 
     themeBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent bubbling issues
-        
+        e.stopPropagation();
         const currentTheme = html.getAttribute('data-theme');
         if (currentTheme === 'dark') {
             html.removeAttribute('data-theme');
@@ -99,8 +101,6 @@ function initCodeCopy() {
         try {
             await navigator.clipboard.writeText(codeBlock.textContent);
             const originalText = copyBtn.innerHTML;
-            
-            // Visual Feedback
             copyBtn.innerHTML = `
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 Copied!
@@ -114,8 +114,7 @@ function initCodeCopy() {
                 copyBtn.style.borderColor = '';
             }, 2000);
         } catch (err) {
-            console.error('Failed to copy text: ', err);
-            copyBtn.textContent = 'Error';
+            console.error('Failed to copy: ', err);
         }
     });
 }
@@ -125,7 +124,6 @@ function initCodeCopy() {
    --------------------------------------------------------- */
 function initFormValidation() {
     const inputs = document.querySelectorAll('.input');
-
     inputs.forEach(input => {
         input.addEventListener('blur', () => validateInput(input));
         input.addEventListener('input', () => {
@@ -188,5 +186,29 @@ function initFilterChips() {
         const siblings = chipContainer.querySelectorAll('.chip');
         siblings.forEach(c => c.classList.remove('is-active'));
         chip.classList.add('is-active');
+    });
+}
+
+/* ---------------------------------------------------------
+   6. ACTIVE LINK HIGHLIGHTER (NEW)
+   --------------------------------------------------------- */
+function highlightCurrentPage() {
+    const currentPath = window.location.pathname;
+    const filename = currentPath.split('/').pop() || 'index.html';
+    
+    // Select both mobile links and desktop department cards
+    const links = document.querySelectorAll('.mobile-nav-link, .dept-card');
+
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === filename) {
+            // Add a visual indicator
+            link.style.fontWeight = 'bold';
+            // If it's a mobile link, maybe add a left border or color shift
+            if (link.classList.contains('mobile-nav-link')) {
+                link.style.borderLeft = '4px solid currentColor';
+                link.style.paddingLeft = '12px';
+            }
+        }
     });
 }
