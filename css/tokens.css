@@ -60,26 +60,35 @@
   --space-6: 48px;
 
   /* ---------------------------------------------------------
-     3. TYPOGRAPHY
+     3. TYPOGRAPHY (Updated: KYNAR Universe System)
      --------------------------------------------------------- */
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-code: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  
+  /* Body: Clean, Geometric, Digital (Glacial Indifference) */
+  --font-body: 'Glacial Indifference', 'Inter', sans-serif;
+  
+  /* Headings: Creative, Bold, Human (Bantayog) */
+  --font-heading: 'Bantayog', sans-serif;
+  
+  /* Code: Monospace (Standard) */
+  --font-code: 'Courier New', monospace;
 
+  /* SIZING */
   --text-xs:   12px;
-  --text-sm:   13px;
-  --text-base: 15px;
+  --text-sm:   14px; /* Bumped up slightly for Glacial readability */
+  --text-base: 16px; /* Glacial reads better a bit larger */
   --text-lg:   18px;
-  --text-xl:   22px;
-  --text-2xl:  30px;
+  --text-xl:   24px;
+  --text-2xl:  32px;
+  --text-3xl:  48px; /* New size for massive headlines */
 
   --weight-normal:   400;
-  --weight-medium:   500;
-  --weight-semibold: 600;
+  --weight-medium:   400; /* Glacial often lacks medium, stick to 400/700 */
+  --weight-semibold: 700; /* Use Bold for emphasis */
   --weight-bold:     700;
 
-  --leading-tight:   1.25;
+  --leading-tight:   1.2;
   --leading-normal:  1.5;
-  --leading-relaxed: 1.6;
+  --leading-relaxed: 1.7; /* Glacial needs breathing room */
 
   /* ---------------------------------------------------------
      4. SHAPE & MOTION
