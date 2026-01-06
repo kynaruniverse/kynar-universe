@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hub | Guides & Resources</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-top">
+            <button class="menu-toggle" aria-label="Open menu" aria-controls="mobile-menu">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+
+            <a href="index.html" class="site-brand">
+                <span class="brand-main">KYNAR</span>
+                <span class="brand-sub">universe</span>
+            </a>
+
+            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Dark Mode">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+        </div>
+        <div class="header-search">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" placeholder="Search guides, tutorials..." class="search-input">
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="mobile-menu">
+        <nav style="display: flex; flex-direction: column; gap: var(--space-3);">
+            <a href="shop-tech.html" class="mobile-nav-link" style="color: var(--color-emerald);">KYNAR Tech</a>
+            <a href="shop-life.html" class="mobile-nav-link" style="color: var(--color-sage);">KYNAR Life</a>
+            <a href="shop-family.html" class="mobile-nav-link" style="color: var(--color-terracotta);">KYNAR Family</a>
+            <div style="height: 1px; background: var(--color-border); margin: var(--space-2) 0;"></div>
+            <a href="hub.html" class="mobile-nav-link" style="color: var(--color-accent);">The Hub</a>
+            <a href="legal.html" class="mobile-nav-link" style="font-size: var(--text-lg);">Help & Support</a>
+        </nav>
+        <div class="mobile-menu-footer">
+            <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-2);">&copy; 2026 KYNAR Universe</p>
+        </div>
+    </div>
+
+    <section class="section hero" style="padding-bottom: var(--space-4);">
+        <div class="container">
+            <div style="display: flex; justify-content: center; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); font-size: var(--text-sm); color: var(--color-text-secondary);">
+                <span style="color: var(--color-accent); font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">Knowledge Base</span>
+            </div>
+            <h1>Learn. Create. Optimize.</h1>
+            <p>Guides, tutorials, and inspiration from across the KYNAR Universe.</p>
+        </div>
+    </section>
+
+    <div class="filter-bar" style="border-bottom: 1px solid var(--color-border); justify-content: center;">
+        <button class="chip is-active">Latest</button>
+        <button class="chip">Tutorials</button>
+        <button class="chip">Lifestyle</button>
+        <button class="chip">Parenting</button>
+        <button class="chip">Coding</button>
+    </div>
+
+    <main class="container section">
+        
+        <article style="display: grid; gap: var(--space-4); margin-bottom: var(--space-6);">
+            <div style="background-color: var(--color-surface-dark); border-radius: var(--radius-lg); aspect-ratio: 16/9; overflow: hidden;">
+                <img src="assets/images/setup-guide-cover.jpg" alt="Featured Guide" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div>
+                <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-2);">
+                    <span class="badge badge--emerald">Tech</span>
+                    <span class="badge">5 min read</span>
+                </div>
+                <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);">Getting Started with Python Automation: A Beginner's Guide</h2>
+                <p style="color: var(--color-text-secondary);">You don't need to be a software engineer to automate your invoices. In this guide, we walk you through setting up Python and running your first KYNAR script.</p>
+                <a href="#" class="btn btn--tertiary" style="padding-left: 0;">Read Full Guide →</a>
+            </div>
+        </article>
+
+        <div class="product-grid">
+            
+            <div class="product-card" style="border: none; background: transparent;">
+                <div class="product-card__image-wrapper" style="border-radius: var(--radius-lg); margin-bottom: var(--space-3);">
+                    <img src="assets/images/morning-routine.jpg" alt="Morning Routine" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                    <span class="badge badge--sage" style="align-self: start;">Life</span>
+                    <h3 style="font-size: var(--text-lg); margin: 0;">How to Design a Morning Routine That Actually Sticks</h3>
+                    <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">Stop hitting snooze. Use the "Habit Stacking" method to build a productive start to your day.</p>
+                </div>
+            </div>
+
+            <div class="product-card" style="border: none; background: transparent;">
+                <div class="product-card__image-wrapper" style="border-radius: var(--radius-lg); margin-bottom: var(--space-3);">
+                    <img src="assets/images/rainy-day.jpg" alt="Rainy Day" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                    <span class="badge badge--terracotta" style="align-self: start;">Family</span>
+                    <h3 style="font-size: var(--text-lg); margin: 0;">10 Screen-Free Rainy Day Activities for Toddlers</h3>
+                    <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">From blanket forts to our "Preschool Learning Bundle," keep them entertained without the iPad.</p>
+                </div>
+            </div>
+
+            <div class="product-card" style="border: none; background: transparent;">
+                <div class="product-card__image-wrapper" style="border-radius: var(--radius-lg); margin-bottom: var(--space-3);">
+                    <img src="assets/images/web-scraping-guide.jpg" alt="Web Scraping" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                    <span class="badge badge--emerald" style="align-self: start;">Tech</span>
+                    <h3 style="font-size: var(--text-lg); margin: 0;">Is Web Scraping Legal? A Freelancer's Checklist</h3>
+                    <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">Understanding `robots.txt` and ethical data collection before you run your first scraper.</p>
+                </div>
+            </div>
+
+            <div class="product-card" style="border: none; background: transparent;">
+                <div class="product-card__image-wrapper" style="border-radius: var(--radius-lg); margin-bottom: var(--space-3);">
+                    <img src="assets/images/freelance-tips.jpg" alt="Freelance" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                    <span class="badge badge--slate" style="align-self: start;">Business</span>
+                    <h3 style="font-size: var(--text-lg); margin: 0;">Streamlining Your Client Onboarding Process</h3>
+                    <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">How to use Notion templates to look professional and save 5 hours per client.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="margin-top: var(--space-6); background-color: var(--color-surface); padding: var(--space-5); border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--color-border);">
+            <h2 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">Join the Universe</h2>
+            <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">Get one high-value resource delivered to your inbox weekly. No spam.</p>
+            <div style="display: flex; gap: var(--space-2); max-width: 400px; margin: 0 auto;">
+                <input type="email" placeholder="you@example.com" class="input" style="background-color: var(--color-bg);">
+                <button class="btn btn--primary">Subscribe</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6);">
+        <div class="container" style="text-align: center; color: var(--color-text-secondary); font-size: var(--text-sm);">
+            <div style="margin-bottom: var(--space-2);">
+                <a href="legal.html" style="color: inherit; text-decoration: underline; margin: 0 var(--space-2);">Terms & Refunds</a>
+                <a href="legal.html" style="color: inherit; text-decoration: underline; margin: 0 var(--space-2);">Privacy</a>
+            </div>
+            <p>&copy; 2026 KYNAR Universe. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>
