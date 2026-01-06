@@ -8,45 +8,12 @@
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
-    
-    <style>
-        /* Simple utility for layout rhythm not yet in a file */
-        .container {
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 var(--space-3);
-        }
-        
-        .section {
-            padding: var(--space-5) 0;
-        }
-
-        .hero {
-            text-align: center;
-            padding: var(--space-6) 0;
-        }
-
-        /* Responsive Grid Logic (Mobile First) */
-        .product-grid {
-            display: grid;
-            gap: var(--space-4);
-            grid-template-columns: 1fr; /* Mobile: 1 col */
-        }
-        
-        @media (min-width: 480px) {
-            .product-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        
-        @media (min-width: 1024px) {
-            .product-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-    </style>
+    <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
 
     <header class="site-header">
-        <a href="/" class="site-logo">
+        <a href="index.html" class="site-logo">
             <svg style="background: var(--color-primary); border-radius: 4px;"></svg>
             Marketplace
         </a>
@@ -70,10 +37,10 @@
             </button>
         </div>
         <nav style="display: flex; flex-direction: column; gap: var(--space-2);">
-            <a href="#" class="mobile-nav-link">Browse All</a>
-            <a href="#" class="mobile-nav-link">Planners</a>
-            <a href="#" class="mobile-nav-link">Scripts</a>
-            <a href="#" class="mobile-nav-link">Templates</a>
+            <a href="browse.html" class="mobile-nav-link">Browse All</a>
+            <a href="browse.html" class="mobile-nav-link">Planners</a>
+            <a href="browse.html" class="mobile-nav-link">Scripts</a>
+            <a href="browse.html" class="mobile-nav-link">Templates</a>
         </nav>
     </div>
 
@@ -83,7 +50,7 @@
                 <h1>Digital tools that actually help.</h1>
                 <p>Curated, practical, and built for quality. No filler, just focus.</p>
                 <div style="margin-top: var(--space-4);">
-                    <a href="#browse" class="btn btn--primary">Browse Products</a>
+                    <a href="browse.html" class="btn btn--primary">Browse Products</a>
                 </div>
             </div>
         </section>
@@ -103,43 +70,47 @@
                 <div class="product-grid">
                     
                     <article class="product-card">
-                        <div class="product-card__image-wrapper">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e8e5dc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' fill='%238a8379'%3EProduct Image%3C/text%3E%3C/svg%3E" alt="Planner Preview" class="product-card__image">
-                        </div>
-                        <div class="product-card__content">
-                            <div>
-                                <h3 class="product-card__title">2026 Life OS Planner</h3>
-                                <div style="margin-top: var(--space-2);">
-                                    <span class="badge badge--sage">PDF</span>
-                                    <span class="badge">Beginner</span>
+                        <a href="product.html" style="text-decoration: none; color: inherit; display: contents;">
+                            <div class="product-card__image-wrapper">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e8e5dc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' fill='%238a8379'%3EProduct Image%3C/text%3E%3C/svg%3E" alt="Planner Preview" class="product-card__image">
+                            </div>
+                            <div class="product-card__content">
+                                <div>
+                                    <h3 class="product-card__title">2026 Life OS Planner</h3>
+                                    <div style="margin-top: var(--space-2);">
+                                        <span class="badge badge--sage">PDF</span>
+                                        <span class="badge">Beginner</span>
+                                    </div>
+                                </div>
+                                <p class="product-card__desc">A complete digital planning system for iPad and tablet users. Includes daily, weekly, and monthly views.</p>
+                                <div class="product-card__footer">
+                                    <span class="product-card__price">£12</span>
+                                    <button class="btn btn--secondary" style="padding: 0 var(--space-2); min-height: 40px;">View</button>
                                 </div>
                             </div>
-                            <p class="product-card__desc">A complete digital planning system for iPad and tablet users. Includes daily, weekly, and monthly views.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£12</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2); min-height: 40px;">View</button>
-                            </div>
-                        </div>
+                        </a>
                     </article>
 
                     <article class="product-card">
-                        <div class="product-card__image-wrapper">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e8e5dc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' fill='%238a8379'%3ECode Preview%3C/text%3E%3C/svg%3E" alt="Script Preview" class="product-card__image">
-                        </div>
-                        <div class="product-card__content">
-                            <div>
-                                <h3 class="product-card__title">Auto-Invoice Generator</h3>
-                                <div style="margin-top: var(--space-2);">
-                                    <span class="badge badge--emerald">Python</span>
-                                    <span class="badge">Intermediate</span>
+                        <a href="product.html" style="text-decoration: none; color: inherit; display: contents;">
+                            <div class="product-card__image-wrapper">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e8e5dc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' fill='%238a8379'%3ECode Preview%3C/text%3E%3C/svg%3E" alt="Script Preview" class="product-card__image">
+                            </div>
+                            <div class="product-card__content">
+                                <div>
+                                    <h3 class="product-card__title">Auto-Invoice Generator</h3>
+                                    <div style="margin-top: var(--space-2);">
+                                        <span class="badge badge--emerald">Python</span>
+                                        <span class="badge">Intermediate</span>
+                                    </div>
+                                </div>
+                                <p class="product-card__desc">Automatically generate PDF invoices from CSV data. Saves 4 hours/week of manual entry.</p>
+                                <div class="product-card__footer">
+                                    <span class="product-card__price">£24</span>
+                                    <button class="btn btn--secondary" style="padding: 0 var(--space-2); min-height: 40px;">View</button>
                                 </div>
                             </div>
-                            <p class="product-card__desc">Automatically generate PDF invoices from CSV data. Saves 4 hours/week of manual entry.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£24</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2); min-height: 40px;">View</button>
-                            </div>
-                        </div>
+                        </a>
                     </article>
 
                      <article class="product-card">
@@ -204,23 +175,6 @@
             <p>VAT Number: GB 123 456 789</p>
         </div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuToggle = document.querySelector('.menu-toggle');
-            const closeMenu = document.getElementById('close-menu');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            function toggleMenu() {
-                mobileMenu.classList.toggle('is-active');
-                const isOpen = mobileMenu.classList.contains('is-active');
-                menuToggle.setAttribute('aria-expanded', isOpen);
-            }
-
-            menuToggle.addEventListener('click', toggleMenu);
-            closeMenu.addEventListener('click', toggleMenu);
-        });
-    </script>
     
     <script src="js/main.js"></script>
 

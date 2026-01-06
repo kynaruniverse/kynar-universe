@@ -17,10 +17,27 @@
             <svg style="background: var(--color-primary); border-radius: 4px;"></svg>
             Marketplace
         </a>
-        <button class="menu-toggle" aria-label="Open menu">
+        <button class="menu-toggle" aria-label="Open menu" aria-controls="mobile-menu">
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
     </header>
+
+    <div id="mobile-menu" class="mobile-menu">
+        <div style="display: flex; justify-content: flex-end;">
+            <button class="menu-toggle" id="close-menu" aria-label="Close menu">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <nav style="display: flex; flex-direction: column; gap: var(--space-2);">
+            <a href="browse.html" class="mobile-nav-link">Browse All</a>
+            <a href="browse.html" class="mobile-nav-link">Planners</a>
+            <a href="browse.html" class="mobile-nav-link">Scripts</a>
+            <a href="browse.html" class="mobile-nav-link">Templates</a>
+        </nav>
+    </div>
 
     <main class="container pdp-layout" style="padding-top: var(--space-4);">
         
@@ -67,7 +84,7 @@
                     <span style="font-size: var(--text-2xl); font-weight: bold; color: var(--color-accent);">£24</span>
                     <span style="font-size: var(--text-sm); color: var(--color-text-secondary);">One-time purchase</span>
                 </div>
-                <button class="btn btn--primary" style="width: 100%;">Buy Now</button>
+                <a href="checkout.html" class="btn btn--primary" style="width: 100%; text-decoration: none;">Buy Now</a>
                 <p style="text-align: center; font-size: var(--text-xs); margin-top: var(--space-2); color: var(--color-text-muted);">Secure checkout via Stripe • Instant Download</p>
             </div>
 
@@ -127,7 +144,7 @@
             <span style="font-size: var(--text-sm); color: var(--color-text-secondary);">Total</span>
             <span style="font-size: var(--text-xl); font-weight: bold; color: var(--color-accent);">£24</span>
         </div>
-        <button class="btn btn--primary" style="padding: 0 var(--space-5);">Buy Now</button>
+        <a href="checkout.html" class="btn btn--primary" style="padding: 0 var(--space-5); text-decoration: none;">Buy Now</a>
     </div>
     
     <script src="js/main.js"></script>
