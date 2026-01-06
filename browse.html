@@ -17,10 +17,27 @@
             <svg style="background: var(--color-primary); border-radius: 4px;"></svg>
             Marketplace
         </a>
-        <button class="menu-toggle" aria-label="Open menu">
+        <button class="menu-toggle" aria-label="Open menu" aria-controls="mobile-menu">
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
     </header>
+
+    <div id="mobile-menu" class="mobile-menu">
+        <div style="display: flex; justify-content: flex-end;">
+            <button class="menu-toggle" id="close-menu" aria-label="Close menu">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <nav style="display: flex; flex-direction: column; gap: var(--space-2);">
+            <a href="browse.html" class="mobile-nav-link">Browse All</a>
+            <a href="browse.html" class="mobile-nav-link">Planners</a>
+            <a href="browse.html" class="mobile-nav-link">Scripts</a>
+            <a href="browse.html" class="mobile-nav-link">Templates</a>
+        </nav>
+    </div>
 
     <div class="filter-bar" style="border-bottom: 1px solid var(--color-border);">
         <button class="chip is-active">All Scripts</button>
@@ -92,7 +109,6 @@
             </div>
 
             <div class="product-grid">
-                
                 <article class="product-card">
                     <a href="product.html" style="text-decoration: none; display: inherit; flex-direction: inherit; height: inherit; color: inherit;">
                         <div class="product-card__image-wrapper">
@@ -181,12 +197,6 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuToggle = document.querySelector('.menu-toggle');
-            const mobileMenu = document.createElement('div'); // Reusing existing menu logic required
-            // In a real build, we'd include the same menu HTML as index.html or use a partial
-        });
-    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>
