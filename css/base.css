@@ -1,27 +1,50 @@
 /* css/base.css */
 
+
 /* ---------------------------------------------------------
-   0. FONT IMPORTS (Inter + JetBrains Mono)
+   0. FONT REGISTRATION
    --------------------------------------------------------- */
-   
-/* Register Custom Font */
+
+/* 1. BRAND FONT: Bantayog (Headings, Logo, Big Links) */
 @font-face {
   font-family: 'Bantayog';
-  src: url('../assets/fonts/Bantayog.woff2') format('woff2'),
-       url('../assets/fonts/Bantayog.woff') format('woff');
+  src: url('../assets/fonts/Bantayog.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+/* 2. BODY FONT: Glacial Indifference (Text, Buttons, Inputs) */
+@font-face {
+  font-family: 'Glacial Indifference';
+  src: url('../assets/fonts/GlacialIndifference-Regular.woff2') format('woff2');
+  font-weight: 400; /* Normal */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Glacial Indifference';
+  src: url('../assets/fonts/GlacialIndifference-Bold.woff2') format('woff2');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback for Code blocks (Keep generic monospace) */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: local('Courier New'); /* Simple fallback if you don't use code often */
+}
 
 /* 1. Box Sizing & Defaults */
 *, *::before, *::after {
   box-sizing: border-box;
-  /* Prevent font inflation on landscape mobile */
   -webkit-text-size-adjust: 100%; 
 }
+
+/* ... rest of your base.css ... */
+
 
 /* 2. Global Document Styles */
 html, body {
@@ -47,22 +70,32 @@ body {
 /* 3. Typography Defaults */
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
-  margin-bottom: var(--space-3); /* 16px */
-  font-weight: var(--weight-semibold);
+  margin-bottom: var(--space-3);
+  
+  /* SWITCH TO BANTAYOG */
+  font-family: var(--font-heading); 
+  
+  font-weight: normal; /* Bantayog is naturally bold, doesn't need bold weight */
   line-height: var(--leading-tight);
   color: var(--color-text-primary);
-  letter-spacing: -0.02em; /* Tighter headings for modern feel */
+  letter-spacing: 0.02em; /* Bantayog looks better slightly spaced */
 }
 
-h1 { font-size: var(--text-2xl); }
-h2 { font-size: var(--text-xl); }
-h3 { font-size: var(--text-lg); }
+h1 { font-size: var(--text-3xl); } /* Bigger hero text */
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+
+p, input, button, a {
+  /* SWITCH TO GLACIAL INDIFFERENCE */
+  font-family: var(--font-body);
+}
 
 p {
   margin-top: 0;
   margin-bottom: var(--space-3);
-  max-width: 70ch; /* Readability limit */
+  max-width: 70ch;
 }
+
 
 /* 4. Media & Touch Target Defaults */
 img, picture, video, canvas, svg {
