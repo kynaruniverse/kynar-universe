@@ -46,7 +46,7 @@
   --color-error:          #a6503a; /* Muted terracotta-red */
   --color-info:           #5a7a6d; /* Muted teal-green */
   
-  /* RESTORED: Deep Gold for KYNAR Header */
+  /* BRAND IDENTITY: KYNAR Gold */
   --color-brand-deep:     #9D7B38; 
 
   /* ---------------------------------------------------------
@@ -74,21 +74,21 @@
 
   /* SIZING */
   --text-xs:   12px;
-  --text-sm:   14px; /* Bumped up slightly for Glacial readability */
-  --text-base: 16px; /* Glacial reads better a bit larger */
+  --text-sm:   14px; 
+  --text-base: 16px; 
   --text-lg:   18px;
   --text-xl:   24px;
   --text-2xl:  32px;
-  --text-3xl:  48px; /* New size for massive headlines */
+  --text-3xl:  48px; 
 
   --weight-normal:   400;
-  --weight-medium:   400; /* Glacial often lacks medium, stick to 400/700 */
-  --weight-semibold: 700; /* Use Bold for emphasis */
+  --weight-medium:   400; 
+  --weight-semibold: 700; 
   --weight-bold:     700;
 
   --leading-tight:   1.2;
   --leading-normal:  1.5;
-  --leading-relaxed: 1.7; /* Glacial needs breathing room */
+  --leading-relaxed: 1.7; 
 
   /* ---------------------------------------------------------
      4. SHAPE & MOTION
@@ -102,11 +102,10 @@
 }
 
 /* ---------------------------------------------------------
-   DARK MODE STRATEGY (Updated: Deep Forest/Charcoal)
-   Replaced "Muddy Brown" with "Premium Slate"
+   DARK MODE STRATEGY
    --------------------------------------------------------- */
 [data-theme="dark"] {
-  --color-bg:             #0d1312; /* Deep Forest/Charcoal - Much cleaner */
+  --color-bg:             #0d1312; /* Deep Forest/Charcoal */
   --color-surface:        #18201e; /* Lighter charcoal */
   --color-surface-dark:   #232b29; /* Elevated surface */
   --color-border:         #2a3532; /* Dark teal-grey border */
@@ -115,7 +114,6 @@
   --color-text-secondary: #9ca3af; /* Cool light grey */
   --color-text-muted:     #6b7280;
   
-  /* Adjust Primary for Dark Mode Contrast */
-  --color-primary:        #10b981; /* Brighter Emerald for dark mode visibility */
+  --color-primary:        #10b981; /* Brighter Emerald */
   --color-primary-hover:  #059669;
 }
