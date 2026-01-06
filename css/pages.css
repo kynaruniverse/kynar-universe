@@ -140,8 +140,6 @@
   color: var(--color-text-primary);
 }
 
-/* css/pages.css (Append this) */
-
 /* ---------------------------------------------------------
    5. BROWSE / CATEGORY LAYOUT
    Sidebar (Desktop) + Main Content
@@ -264,8 +262,6 @@
   font-size: var(--text-sm);
   cursor: pointer;
 }
-
-/* css/pages.css (Append this) */
 
 /* ---------------------------------------------------------
    9. CHECKOUT LAYOUT (Distraction Free)
