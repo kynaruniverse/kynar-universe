@@ -22,6 +22,7 @@
     <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="css/tokens.css">
+    <link rel="manifest" href="site.webmanifest">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
@@ -32,11 +33,12 @@
     <header id="global-header" class="site-header"></header>
 
     <div id="mobile-menu" class="mobile-menu"></div>
+    
 
     <main class="container pdp-layout" style="padding-top: var(--space-4);">
         
         <nav class="breadcrumb" style="grid-column: 1 / -1; margin-bottom: var(--space-2);">
-            <a href="shop-life.html" class="btn btn--tertiary" style="padding-left: 0; font-size: var(--text-sm);">← Back to KYNAR Life</a>
+            <a href="shop-life.html" class="btn btn--tertiary" title="Return to KYNAR Life Department" style="padding-left: 0; font-size: var(--text-sm);">← Back to KYNAR Life</a>
         </nav>
 
         <section>
@@ -117,11 +119,14 @@
     <footer id="global-footer" class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6); background-color: var(--color-surface);"></footer>
 
     <div class="mobile-action-spacer"></div>
-    <div class="mobile-action-bar">
+    <div class="mobile-action-bar" style="border-top: 1.5px solid var(--color-border);">
         <div style="display: flex; flex-direction: column;">
             <span style="font-size: var(--text-sm); color: var(--color-text-secondary);">Total</span>
             <div>
                 <span style="font-size: var(--text-xl); font-weight: bold; color: var(--color-accent);">£12</span>
+                <p style="font-size: 10px; color: var(--color-text-muted); margin: 0;">Secure Vault Enabled</p>
+
+                
             </div>
         </div>
         <a href="checkout.html" class="btn btn--primary" style="padding: 0 var(--space-5); text-decoration: none; background-color: var(--color-sage);">Buy Now</a>

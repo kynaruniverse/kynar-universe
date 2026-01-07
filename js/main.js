@@ -1,8 +1,10 @@
 /* js/main.js - KYNAR UNIVERSE CORE V1.12 (Final Production) */
 const KynarApp = {
  async init() {
-  await this.Layout.loadShell();
-  this.UI.updateHeaderHeight(); // Phase 8
+    await this.Layout.loadShell();
+    requestAnimationFrame(() =>
+   this.UI.updateHeaderHeight()); 
+ // Phase 8
   window.addEventListener('resize', () => this.UI.updateHeaderHeight());
   this.UI.initMobileMenu(); this.UI.initThemeToggle(); this.UI.initFilterChips();
   this.UI.initCopyright(); this.UI.initCookieBanner(); this.UI.highlightCurrentPage();

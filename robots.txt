@@ -1,11 +1,16 @@
 User-agent: *
 Allow: /
 
-# Private Pages (Do not index)
+# 1. Private User Flows
 Disallow: /checkout.html
 Disallow: /success.html
 Disallow: /account.html
 Disallow: /404.html
 
-# Sitemap Location
+# 2. System Fragments (Prevent broken page indexing)
+Disallow: /header-content.html
+Disallow: /footer-content.html
+Disallow: /nav-content.html
+
+# Sitemap
 Sitemap: https://kynaruniverse.co.uk/sitemap.xml
