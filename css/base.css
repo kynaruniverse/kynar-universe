@@ -18,10 +18,11 @@
 @font-face {
   font-family: 'Glacial Indifference';
   src: url('../assets/fonts/GlacialIndifference-Regular.woff2') format('woff2');
-  font-weight: 400; /* Normal */
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
+
 
 @font-face {
   font-family: 'Glacial Indifference';

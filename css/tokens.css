@@ -8,6 +8,8 @@
   
   /* Neutrals - Bone White / Organic */
   --color-bg:             #F9F6EE; /* Bone White - Cleaner/Lighter */
+  --color-bg-rgb:         249, 246, 238; /* RGB equivalent for glass effects */
+
   --color-surface:        #F0EBE0; /* Subtle Bone  */
   --color-surface-dark:   #E6DDD0; /* Card hover state */
   --color-border:         #DCD3C5; /* Crisp beige border */
@@ -92,7 +94,8 @@
   --leading-normal:  1.5;
   --leading-relaxed: 1.7;
     /* RESPONSIVE SCALE */
-  --text-hero: clamp(2rem, 8vw, 4rem); /* Scales between 32px and 64px */
+  --text-hero: 32px; /* Fallback */
+  --text-hero: clamp(2rem, 8vw, 4rem);
 
 
   /* ---------------------------------------------------------
@@ -116,6 +119,8 @@
    --------------------------------------------------------- */
 [data-theme="dark"] {
   --color-bg:             #0d1312; /* Deep Forest/Charcoal */
+  --color-bg-rgb:         13, 19, 18; /* Dark mode RGB */
+
   --color-surface:        #18201e; /* Lighter charcoal */
   --color-surface-dark:   #232b29; /* Elevated surface */
   --color-border:         #2a3532; /* Dark teal-grey border */

@@ -16,7 +16,8 @@
     <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
 
     
-    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/tokens.css">  
+    <link rel="manifest" href="site.webmanifest">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
@@ -34,10 +35,7 @@
         <nav class="breadcrumb"
         style="grid-column: 1 / -1; 
         margin-bottom: var(--space-2);">
-            <a href="shop-family.html" 
-        class="btn btn--tertiary" 
-        style="padding-left: 0; font-size: 
-        var(--text-sm);">← Back to KYNAR Family</a>
+            <a href="shop-family.html" class="btn btn--tertiary" title="Return to KYNAR Family Department" style="padding-left: 0; font-size: var(--text-sm);">← Back to KYNAR Family</a>
         </nav>
 
         <section>
@@ -143,12 +141,14 @@
 
     
     <div class="mobile-action-spacer"></div>
-    <div class="mobile-action-bar">
+    <div class="mobile-action-bar" style="border-top: 1.5px solid var(--color-border);">
         <div style="display: flex; flex-direction: column;">
             <span style="font-size: var(--text-sm); color: var(--color-text-secondary);">Total</span>
             <div>
                 <span style="font-size: var(--text-xl); font-weight: bold; color: var(--color-accent);">£18</span>
+                <p style="font-size: 10px; color: var(--color-text-muted); margin: 0;">Secure Vault Enabled</p>
             </div>
+
         </div>
         <a href="checkout.html" class="btn btn--primary" style="padding: 0 var(--space-5); text-decoration: none; background-color: var(--color-terracotta);">Buy Now</a>
     </div>

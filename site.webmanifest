@@ -1,0 +1,21 @@
+{
+    "name": "KYNAR Universe",
+    "short_name": "KYNAR",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#F9F6EE",
+    "theme_color": "#0f3d30",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "assets/images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
