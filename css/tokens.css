@@ -1,137 +1,140 @@
-/* css/tokens.css */
+/* css/tokens.css - KINETIC VITRO v2.0 (The Physics Engine) */
 
 :root {
   /* ---------------------------------------------------------
-     1. COLOR PALETTE (Earth Tones - Light Mode Default)
-     Source: Implementation Bridge
+     1. KINETIC PALETTE (Industrial Neon - Dark Mode Default)
      --------------------------------------------------------- */
   
-  /* Neutrals - Bone White / Organic */
-  --color-bg:             #F9F6EE; /* Bone White - Cleaner/Lighter */
-  --color-bg-rgb:         249, 246, 238; /* RGB equivalent for glass effects */
+  /* The Void (Backgrounds) */
+  --color-bg:             #0a0a0a;       /* Deepest Charcoal */
+  --color-bg-rgb:         10, 10, 10;    /* For glass calculations */
+  --color-surface:        rgba(255, 255, 255, 0.03); /* Raw Glass */
+  --color-surface-dark:   rgba(0, 0, 0, 0.2);        /* Recessed areas */
+  --color-border:         rgba(255, 255, 255, 0.1);  /* Machined edge */
 
-  --color-surface:        #F0EBE0; /* Subtle Bone  */
-  --color-surface-dark:   #E6DDD0; /* Card hover state */
-  --color-border:         #DCD3C5; /* Crisp beige border */
+  /* Text & Contrast */
+  --color-text-primary:   #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-muted:     rgba(255, 255, 255, 0.4);
+
+  /* Wayfinding Light (Category Neons) */
+  --color-tech:           #00D1FF; /* Cyan - Automation */
+  --color-life:           #7000FF; /* Purple - Life OS */
+  --color-family:         #FF6B4A; /* Kinetic Orange (Evolved Terracotta) */
+  --color-edu:            #FFBD00; /* Amber - Education */
+  --color-pro:            #007BFF; /* Royal Blue - Utilities */
   
-  --color-text-primary:   #1a1614; /* Near-black with warmth */
-  --color-text-secondary: #5c564d; /* Muted brown-grey */
-  --color-text-muted:     #8a8379; /* Light metadata */
+  /* Brand Identity */
+  --color-primary:        var(--color-tech); /* Default to Tech Cyan */
+  --color-accent:         var(--color-life);
+  --color-brand-deep:     #ffffff; /* Logo is now pure light */
 
-  /* Brand - Primary (Forest Green) */
-  --color-primary:        #0f3d30; /* Deep forest green */
-  --color-primary-hover:  #0a2a21; /* Darker forest */
-  --color-primary-light:  #1a5643; /* Lighter forest */
-  --color-primary-pale:   #d4e5df; /* Very light green tint */
-
-  /* Brand - Accent (Brass Gold) */
-  --color-accent:         #c5a059; /* Warm brass gold */
-  --color-accent-hover:   #b08f4a; /* Deeper gold */
-  --color-accent-light:   #d9b876; /* Lighter gold */
-  --color-accent-pale:    #f4ead5; /* Pale gold tint */
-
-  /* Supporting Earth Tones (Categories/Badges) */
-  --color-sage:           #8b9d83; /* Planners */
-  --color-sage-light:     #c7d4c3;
-  --color-emerald:        #2d6b5f; /* Scripts */
-  --color-emerald-light:  #8db3a9;
-  --color-ochre:          #d9a847; /* Templates */
-  --color-ochre-light:    #f2e5c4;
-  --color-slate:          #5a6a60; /* Business */
-  --color-slate-light:    #c1cbc5;
-  --color-terracotta:     #c17456; /* Lifestyle */
-  --color-terracotta-light: #e5b5a3;
-
-  /* Functional / Status */
-  --color-success:        #4a7c59; /* Earthy green */
-  --color-warning:        #c5a059; /* Uses accent gold */
-  --color-error:          #a6503a; /* Muted terracotta-red */
-  --color-info:           #5a7a6d; /* Muted teal-green */
-  
-    /* BRAND IDENTITY: Forest Green (Light Mode) */
-  --color-brand-deep:     #0f3d30; 
-
+  /* Functional Status */
+  --color-success:        #00ff9d; /* Matrix Green */
+  --color-warning:        #ffbd00;
+  --color-error:          #ff4a4a;
 
   /* ---------------------------------------------------------
-     2. SPACING SCALE (8pt System)
+     2. GLASS PHYSICS & MATERIAL
      --------------------------------------------------------- */
+  --glass-blur:           25px;
+  --glass-refraction:     1.05; /* Scale factor for lens effect */
+  --glass-saturation:     120%;
+  --noise-grain:          0.04; /* Texture opacity */
+  
+  /* Liquid Mercury Borders */
+  --mercury-speed:        4s;
+  --fluid-speed:          40s;
+
+  /* ---------------------------------------------------------
+     3. GEOMETRY & PRECISION
+     --------------------------------------------------------- */
+  --radius-universal:     16px;
+  
+  /* Mapping legacy radii to Universal for backward compatibility */
+  --radius-sm:            8px;
+  --radius-md:            12px;
+  --radius-lg:            var(--radius-universal); 
+
+  --grid-gap:             20px;
+  --machined-stroke:      1px;
+
+  /* Spacing Scale (Aligned to 4px grid) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 16px;
-  --space-4: 24px;
+  --space-4: 24px; /* Matches Grid Gap roughly */
   --space-5: 32px;
-  --space-6: 48px;
-  --header-height: 120px; /* Default fallback */
+  --space-6: 64px; /* Doubled for dramatic Hero spacing */
+  
+  --header-height:        100px; /* Slightly tighter */
 
   /* ---------------------------------------------------------
-     3. TYPOGRAPHY (Updated: KYNAR Universe System)
+     4. TYPOGRAPHY (The Industrial Stack)
      --------------------------------------------------------- */
-  
-  /* Body: Clean, Geometric, Digital (Glacial Indifference) */
-  --font-body: 'Glacial Indifference', 'Inter', sans-serif;
-  
-  /* Headings: Creative, Bold, Human (Bantayog) */
   --font-heading: 'Bantayog', sans-serif;
-  
-  /* Code: Monospace (Standard) */
-  --font-code: 'Courier New', monospace;
+  --font-body:    'Glacial Indifference', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
-  /* SIZING */
+  /* Fluid Type Scale (Retained) */
   --text-xs:   12px;
-  --text-sm:   14px; 
-  --text-base: 16px; 
-  --text-lg:   18px;
-  --text-xl:   24px;
-  --text-2xl:  32px;
-  --text-3xl:  48px; 
+  --text-sm:   clamp(0.875rem, 0.85rem + 0.2vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --text-lg:   clamp(1.125rem, 1.05rem + 0.5vw, 1.35rem);
+  --text-xl:   clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-2xl:  clamp(2rem, 1.8rem + 1.5vw, 3rem);
+  --text-3xl:  clamp(2.5rem, 2.1rem + 2vw, 4.5rem);
+  --text-hero: var(--text-3xl);
 
   --weight-normal:   400;
-  --weight-medium:   400; 
-  --weight-semibold: 700; 
+  --weight-medium:   500;
+  --weight-semibold: 700;
   --weight-bold:     700;
 
-  --leading-tight:   1.2;
+  --leading-tight:   1.1;
   --leading-normal:  1.5;
-  --leading-relaxed: 1.7;
-    /* RESPONSIVE SCALE */
-  --text-hero: 32px; /* Fallback */
-  --text-hero: clamp(2rem, 8vw, 4rem);
-
+  --leading-relaxed: 1.6;
 
   /* ---------------------------------------------------------
-     4. SHAPE & MOTION
+     5. ANIMATION & Z-INDEX
      --------------------------------------------------------- */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  
   --transition-fast: 150ms ease-out;
-  --transition-base: 250ms ease-out;
-  /* css/tokens.css - Add to :root */
-  --size-interactive: 44px; /* Minimum Apple/Android tap target */
-  --size-interactive-lg: 48px; /* Standard button height */
-  --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 300ms cubic-bezier(0.2, 0.8, 0.2, 1); /* Snappy industrial feel */
+  --transition-slow: 600ms cubic-bezier(0.16, 1, 0.3, 1);
 
+  --size-interactive: 44px;
+  
+  /* Layering Stack */
+  --z-negative:  -1;
+  --z-noise:      0;    /* New: Grain Texture */
+  --z-background: 1;    /* New: Blobs */
+  --z-grid:       10;   /* Main Content */
+  --z-hover:      20;   /* Lifted Card */
+  --z-sticky:     100;
+  --z-header:     1000;
+  --z-dropdown:   1100;
+  --z-overlay:    2000;
+  --z-modal:      3000;
+  --z-toast:      4000;
 }
 
 /* ---------------------------------------------------------
-   DARK MODE STRATEGY
+   LIGHT MODE OVERRIDE (Laboratory Clean)
    --------------------------------------------------------- */
-[data-theme="dark"] {
-  --color-bg:             #0d1312; /* Deep Forest/Charcoal */
-  --color-bg-rgb:         13, 19, 18; /* Dark mode RGB */
+[data-theme="light"] {
+  --color-bg:             #F5F5F7; /* Lab White */
+  --color-bg-rgb:         245, 245, 247;
+  
+  --color-surface:        rgba(255, 255, 255, 0.4); /* Frosted Ice */
+  --color-surface-dark:   rgba(255, 255, 255, 0.6);
+  --color-border:         rgba(0, 0, 0, 0.05);
 
-  --color-surface:        #18201e; /* Lighter charcoal */
-  --color-surface-dark:   #232b29; /* Elevated surface */
-  --color-border:         #2a3532; /* Dark teal-grey border */
+  --color-text-primary:   #1a1a1a;
+  --color-text-secondary: #5a5a5a;
+  --color-text-muted:     #8a8379;
+
+  --glass-blur:           35px; /* Higher blur for light mode */
+  --glass-saturation:     140%;
   
-  --color-text-primary:   #f2f0e9; /* Light cream text */
-  --color-text-secondary: #9ca3af; /* Cool light grey */
-  --color-text-muted:     #6b7280;
-  
-  --color-primary:        #10b981; /* Brighter Emerald */
-  --color-primary-hover:  #059669;
-  
-  --color-brand-deep:     #9D7B38; 
+  --color-brand-deep:     #000000;
 }
-

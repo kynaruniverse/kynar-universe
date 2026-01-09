@@ -1,11 +1,12 @@
-/* css/base.css */
-
+/* css/base.css - KINETIC VITRO v2.0 */
 
 /* ---------------------------------------------------------
    0. FONT REGISTRATION
    --------------------------------------------------------- */
+/* Import JetBrains Mono for Industrial Metadata */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* 1. BRAND FONT: Bantayog (Headings, Logo, Big Links) */
+/* 1. BRAND FONT: Bantayog (Headings - Retained) */
 @font-face {
   font-family: 'Bantayog';
   src: url('../assets/fonts/Bantayog.woff2') format('woff2');
@@ -14,7 +15,7 @@
   font-display: swap;
 }
 
-/* 2. BODY FONT: Glacial Indifference (Text, Buttons, Inputs) */
+/* 2. BODY FONT: Glacial Indifference (UI Text - Retained) */
 @font-face {
   font-family: 'Glacial Indifference';
   src: url('../assets/fonts/GlacialIndifference-Regular.woff2') format('woff2');
@@ -23,34 +24,30 @@
   font-display: swap;
 }
 
-
 @font-face {
   font-family: 'Glacial Indifference';
   src: url('../assets/fonts/GlacialIndifference-Bold.woff2') format('woff2');
-  font-weight: 700; /* Bold */
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
-/* Fallback for Code blocks (Keep generic monospace) */
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: local('Courier New'); /* Simple fallback if you don't use code often */
-}
-
-/* 1. Box Sizing & Defaults */
+/* ---------------------------------------------------------
+   1. BOX SIZING & DEFAULTS
+   --------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
-  -webkit-text-size-adjust: 100%; 
+  -webkit-text-size-adjust: 100%;
 }
 
-/* ... rest of your base.css ... */
-
-
-/* 2. Global Document Styles */
+/* ---------------------------------------------------------
+   2. GLOBAL DOCUMENT STYLES
+   --------------------------------------------------------- */
 html {
   scroll-padding-top: var(--header-height);
-  scroll-behavior: smooth; /* Native smooth scrolling for anchor links */
+  scroll-behavior: smooth;
+  /* Prevent horizontal drift from parallax animations */
+  overflow-x: hidden; 
 }
 
 body {
@@ -58,27 +55,39 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   line-height: var(--leading-relaxed);
-  font-size: var(--text-base); 
+  font-size: var(--text-base);
+  
+  /* Text Rendering: Crisp for High Contrast */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-.is-scroll-locked {
-  overflow: hidden !important;
-  /* Prevents layout shift on desktop browsers with scrollbars */
-  touch-action: none; 
+  
+  /* Flex Layout for Sticky Footer */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+  /* Transition for Theme Switching */
+  transition: background-color var(--transition-base), color var(--transition-base);
 }
 
+main {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  z-index: var(--z-grid); /* Sit above background blobs */
+}
 
-/* 3. Typography Defaults */
+/* ---------------------------------------------------------
+   3. TYPOGRAPHY DEFAULTS
+   --------------------------------------------------------- */
 h1, h2, .section-title {
   margin-top: 0;
   margin-bottom: var(--space-3);
-  font-family: var(--font-heading); 
-  font-weight: normal; /* Bantayog is naturally bold */
+  font-family: var(--font-heading);
+  font-weight: normal;
   line-height: var(--leading-tight);
   color: var(--color-text-primary);
-  /* Refinement: Tighten tracking for large editorial text */
-  letter-spacing: -0.025em; 
+  letter-spacing: 0.02em; /* Slightly wider for Bantayog in Neon */
 }
 
 h3, .product-card__title {
@@ -86,8 +95,7 @@ h3, .product-card__title {
   margin-bottom: var(--space-2);
   font-family: var(--font-heading);
   line-height: var(--leading-tight);
-  /* Subtle tightening for mid-sized headers */
-  letter-spacing: -0.01em; 
+  letter-spacing: 0.01em;
 }
 
 h1 { font-size: var(--text-3xl); }
@@ -101,83 +109,69 @@ p, input, button, a {
 p {
   margin-top: 0;
   margin-bottom: var(--space-3);
-  max-width: 70ch;
-  line-height: var(--leading-relaxed); /* Improves readability */
+  max-width: 65ch;
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary); /* Soften body text */
 }
 
+/* New: Industrial Metadata Class */
+.text-mono {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  letter-spacing: -0.05em;
+}
 
-
-/* 4. Media & Touch Target Defaults */
+/* ---------------------------------------------------------
+   4. INTERACTION & FOCUS
+   --------------------------------------------------------- */
 img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
 }
 
-/* Ensure all interactive elements are touch-friendly by default */
 button, input, select, textarea, a {
   touch-action: manipulation;
 }
 
-/* 5. Focus State Standardization */
+/* Neon Focus State */
 *:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-tech);
+  outline-offset: 4px;
 }
 
 *:focus:not(:focus-visible) {
   outline: none;
 }
 
+/* Selection Highlight (Cyberpunk Feel) */
+::selection {
+  background: var(--color-tech);
+  color: #000;
+}
+
 /* ---------------------------------------------------------
-   6. PRINT STYLES
-   [span_2](start_span)Source: Implementation Bridge[span_2](end_span)
+   5. CUSTOM SCROLLBARS (Machined Look)
    --------------------------------------------------------- */
-@media print {
-  /* Remove navigation and non-essential elements */
-  header, footer, nav, .menu-toggle, #theme-toggle, .mobile-action-bar {
-    display: none !important;
-  }
-
-  /* Optimize for print */
-  body {
-    background: white !important;
-    color: black !important;
-    font-size: 12pt;
-    line-height: 1.5;
-  }
-
-  /* Ensure readability */
-  h1 { font-size: 24pt; page-break-after: avoid; }
-  h2 { font-size: 18pt; page-break-after: avoid; }
-  h3 { font-size: 14pt; page-break-after: avoid; }
-  
-  /* Show URLs for links */
-  a[href]:after {
-    content: " (" attr(href) ")";
-  }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-/* css/base.css - Reduced Motion Support */
-@media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-delay: -1ms !important;
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    background-attachment: initial !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0s !important;
-    transition-delay: 0s !important;
-  }
-  
-  /* Simplify the mobile menu entrance */
-  .mobile-nav-link {
-    transform: none !important;
-    opacity: 1 !important;
-    transition: none !important;
-  }
+::-webkit-scrollbar-track {
+  background: var(--color-bg); 
 }
 
-/* Screen Reader Only Utility */
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* ---------------------------------------------------------
+   6. UTILITIES
+   --------------------------------------------------------- */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -190,3 +184,84 @@ button, input, select, textarea, a {
   border: 0;
 }
 
+.u-pt-4 { padding-top: var(--space-4); }
+.u-pt-5 { padding-top: var(--space-5); }
+
+/* Layout Centered (404 / Auth) */
+.layout-centered {
+  min-height: 70vh;
+  padding-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------
+   7. KINETIC VITRO: AMORPHOUS CORE & PHYSICS
+   --------------------------------------------------------- */
+
+.vitro-background {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-background); /* Layer 1 */
+  overflow: hidden;
+  background: var(--color-bg);
+  pointer-events: none; /* Allow clicks to pass through to grid */
+}
+
+.vitro-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px); /* The "Soft Light" Effect */
+  opacity: 0.6;
+  animation: drift var(--fluid-speed) infinite alternate ease-in-out;
+  will-change: transform;
+}
+
+/* Blob 1: Tech (Cyan) - Top Left */
+.blob-1 {
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: var(--color-tech);
+  animation-delay: 0s;
+}
+
+/* Blob 2: Life (Purple) - Bottom Right */
+.blob-2 {
+  bottom: -10%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: var(--color-life);
+  animation-delay: -10s;
+}
+
+/* Blob 3: Family (Amber) - Center/Floating */
+.blob-3 {
+  top: 40%;
+  left: 40%;
+  width: 40vw;
+  height: 40vw;
+  background: var(--color-family);
+  animation-delay: -20s;
+}
+
+/* The Tactile Frosting (Noise Overlay) */
+.vitro-noise {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-noise); /* Layer 0 */
+  pointer-events: none;
+  opacity: var(--noise-grain);
+  /* Embedded SVG Noise Filter for "Milled Aluminum" feel */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* The "Drifting" Animation */
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(50px, -50px, 0) scale(1.1); }
+}

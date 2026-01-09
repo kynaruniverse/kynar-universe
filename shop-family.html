@@ -1,207 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="description" content="Printable activities for kids, household chore charts, and educational bundles. Screen-free fun and organization for busy parents.">
-    
-    <link rel="canonical" href="https://kynaruniverse.co.uk/shop-family.html">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
     <title>KYNAR Family | Kids & Household</title>
-    <link rel="icon" href="assets/images/favicon.ico" sizes="any">     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">     <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">     <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
-    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-
     
-    <link rel="stylesheet" href="css/tokens.css">
     <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
 
-    <header id="global-header" class="site-header"></header>
-
-    <div id="mobile-menu" class="mobile-menu"></div>
-
-
-    <section class="section hero" style="padding-top: var(--space-4); padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-border);">
-        <div class="container">
-            <div style="display: flex; justify-content: center; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); font-size: var(--text-sm); color: var(--color-text-secondary);">
-                <a href="index.html" style="color: inherit; text-decoration: none;">Universe</a>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                <span style="color: var(--color-terracotta); font-weight: bold;">Family</span>
-            </div>
-            <h1>Chaos, managed.</h1>
-            <p>Printable activities, household systems, and education packs for busy parents.</p>
-        </div>
-    </section>
-
-    <div class="filter-bar" style="border-bottom: 1px solid var(--color-border);">
-        <button class="chip is-active">All Family</button>
-        <button class="chip">Kids Activities</button>
-        <button class="chip">Household</button>
-        <button class="chip">Education</button>
-        <button class="chip">Fun</button>
+    <div class="vitro-background" aria-hidden="true">
+        <div class="vitro-blob blob-1" style="opacity: 0.2; background: var(--color-family);"></div>
+        <div class="vitro-blob blob-2" style="opacity: 0.3; background: var(--color-life);"></div>
+        <div class="vitro-blob blob-3" style="opacity: 0.8; background: var(--color-family);"></div>
     </div>
+    <div class="vitro-noise"></div>
 
-    <main class="container browse-layout" style="padding-top: var(--space-5);">
-        
+    <header id="global-header" class="site-header">
+        <div class="container header-top">
+            <button class="menu-toggle"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+            <a href="index.html" class="site-brand">
+                <span class="brand-main">KYNAR</span>
+                <span class="brand-sub" style="color: var(--color-family);">FAMILY</span>
+            </a>
+            <button id="theme-toggle" class="menu-toggle"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
+        </div>
+        <div class="container" style="padding-bottom: var(--space-2);">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search activities...">
+            </div>
+        </div>
+    </header>
+
+    <main class="container section browse-layout">
         <aside class="sidebar-filters">
             <div class="filter-group">
-                <span class="filter-title">Category</span>
-                <label class="filter-row"><input type="checkbox" checked> All</label>
-                <label class="filter-row"><input type="checkbox"> Kids & School</label>
-                <label class="filter-row"><input type="checkbox"> Home Management</label>
-                <label class="filter-row"><input type="checkbox"> Meal Planning</label>
-                <label class="filter-row"><input type="checkbox"> Party & Fun</label>
-            </div>
-            <div class="filter-group">
                 <span class="filter-title">Age Group</span>
-                <label class="filter-row"><input type="checkbox"> Toddler (1-3)</label>
-                <label class="filter-row"><input type="checkbox"> Preschool (3-5)</label>
-                <label class="filter-row"><input type="checkbox"> Primary (5-11)</label>
+                <label class="filter-row"><input type="checkbox" checked> Pre-K (3-5)</label>
+                <label class="filter-row"><input type="checkbox"> Primary (6-9)</label>
                 <label class="filter-row"><input type="checkbox"> Parents</label>
-            </div>
-            <div class="filter-group">
-                <span class="filter-title">Format</span>
-                <label class="filter-row"><input type="checkbox"> PDF Printable</label>
-                <label class="filter-row"><input type="checkbox"> Digital (Tablet)</label>
             </div>
         </aside>
 
         <section>
             <div class="browse-header">
-                <div>
-                    <h2 style="margin-bottom: var(--space-1); font-size: var(--text-xl);">Household & Kids</h2>
-                    <p class="text-secondary" style="margin: 0; font-size: var(--text-sm);">Curated for peace of mind.</p>
+                <div class="filter-bar">
+                    <button class="chip is-active">All Activities</button>
+                    <button class="chip">Printables</button>
+                    <button class="chip">Chores</button>
+                    <button class="chip">Meal Planning</button>
                 </div>
-                <select class="sort-select" aria-label="Sort products">
-                    <option>Most Popular</option>
-                    <option>Newest Arrivals</option>
-                    <option>Price: Low to High</option>
-                </select>
             </div>
 
             <div class="product-grid">
-                
-                <article class="product-card">
+
+                <article class="product-card" style="--glow-color: var(--color-family);">
                     <a href="product-preschool.html" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                            <img src="assets/images/preschool-bundle.jpg" alt="Preschool Pack" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                            <img src="assets/images/product-family-1.jpg" alt="Preschool Bundle" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
-                            <h3 class="product-card__title">Ultimate Preschool Learning Bundle</h3>
-                            <div style="margin-top: var(--space-2);">
-                                <span class="badge badge--terracotta">Printable</span>
-                                <span class="badge">Ages 3-5</span>
-                            </div>
-                            <p class="product-card__desc">100+ pages of tracing, counting, and logic worksheets. Instant download for rainy days.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£18</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
-                        </div>
-                    </a>
-                </article>
-
-                <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
-                        <div class="product-card__image-wrapper">
-                             <img src="assets/images/chore-chart.jpg" alt="Chore Chart" class="product-card__image" style="background-color: var(--color-surface-dark);">
-                        </div>
-                        <div class="product-card__content">
-                            <h3 class="product-card__title">Household Chore Coordination <span class="badge--coming-soon">Coming Soon</span></h3>
-                            <div style="margin-top: var(--space-2);">
-                                <span class="badge badge--terracotta">PDF</span>
-                                <span class="badge">System</span>
-                            </div>
-                            <p class="product-card__desc">Visual chore charts for kids and a master schedule for parents. Stop the nagging.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£6</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
-                        </div>
-                    </a>
-                </article>
-
-                <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
-                        <div class="product-card__image-wrapper">
-                            <img src="assets/images/meal-planner.jpg" alt="Meal Planner" class="product-card__image" style="background-color: var(--color-surface-dark);">
-                        </div>
-                        <div class="product-card__content">
-                            <h3 class="product-card__title">Meal & Grocery Action Plan</h3>
-                            <div style="margin-top: var(--space-2);">
-                                <span class="badge badge--slate">Digital</span>
+                            <h3 class="product-card__title">Ultimate Preschool Bundle</h3>
+                            <div class="product-card__desc">
+                                <span class="badge badge--terracotta">3-5 Yrs</span>
                                 <span class="badge">Printable</span>
                             </div>
-                            <p class="product-card__desc">Plan 4 weeks of meals in 20 minutes. Includes automated grocery list generation.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£9</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
+                        </div>
+                        <div class="vitro-meta">
+                            <span>EDU_PK // 100PG</span>
+                            <span>£18</span>
                         </div>
                     </a>
                 </article>
 
-                <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-family);">
+                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                             <img src="assets/images/game-night.jpg" alt="Game Night" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                            <img src="assets/images/product-family-2.jpg" alt="Chore System" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
-                            <h3 class="product-card__title">Family Game Night Pack</h3>
-                            <div style="margin-top: var(--space-2);">
-                                <span class="badge badge--terracotta">Fun</span>
-                                <span class="badge">Groups</span>
+                            <h3 class="product-card__title">Household Chore System</h3>
+                            <div class="product-card__desc">
+                                <span class="badge badge--terracotta">Visual</span>
+                                <span class="badge">Kids</span>
                             </div>
-                            <p class="product-card__desc">Printable scavenger hunts, trivia, and "Minute to Win It" style challenges.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£12</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
+                        </div>
+                        <div class="vitro-meta">
+                            <span>TASK_SYS</span>
+                            <span>£6</span>
                         </div>
                     </a>
                 </article>
 
-                <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-family);">
+                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                             <img src="assets/images/parent-manual.jpg" alt="Parent Manual" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                            <img src="assets/images/product-family-3.jpg" alt="Meal Planner" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
-                            <h3 class="product-card__title">Parent's Everyday Survival Manual <span class="badge--coming-soon">Coming Soon</span></h3>
-
-                            <div style="margin-top: var(--space-2);">
-                                <span class="badge badge--sage">Ebook</span>
-                                <span class="badge">Wellness</span>
+                            <h3 class="product-card__title">Meal Action Plan</h3>
+                            <div class="product-card__desc">
+                                <span class="badge badge--terracotta">Kitchen</span>
+                                <span class="badge">Parents</span>
                             </div>
-                            <p class="product-card__desc">Quick guides for tantrums, rainy days, and quick healthy meals. A cheat sheet for parents.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£15</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
+                        </div>
+                        <div class="vitro-meta">
+                            <span>MEAL_OS</span>
+                            <span>£9</span>
                         </div>
                     </a>
                 </article>
-                 
-                 <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
+
+                <article class="product-card" style="--glow-color: var(--color-family);">
+                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                             <img src="assets/images/coloring-book.jpg" alt="Coloring Book" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                            <img src="assets/images/product-family-4.jpg" alt="Coloring Book" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
-                            <h3 class="product-card__title">Stress-Relief Coloring Book</h3>
-                            <div style="margin-top: var(--space-2);">
+                            <h3 class="product-card__title">Stress-Relief Coloring</h3>
+                            <div class="product-card__desc">
                                 <span class="badge badge--terracotta">Art</span>
                                 <span class="badge">Adults</span>
                             </div>
-                            <p class="product-card__desc">Intricate mandala and nature designs to print and color. Relax after the kids sleep.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£7</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
+                        </div>
+                        <div class="vitro-meta">
+                            <span>ART_THERAPY</span>
+                            <span>£7</span>
                         </div>
                     </a>
                 </article>
@@ -209,27 +139,14 @@
             </div>
             
             <div style="margin-top: var(--space-6); text-align: center;">
-                <button class="btn btn--secondary">Load More Family</button>
+                 <button class="btn btn--secondary">LOAD_MORE_ASSETS</button>
             </div>
         </section>
     </main>
 
-        <footer id="global-footer" class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6); background-color: var(--color-surface);"></footer>
-
-    
-    <div id="cookie-banner" class="cookie-banner">
-    <p class="cookie-banner__text">
-        We use cookies to improve your experience. By using KYNAR Universe, you agree to our 
-        <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
-    </p>
-    <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
-        Accept
-    </button>
-</div>
-
-    
-
-    
+    <footer id="global-footer" class="section site-footer"></footer>
+    <div id="mobile-menu" class="mobile-menu"></div>
+    <div id="cookie-banner" class="cookie-banner"></div>
     <script src="js/main.js"></script>
 </body>
 </html>

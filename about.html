@@ -3,26 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    
+    <meta name="theme-color" content="#0a0a0a">
     <title>About KYNAR Universe | The Vision</title>
-    <meta name="description" content="KYNAR Universe is the Digital Department Store of the future. A centralized hub where quality, utility, and variety converge.">
-
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="KYNAR Universe">
-    <meta property="og:title" content="About KYNAR Universe | The Vision">
-    <meta property="og:description" content="We are building the Digital Department Store of the future. A centralized hub where quality, utility, and variety converge.">
-    <meta property="og:image" content="https://kynaruniverse.co.uk/assets/images/social-share.jpg">
-    <meta property="og:url" content="https://kynaruniverse.co.uk/about.html">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="description" content="The Digital Department Store of the future. A centralized hub where quality, utility, and variety converge.">
     
-    <link rel="icon" href="assets/images/favicon.ico" sizes="any">
-    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
-    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-
-    <link rel="stylesheet" href="css/tokens.css">   
     <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" href="assets/images/favicon.ico" sizes="any">
+    
+    <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
@@ -30,74 +18,87 @@
 
 <body>
 
-    <header id="global-header" class="site-header"></header>
+    <div class="vitro-background" aria-hidden="true">
+        <div class="vitro-blob blob-3" style="opacity: 0.3;"></div> <div class="vitro-blob blob-1" style="opacity: 0.1;"></div>
+    </div>
+    <div class="vitro-noise"></div>
+
+    <header id="global-header" class="site-header">
+        <div class="container header-top">
+            <button class="menu-toggle" aria-label="Open menu">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <a href="index.html" class="site-brand">
+                <span class="brand-main">KYNAR</span>
+                <span class="brand-sub">UNIVERSE</span>
+            </a>
+            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+            </button>
+        </div>
+        <div class="container" style="padding-bottom: var(--space-2);">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search the vision...">
+            </div>
+        </div>
+    </header>
 
     <div id="mobile-menu" class="mobile-menu"></div>
 
+    <main class="container section">
 
-
-    <main class="container section" style="padding-top: var(--space-5);">
-        <div style="max-width: 65ch; margin: 0 auto;">
+        <div class="vitro-matte">
             
-            <span style="color: var(--color-brand-deep); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: var(--text-sm);">The Vision</span>
-            <h1 style="margin-top: var(--space-2); margin-bottom: var(--space-5);">One Universe. Infinite Digital Solutions.</h1>
+            <div class="text-mono" style="color: var(--color-tech); margin-bottom: var(--space-2); font-size: 10px; letter-spacing: 0.2em;">
+                MANIFESTO // V2.0
+            </div>
+            
+            <h1 style="margin-bottom: var(--space-5);">One Universe. Infinite Digital Solutions.</h1>
 
-            <p class="text-lg" style="font-size: 1.25rem; line-height: 1.6; color: var(--color-text-primary);">
-                KYNAR Universe is a comprehensive digital marketplace designed to upgrade every aspect of your reality. In a landscape where resources are scattered across niche sites, we have built the ultimate <strong>Digital Department Store</strong>—a centralized hub where quality, utility, and variety converge.
+            <p style="font-size: 1.125rem; line-height: 1.6;">
+                KYNAR Universe is a comprehensive digital marketplace designed to upgrade every aspect of your reality. In a landscape where resources are scattered, we have built the ultimate <strong>Digital Department Store</strong>—a centralized hub where quality, utility, and variety converge.
             </p>
 
-            <hr style="border: 0; border-top: 1px solid var(--color-border); margin: var(--space-5) 0;">
+            <div style="height: 1px; background: var(--color-border); margin: var(--space-5) 0;"></div>
 
             <p>We bridge the gap between technical power users and busy parents, offering a curated library that spans three distinct worlds:</p>
 
             <div style="margin: var(--space-5) 0; display: grid; gap: var(--space-4);">
                 
-                <div style="padding: var(--space-4); background-color: var(--color-surface); border-radius: var(--radius-md); border-left: 4px solid var(--color-emerald);">
-                    <h3 style="margin: 0 0 var(--space-2) 0; color: var(--color-emerald);">KYNAR Tech</h3>
-                    <p style="margin: 0; font-size: var(--text-sm);">Empowering developers and entrepreneurs with production-ready Python scripts, automation workflows, and business intelligence templates.</p>
+                <div style="padding: var(--space-4); background-color: rgba(0, 209, 255, 0.05); border-radius: var(--radius-sm); border-left: 2px solid var(--color-tech);">
+                    <h3 style="margin: 0 0 var(--space-2) 0; color: var(--color-tech);">KYNAR Tech</h3>
+                    <p style="margin: 0; font-size: var(--text-sm);">Empowering developers with production-ready Python scripts, automation workflows, and business intelligence.</p>
                 </div>
 
-                <div style="padding: var(--space-4); background-color: var(--color-surface); border-radius: var(--radius-md); border-left: 4px solid var(--color-sage);">
-                    <h3 style="margin: 0 0 var(--space-2) 0; color: var(--color-sage);">KYNAR Life</h3>
-                    <p style="margin: 0; font-size: var(--text-sm);">Bringing clarity to daily chaos with digital planners, finance trackers, and wellness systems designed for high-performance living.</p>
+                <div style="padding: var(--space-4); background-color: rgba(112, 0, 255, 0.05); border-radius: var(--radius-sm); border-left: 2px solid var(--color-life);">
+                    <h3 style="margin: 0 0 var(--space-2) 0; color: var(--color-life);">KYNAR Life</h3>
+                    <p style="margin: 0; font-size: var(--text-sm);">Bringing clarity to chaos with digital planners, finance trackers, and wellness systems.</p>
                 </div>
 
-                <div style="padding: var(--space-4); background-color: var(--color-surface); border-radius: var(--radius-md); border-left: 4px solid var(--color-terracotta);">
-                    <h3 style="margin: 0 0 var(--space-2) 0; color: var(--color-terracotta);">KYNAR Family</h3>
-                    <p style="margin: 0; font-size: var(--text-sm);">Supporting households with educational learning bundles, creative activity packs, and home management tools.</p>
+                <div style="padding: var(--space-4); background-color: rgba(255, 107, 74, 0.05); border-radius: var(--radius-sm); border-left: 2px solid var(--color-family);">
+                    <h3 style="margin: 0 0 var(--space-2) 0; color: var(--color-family);">KYNAR Family</h3>
+                    <p style="margin: 0; font-size: var(--text-sm);">Supporting households with educational bundles, creative activity packs, and home management tools.</p>
                 </div>
 
             </div>
-
-            <p>From automating a business workflow to printing a rainy-day activity for your toddler, KYNAR Universe provides instant access to the tools you need to work smarter, live better, and play harder.</p>
 
             <div style="margin-top: var(--space-6); text-align: center;">
                 <a href="index.html" class="btn btn--primary">Explore the Marketplace</a>
             </div>
             
             <div style="margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-border); text-align: center;">
-                <strong style="display: block; color: var(--color-text-primary); margin-bottom: var(--space-2); font-size: var(--text-lg);">Our Mission</strong>
-                <p style="margin: 0; max-width: 60ch; margin: 0 auto; color: var(--color-text-secondary);">To become the global standard for digital utility. We reject "digital filler." Every script, template, and workbook is vetted for usability, quality, and impact.</p>
+                <strong class="text-mono" style="display: block; color: var(--color-text-muted); margin-bottom: var(--space-2); font-size: 10px;">MISSION_STATEMENT</strong>
+                <p style="margin: 0; max-width: 60ch; margin: 0 auto; font-size: var(--text-sm);">
+                    To become the global standard for digital utility. We reject "digital filler." Every script, template, and workbook is vetted for usability, quality, and impact.
+                </p>
             </div>
-
 
         </div>
     </main>
 
-        <footer id="global-footer" class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6); background-color: var(--color-surface);"></footer>
-
-
-    <div id="cookie-banner" class="cookie-banner">
-    <p class="cookie-banner__text">
-        We use cookies to improve your experience. By using KYNAR Universe, you agree to our 
-        <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
-    </p>
-    <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
-        Accept
-    </button>
-</div>
-
-    
+    <footer id="global-footer" class="section site-footer"></footer>
+    <div id="cookie-banner" class="cookie-banner"></div>
     <script src="js/main.js"></script>
 </body>
 </html>

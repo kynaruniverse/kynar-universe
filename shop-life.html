@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="description" content="Organize your life with 2026 digital planners, finance trackers, and wellness journals. Designed for iPad, GoodNotes, and Notion.">
-    
-    <link rel="canonical" href="https://kynaruniverse.co.uk/shop-life.html">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
     <title>KYNAR Life | Planners & Organization</title>
-    <link rel="icon" href="assets/images/favicon.ico" sizes="any">     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">     <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">     <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
-    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-
+    
     <link rel="manifest" href="site.webmanifest">
-
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
@@ -20,189 +14,124 @@
 </head>
 <body>
 
-    <header id="global-header" class="site-header"></header>
-
-    <div id="mobile-menu" class="mobile-menu"></div>
-
-
-    <section class="section hero" style="padding-top: var(--space-4); padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-border);">
-        <div class="container">
-            <div style="display: flex; justify-content: center; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); font-size: var(--text-sm); color: var(--color-text-secondary);">
-                <a href="index.html" style="color: inherit; text-decoration: none;">Universe</a>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                <span style="color: var(--color-sage); font-weight: bold;">Life</span>
-            </div>
-            <h1>Design your best life.</h1>
-            <p>Digital planners, finance trackers, and wellness systems for clarity.</p>
-        </div>
-    </section>
-
-    <div class="filter-bar" style="border-bottom: 1px solid var(--color-border);">
-        <button class="chip is-active">All Life</button>
-        <button class="chip">Digital Planners</button>
-        <button class="chip">Finance & Budget</button>
-        <button class="chip">Wellness</button>
-        <button class="chip">Travel</button>
+    <div class="vitro-background" aria-hidden="true">
+        <div class="vitro-blob blob-1" style="opacity: 0.3; background: var(--color-life);"></div>
+        <div class="vitro-blob blob-2" style="opacity: 0.8; background: var(--color-life);"></div>
+        <div class="vitro-blob blob-3" style="opacity: 0.3; background: var(--color-tech);"></div>
     </div>
+    <div class="vitro-noise"></div>
 
-    <main class="container browse-layout" style="padding-top: var(--space-5);">
-        
+    <header id="global-header" class="site-header">
+        <div class="container header-top">
+            <button class="menu-toggle"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+            <a href="index.html" class="site-brand">
+                <span class="brand-main">KYNAR</span>
+                <span class="brand-sub" style="color: var(--color-life);">LIFE</span>
+            </a>
+            <button id="theme-toggle" class="menu-toggle"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
+        </div>
+        <div class="container" style="padding-bottom: var(--space-2);">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search planners...">
+            </div>
+        </div>
+    </header>
+
+    <main class="container section browse-layout">
         <aside class="sidebar-filters">
             <div class="filter-group">
-                <span class="filter-title">Category</span>
-                <label class="filter-row"><input type="checkbox" checked> All</label>
-                <label class="filter-row"><input type="checkbox"> Digital Planners</label>
-                <label class="filter-row"><input type="checkbox"> Finance & Money</label>
-                <label class="filter-row"><input type="checkbox"> Health & Wellness</label>
-                <label class="filter-row"><input type="checkbox"> Home Organization</label>
-            </div>
-            <div class="filter-group">
                 <span class="filter-title">Format</span>
-                <label class="filter-row"><input type="checkbox"> PDF (Tablet)</label>
-                <label class="filter-row"><input type="checkbox"> Notion Template</label>
-                <label class="filter-row"><input type="checkbox"> Spreadsheet (Excel/Google)</label>
-            </div>
-            <div class="filter-group">
-                <span class="filter-title">Price</span>
-                <label class="filter-row"><input type="checkbox"> Under £10</label>
-                <label class="filter-row"><input type="checkbox"> £10 - £25</label>
-                <label class="filter-row"><input type="checkbox"> £25+</label>
+                <label class="filter-row"><input type="checkbox" checked> PDF (GoodNotes)</label>
+                <label class="filter-row"><input type="checkbox"> Notion</label>
+                <label class="filter-row"><input type="checkbox"> Excel / Sheets</label>
             </div>
         </aside>
 
         <section>
             <div class="browse-header">
-                <div>
-                    <h2 style="margin-bottom: var(--space-1); font-size: var(--text-xl);">Organization Tools</h2>
-                    <p class="text-secondary" style="margin: 0; font-size: var(--text-sm);">Showing curated systems for productivity.</p>
+                <div class="filter-bar">
+                    <button class="chip is-active">All Planners</button>
+                    <button class="chip">2026 Collection</button>
+                    <button class="chip">Finance</button>
+                    <button class="chip">Wellness</button>
                 </div>
-                <select class="sort-select" aria-label="Sort products">
-                    <option>Bestsellers</option>
-                    <option>Newest Arrivals</option>
-                    <option>Price: Low to High</option>
-                </select>
             </div>
 
             <div class="product-grid">
-                
-                <article class="product-card">
+
+                <article class="product-card" style="--glow-color: var(--color-life);">
                     <a href="product-planner.html" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                            <img src="assets/images/planner-preview.jpg" alt="Life Planner" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                            <img src="assets/images/product-life-1.jpg" alt="2026 Life OS Planner" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
                             <h3 class="product-card__title">2026 Life OS Planner</h3>
-                            <div style="margin-top: var(--space-2);">
-                                <span class="badge badge--sage">PDF</span>
-                                <span class="badge">Tablet</span>
+                            <div class="product-card__desc">
+                                <span class="badge badge--sage">iPad</span>
+                                <span class="badge">Hyperlinked</span>
                             </div>
-                            <p class="product-card__desc">The ultimate digital planner for iPad/GoodNotes. Daily, weekly, and monthly views hyperlinked.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£12</span>
-                                
-                <a href="product-planner.html" class="btn btn--secondary" style="padding: 0 var(--space-2); min-height: 40px;">View</a>
-                </div>
-            </div>
+                        </div>
+                        <div class="vitro-meta">
+                            <span>PLAN_SYS // PDF</span>
+                            <span>£12</span>
+                        </div>
                     </a>
                 </article>
 
-                <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-life);">
+                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                             <img src="assets/images/finance-tracker.jpg" alt="Finance Tracker" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                            <img src="assets/images/product-life-2.jpg" alt="Finance Dashboard" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
-                            <h3 class="product-card__title">Personal Finance Dashboard</h3>
-                            <div style="margin-top: var(--space-2);">
+                            <h3 class="product-card__title">Personal Finance DB</h3>
+                            <div class="product-card__desc">
                                 <span class="badge badge--sage">Excel</span>
-                                <span class="badge">Google Sheets</span>
+                                <span class="badge">Sheets</span>
                             </div>
-                            <p class="product-card__desc">Track income, expenses, and savings goals with automated charts and monthly reports.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£15</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
+                        </div>
+                        <div class="vitro-meta">
+                            <span>FIN_TRK // XLS</span>
+                            <span>£15</span>
                         </div>
                     </a>
                 </article>
 
-                <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-life);">
+                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                            <img src="assets/images/routine-builder.jpg" alt="Routine Builder" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                            <img src="assets/images/product-life-3.jpg" alt="Morning Routine Architect" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
                             <h3 class="product-card__title">Morning Routine Architect</h3>
-                            <div style="margin-top: var(--space-2);">
+                            <div class="product-card__desc">
                                 <span class="badge badge--slate">Notion</span>
                                 <span class="badge">Habits</span>
                             </div>
-                            <p class="product-card__desc">A Notion system to design, track, and stick to your ideal morning and evening routines.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£9</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
+                        </div>
+                        <div class="vitro-meta">
+                            <span>HABIT_OS</span>
+                            <span>£9</span>
                         </div>
                     </a>
                 </article>
 
-                <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-life);">
+                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                             <img src="assets/images/goal-setting.jpg" alt="Goal Toolkit" class="product-card__image" style="background-color: var(--color-surface-dark);">
+                            <img src="assets/images/product-life-4.jpg" alt="Mood & Gratitude Journal" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
-                            <h3 class="product-card__title">Goal Setting Toolkit</h3>
-                            <div style="margin-top: var(--space-2);">
+                            <h3 class="product-card__title">Mood & Gratitude</h3>
+                            <div class="product-card__desc">
                                 <span class="badge badge--sage">PDF</span>
-                                <span class="badge">Workbook</span>
-                            </div>
-                            <p class="product-card__desc">A printable 40-page workbook to break down big annual goals into actionable weekly steps.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£14</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
+                                <span class="badge">Wellness</span>
                             </div>
                         </div>
-                    </a>
-                </article>
-
-                <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
-                        <div class="product-card__image-wrapper">
-                             <img src="assets/images/travel-planner.jpg" alt="Travel Planner" class="product-card__image" style="background-color: var(--color-surface-dark);">
-                        </div>
-                        <div class="product-card__content">
-                            <h3 class="product-card__title">Smart Travel Itinerary</h3>
-                            <div style="margin-top: var(--space-2);">
-                                <span class="badge badge--sage">Notion</span>
-                                <span class="badge">Travel</span>
-                            </div>
-                            <p class="product-card__desc">Manage flights, hotels, packing lists, and daily schedules in one collaborative workspace.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£10</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
-                        </div>
-                    </a>
-                </article>
-                 
-                 <article class="product-card">
-                    <a href="product.html" style="text-decoration: none; display: contents; color: inherit;">
-                        <div class="product-card__image-wrapper">
-                             <img src="assets/images/wellness-journal.jpg" alt="Wellness Journal" class="product-card__image" style="background-color: var(--color-surface-dark);">
-                        </div>
-                        <div class="product-card__content">
-                            <h3 class="product-card__title">Daily Wellness Check-In <span class="badge--coming-soon">Coming Soon</span></h3>
-
-                            <div style="margin-top: var(--space-2);">
-                                <span class="badge badge--sage">PDF</span>
-                                <span class="badge">Mental Health</span>
-                            </div>
-                            <p class="product-card__desc">A simple, effective digital journal for tracking mood, gratitude, and energy levels.</p>
-                            <div class="product-card__footer">
-                                <span class="product-card__price">£8</span>
-                                <button class="btn btn--secondary" style="padding: 0 var(--space-2);">View</button>
-                            </div>
+                        <div class="vitro-meta">
+                            <span>MIND_LOG</span>
+                            <span>£8</span>
                         </div>
                     </a>
                 </article>
@@ -210,27 +139,14 @@
             </div>
             
             <div style="margin-top: var(--space-6); text-align: center;">
-                <button class="btn btn--secondary">Load More Life</button>
+                 <button class="btn btn--secondary">LOAD_MORE_ASSETS</button>
             </div>
         </section>
     </main>
 
-        <footer id="global-footer" class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6); background-color: var(--color-surface);"></footer>
-
-    
-    <div id="cookie-banner" class="cookie-banner">
-    <p class="cookie-banner__text">
-        We use cookies to improve your experience. By using KYNAR Universe, you agree to our 
-        <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
-    </p>
-    <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
-        Accept
-    </button>
-</div>
-
-    
-
-    
+    <footer id="global-footer" class="section site-footer"></footer>
+    <div id="mobile-menu" class="mobile-menu"></div>
+    <div id="cookie-banner" class="cookie-banner"></div>
     <script src="js/main.js"></script>
 </body>
 </html>

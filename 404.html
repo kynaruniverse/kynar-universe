@@ -3,39 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="KYNAR Universe">
-    <meta property="og:title" content="Page Not Found | KYNAR Universe">
-    <meta property="og:description" content="The page you are looking for does not exist in this sector of the universe.">
-    <meta property="og:image" content="https://kynaruniverse.co.uk/assets/images/social-share.jpg">
-    <meta property="og:url" content="https://kynaruniverse.co.uk/404.html">
-    <meta name="twitter:card" content="summary_large_image">
-    
+    <meta name="theme-color" content="#0a0a0a">
     <title>Page Not Found | KYNAR Universe</title>
-    <meta name="description" content="Page not found.">
+    <meta name="description" content="The page you are looking for does not exist.">
     <meta name="robots" content="noindex">
     
-    <link rel="icon" href="assets/images/favicon.ico" sizes="any">     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">     <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">     <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" href="assets/images/favicon.ico" sizes="any">
     
     <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-
-    <link rel="stylesheet" href="css/tokens.css">   
-    <link rel="manifest" href="site.webmanifest">
+    
+    <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
 
-    <header id="global-header" class="site-header"></header>
+    <div class="vitro-background" aria-hidden="true">
+        <div class="vitro-blob blob-1" style="opacity: 0.2;"></div> 
+        <div class="vitro-blob blob-2" style="background: var(--color-text-muted); opacity: 0.1;"></div>
+    </div>
+    <div class="vitro-noise"></div>
+
+    <header id="global-header" class="site-header">
+        <div class="container header-top">
+            <button class="menu-toggle" aria-label="Open menu">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <a href="index.html" class="site-brand">
+                <span class="brand-main">KYNAR</span>
+                <span class="brand-sub">UNIVERSE</span>
+            </a>
+            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+            </button>
+        </div>
+        
+        <div class="container" style="padding-bottom: var(--space-2);">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search the universe...">
+            </div>
+        </div>
+    </header>
 
     <div id="mobile-menu" class="mobile-menu"></div>
 
+    <main class="container layout-centered">
+        <div style="text-align: center; max-width: 500px; position: relative;">
+            
+            <div class="text-mono" style="font-size: 12px; color: var(--color-error); letter-spacing: 0.2em; margin-bottom: var(--space-2);">
+                ERR_404 // SECTOR_VOID
+            </div>
 
+            <div style="font-family: var(--font-heading); font-size: clamp(6rem, 15vw, 10rem); color: var(--color-surface); -webkit-text-stroke: 1px var(--color-border); line-height: 1; margin-bottom: var(--space-3); user-select: none;">
+                404
+            </div>
 
-    <main class="container section" style="min-height: 70vh; padding-top: var(--space-6); display: flex; align-items: center; justify-content: center;">
-        <div style="text-align: center; max-width: 500px;">
-            <div style="font-family: var(--font-heading); font-size: clamp(6rem, 15vw, 10rem); color: var(--color-border); line-height: 1; margin-bottom: var(--space-3); user-select: none;">404</div>
             <h1 style="margin-bottom: var(--space-3);">Drifting in space?</h1>
             <p style="margin-bottom: var(--space-5);">The page you are looking for does not exist in this sector of the universe.</p>
             
@@ -46,19 +71,8 @@
         </div>
     </main>
 
-    <footer id="global-footer" class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6); background-color: var(--color-surface);"></footer>
-
-    <div id="cookie-banner" class="cookie-banner">
-    <p class="cookie-banner__text">
-        We use cookies to improve your experience. By using KYNAR Universe, you agree to our 
-        <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
-    </p>
-    <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
-        Accept
-    </button>
-</div>
-
-    
+    <footer id="global-footer" class="section site-footer"></footer>
+    <div id="cookie-banner" class="cookie-banner"></div>
     <script src="js/main.js"></script>
 </body>
 </html>
