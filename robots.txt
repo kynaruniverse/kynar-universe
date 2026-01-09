@@ -2,13 +2,10 @@ User-agent: *
 Allow: /
 
 # 1. Private User Flows
-Disallow: /checkout.html
-Disallow: /success.html
 Disallow: /account.html
 Disallow: /404.html
 
 # 2. System Fragments (Prevent broken page indexing)
-Disallow: /header-content.html
 Disallow: /footer-content.html
 Disallow: /nav-content.html
 

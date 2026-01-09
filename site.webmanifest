@@ -1,10 +1,11 @@
 {
     "name": "KYNAR Universe",
     "short_name": "KYNAR",
+    "description": "The premier marketplace for digital essentials. Tools for Tech, Life, and Family.",
     "start_url": "/index.html",
     "display": "standalone",
-    "background_color": "#F9F6EE",
-    "theme_color": "#0f3d30",
+    "background_color": "#0a0a0a",
+    "theme_color": "#0a0a0a",
     "orientation": "portrait-primary",
     "icons": [
         {

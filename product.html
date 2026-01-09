@@ -3,47 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="KYNAR Universe">
-    <meta property="og:title" content="Auto-Invoice Generator (Python) | KYNAR Tech">
-    <meta property="og:description" content="Generate professional PDF invoices from CSV data instantly. Includes VAT calculation logic. Download now.">
-    <meta property="og:image" content="https://kynaruniverse.co.uk/assets/images/social-share.jpg">
-    <meta property="og:url" content="https://kynaruniverse.co.uk/product.html">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>Auto-Invoice Generator (Python) | KYNAR Tech</title>
+    <meta name="description" content="Generate professional PDF invoices from CSV data instantly. Includes VAT calculation logic.">
     
-    <title>Auto-Invoice Generator | Digital Marketplace</title>
     <link rel="canonical" href="https://kynaruniverse.co.uk/product.html">
-    
-    <link rel="icon" href="assets/images/favicon.ico" sizes="any">     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">     <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">     <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
-    
-    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" href="assets/images/favicon.ico" sizes="any">
     
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
-    <link rel="manifest" href="site.webmanifest">
-
 </head>
 <body>
 
-    <header id="global-header" class="site-header"></header>
+    <div class="vitro-background" aria-hidden="true">
+        <div class="vitro-blob blob-1" style="background: var(--color-tech); opacity: 0.5;"></div>
+        <div class="vitro-blob blob-3" style="background: var(--color-tech); opacity: 0.2;"></div>
+    </div>
+    <div class="vitro-noise"></div>
+
+    <header id="global-header" class="site-header">
+        <div class="container header-top">
+            <button class="menu-toggle" aria-label="Open menu">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <a href="index.html" class="site-brand">
+                <span class="brand-main">KYNAR</span>
+                <span class="brand-sub">UNIVERSE</span>
+            </a>
+            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+            </button>
+        </div>
+        <div class="header-search">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search...">
+            </div>
+        </div>
+    </header>
 
     <div id="mobile-menu" class="mobile-menu"></div>
 
+    <main class="container pdp-layout u-pt-4">
 
-    <main class="container pdp-layout" style="padding-top: var(--space-4);">
-        
-        <nav class="breadcrumb" 
-        style="grid-column: 1 / -1; 
-        margin-bottom: var(--space-2);">
-            <a href="shop-tech.html" 
-        class="btn btn--tertiary" 
-        style="padding-left: 0; font-size: 
-        var(--text-sm);">← Back to KYNAR Tech</a>
+        <nav class="breadcrumb" style="grid-column: 1 / -1; margin-bottom: var(--space-2);">
+            <a href="shop-tech.html" class="btn btn--tertiary" style="padding-left: 0; font-size: var(--text-sm);">← Back to KYNAR Tech</a>
         </nav>
-
 
         <section>
             <div class="gallery-container">
@@ -51,10 +59,10 @@
                     <img src="assets/images/invoice-main.jpg" alt="Main View" style="background-color: var(--color-surface-dark);">
                 </div>
                 <div class="gallery-item">
-                    <img src="assets/images/invoice-output.jpg" alt="Output Example" style="background-color: var(--color-surface-dark);">
+                    <img src="assets/images/invoice-output.jpg" alt="Output Example" style="background-color: var(--color-surface-dark);" loading="lazy">
                 </div>
                 <div class="gallery-item">
-                    <img src="assets/images/invoice-terminal.jpg" alt="Terminal Preview" style="background-color: var(--color-surface-dark);">
+                    <img src="assets/images/invoice-terminal.jpg" alt="Terminal Preview" style="background-color: var(--color-surface-dark);" loading="lazy">
                 </div>
             </div>
 
@@ -63,19 +71,19 @@
                 <p>This script eliminates the Sunday evening "admin dread." It scans your project folder for CSV timesheets, calculates totals, and generates professional PDF invoices instantly. It handles VAT calculations automatically.</p>
                 <p>Designed for freelancers who hate manual data entry.</p>
 
-                <h2 class="section-title" style="margin-top: var(--space-5);">Who it's for</h2>
-                <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
-                    <span class="badge badge--slate">Freelancers</span>
-                    <span class="badge badge--slate">Consultants</span>
-                    <span class="badge badge--slate">Agencies</span>
+                <h3 style="margin-top: var(--space-5); font-size: var(--text-lg);">Who it's for</h3>
+                <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                    <span class="badge badge--emerald">Freelancers</span>
+                    <span class="badge badge--emerald">Consultants</span>
+                    <span class="badge badge--emerald">Agencies</span>
                 </div>
 
-                <div style="margin-top: var(--space-5); border-top: 1px solid var(--color-border); padding-top: var(--space-4);">
+                <div style="border-top: 1px solid var(--color-border); padding-top: var(--space-4);">
                     <details style="cursor: pointer;">
-                        <summary style="font-weight: var(--weight-semibold); color: var(--color-primary);">Preview Setup Instructions</summary>
+                        <summary style="font-weight: var(--weight-bold); color: var(--color-text-primary);">Preview Setup Instructions</summary>
                         <div style="padding: var(--space-3) 0; font-size: var(--text-sm); color: var(--color-text-secondary);">
                             <p><strong>Step 1:</strong> Install dependencies.</p>
-                            <pre style="background: var(--color-surface); padding: var(--space-2); border-radius: var(--radius-sm); font-family: var(--font-code); margin-bottom: var(--space-3);">pip install pandas fpdf</pre>
+                            <pre style="background: var(--color-surface); padding: var(--space-2); border-radius: var(--radius-sm); font-family: var(--font-mono); margin-bottom: var(--space-3); font-size: 12px;">pip install pandas fpdf</pre>
                             <p><strong>Step 2:</strong> Add your CSV file to the /input folder.</p>
                             <p><strong>Step 3:</strong> Run the script using <code>python generator.py</code>.</p>
                         </div>
@@ -85,7 +93,6 @@
         </section>
 
         <aside class="pdp-sidebar">
-            
             <div style="margin-bottom: var(--space-4);">
                 <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-2);">
                     <span class="badge badge--emerald">Python Script</span>
@@ -95,20 +102,22 @@
                 <p class="text-secondary" style="font-size: var(--text-sm);">Version 2.1 • Updated Oct 2025</p>
             </div>
 
-            <div class="desktop-only" style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: var(--space-4);">
+            <div class="pdp-price-card" style="border-left: 2px solid var(--color-tech);">
                 <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-3);">
                     <div>
-                        <span style="font-size: var(--text-2xl); font-weight: bold; color: var(--color-accent);">£24</span>
-                        <span style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-left: 4px;">inc. VAT</span>
+                        <span class="price-display-lg">£24</span>
+                        <span class="text-label-sm" style="margin-left: 4px;">inc. VAT</span>
                     </div>
-                    <span style="font-size: var(--text-sm); color: var(--color-text-secondary);">One-time purchase</span>
+                    <span class="text-label-sm">One-time purchase</span>
                 </div>
-                <a href="checkout.html" class="btn btn--primary" style="width: 100%; text-decoration: none;">Buy Now</a>
-                <p style="text-align: center; font-size: var(--text-xs); margin-top: var(--space-2); color: var(--color-text-muted);">Secure checkout via Stripe • Instant Download</p>
+                
+                <a href="#" class="lemonsqueezy-button btn btn--primary" style="width: 100%; text-decoration: none; box-shadow: 0 0 15px rgba(0, 209, 255, 0.4);">Buy Now</a>
+
+                <p class="text-tiny-muted" style="text-align: center; margin-top: var(--space-2);">Secure checkout via Lemon Squeezy</p>
             </div>
 
             <div style="margin-bottom: var(--space-4);">
-                <h3 style="font-size: var(--text-base); font-weight: var(--weight-semibold); margin-bottom: var(--space-2);">What's Included</h3>
+                <h3 style="font-size: var(--text-base); font-weight: var(--weight-bold); margin-bottom: var(--space-2);">What's Included</h3>
                 <ul class="spec-list">
                     <li class="spec-item">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
@@ -124,70 +133,36 @@
                     </li>
                 </ul>
             </div>
-
-            <div style="background: var(--color-bg); border: 1px solid var(--color-border); padding: var(--space-3); border-radius: var(--radius-md);">
-                <h3 style="font-size: var(--text-base); font-weight: var(--weight-semibold); margin-bottom: var(--space-2);">Requirements</h3>
-                <ul style="margin: 0; padding-left: var(--space-3); font-size: var(--text-sm); color: var(--color-text-secondary); line-height: var(--leading-relaxed);">
-                    <li>Python 3.8+</li>
-                    <li>Pandas library</li>
-                    <li>FPDF library</li>
-                    <li>Works on: Mac, Windows, Linux</li>
-                </ul>
-            </div>
-
         </aside>
 
         <section class="section" style="grid-column: 1 / -1; border-top: 1px solid var(--color-border); margin-top: var(--space-5); padding-top: var(--space-5);">
             <h2 class="section-title">Pairs well with</h2>
-            <div class="product-grid">
-                <article class="product-card">
-                    <div class="product-card__image-wrapper">
-                         <img src="assets/images/related-product.jpg" alt="Related" class="product-card__image" style="background-color: var(--color-surface-dark);">
-                    </div>
-                    <div class="product-card__content">
-                        <h3 class="product-card__title">Client Dashboard Notion</h3>
-                        <div class="product-card__footer">
-                            <span class="product-card__price">£15</span>
-                            <button class="btn btn--secondary" style="padding: 0 var(--space-2); min-height: 40px;">View</button>
-                        </div>
-                    </div>
-                </article>
-            </div>
+            <div id="related-products-grid" class="product-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"></div>
+        </section>
+        
+        <section id="recently-viewed-container" class="section" style="grid-column: 1 / -1; border-top: 1px solid var(--color-border); margin-top: var(--space-5); padding-top: var(--space-5);">
+            <h2 class="section-title">Recently Viewed</h2>
+            <div class="product-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));"></div>
         </section>
         
     </main>
 
-        <footer id="global-footer" class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6); background-color: var(--color-surface);"></footer>
-
-
+    <footer id="global-footer" class="section site-footer"></footer>
 
     <div class="mobile-action-spacer"></div>
     <div class="mobile-action-bar">
         <div style="display: flex; flex-direction: column;">
-            <span style="font-size: var(--text-sm); color: var(--color-text-secondary);">Total</span>
+            <span class="text-label-sm">Total</span>
             <div>
-                <span style="font-size: var(--text-xl); font-weight: bold; color: var(--color-accent);">£24</span>
-                <span style="font-size: var(--text-xs); color: var(--color-text-secondary);">inc. VAT</span>
-                <p style="font-size: 10px; color: var(--color-text-muted); margin: 0;">Secure Vault Enabled</p>
+                <span class="price-display-xl">£24</span>
+                <span class="text-label-sm" style="font-size: var(--text-xs);">inc. VAT</span>
+                <p class="text-tiny-muted">Secure Vault Enabled</p>
             </div>
-
         </div>
-        <a href="checkout.html" class="btn btn--primary" style="padding: 0 var(--space-5); text-decoration: none;">Buy Now</a>
+        <a href="#" class="lemonsqueezy-button btn btn--primary" style="padding: 0 var(--space-5); text-decoration: none; box-shadow: 0 0 15px rgba(0, 209, 255, 0.4);">Buy Now</a>
     </div>
     
-    <div id="cookie-banner" class="cookie-banner">
-    <p class="cookie-banner__text">
-        We use cookies to improve your experience. By using KYNAR Universe, you agree to our 
-        <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
-    </p>
-    <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
-        Accept
-    </button>
-</div>
-
-    
-    
+    <div id="cookie-banner" class="cookie-banner"></div>
     <script src="js/main.js"></script>
-
 </body>
 </html>

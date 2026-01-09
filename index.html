@@ -3,111 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="google-site-verification" content="2m24LD7ZRC3WUTqNPpU_w6d44lriuRCpOOnXkFkeZcM" />
-    <title>KYNAR Universe | Digital Essentials</title>
-    <meta name="description" content="KYNAR Universe is the premier marketplace for digital essentials. Tools for Tech, Life, and Family. From automation scripts to daily planners, download verified solutions instantly.">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="KYNAR Universe">
-    <meta property="og:title" content="KYNAR Universe | Digital Essentials">
-    <meta property="og:description" content="The premier marketplace for digital essentials. Tools for Tech, Life, and Family.">
-    <meta property="og:image" content="https://kynaruniverse.co.uk/assets/images/social-share.jpg">
-    <meta property="og:url" content="https://kynaruniverse.co.uk/">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#0a0a0a">
     
-    <link rel="icon" href="assets/images/favicon.ico" sizes="any">     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+    <title>KYNAR Universe | Kinetic Vitro</title>
+    <meta name="description" content="The premier marketplace for digital essentials. Tools for Tech, Life, and Family.">
+    
     <link rel="manifest" href="site.webmanifest">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">     <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
+    <link rel="canonical" href="https://kynaruniverse.co.uk/">
+    
     <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/tokens.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/pages.css">
-</head>
+    
+    <link rel="stylesheet" href="css/tokens.css">     <link rel="stylesheet" href="css/base.css">       <link rel="stylesheet" href="css/components.css"> <link rel="stylesheet" href="css/pages.css">      </head>
 <body>
 
-    <header id="global-header" class="site-header"></header>
+    <div class="vitro-background" aria-hidden="true">
+        <div class="vitro-blob blob-1"></div> <div class="vitro-blob blob-2"></div> <div class="vitro-blob blob-3"></div> </div>
+    <div class="vitro-noise"></div> <header id="global-header" class="site-header">
+        <div class="container header-top">
+            <button class="menu-toggle" aria-label="Menu" aria-expanded="false">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
 
-    <div id="mobile-menu" class="mobile-menu"></div>
+            <a href="index.html" class="site-brand">
+                <span class="brand-main">KYNAR</span>
+                <span class="brand-sub">UNIVERSE</span>
+            </a>
 
+            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+                </svg>
+            </button>
+        </div>
 
-    <main style="padding-top: var(--space-4);">
-
-        <section class="section hero" style="padding-bottom: var(--space-2);">
-            <div class="container">
-                <h1>Upgrade your reality.</h1>
-                <p>One universe. Three distinct worlds. Select a department to begin.</p>
+        <div class="container" style="padding-bottom: var(--space-2);">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" placeholder="Search the universe..." aria-label="Search">
             </div>
-        </section>
+        </div>
+    </header>
 
-        <section class="section" style="padding-top: 0;">
-            <div class="container">
-                <div class="dept-grid">
+    <main class="container section">
+        
+        <div class="vitro-grid">
+
+            <article class="dept-card dept-card--tech col-span-2 row-span-2" style="--glow-color: var(--color-tech)">
+                <a href="shop-tech.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: var(--space-4);">
+                        <div class="dept-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                        </div>
+                        <h2 class="dept-title" style="font-size: var(--text-3xl);">KYNAR TECH</h2>
+                        <p class="dept-desc">Automate the Ether. Python scripts & developer tools.</p>
+                    </div>
                     
-                    <a href="shop-tech.html" class="dept-card dept-card--tech">
-                        <div>
-                            <svg class="dept-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                            <div class="dept-title">KYNAR Tech</div>
-                            <div class="dept-desc">Scripts, Automation, and AI tools for developers and power users.</div>
-                        </div>
-                        <div style="margin-top: var(--space-4); display: flex; align-items: center; gap: var(--space-2); color: var(--color-emerald); font-weight: bold; font-family: var(--font-body);">
-                            Enter Tech <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                        </div>
-                    </a>
+                    <div class="vitro-meta">
+                        <span>IDX_01 // SYSTEM_ROOT</span>
+                        <span>[ENTER]</span>
+                    </div>
+                </a>
+            </article>
 
-                    <a href="shop-life.html" class="dept-card dept-card--life">
-                        <div>
-                            <svg class="dept-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                            <div class="dept-title">KYNAR Life</div>
-                            <div class="dept-desc">Planners, Finance trackers, and Wellness systems for organized living.</div>
+            <article class="dept-card dept-card--life row-span-2" style="--glow-color: var(--color-life)">
+                <a href="shop-life.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: var(--space-4);">
+                        <div class="dept-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 6v6l4 2"></path>
+                            </svg>
                         </div>
-                        <div style="margin-top: var(--space-4); display: flex; align-items: center; gap: var(--space-2); color: var(--color-sage); font-weight: bold; font-family: var(--font-body);">
-                            Enter Life <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                        </div>
-                    </a>
+                        <h2 class="dept-title">KYNAR LIFE</h2>
+                        <p class="dept-desc">OS for your reality. Planners & trackers.</p>
+                    </div>
+                    
+                    <div class="vitro-meta">
+                        <span>IDX_02 // SYNC_ON</span>
+                        <span>→</span>
+                    </div>
+                </a>
+            </article>
 
-                    <a href="shop-family.html" class="dept-card dept-card--family">
-                        <div>
-                            <svg class="dept-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                            <div class="dept-title">KYNAR Family</div>
-                            <div class="dept-desc">Activities, Education bundles, and Household management for parents.</div>
-                        </div>
-                        <div style="margin-top: var(--space-4); display: flex; align-items: center; gap: var(--space-2); color: var(--color-terracotta); font-weight: bold; font-family: var(--font-body);">
-                            Enter Family <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                        </div>
-                    </a>
+            <article class="dept-card dept-card--family" style="--glow-color: var(--color-family)">
+                <a href="shop-family.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+                    <div style="flex: 1; padding: var(--space-4);">
+                        <h3 class="dept-title" style="font-size: var(--text-xl);">FAMILY</h3>
+                        <p class="dept-desc" style="font-size: var(--text-xs);">Creative logic.</p>
+                    </div>
+                    <div class="vitro-meta">
+                        <span>IDX_03</span>
+                        <span>100+ PG</span>
+                    </div>
+                </a>
+            </article>
 
+            <article class="dept-card" style="--glow-color: var(--color-pro)">
+                <a href="hub.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
+                    <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-pro);">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <div class="vitro-meta">
+                        <span>THE_HUB</span>
+                        <span>READ_DB</span>
+                    </div>
+                </a>
+            </article>
+
+        </div>
+
+        <section id="recently-viewed-container" style="margin-top: var(--space-6); display: none;">
+            <div class="section-title text-mono" style="font-size: var(--text-sm); opacity: 0.7;">// RECENT_TRANSMISSIONS</div>
+            <div class="product-grid">
                 </div>
-            </div>
-        </section>
-
-        <section style="border-top: 1px solid var(--color-border); padding: var(--space-5) 0;">
-            <div class="container" style="text-align: center;">
-                <p style="color: var(--color-text-secondary); font-size: var(--text-sm);">Trusted by 10,000+ creators, parents, and developers worldwide.</p>
-                <div style="display: flex; justify-content: center; gap: var(--space-5); margin-top: var(--space-3); opacity: 0.5;">
-                    <svg height="24" width="40" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                    <svg height="24" width="40" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-                    <svg height="24" width="40" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                </div>
-            </div>
         </section>
 
     </main>
 
-        <footer id="global-footer" class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6); background-color: var(--color-surface);"></footer>
+    <footer id="global-footer" class="section site-footer"></footer>
 
-
+    <div id="mobile-menu" class="mobile-menu"></div>
     <div id="cookie-banner" class="cookie-banner">
-    <p class="cookie-banner__text">
-        We use cookies to improve your experience. By using KYNAR Universe, you agree to our 
-        <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
-    </p>
-    <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
-        Accept
-    </button>
-</div>
+        <p class="cookie-banner__text">
+            We use cookies to improve your experience. 
+            <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
+        </p>
+        <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
+            Accept
+        </button>
+    </div>
 
-
-    
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -3,36 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="KYNAR Universe">
-    <meta property="og:title" content="The Hub | KYNAR Guides & Resources">
-    <meta property="og:description" content="Free tutorials, guides, and inspiration for developers, creators, and parents. Learn, Create, Optimize.">
-    <meta property="og:image" content="https://kynaruniverse.co.uk/assets/images/social-share.jpg">
-    <meta property="og:url" content="https://kynaruniverse.co.uk/hub.html">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>The Hub | KYNAR Guides & Resources</title>
+    <meta name="description" content="Free tutorials, guides, and inspiration for developers, creators, and parents.">
     
-    <link rel="icon" href="assets/images/favicon.ico" sizes="any">     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">     <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">     <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
-    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-
-    
-    <link rel="stylesheet" href="css/tokens.css"> 
+    <link rel="canonical" href="https://kynaruniverse.co.uk/hub.html">
     <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" href="assets/images/favicon.ico" sizes="any">
+    
+    <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
 
-    <header id="global-header" class="site-header"></header>
+    <div class="vitro-background" aria-hidden="true">
+        <div class="vitro-blob blob-1" style="background: var(--color-pro); opacity: 0.4;"></div>
+        <div class="vitro-blob blob-3" style="background: var(--color-tech); opacity: 0.2;"></div>
+    </div>
+    <div class="vitro-noise"></div>
+
+    <header id="global-header" class="site-header">
+        <div class="container header-top">
+            <button class="menu-toggle" aria-label="Open menu">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <a href="index.html" class="site-brand">
+                <span class="brand-main">KYNAR</span>
+                <span class="brand-sub">UNIVERSE</span>
+            </a>
+            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+            </button>
+        </div>
+        <div class="header-search">
+            <div class="search-input-wrapper">
+                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search guides...">
+            </div>
+        </div>
+    </header>
 
     <div id="mobile-menu" class="mobile-menu"></div>
 
-
-
     <section class="section hero" style="padding-top: var(--space-4); padding-bottom: var(--space-4);">
         <div class="container">
-            <div style="display: flex; justify-content: center; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); font-size: var(--text-sm); color: var(--color-text-secondary);">
-                <span style="color: var(--color-accent); font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">Knowledge Base</span>
+            <div class="text-mono" style="margin-bottom: var(--space-2); font-size: 10px; color: var(--color-pro); letter-spacing: 0.2em;">
+                KNOWLEDGE_BASE // PUBLIC
             </div>
             <h1>Learn. Create. Optimize.</h1>
             <p>Guides, tutorials, and inspiration from across the KYNAR Universe.</p>
@@ -47,74 +65,66 @@
         <button class="chip">Coding</button>
     </div>
 
-    <main class="container section" style="padding-top: var(--space-5);">
+    <main class="container browse-layout u-pt-5">
         
-        <article style="display: grid; gap: var(--space-4); margin-bottom: var(--space-6);">
-            <div style="background-color: var(--color-surface-dark); border-radius: var(--radius-lg); aspect-ratio: 16/9; overflow: hidden;">
-                <img src="assets/images/setup-guide-cover.jpg" alt="Featured Guide" style="width: 100%; height: 100%; object-fit: cover;">
+        <article class="pdp-price-card" style="border-left: none; display: grid; gap: var(--space-4); margin-bottom: var(--space-6); grid-template-columns: 1fr;">
+            <div style="background-color: var(--color-surface-dark); border-radius: var(--radius-sm); aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--color-border);">
+                <img src="assets/images/setup-guide-cover.jpg" alt="Featured Guide" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;" loading="lazy">
             </div>
             <div>
                 <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-2);">
                     <span class="badge badge--emerald">Tech</span>
                     <span class="badge">5 min read</span>
                 </div>
-                <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);">Getting Started with Python Automation: A Beginner's Guide</h2>
+                <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);">Getting Started with Python Automation</h2>
                 <p style="color: var(--color-text-secondary);">You don't need to be a software engineer to automate your invoices. In this guide, we walk you through setting up Python and running your first KYNAR script.</p>
                 <a href="product.html" class="btn btn--tertiary" style="padding-left: 0;">Read Full Guide →</a>
             </div>
         </article>
 
-        <div class="product-grid">
+        <div class="dept-grid">
             
-            <div class="product-card" style="border: none; background: transparent;">
-                <div class="product-card__image-wrapper" style="border-radius: var(--radius-lg); margin-bottom: var(--space-3);">
-                    <img src="assets/images/morning-routine.jpg" alt="Morning Routine" class="product-card__image" style="background-color: var(--color-surface-dark);">
+            <a href="#" class="article-card">
+                <div class="article-image-wrapper">
+                    <img src="assets/images/morning-routine.jpg" alt="Morning Routine" loading="lazy">
                 </div>
-                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
-                    <span class="badge badge--sage" style="align-self: start;">Life</span>
-                    <h3 style="font-size: var(--text-lg); margin: 0;">How to Design a Morning Routine That Actually Sticks</h3>
-                    <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">Stop hitting snooze. Use the "Habit Stacking" method to build a productive start to your day.</p>
-                </div>
-            </div>
+                <span class="badge badge--sage" style="align-self: start; margin-bottom: 8px;">Life</span>
+                <h3 class="article-title">Design a Morning Routine</h3>
+                <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-top: 8px;">Stop hitting snooze. Use "Habit Stacking" to build momentum.</p>
+            </a>
 
-            <div class="product-card" style="border: none; background: transparent;">
-                <div class="product-card__image-wrapper" style="border-radius: var(--radius-lg); margin-bottom: var(--space-3);">
-                    <img src="assets/images/rainy-day.jpg" alt="Rainy Day" class="product-card__image" style="background-color: var(--color-surface-dark);">
+            <a href="#" class="article-card">
+                <div class="article-image-wrapper">
+                    <img src="assets/images/rainy-day.jpg" alt="Rainy Day" loading="lazy">
                 </div>
-                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
-                    <span class="badge badge--terracotta" style="align-self: start;">Family</span>
-                    <h3 style="font-size: var(--text-lg); margin: 0;">10 Screen-Free Rainy Day Activities for Toddlers</h3>
-                    <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">From blanket forts to our "Preschool Learning Bundle," keep them entertained without the iPad.</p>
-                </div>
-            </div>
+                <span class="badge badge--terracotta" style="align-self: start; margin-bottom: 8px;">Family</span>
+                <h3 class="article-title">10 Screen-Free Activities</h3>
+                <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-top: 8px;">Keep them entertained without the iPad on rainy days.</p>
+            </a>
 
-            <div class="product-card" style="border: none; background: transparent;">
-                <div class="product-card__image-wrapper" style="border-radius: var(--radius-lg); margin-bottom: var(--space-3);">
-                    <img src="assets/images/web-scraping-guide.jpg" alt="Web Scraping" class="product-card__image" style="background-color: var(--color-surface-dark);">
+            <a href="#" class="article-card">
+                <div class="article-image-wrapper">
+                    <img src="assets/images/web-scraping-guide.jpg" alt="Web Scraping" loading="lazy">
                 </div>
-                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
-                    <span class="badge badge--emerald" style="align-self: start;">Tech</span>
-                    <h3 style="font-size: var(--text-lg); margin: 0;">Is Web Scraping Legal? A Freelancer's Checklist</h3>
-                    <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">Understanding `robots.txt` and ethical data collection before you run your first scraper.</p>
-                </div>
-            </div>
+                <span class="badge badge--emerald" style="align-self: start; margin-bottom: 8px;">Tech</span>
+                <h3 class="article-title">Is Web Scraping Legal?</h3>
+                <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-top: 8px;">Understanding `robots.txt` and ethical data collection.</p>
+            </a>
 
-            <div class="product-card" style="border: none; background: transparent;">
-                <div class="product-card__image-wrapper" style="border-radius: var(--radius-lg); margin-bottom: var(--space-3);">
-                    <img src="assets/images/freelance-tips.jpg" alt="Freelance" class="product-card__image" style="background-color: var(--color-surface-dark);">
+            <a href="#" class="article-card">
+                <div class="article-image-wrapper">
+                    <img src="assets/images/freelance-tips.jpg" alt="Freelance" loading="lazy">
                 </div>
-                <div style="display: flex; flex-direction: column; gap: var(--space-2);">
-                    <span class="badge badge--slate" style="align-self: start;">Business</span>
-                    <h3 style="font-size: var(--text-lg); margin: 0;">Streamlining Your Client Onboarding Process</h3>
-                    <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">How to use Notion templates to look professional and save 5 hours per client.</p>
-                </div>
-            </div>
+                <span class="badge badge--slate" style="align-self: start; margin-bottom: 8px;">Business</span>
+                <h3 class="article-title">Client Onboarding 101</h3>
+                <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-top: 8px;">Look professional and save 5 hours per client with Notion.</p>
+            </a>
 
         </div>
 
-        <div style="margin-top: var(--space-6); background-color: var(--color-surface); padding: var(--space-5); border-radius: var(--radius-lg); text-align: center; border: 1px solid var(--color-border);">
+        <div class="vitro-matte" style="margin-top: var(--space-6); text-align: center;">
             <h2 style="font-size: var(--text-xl); margin-bottom: var(--space-2);">Join the Universe</h2>
-            <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">Get one high-value resource delivered to your inbox weekly. No spam.</p>
+            <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">Get one high-value resource delivered to your inbox weekly.</p>
             <div style="display: flex; gap: var(--space-2); max-width: 400px; margin: 0 auto;">
                 <input type="email" placeholder="you@example.com" class="input" style="background-color: var(--color-bg);" required>
                 <button class="btn btn--primary">Subscribe</button>
@@ -123,21 +133,24 @@
 
     </main>
 
-        <footer id="global-footer" class="section" style="border-top: 1px solid var(--color-border); margin-top: var(--space-6); background-color: var(--color-surface);"></footer>
+    <footer id="global-footer" class="section site-footer"></footer>
+    <div id="cookie-banner" class="cookie-banner"></div>
 
-    
-    <div id="cookie-banner" class="cookie-banner">
-    <p class="cookie-banner__text">
-        We use cookies to improve your experience. By using KYNAR Universe, you agree to our 
-        <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
-    </p>
-    <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
-        Accept
-    </button>
-</div>
-
-    
-
+    <div id="newsletter-toast" class="newsletter-toast">
+        <div class="newsletter-header">
+            <strong style="font-family: var(--font-heading); font-size: var(--text-lg);">Join the Universe</strong>
+            <button id="newsletter-close" class="newsletter-close" aria-label="Close notification">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-3);">
+            Get one high-value resource delivered to your inbox weekly. No filler, just utility.
+        </p>
+        <div style="display: flex; gap: var(--space-2);">
+            <input type="email" placeholder="Email address" class="input" style="height: 40px; font-size: var(--text-sm);">
+            <button class="btn btn--primary" style="min-height: 40px; padding: 0 var(--space-3); font-size: var(--text-sm);">Join</button>
+        </div>
+    </div>
     
     <script src="js/main.js"></script>
 </body>

@@ -1,9 +1,14 @@
-# 1. Enable Compression (Speed)
+# .htaccess
+
+# 1. Custom Error Pages (Action D1)
+ErrorDocument 404 /404.html
+
+# 2. Enable Compression (Speed)
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript
 </IfModule>
 
-# 2. Browser Caching (Efficiency)
+# 3. Browser Caching (Efficiency)
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/jpg "access plus 1 year"
@@ -15,5 +20,5 @@
   ExpiresByType application/javascript "access plus 1 month"
 </IfModule>
 
-# 3. Security (Prevent listing folders)
+# 4. Security (Prevent listing folders)
 Options -Indexes
