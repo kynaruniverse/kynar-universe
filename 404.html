@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a0a">
-    <title>Page Not Found | KYNAR Universe</title>
-    <meta name="description" content="The page you are looking for does not exist.">
+    <meta name="theme-color" content="#F5F5F7"> <title>Sector Void | KYNAR Universe</title>
+    <meta name="description" content="ERR_404: The requested sector does not exist.">
     <meta name="robots" content="noindex">
     
     <link rel="manifest" href="site.webmanifest">
@@ -21,29 +20,31 @@
 <body>
 
     <div class="vitro-background" aria-hidden="true">
-        <div class="vitro-blob blob-1" style="background: var(--color-error); opacity: 0.3;"></div> 
+        <div class="vitro-blob blob-1" style="background: var(--color-error); opacity: 0.2;"></div> 
         <div class="vitro-blob blob-2" style="background: var(--color-text-muted); opacity: 0.1;"></div>
     </div>
 
     <div class="vitro-noise"></div>
 
     <header id="global-header" class="site-header">
-        <div class="container header-top">
-            <button class="menu-toggle" aria-label="Open menu">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </button>
-            <a href="index.html" class="site-brand">
-                <span class="brand-main">KYNAR</span>
-                <span class="brand-sub">UNIVERSE</span>
-            </a>
-            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
-            </button>
-        </div>
-        
-        <div class="container" style="padding-bottom: var(--space-2);">
+        <div class="header-inner">
+            <div class="header-top-row">
+                <button class="menu-toggle" aria-label="Open menu" style="background:none; border:none; padding:0; color:var(--color-text-primary);">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+
+                <a href="index.html" class="site-brand" style="text-align: center; text-decoration: none;">
+                    <div class="brand-main" style="font-family: var(--font-heading); font-size: 20px; letter-spacing: 0.15em; color: var(--color-text-primary); line-height:1;">KYNAR</div>
+                    <div class="brand-sub" style="font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.4em; color: var(--color-text-muted); margin-top: 2px;">UNIVERSE</div>
+                </a>
+
+                <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme" style="background:none; border:none; padding:0; color:var(--color-text-primary);">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                </button>
+            </div>
+
             <div class="search-input-wrapper">
-                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <svg class="search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 <input type="text" class="search-input" placeholder="Search the universe...">
             </div>
         </div>
@@ -51,22 +52,22 @@
 
     <div id="mobile-menu" class="mobile-menu"></div>
 
-    <main class="container layout-centered">
+    <main class="container layout-centered" style="min-height: calc(100vh - var(--header-height) - 100px);">
         <div style="text-align: center; max-width: 500px; position: relative;">
             
-            <div class="text-mono" style="font-size: 12px; color: var(--color-error); letter-spacing: 0.2em; margin-bottom: var(--space-2);">
-                ERR_404 // SECTOR_VOID
+            <div class="text-mono" style="font-size: 11px; color: var(--color-error); letter-spacing: 0.3em; margin-bottom: var(--space-2); text-transform: uppercase;">
+                // signal_lost // sector_not_found
             </div>
 
-            <div style="font-family: var(--font-heading); font-size: clamp(6rem, 15vw, 10rem); color: var(--color-surface); -webkit-text-stroke: 1px var(--color-border); line-height: 1; margin-bottom: var(--space-3); user-select: none;">
+            <div style="font-family: var(--font-heading); font-size: clamp(6rem, 20vw, 12rem); color: var(--color-surface); -webkit-text-stroke: 1px var(--color-border); line-height: 0.9; margin-bottom: var(--space-3); user-select: none;">
                 404
             </div>
 
-            <h1 style="margin-bottom: var(--space-3);">Drifting in space?</h1>
-            <p style="margin-bottom: var(--space-5);">The page you are looking for does not exist in this sector of the universe.</p>
+            <h1 style="margin-bottom: var(--space-3); font-size: var(--text-2xl);">Drifting in space?</h1>
+            <p style="margin-bottom: var(--space-5); color: var(--color-text-secondary);">The coordinates you requested do not exist in this sector of the universe.</p>
             
             <div style="display: flex; gap: var(--space-3); justify-content: center; flex-wrap: wrap;">
-                <a href="index.html" class="btn btn--primary">Return to Base</a>
+                <a href="index.html" class="btn btn--primary" style="box-shadow: 0 0 20px var(--color-error); background-color: var(--color-error); color: white;">Return to Base</a>
                 <a href="hub.html" class="btn btn--secondary">Visit the Hub</a>
             </div>
         </div>
@@ -74,6 +75,7 @@
 
     <footer id="global-footer" class="section site-footer"></footer>
     <div id="cookie-banner" class="cookie-banner"></div>
+    
     <script src="js/main.js"></script>
 </body>
 </html>

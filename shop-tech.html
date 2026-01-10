@@ -3,186 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a0a">
-    
+    <meta name="theme-color" content="#F5F5F7"> 
     <title>KYNAR Tech | Automation & Scripts</title>
-    <meta name="description" content="Production-ready Python automation scripts and developer tools.">
+    <meta name="description" content="Production-ready Python automation scripts and developer tools for the high-performance ether.">
     
     <link rel="manifest" href="site.webmanifest">
     <link rel="canonical" href="https://kynaruniverse.co.uk/shop-tech.html">
+    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin> 
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
     <div class="vitro-background" aria-hidden="true">
-        <div class="vitro-blob blob-1" style="opacity: 0.8;"></div>
-        <div class="vitro-blob blob-2" style="opacity: 0.3;"></div>
-        <div class="vitro-blob blob-3" style="opacity: 0.2;"></div>
+        <div class="vitro-blob blob-1" style="opacity: 0.15; background: var(--color-tech);"></div>
+        <div class="vitro-blob blob-3" style="opacity: 0.1; background: var(--color-pro);"></div>
     </div>
     <div class="vitro-noise"></div>
 
     <header id="global-header" class="site-header">
-        <div class="container header-top">
-            <button class="menu-toggle" aria-label="Open menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-            <a href="index.html" class="site-brand">
-                <span class="brand-main">KYNAR</span>
-                <span class="brand-sub" style="color: var(--color-tech);">TECH</span>
-            </a>
-            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-        </div>
-        <div class="container" style="padding-bottom: var(--space-2);">
+        <div class="header-inner">
+            <div class="header-top-row">
+                <button class="menu-toggle" aria-label="Open Navigation Menu">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+
+                <a href="index.html" class="site-brand">
+                    <div class="brand-main">KYNAR</div>
+                    <div class="brand-sub" style="color: var(--color-tech);">TECH</div>
+                </a>
+
+                <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Interface Theme">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                </button>
+            </div>
+
             <div class="search-input-wrapper">
-                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" class="search-input" placeholder="Search the universe...">
+                <svg class="search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search the tech sector...">
             </div>
         </div>
     </header>
 
+    <div id="mobile-menu" class="mobile-menu"></div>
 
     <main class="container section browse-layout">
         
         <aside class="sidebar-filters">
             <div class="filter-group">
-                <span class="filter-title">Language</span>
-                <label class="filter-row"><input type="checkbox" checked> Python</label>
-                <label class="filter-row"><input type="checkbox"> Bash / Shell</label>
-                <label class="filter-row"><input type="checkbox"> Node.js</label>
+                <span class="filter-title">Language_Protocols</span>
+                <label class="filter-row"><input type="checkbox" checked> Python_Scripts</label>
+                <label class="filter-row"><input type="checkbox"> Bash_Shell</label>
+                <label class="filter-row"><input type="checkbox"> API_Connectors</label>
             </div>
             <div class="filter-group">
-                <span class="filter-title">Use Case</span>
+                <span class="filter-title">System_Utility</span>
                 <label class="filter-row"><input type="checkbox"> Automation</label>
-                <label class="filter-row"><input type="checkbox"> Data Scraping</label>
-                <label class="filter-row"><input type="checkbox"> File Mgmt</label>
-            </div><button id="apply-filters" class="btn btn--primary" style="width: 100%; margin-top: var(--space-4); font-size: var(--text-xs);"> APPLY_FILTERS
+                <label class="filter-row"><input type="checkbox"> Data_Mining</label>
+                <label class="filter-row"><input type="checkbox"> File_Systems</label>
+            </div>
+            <button id="apply-filters" class="btn btn--primary" style="width: 100%; margin-top: var(--space-4); font-size: 10px; letter-spacing: 0.1em;"> 
+                RUN_FILTER_PROTOCOL
             </button>
-
         </aside>
 
         <section>
             <div class="browse-header">
                 <div class="filter-bar">
-                    <button class="chip is-active">All Scripts</button>
-                    <button class="chip">Python</button>
-                    <button class="chip">Bash</button>
-                    <button class="chip">Web Scrapers</button>
+                    <button class="chip is-active">ALL_ASSETS</button>
+                    <button class="chip">PYTHON</button>
+                    <button class="chip">BASH</button>
+                    <button class="chip">SCRAPERS</button>
                 </div>
             </div>
 
             <div class="product-grid">
-
-                <article id="tech-invoice" class="product-card" style="--glow-color: var(--color-tech);">
-                    <a href="product.html?id=auto-invoice" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-tech);">
+                    <a href="product.html?id=auto-invoice" class="product-link" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
                             <img src="assets/images/product-tech-1.jpg" width="400" height="400" alt="Auto-Invoice Generator" class="product-card__image" loading="lazy">
                         </div>
                         <div class="product-card__content">
                             <h3 class="product-card__title">Auto-Invoice Generator</h3>
-                            <div class="product-card__desc">
+                            <div class="product-card__desc" style="padding: 0 var(--space-3) var(--space-3);">
                                 <span class="badge badge--emerald">Python</span>
-                                <span class="badge">CSV</span>
+                                <span class="badge">V2.4</span>
                             </div>
                         </div>
                         <div class="vitro-meta">
-                            <span>AUTO_GEN // PDF</span>
-                            <span>£24</span>
+                            <span>TRANS_BILLING // PDF</span>
+                            <span class="text-mono">£24</span>
                         </div>
                     </a>
                 </article>
 
-                <article id="tech-desktop" class="product-card" style="--glow-color: var(--color-tech);">
-                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-tech);">
+                    <a href="product.html?id=desktop-cleaner" class="product-link" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                            <img src="assets/images/product-tech-2.jpg" width="400" height="400" alt="Desktop Cleaner" class="product-card__image" loading="lazy">
+                            <img src="assets/images/product-tech-2.jpg" width="400" height="400" alt="Desktop Organizer" class="product-card__image" loading="lazy">
                         </div>
-
                         <div class="product-card__content">
-                            <h3 class="product-card__title">Desktop Cleaner</h3>
-                            <div class="product-card__desc">
+                            <h3 class="product-card__title">System Desktop Cleaner</h3>
+                            <div class="product-card__desc" style="padding: 0 var(--space-3) var(--space-3);">
                                 <span class="badge badge--emerald">Python</span>
                                 <span class="badge">Utility</span>
                             </div>
                         </div>
                         <div class="vitro-meta">
-                            <span>SYS_CLEAN // OS</span>
-                            <span>£8</span>
+                            <span>SYS_CLEAN // OS_SYNC</span>
+                            <span class="text-mono">£8</span>
                         </div>
                     </a>
                 </article>
 
-                <article id="tech-resizer" class="product-card" style="--glow-color: var(--color-tech);">
-                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-tech);">
+                    <a href="product.html?id=bulk-resizer" class="product-link" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                            <img src="assets/images/product-tech-3.jpg" width="400" height="400" alt="Image Resizer" class="product-card__image" loading="lazy">
+                            <img src="assets/images/product-tech-3.jpg" width="400" height="400" alt="Image Optimizer" class="product-card__image" loading="lazy">
                         </div>
-
                         <div class="product-card__content">
                             <h3 class="product-card__title">Bulk Image Resizer CLI</h3>
-                            <div class="product-card__desc">
+                            <div class="product-card__desc" style="padding: 0 var(--space-3) var(--space-3);">
                                 <span class="badge badge--slate">Bash</span>
                                 <span class="badge">Media</span>
                             </div>
                         </div>
                         <div class="vitro-meta">
-                            <span>IMG_OPT // CLI</span>
-                            <span>£10</span>
+                            <span>IMG_OPT // OPTIM_V1</span>
+                            <span class="text-mono">£10</span>
                         </div>
                     </a>
                 </article>
 
-                <article id="tech-social" class="product-card" style="--glow-color: var(--color-tech);">
-                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-tech);">
+                    <a href="product.html?id=social-scheduler" class="product-link" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                            <img src="assets/images/product-tech-4.jpg" width="400" height="400" alt="Social Scheduler" class="product-card__image" loading="lazy">
+                            <img src="assets/images/product-tech-4.jpg" width="400" height="400" alt="API Scheduler" class="product-card__image" loading="lazy">
                         </div>
-
                         <div class="product-card__content">
                             <h3 class="product-card__title">Social API Scheduler</h3>
-                            <div class="product-card__desc">
+                            <div class="product-card__desc" style="padding: 0 var(--space-3) var(--space-3);">
                                 <span class="badge badge--emerald">API</span>
                                 <span class="badge">Marketing</span>
                             </div>
                         </div>
                         <div class="vitro-meta">
-                            <span>NET_BOT // V.1</span>
-                            <span>£18</span>
+                            <span>NET_BOT // V.1.0</span>
+                            <span class="text-mono">£18</span>
                         </div>
                     </a>
                 </article>
-                
-                <article class="product-card" style="--glow-color: var(--color-tech);">
-                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
-                        <div class="product-card__image-wrapper">
-                            <img src="assets/images/product-tech-5.jpg" alt="Freelance OS" class="product-card__image" loading="lazy">
-                        </div>
-                        <div class="product-card__content">
-                            <h3 class="product-card__title">Freelance OS</h3>
-                            <div class="product-card__desc">
-                                <span class="badge badge--slate">Notion</span>
-                                <span class="badge">System</span>
-                            </div>
-                        </div>
-                        <div class="vitro-meta">
-                            <span>CLIENT_DB</span>
-                            <span>£15</span>
-                        </div>
-                    </a>
-                </article>
-
             </div>
             
             <div style="margin-top: var(--space-6); text-align: center;">
-                <button class="btn btn--secondary">LOAD_MORE_ASSETS</button>
+                <button class="btn btn--secondary" style="min-width: 240px; font-size: 10px;">SYNC_MORE_ASSETS</button>
             </div>
         </section>
     </main>
 
     <footer id="global-footer" class="section site-footer"></footer>
-    <div id="mobile-menu" class="mobile-menu"></div>
     <div id="cookie-banner" class="cookie-banner"></div>
-    <script src="js/main.js"></script>
+
+    <script src="js/main.js" defer></script>
 </body>
 </html>

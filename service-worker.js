@@ -1,33 +1,41 @@
-/* service-worker.js - Kinetic Vitro Engine v2.0 */
+/* service-worker.js - KYNAR UNIVERSE CORE V2.6 (Dynamic Sync) */
 
-const CACHE_NAME = 'kynar-core-v2.5';
-const IMAGE_CACHE = 'kynar-images-v1.0';
+const CACHE_NAME = 'kynar-core-v2.6';
+const IMAGE_CACHE = 'kynar-images-v1.1';
 
 // 1. Expanded Asset List for Full Offline Sector Support
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/shop-tech.html',
-    '/shop-life.html',
-    '/shop-family.html',
-    '/hub.html',
-    '/about.html',
-    '/404.html',
-    '/css/tokens.css',
-    '/css/base.css',
-    '/css/components.css',
-    '/css/pages.css',
-    '/js/main.js',
-    '/js/search-index.js',
-    '/assets/images/favicon.ico',
-    '/assets/images/icon-192.png',
-    '/assets/images/icon-512.png'
+    'index.html',
+    'product.html',
+    'shop-tech.html',
+    'shop-life.html',
+    'shop-family.html',
+    'hub.html',
+    'about.html',
+    'account.html', // Fixed repo name
+    'legal.html',
+    '404.html',
+    // UI Shell Fragments
+    'nav-content.html',
+    'footer-content.html',
+    // Core Engine
+    'css/tokens.css',
+    'css/base.css',
+    'css/components.css',
+    'css/pages.css',
+    'js/main.js',
+    'js/products.js', // Critical for dynamic loading
+    'js/search-index.js',
+    // Branding
+    'assets/images/favicon.ico',
+    'manifest.json'
 ];
 
 // 2. INSTALL: Deep Cache
 self.addEventListener('install', (evt) => {
     evt.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
+            console.log('Vitro_Cache: Initializing_Sector_Data...');
             return cache.addAll(ASSETS_TO_CACHE);
         })
     );
@@ -55,7 +63,10 @@ self.addEventListener('fetch', (evt) => {
     // STRATEGY A: Navigation (HTML) -> Network First, Fallback to Cache
     if (request.mode === 'navigate') {
         evt.respondWith(
-            fetch(request).catch(() => caches.match(url.pathname) || caches.match('/index.html'))
+            fetch(request).catch(() => {
+                // If offline, try to match the exact path or return the master index
+                return caches.match(request) || caches.match('index.html');
+            })
         );
         return;
     }
@@ -68,7 +79,7 @@ self.addEventListener('fetch', (evt) => {
                     const fetched = fetch(request).then((networkResponse) => {
                         cache.put(request, networkResponse.clone());
                         return networkResponse;
-                    });
+                    }).catch(() => null);
                     return cached || fetched;
                 });
             })
@@ -76,7 +87,7 @@ self.addEventListener('fetch', (evt) => {
         return;
     }
 
-    // STRATEGY C: Core Assets (CSS/JS) -> Cache First
+    // STRATEGY C: Core Assets (CSS/JS/Fragments) -> Cache First
     evt.respondWith(
         caches.match(request).then((cached) => cached || fetch(request))
     );

@@ -36,7 +36,7 @@
     </url>
 
     <url>
-        <loc>https://kynaruniverse.co.uk/product-planner.html</loc>
+        <loc>https://kynaruniverse.co.uk/product.html?id=life-os-planner</loc>
         <lastmod>2026-01-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -47,7 +47,7 @@
     </url>
 
     <url>
-        <loc>https://kynaruniverse.co.uk/product-preschool.html</loc>
+        <loc>https://kynaruniverse.co.uk/product.html?id=preschool-bundle</loc>
         <lastmod>2026-01-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -58,10 +58,10 @@
     </url>
 
     <url>
-        <loc>https://kynaruniverse.co.uk/product.html</loc>
+        <loc>https://kynaruniverse.co.uk/product.html?id=auto-invoice</loc>
         <lastmod>2026-01-10</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
+        <priority>0.8</priority>
         <image:image>
             <image:loc>https://kynaruniverse.co.uk/assets/images/product-tech-1.jpg</image:loc>
             <image:title>Python Auto-Invoice Generator</image:title>
@@ -72,13 +72,19 @@
         <loc>https://kynaruniverse.co.uk/about.html</loc>
         <lastmod>2026-01-10</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://kynaruniverse.co.uk/account.html</loc>
+        <lastmod>2026-01-10</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.4</priority>
     </url>
     <url>
         <loc>https://kynaruniverse.co.uk/legal.html</loc>
         <lastmod>2026-01-10</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
+        <priority>0.3</priority>
     </url>
 
 </urlset>

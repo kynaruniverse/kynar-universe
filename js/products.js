@@ -1,51 +1,119 @@
-/* js/products.js - KYNAR UNIVERSE PRODUCT DATABASE V2.5 */
+/* js/products.js - KYNAR UNIVERSE PRODUCT DATABASE V2.7 (Unified Sync) */
 const KynarDatabase = {
+    // --- KYNAR FAMILY SECTOR ---
     "preschool-bundle": {
         title: "Ultimate Preschool Bundle",
-        tagline: "Rainy days? Sorted.",
+        tagline: "Educational Logic for Early Years.",
         price: "£18",
         category: "Family",
         badgeType: "Printable",
         badgeLevel: "Ages 3-5",
-        meta: "100+ Pages • Instant PDF Download",
+        meta: "100+ PAGE_REGISTRY • INSTANT_DOWNLOAD",
         description: `
-            <p>Keep your little ones engaged and learning with over 100 pages of printable activities. Designed by early-years educators to develop fine motor skills, logic, and counting.</p>
-            <p>Simply download, print at home, and play. No screens required.</p>
+            <p>Eliminate screen fatigue with over 100 pages of educational logic. Designed by early-years specialists to develop motor skills, pattern recognition, and numeracy.</p>
+            <p>Physical engagement for the modern household. Simply download, print, and initiate learning protocols.</p>
         `,
-        image: "assets/images/preschool-bundle.jpg",
+        image: "assets/images/product-family-1.jpg",
         lsLink: "https://kynar.lemonsqueezy.com/checkout/buy/PRESCHOOL_ID",
-        files: ["Tracing_Pack.pdf", "Logic_Puzzles.pdf", "Counting_Games.pdf"]
+        files: ["Tracing_Pack.pdf", "Logic_Puzzles.pdf", "Counting_Games.pdf"],
+        related: ["chore-system", "mood-journal"]
     },
+
+    "chore-system": {
+        title: "Household Chore System",
+        tagline: "Systematize Responsibility.",
+        price: "£6",
+        category: "Family",
+        badgeType: "Printable",
+        badgeLevel: "Visual OS",
+        meta: "Interactive Chart • Habit Builder",
+        description: "<p>A visual command center for household tasks. Reward logic integrated to turn chores into habit-forming achievements.</p>",
+        image: "assets/images/product-family-2.jpg",
+        lsLink: "https://kynar.lemonsqueezy.com/checkout/buy/CHORE_ID",
+        files: ["Chore_Chart.pdf", "Icon_Pack.pdf", "Instructions.pdf"],
+        related: ["preschool-bundle", "meal-plan"]
+    },
+
+    // --- KYNAR LIFE SECTOR ---
     "life-os-planner": {
         title: "2026 Life OS Planner",
-        tagline: "Master your schedule.",
+        tagline: "Master the 2026 Timeline.",
         price: "£12",
         category: "Life",
         badgeType: "Digital PDF",
         badgeLevel: "Hyperlinked",
-        meta: "Jan - Dec 2026 • 450+ Pages",
+        meta: "JAN_DEC 2026 • 450+ PAGES",
         description: `
-            <p>The 2026 Life OS isn't just a calendar—it's a command center for your year. Built with thousands of hyperlinked tabs, you can jump between yearly visions and daily tasks in a single tap.</p>
-            <p>Designed specifically for digital tablet users who want the feel of paper with the power of digital organization.</p>
+            <p>The 2026 Life OS is a high-performance command center. Built with precision-engineered hyperlinked tabs for instantaneous navigation between yearly vision and daily execution.</p>
+            <p>Optimized for iPad and Tablet users requiring a tactile, focused organization protocol.</p>
         `,
-        image: "assets/images/planner-main.jpg",
+        image: "assets/images/product-life-1.jpg",
         lsLink: "https://kynar.lemonsqueezy.com/checkout/buy/PLANNER_ID",
-        files: ["Life_OS_2026.pdf", "User_Guide.pdf"]
+        files: ["Life_OS_2026.pdf", "User_Guide.pdf"],
+        related: ["finance-dashboard", "mood-journal"]
     },
+
+    "finance-dashboard": {
+        title: "Personal Finance Dashboard",
+        tagline: "Wealth Management Protocol.",
+        price: "£15",
+        category: "Life",
+        badgeType: "Spreadsheet",
+        badgeLevel: "Automated",
+        meta: "Excel / Google Sheets Compatible",
+        description: "<p>A robust financial architecture to track assets, liabilities, and monthly cash flow. Automated formulas provide a real-time health check of your economy.</p>",
+        image: "assets/images/product-life-2.jpg",
+        lsLink: "https://kynar.lemonsqueezy.com/checkout/buy/FINANCE_ID",
+        files: ["Finance_Dashboard.xlsx", "Documentation.pdf"],
+        related: ["life-os-planner", "routine-architect"]
+    },
+
+    "mood-journal": {
+        title: "Mood & Gratitude Journal",
+        tagline: "Calibrate Clarity.",
+        price: "£8",
+        category: "Life",
+        badgeType: "PDF",
+        badgeLevel: "Wellness",
+        meta: "Daily Reflection • Digital_Native",
+        description: "<p>A minimalist interface for emotional data logging. Track daily intentions and long-term mental trends with zero clutter.</p>",
+        image: "assets/images/product-life-4.jpg",
+        lsLink: "https://kynar.lemonsqueezy.com/checkout/buy/MOOD_ID",
+        files: ["Daily_Journal.pdf"],
+        related: ["life-os-planner", "routine-architect"]
+    },
+
+    // --- KYNAR TECH SECTOR ---
     "auto-invoice": {
         title: "Auto-Invoice Generator",
-        tagline: "What it does",
+        tagline: "Automated Billing Protocol.",
         price: "£24",
         category: "Tech",
         badgeType: "Python Script",
-        badgeLevel: "Intermediate",
-        meta: "Version 2.1 • Updated Oct 2025",
+        badgeLevel: "Core Utility",
+        meta: "VERSION 2.1 • CLI_OPTIMIZED",
         description: `
-            <p>This script eliminates the Sunday evening "admin dread." It scans your project folder for CSV timesheets, calculates totals, and generates professional PDF invoices instantly.</p>
-            <p>Designed for freelancers who hate manual data entry.</p>
+            <p>Eliminate administrative friction. This Python script parses local CSV timesheets, calculates totals, and generates professional PDF invoices in seconds.</p>
+            <p>Engineered for developers and freelancers who prioritize work over paperwork.</p>
         `,
-        image: "assets/images/invoice-main.jpg",
+        image: "assets/images/product-tech-1.jpg",
         lsLink: "https://kynar.lemonsqueezy.com/checkout/buy/INVOICE_ID",
-        files: ["generator.py", "config.json", "Setup_Guide.pdf"]
+        files: ["generator.py", "config.json", "Setup_Guide.pdf"],
+        related: ["desktop-cleaner", "bulk-resizer"]
+    },
+
+    "desktop-cleaner": {
+        title: "Desktop Cleaner & Organizer",
+        tagline: "Restore Workspace Order.",
+        price: "£8",
+        category: "Tech",
+        badgeType: "Python",
+        badgeLevel: "Utility",
+        meta: "One-Click Cleanup • Cross_Platform",
+        description: "<p>A high-speed utility script that categorizes and organizes cluttered directories instantly. Keep your dev environment pristine with a single command.</p>",
+        image: "assets/images/product-tech-2.jpg",
+        lsLink: "https://kynar.lemonsqueezy.com/checkout/buy/CLEANER_ID",
+        files: ["cleaner.py", "rules.json"],
+        related: ["auto-invoice", "bulk-resizer"]
     }
 };

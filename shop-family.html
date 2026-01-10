@@ -3,158 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a0a">
-    <title>KYNAR Family | Kids & Household</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#F5F5F7"> 
+    <title>KYNAR Family | Kids & Household Logic</title>
+    <meta name="description" content="Digital essentials for the modern household. Educational printables, chore systems, and meal planning logic.">
+    
     <link rel="manifest" href="site.webmanifest">
+    <link rel="canonical" href="https://kynaruniverse.co.uk/shop-family.html">
+    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin> 
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
     <div class="vitro-background" aria-hidden="true">
-        <div class="vitro-blob blob-1" style="opacity: 0.2; background: var(--color-family);"></div>
-        <div class="vitro-blob blob-2" style="opacity: 0.3; background: var(--color-life);"></div>
-        <div class="vitro-blob blob-3" style="opacity: 0.8; background: var(--color-family);"></div>
+        <div class="vitro-blob blob-1" style="opacity: 0.15; background: var(--color-family);"></div>
+        <div class="vitro-blob blob-3" style="opacity: 0.12; background: var(--color-edu);"></div>
     </div>
     <div class="vitro-noise"></div>
 
     <header id="global-header" class="site-header">
-        <div class="container header-top">
-            <button class="menu-toggle" aria-label="Open menu"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-            <a href="index.html" class="site-brand">
-                <span class="brand-main">KYNAR</span>
-                <span class="brand-sub" style="color: var(--color-family);">FAMILY</span>
-            </a>
-            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-        </div>
-        <div class="container" style="padding-bottom: var(--space-2);">
+        <div class="header-inner">
+            <div class="header-top-row">
+                <button class="menu-toggle" aria-label="Open Navigation Menu">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+
+                <a href="index.html" class="site-brand" aria-label="KYNAR Home">
+                    <div class="brand-main">KYNAR</div>
+                    <div class="brand-sub" style="color: var(--color-family); letter-spacing: 0.4em;">FAMILY</div>
+                </a>
+
+                <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Interface Theme">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                </button>
+            </div>
+
             <div class="search-input-wrapper">
-                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" class="search-input" placeholder="Search the universe...">
+                <svg class="search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search family sector..." aria-label="Search Catalog">
             </div>
         </div>
     </header>
 
+    <div id="mobile-menu" class="mobile-menu"></div>
 
     <main class="container section browse-layout">
         <aside class="sidebar-filters">
             <div class="filter-group">
-                <span class="filter-title">Age Group</span>
-                <label class="filter-row"><input type="checkbox" checked> Pre-K (3-5)</label>
-                <label class="filter-row"><input type="checkbox"> Primary (6-9)</label>
-                <label class="filter-row"><input type="checkbox"> Parents</label>
+                <span class="filter-title">Age_Demographics</span>
+                <label class="filter-row"><input type="checkbox" checked> Early_Years (3-5)</label>
+                <label class="filter-row"><input type="checkbox"> Primary_Logic (6-9)</label>
+                <label class="filter-row"><input type="checkbox"> Household_Admin</label>
             </div>
-            <button id="apply-filters" class="btn btn--primary" style="width: 100%; margin-top: var(--space-4); font-size: var(--text-xs);"> APPLY_FILTERS
+            <div class="filter-group">
+                <span class="filter-title">Asset_Utility</span>
+                <label class="filter-row"><input type="checkbox"> Educational_Packs</label>
+                <label class="filter-row"><input type="checkbox"> Habit_Systems</label>
+                <label class="filter-row"><input type="checkbox"> Creative_Resources</label>
+            </div>
+            <button id="apply-filters" class="btn btn--primary" style="width: 100%; margin-top: var(--space-4); font-size: 10px; letter-spacing: 0.1em;"> 
+                RUN_FILTER_SYNC
             </button>
-
         </aside>
 
         <section>
             <div class="browse-header">
                 <div class="filter-bar">
-                    <button class="chip is-active">All Activities</button>
-                    <button class="chip">Printables</button>
-                    <button class="chip">Chores</button>
-                    <button class="chip">Meal Planning</button>
+                    <button class="chip is-active">ALL_ASSETS</button>
+                    <button class="chip">PRINTABLES</button>
+                    <button class="chip">HOUSEHOLD</button>
+                    <button class="chip">NUTRITION</button>
                 </div>
             </div>
 
             <div class="product-grid">
-
-                <article id="fam-preschool" class="product-card" style="--glow-color: var(--color-family);">
-                    <a href="product.html?id=preschool-bundle" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-family);">
+                    <a href="product.html?id=preschool-bundle" class="product-link" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
                             <img src="assets/images/product-family-1.jpg" width="400" height="400" alt="Preschool Bundle" class="product-card__image" loading="lazy">
                         </div>
 
                         <div class="product-card__content">
                             <h3 class="product-card__title">Ultimate Preschool Bundle</h3>
-                            <div class="product-card__desc">
-                                <span class="badge badge--terracotta">3-5 Yrs</span>
-                                <span class="badge">Printable</span>
+                            <div class="product-card__desc" style="padding: 0 var(--space-3) var(--space-3);">
+                                <span class="badge badge--terracotta">3-5 YRS</span>
+                                <span class="badge">PRINTABLE</span>
                             </div>
                         </div>
                         <div class="vitro-meta">
-                            <span>EDU_PK // 100PG</span>
-                            <span>£18</span>
+                            <span>EDU_PK // 100_PG</span>
+                            <span class="text-mono">£18</span>
                         </div>
                     </a>
                 </article>
 
-                <article id="fam-chores" class="product-card" style="--glow-color: var(--color-family);">
-                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-family);">
+                    <a href="product.html?id=chore-system" class="product-link" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                            <img src="assets/images/product-family-2.jpg" width="400" height="400" alt="Chore System" class="product-card__image" loading="lazy">
+                            <img src="assets/images/product-family-2.jpg" width="400" height="400" alt="Household Chore System" class="product-card__image" loading="lazy">
                         </div>
 
                         <div class="product-card__content">
                             <h3 class="product-card__title">Household Chore System</h3>
-                            <div class="product-card__desc">
-                                <span class="badge badge--terracotta">Visual</span>
-                                <span class="badge">Kids</span>
+                            <div class="product-card__desc" style="padding: 0 var(--space-3) var(--space-3);">
+                                <span class="badge badge--terracotta">VISUAL</span>
+                                <span class="badge">KIDS</span>
                             </div>
                         </div>
                         <div class="vitro-meta">
-                            <span>TASK_SYS</span>
-                            <span>£6</span>
+                            <span>TASK_SYNC // OS</span>
+                            <span class="text-mono">£6</span>
                         </div>
                     </a>
                 </article>
 
-                <article id="fam-meal" class="product-card" style="--glow-color: var(--color-family);">
-                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-family);">
+                    <a href="product.html?id=meal-plan" class="product-link" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
                             <img src="assets/images/product-family-3.jpg" width="400" height="400" alt="Meal Planner" class="product-card__image" loading="lazy">
                         </div>
 
                         <div class="product-card__content">
-                            <h3 class="product-card__title">Meal Action Plan</h3>
-                            <div class="product-card__desc">
-                                <span class="badge badge--terracotta">Kitchen</span>
-                                <span class="badge">Parents</span>
+                            <h3 class="product-card__title">Meal & Grocery Action Plan</h3>
+                            <div class="product-card__desc" style="padding: 0 var(--space-3) var(--space-3);">
+                                <span class="badge badge--terracotta">KITCHEN</span>
+                                <span class="badge">LOGIC</span>
                             </div>
                         </div>
                         <div class="vitro-meta">
-                            <span>MEAL_OS</span>
-                            <span>£9</span>
+                            <span>MEAL_OS // SYNC</span>
+                            <span class="text-mono">£9</span>
                         </div>
                     </a>
                 </article>
 
-                <article id="fam-coloring" class="product-card" style="--glow-color: var(--color-family);">
-                    <a href="#" style="text-decoration: none; display: contents; color: inherit;">
+                <article class="product-card" style="--glow-color: var(--color-family);">
+                    <a href="product.html?id=coloring-book" class="product-link" style="text-decoration: none; display: contents; color: inherit;">
                         <div class="product-card__image-wrapper">
-                            <img src="assets/images/product-family-4.jpg" width="400" height="400" alt="Coloring Book" class="product-card__image" loading="lazy">
+                            <img src="assets/images/product-family-4.jpg" width="400" height="400" alt="Stress Relief Coloring" class="product-card__image" loading="lazy">
                         </div>
 
                         <div class="product-card__content">
                             <h3 class="product-card__title">Stress-Relief Coloring</h3>
-                            <div class="product-card__desc">
-                                <span class="badge badge--terracotta">Art</span>
-                                <span class="badge">Adults</span>
+                            <div class="product-card__desc" style="padding: 0 var(--space-3) var(--space-3);">
+                                <span class="badge badge--terracotta">ART</span>
+                                <span class="badge">ADULTS</span>
                             </div>
                         </div>
                         <div class="vitro-meta">
-                            <span>ART_THERAPY</span>
-                            <span>£7</span>
+                            <span>ART_THERAPY // V1</span>
+                            <span class="text-mono">£7</span>
                         </div>
                     </a>
                 </article>
-
             </div>
             
             <div style="margin-top: var(--space-6); text-align: center;">
-                 <button class="btn btn--secondary">LOAD_MORE_ASSETS</button>
+                 <button class="btn btn--secondary" style="min-width: 240px; font-size: 10px;">QUERY_ADDITIONAL_ASSETS</button>
             </div>
         </section>
     </main>
 
     <footer id="global-footer" class="section site-footer"></footer>
-    <div id="mobile-menu" class="mobile-menu"></div>
     <div id="cookie-banner" class="cookie-banner"></div>
-    <script src="js/main.js"></script>
+    
+    <script src="js/main.js" defer></script>
 </body>
 </html>
