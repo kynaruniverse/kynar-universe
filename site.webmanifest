@@ -1,50 +1,82 @@
 {
-  "name": "KYNAR UNIVERSE",
+  "id": "kynar-universe-pwa",
+  "name": "KYNAR Universe",
   "short_name": "KYNAR",
-  "description": "Premium Digital Scripts, Planners, and Printables.",
+  "description": "The premier marketplace for digital essentials. Tools for Tech, Life, and Family.",
+  "lang": "en-GB",
+  "dir": "ltr",
   "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#050505",
-  "theme_color": "#050505",
+  "display_override": ["window-controls-overlay", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#F5F5F7",
+  "theme_color": "#F5F5F7",
+  "categories": ["productivity", "utilities", "education", "lifestyle"],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/assets/images/icon-192.png",
+      "src": "assets/images/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/assets/images/icon-512.png",
+      "src": "assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
     {
-      "src": "/assets/images/screenshot-mobile.jpg",
+      "src": "assets/images/screenshot-mobile.jpg",
       "sizes": "1170x2532",
-      "type": "image/jpg",
+      "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "Kynar Universe Mobile"
+      "label": "Mobile Command Center Interface"
     },
     {
-      "src": "/assets/images/screenshot-desktop.jpg",
+      "src": "assets/images/screenshot-desktop.jpg",
       "sizes": "2880x1800",
-      "type": "image/jpg",
+      "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Kynar Universe Desktop"
+      "label": "Kinetic Vitro Desktop Experience"
     }
   ],
   "shortcuts": [
     {
       "name": "Tech Sector",
+      "short_name": "Tech",
       "url": "/shop-tech.html",
-      "icons": [{ "src": "/assets/images/shortcut-tech.png", "sizes": "192x192" }]
+      "description": "Automation scripts and tools",
+      "icons": [{ "src": "assets/images/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Life Sector",
-      "url": "/shop-life.html",
-      "icons": [{ "src": "/assets/images/shortcut-life.png", "sizes": "192x192" }]
+      "name": "The Hub",
+      "short_name": "Hub",
+      "url": "/hub.html",
+      "description": "Guides and tutorials",
+      "icons": [{ "src": "assets/images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Library",
+      "short_name": "Library",
+      "url": "/account.html",
+      "description": "Access your downloads",
+      "icons": [{ "src": "assets/images/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

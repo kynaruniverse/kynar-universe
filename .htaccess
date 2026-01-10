@@ -1,24 +1,59 @@
-# .htaccess
+# KYNAR UNIVERSE - SERVER CONFIG V2.7
+# Calibrated for Laboratory Clean Performance
 
-# 1. Custom Error Pages (Action D1)
-ErrorDocument 404 /404.html
+# 1. SECURITY: PREVENT DIRECTORY LISTING & PROTECT CONFIG
+Options -Indexes
+<Files ".htaccess">
+  Require all denied
+</Files>
 
-# 2. Enable Compression (Speed)
-<IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript
+# 2. SEO: FORCE HTTPS & WWW (Handshake Sync)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^(.*)$ https://www.kynaruniverse.co.uk/$1 [L,R=301]
 </IfModule>
 
-# 3. Browser Caching (Efficiency)
+# 3. PWA & FONT SUPPORT: MIME TYPES
+<IfModule mod_mime.c>
+  AddType application/manifest+json  webmanifest
+  AddType font/woff2                woff2
+  AddType image/x-icon              ico
+</IfModule>
+
+# 4. ERROR HANDLING
+ErrorDocument 404 /404.html
+
+# 5. PERFORMANCE: GZIP COMPRESSION
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json application/manifest+json
+</IfModule>
+
+# 6. EFFICIENCY: LEVERAGE BROWSER CACHING
 <IfModule mod_expires.c>
   ExpiresActive On
+  
+  # Media: 1 Year (Immutable Assets)
   ExpiresByType image/jpg "access plus 1 year"
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/gif "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  
+  # Fonts: 1 Year (Preloaded Assets)
+  ExpiresByType font/woff2 "access plus 1 year"
+  
+  # Logic & Style: 1 Month (Sector Updates)
   ExpiresByType text/css "access plus 1 month"
-  ExpiresByType application/pdf "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/manifest+json "access plus 1 month"
 </IfModule>
 
-# 4. Security (Prevent listing folders)
-Options -Indexes
+# 7. CLEAN URLS: REMOVE .HTML EXTENSION (Optional but Recommended)
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
+  RewriteRule ^(.*)$ $1.html [NC,L]
+</IfModule>

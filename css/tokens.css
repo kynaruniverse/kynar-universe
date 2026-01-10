@@ -1,147 +1,104 @@
-/* css/tokens.css - KINETIC VITRO v2.5 (Light Mode Default Setup) */
+/* css/tokens.css - KINETIC VITRO v2.6 (Light Mode Calibration) */
 
 :root {
   /* ---------------------------------------------------------
-     1. KINETIC PALETTE (Laboratory Clean - LIGHT MODE DEFAULT)
+     1. KINETIC PALETTE (Laboratory Clean - LIGHT MODE)
      --------------------------------------------------------- */
-  
-  /* The Laboratory (Backgrounds) */
   --color-bg:             #F5F5F7; 
   --color-bg-rgb:         245, 245, 247;
   
-  /* Frosted Material */
-  --color-surface:        rgba(255, 255, 255, 0.7); 
+  /* Material Construction */
+  --color-surface:        rgba(255, 255, 255, 0.65); 
   --color-surface-dark:   rgba(0, 0, 0, 0.03);
-  --color-border:         rgba(0, 0, 0, 0.1); 
+  --color-border:         rgba(0, 0, 0, 0.08); 
   
-  /* High-Contrast Text */
-  --color-text-primary:   #121212;
-  --color-text-secondary: #4a4a4a;
-  --color-text-muted:     #86868b;
+  /* High-Contrast Typography */
+  --color-text-primary:   #1D1D1F;
+  --color-text-secondary: #424245;
+  --color-text-muted:     #86868B;
 
-  /* Wayfinding Refinement (Legibility Optimized) */
-  --color-tech:           #0071E3; /* San Francisco Blue */
-  --color-life:           #5E00D0; /* Deep Purple */
-  --color-family:         #E34D2F; /* Rich Terracotta */
-  --color-edu:            #C98A00; /* Dark Amber */
-  --color-pro:            #0056B3; /* Deep Royal */
+  /* Sector Accents (Legibility Optimized) */
+  --color-tech:           #0071E3; --color-tech-rgb: 0, 113, 227;
+  --color-life:           #6200EE; --color-life-rgb: 98, 0, 238;
+  --color-family:         #D33D21; --color-family-rgb: 211, 61, 33;
+  --color-pro:            #0056B3; 
 
-  /* Adjusted Status Colors */
-  --color-success:        #00a86b; /* Jade Green */
-  --color-warning:        #C98A00;
-  --color-error:          #d70015; /* Alert Red */
+  /* Functional Status */
+  --color-success:        #24A148; 
+  --color-warning:        #F5A623;
+  --color-error:          #E11D48;
   
-  /* Brand Identity */
   --color-primary:        var(--color-tech); 
-  --color-accent:         var(--color-life);
   --color-brand-deep:     #000000;
 
   /* ---------------------------------------------------------
-     2. GLASS PHYSICS & MATERIAL (Light Mode Adjusted)
+     2. GLASS PHYSICS & DEPTH
      --------------------------------------------------------- */
-  --glass-blur:           40px; 
-  --glass-refraction:     1.05; 
-  --glass-saturation:     150%;
-  --noise-grain:          0.04; 
+  --glass-blur:           30px; 
+  --noise-grain:          0.03; 
   
-  --mercury-speed:        4s;
-  --fluid-speed:          40s;
+  /* NEW: Depth Tokens for Light Mode */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 50px rgba(0,0,0,0.12);
 
   /* ---------------------------------------------------------
-     3. GEOMETRY & PRECISION
+     3. GEOMETRY & SPACING
      --------------------------------------------------------- */
-  --radius-universal:     16px;
+  --radius-universal:     18px;
   --radius-sm:            8px;
   --radius-md:            12px;
-  --radius-lg:            var(--radius-universal); 
 
-  --grid-gap:             20px;
-  --machined-stroke:      1px;
-
-  /* Spacing Scale */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 16px;
-  --space-4: 24px; 
-  --space-5: 32px;
-  --space-6: 64px; 
+  --space-1: 4px;   --space-2: 8px;
+  --space-3: 16px;  --space-4: 24px; 
+  --space-5: 48px;  --space-6: 80px; 
   
   --header-height:        100px; 
 
   /* ---------------------------------------------------------
-     4. TYPOGRAPHY (The Industrial Stack)
+     4. TYPOGRAPHY
      --------------------------------------------------------- */
   --font-heading: 'Bantayog', sans-serif;
-  --font-body:    'Glacial Indifference', 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-body:    'Inter', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
 
-  /* Fluid Type Scale */
   --text-xs:   12px;
-  --text-sm:   clamp(0.875rem, 0.85rem + 0.2vw, 1rem);
-  --text-base: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
-  --text-lg:   clamp(1.125rem, 1.05rem + 0.5vw, 1.35rem);
-  --text-xl:   clamp(1.5rem, 1.3rem + 1vw, 2rem);
-  --text-2xl:  clamp(2rem, 1.8rem + 1.5vw, 3rem);
-  --text-3xl:  clamp(2.5rem, 2.1rem + 2vw, 4.5rem);
-  --text-hero: var(--text-3xl);
-
-  --weight-normal:   400;
-  --weight-medium:   500;
-  --weight-semibold: 700;
-  --weight-bold:     700;
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-lg:   18px;
+  --text-xl:   24px;
+  --text-2xl:  32px;
+  --text-3xl:  clamp(2.5rem, 5vw, 4rem);
 
   /* ---------------------------------------------------------
-     5. ANIMATION & Z-INDEX
+     5. Z-INDEX SYSTEM
      --------------------------------------------------------- */
-  --transition-fast: 150ms ease-out;
-  --transition-base: 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  --transition-slow: 600ms cubic-bezier(0.16, 1, 0.3, 1);
-
-  --size-interactive: 44px;
-  
-  --z-negative:  -1;
   --z-background: 0;   
-  --z-noise:      1;   
   --z-grid:       10;  
-  --z-hover:      20;  
-  --z-sticky:     100;
-  --z-header:     1000;
-  --z-dropdown:   1100;
+  --z-sticky:     500;   /* Sidebar */
+  --z-header:     1000;  /* Main Nav */
   --z-overlay:    2000;
-  --z-modal:      3000;
   --z-toast:      4000;
 }
 
 /* ---------------------------------------------------------
-   6. DARK MODE OVERRIDE (Industrial Neon)
+   6. DARK MODE OVERRIDE
    --------------------------------------------------------- */
 [data-theme="dark"] {
-  /* The Void (Backgrounds) */
-  --color-bg:             #0a0a0a;
+  --color-bg:             #0A0A0A;
   --color-bg-rgb:         10, 10, 10;
-  --color-surface:        rgba(255, 255, 255, 0.03);
-  --color-surface-dark:   rgba(0, 0, 0, 0.2);
+  --color-surface:        rgba(20, 20, 20, 0.6);
+  --color-surface-dark:   rgba(0, 0, 0, 0.4);
   --color-border:         rgba(255, 255, 255, 0.1);
 
-  /* Text & Contrast */
-  --color-text-primary:   #ffffff;
-  --color-text-secondary: rgba(255, 255, 255, 0.7);
-  --color-text-muted:     rgba(255, 255, 255, 0.4);
+  --color-text-primary:   #FFFFFF;
+  --color-text-secondary: #A1A1A6;
+  --color-text-muted:     #6E6E73;
 
-  /* Wayfinding Light (Category Neons) */
   --color-tech:           #00D1FF; 
-  --color-life:           #7000FF; 
+  --color-life:           #A855F7; 
   --color-family:         #FF6B4A; 
-  --color-edu:            #FFBD00; 
-  --color-pro:            #007BFF; 
 
-  /* Functional Status */
-  --color-success:        #00ff9d; 
-  --color-warning:        #ffbd00;
-  --color-error:          #ff4a4a;
-
-  /* Physics Reset */
-  --glass-blur:           25px;
-  --glass-saturation:     120%;
-  --color-brand-deep:     #ffffff;
+  --glass-blur:           20px;
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
 }

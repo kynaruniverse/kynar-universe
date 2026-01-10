@@ -3,19 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#F5F5F7">
     
-    <title>KYNAR Universe | Kinetic Vitro</title>
-    <meta name="description" content="The premier marketplace for digital essentials. Tools for Tech, Life, and Family.">
+    <title>KYNAR Universe | Digital Department Store</title>
+    <meta name="description" content="The premier marketplace for digital essentials. High-performance tools for Tech, Life, and Family sectors.">
     
     <link rel="manifest" href="site.webmanifest">
     <link rel="canonical" href="https://kynaruniverse.co.uk/">
+    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+    
     <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
@@ -27,50 +33,37 @@
     <div class="vitro-noise"></div>
 
     <header id="global-header" class="site-header">
-        <div class="container header-top">
-            <button class="menu-toggle" aria-label="Menu" aria-expanded="false">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
+        <div class="header-inner">
+            <div class="header-top-row">
+                <button class="menu-toggle" aria-label="Open Navigation Menu">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
 
-            <a href="index.html" class="site-brand">
-                <span class="brand-main">KYNAR</span>
-                <span class="brand-sub">UNIVERSE</span>
-            </a>
+                <a href="index.html" class="site-brand" aria-label="KYNAR Universe Home">
+                    <div class="brand-main">KYNAR</div>
+                    <div class="brand-sub">UNIVERSE</div>
+                </a>
 
-            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
-                </svg>
-            </button>
-        </div>
+                <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Interface Theme">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                </button>
+            </div>
 
-        <div class="container" style="padding-bottom: var(--space-2);">
             <div class="search-input-wrapper">
-                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <input type="text" id="global-search" class="search-input" placeholder="Search the universe..." aria-label="Search">
+                <svg class="search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search the universe..." aria-label="Search Catalog">
             </div>
         </div>
-
     </header>
 
     <main class="container section">
         <h1 class="sr-only">KYNAR Universe - Digital Marketplace for Tech, Life, and Family</h1>
         
-        
         <div class="vitro-grid">
 
-            <article class="dept-card dept-card--tech col-span-2 row-span-2" style="--glow-color: var(--color-tech); border-bottom: 2px solid var(--color-border);">
-                <a href="shop-tech.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
-                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: var(--space-4);">
-
+            <article class="dept-card dept-card--tech col-span-2 row-span-2" style="--glow-color: var(--color-tech);">
+                <a href="shop-tech.html" class="dept-link">
+                    <div class="dept-content">
                         <div class="dept-icon">
                             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -79,23 +72,22 @@
                             </svg>
                         </div>
                         <h2 class="dept-title" style="font-size: var(--text-3xl);">KYNAR TECH</h2>
-                        <p class="dept-desc">Automate the Ether. Python scripts & developer tools.</p>
+                        <p class="dept-desc">Automate the Ether. Production-ready Python scripts & developer utility tools.</p>
                     </div>
                     
                     <div class="vitro-meta">
-                        <span style="display: flex; align-items: center; gap: 8px;">
-                            <span style="width: 6px; height: 6px; background-color: var(--color-tech); border-radius: 50%; box-shadow: 0 0 8px var(--color-tech);"></span>
+                        <span class="status-indicator">
+                            <span class="status-dot is-secure" style="width: 6px; height: 6px; background-color: var(--color-tech); border-radius: 50%;"></span>
                             SYSTEM_ONLINE
                         </span>
-                        <span>[ENTER]</span>
+                        <span class="text-mono">ENTRY_01</span>
                     </div>
                 </a>
             </article>
 
-            <article class="dept-card dept-card--life row-span-2" style="--glow-color: var(--color-life); border-bottom: 2px solid var(--color-border);">
-
-                <a href="shop-life.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
-                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: var(--space-4);">
+            <article class="dept-card dept-card--life row-span-2" style="--glow-color: var(--color-life);">
+                <a href="shop-life.html" class="dept-link">
+                    <div class="dept-content" style="justify-content: flex-end;">
                         <div class="dept-icon">
                             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                 <circle cx="12" cy="12" r="10"></circle>
@@ -103,42 +95,41 @@
                             </svg>
                         </div>
                         <h2 class="dept-title">KYNAR LIFE</h2>
-                        <p class="dept-desc">OS for your reality. Planners & trackers.</p>
+                        <p class="dept-desc">OS for your reality. Advanced digital planners & performance trackers.</p>
                     </div>
                     
                     <div class="vitro-meta">
-                        <span>IDX_02 // SYNC_ON</span>
+                        <span class="text-mono">IDX_02 // SYNC_ON</span>
                         <span>→</span>
                     </div>
                 </a>
             </article>
 
-            <article class="dept-card dept-card--family" style="--glow-color: var(--color-family); border-bottom: 2px solid var(--color-border);">
-                <a href="shop-family.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
-                    <div style="flex: 1; padding: var(--space-4);">
+            <article class="dept-card dept-card--family" style="--glow-color: var(--color-family);">
+                <a href="shop-family.html" class="dept-link">
+                    <div class="dept-content">
                         <h2 class="dept-title" style="font-size: var(--text-xl);">KYNAR FAMILY</h2>
-                        <p class="dept-desc" style="font-size: var(--text-xs);">Creative logic.</p>
+                        <p class="dept-desc" style="font-size: var(--text-xs);">Creative logic for the modern household.</p>
                     </div>
 
                     <div class="vitro-meta">
-                        <span>IDX_03</span>
-                        <span>100+ PG</span>
+                        <span class="text-mono">IDX_03</span>
+                        <span class="text-mono">100+ PG</span>
                     </div>
                 </a>
             </article>
 
-            <article class="dept-card" style="--glow-color: var(--color-pro); border-bottom: 2px solid var(--color-border);">
-
-                <a href="hub.html" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%;">
-                    <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+            <article class="dept-card" style="--glow-color: var(--color-pro);">
+                <a href="hub.html" class="dept-link">
+                    <div class="dept-content" style="align-items: center; justify-content: center;">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-pro);">
                             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                         </svg>
                     </div>
                     <div class="vitro-meta">
-                        <span>THE_HUB</span>
-                        <span>READ_DB</span>
+                        <span class="text-mono">THE_HUB</span>
+                        <span class="text-mono">READ_DB</span>
                     </div>
                 </a>
             </article>
@@ -153,9 +144,11 @@
 
     </main>
 
-    <footer id="global-footer" class="section site-footer"></footer>
+    <footer id="global-footer" class="section site-footer">
+        </footer>
 
     <div id="mobile-menu" class="mobile-menu"></div>
+    
     <div id="cookie-banner" class="cookie-banner">
         <p class="cookie-banner__text">
             We use cookies to improve your experience. 
@@ -166,6 +159,6 @@
         </button>
     </div>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>

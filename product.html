@@ -3,75 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#F5F5F7"> <title>Loading Product... | KYNAR UNIVERSE</title>
-    <meta name="description" id="pdp-meta-desc" content="Premium Digital Scripts and Planners.">
+    <meta name="theme-color" content="#F5F5F7"> 
+    <title>Loading Protocol... | KYNAR UNIVERSE</title>
+    <meta name="description" id="pdp-meta-desc" content="Premium Digital Scripts, Planners, and System Essentials.">
     
     <link rel="manifest" href="site.webmanifest">
     <link rel="icon" href="assets/images/favicon.ico" sizes="any">
+    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/components.css">
 </head>
 
 <body>
 
     <div class="vitro-background" aria-hidden="true">
-        <div id="pdp-bg-blob" class="vitro-blob blob-1" style="background: var(--color-tech); opacity: 0.5;"></div>
-        <div class="vitro-blob blob-3" style="opacity: 0.2;"></div>
+        <div id="pdp-bg-blob" class="vitro-blob blob-1" style="background: var(--color-tech); opacity: 0.15;"></div>
+        <div class="vitro-blob blob-3" style="opacity: 0.1;"></div>
     </div>
     <div class="vitro-noise"></div>
 
     <header id="global-header" class="site-header">
-        <div class="container header-top">
-            <button class="menu-toggle" aria-label="Open menu">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </button>
-            <a href="index.html" class="site-brand">
-                <span class="brand-main">KYNAR</span>
-                <span class="brand-sub">UNIVERSE</span>
-            </a>
-            <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Theme">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
-            </button>
-        </div>
-        <div class="header-search">
+        <div class="header-inner">
+            <div class="header-top-row">
+                <button class="menu-toggle" aria-label="Open Navigation Menu">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+
+                <a href="index.html" class="site-brand" aria-label="KYNAR Home">
+                    <div class="brand-main">KYNAR</div>
+                    <div class="brand-sub">UNIVERSE</div>
+                </a>
+
+                <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Interface Theme">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                </button>
+            </div>
+
             <div class="search-input-wrapper">
-                <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" class="search-input" placeholder="Search the universe...">
+                <svg class="search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.5;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" placeholder="Search the universe..." aria-label="Search Catalog">
             </div>
         </div>
     </header>
 
     <div id="mobile-menu" class="mobile-menu"></div>
 
-    <main class="container pdp-layout u-pt-4">
+    <main class="container pdp-layout" style="padding-top: var(--space-4);">
 
         <nav class="breadcrumb" style="grid-column: 1 / -1; margin-bottom: var(--space-2);">
-            <a href="#" id="pdp-back-link" class="btn btn--tertiary" style="padding-left: 0; font-size: var(--text-sm);">← Back to Shop</a>
+            <a href="index.html" id="pdp-back-link" class="btn btn--tertiary" style="padding-left: 0; font-size: var(--text-sm);">← BACK_TO_MARKET</a>
         </nav>
 
         <section>
             <div id="pdp-gallery" class="gallery-container">
-                <div class="gallery-item">
-                    <img id="pdp-main-image" src="" width="800" height="600" alt="Product Image" style="background-color: var(--color-surface-dark);">
+                <div class="gallery-item" style="border: 1px solid var(--color-border);">
+                    <img id="pdp-main-image" src="assets/images/placeholder-product.jpg" width="800" height="600" alt="KYNAR Asset Preview" class="vitro-loading">
                 </div>
             </div>
 
             <div style="margin-top: var(--space-5);">
-                <h2 id="pdp-tagline" class="section-title">--</h2>
-                <div id="pdp-long-description">
+                <h2 id="pdp-tagline" class="section-title" style="text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted); font-size: var(--text-sm);">--</h2>
+                <div id="pdp-long-description" class="pdp-description">
                     </div>
 
-                <h3 id="pdp-features-title" style="margin-top: var(--space-5); font-size: var(--text-lg);">Key Protocols</h3>
-                <div id="pdp-badges" style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                <h3 style="margin-top: var(--space-6); font-size: var(--text-lg); font-family: var(--font-heading);">SYSTEM_PROTOCOLS</h3>
+                <div id="pdp-badges" style="display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-3); margin-bottom: var(--space-5);">
                     </div>
 
-                <div id="pdp-extra-info" style="border-top: 1px solid var(--color-border); padding-top: var(--space-4);">
-                    <details style="cursor: pointer;">
-                        <summary id="pdp-details-summary" style="font-weight: var(--weight-bold); color: var(--color-text-primary);">System Specs</summary>
-                        <div id="pdp-details-content" style="padding: var(--space-3) 0; font-size: var(--text-sm); color: var(--color-text-secondary);">
+                <div style="border-top: 1px solid var(--color-border); padding-top: var(--space-4);">
+                    <details class="spec-details">
+                        <summary id="pdp-details-summary" style="font-family: var(--font-mono); font-size: 12px; font-weight: bold; cursor: pointer; list-style: none;">
+                            [+] TECHNICAL_SPECIFICATIONS
+                        </summary>
+                        <div id="pdp-details-content" style="padding: var(--space-4) 0; line-height: 1.7; font-size: var(--text-sm); color: var(--color-text-secondary);">
                             </div>
                     </details>
                 </div>
@@ -79,42 +87,44 @@
         </section>
 
         <aside class="pdp-sidebar">
-            <div style="margin-bottom: var(--space-4);">
-                <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-2);">
+            <div style="margin-bottom: var(--space-5);">
+                <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-3);">
                     <span id="pdp-badge-type" class="badge">--</span>
                     <span id="pdp-badge-level" class="badge">--</span>
                 </div>
-                <h1 id="pdp-title" style="margin-bottom: var(--space-2);">--</h1>
-                <p id="pdp-meta-info" style="font-size: var(--text-sm); color: var(--color-text-secondary);">--</p>
+                <h1 id="pdp-title" style="margin-bottom: var(--space-2); font-size: var(--text-2xl);">--</h1>
+                <p id="pdp-meta-info" class="text-mono" style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;">--</p>
             </div>
 
             <div id="pdp-price-card" class="pdp-price-card">
-                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-3);">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-4);">
                     <div>
                         <span id="pdp-price" class="price-display-lg">--</span>
-                        <span class="text-label-sm" style="margin-left: 4px;">inc. VAT</span>
+                        <span class="text-label-sm" style="margin-left: 6px; opacity: 0.6;">GBP</span>
                     </div>
                 </div>
                 
-                <a href="#" id="pdp-buy-btn" class="lemonsqueezy-button btn btn--primary" style="width: 100%; text-decoration: none;">INITIALIZE_PURCHASE</a>
+                <a href="#" id="pdp-buy-btn" class="lemonsqueezy-button btn btn--primary" style="width: 100%; letter-spacing: 0.1em;">INITIALIZE_PURCHASE</a>
 
-                <p id="pdp-secure-note" class="text-tiny-muted" style="text-align: center; margin-top: var(--space-2);">Secure Handshake via Lemon Squeezy</p>
+                <p class="text-tiny-muted" style="text-align: center; margin-top: var(--space-3); opacity: 0.5;">
+                    TRANSACTION_ENCRYPTED_BY_LS
+                </p>
             </div>
 
-            <div style="margin-bottom: var(--space-4);">
-                <h3 style="font-size: var(--text-base); font-weight: var(--weight-bold); margin-bottom: var(--space-2);">Included Files</h3>
+            <div style="margin-top: var(--space-5);">
+                <h3 style="font-size: var(--text-sm); font-family: var(--font-mono); color: var(--color-text-muted); margin-bottom: var(--space-3);">INCLUDED_FILES</h3>
                 <ul id="pdp-file-list" class="spec-list">
                     </ul>
             </div>
         </aside>
 
-        <section class="section" style="grid-column: 1 / -1; border-top: 1px solid var(--color-border); margin-top: var(--space-5); padding-top: var(--space-5);">
-            <h2 class="section-title">Pairs well with</h2>
+        <section class="section" style="grid-column: 1 / -1; border-top: 1px solid var(--color-border); margin-top: var(--space-6);">
+            <h2 class="section-title text-mono" style="font-size: var(--text-sm); opacity: 0.6;">// RELATED_SYNC</h2>
             <div id="related-products-grid" class="product-grid"></div>
         </section>
         
-        <section id="recently-viewed-container" class="section" style="grid-column: 1 / -1; border-top: 1px solid var(--color-border); margin-top: var(--space-5); padding-top: var(--space-5);">
-            <h2 class="section-title">Recently Viewed</h2>
+        <section id="recently-viewed-container" class="section" style="grid-column: 1 / -1; border-top: 1px solid var(--color-border); display: none;">
+            <h2 class="section-title text-mono" style="font-size: var(--text-sm); opacity: 0.6;">// RECENT_TRANSMISSIONS</h2>
             <div class="product-grid"></div>
         </section>
         
@@ -124,17 +134,15 @@
 
     <div class="mobile-action-bar">
         <div style="display: flex; flex-direction: column;">
-            <span class="text-label-sm">Total</span>
-            <div>
-                <span id="pdp-mobile-price" class="price-display-xl">--</span>
-            </div>
+            <span class="text-label-sm" style="font-size: 10px; opacity: 0.6;">TOTAL_ASSET_VALUE</span>
+            <span id="pdp-mobile-price" class="price-display-xl" style="font-size: var(--text-xl);">--</span>
         </div>
-        <a href="#" id="pdp-mobile-buy-btn" class="lemonsqueezy-button btn btn--primary" style="padding: 0 var(--space-5); text-decoration: none;">Buy Now</a>
+        <a href="#" id="pdp-mobile-buy-btn" class="lemonsqueezy-button btn btn--primary" style="padding: 0 var(--space-5); min-height: 44px;">INITIALIZE</a>
     </div>
     
     <div id="cookie-banner" class="cookie-banner"></div>
 
-    <script src="js/products.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/products.js" defer></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* css/pages.css - KINETIC VITRO v2.1 (Merged Architecture) */
+/* css/pages.css - KINETIC VITRO v3.0 (Unified & Calibrated) */
 
 /* ---------------------------------------------------------
    1. GLOBAL UTILITIES & SECTIONS
@@ -38,67 +38,57 @@
 }
 
 /* ---------------------------------------------------------
-   2. THE KINETIC BENTO GRID (New Homepage Layout)
-   --------------------------------------------------------- */
-/* ---------------------------------------------------------
-   2. THE KINETIC BENTO GRID (Mobile: Horizontal Swipe)
+   2. THE KINETIC BENTO GRID (Homepage Layout)
    --------------------------------------------------------- */
 .vitro-grid {
-  /* Mobile: Turn Grid into Horizontal Snap "Tray" */
+  /* Mobile: Horizontal Snap "Tray" */
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   
   gap: var(--space-3);
-  padding: var(--space-4) 0;
+  padding: var(--space-4) var(--space-3);
   
-  /* Hide Scrollbar for clean glass look */
+  /* Hide Scrollbar */
   scrollbar-width: none; 
   -webkit-overflow-scrolling: touch;
   
-  /* Ensure crosshairs don't break flex layout */
   position: relative;
   width: 100%;
 }
 
 .vitro-grid::-webkit-scrollbar { display: none; }
 
-/* Mobile Card Sizing: 85% width to show "peek" of next card */
+/* Mobile Card Sizing */
 .vitro-grid > article {
   flex: 0 0 85vw; 
   scroll-snap-align: center;
-  height: 400px; /* Tall formatting for mobile impact */
+  min-height: 380px; 
 }
 
-/* Industrial Crosshairs (Desktop Only - Mobile is too fluid) */
-.vitro-grid::before {
-  display: none; 
-}
-
-/* ---------------------------------------------------------
-   DESKTOP OVERRIDE (Standard Bento)
-   --------------------------------------------------------- */
+/* Desktop Override (Standard Bento) */
 @media (min-width: 768px) {
   .vitro-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: 280px;
     overflow-x: visible;
-    padding-bottom: 0;
+    padding: 0;
   }
   
   .vitro-grid::before {
-    display: block; /* Restore Crosshairs */
+    display: block;
     content: " ";
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: -1;
-    background-image: radial-gradient(circle, var(--color-text-muted) 1px, transparent 1px);
+    /* UPGRADE: Darkened for Light Mode visibility */
+    background-image: radial-gradient(circle, var(--color-border) 1.5px, transparent 1px);
     background-size: calc(100% / 4) 280px; 
     background-position: center;
-    opacity: 0.3;
+    opacity: 0.6;
   }
 
   .vitro-grid > article {
@@ -110,10 +100,8 @@
   .row-span-2 { grid-row: span 2; }
 }
 
-
 /* ---------------------------------------------------------
    3. PRODUCT GALLERY (CSS Scroll Snap)
-   Optimized for Glass
    --------------------------------------------------------- */
 .gallery-container {
   display: flex;
@@ -154,7 +142,7 @@
 }
 
 /* ---------------------------------------------------------
-   4. PDP LAYOUT (Grid)
+   4. PDP LAYOUT (Sticky Handshake)
    --------------------------------------------------------- */
 .pdp-layout {
   display: grid;
@@ -166,8 +154,10 @@
     grid-template-columns: 1.5fr 1fr;
     align-items: start;
   }
+  
   .pdp-sidebar {
     position: sticky;
+    /* REPLACEMENT: Synchronized with v3.0 Header height */
     top: calc(var(--header-height) + var(--space-4));
     z-index: var(--z-sticky);
   }
@@ -185,7 +175,6 @@
 .spec-item {
   display: flex; align-items: center; gap: var(--space-2);
   padding: var(--space-2);
-  /* Glass Upgrade */
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -204,26 +193,28 @@
 }
 
 .pdp-price-card {
-  /* Glass Upgrade */
   background-color: var(--color-surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  
   border: 1px solid var(--color-border);
   border-radius: var(--radius-universal);
   padding: var(--space-4);
   margin-bottom: var(--space-4);
-  
-  /* Neon Accent Border */
   border-left: 2px solid var(--color-tech); 
   
-  /* UPGRADE: Tactile Glass Lip + Drop Shadow */
+  /* UPGRADE: Adjusted shadows for Light Mode Depth */
+  box-shadow: 
+      inset 1px 1px 0px rgba(255,255,255,0.4), 
+      inset -1px -1px 0px rgba(0,0,0,0.05),
+      0 10px 30px rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] .pdp-price-card {
   box-shadow: 
       inset 1px 1px 0px rgba(255,255,255,0.08), 
       inset -1px -1px 0px rgba(0,0,0,0.5),
       0 20px 40px rgba(0,0,0,0.3);
 }
-
 
 .price-display-lg {
   font-family: var(--font-heading);
@@ -243,10 +234,10 @@
   position: fixed;
   bottom: 0; left: 0; right: 0;
   
-  /* Glass Upgrade */
-  background-color: rgba(10, 10, 10, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* REPLACEMENT: Linked to theme background for contrast */
+  background-color: var(--color-surface);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   
   border-top: 1px solid var(--color-border);
   z-index: var(--z-sticky);
@@ -256,6 +247,7 @@
   padding: var(--space-3);
   padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
   animation: slideUp 0.3s ease-out;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
 }
 
 @keyframes slideUp {
@@ -273,7 +265,7 @@
 .price-display-xl {
   font-family: var(--font-heading);
   font-size: var(--text-xl);
-  color: var(--color-tech); /* Default glow */
+  color: var(--color-tech); 
 }
 
 /* ---------------------------------------------------------
@@ -299,7 +291,8 @@
   .sidebar-filters {
     display: block;
     position: sticky;
-    top: 100px;
+    /* REPLACEMENT: Synchronized with v3.0 Header height */
+    top: calc(var(--header-height) + var(--space-4));
     padding-right: var(--space-3);
     border-right: 1px solid var(--color-border);
   }
@@ -313,7 +306,7 @@
 .filter-group:last-child { border-bottom: none; }
 
 .filter-title {
-  font-family: var(--font-mono); /* Industrial feel */
+  font-family: var(--font-mono); 
   font-size: 11px;
   text-transform: uppercase;
   color: var(--color-text-muted);
@@ -354,7 +347,6 @@
 
 /* ---------------------------------------------------------
    8. GENERIC PRODUCT GRID
-   (Used for Shops, Related, Recent)
    --------------------------------------------------------- */
 .product-grid {
   display: grid;
@@ -373,7 +365,6 @@
     gap: var(--space-5);
   }
   
-  /* Hero Tile Logic (Optional: Only if 1st item is featured) */
   .product-grid.has-hero article:first-child {
     grid-column: span 2;
     grid-row: span 1;
@@ -381,7 +372,7 @@
 }
 
 /* ---------------------------------------------------------
-   9. DEPARTMENT GATEWAY (Glass Upgraded)
+   9. DEPARTMENT GATEWAY 
    --------------------------------------------------------- */
 .dept-grid {
   display: grid;
@@ -394,21 +385,14 @@
   .dept-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-/* Note: Visual styles for .dept-card are handled in components.css */
 .dept-card {
   display: flex; flex-direction: column; justify-content: space-between;
-  
-  /* Layout specifics for the Grid */
   padding: var(--space-5) var(--space-4);
   min-height: 280px; 
   text-decoration: none;
   position: relative;
   overflow: hidden;
 }
-
-/* Hover behaviors are inherited from components.css */
-
-
 
 .dept-icon {
   width: 48px; height: 48px;
@@ -448,11 +432,8 @@
 
 .order-summary {
   background-color: var(--color-surface);
-  
-  /* UPGRADE: Glass Physics */
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  
   border: 1px solid var(--color-border);
   border-radius: var(--radius-universal);
   padding: var(--space-4);
@@ -477,16 +458,12 @@
   color: var(--color-text-primary);
 }
 
-/* Success / Download */
 .success-card { text-align: center; padding: var(--space-6) var(--space-3); }
 
 .download-box {
   background-color: var(--color-surface);
-  
-  /* UPGRADE: Glass Physics */
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  
   border: 1px solid var(--color-border);
   border-radius: var(--radius-universal);
   padding: var(--space-4);
@@ -532,19 +509,15 @@
 .dash-link.is-active { background-color: var(--color-tech); color: #000; }
 
 .dash-card {
-  /* Glass Upgrade */
   background-color: var(--color-surface);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  
   border: 1px solid var(--color-border);
   border-radius: var(--radius-universal);
   padding: var(--space-4);
   margin-bottom: var(--space-3);
   display: flex; flex-direction: column; gap: var(--space-3);
-
-  /* UPGRADE: Subtle Tactile Lip */
-  box-shadow: inset 1px 1px 0px rgba(255,255,255,0.05), inset -1px -1px 0px rgba(0,0,0,0.2);
+  box-shadow: inset 1px 1px 0px rgba(255,255,255,0.2), inset -1px -1px 0px rgba(0,0,0,0.05);
 }
 
 @media (min-width: 640px) {
@@ -588,43 +561,40 @@
   margin: 0; line-height: var(--leading-tight);
 }
 
-/* css/pages.css (Append this to the bottom) */
-
 /* ---------------------------------------------------------
    13. READER MODE (Matte Finish)
-   For Legal, Account, and text-heavy pages
    --------------------------------------------------------- */
 .vitro-matte {
-  /* Solid background with slight transparency for depth */
-  background-color: rgba(10, 10, 10, 0.95);
-  
-  /* Retain the Industrial Border */
+  /* REPLACEMENT: Standardized for Dynamic Theme support */
+  background-color: var(--color-surface);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-universal);
-  
-  /* No Blur - Pure Contrast */
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  
-  /* OPTIMIZATION: Responsive Padding */
   padding: var(--space-4);
   margin-top: var(--space-5);
   position: relative;
   z-index: var(--z-grid);
+  box-shadow: var(--shadow-md);
 }
 
 @media (min-width: 768px) {
   .vitro-matte { padding: var(--space-5); }
 }
 
-
 /* Reader Typography Overrides */
 .vitro-matte h1, .vitro-matte h2 {
   color: var(--color-text-primary);
-  text-shadow: none; /* Clean text */
+  text-shadow: none; 
 }
 
 .vitro-matte p, .vitro-matte li {
   color: var(--color-text-secondary);
-  max-width: 65ch; /* Optimal reading line length */
+  max-width: 65ch; 
+  line-height: 1.7;
 }
+
+[data-theme="dark"] .vitro-matte {
+  background-color: rgba(15, 15, 15, 0.9);
+}
+
