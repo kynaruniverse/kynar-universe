@@ -12,7 +12,7 @@ export const products = {
     features: ["Daily focus blocks", "Energy tracking", "Reflection prompts", "Printable PDF"],
     actionBtn: "Download Now", 
     gumroadLink: "#", 
-    previewEmoji: "📝" 
+    previewIcon: "ph-pencil-simple",
   },
   "morning-mindset-journal": {
     title: "Morning Mindset Journal",
@@ -24,7 +24,7 @@ export const products = {
     features: ["Gratitude prompts", "Intention setting", "Mood tracker"],
     actionBtn: "Get Journal",
     gumroadLink: "#",
-    previewEmoji: "☀️"
+    previewIcon: "ph-sun",
   },
   "kids-math-pack": {
     title: "Little Math Explorers",
@@ -36,7 +36,7 @@ export const products = {
     features: ["Counting animals", "Simple addition", "Color-by-number"],
     actionBtn: "Download Pack",
     gumroadLink: "#",
-    previewEmoji: "🦁"
+    previewIcon: "ph-star",
   }
 };
 

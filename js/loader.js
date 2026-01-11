@@ -43,7 +43,10 @@ function loadProduct(item) {
   }
 
   const preview = document.getElementById('product-preview');
-  if(preview) preview.innerHTML = `<span style="font-size: 3rem;">${item.previewEmoji}</span>`;
+  if(preview && item.previewIcon) {
+    // Renders the Phosphor Icon
+    preview.innerHTML = `<i class="ph ${item.previewIcon}" style="font-size: 3rem; color: var(--accent-primary);"></i>`;
+  }
 
   const featureList = document.getElementById('product-features');
   if(featureList && item.features) {

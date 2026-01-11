@@ -44,29 +44,22 @@
       </div>
 
       <div class="card stack-md">
-        <h2 class="text-h3">Preferences</h2>
+        <h2 class="text-h3">Visual Mode</h2>
         
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <h4 class="text-body" style="font-weight: 500;">Email Notifications</h4>
-            <p class="text-micro" style="opacity: 0.6;">Updates on new tools.</p>
-          </div>
-          <div style="width: 40px; height: 24px; background: var(--accent-primary); border-radius: 99px; position: relative;">
-            <div style="width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; right: 2px;"></div>
-          </div>
+        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
+          <button onclick="setTheme('auto')" class="btn-tertiary" style="border: 1px solid var(--border-subtle);">Auto</button>
+          <button onclick="setTheme('light')" class="btn-tertiary" style="background: white; color: black; border: 1px solid #ddd;">Light</button>
+          <button onclick="setTheme('dark')" class="btn-tertiary" style="background: #1A1C1F; color: white;">Dark</button>
+          <button onclick="setTheme('starwalker')" class="btn-tertiary" style="opacity: 0.2;" title="???">✨</button>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-sm);">
-          <div>
-            <h4 class="text-body" style="font-weight: 500;">Reduced Motion</h4>
-            <p class="text-micro" style="opacity: 0.6;">Minimize animations.</p>
-          </div>
-          <div style="width: 40px; height: 24px; background: var(--border-subtle); border-radius: 99px; position: relative;">
-             <div style="width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px;"></div>
-          </div>
+        <div style="margin-top: var(--space-md); border-top: 1px solid var(--border-subtle); padding-top: var(--space-md);">
+          <h4 class="text-body" style="font-weight: 500; margin-bottom: 8px;">Test System</h4>
+          <button onclick="showToast('Preferences saved successfully.', 'success')" class="btn btn-secondary">Save Preferences</button>
         </div>
 
       </div>
+
 
       <div style="margin-top: var(--space-lg); opacity: 0.7;">
         <button class="btn-tertiary" style="color: #d64545;">Log Out</button>
