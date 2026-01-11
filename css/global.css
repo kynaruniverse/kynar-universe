@@ -393,3 +393,32 @@ code, pre {
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================
+   10. STARWALKER MODE (Secret Ultra-Premium)
+   Add to css/global.css
+   ========================================= */
+
+/* Golden Glow Borders */
+:root[data-mode="starwalker"] .card {
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.05);
+}
+
+/* Subtle Gold Text Selection */
+:root[data-mode="starwalker"] ::selection {
+  background: #FFD700;
+  color: #000000;
+}
+
+/* Header Shine */
+:root[data-mode="starwalker"] .glass-header {
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  background: rgba(5, 5, 5, 0.85);
+}
+
+/* Hero Soul Shift */
+:root[data-mode="starwalker"] .hero-soul::before {
+  background: radial-gradient(circle at center, #FFD700, transparent 70%);
+  opacity: 0.08; /* Very subtle gold mist */
+}
