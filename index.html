@@ -22,19 +22,43 @@
 
   <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
-    <header class="stack-md animate-enter">
-      <div style="width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle, var(--pal-tools-core), transparent); opacity: 0.8; filter: blur(10px); margin-bottom: -1rem;"></div>
+    <header class="stack-md animate-enter" style="text-align: center; align-items: center; margin-bottom: var(--space-xl); padding-top: var(--space-lg);">
       
-      <h1 class="text-h1">A space,<br>not a screen.</h1>
-      <p class="text-body" style="font-size: 1.1rem; opacity: 0.8;">
-        A guided world of digital tools and resources. 
-        Built for travelers, creators, and worldbuilders.
-      </p>
-      
-      <div style="margin-top: var(--space-sm); padding-left: var(--space-sm); border-left: 2px solid var(--border-highlight);">
-        <p class="text-lore">"Every tool is a small spark in the world."</p>
+      <div style="
+        width: 64px; height: 64px; 
+        border-radius: 50%;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent);
+        border: 1px solid var(--border-highlight);
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 0 30px -10px var(--accent-glow); /* Pulsing Glow */
+        backdrop-filter: blur(4px);
+        margin-bottom: var(--space-xs);
+      ">
+        <i class="ph ph-star-four" style="font-size: 1.75rem; color: var(--text-main); opacity: 0.9;"></i>
       </div>
+
+      <h1 class="text-h1" style="line-height: 1.1; margin-bottom: var(--space-xs);">
+        A space,<br>
+        <span style="color: var(--text-muted); font-style: italic;">not a screen.</span>
+      </h1>
+
+      <p class="text-body" style="font-size: 1.15rem; max-width: 42ch; opacity: 0.8; margin: 0 auto;">
+        A guided world of digital tools. Built for travelers, creators, and worldbuilders.
+      </p>
+
+      <div style="
+        margin-top: var(--space-md); 
+        padding-top: var(--space-md); 
+        border-top: 1px solid var(--border-subtle); 
+        width: 100%; 
+        max-width: 200px;
+        opacity: 0.6;
+      ">
+        <p class="text-lore" style="font-size: 0.85rem;">"Every tool is a small spark."</p>
+      </div>
+
     </header>
+
 
     <section class="stack-md animate-enter delay-1">
       
