@@ -1,5 +1,6 @@
-/* ASTRYX DESIGN TOKENS
+/* KYNAR DESIGN TOKENS
    Source of Truth for Colors, Type, Spacing, and Radius.
+   Status: FINAL MASTER (Aligned with Kynar Color Bible & Category Architecture)
 */
 
 :root {
@@ -46,64 +47,181 @@
 
   --grid-max-width: 1200px;
   --grid-gutter: var(--space-md);
+  
+  /* =========================================
+     4. UTILITY TOKENS
+     ========================================= */
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease-out;
+  --transition-base: 250ms ease-out;
+  --transition-slow: 400ms ease-out;
+
+  /* Z-Index Layers */
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-header: 800;
+  --z-trigger: 900;
+  --z-modal: 2000;
 
   /* =========================================
-     4. COLOR PALETTE DEFINITIONS
+     5. COLOR PALETTE DEFINITIONS (Strict Values)
      ========================================= */
 
-  /* HOME PALETTE (Default) */
+  /* --- HOME PALETTE (Main / Shell) --- */
+  /* Normal */
   --pal-home-base: #CFEAFF;
   --pal-home-white: #F7FAFF;
+  --pal-home-neutral: #C7CCD4;
   --pal-home-accent: #8FB7FF;
-  --pal-home-ink: #2A2D32;
   --pal-home-highlight: #FFE900;
+  --pal-home-signal: #1ACBFF;
+  /* Ultra-Premium */
+  --pal-home-prem-base: #C9DFF5;
+  --pal-home-prem-white: #F7FAFF;
+  --pal-home-prem-regal: #A9C8FF;
+  --pal-home-prem-gold: #F4D400;
+  --pal-home-prem-flux: #00E4FF;
+  /* Material-Aware */
+  --pal-home-mat-matte: #B6D9F0;
+  --pal-home-mat-gloss: #D0ECFF;
+  --pal-home-mat-pearl: #F7FAFF;
 
-  /* TOOLS PALETTE (Tech) */
-  --pal-tools-core: #1ACBFF;
+  /* --- TOOLS PALETTE (Tech) --- */
+  /* Normal */
+  --pal-tools-core: #1ACBFF; /* Ion Core Blue */
   --pal-tools-graphite: #2A2D32;
   --pal-tools-white: #F5F7FA;
   --pal-tools-violet: #A88BFF;
+  --pal-tools-silver: #DDE3EA;
   --pal-tools-navy: #0B1F33;
+  --pal-tools-yellow: #FFE900;
+  --pal-tools-red: #FF3A5C;
+  /* Ultra-Premium */
+  --pal-tools-prem-ion: #C9D6E3;
+  --pal-tools-prem-obsidian: #0F1113;
+  --pal-tools-prem-cerulean: #8FD9FF;
+  --pal-tools-prem-aqua: #00E4FF;
+  /* Material-Aware */
+  --pal-tools-mat-matte: #1BB7E8;
+  --pal-tools-mat-gloss: #29D4FF;
+  --pal-tools-mat-metal: #3A3E44;
 
-  /* LIVING PALETTE (Life) */
+  /* --- LIVING PALETTE (Life) --- */
+  /* Normal */
   --pal-living-meadow: #E4FFF5;
   --pal-living-green: #8ED9A1;
   --pal-living-clay: #D9C2A8;
+  --pal-living-sky: #CDEAFF;
   --pal-living-peach: #FFCEB8;
+  --pal-living-amber: #FFD27A;
+  --pal-living-mint: #CFFFEF;
+  --pal-living-moss: #7A9B7F;
+  /* Ultra-Premium */
+  --pal-living-prem-opal: #DFFEF3;
+  --pal-living-prem-emerald: #5FCF8F;
+  --pal-living-prem-clay: #C9B6A0;
+  --pal-living-prem-rose: #FFBFA8;
+  /* Material-Aware */
+  --pal-living-mat-matte: #D8F7EB;
+  --pal-living-mat-gloss: #ECFFF8;
+  --pal-living-mat-satin: #DCCBB7;
 
-  /* ACCOUNTS PALETTE */
-  --pal-account-base: #F3E7D6;
-  --pal-account-neutral: #D9C2A8;
-  --pal-account-blue: #8FB7FF;
-  
-  /* ABOUT PALETTE (New) */
-  --pal-about-base: #FFFFFF;
-  --pal-about-grey: #DDE3EA;
-  --pal-about-sky: #D0ECFF;
-  --pal-about-mint: #CFFFEF;
-  --pal-about-coral: #FF9A7A;
-  
-  /* GLOBAL NEUTRALS */
-  --neutral-white: #FFFFFF;
-  --neutral-ink: #2A2D32;
-  --neutral-ink-weak: #585C63;
-  
-  /* HUB PALETTE (Community/Guides) */
+  /* --- FAMILY PALETTE (Home Category Content) --- */
+  /* Normal */
+  --pal-family-sky: #BEE4FF;
+  --pal-family-beige: #F3E7D6;
+  --pal-family-blue: #8FB7FF;
+  --pal-family-lavender: #D9C6FF;
+  --pal-family-apricot: #FFC9A1;
+  --pal-family-forest: #7FBF8A;
+  --pal-family-yellow: #FFF06A;
+  --pal-family-coral: #FF9A7A;
+  --pal-family-bubblegum: #FF8CCF;
+  /* Ultra-Premium */
+  --pal-family-prem-celestial: #D0ECFF;
+  --pal-family-prem-hearth: #F5EDE2;
+  --pal-family-prem-regal: #A9C8FF;
+  --pal-family-prem-velvet: #E4D8FF;
+  /* Material-Aware */
+  --pal-family-mat-sky-gloss: #D9F2FF;
+  --pal-family-mat-lav-pearl: #EADFFF;
+  --pal-family-mat-apricot: #F5C4A0;
+
+  /* --- HUB PALETTE (Community/Guides) --- */
+  /* Normal */
   --pal-hub-base: #E4FFF5;
   --pal-hub-neutral: #DDE3EA;
   --pal-hub-ink: #2A2D32;
   --pal-hub-green: #8ED9A1;
   --pal-hub-blue: #BEE4FF;
   --pal-hub-pink: #FFD9E8;
+  /* Ultra-Premium */
+  --pal-hub-prem-opal: #DFFEF3;
+  --pal-hub-prem-platinum: #C9D6E3;
+  --pal-hub-prem-obsidian: #0F1113;
+  --pal-hub-prem-emerald: #5FCF8F;
+  /* Material-Aware */
+  --pal-hub-mat-matte: #D8F7EB;
+  --pal-hub-mat-gloss: #ECFFF8;
+  --pal-hub-mat-pearl: #E4F7FF;
 
+  /* --- ACCOUNTS PALETTE --- */
+  /* Normal */
+  --pal-account-base: #F3E7D6;
+  --pal-account-neutral: #D9C2A8;
+  --pal-account-ink: #2A2D32;
+  --pal-account-blue: #8FB7FF;
+  --pal-account-violet: #A88BFF;
+  --pal-account-yellow: #FFD27A;
+  /* Ultra-Premium */
+  --pal-account-prem-luxe: #F5EDE2;
+  --pal-account-prem-clay: #C9B6A0;
+  --pal-account-prem-regal: #A9C8FF;
+  --pal-account-prem-sun: #FFC45A;
+  /* Material-Aware */
+  --pal-account-mat-matte: #E8D9C8;
+  --pal-account-mat-gloss: #F5EDE2;
+  --pal-account-mat-pearl: #E4D8FF;
+
+  /* --- ABOUT PALETTE --- */
+  /* Normal */
+  --pal-about-base: #FFFFFF;
+  --pal-about-grey: #DDE3EA;
+  --pal-about-neutral: #A7A9AC;
+  --pal-about-sky: #D0ECFF;
+  --pal-about-mint: #CFFFEF;
+  --pal-about-coral: #FF9A7A;
+  /* Ultra-Premium */
+  --pal-about-prem-platinum: #F7FAFF;
+  --pal-about-prem-alloy: #C7CCD4;
+  --pal-about-prem-obsidian: #2A2D32;
+  /* Material-Aware */
+  --pal-about-mat-pearl: #F7FAFF;
+  --pal-about-mat-matte: #B7BCC2;
+
+  /* --- STATUS COLORS --- */
+  --color-success: #8ED9A1;
+  --color-warning: #FFD27A;
+  --color-error: #FF9A7A;
+  --color-info: #8FB7FF;
+
+  /* --- GLOBAL NEUTRALS --- */
+  --neutral-white: #FFFFFF;
+  --neutral-ink: #2A2D32;
+  --neutral-ink-weak: #585C63;
 }
 
 
 /* =========================================
-   5. SEMANTIC THEME ENGINE
+   6. SEMANTIC THEME ENGINE
    ========================================= */
 
-/* DEFAULT THEME (Home) */
+/* DEFAULT THEME (Root Landing Page - Blue) */
 :root {
   --bg-page: var(--pal-home-base);
   --bg-surface: var(--pal-home-white);
@@ -132,6 +250,26 @@
   --accent-highlight: var(--pal-living-peach);
 }
 
+/* THEME: HOME CATEGORY (Internal ID: Family) */
+/* This theme applies to the "Home" Category page (Kids/Routines) */
+[data-theme="home-category"] {
+  --bg-page: var(--pal-family-beige); 
+  --bg-surface: var(--neutral-white);
+  --text-main: var(--neutral-ink);
+  --accent-primary: var(--pal-family-blue);
+  --accent-highlight: var(--pal-family-coral);
+}
+
+/* THEME: HUB */
+[data-theme="hub"] {
+  --bg-page: var(--pal-hub-base);
+  --bg-surface: var(--neutral-white);
+  --text-main: var(--pal-hub-ink);
+  --accent-primary: var(--pal-hub-green);
+  --accent-highlight: var(--pal-hub-pink);
+  --border-subtle: rgba(42, 45, 50, 0.08);
+}
+
 /* THEME: ACCOUNTS */
 [data-theme="accounts"] {
   --bg-page: var(--pal-account-base);
@@ -152,26 +290,64 @@
 }
 
 /* =========================================
-   6. MANUAL THEME OVERRIDES
+   7. DARK MODE OVERRIDES (TRUE DARK)
    ========================================= */
 
-/* The Logic: Apply Dark Mode if:
-   1. The user's system prefers dark AND they haven't manually set it to light.
-   2. OR, the user has manually set it to dark.
-*/
 @media (prefers-color-scheme: dark) {
+  /* ROOT DARK */
   :root:not([data-mode="light"]) {
-    --bg-page: #A5CFEA; 
-    --bg-surface: #DDE3EA;
-    --text-main: #1A1C1F;
-    --border-subtle: rgba(0, 0, 0, 0.1);
+    --bg-page: #A5CFEA; /* Home Base Blue DM */
+    --bg-surface: #DDE3EA; /* Home Soft White DM */
+    --text-main: #1A1C1F; /* Quantum Graphite DM */
+    --border-subtle: rgba(255, 255, 255, 0.1);
   }
-  /* Repeat your specific theme dark overrides here inside the media query */
+  
+  /* TOOLS DARK */
   :root:not([data-mode="light"]) [data-theme="tools"] {
-    --bg-page: #071423; --bg-surface: #1A1C1F; --text-main: #E6E8EB; --accent-primary: #0FA3D6;
+    --bg-page: #071423; /* System Night Navy */
+    --bg-surface: #1A1C1F; /* Quantum Graphite DM */
+    --text-main: #E6E8EB; /* Alloy Night White */
+    --accent-primary: #0FA3D6; /* Ion Core Blue DM */
   }
+  
+  /* LIVING DARK */
   :root:not([data-mode="light"]) [data-theme="living"] {
-    --bg-page: #C8F5E7; --bg-surface: #D8F7EB; --text-main: #1A1C1F; --accent-primary: #6FBF8A;
+    --bg-page: #C8F5E7; /* Meadow Night */
+    --bg-surface: #B8A48F; /* Clay Earth DM - Used as surface for contrast */
+    --text-main: #1A1C1F; 
+    --accent-primary: #6FBF8A; /* Leaf Shadow Green */
+  }
+
+  /* HOME CATEGORY DARK (Family) */
+  :root:not([data-mode="light"]) [data-theme="home-category"] {
+    --bg-page: #9CC9E8; /* Sky Night */
+    --bg-surface: #D9CCBC; /* Hug Beige DM */
+    --text-main: #1A1C1F; 
+    --accent-primary: #6F9ED6; /* Homebase Blue DM */
+  }
+
+  /* HUB DARK */
+  :root:not([data-mode="light"]) [data-theme="hub"] {
+    --bg-page: #C4E9D8; /* Hub Base DM */
+    --bg-surface: #AEB4BC; /* Hub Neutral DM */
+    --text-main: #1A1C1F; /* Hub Ink DM */
+    --accent-primary: #6FBF8A; /* Hub Accent Green DM */
+  }
+
+  /* ACCOUNTS DARK */
+  :root:not([data-mode="light"]) [data-theme="accounts"] {
+    --bg-page: #D9CCBC; /* Account Base DM */
+    --bg-surface: #B8A48F; /* Account Neutral DM */
+    --text-main: #1A1C1F; /* Account Ink DM */
+    --accent-primary: #6F9ED6; /* Account Accent Blue DM */
+  }
+
+  /* ABOUT DARK */
+  :root:not([data-mode="light"]) [data-theme="about"] {
+    --bg-page: #DDE3EA; /* About Base DM */
+    --bg-surface: #AEB4BC; /* About Soft Grey DM */
+    --text-main: #1A1C1F; /* About Obsidian Neutral DM */
+    --accent-primary: #E67F68; /* About Highlight Coral DM */
   }
 }
 
@@ -180,21 +356,33 @@
   --bg-page: #A5CFEA; 
   --bg-surface: #DDE3EA;
   --text-main: #1A1C1F;
-  --border-subtle: rgba(0, 0, 0, 0.1);
+  --border-subtle: rgba(255, 255, 255, 0.1);
 }
 :root[data-mode="dark"] [data-theme="tools"] {
   --bg-page: #071423; --bg-surface: #1A1C1F; --text-main: #E6E8EB; --accent-primary: #0FA3D6;
 }
 :root[data-mode="dark"] [data-theme="living"] {
-  --bg-page: #C8F5E7; --bg-surface: #D8F7EB; --text-main: #1A1C1F; --accent-primary: #6FBF8A;
+  --bg-page: #C8F5E7; --bg-surface: #B8A48F; --text-main: #1A1C1F; --accent-primary: #6FBF8A;
+}
+:root[data-mode="dark"] [data-theme="home-category"] {
+  --bg-page: #9CC9E8; --bg-surface: #D9CCBC; --text-main: #1A1C1F; --accent-primary: #6F9ED6;
+}
+:root[data-mode="dark"] [data-theme="hub"] {
+  --bg-page: #C4E9D8; --bg-surface: #AEB4BC; --text-main: #1A1C1F; --accent-primary: #6FBF8A;
+}
+:root[data-mode="dark"] [data-theme="accounts"] {
+  --bg-page: #D9CCBC; --bg-surface: #B8A48F; --text-main: #1A1C1F; --accent-primary: #6F9ED6;
+}
+:root[data-mode="dark"] [data-theme="about"] {
+  --bg-page: #DDE3EA; --bg-surface: #AEB4BC; --text-main: #1A1C1F; --accent-primary: #E67F68;
 }
 
-/* ULTRA-PREMIUM "STARWALKER" MODE (Hidden Secret) */
+/* ULTRA-PREMIUM "STARWALKER" MODE */
+/* Uses Ultra-Premium Dark values from Home Palette for consistency */
 :root[data-mode="starwalker"] {
-  --bg-page: #050505;
-  --bg-surface: #111111;
-  --text-main: #E0E0E0;
-  --accent-primary: #FFD700; /* Gold */
-  --border-subtle: rgba(255, 215, 0, 0.2);
+  --bg-page: #AFC3D1; /* Home Platinum Blue DM */
+  --bg-surface: #D9DDE2; /* Home Luxe White DM */
+  --text-main: #0F1113; /* Hub Obsidian Ink */
+  --accent-primary: #D9BD00; /* Home Gold Highlight DM */
+  --border-subtle: rgba(217, 189, 0, 0.3);
 }
-

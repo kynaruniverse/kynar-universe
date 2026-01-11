@@ -4,62 +4,73 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home Category | Kynar Universe</title>
+  
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
 </head>
 
-<body data-theme="home">
+<body data-theme="home-category">
 
   <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
-    <nav class="breadcrumb">
+    <nav class="breadcrumb animate-enter">
       <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">← Return</a>
       <span style="opacity: 0.5;">/</span>
       <span class="text-micro">Home</span>
     </nav>
 
-    <header class="stack-md animate-enter">
-      <span class="tag" style="background-color: var(--pal-home-white); color: var(--pal-home-accent); border-color: var(--pal-home-accent);">Category 03</span>
+    <header class="stack-md animate-enter delay-1">
+      <div>
+        <span class="tag" data-variant="family">Category 03</span>
+      </div>
+      
       <h1 class="text-h1">Home</h1>
+      
       <p class="text-body">
         Warm, simple tools for families, routines, and daily comfort.
         A space for the people who matter.
       </p>
-      <p class="text-micro" style="opacity: 0.6; font-style: italic;">
-        "This space is yours."
-      </p>
+      
+      <div style="opacity: 0.8; margin-top: var(--space-sm);">
+        <p class="text-lore">"This space is yours."</p>
+      </div>
     </header>
 
-    <section class="stack-md animate-enter delay-1">
+    <section class="stack-md animate-enter delay-2">
       <h2 class="text-h3">Collections</h2>
       
-      <div style="display: grid; gap: var(--space-md);">
+      <div style="display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
         
-        <div class="card">
-          <div class="stack-sm">
-            <h3 class="text-h3">Family & Kids</h3>
-            <p class="text-body" style="font-size: 0.9rem;">Learning packs and fun activities.</p>
-            <div style="margin-top: var(--space-sm);">
-               <a href="../product.html?id=kids-math-pack" class="btn-tertiary" style="padding-left: 0;">View Pack →</a>
+        <div class="card" data-variant="home">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="stack-sm">
+              <h3 class="text-h3">Family & Kids</h3>
+              <p class="text-body" style="font-size: 0.9rem;">Learning packs and fun activities.</p>
+              <div style="margin-top: var(--space-sm);">
+                 <a href="../product.html?id=kids-math-pack" class="btn-tertiary" style="padding-left: 0;">View Pack →</a>
+              </div>
             </div>
+            <i class="ph ph-smiley-sticker" style="font-size: 1.5rem; color: var(--pal-family-coral); opacity: 0.8;"></i>
           </div>
         </div>
 
-        <div class="card">
-          <div class="stack-sm">
-            <h3 class="text-h3">Routines & Org</h3>
-            <p class="text-body" style="font-size: 0.9rem;">Planners for a calmer home life.</p>
-            <div style="margin-top: var(--space-sm);">
-               <button class="btn-tertiary" style="padding-left: 0;">View Tools →</button>
+        <div class="card" data-variant="home">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="stack-sm">
+              <h3 class="text-h3">Routines & Org</h3>
+              <p class="text-body" style="font-size: 0.9rem;">Planners for a calmer home life.</p>
+              <div style="margin-top: var(--space-sm);">
+                 <button class="btn-tertiary" style="padding-left: 0;">View Tools →</button>
+              </div>
             </div>
+            <i class="ph ph-calendar-check" style="font-size: 1.5rem; color: var(--pal-family-blue); opacity: 0.8;"></i>
           </div>
         </div>
 
@@ -72,9 +83,9 @@
 
   </main>
 
-<script src="../../js/app.js"></script>
-<script type="module" src="../../js/header.js"></script> 
-<script type="module" src="../../js/search.js"></script>
+  <script src="../../js/app.js"></script>
+  <script type="module" src="../../js/header.js"></script> 
+  <script type="module" src="../../js/search.js"></script>
 
 </body>
 </html>

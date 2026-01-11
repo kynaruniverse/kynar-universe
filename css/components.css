@@ -1,7 +1,9 @@
-/* ASTRYX COMPONENT LIBRARY */
+/* KYNAR COMPONENT LIBRARY
+   Status: FINAL MASTER (Aligned with Kynar Color System & Language Bible)
+*/
 
 /* =========================================
-   1. BUTTONS
+   1. BUTTONS (Tactile & Warm)
    ========================================= */
 .btn {
   display: inline-flex;
@@ -10,48 +12,68 @@
   gap: var(--space-sm);
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-pill);
+  
+  font-family: var(--font-primary);
   font-weight: var(--weight-medium);
   font-size: var(--text-body);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  line-height: 1.2;
+  
   cursor: pointer;
   border: none;
   text-decoration: none;
-  line-height: 1.2;
+  
+  /* Premium Motion - "Warm Guidance" feels responsive */
+  transition: transform var(--transition-fast), 
+              box-shadow var(--transition-fast), 
+              background-color var(--transition-fast),
+              color var(--transition-fast);
 }
 
 .btn:active {
-  transform: scale(0.97);
+  transform: scale(0.97) translateY(1px); /* Satisfying "click" feel */
 }
 
-/* Primary Button */
+/* Primary: Confident & Warm */
 .btn-primary {
   background-color: var(--accent-primary);
   color: var(--neutral-white);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft lift */
+}
+.btn-primary:hover {
+  background-color: var(--pal-home-signal); /* Slight brighten on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Secondary Button */
+/* Secondary: Supportive & Clear */
 .btn-secondary {
   background-color: transparent;
   border: 2px solid var(--accent-primary);
   color: var(--accent-primary);
 }
+.btn-secondary:hover {
+  background-color: var(--bg-surface);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
 
-/* Tertiary/Ghost Button */
+/* Tertiary: Quiet & Optional ("A whisper, not a shout") */
 .btn-tertiary {
   background-color: transparent;
   color: var(--text-muted);
   padding: 0.5rem 1rem;
 }
-
 .btn-tertiary:hover {
   color: var(--accent-primary);
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  background-color: rgba(0,0,0,0.03); /* Very subtle interaction area */
+  text-decoration: none; 
+}
+@media (prefers-color-scheme: dark) {
+  .btn-tertiary:hover { background-color: rgba(255,255,255,0.05); }
 }
 
 /* =========================================
-   2. INPUTS & FORMS
+   2. INPUTS & FORMS (Material-Aware)
    ========================================= */
 .form-group {
   display: flex;
@@ -64,52 +86,96 @@
   font-weight: var(--weight-semibold);
   color: var(--text-main);
   margin-left: var(--space-xs);
+  opacity: 0.9;
 }
 
 .input {
   width: 100%;
   padding: var(--space-md);
+  
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
+  
   font-family: var(--font-primary);
   font-size: var(--text-body);
   color: var(--text-main);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  
+  box-shadow: var(--shadow-sm); /* Subtle depth */
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .input:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(143, 183, 255, 0.2);
+  /* Use variable-based shadow glow instead of hardcoded hex */
+  box-shadow: 0 0 0 4px var(--pal-home-base); 
+}
+@media (prefers-color-scheme: dark) {
+  .input:focus { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1); }
 }
 
 /* =========================================
-   3. TAGS & PILLS
+   3. TAGS & PILLS (Full Ecosystem)
    ========================================= */
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem 0.85rem; /* Slightly wider for elegance */
   border-radius: var(--radius-pill);
+  
   font-size: var(--text-micro);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.02em;
+  
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
-/* Contextual Tags */
+/* Contextual Variants (Matches Kynar Colors.txt) */
+
+/* TOOLS: Tech Blue */
 .tag[data-variant="tools"] {
   background-color: var(--pal-tools-white);
-  color: var(--pal-tools-core);
+  color: var(--pal-tools-navy);
   border-color: var(--pal-tools-core);
 }
 
+/* LIVING: Meadow Green */
 .tag[data-variant="living"] {
   background-color: var(--pal-living-meadow);
   color: var(--pal-living-green);
   border-color: var(--pal-living-green);
+}
+
+/* HOME: Brand Blue */
+.tag[data-variant="home"] {
+  background-color: var(--pal-home-white);
+  color: var(--pal-home-accent);
+  border-color: var(--pal-home-accent);
+}
+
+/* FAMILY: Warm Beige/Apricot */
+.tag[data-variant="family"] {
+  background-color: var(--pal-family-beige);
+  color: var(--pal-family-coral);
+  border-color: var(--pal-family-apricot);
+}
+
+/* HUB: Mint/Ink */
+.tag[data-variant="hub"] {
+  background-color: var(--pal-hub-base);
+  color: var(--pal-hub-ink);
+  border-color: var(--pal-hub-green);
+}
+
+/* ACCOUNT: Gold/Blue */
+.tag[data-variant="account"] {
+  background-color: var(--pal-account-base);
+  color: var(--pal-account-blue);
+  border-color: var(--pal-account-neutral);
 }
 
 /* =========================================
@@ -123,18 +189,50 @@
   color: var(--text-muted);
 }
 
+.breadcrumb a {
+  transition: color var(--transition-fast);
+  border-bottom: 1px solid transparent;
+}
+.breadcrumb a:hover {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
 /* =========================================
-   5. MOTION UTILITIES
+   5. MOTION UTILITIES (Manual Sequencing)
    ========================================= */
+/* Used for Hero sections to create "Guided" entry */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-enter {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0; /* Hidden until animation starts */
 }
 
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
+.delay-1 { animation-delay: 100ms; }
+.delay-2 { animation-delay: 200ms; }
+.delay-3 { animation-delay: 300ms; }
+
+/* =========================================
+   6. TECHNICAL COMPONENTS (New for Scripts)
+   ========================================= */
+/* For displaying code snippets (Automation Products) */
+.code-block {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  font-family: "Fira Code", "JetBrains Mono", monospace;
+  font-size: 0.9em;
+  color: var(--text-main);
+  overflow-x: auto; /* Scroll horizontal if long */
+  position: relative;
+}
+
+/* Optional: Add a subtle left border for Tools/Tech context */
+.code-block[data-context="tools"] {
+  border-left: 4px solid var(--pal-tools-core);
+}

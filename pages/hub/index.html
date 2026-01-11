@@ -4,51 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Hub | Kynar Universe</title>
+  
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
 </head>
+
 <body data-theme="hub">
 
   <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
-    <nav class="breadcrumb">
-      <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">← Return Home</a>
+    <nav class="breadcrumb animate-enter">
+      <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">← Return</a>
+      <span style="opacity: 0.5;">/</span>
+      <span class="text-micro">The Hub</span>
     </nav>
 
-    <header class="stack-md animate-enter">
-      <span class="tag" style="background-color: var(--pal-hub-green); color: var(--pal-hub-ink);">Community</span>
+    <header class="stack-md animate-enter delay-1">
+      <div>
+        <span class="tag" data-variant="hub">Community</span>
+      </div>
+      
       <h1 class="text-h1">The Hub</h1>
+      
       <p class="text-body">
         A space for curious explorers. Guides, ideas, and stories to help you build your world.
       </p>
+
+      <div style="opacity: 0.8; margin-top: var(--space-xs);">
+        <p class="text-lore">"Every corner has a story."</p>
+      </div>
     </header>
 
-    <section class="stack-md animate-enter delay-1">
+    <section class="stack-md animate-enter delay-2">
       <h2 class="text-h3">Latest Guides</h2>
       
-      <div style="display: grid; gap: var(--space-md);">
+      <div style="display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
         
-        <a href="../guide.html?guide=start-journaling" class="card" style="border-left: 4px solid var(--pal-hub-green);">
-          <div class="stack-sm">
-            <h3 class="text-h3">How to Start Journaling</h3>
-            <p class="text-body" style="font-size: 0.9rem;">Simple tips to build a habit that sticks.</p>
-            <div style="margin-top: var(--space-xs);">
-               <span class="text-micro" style="color: var(--pal-hub-ink); opacity: 0.6;">Read Guide →</span>
+        <a href="../guide.html?guide=start-journaling" class="card" data-variant="hub">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="stack-sm">
+              <h3 class="text-h3">How to Start Journaling</h3>
+              <p class="text-body" style="font-size: 0.9rem;">Simple tips to build a habit that sticks.</p>
+              <div style="margin-top: var(--space-xs);">
+                 <span class="text-micro" style="color: var(--pal-hub-ink); opacity: 0.6; text-decoration: underline; text-underline-offset: 4px;">Read Guide</span>
+              </div>
             </div>
+            <i class="ph ph-book-open" style="font-size: 1.5rem; color: var(--pal-hub-green); opacity: 0.8;"></i>
           </div>
         </a>
 
-        <a href="../guide.html?guide=calm-morning-routine" class="card" style="border-left: 4px solid var(--pal-hub-blue);">
-          <div class="stack-sm">
-            <h3 class="text-h3">Building a Calm Morning</h3>
-            <p class="text-body" style="font-size: 0.9rem;">Reclaim your mornings from chaos.</p>
-             <div style="margin-top: var(--space-xs);">
-               <span class="text-micro" style="color: var(--pal-hub-ink); opacity: 0.6;">Read Guide →</span>
+        <a href="../guide.html?guide=calm-morning-routine" class="card" data-variant="hub">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="stack-sm">
+              <h3 class="text-h3">Building a Calm Morning</h3>
+              <p class="text-body" style="font-size: 0.9rem;">Reclaim your mornings from chaos.</p>
+               <div style="margin-top: var(--space-xs);">
+                 <span class="text-micro" style="color: var(--pal-hub-ink); opacity: 0.6; text-decoration: underline; text-underline-offset: 4px;">Read Guide</span>
+              </div>
             </div>
+            <i class="ph ph-coffee" style="font-size: 1.5rem; color: var(--pal-hub-green); opacity: 0.8;"></i>
           </div>
         </a>
 
@@ -60,8 +81,10 @@
     </footer>
 
   </main>
+
   <script src="../../js/app.js"></script>
-  <script type="module" src="../../js/header.js"></script> <script type="module" src="../../js/search.js"></script>
+  <script type="module" src="../../js/header.js"></script> 
+  <script type="module" src="../../js/search.js"></script>
 
 </body>
 </html>
