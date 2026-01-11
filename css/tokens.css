@@ -151,37 +151,50 @@
   --border-subtle: rgba(0,0,0,0.05);
 }
 
-/* DARK MODE OVERRIDES */
+/* =========================================
+   6. MANUAL THEME OVERRIDES
+   ========================================= */
+
+/* The Logic: Apply Dark Mode if:
+   1. The user's system prefers dark AND they haven't manually set it to light.
+   2. OR, the user has manually set it to dark.
+*/
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-mode="light"]) {
     --bg-page: #A5CFEA; 
     --bg-surface: #DDE3EA;
     --text-main: #1A1C1F;
     --border-subtle: rgba(0, 0, 0, 0.1);
   }
-
-  [data-theme="tools"] {
-    --bg-page: #071423; 
-    --bg-surface: #1A1C1F;
-    --text-main: #E6E8EB; 
-    --accent-primary: #0FA3D6;
+  /* Repeat your specific theme dark overrides here inside the media query */
+  :root:not([data-mode="light"]) [data-theme="tools"] {
+    --bg-page: #071423; --bg-surface: #1A1C1F; --text-main: #E6E8EB; --accent-primary: #0FA3D6;
   }
-  
-  [data-theme="living"] {
-    --bg-page: #C8F5E7;
-    --bg-surface: #D8F7EB;
-    --text-main: #1A1C1F;
-    --accent-primary: #6FBF8A;
+  :root:not([data-mode="light"]) [data-theme="living"] {
+    --bg-page: #C8F5E7; --bg-surface: #D8F7EB; --text-main: #1A1C1F; --accent-primary: #6FBF8A;
   }
-  
-  /* THEME: HUB */
-  [data-theme="hub"] {
-    --bg-page: var(--pal-hub-base);
-    --bg-surface: var(--neutral-white);
-    --text-main: var(--pal-hub-ink);
-    --accent-primary: var(--pal-hub-green);
-    --accent-highlight: var(--pal-hub-pink);
-    --border-subtle: rgba(42, 45, 50, 0.08);
-  }
-
 }
+
+/* FORCED DARK MODE (User selected "Dark") */
+:root[data-mode="dark"] {
+  --bg-page: #A5CFEA; 
+  --bg-surface: #DDE3EA;
+  --text-main: #1A1C1F;
+  --border-subtle: rgba(0, 0, 0, 0.1);
+}
+:root[data-mode="dark"] [data-theme="tools"] {
+  --bg-page: #071423; --bg-surface: #1A1C1F; --text-main: #E6E8EB; --accent-primary: #0FA3D6;
+}
+:root[data-mode="dark"] [data-theme="living"] {
+  --bg-page: #C8F5E7; --bg-surface: #D8F7EB; --text-main: #1A1C1F; --accent-primary: #6FBF8A;
+}
+
+/* ULTRA-PREMIUM "STARWALKER" MODE (Hidden Secret) */
+:root[data-mode="starwalker"] {
+  --bg-page: #050505;
+  --bg-surface: #111111;
+  --text-main: #E0E0E0;
+  --accent-primary: #FFD700; /* Gold */
+  --border-subtle: rgba(255, 215, 0, 0.2);
+}
+
