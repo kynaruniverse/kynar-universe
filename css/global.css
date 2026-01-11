@@ -423,3 +423,70 @@ code, pre {
   background: radial-gradient(circle at center, #FFD700, transparent 70%);
   opacity: 0.1;
 }
+
+/* --- HEADER CONTROLS (Add to css/global.css) --- */
+
+/* The Container for the buttons */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Consistent spacing between buttons */
+}
+
+/* The Tactile Button */
+.header-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Perfect Circle */
+  
+  background: transparent; /* Invisible by default */
+  border: 1px solid transparent; /* Reserve space for border */
+  color: var(--text-muted);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  
+  transition: all 0.2s ease;
+  font-size: 1.25rem; /* Icon size */
+}
+
+/* Hover State: Glassy Glow */
+.header-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-main);
+  border-color: var(--border-subtle);
+  transform: translateY(-1px);
+}
+
+/* Active/Click State: Press down */
+.header-btn:active {
+  transform: translateY(1px) scale(0.95);
+  background: var(--border-subtle);
+}
+
+/* The Logo Area adjustments */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 8px 0; /* Increase touch target */
+  transition: opacity 0.2s;
+}
+
+.header-logo:hover {
+  opacity: 0.8;
+}
+
+/* The Glowing Dot */
+.logo-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-primary); /* Connects to current theme color */
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent-glow); /* Soft light emission */
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
