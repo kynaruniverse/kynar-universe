@@ -3,126 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Kynar Universe | A Space, Not a Screen</title>
-  <meta name="description" content="A warm, guided world of digital tools and resources. Built for travelers, creators, and worldbuilders.">
-  <meta name="theme-color" content="#CFEAFF">
+  <title>Kynar Universe</title>
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://kynaruniverse.co.uk/">
-  <meta property="og:title" content="Kynar Universe | A Space, Not a Screen">
-  <meta property="og:description" content="Tools, guides, and resources for a clearer life. Explore the world.">
-  <meta property="og:image" content="https://kynaruniverse.co.uk/assets/share-preview.png">
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
 
-<body data-theme="home">
+<body>
 
-  <main class="container stack-xl" style="padding-top: var(--space-hero); padding-bottom: var(--space-section);">
+  <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
-    <header class="stack-md animate-enter hero-soul">
-      <h1 class="text-h1">
-        A space, <br>
-        not a screen.
-      </h1>
-      <p class="text-body">
-        A warm, guided world of digital tools and resources. 
+    <header class="stack-md animate-enter">
+      <div style="width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle, var(--pal-tools-core), transparent); opacity: 0.8; filter: blur(10px); margin-bottom: -1rem;"></div>
+      
+      <h1 class="text-h1">A space,<br>not a screen.</h1>
+      <p class="text-body" style="font-size: 1.1rem; opacity: 0.8;">
+        A guided world of digital tools and resources. 
         Built for travelers, creators, and worldbuilders.
       </p>
+      
+      <div style="margin-top: var(--space-sm); padding-left: var(--space-sm); border-left: 2px solid var(--border-highlight);">
+        <p class="text-lore">"Every tool is a small spark in the world."</p>
+      </div>
     </header>
 
-    <div class="animate-enter delay-1" style="opacity: 0.8;">
-      <p class="text-lore">"Every tool is a small spark in the world."</p>
-    </div>
-
-    <nav class="stack-md animate-enter delay-2">
+    <section class="stack-md animate-enter delay-1">
       
       <a href="pages/tools/index.html" class="card" data-variant="tools">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div class="stack-sm">
-            <span class="text-micro" style="color: var(--pal-tools-core);">Tools</span>
+            <span class="tag" style="color: var(--pal-tools-core); font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase;">Category 01</span>
             <h2 class="text-h3">Build & Create</h2>
-            <p class="text-body" style="font-size: 0.9rem;">
-              Productivity, tech, and creative systems.
-            </p>
+            <p class="text-body" style="font-size: 0.9rem;">Productivity systems, automation scripts, and creative tools.</p>
           </div>
-          <i class="ph ph-wrench" style="font-size: 1.5rem; color: var(--pal-tools-core); opacity: 0.8;"></i>
+          <i class="ph ph-wrench" style="font-size: 1.5rem; color: var(--pal-tools-core);"></i>
         </div>
       </a>
 
       <a href="pages/living/index.html" class="card" data-variant="living">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div class="stack-sm">
-            <span class="text-micro" style="color: var(--pal-living-green);">Living</span>
+             <span class="tag" style="color: var(--pal-living-core); font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase;">Category 02</span>
             <h2 class="text-h3">Life & Growth</h2>
-            <p class="text-body" style="font-size: 0.9rem;">
-              Wellness, learning, and everyday creativity.
-            </p>
+            <p class="text-body" style="font-size: 0.9rem;">Wellness journals, learning paths, and everyday clarity.</p>
           </div>
-          <i class="ph ph-plant" style="font-size: 1.5rem; color: var(--pal-living-green); opacity: 0.8;"></i>
-        </div>
-      </a>
-
-      <a href="pages/hub/index.html" class="card" data-variant="hub">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-          <div class="stack-sm">
-            <span class="text-micro" style="color: var(--pal-hub-green);">The Hub</span>
-            <h2 class="text-h3">Community & Guides</h2>
-            <p class="text-body" style="font-size: 0.9rem;">
-              Explore ideas, stories, and the knowledge library.
-            </p>
-          </div>
-          <i class="ph ph-users" style="font-size: 1.5rem; color: var(--pal-hub-green); opacity: 0.8;"></i>
+          <i class="ph ph-plant" style="font-size: 1.5rem; color: var(--pal-living-core);"></i>
         </div>
       </a>
 
       <a href="pages/home/index.html" class="card" data-variant="home">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div class="stack-sm">
-            <span class="text-micro" style="color: var(--pal-family-blue);">Home</span>
+             <span class="tag" style="color: var(--pal-home-core); font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase;">Category 03</span>
             <h2 class="text-h3">Family & Routines</h2>
-            <p class="text-body" style="font-size: 0.9rem;">
-              Warm tools for parents, kids, and daily comfort.
-            </p>
+            <p class="text-body" style="font-size: 0.9rem;">Warm tools for parents, kids, and daily comfort.</p>
           </div>
-          <i class="ph ph-house-line" style="font-size: 1.5rem; color: var(--pal-family-blue); opacity: 0.8;"></i>
+          <i class="ph ph-house-line" style="font-size: 1.5rem; color: var(--pal-home-core);"></i>
         </div>
       </a>
 
-      <a href="pages/account/index.html" class="card" data-variant="account">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+      <a href="pages/hub/index.html" class="card" data-variant="hub">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div class="stack-sm">
-            <span class="text-micro" style="color: var(--pal-account-blue);">The Archive</span>
-            <h2 class="text-h3">Your Collections</h2>
+             <span class="tag" style="color: var(--pal-hub-core); font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase;">The Hub</span>
+            <h2 class="text-h3">Community & Guides</h2>
+            <p class="text-body" style="font-size: 0.9rem;">Explore ideas, stories, and the knowledge library.</p>
           </div>
-          <i class="ph ph-archive" style="font-size: 1.5rem; color: var(--pal-account-blue); opacity: 0.8;"></i>
+          <i class="ph ph-compass" style="font-size: 1.5rem; color: var(--pal-hub-core);"></i>
         </div>
       </a>
 
-    </nav>
+      <a href="pages/account/index.html" class="card" style="border-left: none; text-align: center; opacity: 0.8;">
+        <span class="text-micro">Login to The Archive →</span>
+      </a>
 
-    <footer class="stack-md" style="margin-top: var(--space-xl); opacity: 0.6; text-align: center;">
-      <div style="display: flex; gap: var(--space-md); justify-content: center;">
-        <a href="pages/about/index.html" class="text-micro" style="text-decoration: underline; text-underline-offset: 4px;">Read the Story</a>
-        <a href="pages/support/index.html" class="text-micro" style="text-decoration: underline; text-underline-offset: 4px;">Help</a>
-      </div>
+    </section>
+
+    <footer style="margin-top: var(--space-xl); opacity: 0.5; text-align: center;">
       <p class="text-micro">The path continues.</p>
     </footer>
 
   </main>
-
+  
   <script src="js/app.js"></script>
-  <script type="module" src="js/header.js"></script>
+  <script type="module" src="js/header.js"></script> 
   <script type="module" src="js/search.js"></script>
-
 </body>
 </html>

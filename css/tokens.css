@@ -1,6 +1,6 @@
-/* KYNAR DESIGN TOKENS
+/* KYNAR DESIGN TOKENS (EVOLVED)
    Source of Truth for Colors, Type, Spacing, and Radius.
-   Status: FINAL MASTER (Aligned with Kynar Color Bible & Category Architecture)
+   Theme: Deep Atmosphere / Glass / Starlight
 */
 
 :root {
@@ -9,9 +9,10 @@
      ========================================= */
   --font-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
   --font-secondary: "Lora", Georgia, serif; 
+  --font-mono: "Fira Code", monospace; /* Added for Scripts/Code */
 
-  --text-h1: clamp(2rem, 5vw, 3rem);      
-  --text-h2: clamp(1.5rem, 3vw, 2.25rem); 
+  --text-h1: clamp(2.5rem, 5vw, 4rem);      
+  --text-h2: clamp(1.75rem, 3vw, 2.5rem); 
   --text-h3: 1.25rem;                     
   --text-body: 1rem;                      
   --text-micro: 0.875rem;                 
@@ -34,355 +35,147 @@
   --space-md-lg: 24px;
   --space-lg: 32px;
   --space-xl: 48px;
-  --space-section: 64px;
-  --space-hero: 96px;
+  --space-2xl: 64px;
+  --space-section: 96px; /* Increased for dramatic spacing */
+  --space-hero: 128px;
 
   /* =========================================
      3. SHAPE & LAYOUT
      ========================================= */
   --radius-sm: 4px;
-  --radius-md: 8px;   
-  --radius-lg: 16px;  
+  --radius-md: 12px;   
+  --radius-lg: 24px;  /* More rounded for "portal" feel */
   --radius-pill: 999px; 
 
   --grid-max-width: 1200px;
   --grid-gutter: var(--space-md);
   
-  /* =========================================
-     4. UTILITY TOKENS
-     ========================================= */
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-
-  /* Transitions */
-  --transition-fast: 150ms ease-out;
-  --transition-base: 250ms ease-out;
-  --transition-slow: 400ms ease-out;
-
-  /* Z-Index Layers */
-  --z-base: 1;
-  --z-dropdown: 100;
-  --z-header: 800;
-  --z-trigger: 900;
-  --z-modal: 2000;
+  --z-header: 1000;
+  --z-overlay: 2000;
 
   /* =========================================
-     5. COLOR PALETTE DEFINITIONS (Strict Values)
+     4. COLOR PALETTE DEFINITIONS (DEEP SPACE)
      ========================================= */
 
-  /* --- HOME PALETTE (Main / Shell) --- */
-  /* Normal */
-  --pal-home-base: #CFEAFF;
-  --pal-home-white: #F7FAFF;
-  --pal-home-neutral: #C7CCD4;
-  --pal-home-accent: #8FB7FF;
-  --pal-home-highlight: #FFE900;
-  --pal-home-signal: #1ACBFF;
-  /* Ultra-Premium */
-  --pal-home-prem-base: #C9DFF5;
-  --pal-home-prem-white: #F7FAFF;
-  --pal-home-prem-regal: #A9C8FF;
-  --pal-home-prem-gold: #F4D400;
-  --pal-home-prem-flux: #00E4FF;
-  /* Material-Aware */
-  --pal-home-mat-matte: #B6D9F0;
-  --pal-home-mat-gloss: #D0ECFF;
-  --pal-home-mat-pearl: #F7FAFF;
+  /* THE CANVAS (Backgrounds) */
+  --bg-page: #0a0a0a;  /* Deepest Charcoal */
+  --bg-panel: #141414; /* Slightly lighter panel */
+  --bg-surface: rgba(255, 255, 255, 0.03); /* Glassy transparency */
+  --bg-surface-hover: rgba(255, 255, 255, 0.08); /* Brighter glass on hover */
+  
+  /* THE INK (Typography) */
+  --text-main: #ededed;  /* Soft White */
+  --text-body: #a1a1aa;  /* Silver Grey */
+  --text-muted: #52525b; /* Dark Grey */
+  --text-inverse: #0a0a0a; /* For buttons on light backgrounds */
 
-  /* --- TOOLS PALETTE (Tech) --- */
-  /* Normal */
-  --pal-tools-core: #1ACBFF; /* Ion Core Blue */
-  --pal-tools-graphite: #2A2D32;
-  --pal-tools-white: #F5F7FA;
-  --pal-tools-violet: #A88BFF;
-  --pal-tools-silver: #DDE3EA;
-  --pal-tools-navy: #0B1F33;
-  --pal-tools-yellow: #FFE900;
-  --pal-tools-red: #FF3A5C;
-  /* Ultra-Premium */
-  --pal-tools-prem-ion: #C9D6E3;
-  --pal-tools-prem-obsidian: #0F1113;
-  --pal-tools-prem-cerulean: #8FD9FF;
-  --pal-tools-prem-aqua: #00E4FF;
-  /* Material-Aware */
-  --pal-tools-mat-matte: #1BB7E8;
-  --pal-tools-mat-gloss: #29D4FF;
-  --pal-tools-mat-metal: #3A3E44;
+  /* GLOBAL UTILITIES */
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-highlight: rgba(255, 255, 255, 0.2);
+  --glass-blur: blur(16px);
+  --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.05);
+  
+  /* STATUS COLORS */
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
 
-  /* --- LIVING PALETTE (Life) --- */
-  /* Normal */
-  --pal-living-meadow: #E4FFF5;
-  --pal-living-green: #8ED9A1;
-  --pal-living-clay: #D9C2A8;
-  --pal-living-sky: #CDEAFF;
-  --pal-living-peach: #FFCEB8;
-  --pal-living-amber: #FFD27A;
-  --pal-living-mint: #CFFFEF;
-  --pal-living-moss: #7A9B7F;
-  /* Ultra-Premium */
-  --pal-living-prem-opal: #DFFEF3;
-  --pal-living-prem-emerald: #5FCF8F;
-  --pal-living-prem-clay: #C9B6A0;
-  --pal-living-prem-rose: #FFBFA8;
-  /* Material-Aware */
-  --pal-living-mat-matte: #D8F7EB;
-  --pal-living-mat-gloss: #ECFFF8;
-  --pal-living-mat-satin: #DCCBB7;
+  /* --- CATEGORY SOULS (The Glowing Accents) --- */
 
-  /* --- FAMILY PALETTE (Home Category Content) --- */
-  /* Normal */
-  --pal-family-sky: #BEE4FF;
-  --pal-family-beige: #F3E7D6;
-  --pal-family-blue: #8FB7FF;
-  --pal-family-lavender: #D9C6FF;
-  --pal-family-apricot: #FFC9A1;
-  --pal-family-forest: #7FBF8A;
-  --pal-family-yellow: #FFF06A;
-  --pal-family-coral: #FF9A7A;
-  --pal-family-bubblegum: #FF8CCF;
-  /* Ultra-Premium */
-  --pal-family-prem-celestial: #D0ECFF;
-  --pal-family-prem-hearth: #F5EDE2;
-  --pal-family-prem-regal: #A9C8FF;
-  --pal-family-prem-velvet: #E4D8FF;
-  /* Material-Aware */
-  --pal-family-mat-sky-gloss: #D9F2FF;
-  --pal-family-mat-lav-pearl: #EADFFF;
-  --pal-family-mat-apricot: #F5C4A0;
+  /* TOOLS (Electric Blue) */
+  --pal-tools-core: #3b82f6;
+  --pal-tools-glow: rgba(59, 130, 246, 0.4);
+  --pal-tools-surface: rgba(59, 130, 246, 0.1);
 
-  /* --- HUB PALETTE (Community/Guides) --- */
-  /* Normal */
-  --pal-hub-base: #E4FFF5;
-  --pal-hub-neutral: #DDE3EA;
-  --pal-hub-ink: #2A2D32;
-  --pal-hub-green: #8ED9A1;
-  --pal-hub-blue: #BEE4FF;
-  --pal-hub-pink: #FFD9E8;
-  /* Ultra-Premium */
-  --pal-hub-prem-opal: #DFFEF3;
-  --pal-hub-prem-platinum: #C9D6E3;
-  --pal-hub-prem-obsidian: #0F1113;
-  --pal-hub-prem-emerald: #5FCF8F;
-  /* Material-Aware */
-  --pal-hub-mat-matte: #D8F7EB;
-  --pal-hub-mat-gloss: #ECFFF8;
-  --pal-hub-mat-pearl: #E4F7FF;
+  /* LIVING (Emerald Green) */
+  --pal-living-core: #10b981;
+  --pal-living-glow: rgba(16, 185, 129, 0.4);
+  --pal-living-surface: rgba(16, 185, 129, 0.1);
 
-  /* --- ACCOUNTS PALETTE --- */
-  /* Normal */
-  --pal-account-base: #F3E7D6;
-  --pal-account-neutral: #D9C2A8;
-  --pal-account-ink: #2A2D32;
-  --pal-account-blue: #8FB7FF;
-  --pal-account-violet: #A88BFF;
-  --pal-account-yellow: #FFD27A;
-  /* Ultra-Premium */
-  --pal-account-prem-luxe: #F5EDE2;
-  --pal-account-prem-clay: #C9B6A0;
-  --pal-account-prem-regal: #A9C8FF;
-  --pal-account-prem-sun: #FFC45A;
-  /* Material-Aware */
-  --pal-account-mat-matte: #E8D9C8;
-  --pal-account-mat-gloss: #F5EDE2;
-  --pal-account-mat-pearl: #E4D8FF;
+  /* HOME (Warm Amber/Gold) */
+  --pal-home-core: #f59e0b;
+  --pal-home-glow: rgba(245, 158, 11, 0.4);
+  --pal-home-surface: rgba(245, 158, 11, 0.1);
 
-  /* --- ABOUT PALETTE --- */
-  /* Normal */
-  --pal-about-base: #FFFFFF;
-  --pal-about-grey: #DDE3EA;
-  --pal-about-neutral: #A7A9AC;
-  --pal-about-sky: #D0ECFF;
-  --pal-about-mint: #CFFFEF;
-  --pal-about-coral: #FF9A7A;
-  /* Ultra-Premium */
-  --pal-about-prem-platinum: #F7FAFF;
-  --pal-about-prem-alloy: #C7CCD4;
-  --pal-about-prem-obsidian: #2A2D32;
-  /* Material-Aware */
-  --pal-about-mat-pearl: #F7FAFF;
-  --pal-about-mat-matte: #B7BCC2;
+  /* HUB (Mystic Purple) */
+  --pal-hub-core: #8b5cf6;
+  --pal-hub-glow: rgba(139, 92, 246, 0.4);
+  --pal-hub-surface: rgba(139, 92, 246, 0.1);
+  
+  /* ACCOUNTS (Gold/Neutral) */
+  --pal-account-core: #d4d4d8;
+  --pal-account-blue: #3b82f6;
 
-  /* --- STATUS COLORS --- */
-  --color-success: #8ED9A1;
-  --color-warning: #FFD27A;
-  --color-error: #FF9A7A;
-  --color-info: #8FB7FF;
-
-  /* --- GLOBAL NEUTRALS --- */
-  --neutral-white: #FFFFFF;
-  --neutral-ink: #2A2D32;
-  --neutral-ink-weak: #585C63;
+  /* STARWALKER (Ultra-Premium Secret) */
+  --pal-star-gold: #FFD700;
+  --pal-star-glow: rgba(255, 215, 0, 0.5);
 }
 
-
 /* =========================================
-   6. SEMANTIC THEME ENGINE
+   5. SEMANTIC THEME ENGINE
    ========================================= */
 
-/* DEFAULT THEME (Root Landing Page - Blue) */
+/* DEFAULT THEME (Universe/Home) */
 :root {
-  --bg-page: var(--pal-home-base);
-  --bg-surface: var(--pal-home-white);
-  --text-main: var(--neutral-ink);
-  --text-muted: var(--neutral-ink-weak);
-  --accent-primary: var(--pal-home-accent);
-  --accent-highlight: var(--pal-home-highlight);
-  --border-subtle: rgba(42, 45, 50, 0.08); 
+  --accent-primary: var(--pal-tools-core); /* Default blue glow */
+  --accent-glow: var(--pal-tools-glow);
 }
 
 /* THEME: TOOLS */
 [data-theme="tools"] {
-  --bg-page: var(--pal-tools-white);
-  --bg-surface: var(--neutral-white);
-  --text-main: var(--pal-tools-graphite);
   --accent-primary: var(--pal-tools-core);
-  --accent-highlight: var(--pal-tools-violet);
+  --accent-glow: var(--pal-tools-glow);
 }
 
 /* THEME: LIVING */
 [data-theme="living"] {
-  --bg-page: var(--pal-living-meadow);
-  --bg-surface: var(--neutral-white);
-  --text-main: var(--neutral-ink);
-  --accent-primary: var(--pal-living-green);
-  --accent-highlight: var(--pal-living-peach);
+  --accent-primary: var(--pal-living-core);
+  --accent-glow: var(--pal-living-glow);
 }
 
-/* THEME: HOME CATEGORY (Internal ID: Family) */
-/* This theme applies to the "Home" Category page (Kids/Routines) */
-[data-theme="home-category"] {
-  --bg-page: var(--pal-family-beige); 
-  --bg-surface: var(--neutral-white);
-  --text-main: var(--neutral-ink);
-  --accent-primary: var(--pal-family-blue);
-  --accent-highlight: var(--pal-family-coral);
+/* THEME: HOME */
+[data-theme="home"] {
+  --accent-primary: var(--pal-home-core);
+  --accent-glow: var(--pal-home-glow);
 }
 
 /* THEME: HUB */
 [data-theme="hub"] {
-  --bg-page: var(--pal-hub-base);
-  --bg-surface: var(--neutral-white);
-  --text-main: var(--pal-hub-ink);
-  --accent-primary: var(--pal-hub-green);
-  --accent-highlight: var(--pal-hub-pink);
-  --border-subtle: rgba(42, 45, 50, 0.08);
+  --accent-primary: var(--pal-hub-core);
+  --accent-glow: var(--pal-hub-glow);
 }
 
 /* THEME: ACCOUNTS */
 [data-theme="accounts"] {
-  --bg-page: var(--pal-account-base);
-  --bg-surface: #F5EDE2; 
-  --text-main: var(--pal-home-ink);
   --accent-primary: var(--pal-account-blue);
-  --accent-highlight: var(--pal-account-neutral);
+  --bg-page: #0f0f10; /* Slightly different void for distinction */
 }
 
-/* THEME: ABOUT */
-[data-theme="about"] {
-  --bg-page: var(--pal-about-base);
-  --bg-surface: var(--pal-about-grey);
-  --text-main: var(--neutral-ink);
-  --accent-primary: var(--pal-about-coral);
-  --accent-highlight: var(--pal-about-mint);
-  --border-subtle: rgba(0,0,0,0.05);
+/* THEME: STARWALKER (Secret) */
+[data-mode="starwalker"] {
+  --accent-primary: var(--pal-star-gold);
+  --accent-glow: var(--pal-star-glow);
+  --text-main: #fffcf0; /* Warmer white */
+  --border-subtle: rgba(255, 215, 0, 0.2);
 }
 
-/* =========================================
-   7. DARK MODE OVERRIDES (TRUE DARK)
-   ========================================= */
-
-@media (prefers-color-scheme: dark) {
-  /* ROOT DARK */
-  :root:not([data-mode="light"]) {
-    --bg-page: #A5CFEA; /* Home Base Blue DM */
-    --bg-surface: #DDE3EA; /* Home Soft White DM */
-    --text-main: #1A1C1F; /* Quantum Graphite DM */
-    --border-subtle: rgba(255, 255, 255, 0.1);
-  }
+/* LIGHT MODE OVERRIDES (Optional Toggle) */
+:root[data-mode="light"] {
+  --bg-page: #fdfbf7; /* Warm Paper */
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f4f4f5;
+  --bg-panel: #f4f4f5;
   
-  /* TOOLS DARK */
-  :root:not([data-mode="light"]) [data-theme="tools"] {
-    --bg-page: #071423; /* System Night Navy */
-    --bg-surface: #1A1C1F; /* Quantum Graphite DM */
-    --text-main: #E6E8EB; /* Alloy Night White */
-    --accent-primary: #0FA3D6; /* Ion Core Blue DM */
-  }
+  --text-main: #18181b;
+  --text-body: #52525b;
+  --text-muted: #71717a;
+  --text-inverse: #ffffff;
+
+  --border-subtle: #e4e4e7;
+  --border-highlight: #d4d4d8;
+  --glass-blur: blur(0px); /* No blur in light mode usually helps crispness */
   
-  /* LIVING DARK */
-  :root:not([data-mode="light"]) [data-theme="living"] {
-    --bg-page: #C8F5E7; /* Meadow Night */
-    --bg-surface: #B8A48F; /* Clay Earth DM - Used as surface for contrast */
-    --text-main: #1A1C1F; 
-    --accent-primary: #6FBF8A; /* Leaf Shadow Green */
-  }
-
-  /* HOME CATEGORY DARK (Family) */
-  :root:not([data-mode="light"]) [data-theme="home-category"] {
-    --bg-page: #9CC9E8; /* Sky Night */
-    --bg-surface: #D9CCBC; /* Hug Beige DM */
-    --text-main: #1A1C1F; 
-    --accent-primary: #6F9ED6; /* Homebase Blue DM */
-  }
-
-  /* HUB DARK */
-  :root:not([data-mode="light"]) [data-theme="hub"] {
-    --bg-page: #C4E9D8; /* Hub Base DM */
-    --bg-surface: #AEB4BC; /* Hub Neutral DM */
-    --text-main: #1A1C1F; /* Hub Ink DM */
-    --accent-primary: #6FBF8A; /* Hub Accent Green DM */
-  }
-
-  /* ACCOUNTS DARK */
-  :root:not([data-mode="light"]) [data-theme="accounts"] {
-    --bg-page: #D9CCBC; /* Account Base DM */
-    --bg-surface: #B8A48F; /* Account Neutral DM */
-    --text-main: #1A1C1F; /* Account Ink DM */
-    --accent-primary: #6F9ED6; /* Account Accent Blue DM */
-  }
-
-  /* ABOUT DARK */
-  :root:not([data-mode="light"]) [data-theme="about"] {
-    --bg-page: #DDE3EA; /* About Base DM */
-    --bg-surface: #AEB4BC; /* About Soft Grey DM */
-    --text-main: #1A1C1F; /* About Obsidian Neutral DM */
-    --accent-primary: #E67F68; /* About Highlight Coral DM */
-  }
-}
-
-/* FORCED DARK MODE (User selected "Dark") */
-:root[data-mode="dark"] {
-  --bg-page: #A5CFEA; 
-  --bg-surface: #DDE3EA;
-  --text-main: #1A1C1F;
-  --border-subtle: rgba(255, 255, 255, 0.1);
-}
-:root[data-mode="dark"] [data-theme="tools"] {
-  --bg-page: #071423; --bg-surface: #1A1C1F; --text-main: #E6E8EB; --accent-primary: #0FA3D6;
-}
-:root[data-mode="dark"] [data-theme="living"] {
-  --bg-page: #C8F5E7; --bg-surface: #B8A48F; --text-main: #1A1C1F; --accent-primary: #6FBF8A;
-}
-:root[data-mode="dark"] [data-theme="home-category"] {
-  --bg-page: #9CC9E8; --bg-surface: #D9CCBC; --text-main: #1A1C1F; --accent-primary: #6F9ED6;
-}
-:root[data-mode="dark"] [data-theme="hub"] {
-  --bg-page: #C4E9D8; --bg-surface: #AEB4BC; --text-main: #1A1C1F; --accent-primary: #6FBF8A;
-}
-:root[data-mode="dark"] [data-theme="accounts"] {
-  --bg-page: #D9CCBC; --bg-surface: #B8A48F; --text-main: #1A1C1F; --accent-primary: #6F9ED6;
-}
-:root[data-mode="dark"] [data-theme="about"] {
-  --bg-page: #DDE3EA; --bg-surface: #AEB4BC; --text-main: #1A1C1F; --accent-primary: #E67F68;
-}
-
-/* ULTRA-PREMIUM "STARWALKER" MODE */
-/* Uses Ultra-Premium Dark values from Home Palette for consistency */
-:root[data-mode="starwalker"] {
-  --bg-page: #AFC3D1; /* Home Platinum Blue DM */
-  --bg-surface: #D9DDE2; /* Home Luxe White DM */
-  --text-main: #0F1113; /* Hub Obsidian Ink */
-  --accent-primary: #D9BD00; /* Home Gold Highlight DM */
-  --border-subtle: rgba(217, 189, 0, 0.3);
+  /* Adjust glows to be darker for contrast on white */
+  --pal-tools-glow: rgba(59, 130, 246, 0.1);
+  --pal-living-glow: rgba(16, 185, 129, 0.1);
 }
