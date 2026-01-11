@@ -174,3 +174,98 @@ h1, h2, h3 {
 @keyframes toastExit {
   to { opacity: 0; transform: translateY(10px); }
 }
+
+/* =========================================
+   SEARCH SYSTEM STYLES
+   ========================================= */
+
+/* 1. The Trigger Button (Top Right Fixed) */
+.search-trigger {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 900;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-trigger:hover {
+  transform: scale(1.05);
+  color: var(--accent-primary);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* 2. The Overlay (Modal) */
+.search-overlay {
+  position: fixed;
+  inset: 0; /* Full screen */
+  background: rgba(255, 255, 255, 0.95); /* High opacity for focus */
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 100px; /* Start a bit down */
+  
+  /* State: Hidden */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Dark Mode Overlay */
+@media (prefers-color-scheme: dark) {
+  .search-overlay { background: rgba(10, 10, 10, 0.95); }
+}
+
+.search-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* 3. The Container & Input */
+.search-container {
+  width: 100%;
+  max-width: 600px;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border-subtle);
+  font-size: 2rem; /* Big text */
+  font-family: var(--font-secondary);
+  color: var(--text-main);
+  padding: 16px 0;
+  border-radius: 0;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+/* 4. Results */
+.search-result-card {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+}
+.search-result-card:hover {
+  background: var(--bg-page);
+  transform: translateX(4px);
+}
