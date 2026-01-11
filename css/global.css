@@ -1,10 +1,17 @@
 /* css/global.css */
+/* Status: FINAL MASTER (Aligned with Kynar Language, Color, & Vision Blueprints) */
 
-/* 1. RESET & BASE */
+/* =========================================
+   1. RESET & BASE (The Foundation)
+   ========================================= */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* Guided, not rushed */
 }
 
 body {
@@ -12,27 +19,57 @@ body {
   color: var(--text-main);
   font-family: var(--font-primary);
   line-height: var(--leading-base);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  
+  /* Smooth transitions for Theme Switching */
+  transition: background-color var(--transition-base), color var(--transition-base);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img {
   max-width: 100%;
   display: block;
+  border-radius: var(--radius-sm); /* Softens all images slightly */
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-/* 2. TYPOGRAPHY CLASSES */
+/* --- PREMIUM POLISH (Scrollbars & Selection) --- */
+::selection {
+  background: var(--accent-primary);
+  color: var(--bg-surface);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--border-subtle);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--bg-page); /* Creates padding effect */
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
+
+/* =========================================
+   2. TYPOGRAPHY SYSTEM (The Voice)
+   ========================================= */
 h1, h2, h3 {
   font-weight: var(--weight-medium);
   line-height: var(--leading-tight);
   margin-bottom: var(--space-sm);
+  letter-spacing: -0.01em; /* Modern tightness */
 }
 
+/* "Warm Clarity" - The Helpful Guide */
 .text-h1 {
   font-family: var(--font-secondary);
   font-size: var(--text-h1);
@@ -56,15 +93,33 @@ h1, h2, h3 {
   max-width: 65ch; /* Optimal reading width */
 }
 
+/* "Curious Playfulness" - Microcopy */
 .text-micro {
   font-size: var(--text-micro);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   font-weight: var(--weight-semibold);
   opacity: 0.7;
 }
 
-/* 3. LAYOUT UTILITIES */
+/* "Quiet Mythic Depth" - The Lore Keeper */
+.text-lore {
+  font-family: var(--font-secondary);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Code Blocks (For Automation Scripts/Dev Tools) */
+code, pre {
+  font-family: "Fira Code", "JetBrains Mono", monospace; 
+  font-size: 0.9em;
+}
+
+/* =========================================
+   3. LAYOUT UTILITIES
+   ========================================= */
 .container {
   width: 100%;
   max-width: var(--grid-max-width);
@@ -76,231 +131,83 @@ h1, h2, h3 {
 .stack-lg { display: flex; flex-direction: column; gap: var(--space-lg); }
 .stack-md { display: flex; flex-direction: column; gap: var(--space-md); }
 .stack-sm { display: flex; flex-direction: column; gap: var(--space-sm); }
+.stack-xs { display: flex; flex-direction: column; gap: var(--space-xs); }
 
-/* 4. COMPONENT BASICS (For the Homepage) */
+/* =========================================
+   4. COMPONENT BASICS
+   ========================================= */
 .card {
   background: var(--bg-surface);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   border: 1px solid var(--border-subtle);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  /* Material-Aware Interaction */
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-primary); /* Subtle highlight */
 }
 
 .card:active {
-  transform: scale(0.98); /* Tactile mobile feedback */
+  transform: scale(0.99); /* Tactile feedback */
 }
 
-/* Contextual Card Colors */
-.card[data-variant="tools"] {
-  border-left: 4px solid var(--pal-tools-core);
+/* Contextual Card Colors (Aligned with Blueprint Palettes) */
+.card[data-variant="tools"] { border-left: 4px solid var(--pal-tools-core); }
+.card[data-variant="living"] { border-left: 4px solid var(--pal-living-green); }
+.card[data-variant="hub"] { border-left: 4px solid var(--pal-hub-green); }
+
+/* ALIGNMENT FIX: Home Category uses Family Palette */
+.card[data-variant="home"] { border-left: 4px solid var(--pal-family-blue); } 
+
+/* Global Focus State (Accessibility + Brand) */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
-.card[data-variant="living"] {
-  border-left: 4px solid var(--pal-living-green);
-}
-
-.card[data-variant="home"] {
-  border-left: 4px solid var(--pal-home-accent); /* Blue Accent */
-}
-
-.card[data-variant="hub"] {
-  border-left: 4px solid var(--pal-hub-green); 
-}
-
-/* 5. HERO SOUL (ATMOSPHERE) - NEW ADDITION */
+/* =========================================
+   5. HERO SOUL (Atmosphere)
+   ========================================= */
 .hero-soul {
   position: relative;
   z-index: 1;
 }
 
-/* The glowing atmospheric blob */
+/* The glowing atmospheric blob - "A whisper, not a shout" */
 .hero-soul::before {
   content: '';
   position: absolute;
   top: -120px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100vw;
+  width: 120%;
   height: 500px;
-  background: radial-gradient(circle at center, var(--pal-home-white), transparent 70%);
-  opacity: 0.6;
+  
+  /* Uses the Accent color for a subtle brand glow */
+  background: radial-gradient(circle at center, var(--accent-primary), transparent 60%);
+  
+  opacity: 0.15; /* Kept subtle */
   z-index: -1;
   pointer-events: none;
-  filter: blur(80px); /* The soft mythic blur */
-  animation: soulPulse 8s ease-in-out infinite alternate;
+  filter: blur(80px);
+  animation: soulPulse 12s ease-in-out infinite alternate;
 }
 
-/* Dark mode adjustment for the soul */
 @media (prefers-color-scheme: dark) {
   .hero-soul::before {
-    background: radial-gradient(circle at center, rgba(143, 183, 255, 0.12), transparent 70%);
+    opacity: 0.2; /* Slightly stronger in dark mode for visibility */
   }
 }
 
 @keyframes soulPulse {
-  0% { opacity: 0.5; transform: translateX(-50%) scale(0.95); }
-  100% { opacity: 0.7; transform: translateX(-50%) scale(1.05); }
-}
-
-/* MOTION SYSTEM UTILITIES */
-.scroll-fade-item {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  will-change: opacity, transform;
-}
-
-.scroll-fade-item.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Disable motion if user requests reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .scroll-fade-item {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-
-/* TOAST NOTIFICATION SYSTEM */
-.toast-container {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  pointer-events: none; /* Let clicks pass through */
-}
-
-.toast {
-  background: var(--bg-surface);
-  border-left: 4px solid var(--accent-primary);
-  padding: 12px 24px;
-  border-radius: var(--radius-md);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: var(--text-micro);
-  font-weight: var(--weight-medium);
-  color: var(--text-main);
-  
-  /* Motion */
-  opacity: 0;
-  transform: translateY(20px);
-  animation: toastEnter 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-.toast.leaving {
-  animation: toastExit 0.3s ease-in forwards;
-}
-
-@keyframes toastEnter {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes toastExit {
-  to { opacity: 0; transform: translateY(10px); }
-}
-
-/* =========================================
-   SEARCH SYSTEM STYLES
-   ========================================= */
-
-/* 1. The Trigger Button (Top Right Fixed) */
-.search-trigger {
-  position: fixed;
-  top: 24px;
-  right: 24px;
-  z-index: 900;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-main);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.search-trigger:hover {
-  transform: scale(1.05);
-  color: var(--accent-primary);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-/* 2. The Overlay (Modal) */
-.search-overlay {
-  position: fixed;
-  inset: 0; /* Full screen */
-  background: rgba(255, 255, 255, 0.95); /* High opacity for focus */
-  backdrop-filter: blur(8px);
-  z-index: 2000;
-  padding: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 100px; /* Start a bit down */
-  
-  /* State: Hidden */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-/* Dark Mode Overlay */
-@media (prefers-color-scheme: dark) {
-  .search-overlay { background: rgba(10, 10, 10, 0.95); }
-}
-
-.search-overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-/* 3. The Container & Input */
-.search-container {
-  width: 100%;
-  max-width: 600px;
-  width: 100%;
-}
-
-.search-input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid var(--border-subtle);
-  font-size: 2rem; /* Big text */
-  font-family: var(--font-secondary);
-  color: var(--text-main);
-  padding: 16px 0;
-  border-radius: 0;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-}
-
-/* 4. Results */
-.search-result-card {
-  padding: 16px;
-  border-radius: var(--radius-md);
-  transition: background 0.2s;
-}
-.search-result-card:hover {
-  background: var(--bg-page);
-  transform: translateX(4px);
+  0% { opacity: 0.12; transform: translateX(-50%) scale(0.9); }
+  100% { opacity: 0.18; transform: translateX(-50%) scale(1.1); }
 }
 
 /* =========================================
@@ -311,51 +218,178 @@ h1, h2, h3 {
   top: 0;
   left: 0;
   width: 100%;
-  height: 64px; /* Standard accessible height */
-  z-index: 800; /* Below Search Overlay (2000) but above content */
+  height: 64px;
+  z-index: var(--z-header);
   
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px); /* The "Frosted Glass" effect */
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
   
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-base);
 }
 
-/* Dark Mode Glass */
 @media (prefers-color-scheme: dark) {
   .glass-header {
-    background: rgba(10, 10, 10, 0.7);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background: rgba(26, 28, 31, 0.75); /* Matches Dark Mode Base */
   }
 }
 
-/* Logo Styling */
 .header-logo {
   display: flex;
   align-items: center;
   gap: 12px;
   color: var(--text-main);
-  text-decoration: none;
   opacity: 0.9;
-  transition: opacity 0.2s;
+  transition: opacity var(--transition-fast);
 }
-
-.header-logo:hover {
-  opacity: 1;
-}
+.header-logo:hover { opacity: 1; }
 
 .logo-dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   background-color: var(--accent-primary);
   border-radius: 50%;
-  box-shadow: 0 0 12px var(--accent-primary); /* Subtle glow */
+  box-shadow: 0 0 12px var(--accent-primary);
 }
 
-/* Actions Area */
 .header-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* =========================================
+   7. SEARCH SYSTEM
+   ========================================= */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-modal);
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 100px;
+  
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-overlay { background: rgba(10, 10, 10, 0.95); }
+}
+
+.search-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.search-container {
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border-subtle);
+  font-size: 2rem;
+  font-family: var(--font-secondary);
+  color: var(--text-main);
+  padding: 16px 0;
+  border-radius: 0;
+  transition: border-color var(--transition-fast);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.search-result-card {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+  display: block; /* Ensure it behaves like a block link */
+}
+.search-result-card:hover {
+  background: var(--bg-page);
+  transform: translateX(4px);
+}
+
+/* =========================================
+   8. TOAST NOTIFICATIONS
+   ========================================= */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--bg-surface);
+  border-left: 4px solid var(--accent-primary);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--text-micro);
+  font-weight: var(--weight-medium);
+  color: var(--text-main);
+  
+  opacity: 0;
+  transform: translateY(20px);
+  animation: toastEnter 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.toast.leaving {
+  animation: toastExit 0.3s ease-in forwards;
+}
+
+@keyframes toastEnter { to { opacity: 1; transform: translateY(0); } }
+@keyframes toastExit { to { opacity: 0; transform: translateY(10px); } }
+
+/* =========================================
+   9. MOTION UTILITIES
+   ========================================= */
+.animate-enter {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.scroll-fade-item {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+.scroll-fade-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -4,56 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Help & Support | Kynar Universe</title>
+  
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
 </head>
+
 <body data-theme="about">
 
   <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
-    <nav class="breadcrumb">
-      <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">← Return Home</a>
+    <nav class="breadcrumb animate-enter">
+      <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">← Return</a>
+      <span style="opacity: 0.5;">/</span>
+      <span class="text-micro">Support</span>
     </nav>
 
-    <header class="stack-md animate-enter" style="max-width: 600px;">
-      <span class="tag">Support</span>
-      <h1 class="text-h1">How can we help?</h1>
+    <header class="stack-md animate-enter delay-1" style="max-width: 600px;">
+      <div>
+        <span class="tag" style="background-color: var(--pal-about-mint); color: var(--neutral-ink); border-color: var(--pal-about-mint);">Help Desk</span>
+      </div>
+      
+      <h1 class="text-h1">Help & Support</h1>
       <p class="text-body">
-        If something isn't working, or if you just have a question, we're here.
+        Clear answers for a smooth journey. If you're stuck, we're here.
       </p>
     </header>
 
-    <section class="stack-lg animate-enter delay-1">
+    <section class="stack-lg animate-enter delay-2">
       <div class="stack-md">
         <h2 class="text-h3">Common Questions</h2>
         
-        <div class="card">
-          <h3 class="text-body" style="font-weight: 600;">Where are my downloads?</h3>
-          <p class="text-body" style="font-size: 0.95rem; margin-top: 8px;">
-            After purchasing, you should receive an email from Gumroad with a direct link. You can also view them in your <a href="../account/index.html" style="text-decoration:underline;">Collections</a>.
-          </p>
+        <div class="card" style="display: flex; gap: var(--space-md);">
+          <div style="flex-shrink: 0; padding-top: 4px;">
+            <i class="ph ph-download-simple" style="font-size: 1.5rem; color: var(--pal-about-coral);"></i>
+          </div>
+          <div>
+            <h3 class="text-body" style="font-weight: 600;">Where are my downloads?</h3>
+            <p class="text-body" style="font-size: 0.95rem; margin-top: 8px; opacity: 0.8;">
+              After purchasing, you receive an email from Gumroad with a direct link. You can also view them in your <a href="../account/index.html" style="text-decoration:underline; color: var(--pal-about-coral);">Collections</a>.
+            </p>
+          </div>
         </div>
 
-        <div class="card">
-          <h3 class="text-body" style="font-weight: 600;">Can I use these on any device?</h3>
-          <p class="text-body" style="font-size: 0.95rem; margin-top: 8px;">
-            Yes. Our PDF planners work on iPad, Android tablets, and can be printed at home.
-          </p>
+        <div class="card" style="display: flex; gap: var(--space-md);">
+          <div style="flex-shrink: 0; padding-top: 4px;">
+            <i class="ph ph-device-mobile" style="font-size: 1.5rem; color: var(--pal-about-coral);"></i>
+          </div>
+          <div>
+            <h3 class="text-body" style="font-weight: 600;">Can I use these on any device?</h3>
+            <p class="text-body" style="font-size: 0.95rem; margin-top: 8px; opacity: 0.8;">
+              Yes. Our PDF planners work on iPad, Android tablets, and can be printed at home. Scripts run on Windows, macOS, and Linux.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div class="stack-md">
+      <div class="stack-md" style="border-top: 1px solid var(--border-subtle); padding-top: var(--space-lg);">
         <h2 class="text-h3">Still need help?</h2>
         <p class="text-body">Send us a message. We'll get back to you within 24 hours.</p>
-        <button class="btn btn-primary" style="width: fit-content;">Contact Support</button>
+        
+        <a href="mailto:support@kynaruniverse.co.uk" class="btn btn-primary" style="width: fit-content; background-color: var(--neutral-ink);">
+          <i class="ph ph-envelope-simple"></i> Contact Support
+        </a>
       </div>
     </section>
 
+    <footer style="margin-top: var(--space-xl); opacity: 0.6;">
+      <p class="text-micro">The path continues.</p>
+    </footer>
+
   </main>
+
   <script src="../../js/app.js"></script>
+  <script type="module" src="../../js/header.js"></script> 
+  <script type="module" src="../../js/search.js"></script>
+
 </body>
 </html>

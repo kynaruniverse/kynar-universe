@@ -3,68 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product | Kynar Universe</title>
+  <title>Product Details | Kynar Universe</title>
+  
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
+  
   <meta name="description" content="View this item on Kynar Universe. A curated digital resource for creators and worldbuilders.">
   <meta property="og:title" content="Item Details | Kynar Universe">
-  <meta property="og:description" content="Click to view this resource in the archive.">
+  <meta property="og:description" content="Tools, guides, and resources for a clearer life.">
 
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/components.css">
 </head>
 
-<body data-theme="home">
+<body data-theme="tools">
 
   <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
-    <nav class="breadcrumb">
+    <nav class="breadcrumb animate-enter">
       <a href="../index.html" class="btn-tertiary" style="padding-left:0;">Home</a>
-      <span>/</span>
+      <span style="opacity: 0.3;">/</span>
       <a href="#" id="link-category" class="btn-tertiary" style="padding-left:0;"><span id="breadcrumb-category">Category</span></a>
-      <span>/</span>
-      <span class="text-micro" id="breadcrumb-title">Loading...</span>
+      <span style="opacity: 0.3;">/</span>
+      <span class="text-micro" id="breadcrumb-title" style="opacity: 0.6;">Loading...</span>
     </nav>
 
-    <header class="stack-md animate-enter">
-      <span id="product-tag" class="tag" data-variant="home">Tag</span>
+    <header class="stack-md animate-enter delay-1">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span id="product-tag" class="tag" data-variant="tools">Loading Tag...</span>
+        <span id="product-price" class="text-h3" style="color: var(--accent-primary);">£--.--</span>
+      </div>
       
       <h1 class="text-h1" id="product-title">Loading Product...</h1>
       
-      <p class="text-body" style="font-size: 1.1rem;" id="product-short-desc">
+      <p class="text-body" style="font-size: 1.1rem; max-width: 60ch;" id="product-short-desc">
         Please wait while we fetch the details.
       </p>
 
-      <p class="text-micro" style="opacity: 0.6; font-style: italic;" id="product-lore">
-        "..."
-      </p>
+      <div style="opacity: 0.8; margin-top: var(--space-xs);">
+        <p class="text-lore" id="product-lore">"..."</p>
+      </div>
 
-      <div style="margin-top: var(--space-sm);">
-        <button id="btn-action" class="btn btn-primary">Loading...</button>
+      <div style="margin-top: var(--space-md); display: flex; gap: var(--space-sm);">
+        <button id="btn-action" class="btn btn-primary">Download Now</button>
+        <button class="btn btn-secondary">View Demo</button>
       </div>
     </header>
 
-    <div id="product-preview" class="card animate-enter delay-1" style="height: 250px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface); border: 1px dashed var(--border-subtle);">
-      </div>
+    <div id="product-preview" class="card animate-enter delay-2" style="min-height: 300px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface); border: 1px dashed var(--border-subtle);">
+      <p class="text-micro">Image Gallery Container</p>
+    </div>
 
-    <section class="stack-lg animate-enter delay-2">
+    <section class="animate-enter delay-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
       
-      <div class="stack-sm">
-        <h2 class="text-h3">What is it?</h2>
-        <p class="text-body" id="product-desc">
-          Description loading...
-        </p>
+      <div class="stack-lg">
+        <div class="stack-sm">
+          <h2 class="text-h3">What is it?</h2>
+          <p class="text-body" id="product-desc">
+            Description loading...
+          </p>
+        </div>
+
+        <div class="stack-sm">
+          <h2 class="text-h3">What's Inside</h2>
+          <ul id="product-features" class="text-body" style="padding-left: 1.5rem; display: flex; flex-direction: column; gap: 8px;">
+            <li>Loading file list...</li>
+          </ul>
+        </div>
       </div>
 
-      <div class="stack-sm">
-        <h2 class="text-h3">What's Inside</h2>
-        <ul id="product-features" class="text-body" style="padding-left: 1.5rem; display: flex; flex-direction: column; gap: 8px;">
-          </ul>
+      <div class="stack-lg">
+        
+        <div id="code-preview-container" class="stack-sm" style="display: none;">
+          <h2 class="text-h3">Code Preview</h2>
+          <div class="code-block" data-context="tools">
+            <pre><code id="code-snippet"># Sample Python Script
+def automate_task():
+    print("Optimization complete.")
+    return True</code></pre>
+          </div>
+        </div>
+
+        <div class="card" style="background: var(--bg-page);">
+          <div class="stack-sm">
+            <h3 class="text-h3" style="font-size: 1rem;">Requirements</h3>
+            <div id="tech-specs" class="text-micro" style="display: flex; flex-direction: column; gap: 8px;">
+              <span>• Format: <span id="spec-format">ZIP / PDF</span></span>
+              <span>• Version: <span id="spec-version">1.0.0</span></span>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </section>

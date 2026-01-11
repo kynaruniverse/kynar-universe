@@ -4,29 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome | Kynar Universe</title>
+  
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
+
   <style>
     /* Wizard Specific Styles */
     .step { display: none; }
-    .step.active { display: flex; animation: fadeIn 0.5s ease-out; }
+    .step.active { display: flex; animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-subtle); transition: background 0.3s; }
-    .dot.active { background: var(--accent-primary); }
+    .dot.active { background: var(--accent-primary); transform: scale(1.2); }
+
+    /* Selection Card Interaction */
+    .option-card {
+      text-align: left; 
+      width: 100%; 
+      cursor: pointer; 
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+    .option-card:hover {
+      background-color: var(--bg-page);
+      transform: translateX(4px);
+    }
+    .option-card.selected {
+      border-color: var(--accent-primary);
+      background-color: var(--bg-page);
+      box-shadow: var(--shadow-md);
+    }
   </style>
 </head>
+
 <body data-theme="home">
 
   <main class="container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; max-width: 500px;">
 
     <div id="step-1" class="step active stack-lg" style="text-align: center; align-items: center;">
-      <span style="font-size: 3rem;">👋</span>
+      <i class="ph ph-hand-waving" style="font-size: 3rem; color: var(--accent-primary);"></i>
       <div class="stack-sm">
         <h1 class="text-h1">Welcome, Traveler.</h1>
-        <p class="text-body">Let's get you settled into the space.</p>
+        <p class="text-body" style="font-size: 1.1rem; opacity: 0.8;">
+          A space, not a screen.<br>Let's find your path.
+        </p>
       </div>
       <button onclick="nextStep(2)" class="btn btn-primary" style="width: 100%;">Begin Journey</button>
     </div>
@@ -35,27 +62,46 @@
       <div class="stack-sm">
         <span class="tag">Step 1 of 3</span>
         <h2 class="text-h2">What brings you here?</h2>
-        <p class="text-body">This helps us guide you to the right tools.</p>
+        <p class="text-body">This helps us organize your workspace.</p>
       </div>
       
       <div class="stack-sm">
-        <button class="card" onclick="selectOption(this)" style="text-align: left; width: 100%; cursor: pointer;">
-          <h3 class="text-h3" style="margin:0;">Building & Creating</h3>
-          <p class="text-micro">I need tools to work better.</p>
+        
+        <button class="card option-card" onclick="selectOption(this, 'tools')">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="ph ph-wrench" style="font-size: 1.5rem; color: var(--pal-tools-core);"></i>
+            <div>
+              <h3 class="text-h3" style="margin:0;">Building & Creating</h3>
+              <p class="text-micro" style="text-transform: none;">I need tools and scripts.</p>
+            </div>
+          </div>
         </button>
-        <button class="card" onclick="selectOption(this)" style="text-align: left; width: 100%; cursor: pointer;">
-          <h3 class="text-h3" style="margin:0;">Growth & Wellness</h3>
-          <p class="text-micro">I want to slow down and learn.</p>
+
+        <button class="card option-card" onclick="selectOption(this, 'living')">
+           <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="ph ph-plant" style="font-size: 1.5rem; color: var(--pal-living-green);"></i>
+            <div>
+              <h3 class="text-h3" style="margin:0;">Growth & Wellness</h3>
+              <p class="text-micro" style="text-transform: none;">I want to slow down.</p>
+            </div>
+          </div>
         </button>
-        <button class="card" onclick="selectOption(this)" style="text-align: left; width: 100%; cursor: pointer;">
-          <h3 class="text-h3" style="margin:0;">Family & Home</h3>
-          <p class="text-micro">I'm organizing my home life.</p>
+
+        <button class="card option-card" onclick="selectOption(this, 'home')">
+           <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="ph ph-house-line" style="font-size: 1.5rem; color: var(--pal-family-blue);"></i>
+            <div>
+              <h3 class="text-h3" style="margin:0;">Family & Home</h3>
+              <p class="text-micro" style="text-transform: none;">I'm organizing my home life.</p>
+            </div>
+          </div>
         </button>
+
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <button onclick="nextStep(1)" class="btn-tertiary">Back</button>
-        <button onclick="nextStep(3)" class="btn btn-primary">Next</button>
+        <button onclick="nextStep(3)" class="btn btn-primary" id="btn-step-2" disabled style="opacity: 0.5;">Next</button>
       </div>
     </div>
 
@@ -67,7 +113,10 @@
       </div>
       
       <div class="form-group">
-        <input type="text" class="input" placeholder="e.g., Start a morning routine...">
+        <div style="position: relative;">
+          <input type="text" class="input" placeholder="e.g., Start a morning routine..." style="padding-left: 40px;">
+          <i class="ph ph-target" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+        </div>
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -77,12 +126,12 @@
     </div>
 
     <div id="step-4" class="step stack-lg" style="text-align: center; align-items: center;">
-      <span style="font-size: 3rem;">✨</span>
+      <i class="ph ph-star-four" style="font-size: 3rem; color: var(--pal-home-highlight);"></i>
       <div class="stack-sm">
         <h1 class="text-h2">You're all set.</h1>
         <p class="text-body">Your path continues. The world is open to you.</p>
       </div>
-      <a href="../../index.html" class="btn btn-primary" style="width: 100%;">Enter Kynar Universe</a>
+      <button onclick="finishOnboarding()" class="btn btn-primary" style="width: 100%;">Enter Kynar Universe</button>
     </div>
 
     <div style="display: flex; gap: 8px; justify-content: center; margin-top: var(--space-xl);">
@@ -96,7 +145,8 @@
 
   <script src="../../js/app.js"></script>
   <script>
-    // Simple Wizard Logic
+    let selectedCategory = null;
+
     function nextStep(stepNum) {
       // Hide all steps
       document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
@@ -107,10 +157,27 @@
       document.getElementById(`dot-${stepNum}`).classList.add('active');
     }
 
-    function selectOption(btn) {
-      // Visual selection feedback
-      btn.style.borderColor = 'var(--accent-primary)';
-      btn.style.backgroundColor = 'var(--bg-page)';
+    function selectOption(btn, category) {
+      // Deselect all
+      document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+      
+      // Select clicked
+      btn.classList.add('selected');
+      selectedCategory = category;
+      
+      // Enable Next Button
+      const nextBtn = document.getElementById('btn-step-2');
+      nextBtn.disabled = false;
+      nextBtn.style.opacity = '1';
+    }
+
+    function finishOnboarding() {
+      // Save User Preference (Personalization)
+      if (selectedCategory) {
+        localStorage.setItem('kynar_user_path', selectedCategory);
+      }
+      // Redirect
+      window.location.href = '../../index.html';
     }
   </script>
 </body>

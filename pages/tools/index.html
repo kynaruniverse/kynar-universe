@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tools | Kynar Universe</title>
+  <title>Tools Category | Kynar Universe</title>
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
-
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
@@ -21,50 +20,70 @@
 
   <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
-    <nav class="breadcrumb">
-      <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">← Home</a>
+    <nav class="breadcrumb animate-enter">
+      <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">← Return</a>
       <span style="opacity: 0.5;">/</span>
       <span class="text-micro">Tools</span>
     </nav>
 
-    <header class="stack-md animate-enter">
-      <span class="tag" data-variant="tools">Category 01</span>
+    <header class="stack-md animate-enter delay-1">
+      <div>
+        <span class="tag" data-variant="tools">Category 01</span>
+      </div>
+      
       <h1 class="text-h1">Tools</h1>
+      
       <p class="text-body">
         Everything you need to build, create, and stay organized. 
         Clear tools for a brighter workflow.
       </p>
-      <p class="text-micro" style="font-style: italic; opacity: 0.6; margin-top: var(--space-sm);">
-        "Every tool is a small spark in the world."
-      </p>
+      
+      <div style="opacity: 0.8; margin-top: var(--space-sm);">
+        <p class="text-lore">"Every tool is a small spark in the world."</p>
+      </div>
     </header>
 
-    <section class="stack-md animate-enter delay-1">
-      <h2 class="text-h3">Explore Sections</h2>
+    <section class="stack-md animate-enter delay-2">
+      <h2 class="text-h3">Collections</h2>
       
-      <div style="display: grid; grid-template-columns: 1fr; gap: var(--space-md);">
+      <div style="display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
         
-        <div class="card">
-          <div class="stack-sm">
-            <h3 class="text-h3">Productivity</h3>
-            <p class="text-body" style="font-size: 0.9rem; opacity: 0.8;">
-              Systems to keep your path clear.
-            </p>
-            <div style="margin-top: var(--space-sm);">
-              <a href="../product.html?id=daily-clarity-planner" class="btn-tertiary" style="padding-left: 0;">View Daily Planner →</a>
+        <div class="card" data-variant="tools">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="stack-sm">
+              <h3 class="text-h3">Productivity</h3>
+              <p class="text-body" style="font-size: 0.9rem;">Systems to keep your path clear.</p>
+              <div style="margin-top: var(--space-sm);">
+                <a href="../product.html?id=daily-clarity-planner" class="btn-tertiary" style="padding-left: 0;">View Planners →</a>
+              </div>
             </div>
+            <i class="ph ph-check-square-offset" style="font-size: 1.5rem; color: var(--pal-tools-core); opacity: 0.8;"></i>
           </div>
         </div>
 
-        <div class="card">
-          <div class="stack-sm">
-            <h3 class="text-h3">Creative Tools</h3>
-            <p class="text-body" style="font-size: 0.9rem; opacity: 0.8;">
-              Resources for making and shaping.
-            </p>
-            <div style="margin-top: var(--space-sm);">
-               <button class="btn-tertiary" style="padding-left: 0;">Browse →</button>
+        <div class="card" data-variant="tools">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="stack-sm">
+              <h3 class="text-h3">Automation & Code</h3>
+              <p class="text-body" style="font-size: 0.9rem;">Scripts to reclaim your time.</p>
+              <div style="margin-top: var(--space-sm);">
+                 <button class="btn-tertiary" style="padding-left: 0;">Browse Scripts →</button>
+              </div>
             </div>
+            <i class="ph ph-code" style="font-size: 1.5rem; color: var(--pal-tools-core); opacity: 0.8;"></i>
+          </div>
+        </div>
+
+        <div class="card" data-variant="tools">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="stack-sm">
+              <h3 class="text-h3">Creative Tools</h3>
+              <p class="text-body" style="font-size: 0.9rem;">Resources for making and shaping.</p>
+              <div style="margin-top: var(--space-sm);">
+                 <button class="btn-tertiary" style="padding-left: 0;">View Assets →</button>
+              </div>
+            </div>
+            <i class="ph ph-pen-nib" style="font-size: 1.5rem; color: var(--pal-tools-core); opacity: 0.8;"></i>
           </div>
         </div>
 

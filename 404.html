@@ -4,11 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Page Not Found | Kynar Universe</title>
+  
+  <base href="/">
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/global.css">
@@ -21,18 +24,18 @@
     
     <div class="stack-md animate-enter">
       
-      <span style="font-size: 4rem;">🧭</span>
+      <i class="ph ph-compass" style="font-size: 4rem; color: var(--pal-home-accent); opacity: 0.8;"></i>
       
-      <h1 class="text-h1">The path flickered.</h1>
+      <h1 class="text-h1">Page not found.</h1>
       
       <p class="text-body" style="max-width: 45ch; margin: 0 auto;">
         The page you are looking for has moved, or perhaps it never existed.
         Don't worry—you are still in the world.
       </p>
 
-      <p class="text-micro" style="opacity: 0.5; font-style: italic;">
-        "Every path leads somewhere, even the wrong ones."
-      </p>
+      <div style="margin-top: var(--space-xs);">
+        <p class="text-lore">"The path flickered."</p>
+      </div>
 
       <div style="margin-top: var(--space-md); display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
         <a href="index.html" class="btn btn-primary">Return Home</a>
@@ -44,5 +47,5 @@
   </main>
 
   <script src="js/app.js"></script>
-</body>
+  </body>
 </html>
