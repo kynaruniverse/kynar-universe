@@ -88,13 +88,19 @@
 
     </section>
 
-    <footer style="margin-top: var(--space-xl); opacity: 0.5; text-align: center;">
+    <footer style="margin-top: var(--space-xl); opacity: 0.5; text-align: center; display: flex; flex-direction: column; gap: var(--space-sm); align-items: center;">
       <p class="text-micro">The path continues.</p>
+      
+      <div style="display: flex; gap: var(--space-md);">
+        <a href="pages/legal/privacy.html" class="text-micro" style="opacity: 0.7;">Privacy</a>
+        <a href="pages/support/index.html" class="text-micro" style="opacity: 0.7;">Support</a>
+        <a href="pages/settings/index.html" class="text-micro" style="opacity: 0.7;">Settings</a>
+      </div>
     </footer>
 
   </main>
   
-  <script src="js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
   <script type="module" src="js/header.js"></script> 
   <script type="module" src="js/search.js"></script>
 </body>

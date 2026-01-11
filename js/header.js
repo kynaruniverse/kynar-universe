@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function injectHeader() {
   // 1. Resolve Paths (Where are we?)
   const rootPath = resolveRootPath();
-  const accountPath = `${rootPath}pages/account/index.html`;
+  const accountPath = `${rootPath}pages/settings/index.html`;
   const homeLink = `${rootPath}index.html`;
 
   // 2. Create the Header Element
