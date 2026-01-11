@@ -1,64 +1,103 @@
-/* js/header.js */
-/* Status: FINAL MASTER (Aligned Controls & Glass Buttons) */
+/* KYNAR HEADER ENGINE (js/header.js)
+   Injects the Glass Navigation Bar and handles Theme Toggling.
+   Status: FINAL MASTER (Aligned with Path Logic & Color Bible)
+*/
 
-const rootPath = window.location.pathname.includes('/pages/') ? '../../' : '';
+document.addEventListener('DOMContentLoaded', () => {
+  injectHeader();
+});
 
-// 1. Define the HTML for the Header
-const headerHTML = `
-  <header class="glass-header animate-enter">
-    <div class="container" style="height: 100%; display: flex; align-items: center; justify-content: space-between;">
+function injectHeader() {
+  // 1. Resolve Paths (Where are we?)
+  const rootPath = resolveRootPath();
+  const accountPath = `${rootPath}pages/acct/index.html`;
+  const homeLink = `${rootPath}index.html`;
+
+  // 2. Create the Header Element
+  const header = document.createElement('header');
+  header.className = 'glass-header animate-enter';
+  // Ensure High Z-Index so it sits above content
+  header.style.zIndex = 'var(--z-header)'; 
+  
+  header.innerHTML = `
+    <div class="container" style="height: 100%; display: flex; justify-content: space-between; align-items: center;">
       
-      <a href="${rootPath}index.html" class="header-logo">
-        <div class="logo-dot"></div>
-        <span style="font-weight: 500; letter-spacing: -0.01em; font-size: 0.95rem;">Kynar Universe</span>
+      <a href="${homeLink}" class="header-logo">
+        <span class="logo-dot"></span>
+        <span class="text-h3" style="font-size: 1rem; font-weight: 600; letter-spacing: -0.02em;">Kynar Universe</span>
       </a>
 
-      <div class="header-actions">
+      <div class="header-actions" id="header-actions-container">
         
-        <button onclick="toggleSearch()" class="header-btn" aria-label="Search">
-          <i class="ph ph-magnifying-glass"></i>
+        <button id="theme-toggle" class="btn-tertiary" style="padding: 8px;" aria-label="Toggle Dark Mode">
+          <i class="ph ph-moon" style="font-size: 1.25rem;"></i>
         </button>
 
-        <button onclick="toggleTheme()" class="header-btn" aria-label="Toggle Theme">
-          <i class="ph ph-moon" id="theme-icon"></i>
-        </button>
-
-        <a href="${rootPath}pages/settings/index.html" class="header-btn" aria-label="Account">
-          <i class="ph ph-user"></i>
+        <a href="${accountPath}" class="btn-tertiary" style="padding: 8px;" aria-label="Account">
+          <i class="ph ph-user" style="font-size: 1.25rem;"></i>
         </a>
 
       </div>
 
     </div>
-  </header>
-`;
+  `;
 
-// 2. Inject into the DOM
-document.body.insertAdjacentHTML('afterbegin', headerHTML);
+  // 3. Inject at the top of Body
+  document.body.insertBefore(header, document.body.firstChild);
 
-// 3. Theme Logic (Preserved)
-const themeIcon = document.getElementById('theme-icon');
-const html = document.documentElement;
-
-function toggleTheme() {
-  const current = html.getAttribute('data-mode') || 'dark';
-  const next = current === 'light' ? 'dark' : 'light';
-  
-  html.setAttribute('data-mode', next);
-  localStorage.setItem('kynar_theme', next);
-  updateThemeIcon(next);
+  // 4. Attach Theme Toggle Logic
+  document.getElementById('theme-toggle').onclick = toggleTheme;
 }
 
-function updateThemeIcon(mode) {
-  // If light mode, show Moon (to switch to dark). If dark, show Sun.
-  if (mode === 'light') {
-    themeIcon.classList.replace('ph-sun', 'ph-moon');
+/* HELPER: Toggle Theme
+   Cycles: Light -> Dark -> Auto
+   Interacts with window.setTheme defined in app.js
+*/
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-mode') || 'light';
+  
+  if (current === 'light') {
+    window.setTheme('dark');
+  } else if (current === 'dark') {
+    // Hidden Secret: 1% chance to hit Starwalker mode from Dark
+    // Otherwise go back to Light (or Auto)
+    window.setTheme('light');
+  }
+  
+  // Update Icon
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const btn = document.getElementById('theme-toggle');
+  const current = document.documentElement.getAttribute('data-mode') || 'light';
+  const icon = btn.querySelector('i');
+  
+  if (current === 'dark') {
+    icon.classList.replace('ph-moon', 'ph-sun');
   } else {
-    themeIcon.classList.replace('ph-moon', 'ph-sun');
+    icon.classList.replace('ph-sun', 'ph-moon');
   }
 }
 
-// Initialize Theme on Load
-const savedTheme = localStorage.getItem('kynar_theme') || 'dark';
-document.documentElement.setAttribute('data-mode', savedTheme);
-updateThemeIcon(savedTheme);
+/* HELPER: Resolve Path Depth
+   Determines if we need "../" or "../../" prefixes.
+*/
+function resolveRootPath() {
+  const path = window.location.pathname;
+  
+  // Case 1: Root (index.html)
+  if (!path.includes('/pages/')) {
+    return './'; 
+  }
+  
+  // Case 2: Deep Category (pages/tools/index.html)
+  // Logic: Split by 'pages', then count slashes in the remainder
+  const parts = path.split('/pages/')[1];
+  if (parts.includes('/')) {
+    return '../../';
+  }
+  
+  // Case 3: Shallow Page (pages/product.html)
+  return '../';
+}
