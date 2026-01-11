@@ -8,12 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function injectSearchUI() {
-  // 1. Create the Trigger Button (Top Right)
+  // 1. Create the Trigger Button
   const trigger = document.createElement('button');
-  trigger.className = 'search-trigger animate-enter';
-  trigger.innerHTML = '<i class="ph ph-magnifying-glass"></i>';
+  // Changed class to match header buttons (removed fixed positioning classes)
+  trigger.className = 'btn-tertiary'; 
+  trigger.style.padding = '8px';
+  trigger.innerHTML = '<i class="ph ph-magnifying-glass" style="font-size: 1.25rem;"></i>';
   trigger.onclick = openSearch;
-  document.body.appendChild(trigger);
+
+  // WAIT for Header to exist, then inject inside. 
+  // If header doesn't exist (onboarding), maybe don't show search? 
+  // Or append to body as fallback.
+  setTimeout(() => {
+    const headerContainer = document.getElementById('header-actions-container');
+    if (headerContainer) {
+      // Insert before the Account icon
+      headerContainer.insertBefore(trigger, headerContainer.firstChild);
+    } else {
+      // Fallback: Floating button if no header
+      trigger.className = 'search-trigger animate-enter'; // Revert to floating style
+      document.body.appendChild(trigger);
+    }
+  }, 100); // Small delay to ensure header.js has finished
 
   // 2. Create the Overlay (Hidden by default)
   const overlay = document.createElement('div');
