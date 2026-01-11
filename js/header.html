@@ -1,0 +1,51 @@
+/* ASTRYX HEADER ENGINE (js/header.js)
+   Injects the Glass Navigation Bar automatically.
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+  injectHeader();
+});
+
+function injectHeader() {
+  // 1. Determine "Home" path depth
+  const path = window.location.pathname;
+  let homeLink = "index.html"; // Default for root
+  let assetsPrefix = "";
+
+  if (path.includes("/pages/")) {
+    const depth = path.split("/pages/")[1].split("/").length;
+    if (depth === 1) {
+      // e.g. pages/product.html
+      homeLink = "../index.html";
+      assetsPrefix = "../";
+    } else {
+      // e.g. pages/tools/index.html
+      homeLink = "../../index.html";
+      assetsPrefix = "../../";
+    }
+  }
+
+  // 2. Create the Header Element
+  const header = document.createElement('header');
+  header.className = 'glass-header animate-enter';
+  
+  header.innerHTML = `
+    <div class="container" style="height: 100%; display: flex; justify-content: space-between; align-items: center;">
+      
+      <a href="${homeLink}" class="header-logo">
+        <span class="logo-dot"></span>
+        <span class="text-h3" style="font-size: 1rem; font-weight: 600; letter-spacing: -0.02em;">Kynar Universe</span>
+      </a>
+
+      <div class="header-actions" id="header-actions-container">
+        <a href="${homeLink.replace('index.html', 'pages/account/index.html')}" class="btn-tertiary" style="padding: 8px;">
+          <i class="ph ph-user" style="font-size: 1.25rem;"></i>
+        </a>
+      </div>
+
+    </div>
+  `;
+
+  // 3. Inject at the top of Body
+  document.body.insertBefore(header, document.body.firstChild);
+}
