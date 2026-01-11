@@ -1,159 +1,166 @@
-/* css/tokens.css - KINETIC VITRO v3.0 (Sector-Specific Physics) */
+/* ASTRYX DESIGN TOKENS
+   Source of Truth for Colors, Type, Spacing, and Radius.
+*/
 
 :root {
-  /* SUPREMACY PALETTE (Prussian Blue + Saffron Gold) */
-  --color-bg:             #1E2A44; 
-  --color-bg-rgb:         30, 42, 68;
+  /* =========================================
+     1. TYPOGRAPHY SYSTEM
+     ========================================= */
+  --font-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+  --font-secondary: "Lora", Georgia, serif; 
+
+  --text-h1: clamp(2rem, 5vw, 3rem);      
+  --text-h2: clamp(1.5rem, 3vw, 2.25rem); 
+  --text-h3: 1.25rem;                     
+  --text-body: 1rem;                      
+  --text-micro: 0.875rem;                 
+
+  --leading-tight: 1.2;
+  --leading-base: 1.6;  
+  --leading-loose: 1.8;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600; 
   
-  /* Frost Glass Physics */
-  --color-surface:        rgba(255, 255, 255, 0.05); 
-  --color-surface-dark:   rgba(0, 0, 0, 0.2);
-  --color-border:         rgba(255, 255, 255, 0.1); 
+  /* =========================================
+     2. SPACING SCALE (4px Base)
+     ========================================= */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md-sm: 12px;
+  --space-md: 16px;
+  --space-md-lg: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-section: 64px;
+  --space-hero: 96px;
+
+  /* =========================================
+     3. SHAPE & LAYOUT
+     ========================================= */
+  --radius-sm: 4px;
+  --radius-md: 8px;   
+  --radius-lg: 16px;  
+  --radius-pill: 999px; 
+
+  --grid-max-width: 1200px;
+  --grid-gutter: var(--space-md);
+
+  /* =========================================
+     4. COLOR PALETTE DEFINITIONS
+     ========================================= */
+
+  /* HOME PALETTE (Default) */
+  --pal-home-base: #CFEAFF;
+  --pal-home-white: #F7FAFF;
+  --pal-home-accent: #8FB7FF;
+  --pal-home-ink: #2A2D32;
+  --pal-home-highlight: #FFE900;
+
+  /* TOOLS PALETTE (Tech) */
+  --pal-tools-core: #1ACBFF;
+  --pal-tools-graphite: #2A2D32;
+  --pal-tools-white: #F5F7FA;
+  --pal-tools-violet: #A88BFF;
+  --pal-tools-navy: #0B1F33;
+
+  /* LIVING PALETTE (Life) */
+  --pal-living-meadow: #E4FFF5;
+  --pal-living-green: #8ED9A1;
+  --pal-living-clay: #D9C2A8;
+  --pal-living-peach: #FFCEB8;
+
+  /* ACCOUNTS PALETTE */
+  --pal-account-base: #F3E7D6;
+  --pal-account-neutral: #D9C2A8;
+  --pal-account-blue: #8FB7FF;
   
-  /* Archimedean Typography */
-  --color-text-primary:   #FFFFFF;
-  --color-text-secondary: #E8F4FD; 
-  --color-text-muted:     #8FA3BF;
-
-  /* Sector Identities (Subtle) */
-  --color-tech:           #00D1FF; --color-tech-rgb: 0, 209, 255;
-  --color-life:           #A855F7; --color-life-rgb: 168, 85, 247;
-  --color-family:         #FF6B4A; --color-family-rgb: 255, 107, 74;
-  --color-pro:            #F4C430; 
-
-  /* Status & Accents */
-  --color-success:        #00E676; 
-  --color-warning:        #F4C430;
-  --color-error:          #FF3D71;
-  --color-primary:        #F4C430; /* Saffron Gold */
-  --color-brand-deep:     #0F1623;
+  /* ABOUT PALETTE (New) */
+  --pal-about-base: #FFFFFF;
+  --pal-about-grey: #DDE3EA;
+  --pal-about-sky: #D0ECFF;
+  --pal-about-mint: #CFFFEF;
+  --pal-about-coral: #FF9A7A;
   
-  /* Physics */
-  --glass-blur:           40px; 
-  --noise-grain:          0.05; 
-  --shadow-sm: 0 4px 12px rgba(0,0,0,0.2);
-  --shadow-md: 0 12px 40px rgba(0,0,0,0.3);
-  --shadow-lg: 0 30px 80px rgba(0,0,0,0.5);
-
-  /* Fibonacci Geometry */
-  --radius-universal:     16px; 
-  --radius-sm:            8px;
-  --radius-md:            12px;
-  --border-width:         1px;
-
-  --space-1: 5px;   --space-2: 8px;
-  --space-3: 13px;  --space-4: 21px; 
-  --space-5: 34px;  --space-6: 55px; 
-  --space-8: 89px;
-  --header-height:        90px; 
-
-  /* Typography */
-  --font-heading: 'Inter', 'Bantayog', sans-serif;
-  --font-body:    'Inter', -apple-system, sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
-
-  --text-xs:   12px; --text-sm: 14px; --text-base: 16px;
-  --text-lg:   18px; --text-xl: 24px; --text-2xl:  36px;
-  --text-3xl:  clamp(3rem, 5vw, 4.5rem);
-  --text-4xl:  clamp(4rem, 7vw, 6rem);
-
-  /* Z-Index */
-  --z-background: 0; --z-grid: 10; --z-sticky: 500;   
-  --z-header: 1000; --z-overlay: 2000; --z-toast: 4000;
+  /* GLOBAL NEUTRALS */
+  --neutral-white: #FFFFFF;
+  --neutral-ink: #2A2D32;
+  --neutral-ink-weak: #585C63;
 }
 
+/* =========================================
+   5. SEMANTIC THEME ENGINE
+   ========================================= */
 
-/* ---------------------------------------------------------
-   6. SECTOR OVERRIDES (The "Different Rooms")
-   --------------------------------------------------------- */
-
-/* SECTOR: TECH ("The Server Room") 
-   Vibe: Industrial, Precision, CLI, Sharp Edges
-*/
-[data-sector="tech"] {
-  --color-primary:        var(--color-tech);
-  --color-bg:             #F0F2F5; /* Cooler, steel grey */
-  
-  /* Geometry: Sharp, Machined */
-  --radius-universal:     2px;
-  --radius-md:            2px;
-  --radius-sm:            0px;
-  
-  /* Type: Monospace Dominance */
-  --font-heading:         'JetBrains Mono', monospace;
-  --font-body:            'JetBrains Mono', monospace; /* Full Terminal Vibe */
-  
-  /* Physics: Crystal Clear */
-  --glass-blur:           10px; 
-  --color-border:         rgba(0, 113, 227, 0.2); /* Tech Blue tint on borders */
+/* DEFAULT THEME (Home) */
+:root {
+  --bg-page: var(--pal-home-base);
+  --bg-surface: var(--pal-home-white);
+  --text-main: var(--neutral-ink);
+  --text-muted: var(--neutral-ink-weak);
+  --accent-primary: var(--pal-home-accent);
+  --accent-highlight: var(--pal-home-highlight);
+  --border-subtle: rgba(42, 45, 50, 0.08); 
 }
 
-/* SECTOR: LIFE ("The Studio") 
-   Vibe: Organic, Editorial, Soft, Flowing
-*/
-[data-sector="life"] {
-  --color-primary:        var(--color-life);
-  --color-bg:             #F8F5FA; /* Lavender tint */
-
-  /* Geometry: Soft Curves */
-  --radius-universal:     24px;
-  --radius-md:            16px;
-  --radius-sm:            8px;
-  
-  /* Type: Elegant Sans */
-  --font-heading:         'Glacial Indifference', sans-serif;
-  --font-body:            'Inter', sans-serif;
-  
-  /* Physics: Frosted Rice Paper */
-  --glass-blur:           50px; 
-  --color-surface:        rgba(255, 255, 255, 0.75); /* More opaque, paper-like */
+/* THEME: TOOLS */
+[data-theme="tools"] {
+  --bg-page: var(--pal-tools-white);
+  --bg-surface: var(--neutral-white);
+  --text-main: var(--pal-tools-graphite);
+  --accent-primary: var(--pal-tools-core);
+  --accent-highlight: var(--pal-tools-violet);
 }
 
-/* SECTOR: FAMILY ("The Playroom") 
-   Vibe: Durable, Warm, Chunky, Friendly
-*/
-[data-sector="family"] {
-  --color-primary:        var(--color-family);
-  --color-bg:             #FFF8F5; /* Warm apricot tint */
-
-  /* Geometry: Bubble / Safety Rounded */
-  --radius-universal:     32px;
-  --radius-md:            20px;
-  --radius-sm:            12px;
-  
-  /* Type: Friendly Display */
-  --font-heading:         'Bantayog', sans-serif;
-  
-  /* Physics: Plastic/Acrylic */
-  --color-border:         rgba(211, 61, 33, 0.15); 
-  --shadow-lg:            0 20px 40px rgba(211, 61, 33, 0.1); 
+/* THEME: LIVING */
+[data-theme="living"] {
+  --bg-page: var(--pal-living-meadow);
+  --bg-surface: var(--neutral-white);
+  --text-main: var(--neutral-ink);
+  --accent-primary: var(--pal-living-green);
+  --accent-highlight: var(--pal-living-peach);
 }
 
-
-/* ---------------------------------------------------------
-   7. DARK MODE OVERRIDE (Global & Sector Aware)
-   --------------------------------------------------------- */
-[data-theme="dark"] {
-  --color-bg:             #0A0A0A;
-  --color-bg-rgb:         10, 10, 10;
-  --color-surface:        rgba(20, 20, 20, 0.6);
-  --color-surface-dark:   rgba(0, 0, 0, 0.4);
-  --color-border:         rgba(255, 255, 255, 0.1);
-
-  --color-text-primary:   #FFFFFF;
-  --color-text-secondary: #A1A1A6;
-  --color-text-muted:     #6E6E73;
-
-  --color-tech:           #00D1FF; 
-  --color-life:           #A855F7; 
-  --color-family:         #FF6B4A; 
-
-  --glass-blur:           20px;
-  --shadow-md: 0 8px 32px rgba(0,0,0,0.4);
+/* THEME: ACCOUNTS */
+[data-theme="accounts"] {
+  --bg-page: var(--pal-account-base);
+  --bg-surface: #F5EDE2; 
+  --text-main: var(--pal-home-ink);
+  --accent-primary: var(--pal-account-blue);
+  --accent-highlight: var(--pal-account-neutral);
 }
 
-/* Dark Mode Sector Adjustments */
-[data-theme="dark"][data-sector="tech"] {
-  --color-bg: #050505; /* Deep black for terminal */
-  --color-border: rgba(0, 209, 255, 0.3); /* Neon borders */
+/* THEME: ABOUT */
+[data-theme="about"] {
+  --bg-page: var(--pal-about-base);
+  --bg-surface: var(--pal-about-grey);
+  --text-main: var(--neutral-ink);
+  --accent-primary: var(--pal-about-coral);
+  --accent-highlight: var(--pal-about-mint);
+  --border-subtle: rgba(0,0,0,0.05);
+}
+
+/* DARK MODE OVERRIDES */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page: #A5CFEA; 
+    --bg-surface: #DDE3EA;
+    --text-main: #1A1C1F;
+    --border-subtle: rgba(0, 0, 0, 0.1);
+  }
+
+  [data-theme="tools"] {
+    --bg-page: #071423; 
+    --bg-surface: #1A1C1F;
+    --text-main: #E6E8EB; 
+    --accent-primary: #0FA3D6;
+  }
+  
+  [data-theme="living"] {
+    --bg-page: #C8F5E7;
+    --bg-surface: #D8F7EB;
+    --text-main: #1A1C1F;
+    --accent-primary: #6FBF8A;
+  }
 }

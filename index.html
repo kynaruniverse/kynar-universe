@@ -1,175 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#1E2A44">
-    
-    <title>KYNAR Universe | Digital Department Store</title>
-    <meta name="description" content="The premier marketplace for digital essentials. High-performance tools for Tech, Life, and Family sectors.">
-    
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="canonical" href="https://kynaruniverse.co.uk/">
-    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
-    
-    <link rel="preload" href="assets/fonts/Bantayog.woff2" as="font" type="font/woff2" crossorigin>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/tokens.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/pages.css">
-    <link rel="stylesheet" href="css/components.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kynar Universe | A Space, Not a Screen</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
-<body data-sector="family">
 
+<body data-theme="home">
 
-    <div class="vitro-background" aria-hidden="true">
-        <div class="vitro-blob blob-1"></div>
-        <div class="vitro-blob blob-2"></div>
-        <div class="vitro-blob blob-3"></div>
-    </div>
-    <div class="vitro-noise"></div>
-
-    <header id="global-header" class="site-header">
-        <div class="header-inner">
-            <div class="header-top-row">
-                <button class="menu-toggle" aria-label="Open Navigation Menu">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
-
-                <a href="index.html" class="site-brand" aria-label="KYNAR Universe Home">
-                    <div class="brand-main">KYNAR</div>
-                    <div class="brand-sub">UNIVERSE</div>
-                </a>
-
-                <button id="theme-toggle" class="menu-toggle" aria-label="Toggle Interface Theme">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
-                </button>
-            </div>
-
-            <div class="search-input-wrapper">
-                <svg class="search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" class="search-input" placeholder="Search the universe..." aria-label="Search Catalog">
-            </div>
-        </div>
+  <main class="container stack-xl" style="padding-top: var(--space-hero); padding-bottom: var(--space-section);">
+    
+    <header class="stack-md animate-enter">
+      <h1 class="text-h1">
+        A space, <br>
+        not a screen.
+      </h1>
+      <p class="text-body">
+        A warm, guided world of digital tools and resources. 
+        Built for travelers, creators, and worldbuilders.
+      </p>
     </header>
 
-    <main class="container section">
-        <h1 class="sr-only">KYNAR Universe - Digital Marketplace for Tech, Life, and Family</h1>
-        
-        <div class="hero-bento-supreme">
-
-            <article class="dept-card bento-dominant" style="--glow-color: var(--color-tech);">
-                <a href="shop-tech.html" class="dept-link" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-5);">
-                    <div class="dept-content">
-                        <div class="dept-icon" style="margin-bottom: var(--space-4);">
-                            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                                <line x1="8" y1="21" x2="16" y2="21"></line>
-                                <line x1="12" y1="17" x2="12" y2="21"></line>
-                            </svg>
-                        </div>
-                        <h2 class="dept-title" style="font-size: var(--text-4xl); margin-bottom: var(--space-2);">KYNAR TECH</h2>
-                        <p class="dept-desc" style="font-size: var(--text-lg); color: var(--color-text-secondary);">Production-ready automation scripts & developer utilities.</p>
-                        <span class="btn btn--primary" style="margin-top: var(--space-4); width: fit-content; background: var(--color-primary); color: #000; font-weight: bold;">ACCESS_TERMINAL</span>
-                    </div>
-                    
-                    <div class="vitro-meta" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--space-3); margin-top: auto; display: flex; justify-content: space-between;">
-                        <span class="status-indicator">
-                            <span class="status-dot is-secure" style="background-color: var(--color-success);"></span>
-                            SYSTEM_ONLINE
-                        </span>
-                        <span class="text-mono">ENTRY_01</span>
-                    </div>
-                </a>
-            </article>
-
-            <article class="dept-card bento-sub-1" style="--glow-color: var(--color-life);">
-                <a href="shop-life.html" class="dept-link" style="height: 100%; display: flex; flex-direction: column; padding: var(--space-4);">
-                    <div class="dept-content">
-                        <div class="dept-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M12 6v6l4 2"></path>
-                            </svg>
-                        </div>
-                        <h2 class="dept-title" style="font-size: var(--text-xl);">KYNAR LIFE</h2>
-                        <p class="dept-desc" style="font-size: var(--text-sm);">OS for your reality. Digital planners & trackers.</p>
-                    </div>
-                    <div class="vitro-meta" style="margin-top: auto;">
-                        <span class="text-mono" style="font-size: 10px; opacity: 0.6;">IDX_02 // SYNC_ON</span>
-                    </div>
-                </a>
-            </article>
-
-            <article class="dept-card bento-sub-2" style="--glow-color: var(--color-family);">
-                <a href="shop-family.html" class="dept-link" style="height: 100%; display: flex; flex-direction: column; padding: var(--space-4);">
-                    <div class="dept-content">
-                        <div class="dept-icon">
-                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M3 3h18v18H3z"></path>
-                                <path d="M12 8v8"></path>
-                                <path d="M8 12h8"></path>
-                            </svg>
-                        </div>
-                        <h2 class="dept-title" style="font-size: var(--text-xl);">KYNAR FAMILY</h2>
-                        <p class="dept-desc" style="font-size: var(--text-sm);">Creative logic for the modern household.</p>
-                    </div>
-                    <div class="vitro-meta" style="margin-top: auto;">
-                        <span class="text-mono" style="font-size: 10px; opacity: 0.6;">IDX_03 // 100+ PG</span>
-                    </div>
-                </a>
-            </article>
-
-            <article class="dept-card bento-utility" style="--glow-color: var(--color-pro); min-height: 100px;">
-                <a href="hub.html" class="dept-link" style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-4); height: 100%;">
-                    <div style="display: flex; align-items: center; gap: var(--space-4);">
-                        <div class="dept-icon" style="margin: 0; color: var(--color-primary);">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h2 class="dept-title" style="margin: 0; font-size: var(--text-lg); line-height: 1;">THE HUB</h2>
-                            <p class="dept-desc" style="margin: 4px 0 0 0; font-size: 12px;">Knowledge Base & System Tutorials</p>
-                        </div>
-                    </div>
-                    <div class="vitro-meta">
-                        <span class="text-mono" style="color: var(--color-primary);">READ_DB →</span>
-                    </div>
-                </a>
-            </article>
-
+    <nav class="stack-md animate-enter delay-1">
+      
+      <a href="pages/tools/index.html" class="card" data-variant="tools">
+        <div class="stack-sm">
+          <span class="text-micro" style="color: var(--pal-tools-core);">Tools</span>
+          <h2 class="text-h3">Build & Create</h2>
+          <p class="text-body" style="font-size: 0.9rem;">
+            Productivity, tech, and creative systems.
+          </p>
         </div>
+      </a>
 
+      <a href="pages/living/index.html" class="card" data-variant="living">
+        <div class="stack-sm">
+          <span class="text-micro" style="color: var(--pal-living-green);">Living</span>
+          <h2 class="text-h3">Life & Growth</h2>
+          <p class="text-body" style="font-size: 0.9rem;">
+            Wellness, learning, and everyday creativity.
+          </p>
+        </div>
+      </a>
 
-        <section id="recently-viewed-container" style="margin-top: var(--space-6); display: none;">
-            <div class="section-title text-mono" style="font-size: var(--text-sm); opacity: 0.7;">// RECENT_TRANSMISSIONS</div>
-            <div class="product-grid">
-                </div>
-        </section>
+      <a href="pages/home/index.html" class="card" data-variant="home">
+        <div class="stack-sm">
+          <span class="text-micro" style="color: var(--pal-home-accent);">Home</span>
+          <h2 class="text-h3">Family & Routines</h2>
+          <p class="text-body" style="font-size: 0.9rem;">
+            Warm tools for parents, kids, and daily comfort.
+          </p>
+        </div>
+      </a>
 
-    </main>
+      <a href="pages/account/index.html" class="card">
+        <div class="stack-sm">
+          <span class="text-micro" style="color: var(--pal-account-blue);">The Archive</span>
+          <h2 class="text-h3">Your Collections</h2>
+        </div>
+      </a>
 
-    <footer id="global-footer" class="section site-footer">
-        </footer>
+    </nav>
 
-    <div id="mobile-menu" class="mobile-menu"></div>
-    
-    <div id="cookie-banner" class="cookie-banner">
-        <p class="cookie-banner__text">
-            We use cookies to improve your experience. 
-            <a href="legal.html" class="cookie-banner__link">Privacy Policy</a>.
-        </p>
-        <button id="accept-cookies" class="btn btn--primary" style="min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-sm);">
-            Accept
-        </button>
-    </div>
+    <footer class="stack-md" style="margin-top: var(--space-lg); opacity: 0.6; text-align: center;">
+      <div style="display: flex; gap: var(--space-md); justify-content: center;">
+        <a href="pages/about/index.html" class="text-micro" style="text-decoration: underline; text-underline-offset: 4px;">Read the Story</a>
+      </div>
+      <p class="text-micro">The path continues.</p>
+    </footer>
 
-    <script src="js/main.js" defer></script>
+  </main>
+
+  <script src="js/app.js"></script>
 </body>
 </html>
