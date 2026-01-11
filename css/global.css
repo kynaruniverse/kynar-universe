@@ -1,5 +1,5 @@
 /* css/global.css */
-/* Status: FINAL MASTER (Aligned with Kynar Language, Color, & Vision Blueprints) */
+/* Status: FINAL MASTER (Deep Atmosphere / Glass / Starwalker Ready) */
 
 /* =========================================
    1. RESET & BASE (The Foundation)
@@ -11,7 +11,7 @@
 }
 
 html {
-  scroll-behavior: smooth; /* Guided, not rushed */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -20,28 +20,32 @@ body {
   font-family: var(--font-primary);
   line-height: var(--leading-base);
   
-  /* Smooth transitions for Theme Switching */
-  transition: background-color var(--transition-base), color var(--transition-base);
+  /* THE UNIVERSE GRADIENT (The "Heartbeat" of the page) */
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%), 
+    radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05), transparent 25%);
+  background-attachment: fixed; /* Keeps the stars static while you scroll */
+
+  transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 img {
   max-width: 100%;
   display: block;
-  border-radius: var(--radius-sm); /* Softens all images slightly */
+  border-radius: var(--radius-sm);
 }
 
 a {
   color: inherit;
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: opacity 0.2s ease;
 }
 
-/* --- PREMIUM POLISH (Scrollbars & Selection) --- */
+/* --- PREMIUM SCROLLBARS --- */
 ::selection {
   background: var(--accent-primary);
-  color: var(--bg-surface);
+  color: #000; /* Contrast text for selection */
 }
 
 ::-webkit-scrollbar {
@@ -53,7 +57,6 @@ a {
 ::-webkit-scrollbar-thumb {
   background-color: var(--border-subtle);
   border-radius: var(--radius-pill);
-  border: 2px solid var(--bg-page); /* Creates padding effect */
 }
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--text-muted);
@@ -63,57 +66,58 @@ a {
    2. TYPOGRAPHY SYSTEM (The Voice)
    ========================================= */
 h1, h2, h3 {
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-tight);
   margin-bottom: var(--space-sm);
-  letter-spacing: -0.01em; /* Modern tightness */
+  letter-spacing: -0.02em;
 }
 
-/* "Warm Clarity" - The Helpful Guide */
+/* "Warm Clarity" - Headlines */
 .text-h1 {
   font-family: var(--font-secondary);
   font-size: var(--text-h1);
+  font-weight: 400; /* Lora looks better at 400 */
+  line-height: 1.1;
   color: var(--text-main);
 }
 
 .text-h2 {
-  font-family: var(--font-primary);
+  font-family: var(--font-secondary);
   font-size: var(--text-h2);
-  font-weight: var(--weight-semibold);
+  font-weight: 400;
 }
 
 .text-h3 {
+  font-family: var(--font-primary);
   font-size: var(--text-h3);
-  font-weight: var(--weight-medium);
+  font-weight: 600;
 }
 
 .text-body {
+  font-family: var(--font-primary);
   font-size: var(--text-body);
+  color: var(--text-body);
   opacity: 0.9;
-  max-width: 65ch; /* Optimal reading width */
+  max-width: 60ch;
 }
 
-/* "Curious Playfulness" - Microcopy */
 .text-micro {
   font-size: var(--text-micro);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-weight: var(--weight-semibold);
+  font-weight: 600;
   opacity: 0.7;
 }
 
-/* "Quiet Mythic Depth" - The Lore Keeper */
 .text-lore {
   font-family: var(--font-secondary);
   font-style: italic;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text-muted);
-  line-height: 1.6;
+  opacity: 0.8;
 }
 
-/* Code Blocks (For Automation Scripts/Dev Tools) */
+/* Code Blocks */
 code, pre {
-  font-family: "Fira Code", "JetBrains Mono", monospace; 
+  font-family: var(--font-mono);
   font-size: 0.9em;
 }
 
@@ -134,42 +138,43 @@ code, pre {
 .stack-xs { display: flex; flex-direction: column; gap: var(--space-xs); }
 
 /* =========================================
-   4. COMPONENT BASICS
+   4. THE GLASS CARDS (Portals)
    ========================================= */
 .card {
   background: var(--bg-surface);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
   border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md); /* Reduced slightly for sleekness */
   
-  /* Material-Aware Interaction */
-  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  /* The Glass Effect */
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Hover: Float & Glow */
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--accent-primary); /* Subtle highlight */
+  transform: translateY(-4px);
+  border-color: var(--border-highlight);
+  background: var(--bg-surface-hover);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5); /* Deep shadow */
 }
 
-.card:active {
-  transform: scale(0.99); /* Tactile feedback */
-}
+/* Category Borders (The "Soul" Colors) */
+.card[data-variant="tools"] { border-left: 2px solid var(--pal-tools-core); }
+.card[data-variant="tools"]:hover { box-shadow: 0 0 30px var(--pal-tools-glow); border-color: var(--pal-tools-core); }
 
-/* Contextual Card Colors (Aligned with Blueprint Palettes) */
-.card[data-variant="tools"] { border-left: 4px solid var(--pal-tools-core); }
-.card[data-variant="living"] { border-left: 4px solid var(--pal-living-green); }
-.card[data-variant="hub"] { border-left: 4px solid var(--pal-hub-green); }
+.card[data-variant="living"] { border-left: 2px solid var(--pal-living-core); }
+.card[data-variant="living"]:hover { box-shadow: 0 0 30px var(--pal-living-glow); border-color: var(--pal-living-core); }
 
-/* ALIGNMENT FIX: Home Category uses Family Palette */
-.card[data-variant="home"] { border-left: 4px solid var(--pal-family-blue); } 
+.card[data-variant="home"] { border-left: 2px solid var(--pal-home-core); }
+.card[data-variant="home"]:hover { box-shadow: 0 0 30px var(--pal-home-glow); border-color: var(--pal-home-core); }
 
-/* Global Focus State (Accessibility + Brand) */
-:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 4px;
-  border-radius: 2px;
-}
+.card[data-variant="hub"] { border-left: 2px solid var(--pal-hub-core); }
+.card[data-variant="hub"]:hover { box-shadow: 0 0 30px var(--pal-hub-glow); border-color: var(--pal-hub-core); }
 
 /* =========================================
    5. HERO SOUL (Atmosphere)
@@ -179,35 +184,29 @@ code, pre {
   z-index: 1;
 }
 
-/* The glowing atmospheric blob - "A whisper, not a shout" */
 .hero-soul::before {
   content: '';
   position: absolute;
-  top: -120px;
+  top: -150px;
   left: 50%;
   transform: translateX(-50%);
-  width: 120%;
-  height: 500px;
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
   
-  /* Uses the Accent color for a subtle brand glow */
-  background: radial-gradient(circle at center, var(--accent-primary), transparent 60%);
+  /* Uses the generic accent glow for the page theme */
+  background: radial-gradient(circle at center, var(--accent-glow), transparent 70%);
   
-  opacity: 0.15; /* Kept subtle */
+  opacity: 0.4; 
   z-index: -1;
   pointer-events: none;
   filter: blur(80px);
-  animation: soulPulse 12s ease-in-out infinite alternate;
-}
-
-@media (prefers-color-scheme: dark) {
-  .hero-soul::before {
-    opacity: 0.2; /* Slightly stronger in dark mode for visibility */
-  }
+  animation: soulPulse 8s ease-in-out infinite alternate;
 }
 
 @keyframes soulPulse {
-  0% { opacity: 0.12; transform: translateX(-50%) scale(0.9); }
-  100% { opacity: 0.18; transform: translateX(-50%) scale(1.1); }
+  0% { opacity: 0.3; transform: translateX(-50%) scale(0.95); }
+  100% { opacity: 0.5; transform: translateX(-50%) scale(1.05); }
 }
 
 /* =========================================
@@ -221,17 +220,18 @@ code, pre {
   height: 64px;
   z-index: var(--z-header);
   
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(10, 10, 10, 0.7); /* Dark semi-transparent */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
   
-  transition: transform var(--transition-base);
+  transition: transform 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  .glass-header {
-    background: rgba(26, 28, 31, 0.75); /* Matches Dark Mode Base */
+/* Light mode override for header */
+@media (prefers-color-scheme: light) {
+  :root[data-mode="light"] .glass-header {
+    background: rgba(255, 255, 255, 0.8);
   }
 }
 
@@ -240,17 +240,15 @@ code, pre {
   align-items: center;
   gap: 12px;
   color: var(--text-main);
-  opacity: 0.9;
-  transition: opacity var(--transition-fast);
+  text-decoration: none;
 }
-.header-logo:hover { opacity: 1; }
 
 .logo-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background-color: var(--accent-primary);
   border-radius: 50%;
-  box-shadow: 0 0 12px var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-primary);
 }
 
 .header-actions {
@@ -260,14 +258,64 @@ code, pre {
 }
 
 /* =========================================
-   7. SEARCH SYSTEM
+   7. BUTTONS & INPUTS
+   ========================================= */
+.btn-primary {
+  background: var(--text-main);
+  color: var(--bg-page);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+  text-align: center;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+}
+
+.btn-tertiary {
+  background: transparent;
+  border: none;
+  color: var(--text-body);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, background 0.2s;
+}
+.btn-tertiary:hover {
+  color: var(--text-main);
+  background: var(--border-subtle);
+}
+
+.input {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent-primary);
+}
+
+/* =========================================
+   8. UTILITIES (Search & Toast)
    ========================================= */
 .search-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  z-index: var(--z-modal);
+  background: rgba(0, 0, 0, 0.85); /* Darker overlay */
+  backdrop-filter: blur(10px);
+  z-index: var(--z-overlay);
   padding: 24px;
   display: flex;
   justify-content: center;
@@ -276,149 +324,81 @@ code, pre {
   
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-base);
+  transition: opacity 0.3s ease;
 }
-
-@media (prefers-color-scheme: dark) {
-  .search-overlay { background: rgba(10, 10, 10, 0.95); }
-}
-
-.search-overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.search-container {
-  width: 100%;
-  max-width: 600px;
-}
+.search-overlay.active { opacity: 1; pointer-events: all; }
 
 .search-input {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
   font-size: 2rem;
   font-family: var(--font-secondary);
   color: var(--text-main);
   padding: 16px 0;
-  border-radius: 0;
-  transition: border-color var(--transition-fast);
 }
+.search-input:focus { outline: none; border-color: var(--accent-primary); }
 
-.search-input:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-}
-
-.search-result-card {
-  padding: 16px;
-  border-radius: var(--radius-md);
-  transition: background var(--transition-fast), transform var(--transition-fast);
-  cursor: pointer;
-  display: block; /* Ensure it behaves like a block link */
-}
-.search-result-card:hover {
-  background: var(--bg-page);
-  transform: translateX(4px);
-}
-
-/* =========================================
-   8. TOAST NOTIFICATIONS
-   ========================================= */
 .toast-container {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: var(--z-modal);
+  z-index: var(--z-overlay);
   display: flex;
   flex-direction: column;
   gap: 12px;
   pointer-events: none;
 }
-
 .toast {
-  background: var(--bg-surface);
-  border-left: 4px solid var(--accent-primary);
-  padding: 12px 24px;
+  background: #1a1a1a;
+  border: 1px solid var(--border-subtle);
+  color: #fff;
+  padding: 12px 20px;
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: var(--text-micro);
-  font-weight: var(--weight-medium);
-  color: var(--text-main);
-  
-  opacity: 0;
-  transform: translateY(20px);
-  animation: toastEnter 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  display: flex; align-items: center; gap: 12px;
+  opacity: 0; transform: translateY(20px);
+  animation: toastEnter 0.4s forwards;
 }
-
-.toast.leaving {
-  animation: toastExit 0.3s ease-in forwards;
-}
+.toast.leaving { animation: toastExit 0.3s forwards; }
 
 @keyframes toastEnter { to { opacity: 1; transform: translateY(0); } }
 @keyframes toastExit { to { opacity: 0; transform: translateY(10px); } }
 
 /* =========================================
-   9. MOTION UTILITIES
+   9. ANIMATIONS
    ========================================= */
 .animate-enter {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-.scroll-fade-item {
+  animation: fadeUp 0.8s ease-out forwards;
   opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  will-change: opacity, transform;
+  transform: translateY(20px);
 }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
 
-.scroll-fade-item.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
 /* =========================================
    10. STARWALKER MODE (Secret Ultra-Premium)
-   Add to css/global.css
    ========================================= */
-
-/* Golden Glow Borders */
 :root[data-mode="starwalker"] .card {
   border-color: rgba(255, 215, 0, 0.3);
   box-shadow: 0 4px 20px rgba(255, 215, 0, 0.05);
 }
 
-/* Subtle Gold Text Selection */
 :root[data-mode="starwalker"] ::selection {
   background: #FFD700;
   color: #000000;
 }
 
-/* Header Shine */
 :root[data-mode="starwalker"] .glass-header {
   border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  background: rgba(5, 5, 5, 0.85);
+  background: rgba(5, 5, 5, 0.9);
 }
 
-/* Hero Soul Shift */
 :root[data-mode="starwalker"] .hero-soul::before {
   background: radial-gradient(circle at center, #FFD700, transparent 70%);
-  opacity: 0.08; /* Very subtle gold mist */
+  opacity: 0.1;
 }
