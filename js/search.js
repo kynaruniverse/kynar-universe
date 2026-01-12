@@ -7,21 +7,19 @@
 import { KYNAR_DATA } from './data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  injectSearchOverlay();
+  injectSearchUI();
 });
 
 /* =========================================
    1. INJECT THE LENS (OVERLAY)
    ========================================= */
-function injectSearchOverlay() {
-  // Check if exists to prevent duplicates
+function injectSearchUI() {
   if (document.getElementById('search-overlay')) return;
 
   const overlay = document.createElement('div');
   overlay.id = 'search-overlay';
   overlay.className = 'search-overlay';
   
-  // ALIGNMENT: "Grand Vision" Copy
   overlay.innerHTML = `
     <div class="search-container stack-md animate-enter">
       
@@ -41,13 +39,11 @@ function injectSearchOverlay() {
       </div>
       
       <div id="search-results" class="search-results stack-sm" style="max-height: 60vh; overflow-y: auto; padding-right: 4px;">
-        
         <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
           <i class="ph ph-telescope" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
           <p class="text-body">Explore the Digital Department Store.</p>
           <p class="text-micro">Type to access verified tools and knowledge.</p>
         </div>
-
       </div>
 
       <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; display: flex; justify-content: space-between; opacity: 0.5;">
@@ -60,14 +56,11 @@ function injectSearchOverlay() {
   
   document.body.appendChild(overlay);
 
-  // LISTENERS
   const input = document.getElementById('search-input');
   input.addEventListener('input', (e) => handleSearch(e.target.value));
   
-  // Keyboard Support
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSearch();
-    // Shortcut: Ctrl+K or Cmd+K to open
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
       openSearch();
@@ -77,7 +70,6 @@ function injectSearchOverlay() {
 
 /* =========================================
    2. VISIBILITY LOGIC
-   Exposed globally so header.js can call it.
    ========================================= */
 function toggleSearch() {
   const overlay = document.getElementById('search-overlay');
@@ -87,23 +79,19 @@ function toggleSearch() {
     openSearch();
   }
 }
-window.toggleSearch = toggleSearch; // Global Exposure
+window.toggleSearch = toggleSearch;
 
 function openSearch() {
   const overlay = document.getElementById('search-overlay');
   overlay.classList.add('active');
-  document.body.style.overflow = 'hidden'; // Lock scroll
-  
-  // Focus input for "Instant Access"
+  document.body.style.overflow = 'hidden';
   setTimeout(() => document.getElementById('search-input').focus(), 100);
 }
 
 function closeSearch() {
   const overlay = document.getElementById('search-overlay');
   overlay.classList.remove('active');
-  document.body.style.overflow = ''; // Unlock scroll
-  
-  // Optional: Clear input on close
+  document.body.style.overflow = '';
   setTimeout(() => {
     document.getElementById('search-input').value = '';
     resetResults();
@@ -119,9 +107,16 @@ function resetResults() {
 }
 
 /* =========================================
-   3. SEARCH ALGORITHM
-   Flattens the "Centralized Hub" (Data) and filters it.
+   3. SEARCH ALGORITHM (OPTIMIZED)
+   Flattens the data ONCE, not on every keystroke.
    ========================================= */
+
+// 1. CACHE THE INDEX (Performance Fix)
+const allItems = [
+  ...KYNAR_DATA.products.map(item => ({ ...item, type: 'product' })),
+  ...KYNAR_DATA.guides.map(item => ({ ...item, type: 'guide' }))
+];
+
 function handleSearch(query) {
   const resultsContainer = document.getElementById('search-results');
   const term = query.toLowerCase().trim();
@@ -131,13 +126,7 @@ function handleSearch(query) {
     return;
   }
 
-  // Combine Assets (Products) and Knowledge (Guides)
-  const allItems = [
-    ...KYNAR_DATA.products.map(item => ({ ...item, type: 'product' })),
-    ...KYNAR_DATA.guides.map(item => ({ ...item, type: 'guide' }))
-  ];
-
-  // Filter Logic
+  // 2. FILTER THE CACHED INDEX (Fast)
   const matches = allItems.filter(item => {
     return (
       item.title.toLowerCase().includes(term) || 
@@ -147,7 +136,6 @@ function handleSearch(query) {
     );
   });
 
-  // Render Logic
   if (matches.length === 0) {
     resultsContainer.innerHTML = `
       <div style="text-align:center; opacity:0.5; padding: 2rem;">
@@ -161,7 +149,6 @@ function handleSearch(query) {
 
 /* =========================================
    4. RENDERER
-   Displays results as "Verified Assets"
    ========================================= */
 function renderResultCard(item) {
   const link = resolvePath(item);
@@ -183,22 +170,18 @@ function renderResultCard(item) {
   return `
     <a href="${link}" class="card search-result-card animate-enter" onclick="closeSearch()">
       <div style="display:flex; align-items:center; gap:var(--space-md);">
-        
         <div style="width:40px; height:40px; border-radius:50%; background:var(--bg-page); display:flex; align-items:center; justify-content:center; flex-shrink: 0; border: 1px solid var(--border-subtle);">
           <i class="ph ${iconClass}" style="font-size:1.25rem; color:var(--text-main); opacity: 0.8;"></i>
         </div>
-        
         <div class="stack-xs" style="flex:1;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
              <h4 class="text-body" style="font-weight:600; font-size:0.95rem; margin:0;">${item.title}</h4>
              ${badge}
           </div>
-          
           <div style="display:flex; justify-content:space-between; font-size: 0.8rem; opacity: 0.6; margin-top: 2px;">
             <span>${subText}</span>
           </div>
         </div>
-
       </div>
     </a>
   `;
@@ -206,21 +189,19 @@ function renderResultCard(item) {
 
 /* =========================================
    5. UTILITIES
-   Smart Path Resolution (Matches Header Logic)
    ========================================= */
 function resolvePath(item) {
   const path = window.location.pathname;
   let prefix = '';
 
-  // Logic: Are we deep in a category?
   if (!path.includes('/pages/')) {
-    prefix = 'pages/'; // We are at Root
+    prefix = 'pages/';
   } else {
     const parts = path.split('/pages/')[1];
     if (parts && parts.includes('/')) {
-      prefix = '../'; // We are deep (e.g. tools/index.html) -> Go up
+      prefix = '../';
     } else {
-      prefix = ''; // We are at pages level (e.g. product.html)
+      prefix = '';
     }
   }
 

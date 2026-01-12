@@ -58,7 +58,7 @@ def organize_directory():
       tag: "Business Intelligence",
       shortDesc: "A master spreadsheet for forecasting revenue and runway.",
       lore: "Data is clarity.",
-      description: "Don't guess your growth. This pre-built financial model helps entrepreneurs track burn rate, project revenue, and secure funding. Vetted by founders.",
+      description: "Don't guess your growth. This pre-built financial model helps entrepreneurs track burn rate, project revenue, and secure funding.",
       features: [
         "Revenue Forecasting Tab",
         "Expense Categorization",
