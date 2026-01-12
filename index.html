@@ -2,8 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kynar Universe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>One Universe. Infinite Digital Solutions. | Kynar Universe</title>
+  
+  <meta name="description" content="The premier marketplace for high-quality digital essentials. From Python scripts to digital planners, download verified solutions to work smarter, live better, and play harder.">
+  <meta name="author" content="Kynar Universe">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kynaruniverse.co.uk/">
+  <meta property="og:title" content="One Universe. Infinite Digital Solutions.">
+  <meta property="og:description" content="The ultimate Digital Department Store. We reject digital filler. Download verified tools for developers, high-performers, and families.">
+  <meta property="og:image" content="https://kynaruniverse.co.uk/assets/share-preview.png">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kynaruniverse.co.uk/assets/share-preview.png">
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
   
@@ -19,128 +32,118 @@
 </head>
 
 <body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
 
-  <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
     <header class="stack-md animate-enter" style="text-align: center; align-items: center; margin-bottom: var(--space-xl); padding-top: var(--space-lg);">
-      
+  
       <div style="
-        width: 64px; height: 64px; 
+        width: 64px; height: 64px;
         border-radius: 50%;
-        background: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent);
+        background: radial-gradient(circle at center, rgba(59, 130, 246, 0.2), transparent);
         border: 1px solid var(--border-highlight);
         display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 0 30px -10px var(--accent-glow); /* Pulsing Glow */
-        backdrop-filter: blur(4px);
-        margin-bottom: var(--space-xs);
+        box-shadow: 0 0 40px -10px var(--accent-glow);
+        margin-bottom: var(--space-sm);
       ">
-        <i class="ph ph-star-four" style="font-size: 1.75rem; color: var(--text-main); opacity: 0.9;"></i>
+        <i class="ph ph-globe-hemisphere-west" style="font-size: 2rem; color: var(--text-main);"></i>
       </div>
 
       <h1 class="text-h1" style="line-height: 1.1; margin-bottom: var(--space-xs);">
-        A space,<br>
-        <span style="color: var(--text-muted); font-style: italic;">not a screen.</span>
+        One Universe.<br>
+        <span style="color: var(--accent-primary);">Infinite Digital Solutions.</span>
       </h1>
 
-      <p class="text-body" style="font-size: 1.15rem; max-width: 42ch; opacity: 0.8; margin: 0 auto;">
-        A guided world of digital tools. Built for travelers, creators, and worldbuilders.
+      <p class="text-body" style="font-size: 1.15rem; max-width: 60ch; opacity: 0.9; margin: 0 auto;">
+        The ultimate <strong>Digital Department Store</strong>. We are building the world's largest library of downloadable tools—serving everyone from coders to parents. Download your upgrade.
       </p>
 
-      <div style="
-        margin-top: var(--space-md); 
-        padding-top: var(--space-md); 
-        border-top: 1px solid var(--border-subtle); 
-        width: 100%; 
-        max-width: 200px;
-        opacity: 0.6;
-      ">
-        <p class="text-lore" style="font-size: 0.85rem;">"Every tool is a small spark."</p>
+      <div style="margin-top: var(--space-md); display: flex; gap: var(--space-sm); justify-content: center;">
+         <a href="#departments" class="btn-primary">Browse Departments</a>
       </div>
 
     </header>
 
-
-    <section class="stack-md animate-enter delay-1">
-      
+    <section id="departments" class="stack-md animate-enter delay-1">
+  
       <a href="pages/tools/index.html" class="card" data-variant="tools">
         <div style="display: flex; align-items: center; gap: var(--space-md);">
-          
-          <div style="background: rgba(59, 130, 246, 0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(59, 130, 246, 0.2);">
-            <i class="ph ph-wrench" style="font-size: 1.5rem; color: var(--pal-tools-core);"></i>
+      
+          <div class="icon-box">
+            <i class="ph ph-code"></i> 
           </div>
 
           <div class="stack-xs">
-            <h2 class="text-h3" style="margin: 0;">Build & Create</h2>
-            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.7;">
-              Productivity systems, automation scripts, and creative tools.
+            <h2 class="text-h3" style="margin: 0;">KYNAR Tools</h2> 
+            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.8;">
+              Empowering developers and entrepreneurs with production-ready Python scripts, automation workflows, and business intelligence templates.
             </p>
           </div>
-          
+      
         </div>
       </a>
 
       <a href="pages/living/index.html" class="card" data-variant="living">
         <div style="display: flex; align-items: center; gap: var(--space-md);">
-          
-          <div style="background: rgba(16, 185, 129, 0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(16, 185, 129, 0.2);">
-            <i class="ph ph-plant" style="font-size: 1.5rem; color: var(--pal-living-core);"></i>
+      
+          <div class="icon-box">
+            <i class="ph ph-lightning"></i> 
           </div>
 
           <div class="stack-xs">
-            <h2 class="text-h3" style="margin: 0;">Life & Growth</h2>
-            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.7;">
-              Wellness journals, learning paths, and everyday clarity.
+            <h2 class="text-h3" style="margin: 0;">KYNAR Living</h2>
+            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.8;">
+              Bringing clarity to daily chaos with digital planners, finance trackers, and wellness systems designed for high-performance living.
             </p>
           </div>
-          
+      
         </div>
       </a>
 
       <a href="pages/home/index.html" class="card" data-variant="home">
         <div style="display: flex; align-items: center; gap: var(--space-md);">
-          
-          <div style="background: rgba(245, 158, 11, 0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(245, 158, 11, 0.2);">
-            <i class="ph ph-house-line" style="font-size: 1.5rem; color: var(--pal-home-core);"></i>
+      
+          <div class="icon-box">
+            <i class="ph ph-house-line"></i>
           </div>
 
           <div class="stack-xs">
-            <h2 class="text-h3" style="margin: 0;">Family & Routines</h2>
-            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.7;">
-              Warm tools for parents, kids, and daily comfort.
+            <h2 class="text-h3" style="margin: 0;">KYNAR Home</h2>
+            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.8;">
+              Supporting households with educational learning bundles, creative activity packs, and home management tools.
             </p>
           </div>
-          
-        </div>
-      </a>
-
-      <a href="pages/hub/index.html" class="card" data-variant="hub">
-        <div style="display: flex; align-items: center; gap: var(--space-md);">
-          
-          <div style="background: rgba(139, 92, 246, 0.1); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(139, 92, 246, 0.2);">
-            <i class="ph ph-compass" style="font-size: 1.5rem; color: var(--pal-hub-core);"></i>
-          </div>
-
-          <div class="stack-xs">
-            <h2 class="text-h3" style="margin: 0;">Community & Guides</h2>
-            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.7;">
-              Explore ideas, stories, and the knowledge library.
-            </p>
-          </div>
-          
+      
         </div>
       </a>
 
       <a href="pages/account/index.html" class="card" style="border-left: none; text-align: center; opacity: 0.7; padding: var(--space-sm);">
-        <span class="text-micro" style="letter-spacing: 0.1em;">Login to The Archive</span>
+        <span class="text-micro" style="letter-spacing: 0.1em;">Open Your Inventory</span>
       </a>
 
     </section>
+    
+    <section class="animate-enter delay-2" style="margin-top: var(--space-xl); padding: var(--space-lg) 0; border-top: 1px solid var(--border-subtle); text-align: center;">
+  
+      <span class="text-micro" style="color: var(--accent-primary);">Global Standard for Digital Utility</span>
+      <h3 class="text-h2" style="margin-top: var(--space-sm); font-size: 1.5rem;">No Digital Filler.</h3>
+  
+      <p class="text-body" style="margin: var(--space-sm) auto; max-width: 65ch; opacity: 0.8;">
+        We believe that the right digital tool can change your day. At KYNAR Universe, every script, template, and workbook is vetted for usability, quality, and impact. 
+        We are democratizing access to productivity—one instant download at a time.
+      </p>
 
+    </section>
 
     <footer style="margin-top: var(--space-xl); opacity: 0.5; text-align: center; display: flex; flex-direction: column; gap: var(--space-sm); align-items: center;">
       <p class="text-micro">The path continues.</p>
       
-      <div style="display: flex; gap: var(--space-md);">
+      <p class="text-lore" style="font-size: 0.75rem; opacity: 0.3; margin-top: 4px;">
+        "Look to the stars in your settings."
+      </p>
+      
+      <div style="display: flex; gap: var(--space-md); margin-top: var(--space-sm);">
         <a href="pages/legal/privacy.html" class="text-micro" style="opacity: 0.7;">Privacy</a>
         <a href="pages/support/index.html" class="text-micro" style="opacity: 0.7;">Support</a>
         <a href="pages/settings/index.html" class="text-micro" style="opacity: 0.7;">Settings</a>

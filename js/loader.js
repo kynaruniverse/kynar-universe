@@ -1,118 +1,141 @@
-/* ASTRYX LOADER (js/loader.js)
-   Injects Product OR Guide data into templates.
-   Status: FINAL MASTER (Aligned with Data Engine & Business Vision)
+/* KYNAR UNIVERSE ENGINE (js/loader.js)
+   Retrieves assets from the Centralized Hub (data.js) and injects them into the Specification Sheet.
+   Status: FINAL MASTER (Aligned with "Grand Vision" & SEO Logic)
 */
 
-// ALIGNMENT: Import helper functions, not raw arrays
 import { getProductById, getGuideById } from './data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   
-  // CHECK: Is this a Product request?
+  // ROUTING LOGIC: Determine if we are loading an Asset (Tool) or Knowledge (Guide)
   if (params.has('id')) {
     const productId = params.get('id');
-    const product = getProductById(productId); // Use Helper
+    const product = getProductById(productId);
     
     if (product) {
       loadProduct(product);
     } else {
-      // Handle 404 - Product Not Found
-      document.getElementById('product-title').textContent = "Product Not Found";
-      document.getElementById('btn-action').style.display = "none";
+      handleNotFound('Asset');
     }
   } 
-  // CHECK: Is this a Guide request? (For Phase 2 Hub)
   else if (params.has('guide')) {
     const guideId = params.get('guide');
-    const guide = getGuideById(guideId); // Use Helper
-    if (guide) loadGuide(guide);
+    const guide = getGuideById(guideId);
+    
+    if (guide) {
+      loadGuide(guide);
+    } else {
+      handleNotFound('Knowledge Record');
+    }
   }
 });
 
+/* =========================================
+   ASSET LOADER (Products)
+   "The Digital Department Store" Logic
+   ========================================= */
 function loadProduct(item) {
-  // 1. THEME LOGIC (Critical for Color Bible Alignment)
-  // If category is 'home' (Family), we must use the 'home-category' theme to get Beige colors.
+  
+  // 1. ATMOSPHERE CONTROL
+  // Sets the visual theme based on the Department (Tools=Blue, Home=Gold, Living=Green)
   const theme = item.category === 'home' ? 'home-category' : item.category;
   document.body.setAttribute('data-theme', theme);
 
-  // 2. TEXT INJECTION
+  // 2. SEO INJECTION (Mission: "Global Standard")
+  // Updates the browser tab and meta description dynamically
+  updatePageMeta(item.title, item.shortDesc);
+
+  // 3. TEXT INJECTION (The Specification Sheet)
   safeSetText('product-title', item.title);
   safeSetText('product-tag', item.tag);
   safeSetText('product-short-desc', item.shortDesc);
   safeSetText('product-desc', item.description);
+  safeSetText('product-price', `£${item.price.toFixed(2)}`); // Grand Vision: Standardized Currency
   
-  // Vision Requirement: Price in GBP
-  safeSetText('product-price', `£${item.price.toFixed(2)}`);
-
-  // Language Bible: "Quiet Mythic Depth"
+  // 4. LORE INJECTION ("Quiet Mythic Depth")
   safeSetText('product-lore', `"${item.lore}"`); 
 
-  // Breadcrumbs
+  // 5. NAVIGATION ALIGNMENT
   safeSetText('breadcrumb-category', capitalize(item.category));
   safeSetText('breadcrumb-title', item.title);
   
   const catLink = document.getElementById('link-category');
-  if(catLink) catLink.href = `../${item.category}/index.html`;
+  if (catLink) catLink.href = `../${item.category}/index.html`;
 
   const tag = document.getElementById('product-tag');
-  if(tag) tag.setAttribute('data-variant', item.category);
+  if (tag) tag.setAttribute('data-variant', item.category);
 
-  // 3. ACTION BUTTON
+  // 6. ACTION LOGIC ("Elevator Pitch": Instant Download)
   const buyBtn = document.getElementById('btn-action');
-  if(buyBtn) {
-    buyBtn.textContent = item.actionBtn;
-    // Placeholder logic - In Phase 2 this connects to Stripe/Gumroad
-    buyBtn.onclick = () => alert(`Opening checkout for: ${item.title}`);
+  if (buyBtn) {
+    buyBtn.textContent = item.actionBtn || "Secure Instant Download";
+    
+    // SIMULATION: In a real app, this connects to Stripe.
+    // Here, it fulfills the promise of "Instant Download" by going to Success page.
+    buyBtn.onclick = () => {
+      // Optional: Save to local storage to simulate "Inventory" population
+      addToLocalInventory(item.title);
+      window.location.href = '../checkout/success.html';
+    };
   }
 
-  // 4. PREVIEW ICON (Phosphor)
+  // 7. VISUALS
   const preview = document.getElementById('product-preview');
-  if(preview && item.previewIcon) {
-    // Uses the Accent color for the icon
-    preview.innerHTML = `<i class="ph ${item.previewIcon}" style="font-size: 4rem; color: var(--accent-primary); opacity: 0.8;"></i>`;
+  if (preview && item.previewIcon) {
+    // Uses the theme color for the icon to ensure consistency
+    preview.innerHTML = `<i class="ph ${item.previewIcon}" style="font-size: 5rem; color: var(--accent-primary); opacity: 0.9;"></i>`;
   }
 
-  // 5. FEATURE LIST
+  // 8. ASSET LIST (What's Inside)
   const featureList = document.getElementById('product-features');
-  if(featureList && item.features) {
-    featureList.innerHTML = item.features.map(f => `<li>${f}</li>`).join('');
+  if (featureList && item.features) {
+    featureList.innerHTML = item.features.map(f => 
+      `<li style="display: flex; gap: 8px; align-items: flex-start;"><i class="ph ph-check" style="color: var(--accent-primary); margin-top: 4px;"></i><span>${f}</span></li>`
+    ).join('');
   }
 
-  // 6. TECHNICAL DATA (Business Vision: Automation Scripts)
-  // Check if this product has a Code Preview (e.g., Python Script)
+  // 9. TECHNICAL SPECIFICATIONS ("Vetted for Usability")
+  // Handles Code Previews for Developers
   const codeContainer = document.getElementById('code-preview-container');
   const codeSnippet = document.getElementById('code-snippet');
   
   if (item.codePreview && codeContainer && codeSnippet) {
-    codeContainer.style.display = 'flex'; // Unhide the block
+    codeContainer.style.display = 'flex';
     codeSnippet.textContent = item.codePreview;
   }
 
-  // Check if this product has Tech Specs
-  const specsContainer = document.getElementById('tech-specs');
-  if (item.specs && specsContainer) {
-    // Generate spec list dynamically
-    specsContainer.innerHTML = `
-      <span>• <strong>Language:</strong> ${item.specs.language}</span>
-      <span>• <strong>OS:</strong> ${item.specs.os}</span>
-      <span>• <strong>Difficulty:</strong> ${item.specs.difficulty}</span>
-    `;
+  // Handles File Specs (Format, Version)
+  if (item.specs) {
+    safeSetText('spec-format', item.specs.format || "ZIP / PDF");
+    safeSetText('spec-version', item.specs.version || "1.0.0");
   }
 }
 
+/* =========================================
+   KNOWLEDGE LOADER (Guides)
+   "The Hub" Logic
+   ========================================= */
 function loadGuide(item) {
   document.body.setAttribute('data-theme', 'hub'); // Guides always use Hub theme
+  
+  // SEO
+  updatePageMeta(item.title, "A verified guide from the Kynar Knowledge Library.");
+
+  // Content
   safeSetText('guide-title', item.title);
   safeSetText('guide-date', item.date);
   safeSetText('guide-readtime', item.readTime);
   safeSetText('breadcrumb-title', item.title);
   
   const contentBox = document.getElementById('guide-content');
-  if(contentBox) contentBox.innerHTML = item.content;
+  if (contentBox) contentBox.innerHTML = item.content;
 }
 
-/* UTILITIES */
+/* =========================================
+   UTILITIES
+   ========================================= */
+
 function safeSetText(id, text) {
   const el = document.getElementById(id);
   if (el) el.textContent = text;
@@ -120,4 +143,32 @@ function safeSetText(id, text) {
 
 function capitalize(s) {
   return s && s[0].toUpperCase() + s.slice(1);
+}
+
+function handleNotFound(type) {
+  document.title = "404 Not Found | Kynar Universe";
+  safeSetText('product-title', `${type} Not Found`);
+  safeSetText('product-short-desc', "This item has been moved or archived.");
+  const btn = document.getElementById('btn-action');
+  if (btn) btn.style.display = 'none';
+}
+
+function updatePageMeta(title, desc) {
+  // Update Tab Title
+  document.title = `${title} | Kynar Universe`;
+  
+  // Update Description for SEO
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (!metaDesc) {
+    metaDesc = document.createElement('meta');
+    metaDesc.name = "description";
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.content = desc;
+}
+
+// Simulates adding item to the "Inventory" (Local Storage)
+function addToLocalInventory(itemName) {
+  // This is a simple mock for the "Inventory" concept
+  console.log(`[Universe] ${itemName} added to inventory.`);
 }

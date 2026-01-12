@@ -1,5 +1,7 @@
-/* css/global.css */
-/* Status: FINAL MASTER (Deep Atmosphere / Glass / Starwalker Ready) */
+/* KYNAR UNIVERSE GLOBAL STYLES (css/global.css)
+   The visual physics engine. Handles Layout, Typography, Atmosphere, and the Glass Interface.
+   Status: FINAL MASTER (Deep Atmosphere / Glass / Starwalker Ready)
+*/
 
 /* =========================================
    1. RESET & BASE (The Foundation)
@@ -12,6 +14,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -20,14 +23,20 @@ body {
   font-family: var(--font-primary);
   line-height: var(--leading-base);
   
-  /* THE UNIVERSE GRADIENT (The "Heartbeat" of the page) */
+  /* MOBILE SAFETY: Handle Notches and Home Bars */
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  /* Top padding is handled by the sticky header */
+  
+  /* THE UNIVERSE GRADIENT: Subtle depth */
   background-image: 
     radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%), 
     radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05), transparent 25%);
-  background-attachment: fixed; /* Keeps the stars static while you scroll */
+  background-attachment: fixed;
 
   transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img {
@@ -45,7 +54,7 @@ a {
 /* --- PREMIUM SCROLLBARS --- */
 ::selection {
   background: var(--accent-primary);
-  color: #000; /* Contrast text for selection */
+  color: var(--bg-page);
 }
 
 ::-webkit-scrollbar {
@@ -74,7 +83,7 @@ h1, h2, h3 {
 .text-h1 {
   font-family: var(--font-secondary);
   font-size: var(--text-h1);
-  font-weight: 400; /* Lora looks better at 400 */
+  font-weight: 400;
   line-height: 1.1;
   color: var(--text-main);
 }
@@ -96,7 +105,7 @@ h1, h2, h3 {
   font-size: var(--text-body);
   color: var(--text-body);
   opacity: 0.9;
-  max-width: 60ch;
+  max-width: 60ch; /* Optimum reading length */
 }
 
 .text-micro {
@@ -115,7 +124,7 @@ h1, h2, h3 {
   opacity: 0.8;
 }
 
-/* Code Blocks */
+/* Technical Data */
 code, pre {
   font-family: var(--font-mono);
   font-size: 0.9em;
@@ -131,6 +140,7 @@ code, pre {
   padding: 0 var(--space-md);
 }
 
+/* Vertical Stacks */
 .stack-xl { display: flex; flex-direction: column; gap: var(--space-xl); }
 .stack-lg { display: flex; flex-direction: column; gap: var(--space-lg); }
 .stack-md { display: flex; flex-direction: column; gap: var(--space-md); }
@@ -141,22 +151,22 @@ code, pre {
    4. THE GLASS CARDS (Portals)
    ========================================= */
 .card {
-  /* NEW: Gradient Background for Volume */
+  /* Volume Gradient */
   background: linear-gradient(
     180deg, 
     rgba(255, 255, 255, 0.05) 0%, 
     rgba(255, 255, 255, 0.01) 100%
   );
   
-  /* NEW: Lighting Effects */
+  /* Lighting & Edges */
   border: 1px solid var(--border-subtle);
-  border-top: 1px solid var(--border-highlight); /* Brighter top edge */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Lift it off the page */
+  border-top: 1px solid var(--border-highlight); /* Highlight top edge */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Lift */
   
   border-radius: var(--radius-lg);
   padding: var(--space-md);
   
-  /* The Glass Effect */
+  /* Glass Blur */
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   
@@ -168,7 +178,7 @@ code, pre {
   display: block;
 }
 
-/* Hover: Float & Glow */
+/* Interaction: Lift & Glow */
 .card:hover {
   transform: translateY(-4px) scale(1.01);
   background: linear-gradient(
@@ -181,21 +191,10 @@ code, pre {
 }
 
 /* Category Borders (The "Soul" Colors) */
-/* Kept clean, simple left borders for identification */
 .card[data-variant="tools"] { border-left: 2px solid var(--pal-tools-core); }
 .card[data-variant="living"] { border-left: 2px solid var(--pal-living-core); }
 .card[data-variant="home"] { border-left: 2px solid var(--pal-home-core); }
 .card[data-variant="hub"] { border-left: 2px solid var(--pal-hub-core); }
-
-/* Starwalker Card Overrides */
-:root[data-mode="starwalker"] .card {
-  border-color: rgba(255, 215, 0, 0.3);
-  background: linear-gradient(
-    180deg, 
-    rgba(255, 215, 0, 0.05) 0%, 
-    rgba(0, 0, 0, 0) 100%
-  );
-}
 
 /* =========================================
    5. HERO SOUL (Atmosphere)
@@ -215,7 +214,7 @@ code, pre {
   max-width: 600px;
   height: 400px;
   
-  /* Uses the generic accent glow for the page theme */
+  /* Dynamic Glow based on current Theme */
   background: radial-gradient(circle at center, var(--accent-glow), transparent 70%);
   
   opacity: 0.4; 
@@ -231,51 +230,104 @@ code, pre {
 }
 
 /* =========================================
-   6. GLASS HEADER
+   6. GLASS HEADER (Navigation)
    ========================================= */
 .glass-header {
   position: sticky;
   top: 0;
   left: 0;
   width: 100%;
-  height: 64px;
+  
+  /* Adapts to Mobile Notch */
+  height: calc(64px + var(--safe-top));
+  padding-top: var(--safe-top);
+  
   z-index: var(--z-header);
   
-  background: rgba(10, 10, 10, 0.7); /* Dark semi-transparent */
+  background: rgba(10, 10, 10, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
   
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
-/* Light mode override for header */
-@media (prefers-color-scheme: light) {
-  :root[data-mode="light"] .glass-header {
-    background: rgba(255, 255, 255, 0.8);
-  }
+/* Header Inner Layout */
+.header-inner {
+  height: 100%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
 }
 
+/* Branding */
 .header-logo {
   display: flex;
   align-items: center;
   gap: 12px;
   color: var(--text-main);
   text-decoration: none;
+  padding: 8px 0;
+  transition: opacity 0.2s;
 }
 
+.header-logo:hover {
+  opacity: 0.8;
+}
+
+/* The Glowing Dot */
 .logo-dot {
   width: 8px;
   height: 8px;
   background-color: var(--accent-primary);
   border-radius: 50%;
-  box-shadow: 0 0 10px var(--accent-primary);
+  box-shadow: 0 0 12px var(--accent-glow);
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
+/* Controls Container */
 .header-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* Tactile Header Buttons */
+.header-btn {
+  width: var(--touch-target);
+  height: var(--touch-target);
+  
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  
+  transition: all 0.2s ease;
+  font-size: 1.25rem;
+}
+
+.header-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-main);
+  border-color: var(--border-subtle);
+  transform: translateY(-1px);
+}
+
+.header-btn:active {
+  transform: translateY(1px) scale(0.95);
+  background: var(--border-subtle);
+}
+
+/* Light Mode Header Override */
+@media (prefers-color-scheme: light) {
+  :root[data-mode="light"] .glass-header {
+    background: rgba(255, 255, 255, 0.8);
+  }
 }
 
 /* =========================================
@@ -290,12 +342,30 @@ code, pre {
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  display: inline-block;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
 }
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover {
+  border-color: var(--text-muted);
+  background: var(--bg-surface-hover);
 }
 
 .btn-tertiary {
@@ -303,13 +373,16 @@ code, pre {
   border: none;
   color: var(--text-body);
   cursor: pointer;
-  padding: 8px;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
   transition: color 0.2s, background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .btn-tertiary:hover {
   color: var(--text-main);
-  background: var(--border-subtle);
+  background: var(--bg-surface-hover);
 }
 
 .input {
@@ -329,13 +402,32 @@ code, pre {
 }
 
 /* =========================================
-   8. UTILITIES (Search & Toast)
+   8. UTILITIES (Search, Toast, Skip Link)
    ========================================= */
+   
+/* Skip Link for A11Y */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 10px;
+  background: var(--accent-primary);
+  color: var(--bg-page);
+  padding: 8px;
+  z-index: 9999;
+  transition: top 0.2s;
+  border-radius: var(--radius-sm);
+}
+.skip-link:focus {
+  top: 10px;
+}
+
+/* Search Overlay */
 .search-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85); /* Darker overlay */
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: var(--z-overlay);
   padding: 24px;
   display: flex;
@@ -354,13 +446,14 @@ code, pre {
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--border-subtle);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-family: var(--font-secondary);
   color: var(--text-main);
   padding: 16px 0;
 }
 .search-input:focus { outline: none; border-color: var(--accent-primary); }
 
+/* Toasts */
 .toast-container {
   position: fixed;
   bottom: 24px;
@@ -382,10 +475,8 @@ code, pre {
   opacity: 0; transform: translateY(20px);
   animation: toastEnter 0.4s forwards;
 }
-.toast.leaving { animation: toastExit 0.3s forwards; }
 
 @keyframes toastEnter { to { opacity: 1; transform: translateY(0); } }
-@keyframes toastExit { to { opacity: 0; transform: translateY(10px); } }
 
 /* =========================================
    9. ANIMATIONS
@@ -406,6 +497,11 @@ code, pre {
    ========================================= */
 :root[data-mode="starwalker"] .card {
   border-color: rgba(255, 215, 0, 0.3);
+  background: linear-gradient(
+    180deg, 
+    rgba(255, 215, 0, 0.05) 0%, 
+    rgba(0, 0, 0, 0) 100%
+  );
   box-shadow: 0 4px 20px rgba(255, 215, 0, 0.05);
 }
 
@@ -422,71 +518,4 @@ code, pre {
 :root[data-mode="starwalker"] .hero-soul::before {
   background: radial-gradient(circle at center, #FFD700, transparent 70%);
   opacity: 0.1;
-}
-
-/* --- HEADER CONTROLS (Add to css/global.css) --- */
-
-/* The Container for the buttons */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Consistent spacing between buttons */
-}
-
-/* The Tactile Button */
-.header-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%; /* Perfect Circle */
-  
-  background: transparent; /* Invisible by default */
-  border: 1px solid transparent; /* Reserve space for border */
-  color: var(--text-muted);
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  
-  transition: all 0.2s ease;
-  font-size: 1.25rem; /* Icon size */
-}
-
-/* Hover State: Glassy Glow */
-.header-btn:hover {
-  background: var(--bg-surface-hover);
-  color: var(--text-main);
-  border-color: var(--border-subtle);
-  transform: translateY(-1px);
-}
-
-/* Active/Click State: Press down */
-.header-btn:active {
-  transform: translateY(1px) scale(0.95);
-  background: var(--border-subtle);
-}
-
-/* The Logo Area adjustments */
-.header-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-main);
-  text-decoration: none;
-  padding: 8px 0; /* Increase touch target */
-  transition: opacity 0.2s;
-}
-
-.header-logo:hover {
-  opacity: 0.8;
-}
-
-/* The Glowing Dot */
-.logo-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--accent-primary); /* Connects to current theme color */
-  border-radius: 50%;
-  box-shadow: 0 0 12px var(--accent-glow); /* Soft light emission */
-  transition: background-color 0.3s, box-shadow 0.3s;
 }

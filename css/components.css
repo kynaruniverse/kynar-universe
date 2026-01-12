@@ -1,5 +1,6 @@
-/* KYNAR COMPONENT LIBRARY
-   Status: FINAL MASTER (Aligned with Kynar Color System & Language Bible)
+/* KYNAR UNIVERSE COMPONENTS (css/components.css)
+   The interactive atoms of the Universe.
+   Status: FINAL MASTER (Aligned with Tokens & Grand Vision)
 */
 
 /* =========================================
@@ -11,7 +12,7 @@
   justify-content: center;
   gap: var(--space-sm);
   padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   
   font-family: var(--font-primary);
   font-weight: var(--weight-medium);
@@ -22,11 +23,7 @@
   border: none;
   text-decoration: none;
   
-  /* Premium Motion - "Warm Guidance" feels responsive */
-  transition: transform var(--transition-fast), 
-              box-shadow var(--transition-fast), 
-              background-color var(--transition-fast),
-              color var(--transition-fast);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .btn:active {
@@ -35,41 +32,35 @@
 
 /* Primary: Confident & Warm */
 .btn-primary {
-  background-color: var(--accent-primary);
-  color: var(--neutral-white);
+  background-color: var(--text-main); /* High contrast */
+  color: var(--bg-page);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft lift */
 }
 .btn-primary:hover {
-  background-color: var(--pal-home-signal); /* Slight brighten on hover */
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.1);
 }
 
-/* Secondary: Supportive & Clear */
+/* Secondary: Supportive */
 .btn-secondary {
-  background-color: transparent;
-  border: 2px solid var(--accent-primary);
-  color: var(--accent-primary);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
 }
 .btn-secondary:hover {
-  background-color: var(--bg-surface);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--bg-surface-hover);
+  border-color: var(--text-muted);
 }
 
-/* Tertiary: Quiet & Optional ("A whisper, not a shout") */
+/* Tertiary: Quiet ("A whisper, not a shout") */
 .btn-tertiary {
   background-color: transparent;
   color: var(--text-muted);
   padding: 0.5rem 1rem;
 }
 .btn-tertiary:hover {
-  color: var(--accent-primary);
-  background-color: rgba(0,0,0,0.03); /* Very subtle interaction area */
-  text-decoration: none; 
-}
-@media (prefers-color-scheme: dark) {
-  .btn-tertiary:hover { background-color: rgba(255,255,255,0.05); }
+  color: var(--text-main);
+  background-color: var(--bg-surface-hover);
 }
 
 /* =========================================
@@ -78,55 +69,51 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: 8px;
 }
 
 .label {
   font-size: var(--text-micro);
   font-weight: var(--weight-semibold);
   color: var(--text-main);
-  margin-left: var(--space-xs);
+  margin-left: 4px;
   opacity: 0.9;
 }
 
 .input {
   width: 100%;
-  padding: var(--space-md);
+  padding: 12px 16px;
   
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   
   font-family: var(--font-primary);
-  font-size: var(--text-body);
+  font-size: 1rem;
   color: var(--text-main);
   
-  box-shadow: var(--shadow-sm); /* Subtle depth */
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus {
   outline: none;
   border-color: var(--accent-primary);
-  /* Use variable-based shadow glow instead of hardcoded hex */
-  box-shadow: 0 0 0 4px var(--pal-home-base); 
-}
-@media (prefers-color-scheme: dark) {
-  .input:focus { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1); }
+  box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent-primary);
 }
 
 /* =========================================
-   3. TAGS & PILLS (Full Ecosystem)
+   3. TAGS (Category Identifiers)
    ========================================= */
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.85rem; /* Slightly wider for elegance */
+  padding: 4px 12px;
   border-radius: var(--radius-pill);
   
   font-size: var(--text-micro);
   font-weight: var(--weight-semibold);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -134,48 +121,34 @@
   white-space: nowrap;
 }
 
-/* Contextual Variants (Matches Kynar Colors.txt) */
+/* Contextual Variants (Department Colors) */
 
-/* TOOLS: Tech Blue */
+/* TOOLS: Electric Blue */
 .tag[data-variant="tools"] {
-  background-color: var(--pal-tools-white);
-  color: var(--pal-tools-navy);
-  border-color: var(--pal-tools-core);
+  background-color: var(--pal-tools-surface);
+  color: var(--pal-tools-core);
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
-/* LIVING: Meadow Green */
+/* LIVING: Emerald Green */
 .tag[data-variant="living"] {
-  background-color: var(--pal-living-meadow);
+  background-color: var(--pal-living-surface);
   color: var(--pal-living-green);
-  border-color: var(--pal-living-green);
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
-/* HOME: Brand Blue */
-.tag[data-variant="home"] {
-  background-color: var(--pal-home-white);
-  color: var(--pal-home-accent);
-  border-color: var(--pal-home-accent);
+/* HOME: Amber/Gold */
+.tag[data-variant="home"], .tag[data-variant="family"] {
+  background-color: var(--pal-home-surface);
+  color: var(--pal-home-core);
+  border-color: rgba(245, 158, 11, 0.3);
 }
 
-/* FAMILY: Warm Beige/Apricot */
-.tag[data-variant="family"] {
-  background-color: var(--pal-family-beige);
-  color: var(--pal-family-coral);
-  border-color: var(--pal-family-apricot);
-}
-
-/* HUB: Mint/Ink */
+/* HUB: Mystic Purple */
 .tag[data-variant="hub"] {
-  background-color: var(--pal-hub-base);
-  color: var(--pal-hub-ink);
-  border-color: var(--pal-hub-green);
-}
-
-/* ACCOUNT: Gold/Blue */
-.tag[data-variant="account"] {
-  background-color: var(--pal-account-base);
-  color: var(--pal-account-blue);
-  border-color: var(--pal-account-neutral);
+  background-color: var(--pal-hub-surface);
+  color: var(--pal-hub-core);
+  border-color: rgba(139, 92, 246, 0.3);
 }
 
 /* =========================================
@@ -187,52 +160,84 @@
   gap: var(--space-sm);
   font-size: var(--text-micro);
   color: var(--text-muted);
+  flex-wrap: wrap;
 }
 
 .breadcrumb a {
-  transition: color var(--transition-fast);
+  transition: color 0.2s;
   border-bottom: 1px solid transparent;
 }
 .breadcrumb a:hover {
-  color: var(--accent-primary);
-  border-color: var(--accent-primary);
+  color: var(--text-main);
 }
 
 /* =========================================
-   5. MOTION UTILITIES (Manual Sequencing)
+   5. ICON BOXES (The Glowing Squares)
    ========================================= */
-/* Used for Hero sections to create "Guided" entry */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+.icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  
+  /* Default State */
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.animate-enter {
-  animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  opacity: 0; /* Hidden until animation starts */
+/* Automatic Coloring based on Parent Card */
+.card[data-variant="tools"] .icon-box {
+  background: var(--pal-tools-surface);
+  border-color: rgba(59, 130, 246, 0.2);
+  color: var(--pal-tools-core);
 }
 
-.delay-1 { animation-delay: 100ms; }
-.delay-2 { animation-delay: 200ms; }
-.delay-3 { animation-delay: 300ms; }
+.card[data-variant="living"] .icon-box {
+  background: var(--pal-living-surface);
+  border-color: rgba(16, 185, 129, 0.2);
+  color: var(--pal-living-core);
+}
+
+.card[data-variant="home"] .icon-box {
+  background: var(--pal-home-surface);
+  border-color: rgba(245, 158, 11, 0.2);
+  color: var(--pal-home-core);
+}
+
+.card[data-variant="hub"] .icon-box {
+  background: var(--pal-hub-surface);
+  border-color: rgba(139, 92, 246, 0.2);
+  color: var(--pal-hub-core);
+}
+
+/* Hover Effect */
+.card:hover .icon-box {
+  transform: scale(1.1) rotate(2deg);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
 
 /* =========================================
-   6. TECHNICAL COMPONENTS (New for Scripts)
+   6. TECHNICAL COMPONENTS
    ========================================= */
-/* For displaying code snippets (Automation Products) */
+/* Code Block for Tech Specs */
 .code-block {
-  background-color: var(--bg-surface);
+  background-color: #0d1117; /* GitHub Dark Dimmed */
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: var(--space-md);
-  font-family: "Fira Code", "JetBrains Mono", monospace;
-  font-size: 0.9em;
-  color: var(--text-main);
-  overflow-x: auto; /* Scroll horizontal if long */
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #c9d1d9;
+  overflow-x: auto;
   position: relative;
 }
 
-/* Optional: Add a subtle left border for Tools/Tech context */
 .code-block[data-context="tools"] {
-  border-left: 4px solid var(--pal-tools-core);
+  border-left: 3px solid var(--pal-tools-core);
 }
