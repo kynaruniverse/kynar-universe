@@ -20,7 +20,6 @@
   
   <link rel="icon" type="image/png" href="assets/favicon.png">
 
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
@@ -30,6 +29,21 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/components.css">
+
+  <style>
+    .hero-logo-glow {
+      /* Pick up the theme color (Blue/Green/Gold) for the shadow */
+      filter: drop-shadow(0 0 25px var(--accent-glow)); 
+      animation: floatLogo 6s ease-in-out infinite;
+      /* Ensure it renders crisp */
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+  </style>
 </head>
 
 <body>
@@ -39,16 +53,11 @@
     
     <header class="stack-md animate-enter" style="text-align: center; align-items: center; margin-bottom: var(--space-xl); padding-top: var(--space-lg);">
   
-      <div style="
-        width: 64px; height: 64px;
-        border-radius: 50%;
-        background: radial-gradient(circle at center, rgba(59, 130, 246, 0.2), transparent);
-        border: 1px solid var(--border-highlight);
-        display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 0 40px -10px var(--accent-glow);
-        margin-bottom: var(--space-sm);
-      ">
-        <i class="ph ph-globe-hemisphere-west" style="font-size: 2rem; color: var(--text-main);"></i>
+      <div style="margin-bottom: var(--space-md);">
+        <img src="assets/logo.png" 
+             alt="Kynar Universe Logo" 
+             class="hero-logo-glow"
+             style="width: 120px; height: auto; opacity: 1;">
       </div>
 
       <h1 class="text-h1" style="line-height: 1.1; margin-bottom: var(--space-xs);">
