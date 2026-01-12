@@ -74,6 +74,33 @@ def organize_directory():
       previewIcon: "ph-chart-bar",
       image: "assets/products/finance-sheet.png"
     },
+    
+    {
+      id: "creative-assets",
+      category: "tools",
+      subCategory: "Design",
+      title: "Creator Asset Pack",
+      price: 18.00,
+      tag: "Design Assets",
+      shortDesc: "High-fidelity textures, fonts, and icons for UI design.",
+      lore: "Shape your reality.",
+      description: "A curated collection of dark-mode UI elements, noisy gradients, and glass-morphism textures. Perfect for building interfaces that feel alive.",
+      features: [
+        "20+ High-Res Textures",
+        "Figma Component Library",
+        "Custom Icon Set (SVG)",
+        "Commercial License"
+      ],
+      specs: {
+        format: "Figma / PNG / SVG",
+        size: "1.2 GB",
+        license: "Commercial Use"
+      },
+      actionBtn: "Download Assets",
+      previewIcon: "ph-paint-brush-broad", // This was referenced in your HTML icon
+      image: "assets/products/creative.png"
+    },
+    
 
     // --- DEPARTMENT: KYNAR LIVING (High Performers) ---
     {
