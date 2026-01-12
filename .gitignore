@@ -1,0 +1,12 @@
+# Mac System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows System Files
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Logs and debugs
+*.log

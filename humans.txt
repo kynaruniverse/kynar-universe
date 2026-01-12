@@ -1,0 +1,15 @@
+/* THE ARCHITECTS */
+  Founder: Kynar
+  Site: www.kynaruniverse.co.uk
+  Location: United Kingdom
+
+/* THE TECHNOLOGY */
+  Core: HTML5, CSS3 Variables (Tokens), Vanilla JS Modules
+  Icons: Phosphor Icons
+  Server: GitHub Pages
+  
+/* THE LORE */
+  "One Universe. Infinite Solutions."
+  We reject digital filler. 
+  
+  Look to the stars in your settings.

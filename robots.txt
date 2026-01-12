@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Keep crawlers out of the engine room
+Disallow: /assets/
+Disallow: /pages/account/
+Disallow: /pages/settings/
+Disallow: /pages/checkout/
+
+# Point to the map
+Sitemap: https://www.kynaruniverse.co.uk/sitemap.xml
