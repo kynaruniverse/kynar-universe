@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Archive | Kynar Universe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>The Inventory | Kynar Universe</title>
+  
+  <meta name="description" content="Access your personal inventory of digital upgrades. The centralized hub for your scripts, planners, and verified tools.">
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
@@ -18,59 +23,67 @@
 
 <body data-theme="accounts">
 
-  <main class="container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: var(--space-xl); padding-bottom: var(--space-xl);">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <main id="main-content" class="container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: var(--space-xl); padding-bottom: var(--space-xl);">
     
-    <nav style="position: absolute; top: var(--space-md); left: var(--space-md);">
+    <nav style="position: absolute; top: var(--space-md); left: var(--space-md); z-index: 10;">
       <a href="../../index.html" class="btn-tertiary">← Return</a>
     </nav>
 
     <div class="card stack-lg animate-enter" style="max-width: 400px; margin: 0 auto; width: 100%; border-top: 4px solid var(--pal-account-blue);">
       
       <header class="stack-sm" style="text-align: center;">
-        <span class="text-micro" style="color: var(--pal-account-blue);">The Archive</span>
-        <h1 class="text-h2">Welcome Back</h1>
+        <span class="text-micro" style="color: var(--pal-account-blue);">The Inventory</span>
+        <h1 class="text-h2">Access Your Upgrades</h1>
         <p class="text-body" style="font-size: 0.95rem;">
-          Enter your details to access your collections.
+          Enter your details to manage your scripts, planners, and tools.
         </p>
       </header>
 
       <form class="stack-md" onsubmit="event.preventDefault(); window.location.href='collections.html';">
         
         <div class="form-group">
-          <label for="email" class="label">Email Address</label>
+          <label for="email" class="text-micro" style="display: block; margin-bottom: 8px;">Email Address</label>
           <div style="position: relative;">
-            <input type="email" id="email" class="input" placeholder="traveler@example.com" style="padding-left: 40px;">
-            <i class="ph ph-envelope-simple" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+            <input type="email" id="email" class="input" placeholder="traveler@example.com" style="padding-left: 44px;" aria-label="Email Address">
+            <i class="ph ph-envelope-simple" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;"></i>
           </div>
         </div>
 
         <div class="form-group">
-          <div style="display: flex; justify-content: space-between; align-items: baseline;">
-            <label for="password" class="label">Password</label>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+            <label for="password" class="text-micro">Password</label>
             <a href="#" class="text-micro" style="text-transform: none; opacity: 0.6;">Forgot?</a>
           </div>
           <div style="position: relative;">
-            <input type="password" id="password" class="input" placeholder="••••••••" style="padding-left: 40px;">
-            <i class="ph ph-lock-key" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+            <input type="password" id="password" class="input" placeholder="••••••••" style="padding-left: 44px;" aria-label="Password">
+            <i class="ph ph-lock-key" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;"></i>
           </div>
         </div>
 
         <div class="stack-sm" style="margin-top: var(--space-sm);">
-          <button type="submit" class="btn btn-primary" style="width: 100%; background-color: var(--pal-account-blue);">Enter The Archive</button>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Open Inventory</button>
         </div>
 
       </form>
 
       <div style="text-align: center; border-top: 1px solid var(--border-subtle); padding-top: var(--space-md);">
-        <p class="text-micro" style="opacity: 0.5; margin-bottom: var(--space-sm);">New to the world?</p>
+        <p class="text-micro" style="opacity: 0.5; margin-bottom: var(--space-sm);">New to the Universe?</p>
         <div style="display: flex; gap: var(--space-sm); justify-content: center;">
-           <a href="../onboarding/index.html" class="btn-tertiary">Start Journey</a>
+           <a href="../../index.html#departments" class="btn-tertiary">Browse Departments</a>
            <span style="opacity: 0.3;">|</span>
            <a href="collections.html" class="btn-tertiary">View Demo</a>
         </div>
       </div>
 
     </div>
+
+    <footer style="text-align: center; margin-top: var(--space-xl); opacity: 0.4;">
+       <p class="text-lore" style="font-size: 0.75rem;">
+        "Look to the stars in your settings."
+      </p>
+    </footer>
 
   </main>
 

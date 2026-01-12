@@ -1,206 +1,236 @@
-/* ASTRYX SEARCH ENGINE (js/search.js)
-   Client-side search for Products and Guides.
-   Status: FINAL MASTER (Aligned with Data Arrays & Path Logic)
+/* KYNAR UNIVERSE SEARCH ENGINE (js/search.js)
+   "The Lens."
+   Allows instant querying of the centralized Inventory and Knowledge Library.
+   Status: FINAL MASTER (Aligned with Header & Data Engine)
 */
 
 import { KYNAR_DATA } from './data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  injectSearchUI();
+  injectSearchOverlay();
 });
 
-function injectSearchUI() {
-  // 1. Create the Trigger Button
-  const trigger = document.createElement('button');
-  trigger.className = 'btn-tertiary'; 
-  trigger.style.padding = '8px';
-  trigger.innerHTML = '<i class="ph ph-magnifying-glass" style="font-size: 1.25rem;"></i>';
-  trigger.ariaLabel = "Search Kynar Universe";
-  trigger.onclick = openSearch;
+/* =========================================
+   1. INJECT THE LENS (OVERLAY)
+   ========================================= */
+function injectSearchOverlay() {
+  // Check if exists to prevent duplicates
+  if (document.getElementById('search-overlay')) return;
 
-  // 2. Inject into Header (with fallback)
-  setTimeout(() => {
-    const headerContainer = document.getElementById('header-actions-container');
-    if (headerContainer) {
-      headerContainer.insertBefore(trigger, headerContainer.firstChild);
-    } else {
-      // Fallback: Fixed floating button if no header exists
-      trigger.className = 'search-trigger animate-enter'; 
-      trigger.style.position = 'fixed';
-      trigger.style.top = '24px';
-      trigger.style.right = '24px';
-      trigger.style.zIndex = '900';
-      document.body.appendChild(trigger);
-    }
-  }, 100); 
-
-  // 3. Create the Overlay (Hidden by default)
   const overlay = document.createElement('div');
   overlay.id = 'search-overlay';
   overlay.className = 'search-overlay';
+  
+  // ALIGNMENT: "Grand Vision" Copy
   overlay.innerHTML = `
-    <div class="search-container stack-md">
+    <div class="search-container stack-md animate-enter">
+      
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2 class="text-h3" style="margin:0;">Search</h2>
-        <button class="btn-tertiary" id="close-search-btn">Close</button>
-      </div>
-      
-      <input type="text" id="search-input" class="search-input" placeholder="Type to explore..." autocomplete="off">
-      
-      <div id="search-results" class="search-results stack-sm" style="max-height: 60vh; overflow-y: auto;">
-        <div style="text-align:center; opacity:0.5; padding: 2rem;">
-          <p class="text-micro">Find tools, guides, and resources.</p>
+        <div style="display:flex; align-items:center; gap: 8px;">
+          <i class="ph ph-planet" style="color: var(--accent-primary);"></i>
+          <h2 class="text-h3" style="margin:0;">Search Universe</h2>
         </div>
+        <button class="btn-tertiary" onclick="toggleSearch()">
+          <i class="ph ph-x"></i> Close
+        </button>
       </div>
+      
+      <div style="position: relative;">
+        <input type="text" id="search-input" class="search-input" placeholder="Find scripts, planners, and guides..." autocomplete="off">
+        <i class="ph ph-magnifying-glass" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
+      </div>
+      
+      <div id="search-results" class="search-results stack-sm" style="max-height: 60vh; overflow-y: auto; padding-right: 4px;">
+        
+        <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
+          <i class="ph ph-telescope" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
+          <p class="text-body">Explore the Digital Department Store.</p>
+          <p class="text-micro">Type to access verified tools and knowledge.</p>
+        </div>
+
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; display: flex; justify-content: space-between; opacity: 0.5;">
+        <span class="text-micro">Press ESC to close</span>
+        <span class="text-micro">Kynar Universe</span>
+      </div>
+
     </div>
   `;
+  
   document.body.appendChild(overlay);
 
-  // 4. Attach Listeners
-  document.getElementById('search-input').addEventListener('input', (e) => handleSearch(e.target.value));
-  document.getElementById('close-search-btn').onclick = closeSearch;
+  // LISTENERS
+  const input = document.getElementById('search-input');
+  input.addEventListener('input', (e) => handleSearch(e.target.value));
   
-  // Close on Escape key
+  // Keyboard Support
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSearch();
+    // Shortcut: Ctrl+K or Cmd+K to open
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
   });
 }
 
-// --- LOGIC ---
+/* =========================================
+   2. VISIBILITY LOGIC
+   Exposed globally so header.js can call it.
+   ========================================= */
+function toggleSearch() {
+  const overlay = document.getElementById('search-overlay');
+  if (overlay.classList.contains('active')) {
+    closeSearch();
+  } else {
+    openSearch();
+  }
+}
+window.toggleSearch = toggleSearch; // Global Exposure
 
 function openSearch() {
-  document.getElementById('search-overlay').classList.add('active');
-  // Small delay to allow CSS transition to start before focusing
-  setTimeout(() => document.getElementById('search-input').focus(), 50);
+  const overlay = document.getElementById('search-overlay');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden'; // Lock scroll
+  
+  // Focus input for "Instant Access"
+  setTimeout(() => document.getElementById('search-input').focus(), 100);
 }
 
 function closeSearch() {
-  document.getElementById('search-overlay').classList.remove('active');
-  document.getElementById('search-input').value = ''; 
-  // Reset results
-  document.getElementById('search-results').innerHTML = '<div style="text-align:center; opacity:0.5; padding: 2rem;"><p class="text-micro">Find tools, guides, and resources.</p></div>';
+  const overlay = document.getElementById('search-overlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = ''; // Unlock scroll
+  
+  // Optional: Clear input on close
+  setTimeout(() => {
+    document.getElementById('search-input').value = '';
+    resetResults();
+  }, 300);
 }
-window.closeSearch = closeSearch;
 
+function resetResults() {
+  document.getElementById('search-results').innerHTML = `
+    <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
+      <i class="ph ph-telescope" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
+      <p class="text-body">Explore the Digital Department Store.</p>
+    </div>`;
+}
+
+/* =========================================
+   3. SEARCH ALGORITHM
+   Flattens the "Centralized Hub" (Data) and filters it.
+   ========================================= */
 function handleSearch(query) {
   const resultsContainer = document.getElementById('search-results');
   const term = query.toLowerCase().trim();
 
   if (term.length < 2) {
-    // Keep the empty state if query is too short
+    if (term.length === 0) resetResults();
     return;
   }
 
-  // 1. Flatten Data (Convert Arrays to Searchable List)
+  // Combine Assets (Products) and Knowledge (Guides)
   const allItems = [
     ...KYNAR_DATA.products.map(item => ({ ...item, type: 'product' })),
     ...KYNAR_DATA.guides.map(item => ({ ...item, type: 'guide' }))
   ];
 
-  // 2. Filter Algorithm
+  // Filter Logic
   const matches = allItems.filter(item => {
     return (
       item.title.toLowerCase().includes(term) || 
       (item.tag && item.tag.toLowerCase().includes(term)) ||
       (item.subCategory && item.subCategory.toLowerCase().includes(term)) ||
-      (item.shortDesc && item.shortDesc.toLowerCase().includes(term)) ||
       item.category.toLowerCase().includes(term)
     );
   });
 
-  // 3. Render
+  // Render Logic
   if (matches.length === 0) {
     resultsContainer.innerHTML = `
       <div style="text-align:center; opacity:0.5; padding: 2rem;">
-        <p class="text-body">No matches found.</p>
-        <p class="text-micro" style="margin-top:8px;">Try "Planner", "Python", or "Wellness"</p>
+        <p class="text-body">Sector Uncharted.</p>
+        <p class="text-micro" style="margin-top:8px;">Try "Automation", "Wellness", or "Planner".</p>
       </div>`;
   } else {
     resultsContainer.innerHTML = matches.map(item => renderResultCard(item)).join('');
   }
 }
 
+/* =========================================
+   4. RENDERER
+   Displays results as "Verified Assets"
+   ========================================= */
 function renderResultCard(item) {
   const link = resolvePath(item);
   
-  // Visual Configuration
-  let iconClass = 'ph-file';
-  let badgeColor = 'var(--bg-surface)';
-  let metaInfo = '';
+  let iconClass = 'ph-cube';
+  let subText = '';
+  let badge = '';
 
   if (item.type === 'product') {
-    iconClass = item.previewIcon || 'ph-cube';
-    // Use Category Colors for badge background
-    if (item.category === 'tools') badgeColor = 'var(--pal-tools-white)';
-    if (item.category === 'living') badgeColor = 'var(--pal-living-meadow)';
-    if (item.category === 'home') badgeColor = 'var(--pal-family-beige)';
-    
-    metaInfo = `<span style="color: var(--accent-primary); font-weight: 600;">£${item.price.toFixed(2)}</span>`;
+    iconClass = item.previewIcon || 'ph-package';
+    subText = `Verified Tool • ${capitalize(item.category)}`;
+    badge = `<span style="font-weight: 600; color: var(--accent-primary);">£${item.price.toFixed(2)}</span>`;
   } else {
-    // Guides
-    iconClass = 'ph-article';
-    badgeColor = 'var(--pal-hub-base)';
-    metaInfo = `<span>${item.readTime}</span>`;
+    iconClass = 'ph-book-open';
+    subText = `Knowledge Record • ${item.readTime}`;
+    badge = `<span style="font-size: 0.8rem; opacity: 0.7;">Read Guide</span>`;
   }
 
   return `
-    <a href="${link}" class="card search-result-card animate-enter" style="text-decoration: none; border: 1px solid var(--border-subtle);">
+    <a href="${link}" class="card search-result-card animate-enter" onclick="closeSearch()">
       <div style="display:flex; align-items:center; gap:var(--space-md);">
         
-        <div style="background:${badgeColor}; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink: 0;">
-          <i class="ph ${iconClass}" style="font-size:1.5rem; color:var(--text-main); opacity: 0.8;"></i>
+        <div style="width:40px; height:40px; border-radius:50%; background:var(--bg-page); display:flex; align-items:center; justify-content:center; flex-shrink: 0; border: 1px solid var(--border-subtle);">
+          <i class="ph ${iconClass}" style="font-size:1.25rem; color:var(--text-main); opacity: 0.8;"></i>
         </div>
         
         <div class="stack-xs" style="flex:1;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-             <h4 class="text-body" style="font-weight:600; font-size:1rem; margin:0;">${item.title}</h4>
-             <span class="tag" style="font-size:0.7rem; padding:2px 8px;">${item.type === 'product' ? 'Tool' : 'Guide'}</span>
+             <h4 class="text-body" style="font-weight:600; font-size:0.95rem; margin:0;">${item.title}</h4>
+             ${badge}
           </div>
           
-          <div style="display:flex; justify-content:space-between; font-size: 0.85rem; opacity: 0.8; margin-top: 4px;">
-            <p style="margin:0; max-width: 80%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${item.shortDesc}</p>
-            ${metaInfo}
+          <div style="display:flex; justify-content:space-between; font-size: 0.8rem; opacity: 0.6; margin-top: 2px;">
+            <span>${subText}</span>
           </div>
         </div>
+
       </div>
     </a>
   `;
 }
 
-/* HELPER: Resolve Relative Paths
-   Determines the correct link based on current page depth.
-*/
+/* =========================================
+   5. UTILITIES
+   Smart Path Resolution (Matches Header Logic)
+   ========================================= */
 function resolvePath(item) {
   const path = window.location.pathname;
   let prefix = '';
 
-  // HEURISTIC: Count slashes to determine depth
-  // Level 0 (Root): /index.html -> needs 'pages/'
-  // Level 1 (Product): /pages/product.html -> needs ''
-  // Level 2 (Category): /pages/tools/index.html -> needs '../'
-  
-  // Note: On GitHub Pages, there might be a repo name prefix. 
-  // Checking for 'pages' string is safer.
-  
+  // Logic: Are we deep in a category?
   if (!path.includes('/pages/')) {
-    // We are at Root
-    prefix = 'pages/';
+    prefix = 'pages/'; // We are at Root
   } else {
-    // We are inside /pages/
-    const partsAfterPages = path.split('/pages/')[1];
-    if (partsAfterPages.includes('/')) {
-      // We are deep (e.g. tools/index.html) -> Go up one level
-      prefix = '../';
+    const parts = path.split('/pages/')[1];
+    if (parts && parts.includes('/')) {
+      prefix = '../'; // We are deep (e.g. tools/index.html) -> Go up
     } else {
-      // We are at /pages/product.html level -> sibling
-      prefix = '';
+      prefix = ''; // We are at pages level (e.g. product.html)
     }
   }
 
   if (item.type === 'product') {
     return `${prefix}product.html?id=${item.id}`;
   } else {
-    // Future Phase: Guide Template
     return `${prefix}guide.html?guide=${item.id}`; 
   }
+}
+
+function capitalize(s) {
+  return s && s[0].toUpperCase() + s.slice(1);
 }

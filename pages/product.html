@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details | Kynar Universe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <title>Digital Asset Details | Kynar Universe</title>
+  
+  <meta name="description" content="View specification for this verified digital asset. Secure instant download available.">
+  <meta property="og:title" content="Digital Upgrade | Kynar Universe">
+  <meta property="og:description" content="Production-ready tools for a smarter workflow. Verified for usability and impact.">
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
-  
-  <meta name="description" content="View this item on Kynar Universe. A curated digital resource for creators and worldbuilders.">
-  <meta property="og:title" content="Item Details | Kynar Universe">
-  <meta property="og:description" content="Tools, guides, and resources for a clearer life.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,56 +23,74 @@
 
 <body data-theme="tools">
 
-  <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
     <nav class="breadcrumb animate-enter">
       <a href="../index.html" class="btn-tertiary" style="padding-left:0;">Home</a>
       <span style="opacity: 0.3;">/</span>
-      <a href="#" id="link-category" class="btn-tertiary" style="padding-left:0;"><span id="breadcrumb-category">Category</span></a>
+      <a href="#" id="link-category" class="btn-tertiary" style="padding-left:0;"><span id="breadcrumb-category">Department</span></a>
       <span style="opacity: 0.3;">/</span>
-      <span class="text-micro" id="breadcrumb-title" style="opacity: 0.6;">Loading...</span>
+      <span class="text-micro" id="breadcrumb-title" style="opacity: 0.6;">Loading Item...</span>
     </nav>
 
     <header class="stack-md animate-enter delay-1">
       <div style="display: flex; align-items: center; justify-content: space-between;">
-        <span id="product-tag" class="tag" data-variant="tools">Loading Tag...</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span id="product-tag" class="tag" data-variant="tools">Loading...</span>
+          <span class="text-micro" style="opacity: 0.6; display: flex; align-items: center; gap: 4px;">
+            <i class="ph ph-check-circle"></i> Verified Utility
+          </span>
+        </div>
         <span id="product-price" class="text-h3" style="color: var(--accent-primary);">£--.--</span>
       </div>
       
-      <h1 class="text-h1" id="product-title">Loading Product...</h1>
+      <h1 class="text-h1" id="product-title">Retrieving Asset...</h1>
       
-      <p class="text-body" style="font-size: 1.1rem; max-width: 60ch;" id="product-short-desc">
-        Please wait while we fetch the details.
+      <p class="text-body" style="font-size: 1.15rem; max-width: 60ch; opacity: 0.9;" id="product-short-desc">
+        We are fetching the specifications for this tool from the Kynar Archive.
       </p>
 
-      <div style="opacity: 0.8; margin-top: var(--space-xs);">
+      <div style="opacity: 0.8; margin-top: var(--space-xs); border-left: 2px solid var(--accent-primary); padding-left: var(--space-sm);">
         <p class="text-lore" id="product-lore">"..."</p>
       </div>
 
-      <div style="margin-top: var(--space-md); display: flex; gap: var(--space-sm);">
-        <button id="btn-action" class="btn btn-primary">Download Now</button>
-        <button class="btn btn-secondary">View Demo</button>
+      <div style="margin-top: var(--space-md); display: flex; gap: var(--space-sm); flex-wrap: wrap;">
+        <button id="btn-action" class="btn-primary" aria-label="Purchase and Download">
+          Secure Instant Download
+        </button>
+        <button class="btn-tertiary" style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+          View Documentation
+        </button>
       </div>
+      
+      <p class="text-micro" style="opacity: 0.5; margin-top: 4px;">
+        <i class="ph ph-shield-check"></i> Vetted for usability and impact.
+      </p>
     </header>
 
-    <div id="product-preview" class="card animate-enter delay-2" style="min-height: 300px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface); border: 1px dashed var(--border-subtle);">
-      <p class="text-micro">Image Gallery Container</p>
+    <div id="product-preview" class="card animate-enter delay-2" style="min-height: 350px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface); border: 1px dashed var(--border-subtle); position: relative; overflow: hidden;">
+      <div style="text-align: center; opacity: 0.3;">
+        <i class="ph ph-image" style="font-size: 3rem;"></i>
+        <p class="text-micro">Loading Preview...</p>
+      </div>
     </div>
 
     <section class="animate-enter delay-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
       
       <div class="stack-lg">
         <div class="stack-sm">
-          <h2 class="text-h3">What is it?</h2>
-          <p class="text-body" id="product-desc">
+          <h2 class="text-h3">Solution Overview</h2>
+          <p class="text-body" id="product-desc" style="opacity: 0.8;">
             Description loading...
           </p>
         </div>
 
         <div class="stack-sm">
-          <h2 class="text-h3">What's Inside</h2>
-          <ul id="product-features" class="text-body" style="padding-left: 1.5rem; display: flex; flex-direction: column; gap: 8px;">
-            <li>Loading file list...</li>
+          <h2 class="text-h3">Included Assets</h2>
+          <ul id="product-features" class="text-body" style="padding-left: 1.5rem; display: flex; flex-direction: column; gap: 12px; opacity: 0.8;">
+            <li>Scanning file list...</li>
           </ul>
         </div>
       </div>
@@ -80,20 +99,27 @@
         
         <div id="code-preview-container" class="stack-sm" style="display: none;">
           <h2 class="text-h3">Code Preview</h2>
-          <div class="code-block" data-context="tools">
-            <pre><code id="code-snippet"># Sample Python Script
-def automate_task():
-    print("Optimization complete.")
-    return True</code></pre>
+          <div class="code-block" data-context="tools" style="padding: 16px; border-radius: var(--radius-md); background: #0d1117; border: 1px solid var(--border-subtle);">
+            <pre><code id="code-snippet" style="font-family: 'Fira Code', monospace; font-size: 0.85rem; color: #c9d1d9;"># Loading snippet...</code></pre>
           </div>
         </div>
 
-        <div class="card" style="background: var(--bg-page);">
+        <div class="card" style="background: var(--bg-surface);">
           <div class="stack-sm">
-            <h3 class="text-h3" style="font-size: 1rem;">Requirements</h3>
-            <div id="tech-specs" class="text-micro" style="display: flex; flex-direction: column; gap: 8px;">
-              <span>• Format: <span id="spec-format">ZIP / PDF</span></span>
-              <span>• Version: <span id="spec-version">1.0.0</span></span>
+            <h3 class="text-h3" style="font-size: 1rem;">Technical Specifications</h3>
+            <div id="tech-specs" class="text-micro" style="display: flex; flex-direction: column; gap: 12px; opacity: 0.7;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+                <span>Format</span>
+                <span id="spec-format" style="font-weight: 600;">ZIP / PDF</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+                <span>Version</span>
+                <span id="spec-version" style="font-weight: 600;">1.0.0</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span>License</span>
+                <span style="font-weight: 600;">Personal Use</span>
+              </div>
             </div>
           </div>
         </div>
@@ -102,8 +128,11 @@ def automate_task():
 
     </section>
 
-    <footer style="margin-top: var(--space-xl); opacity: 0.6;">
+    <footer style="margin-top: var(--space-xl); opacity: 0.6; text-align: center;">
       <p class="text-micro">The path continues.</p>
+       <p class="text-lore" style="font-size: 0.75rem; opacity: 0.3; margin-top: 4px;">
+        "Look to the stars in your settings."
+      </p>
     </footer>
 
   </main>

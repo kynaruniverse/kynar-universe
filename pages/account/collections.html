@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Collections | Kynar Universe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>My Inventory | Kynar Universe</title>
+  
+  <meta name="description" content="Your centralized hub for digital upgrades. Access your production-ready scripts, planners, and verified tools here.">
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
@@ -18,7 +23,9 @@
 
 <body data-theme="accounts">
 
-  <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
     <nav style="display: flex; justify-content: space-between; align-items: center;" class="animate-enter">
       <div class="breadcrumb">
@@ -26,36 +33,51 @@
         <span style="opacity: 0.3;">/</span>
         <a href="index.html" class="btn-tertiary" style="padding-left:0;">Account</a>
         <span style="opacity: 0.3;">/</span>
-        <span class="text-micro">Collections</span>
+        <span class="text-micro">Inventory</span>
       </div>
       
-      <a href="../settings/index.html" class="btn-tertiary">
+      <a href="../settings/index.html" class="btn-tertiary" aria-label="Settings">
         Settings <i class="ph ph-gear" style="margin-left: 4px;"></i>
       </a>
     </nav>
 
     <header class="stack-md animate-enter delay-1">
-      <span class="text-micro" style="color: var(--pal-account-blue);">The Archive</span>
-      <h1 class="text-h1">Your Collections</h1>
+      <span class="text-micro" style="color: var(--pal-account-blue);">The Inventory</span>
+      <h1 class="text-h1">Your Digital Assets</h1>
+      <p class="text-body" style="font-size: 0.95rem; opacity: 0.8;">
+        Your personal library of verified tools and upgrades.
+      </p>
     </header>
 
     <section class="card animate-enter delay-2" style="text-align: center; padding: var(--space-xl) var(--space-md); border-top: 4px solid var(--pal-account-neutral);">
       <div class="stack-md" style="align-items: center;">
         
-        <i class="ph ph-package" style="font-size: 3rem; color: var(--text-muted); opacity: 0.5;"></i>
+        <div class="icon-box" style="width: 80px; height: 80px; font-size: 2.5rem; background: var(--bg-page); border-color: var(--border-subtle);">
+           <i class="ph ph-stack" style="color: var(--text-muted);"></i>
+        </div>
         
         <div class="stack-sm">
-          <h2 class="text-h3">This space is waiting for you.</h2>
-          <p class="text-body" style="max-width: 40ch; margin: 0 auto; opacity: 0.8;">
-            Items you save or purchase will appear here for safekeeping.
+          <h2 class="text-h3">Ready for Upgrades</h2>
+          <p class="text-body" style="max-width: 45ch; margin: 0 auto; opacity: 0.8;">
+            Your centralized hub is currently empty. Visit the Digital Department Store to find production-ready scripts, planners, and tools.
           </p>
         </div>
 
-        <a href="../../index.html" class="btn btn-primary" style="background-color: var(--pal-account-blue);">Start Exploring</a>
+        <div style="margin-top: var(--space-sm);">
+          <a href="../../index.html#departments" class="btn-primary" style="background-color: var(--pal-account-blue);">Browse Departments</a>
+        </div>
+        
       </div>
     </section>
 
-    </main>
+    <footer style="margin-top: var(--space-xl); opacity: 0.6; text-align: center;">
+      <p class="text-micro">The path continues.</p>
+       <p class="text-lore" style="font-size: 0.75rem; opacity: 0.3; margin-top: 4px;">
+        "Look to the stars in your settings."
+      </p>
+    </footer>
+
+  </main>
 
   <script type="module" src="../../js/app.js"></script>
   <script type="module" src="../../js/header.js"></script>

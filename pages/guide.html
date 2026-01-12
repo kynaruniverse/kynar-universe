@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guide | Kynar Universe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   
+  <title>Knowledge Library | Kynar Universe</title>
+  
+  <meta name="description" content="A verified guide from the Kynar Knowledge Library. Actionable insights and no digital filler.">
+  <meta property="og:title" content="Knowledge Record | Kynar Universe">
+  <meta property="og:description" content="Democratizing access to productivity. Read this verified guide.">
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
-  
-  <meta name="description" content="Read this guide on Kynar Universe.">
-  <meta property="og:title" content="Guide | Kynar Universe">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +23,9 @@
 
 <body data-theme="hub">
 
-  <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
     <nav class="breadcrumb animate-enter">
       <a href="../index.html" class="btn-tertiary" style="padding-left:0;">Home</a>
@@ -34,31 +38,51 @@
     <header class="stack-md animate-enter delay-1" style="max-width: 800px;">
       
       <div style="display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap;">
-        <span class="tag" data-variant="hub">Guide</span>
+        <div class="icon-box" style="width: 32px; height: 32px; font-size: 1rem; background: var(--pal-hub-surface); color: var(--pal-hub-core); border-color: rgba(139, 92, 246, 0.2);">
+           <i class="ph ph-compass"></i>
+        </div>
         
-        <div style="display: flex; gap: var(--space-sm); align-items: center; opacity: 0.7;">
-          <i class="ph ph-clock" style="font-size: 1rem;"></i>
-          <span class="text-micro" id="guide-readtime" style="font-size: 0.8rem;">...</span>
-          
+        <span class="tag" data-variant="hub">Verified Guide</span>
+        
+        <div style="display: flex; gap: var(--space-sm); align-items: center; opacity: 0.6;">
+          <span class="text-micro" style="display: flex; align-items: center; gap: 4px;">
+            <i class="ph ph-clock"></i> <span id="guide-readtime">...</span>
+          </span>
           <span style="opacity: 0.3;">|</span>
-          
-          <i class="ph ph-calendar-blank" style="font-size: 1rem;"></i>
-          <span class="text-micro" id="guide-date" style="font-size: 0.8rem;">...</span>
+          <span class="text-micro" id="guide-date">...</span>
         </div>
       </div>
 
-      <h1 class="text-h1" id="guide-title">Loading Article...</h1>
+      <h1 class="text-h1" id="guide-title">Retrieving Knowledge...</h1>
+      
+      <p class="text-lore" style="font-size: 1.1rem; opacity: 0.8; max-width: 60ch;">
+        "We reject digital filler. This guide is vetted for impact."
+      </p>
     </header>
 
-    <article id="guide-content" class="stack-md animate-enter delay-2 text-body" style="max-width: 65ch; font-size: 1.1rem;">
-       <p style="opacity: 0.5;">Fetching content from the archive...</p>
+    <article id="guide-content" class="stack-md animate-enter delay-2 text-body" style="max-width: 65ch; font-size: 1.1rem; line-height: 1.8;">
+       <div style="padding: var(--space-xl) 0; opacity: 0.5; border-left: 2px solid var(--border-subtle); padding-left: var(--space-md);">
+         <p>Accessing the Kynar Knowledge Library...</p>
+       </div>
     </article>
 
-    <footer style="margin-top: var(--space-xl); opacity: 0.8; border-top: 1px solid var(--border-subtle); padding-top: var(--space-lg);">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <a href="hub/index.html" class="btn-tertiary" style="padding-left:0;">← Back to Hub</a>
-        <p class="text-micro" style="opacity: 0.6;">The path continues.</p>
+    <section class="card animate-enter delay-3" style="margin-top: var(--space-xl); max-width: 800px; border-left: 4px solid var(--pal-hub-core);">
+      <div class="stack-sm">
+        <h3 class="text-h3">Turn knowledge into action.</h3>
+        <p class="text-body" style="font-size: 0.95rem;">
+          Don't just read about it. Download the tools to upgrade your reality.
+        </p>
+        <div style="margin-top: var(--space-sm);">
+          <a href="../index.html#departments" class="btn-tertiary" style="padding-left: 0; color: var(--pal-hub-core);">Browse Related Tools →</a>
+        </div>
       </div>
+    </section>
+
+    <footer style="margin-top: var(--space-xl); opacity: 0.8; border-top: 1px solid var(--border-subtle); padding-top: var(--space-lg); text-align: center;">
+      <p class="text-micro" style="opacity: 0.6;">The path continues.</p>
+       <p class="text-lore" style="font-size: 0.75rem; opacity: 0.3; margin-top: 4px;">
+        "Look to the stars in your settings."
+      </p>
     </footer>
 
   </main>

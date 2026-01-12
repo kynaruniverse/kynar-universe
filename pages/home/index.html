@@ -2,44 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home Category | Kynar Universe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <title>KYNAR Home | Family & Household Management</title>
+  
+  <meta name="description" content="Supporting households with educational learning bundles, creative activity packs, and home management tools. Download your upgrade for a calmer home.">
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
 </head>
 
-<body data-theme="home-category">
+<body data-theme="home">
+  
+  <a href="#main-content" class="skip-link">Skip to content</a>
 
-  <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
     <nav class="breadcrumb animate-enter">
       <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">← Return</a>
       <span style="opacity: 0.5;">/</span>
-      <span class="text-micro">Home</span>
+      <span class="text-micro">Department: Home</span>
     </nav>
 
     <header class="stack-md animate-enter delay-1">
-      <div>
-        <span class="tag" data-variant="family">Category 03</span>
+      
+      <div class="icon-box" style="background: var(--pal-home-surface); border-color: rgba(245, 158, 11, 0.2); color: var(--pal-home-core);">
+        <i class="ph ph-house-line"></i>
       </div>
       
-      <h1 class="text-h1">Home</h1>
+      <h1 class="text-h1">KYNAR Home</h1>
       
-      <p class="text-body">
-        Warm, simple tools for families, routines, and daily comfort.
-        A space for the people who matter.
+      <p class="text-body" style="font-size: 1.1rem; max-width: 55ch;">
+        Supporting households with educational learning bundles, creative activity packs, and home management tools.
+        <br><br>
+        <span style="opacity: 0.8; font-size: 1rem;">From automating chores to printing a rainy-day activity for your toddler.</span>
       </p>
       
-      <div style="opacity: 0.8; margin-top: var(--space-sm);">
-        <p class="text-lore">"This space is yours."</p>
+      <div style="opacity: 0.8; margin-top: var(--space-sm); border-left: 2px solid var(--pal-home-core); padding-left: var(--space-sm);">
+        <p class="text-lore">"Foundations for a calm and connected home."</p>
       </div>
     </header>
 
@@ -48,37 +57,46 @@
       
       <div style="display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
         
-        <div class="card" data-variant="home">
+        <a href="../product.html?id=kids-bundles" class="card" data-variant="home">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div class="stack-sm">
-              <h3 class="text-h3">Family & Kids</h3>
-              <p class="text-body" style="font-size: 0.9rem;">Learning packs and fun activities.</p>
-              <div style="margin-top: var(--space-sm);">
-                 <a href="../product.html?id=kids-math-pack" class="btn-tertiary" style="padding-left: 0;">View Pack →</a>
-              </div>
+              <h3 class="text-h3">Education & Play</h3>
+              <p class="text-body" style="font-size: 0.9rem;">
+                Learning bundles and creative activity packs for the family.
+              </p>
+              <span class="text-micro" style="margin-top: var(--space-sm); color: var(--pal-home-core);">View Pack →</span>
             </div>
-            <i class="ph ph-smiley-sticker" style="font-size: 1.5rem; color: var(--pal-family-coral); opacity: 0.8;"></i>
+            
+            <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem;">
+               <i class="ph ph-smiley-sticker"></i>
+            </div>
           </div>
-        </div>
+        </a>
 
-        <div class="card" data-variant="home">
+        <a href="../product.html?id=home-management" class="card" data-variant="home">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div class="stack-sm">
-              <h3 class="text-h3">Routines & Org</h3>
-              <p class="text-body" style="font-size: 0.9rem;">Planners for a calmer home life.</p>
-              <div style="margin-top: var(--space-sm);">
-                 <button class="btn-tertiary" style="padding-left: 0;">View Tools →</button>
-              </div>
+              <h3 class="text-h3">Home Management</h3>
+              <p class="text-body" style="font-size: 0.9rem;">
+                Meal planners, chore systems, and finance trackers.
+              </p>
+              <span class="text-micro" style="margin-top: var(--space-sm); color: var(--pal-home-core);">View Tools →</span>
             </div>
-            <i class="ph ph-calendar-check" style="font-size: 1.5rem; color: var(--pal-family-blue); opacity: 0.8;"></i>
+            
+            <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem;">
+               <i class="ph ph-calendar-check"></i>
+            </div>
           </div>
-        </div>
+        </a>
 
       </div>
     </section>
 
-    <footer style="margin-top: var(--space-xl); opacity: 0.6;">
+    <footer style="margin-top: var(--space-xl); opacity: 0.6; text-align: center;">
       <p class="text-micro">The path continues.</p>
+       <p class="text-lore" style="font-size: 0.75rem; opacity: 0.3; margin-top: 4px;">
+        "Look to the stars in your settings."
+      </p>
     </footer>
 
   </main>

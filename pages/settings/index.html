@@ -2,14 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings | Kynar Universe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <title>System Configuration | Kynar Universe</title>
+  
+  <meta name="description" content="Calibrate your Kynar Universe experience. Manage your identity, preferences, and visual atmosphere.">
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
@@ -18,80 +23,99 @@
 
 <body data-theme="accounts">
 
-  <main class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
     <nav class="breadcrumb animate-enter">
       <a href="../../index.html" class="btn-tertiary" style="padding-left:0;">Home</a>
       <span style="opacity: 0.3;">/</span>
       <a href="../account/index.html" class="btn-tertiary" style="padding-left:0;">Account</a>
       <span style="opacity: 0.3;">/</span>
-      <span class="text-micro">Settings</span>
+      <span class="text-micro">Configuration</span>
     </nav>
 
     <header class="stack-md animate-enter delay-1">
-      <h1 class="text-h1">Settings</h1>
-      <p class="text-body">Configure your environment and personal details.</p>
+      <h1 class="text-h1">System Configuration</h1>
+      <p class="text-body" style="font-size: 1.1rem; opacity: 0.8; max-width: 50ch;">
+        Calibrate your digital environment. Manage your identity and visual atmosphere.
+      </p>
     </header>
 
     <section class="stack-lg animate-enter delay-2">
       
       <div class="card stack-md">
-        <h2 class="text-h3">Profile</h2>
+        <div style="display: flex; align-items: center; gap: var(--space-sm);">
+          <div class="icon-box" style="width: 32px; height: 32px; font-size: 1rem;">
+            <i class="ph ph-identification-card"></i>
+          </div>
+          <h2 class="text-h3">Traveler Identity</h2>
+        </div>
         
         <div class="form-group">
           <label class="label">Display Name</label>
           <div style="position: relative;">
-            <input type="text" class="input" value="Traveler" style="padding-left: 40px;">
-            <i class="ph ph-user" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+            <input type="text" class="input" value="Traveler" style="padding-left: 44px;" aria-label="Display Name">
+            <i class="ph ph-user" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem;"></i>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="label">Email</label>
+          <label class="label">Communication Link</label>
           <div style="position: relative;">
-            <input type="email" class="input" value="traveler@example.com" style="padding-left: 40px;">
-            <i class="ph ph-envelope-simple" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+            <input type="email" class="input" value="traveler@example.com" style="padding-left: 44px;" aria-label="Email Address">
+            <i class="ph ph-envelope-simple" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem;"></i>
           </div>
         </div>
 
         <div style="text-align: right;">
-          <button class="btn btn-secondary" onclick="showToast('Profile updated.', 'success')">Save Changes</button>
+          <button class="btn btn-secondary" onclick="showToast('Identity updated.', 'success')">Save Changes</button>
         </div>
       </div>
 
       <div class="card stack-md">
-        <h2 class="text-h3">Visual Mode</h2>
-        <p class="text-body" style="font-size: 0.9rem; opacity: 0.8;">Select how you want to experience the world.</p>
+        <div style="display: flex; align-items: center; gap: var(--space-sm);">
+          <div class="icon-box" style="width: 32px; height: 32px; font-size: 1rem;">
+            <i class="ph ph-eye"></i>
+          </div>
+          <h2 class="text-h3">Visual Atmosphere</h2>
+        </div>
+        
+        <p class="text-body" style="font-size: 0.9rem; opacity: 0.8;">
+          Select how you want to experience the Universe.
+        </p>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: var(--space-sm);">
           
-          <button onclick="setTheme('auto')" class="card" style="padding: 1rem; text-align: center; cursor: pointer; border: 1px solid var(--border-subtle);">
+          <button onclick="setTheme('auto')" class="card" style="padding: 1rem; text-align: center; cursor: pointer; border: 1px solid var(--border-subtle); display: flex; flex-direction: column; align-items: center; gap: 8px;">
             <i class="ph ph-desktop" style="font-size: 1.5rem; color: var(--text-main);"></i>
-            <p class="text-micro" style="margin-top: 8px;">Auto</p>
+            <span class="text-micro">System</span>
           </button>
 
-          <button onclick="setTheme('light')" class="card" style="padding: 1rem; text-align: center; cursor: pointer; border: 1px solid var(--border-subtle); background: var(--neutral-white);">
-            <i class="ph ph-sun" style="font-size: 1.5rem; color: var(--neutral-ink);"></i>
-            <p class="text-micro" style="margin-top: 8px; color: var(--neutral-ink);">Light</p>
+          <button onclick="setTheme('light')" class="card" style="padding: 1rem; text-align: center; cursor: pointer; border: 1px solid var(--border-subtle); background: #F9FAFB; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <i class="ph ph-sun" style="font-size: 1.5rem; color: #111827;"></i>
+            <span class="text-micro" style="color: #111827;">Daylight</span>
           </button>
 
-          <button onclick="setTheme('dark')" class="card" style="padding: 1rem; text-align: center; cursor: pointer; border: 1px solid var(--border-subtle); background: #1A1C1F;">
-            <i class="ph ph-moon" style="font-size: 1.5rem; color: #FFFFFF;"></i>
-            <p class="text-micro" style="margin-top: 8px; color: #FFFFFF;">Dark</p>
+          <button onclick="setTheme('dark')" class="card" style="padding: 1rem; text-align: center; cursor: pointer; border: 1px solid var(--border-subtle); background: #111827; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <i class="ph ph-moon" style="font-size: 1.5rem; color: #F9FAFB;"></i>
+            <span class="text-micro" style="color: #F9FAFB;">Midnight</span>
           </button>
 
-          <button onclick="setTheme('starwalker')" class="card" style="padding: 1rem; text-align: center; cursor: pointer; border: 1px solid var(--pal-account-prem-sun);">
-            <i class="ph ph-star-four" style="font-size: 1.5rem; color: var(--pal-account-prem-sun);"></i>
-            <p class="text-micro" style="margin-top: 8px; color: var(--pal-account-prem-sun);">Secret</p>
+          <button onclick="setTheme('starwalker')" class="card" style="padding: 1rem; text-align: center; cursor: pointer; border: 1px solid var(--accent-primary); background: rgba(15, 23, 42, 0.5); display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; overflow: hidden;">
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(59, 130, 246, 0.2), transparent); pointer-events: none;"></div>
+            
+            <i class="ph ph-star-four" style="font-size: 1.5rem; color: var(--accent-primary);"></i>
+            <span class="text-micro" style="color: var(--accent-primary); font-weight: 600;">Starwalker</span>
           </button>
 
         </div>
       </div>
 
-      <div style="margin-top: var(--space-lg); opacity: 0.8; display: flex; justify-content: space-between; align-items: center;">
-        <span class="text-micro">Kynar Universe v1.0</span>
-        <button class="btn-tertiary" style="color: var(--color-error);" onclick="showToast('Logged out.', 'normal'); setTimeout(() => window.location.href='../account/index.html', 1000);">
-          Log Out
+      <div style="margin-top: var(--space-lg); opacity: 0.8; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: var(--space-md);">
+        <span class="text-micro">Universe v1.0.4</span>
+        <button class="btn-tertiary" style="color: var(--color-error); display: flex; align-items: center; gap: 6px;" onclick="showToast('Disconnecting from Universe...', 'normal'); setTimeout(() => window.location.href='../account/index.html', 1500);">
+          <i class="ph ph-sign-out"></i> Disconnect
         </button>
       </div>
 
@@ -102,5 +126,24 @@
   <script type="module" src="../../js/app.js"></script>
   <script type="module" src="../../js/header.js"></script>
   <script type="module" src="../../js/search.js"></script>
+  
+  <script>
+    // Simple bridge to the main theme engine in app.js
+    function setTheme(mode) {
+      if (window.setTheme) {
+        window.setTheme(mode);
+        // Visual feedback
+        const name = mode.charAt(0).toUpperCase() + mode.slice(1);
+        const msg = mode === 'starwalker' ? 'Starwalker Mode Engaged.' : `${name} atmosphere applied.`;
+        
+        // Check if toast exists (it should be in app.js)
+        if (typeof showToast === 'function') {
+           showToast(msg, 'success');
+        } else {
+           console.log(msg);
+        }
+      }
+    }
+  </script>
 </body>
 </html>

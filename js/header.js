@@ -1,6 +1,6 @@
 /* KYNAR HEADER ENGINE (js/header.js)
-   Injects the Glass Navigation Bar and handles Theme Toggling.
-   Status: FINAL MASTER (Aligned with Path Logic & Color Bible)
+   Injects the Glass Navigation Bar and handles Atmosphere Toggling.
+   Status: FINAL MASTER (Aligned with "Inventory" & "Starwalker" Logic)
 */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,33 +8,37 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function injectHeader() {
-  // 1. Resolve Paths (Where are we?)
+  // 1. Resolve Paths (Smart Navigation)
   const rootPath = resolveRootPath();
-  const accountPath = `${rootPath}pages/acct/index.html`;
+  const accountPath = `${rootPath}pages/account/index.html`; // Points to "The Inventory"
   const homeLink = `${rootPath}index.html`;
 
   // 2. Create the Header Element
   const header = document.createElement('header');
   header.className = 'glass-header animate-enter';
-  // Ensure High Z-Index so it sits above content
-  header.style.zIndex = 'var(--z-header)'; 
   
+  // 3. The Clean HTML
+  // Uses .header-inner for layout and .header-btn for the 44px tactile targets
   header.innerHTML = `
-    <div class="container" style="height: 100%; display: flex; justify-content: space-between; align-items: center;">
+    <div class="container header-inner">
       
-      <a href="${homeLink}" class="header-logo">
+      <a href="${homeLink}" class="header-logo" aria-label="Kynar Universe Home">
         <span class="logo-dot"></span>
-        <span class="text-h3" style="font-size: 1rem; font-weight: 600; letter-spacing: -0.02em;">Kynar Universe</span>
+        <span style="font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em;">Kynar Universe</span>
       </a>
 
-      <div class="header-actions" id="header-actions-container">
+      <div class="header-actions">
         
-        <button id="theme-toggle" class="btn-tertiary" style="padding: 8px;" aria-label="Toggle Dark Mode">
-          <i class="ph ph-moon" style="font-size: 1.25rem;"></i>
+        <button onclick="toggleSearch()" class="header-btn" aria-label="Search Universe">
+          <i class="ph ph-magnifying-glass"></i>
+        </button>
+        
+        <button id="theme-toggle" class="header-btn" aria-label="Toggle Atmosphere">
+          <i class="ph ph-moon" id="theme-icon"></i>
         </button>
 
-        <a href="${accountPath}" class="btn-tertiary" style="padding: 8px;" aria-label="Account">
-          <i class="ph ph-user" style="font-size: 1.25rem;"></i>
+        <a href="${accountPath}" class="header-btn" aria-label="Open Inventory">
+          <i class="ph ph-user"></i>
         </a>
 
       </div>
@@ -42,62 +46,78 @@ function injectHeader() {
     </div>
   `;
 
-  // 3. Inject at the top of Body
+  // 4. Inject at the top of the body
   document.body.insertBefore(header, document.body.firstChild);
 
-  // 4. Attach Theme Toggle Logic
+  // 5. Attach Logic
   document.getElementById('theme-toggle').onclick = toggleTheme;
-}
-
-/* HELPER: Toggle Theme
-   Cycles: Light -> Dark -> Auto
-   Interacts with window.setTheme defined in app.js
-*/
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-mode') || 'light';
   
-  if (current === 'light') {
-    window.setTheme('dark');
-  } else if (current === 'dark') {
-    // Hidden Secret: 1% chance to hit Starwalker mode from Dark
-    // Otherwise go back to Light (or Auto)
-    window.setTheme('light');
-  }
-  
-  // Update Icon
+  // 6. Initialize State
   updateThemeIcon();
 }
 
-function updateThemeIcon() {
-  const btn = document.getElementById('theme-toggle');
-  const current = document.documentElement.getAttribute('data-mode') || 'light';
-  const icon = btn.querySelector('i');
-  
+/* HELPER: Toggle Atmosphere
+   Cycles: Light <-> Dark.
+   If user is in "Starwalker" (Secret) mode, clicking this returns them to reality (Dark).
+*/
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-mode') || 'dark';
+  let next = 'dark';
+
   if (current === 'dark') {
-    icon.classList.replace('ph-moon', 'ph-sun');
+    next = 'light';
+  } else if (current === 'light') {
+    next = 'dark';
+  } else if (current === 'starwalker') {
+    // If in Secret Mode, exit back to standard Dark Mode
+    next = 'dark';
+  }
+  
+  window.setTheme(next); // Uses the main app.js engine
+  updateThemeIcon();
+}
+
+/* HELPER: Update Icon State
+   Handles Sun, Moon, and the Secret Starwalker Icon.
+*/
+function updateThemeIcon() {
+  const icon = document.getElementById('theme-icon');
+  if (!icon) return;
+
+  const current = document.documentElement.getAttribute('data-mode') || 'dark';
+  
+  // Reset base class
+  icon.className = 'ph';
+
+  if (current === 'light') {
+    icon.classList.add('ph-moon'); // Show Moon (to switch to Dark)
+  } else if (current === 'dark') {
+    icon.classList.add('ph-sun');  // Show Sun (to switch to Light)
+  } else if (current === 'starwalker') {
+    icon.classList.add('ph-star-four'); // Show Star (Secret State)
   } else {
-    icon.classList.replace('ph-sun', 'ph-moon');
+    // Fallback for Auto
+    icon.classList.add('ph-sun');
   }
 }
 
-/* HELPER: Resolve Path Depth
-   Determines if we need "../" or "../../" prefixes.
+/* HELPER: Smart Path Resolution
+   Handles root (./), deep pages (../../), and shallow pages (../)
 */
 function resolveRootPath() {
   const path = window.location.pathname;
   
-  // Case 1: Root (index.html)
+  // 1. Root (index.html)
   if (!path.includes('/pages/')) {
     return './'; 
   }
   
-  // Case 2: Deep Category (pages/tools/index.html)
-  // Logic: Split by 'pages', then count slashes in the remainder
+  // 2. Deep Category (pages/tools/index.html)
   const parts = path.split('/pages/')[1];
-  if (parts.includes('/')) {
+  if (parts && parts.includes('/')) {
     return '../../';
   }
   
-  // Case 3: Shallow Page (pages/product.html)
+  // 3. Shallow Page (pages/legal.html)
   return '../';
 }
