@@ -614,3 +614,27 @@ code, pre {
     page-break-inside: avoid;
   }
 }
+
+/* =========================================
+   FIX: HERO SPACING ADJUSTMENT
+   Tightens the gap between the header and the main logo.
+   ========================================= */
+
+/* 1. Remove generic main padding if it exists */
+main {
+  padding-top: 0 !important;
+}
+
+/* 2. Pull the Hero Section up */
+.hero-soul {
+  /* Change 'space-md' to 'space-sm' if you want it even tighter */
+  padding-top: var(--space-md) !important; 
+  margin-top: 0 !important;
+}
+
+/* 3. OPTIONAL: Specific Logo Adjustment */
+/* If the logo itself has built-in whitespace in the SVG, 
+   we pull it up specifically. */
+.hero-soul img {
+  margin-top: -10px; /* Fine-tune this number as needed */
+}
