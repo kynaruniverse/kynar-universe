@@ -1,12 +1,13 @@
 /* THE ARCHITECTS */
-  Founder: Kynar
+  Founder: Charles Blackwood
   Site: www.kynaruniverse.co.uk
   Location: United Kingdom
 
 /* THE TECHNOLOGY */
   Core: HTML5, CSS3 Variables (Tokens), Vanilla JS Modules
-  Icons: Phosphor Icons
-  Server: GitHub Pages
+  Icons: Remix Icons (CDN)
+  Backend: Supabase
+  Server: GitHub Pages / Netlify
   
 /* THE LORE */
   "One Universe. Infinite Solutions."

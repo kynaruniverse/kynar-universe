@@ -1,6 +1,9 @@
-# Kynar Universe Security
-Contact: mailto:kynaruniverse@gmail.com
+# Kynar Universe Security Configuration
+# Status: ACTIVE
+
+Contact: mailto:support@kynaruniverse.co.uk
 Preferred-Languages: en
 Policy: https://www.kynaruniverse.co.uk/pages/legal/privacy.html
+Expires: 2027-01-01T00:00:00.000Z
 
 # "One Universe. Infinite Solutions."

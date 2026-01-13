@@ -1,6 +1,6 @@
-/* KYNAR UNIVERSE BREADCRUMB COMPONENT (js/components/breadcrumb.js)
+/* KYNAR UNIVERSE BREADCRUMB COMPONENT (js/breadcrumb.js)
    Auto-generates breadcrumb navigation based on URL path.
-   Status: PHASE 3 - Deduplication
+   Status: FINAL MASTER (REMIX ICON ALIGNED)
 */
 
 export function injectBreadcrumb() {
@@ -19,9 +19,11 @@ export function injectBreadcrumb() {
   
   // Check if we're on a deep page
   if (segments.length > 1) {
-    breadcrumbHTML += `<i class="ph ph-arrow-left"></i> Home`;
+    // REMIX ICON UPDATE: ri-arrow-left-line
+    breadcrumbHTML += `<i class="ri-arrow-left-line"></i> Home`;
   } else {
-    breadcrumbHTML += `<i class="ph ph-arrow-left"></i> Return`;
+    // REMIX ICON UPDATE: ri-arrow-left-line
+    breadcrumbHTML += `<i class="ri-arrow-left-line"></i> Return`;
   }
   
   breadcrumbHTML += `</a>`;
@@ -56,6 +58,7 @@ export function injectBreadcrumb() {
 function getRootPath() {
   const path = window.location.pathname;
   if (!path.includes('/pages/')) return './';
+  // Calculates depth to ensure links work from any folder level
   const depth = (path.split('/pages/')[1].match(/\//g) || []).length;
   return '../'.repeat(depth + 1);
 }

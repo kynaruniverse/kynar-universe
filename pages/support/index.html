@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
-               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
-               font-src 'self' https://fonts.gstatic.com; 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
+               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
+               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+               font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -19,31 +19,31 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-
-
+  
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   
-  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3" integrity="sha384-hiKKzPWrwThyepBYcEjt4rzb2Xw5k8w1YWCgv0v1lh8FwLKwQAs1Z4yPmBifZZl8" crossorigin="anonymous"></script>
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
+  
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
 </head>
 
 <body data-theme="about">
-
+  
   <a href="#main-content" class="skip-link">Skip to content</a>
-
+  
   <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
     <div id="breadcrumb-nav"></div>
-
+    
     <header class="stack-md animate-enter delay-1" style="max-width: 600px;">
       
       <div class="icon-box" style="background: var(--pal-about-mint); color: var(--neutral-ink); border-color: rgba(0,0,0,0.1);">
-         <i class="ph ph-lifebuoy"></i>
+        <i class="ri-lifebuoy-line"></i>
       </div>
       
       <h1 class="text-h1">Universe Support</h1>
@@ -55,26 +55,26 @@
         <p class="text-lore">"No traveler is left behind."</p>
       </div>
     </header>
-
+    
     <section class="stack-lg animate-enter delay-2">
       <div class="stack-md">
         <h2 class="text-h3">Common Inquiries</h2>
         
         <div class="card" style="display: flex; gap: var(--space-md); align-items: flex-start;">
           <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem; background: rgba(255,255,255,0.05);">
-            <i class="ph ph-download-simple" style="color: var(--pal-about-coral);"></i>
+            <i class="ri-download-line" style="color: var(--pal-about-coral);"></i>
           </div>
           <div>
             <h3 class="text-body" style="font-weight: 600;">Where are my upgrades?</h3>
             <p class="text-body" style="font-size: 0.95rem; margin-top: 8px; opacity: 0.8;">
-              Instant downloads are sent via email immediately after purchase. For safekeeping, all your tools are stored in your central <a href="../account/collections.html" style="text-decoration:underline; color: var(--pal-about-coral);">Inventory</a>.
+              Instant downloads are sent via email immediately after purchase. For safekeeping, all your tools are stored in your central <a href="../account/index.html" style="text-decoration:underline; color: var(--pal-about-coral);">Inventory</a>.
             </p>
           </div>
         </div>
-
+        
         <div class="card" style="display: flex; gap: var(--space-md); align-items: flex-start;">
           <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem; background: rgba(255,255,255,0.05);">
-            <i class="ph ph-device-mobile" style="color: var(--pal-about-coral);"></i>
+            <i class="ri-smartphone-line" style="color: var(--pal-about-coral);"></i>
           </div>
           <div>
             <h3 class="text-body" style="font-weight: 600;">Device Compatibility</h3>
@@ -86,7 +86,7 @@
         
         <div class="card" style="display: flex; gap: var(--space-md); align-items: flex-start;">
           <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem; background: rgba(255,255,255,0.05);">
-             <i class="ph ph-book-bookmark" style="color: var(--pal-about-coral);"></i>
+            <i class="ri-book-mark-line" style="color: var(--pal-about-coral);"></i>
           </div>
           <div>
             <h3 class="text-body" style="font-weight: 600;">How do I use these tools?</h3>
@@ -96,7 +96,7 @@
           </div>
         </div>
       </div>
-
+      
       <div class="stack-md" style="border-top: 1px solid var(--border-subtle); padding-top: var(--space-lg);">
         <h2 class="text-h3">Direct Assistance</h2>
         <p class="text-body">
@@ -104,18 +104,19 @@
         </p>
         
         <a href="mailto:support@kynaruniverse.co.uk" class="btn-primary" style="width: fit-content;">
-          <i class="ph ph-envelope-simple"></i> Contact Support
+          <i class="ri-mail-send-line"></i> Contact Support
         </a>
       </div>
     </section>
-
+    
   </main>
-
+  
   <script type="module" src="../../js/app.js"></script>
-  <script type="module" src="../../js/header.js"></script> 
+  <script type="module" src="../../js/header.js"></script>
   <script type="module" src="../../js/search.js"></script>
   <script type="module" src="../../js/footer.js"></script>
   <script type="module" src="../../js/breadcrumb.js"></script>
-
+  
 </body>
+
 </html>

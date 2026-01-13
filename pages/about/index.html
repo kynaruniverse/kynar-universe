@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
                script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
-               font-src 'self' https://fonts.gstatic.com; 
+               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+               font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+  
   <title>Our Mission | Kynar Universe</title>
   
   <meta name="description" content="Kynar Universe is the global standard for digital utility. We reject digital filler and democratize access to verified tools for creators, parents, and high-performers.">
@@ -19,27 +19,27 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-
-
+  
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   
-  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3" integrity="sha384-hiKKzPWrwThyepBYcEjt4rzb2Xw5k8w1YWCgv0v1lh8FwLKwQAs1Z4yPmBifZZl8" crossorigin="anonymous"></script>
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
+  
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
 </head>
 
 <body data-theme="about">
-
+  
   <a href="#main-content" class="skip-link">Skip to content</a>
-
+  
   <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
     
     <div id="breadcrumb-nav"></div>
-
+    
     <header class="stack-md animate-enter delay-1" style="max-width: 800px;">
       <div>
         <span class="tag" style="background-color: var(--pal-about-sky); color: var(--neutral-ink); border-color: var(--pal-about-sky);">The Global Standard</span>
@@ -50,12 +50,12 @@
       <p class="text-body" style="font-size: 1.15rem; opacity: 0.9; max-width: 60ch;">
         We believe that the right digital tool can change your day. We are democratizing access to productivity, creativity, and organization—one instant download at a time.
       </p>
-
+      
       <div style="opacity: 0.8; margin-top: var(--space-xs); border-left: 2px solid var(--pal-about-coral); padding-left: var(--space-sm);">
         <p class="text-lore">"One Universe. Infinite Solutions."</p>
       </div>
     </header>
-
+    
     <section class="stack-lg animate-enter delay-2" style="max-width: 65ch;">
       
       <h2 class="text-h2" style="color: var(--pal-about-coral);">The Digital Department Store</h2>
@@ -67,18 +67,20 @@
       <p class="text-body">
         Kynar Universe is where quality, utility, and variety converge. We have created a curated library that spans three distinct worlds, bringing everything under one roof.
       </p>
-
+      
     </section>
-
+    
     <section class="card animate-enter delay-3" style="border-left: 4px solid var(--neutral-ink); background: rgba(255,255,255,0.5);">
       <div class="stack-sm">
-        <h3 class="text-h3"><i class="ph ph-prohibit" style="margin-right: 8px;"></i> We reject "Digital Filler."</h3>
+        <h3 class="text-h3">
+          <i class="ri-prohibited-line" style="margin-right: 8px;"></i> We reject "Digital Filler."
+        </h3>
         <p class="text-body" style="font-size: 0.95rem;">
           The internet is full of clutter. We don't add to it. Every script, template, and workbook in our marketplace is vetted for usability, quality, and impact. If it doesn't upgrade your reality, it doesn't belong here.
         </p>
       </div>
     </section>
-
+    
     <section class="stack-md animate-enter delay-3">
       <h2 class="text-h3">Bridging the Gap</h2>
       <p class="text-body" style="max-width: 60ch; margin-bottom: var(--space-md);">
@@ -89,38 +91,39 @@
         
         <div class="card" style="background: var(--pal-tools-surface); border-color: rgba(59, 130, 246, 0.2);">
           <div class="stack-xs">
-            <i class="ph ph-code" style="color: var(--pal-tools-core); font-size: 1.5rem;"></i>
+            <i class="ri-code-s-slash-line" style="color: var(--pal-tools-core); font-size: 1.5rem;"></i>
             <h3 class="text-h3" style="font-size: 1rem;">Developers</h3>
             <p class="text-micro">Production-ready scripts & automation.</p>
           </div>
         </div>
-
+        
         <div class="card" style="background: var(--pal-living-surface); border-color: rgba(16, 185, 129, 0.2);">
           <div class="stack-xs">
-            <i class="ph ph-lightning" style="color: var(--pal-living-green); font-size: 1.5rem;"></i>
+            <i class="ri-flashlight-line" style="color: var(--pal-living-green); font-size: 1.5rem;"></i>
             <h3 class="text-h3" style="font-size: 1rem;">High Performers</h3>
             <p class="text-micro">Finance trackers & wellness systems.</p>
           </div>
         </div>
-
+        
         <div class="card" style="background: var(--pal-home-surface); border-color: rgba(245, 158, 11, 0.2);">
           <div class="stack-xs">
-            <i class="ph ph-house-line" style="color: var(--pal-home-core); font-size: 1.5rem;"></i>
+            <i class="ri-home-4-line" style="color: var(--pal-home-core); font-size: 1.5rem;"></i>
             <h3 class="text-h3" style="font-size: 1rem;">Parents</h3>
             <p class="text-micro">Learning bundles & home management.</p>
           </div>
         </div>
-
+        
       </div>
     </section>
-
+    
   </main>
-
+  
   <script type="module" src="../../js/app.js"></script>
-  <script type="module" src="../../js/header.js"></script> 
+  <script type="module" src="../../js/header.js"></script>
   <script type="module" src="../../js/search.js"></script>
-
- <script type="module" src="../../js/footer.js"></script>
- <script type="module" src="../../js/breadcrumb.js"></script>
+  
+  <script type="module" src="../../js/footer.js"></script>
+  <script type="module" src="../../js/breadcrumb.js"></script>
 </body>
+
 </html>

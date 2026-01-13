@@ -1,37 +1,51 @@
 /* KYNAR UNIVERSE ANALYTICS (js/analytics.js)
-   Privacy-focused event tracking
-   Status: PRODUCTION READY
+   Privacy-focused event tracking wrapper.
+   Status: PRODUCTION READY (Smart Logging)
 */
 
+const IS_DEV = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const DO_NOT_TRACK = navigator.doNotTrack === '1';
+
 export const Analytics = {
-  // Track page views
+  
+  // Internal Logger
+  log(event, details) {
+    // Only log if we are in Dev mode AND the user hasn't opted out of tracking
+    if (IS_DEV && !DO_NOT_TRACK) {
+      console.log(`[Analytics] ${event}:`, details);
+    }
+    // In the future, this is where you would send data to Plausible/Fathom
+    // if (!DO_NOT_TRACK) { sendToService(event, details); }
+  },
+
+  // 1. Page Views
   trackPageView(pageName) {
-    console.log(`[Analytics] Page View: ${pageName}`);
-    // Add your analytics service here (Plausible, Fathom, etc.)
+    this.log('Page View', pageName);
   },
   
-  // Track product views
+  // 2. Product Views
   trackProductView(productId, productName) {
-    console.log(`[Analytics] Product View: ${productName} (${productId})`);
+    this.log('Product View', `${productName} (${productId})`);
   },
   
-  // Track purchases
+  // 3. Purchases
   trackPurchase(productId, productName, price) {
-    console.log(`[Analytics] Purchase: ${productName} - £${price}`);
+    this.log('Purchase', `${productName} - £${price}`);
   },
   
-  // Track search queries
+  // 4. Search Queries
   trackSearch(query, resultsCount) {
-    console.log(`[Analytics] Search: "${query}" - ${resultsCount} results`);
+    this.log('Search', `"${query}" - ${resultsCount} results`);
   },
   
-  // Track theme changes
+  // 5. Theme Changes
   trackThemeChange(theme) {
-    console.log(`[Analytics] Theme Change: ${theme}`);
+    this.log('Theme Change', theme);
   }
 };
 
-// Auto-track page views
+// Auto-track page view on load
+// We use 'once' to ensure it doesn't fire multiple times if imported elsewhere
 document.addEventListener('DOMContentLoaded', () => {
   Analytics.trackPageView(document.title);
-});
+}, { once: true });

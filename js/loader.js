@@ -1,6 +1,6 @@
 /* KYNAR UNIVERSE ENGINE (js/loader.js)
    Retrieves assets from the Centralized Hub (data.js) and injects them into the Specification Sheet.
-   Status: FINAL MASTER (Aligned with "Grand Vision" & SEO Logic)
+   Status: FINAL MASTER (REMIX ICON ALIGNED)
 */
 
 import { getProductById, getGuideById } from './data.js';
@@ -44,6 +44,12 @@ function loadProduct(item) {
   
   // 2. SEO INJECTION
   updatePageMeta(item.title, item.shortDesc);
+  injectStructuredData('product', {
+    title: item.title,
+    description: item.description || item.shortDesc,
+    price: item.price,
+    category: item.category
+  }); 
   
   // 3. TEXT INJECTION
   safeSetText('product-title', item.title);
@@ -59,56 +65,74 @@ function loadProduct(item) {
   safeSetText('breadcrumb-category', capitalize(item.category));
   safeSetText('breadcrumb-title', item.title);
   
-// Inject SEO structured data
-  injectStructuredData('product', {
-    title: item.title,
-    description: item.description || item.shortDesc,
-    price: item.price,
-    category: item.category
-  });  
-  
   const catLink = document.getElementById('link-category');
   if (catLink) catLink.href = `../${item.category}/index.html`;
   
-  // ✅ FIX: Added null check before setting attribute
   const tag = document.getElementById('product-tag');
   if (tag) {
     tag.setAttribute('data-variant', item.category);
-  } else {
-    console.warn('[Loader] Product tag element not found');
   }
   
   // 6. ACTION LOGIC
   const buyBtn = document.getElementById('btn-action');
   if (buyBtn) {
     buyBtn.textContent = item.actionBtn || "Secure Instant Download";
-    buyBtn.onclick = () => {
-      addToLocalInventory(item);
-      window.location.href = '../checkout/success.html';
-    };
+    
+    // If the product has a real buy link (Phase 2), use it. 
+    // Otherwise, use the simulation (Phase 1).
+    if (item.buyUrl && item.buyUrl !== "#") {
+        buyBtn.onclick = () => window.location.href = item.buyUrl;
+    } else {
+        buyBtn.onclick = () => {
+          addToLocalInventory(item);
+          alert("Simulation: Item added to inventory."); // Phase 1 Feedback
+        };
+    }
   }
   
-  // 7. VISUALS
+  // 7. VISUALS (REMIX ICON UPDATE)
   const preview = document.getElementById('product-preview');
   if (preview && item.previewIcon) {
-    preview.innerHTML = `<i class="ph ${item.previewIcon}" style="font-size: 5rem; color: var(--accent-primary); opacity: 0.9;"></i>`;
+    // Removed 'ph' prefix. Now uses raw Remix class (e.g., 'ri-code-line')
+    preview.innerHTML = `<i class="${item.previewIcon}" style="font-size: 5rem; color: var(--accent-primary); opacity: 0.9;"></i>`;
   }
   
-  // 8. ASSET LIST
+  // 8. ASSET LIST (REMIX ICON UPDATE)
   const featureList = document.getElementById('product-features');
   if (featureList && item.features) {
     featureList.innerHTML = item.features.map(f =>
-      `<li style="display: flex; gap: 8px; align-items: flex-start;"><i class="ph ph-check" style="color: var(--accent-primary); margin-top: 4px;"></i><span>${f}</span></li>`
+      `<li style="display: flex; gap: 8px; align-items: flex-start;">
+         <i class="ri-check-line" style="color: var(--accent-primary); margin-top: 4px;"></i>
+         <span>${f}</span>
+       </li>`
     ).join('');
   }
   
-  // 9. TECHNICAL SPECIFICATIONS
+  // 9. TECHNICAL SPECIFICATIONS & COPY BUTTON
   const codeContainer = document.getElementById('code-preview-container');
   const codeSnippet = document.getElementById('code-snippet');
   
   if (item.codePreview && codeContainer && codeSnippet) {
     codeContainer.style.display = 'flex';
     codeSnippet.textContent = item.codePreview;
+
+    // COPY BUTTON LOGIC (Moved inside function to fix crash)
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'btn-tertiary';
+    copyBtn.innerHTML = '<i class="ri-file-copy-line"></i> Copy';
+    copyBtn.style.cssText = 'position: absolute; top: 12px; right: 12px; padding: 6px 12px; font-size: 0.85rem;';
+    
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(item.codePreview).then(() => {
+        copyBtn.innerHTML = '<i class="ri-check-line"></i> Copied!';
+        setTimeout(() => {
+          copyBtn.innerHTML = '<i class="ri-file-copy-line"></i> Copy';
+        }, 2000);
+      });
+    };
+    
+    codeContainer.style.position = 'relative';
+    codeContainer.appendChild(copyBtn);
   }
   
   if (item.specs) {
@@ -117,36 +141,20 @@ function loadProduct(item) {
   }
 }
 
-if (item.codePreview && codeContainer && codeSnippet) {
-    codeContainer.style.display = 'flex';
-    codeSnippet.textContent = item.codePreview;
-    
-    // ADD COPY BUTTON
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'btn-tertiary';
-    copyBtn.innerHTML = '<i class="ph ph-copy"></i> Copy';
-    copyBtn.style.cssText = 'position: absolute; top: 12px; right: 12px; padding: 6px 12px; font-size: 0.85rem;';
-    copyBtn.onclick = () => {
-      navigator.clipboard.writeText(item.codePreview).then(() => {
-        copyBtn.innerHTML = '<i class="ph ph-check"></i> Copied!';
-        setTimeout(() => {
-          copyBtn.innerHTML = '<i class="ph ph-copy"></i> Copy';
-        }, 2000);
-      });
-    };
-    codeContainer.style.position = 'relative';
-    codeContainer.appendChild(copyBtn);
-  }
-
 /* =========================================
    KNOWLEDGE LOADER (Guides)
    "The Hub" Logic
    ========================================= */
 function loadGuide(item) {
-  document.body.setAttribute('data-theme', 'hub'); // Guides always use Hub theme
+  document.body.setAttribute('data-theme', 'hub'); 
   
   // SEO
   updatePageMeta(item.title, "A verified guide from the Kynar Knowledge Library.");
+  injectStructuredData('article', {
+    title: item.title,
+    shortDesc: item.shortDesc || "A verified guide from the Kynar Knowledge Library.",
+    date: item.date
+  });
 
   // Content
   safeSetText('guide-title', item.title);
@@ -157,13 +165,6 @@ function loadGuide(item) {
   const contentBox = document.getElementById('guide-content');
   if (contentBox) contentBox.innerHTML = item.content;
 }
-
-// Inject SEO structured data for guides
-  injectStructuredData('article', {
-    title: item.title,
-    shortDesc: item.shortDesc || "A verified guide from the Kynar Knowledge Library.",
-    date: item.date
-  });
 
 /* =========================================
    UTILITIES
@@ -187,20 +188,16 @@ function handleNotFound(type) {
 }
 
 function updatePageMeta(title, desc) {
-  // Update Tab Title
   document.title = `${title} | Kynar Universe`;
   
- // Remove any existing description meta tags to avoid duplicates
-const existingMetas = document.querySelectorAll('meta[name="description"]');
-existingMetas.forEach(meta => meta.remove());
+  const existingMetas = document.querySelectorAll('meta[name="description"]');
+  existingMetas.forEach(meta => meta.remove());
 
-// Create fresh meta description
-const metaDesc = document.createElement('meta');
-metaDesc.name = "description";
-metaDesc.content = desc;
-document.head.appendChild(metaDesc);
+  const metaDesc = document.createElement('meta');
+  metaDesc.name = "description";
+  metaDesc.content = desc;
+  document.head.appendChild(metaDesc);
   
-  // ✅ BONUS: Update Open Graph tags if they exist
   const ogTitle = document.querySelector('meta[property="og:title"]');
   if (ogTitle) ogTitle.content = title;
   
@@ -208,21 +205,14 @@ document.head.appendChild(metaDesc);
   if (ogDesc) ogDesc.content = desc;
 }
 
-// ✅ FIX: Actually save items to localStorage
 function addToLocalInventory(item) {
   try {
-    // Get existing inventory
     let inventory = localStorage.getItem('kynar_inventory');
     let items = inventory ? JSON.parse(inventory) : [];
     
-    // Check if item already exists (prevent duplicates)
     const exists = items.some(i => i.id === item.id);
-    if (exists) {
-      console.log(`[Universe] ${item.title} already in inventory.`);
-      return;
-    }
+    if (exists) return;
     
-    // Add new item with timestamp
     items.push({
       id: item.id,
       title: item.title,
@@ -231,12 +221,10 @@ function addToLocalInventory(item) {
       purchasedAt: new Date().toISOString()
     });
     
-    // Save back to localStorage
     localStorage.setItem('kynar_inventory', JSON.stringify(items));
     console.log(`[Universe] ${item.title} added to inventory.`);
     
   } catch (error) {
     console.error('[Universe] Failed to save to inventory:', error);
-    // Fail gracefully - don't block checkout
   }
 }

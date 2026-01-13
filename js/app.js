@@ -1,13 +1,16 @@
 /* KYNAR UNIVERSE CORE ENGINE (js/app.js)
    The central nervous system. Handles Atmosphere, Motion, and System Feedback.
-   Status: FINAL MASTER (Aligned with "Grand Vision" & "No Digital Filler")
+   Status: FINAL MASTER (REMIX ICON ALIGNED)
 */
 
 import { KYNAR_DATA } from './data.js';
-import { Analytics } from './analytics.js';
+import { Analytics } from './analytics.js'; 
+
+// CRITICAL: Make Analytics global so HTML files can use it (e.g. onclick="Analytics.track...")
+window.Analytics = Analytics;
 
 document.addEventListener('DOMContentLoaded', () => {
-  injectIconSystem(); // Visuals
+  injectIconSystem(); // Visuals (Fallback)
   initLoreSystem();   // Narrative
   initMotionSystem(); // Cinematic Feel
   initScrollProgress(); // Add scroll indicator
@@ -17,46 +20,37 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =========================================
-   0. ICON SYSTEM INJECTOR
-   Ensures the visual language (Phosphor Icons) is always present.
+   0. ICON SYSTEM INJECTOR (REMIX ICONS)
+   Ensures the visual language is always present.
    ========================================= */
 function injectIconSystem() {
-  if (!document.getElementById('phosphor-icons')) {
-    const script = document.createElement('script');
-    script.id = 'phosphor-icons';
-    script.src = 'https://unpkg.com/@phosphor-icons/web';
-    script.async = true;
-    document.head.appendChild(script);
-  }
+  if (document.querySelector('link[href*="remixicon"]')) return;
+  
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css';
+  document.head.appendChild(link);
 }
 
 /* =========================================
    1. THE LORE SYSTEM
    Pulls from KYNAR_DATA to inject the "Whispers" into the footer.
-   Aligned with: "A space, not a screen."
    ========================================= */
 function initLoreSystem() {
   const body = document.body;
-  
-  // LOGIC: Map specific page themes back to their parent lore category
-  // e.g., 'home-category' (Beige) uses the 'home' lore pool.
   let currentTheme = body.getAttribute('data-theme') || 'home';
   if (currentTheme === 'home-category') currentTheme = 'home';
-  if (currentTheme === 'hub') currentTheme = 'general'; // Hub uses general wisdom
+  if (currentTheme === 'hub') currentTheme = 'general';
   
   const footerLore = document.querySelector('.text-lore');
   
-  // Safety Check: Ensure the element and data exist
   if (footerLore && KYNAR_DATA && KYNAR_DATA.lore) {
     const themePhrases = KYNAR_DATA.lore[currentTheme] || [];
     const globalPhrases = KYNAR_DATA.lore.general || []; 
-    
-    // Mix specific theme lore with general universe lore for variety
     const combinedPool = [...themePhrases, ...globalPhrases];
     
     if (combinedPool.length > 0) {
       const randomPhrase = combinedPool[Math.floor(Math.random() * combinedPool.length)];
-      // Inject with quotes for that "Whisper" effect
       footerLore.textContent = `"${randomPhrase}"`;
     }
   }
@@ -64,11 +58,9 @@ function initLoreSystem() {
 
 /* =========================================
    2. THE MOTION SYSTEM
-   Handles the "Waterfall" reveal effect on page load.
-   Aligned with: "Guided World" (Gentle, not jarring).
+   Handles the "Waterfall" reveal effect.
    ========================================= */
 function initMotionSystem() {
-  // Accessibility: Respect user preference for reduced motion
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
 
@@ -78,18 +70,15 @@ function initMotionSystem() {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target); // Efficiency: Stop watching once visible
+        observer.unobserve(entry.target); 
       }
     });
   }, observerOptions);
 
-  // Targets: Cards, Text Blocks, Headers, Sections
   const animatedElements = document.querySelectorAll('.card, .text-body, section, h2, header, .animate-enter');
   
   animatedElements.forEach((el, index) => {
     el.classList.add('scroll-fade-item');
-    // Logic: Stagger delay slightly for a premium "waterfall" feel
-    // Cap it at 500ms so the user doesn't wait too long
     const delay = Math.min((index % 5) * 50, 500); 
     el.style.transitionDelay = `${delay}ms`; 
     observer.observe(el);
@@ -98,18 +87,15 @@ function initMotionSystem() {
 
 /* =========================================
    2B. SCROLL PROGRESS INDICATOR
-   Shows reading progress on long pages
    ========================================= */
 function initScrollProgress() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
 
-  // Create progress bar
   const progressBar = document.createElement('div');
   progressBar.className = 'scroll-progress';
   document.body.appendChild(progressBar);
 
-  // Update on scroll
   window.addEventListener('scroll', () => {
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight - windowHeight;
@@ -122,12 +108,11 @@ function initScrollProgress() {
 
 /* =========================================
    3. SYSTEM FEEDBACK (Toasts)
-   "Soft feedback" for user actions (Save, Copy, Theme Change).
+   REMIX ICON UPDATED
    ========================================= */
 function showToast(message, type = 'normal') {
   let container = document.querySelector('.toast-container');
   
-  // Create container if it doesn't exist yet
   if (!container) {
     container = document.createElement('div');
     container.className = 'toast-container';
@@ -137,20 +122,21 @@ function showToast(message, type = 'normal') {
   const toast = document.createElement('div');
   toast.className = 'toast animate-enter';
   
-  let icon = '<i class="ph ph-info"></i>';
+  // REMIX ICONS MAPPING
+  let icon = '<i class="ri-information-line"></i>';
   if (type === 'success') {
-    icon = '<i class="ph ph-check-circle" style="color:var(--color-success)"></i>';
+    icon = '<i class="ri-checkbox-circle-line" style="color:var(--color-success)"></i>';
   } else if (type === 'error') {
-    icon = '<i class="ph ph-warning-circle" style="color:var(--color-error)"></i>';
+    icon = '<i class="ri-error-warning-line" style="color:var(--color-error)"></i>';
   } else if (type === 'starwalker') {
-    icon = '<i class="ph ph-star-four" style="color:var(--accent-primary)"></i>';
+    icon = '<i class="ri-shining-2-line" style="color:var(--accent-primary)"></i>';
   }
   
   toast.innerHTML = `
     ${icon}
     <span>${message}</span>
     <button onclick="this.parentElement.remove()" class="btn-tertiary" style="padding: 4px 8px; margin-left: auto;">
-      <i class="ph ph-x" style="font-size: 0.9rem;"></i>
+      <i class="ri-close-line" style="font-size: 0.9rem;"></i>
     </button>
   `;
   toast.style.display = 'flex';
@@ -159,9 +145,8 @@ function showToast(message, type = 'normal') {
   
   container.appendChild(toast);
   
-  // Auto-dismiss with visual countdown
+  // Auto-dismiss
   const dismissTime = 3000;
-  let startTime = Date.now();
   
   const progressBar = document.createElement('div');
   progressBar.style.cssText = `
@@ -187,22 +172,21 @@ function showToast(message, type = 'normal') {
     setTimeout(() => toast.remove(), 300);
   }, dismissTime);
 }
+
+// Make showToast global too, just in case
+window.showToast = showToast;
+
 /* =========================================
    4. ATMOSPHERE SYSTEM (Themes)
-   Handles Light, Dark, and the Secret "Starwalker" Mode.
    ========================================= */
 function initThemeSystem() {
   const savedMode = localStorage.getItem('kynar_mode');
-  
-  // Apply saved preference immediately on load
   if (savedMode) {
     document.documentElement.setAttribute('data-mode', savedMode);
   }
 }
 
 function setTheme(mode) {
-  // mode options: 'light', 'dark', 'auto', 'starwalker'
-  
   if (mode === 'auto') {
     document.documentElement.removeAttribute('data-mode');
     localStorage.removeItem('kynar_mode');
@@ -210,8 +194,10 @@ function setTheme(mode) {
   } else {
     document.documentElement.setAttribute('data-mode', mode);
     localStorage.setItem('kynar_mode', mode);
-    Analytics.trackThemeChange(mode)
-    // Feedback Logic
+    
+    // Safely call analytics if available
+    if (typeof Analytics !== 'undefined') Analytics.trackThemeChange(mode);
+
     if (mode === 'starwalker') {
       showToast('Starwalker Mode Engaged.', 'starwalker');
     } else if (mode === 'light') {
@@ -222,27 +208,25 @@ function setTheme(mode) {
   }
 }
 
-// Expose to window so Settings Page and Header can call it
 window.setTheme = setTheme;
 
 /* =========================================
    5. SERVICE WORKER REGISTRATION
-   Enables offline functionality and caching
    ========================================= */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then(registration => {
-        console.log('[Universe] Service Worker registered:', registration.scope);
+        // console.log('[Universe] Service Worker registered');
       })
       .catch(error => {
-        console.log('[Universe] Service Worker registration failed:', error);
+        // console.log('[Universe] SW failed:', error);
       });
   });
 }
 
 /* =========================================
-   IMAGE LAZY LOADING HANDLER
+   IMAGE LAZY LOADING
    ========================================= */
 function initLazyImages() {
   const images = document.querySelectorAll('img[loading="lazy"]');
@@ -260,21 +244,18 @@ function initLazyImages() {
     
     images.forEach(img => imageObserver.observe(img));
   } else {
-    // Fallback for older browsers
     images.forEach(img => img.classList.add('loaded'));
   }
 }
 
 /* =========================================
-   IMAGE ERROR HANDLING
-   Replaces broken images with placeholder
+   IMAGE ERROR HANDLING (REMIX ICON UPDATED)
    ========================================= */
 function initImageErrorHandling() {
   document.addEventListener('error', (e) => {
     if (e.target.tagName === 'IMG') {
       e.target.style.display = 'none';
       
-      // Create placeholder
       const placeholder = document.createElement('div');
       placeholder.className = 'image-placeholder';
       placeholder.innerHTML = `
@@ -290,7 +271,7 @@ function initImageErrorHandling() {
           flex-direction: column;
           gap: 8px;
         ">
-          <i class="ph ph-image-broken" style="font-size: 2rem; opacity: 0.3;"></i>
+          <i class="ri-image-2-line" style="font-size: 2rem; opacity: 0.3;"></i>
           <span class="text-micro" style="opacity: 0.5;">Image unavailable</span>
         </div>
       `;

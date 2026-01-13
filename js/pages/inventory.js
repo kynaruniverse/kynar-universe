@@ -1,6 +1,6 @@
 /* KYNAR INVENTORY PAGE LOGIC (js/pages/inventory.js)
    Loads and displays user's purchased items from localStorage.
-   Status: PHASE 3 - Extracted from inline script
+   Status: FINAL MASTER (REMIX ICON ALIGNED)
 */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -29,7 +29,7 @@ function loadInventory() {
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <h2 class="text-h3">Your Upgrades (${items.length})</h2>
           <button onclick="window.clearInventory()" class="btn-tertiary" style="color: var(--color-error);">
-            <i class="ph ph-trash"></i> Clear All
+            <i class="ri-delete-bin-line"></i> Clear All
           </button>
         </div>
         
@@ -49,7 +49,7 @@ function loadInventory() {
                   </span>
                   <br>
                   <a href="#" class="text-micro" style="text-decoration: underline; margin-top: 4px; display: inline-block;">
-                    <i class="ph ph-download-simple"></i> Download
+                    <i class="ri-download-line"></i> Download
                   </a>
                 </div>
               </div>
@@ -66,7 +66,7 @@ function loadInventory() {
 
 // Expose to window for button onclick
 window.clearInventory = function() {
-  if (confirm('Are you sure? This will remove all items from your inventory.')) {
+  if (confirm('Are you sure? This will remove all items from your inventory?')) {
     localStorage.removeItem('kynar_inventory');
     location.reload();
   }

@@ -1,6 +1,6 @@
 /* KYNAR UNIVERSE DATA ENGINE (js/data.js)
    Source of Truth for the Digital Department Store.
-   Status: FINAL MASTER (Aligned with Grand Vision & Elevator Pitch)
+   Status: FINAL MASTER (REMIX ICONS UPDATED)
 */
 
 export const KYNAR_DATA = {
@@ -27,13 +27,11 @@ export const KYNAR_DATA = {
         "PDF Text Extractor",
         "Config.yaml for Custom Rules"
       ],
-      // Technical Specs for the "Specification Sheet"
       specs: {
         format: "Python (.py)",
         version: "v2.4 (Stable)",
         os: "Windows / macOS / Linux"
       },
-      // Code Preview for the "Tech Specs" card
       codePreview: `import os
 import shutil
 
@@ -45,8 +43,9 @@ def organize_directory():
             shutil.move(filename, DOCS_DIR)
             print(f"Moved: {filename}")`,
       
+      buyUrl: "#", // Phase 1 Placeholder
       actionBtn: "Secure Instant Download",
-      previewIcon: "ph-code",
+      previewIcon: "ri-code-s-slash-line", // REMIX ICON
       image: "assets/products/script-preview.png"
     },
     {
@@ -70,11 +69,11 @@ def organize_directory():
         version: "2025 Edition",
         license: "Commercial Use"
       },
+      buyUrl: "#",
       actionBtn: "Download Template",
-      previewIcon: "ph-chart-bar",
+      previewIcon: "ri-bar-chart-box-line", // REMIX ICON
       image: "assets/products/finance-sheet.png"
     },
-    
     {
       id: "creative-assets",
       category: "tools",
@@ -96,8 +95,9 @@ def organize_directory():
         size: "1.2 GB",
         license: "Commercial Use"
       },
+      buyUrl: "#",
       actionBtn: "Download Assets",
-      previewIcon: "ph-paint-brush-broad", // This was referenced in your HTML icon
+      previewIcon: "ri-brush-line", // REMIX ICON
       image: "assets/products/creative.png"
     },
     
@@ -124,8 +124,9 @@ def organize_directory():
         compatibility: "Mobile & Desktop",
         license: "Personal Use"
       },
+      buyUrl: "#",
       actionBtn: "Get Dashboard",
-      previewIcon: "ph-currency-dollar",
+      previewIcon: "ri-money-dollar-circle-line", // REMIX ICON
       image: "assets/products/finance-tracker.png"
     },
     {
@@ -149,8 +150,9 @@ def organize_directory():
         pages: "120 Pages",
         license: "Personal Use"
       },
+      buyUrl: "#",
       actionBtn: "Download Journal",
-      previewIcon: "ph-sun",
+      previewIcon: "ri-sun-line", // REMIX ICON
       image: "assets/products/journal.png"
     },
 
@@ -176,8 +178,9 @@ def organize_directory():
         ageGroup: "4-7 Years",
         license: "Household Use"
       },
+      buyUrl: "#",
       actionBtn: "Download Bundle",
-      previewIcon: "ph-smiley-sticker",
+      previewIcon: "ri-emotion-happy-line", // REMIX ICON
       image: "assets/products/kids-pack.png"
     },
     {
@@ -201,8 +204,9 @@ def organize_directory():
         version: "v1.0",
         license: "Household Use"
       },
+      buyUrl: "#",
       actionBtn: "Get Organized",
-      previewIcon: "ph-house",
+      previewIcon: "ri-home-4-line", // REMIX ICON
       image: "assets/products/home-org.png"
     }
   ],
