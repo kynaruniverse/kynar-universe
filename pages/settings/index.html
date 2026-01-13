@@ -128,33 +128,37 @@
 
   </main>
 
-  <script type="module" src="../../js/app.js"></script>
-  <script type="module" src="../../js/header.js"></script>
-  <script type="module" src="../../js/search.js"></script>
-  
-  <script>
-    // Simple bridge to the main theme engine in app.js
-    function setTheme(mode) {
+  <script type="module">
+  // Bridge to the main theme engine in app.js
+    window.setThemeFromSettings = function(mode) {
       if (window.setTheme) {
         window.setTheme(mode);
-        // Visual feedback
-        const name = mode.charAt(0).toUpperCase() + mode.slice(1);
-        const msg = mode === 'starwalker' ? 'Starwalker Mode Engaged.' : `${name} atmosphere applied.`;
-        
-        // Check if toast exists (it should be in app.js)
-        if (typeof showToast === 'function') {
-           showToast(msg, 'success');
+      
+        const modeNames = {
+          auto: 'System',
+          light: 'Daylight',
+          dark: 'Midnight',
+          starwalker: 'Starwalker Mode'
+        };
+      
+        const msg = modeNames[mode] + ' atmosphere applied.';
+        const toastType = mode === 'starwalker' ? 'starwalker' : 'success';
+      
+       if (typeof window.showToast === 'function') {
+         window.showToast(msg, toastType);
         } else {
-           console.log(msg);
+          console.log(msg);
         }
       }
-    }
+    };
+  </script>
+  
   <script type="module" src="../../js/app.js"></script>
   <script type="module" src="../../js/header.js"></script>
   <script type="module" src="../../js/search.js"></script>
   <script type="module" src="../../js/components/footer.js"></script>
   <script type="module" src="../../js/components/breadcrumb.js"></script>
   <script type="module" src="../../js/pages/settings.js"></script>
-</body>
+  
 </body>
 </html>

@@ -4,6 +4,7 @@
 */
 
 import { getProductById, getGuideById } from './data.js';
+import { injectStructuredData } from './components/structured-data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
@@ -58,6 +59,14 @@ function loadProduct(item) {
   safeSetText('breadcrumb-category', capitalize(item.category));
   safeSetText('breadcrumb-title', item.title);
   
+// Inject SEO structured data
+  injectStructuredData('product', {
+    title: item.title,
+    description: item.description || item.shortDesc,
+    price: item.price,
+    category: item.category
+  });  
+  
   const catLink = document.getElementById('link-category');
   if (catLink) catLink.href = `../${item.category}/index.html`;
   
@@ -65,6 +74,8 @@ function loadProduct(item) {
   const tag = document.getElementById('product-tag');
   if (tag) {
     tag.setAttribute('data-variant', item.category);
+  } else {
+    console.warn('[Loader] Product tag element not found');
   }
   
   // 6. ACTION LOGIC
@@ -106,6 +117,27 @@ function loadProduct(item) {
   }
 }
 
+if (item.codePreview && codeContainer && codeSnippet) {
+    codeContainer.style.display = 'flex';
+    codeSnippet.textContent = item.codePreview;
+    
+    // ADD COPY BUTTON
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'btn-tertiary';
+    copyBtn.innerHTML = '<i class="ph ph-copy"></i> Copy';
+    copyBtn.style.cssText = 'position: absolute; top: 12px; right: 12px; padding: 6px 12px; font-size: 0.85rem;';
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(item.codePreview).then(() => {
+        copyBtn.innerHTML = '<i class="ph ph-check"></i> Copied!';
+        setTimeout(() => {
+          copyBtn.innerHTML = '<i class="ph ph-copy"></i> Copy';
+        }, 2000);
+      });
+    };
+    codeContainer.style.position = 'relative';
+    codeContainer.appendChild(copyBtn);
+  }
+
 /* =========================================
    KNOWLEDGE LOADER (Guides)
    "The Hub" Logic
@@ -125,6 +157,13 @@ function loadGuide(item) {
   const contentBox = document.getElementById('guide-content');
   if (contentBox) contentBox.innerHTML = item.content;
 }
+
+// Inject SEO structured data for guides
+  injectStructuredData('article', {
+    title: item.title,
+    shortDesc: item.shortDesc || "A verified guide from the Kynar Knowledge Library.",
+    date: item.date
+  });
 
 /* =========================================
    UTILITIES
@@ -151,14 +190,15 @@ function updatePageMeta(title, desc) {
   // Update Tab Title
   document.title = `${title} | Kynar Universe`;
   
-  // ✅ FIX: Check if meta description exists before creating
-  let metaDesc = document.querySelector('meta[name="description"]');
-  if (!metaDesc) {
-    metaDesc = document.createElement('meta');
-    metaDesc.name = "description";
-    document.head.appendChild(metaDesc);
-  }
-  metaDesc.content = desc;
+ // Remove any existing description meta tags to avoid duplicates
+const existingMetas = document.querySelectorAll('meta[name="description"]');
+existingMetas.forEach(meta => meta.remove());
+
+// Create fresh meta description
+const metaDesc = document.createElement('meta');
+metaDesc.name = "description";
+metaDesc.content = desc;
+document.head.appendChild(metaDesc);
   
   // ✅ BONUS: Update Open Graph tags if they exist
   const ogTitle = document.querySelector('meta[property="og:title"]');
