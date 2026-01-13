@@ -38,65 +38,60 @@ document.addEventListener('DOMContentLoaded', () => {
 function loadProduct(item) {
   
   // 1. ATMOSPHERE CONTROL
-  // Sets the visual theme based on the Department (Tools=Blue, Home=Gold, Living=Green)
   const theme = item.category === 'home' ? 'home-category' : item.category;
   document.body.setAttribute('data-theme', theme);
-
-  // 2. SEO INJECTION (Mission: "Global Standard")
-  // Updates the browser tab and meta description dynamically
+  
+  // 2. SEO INJECTION
   updatePageMeta(item.title, item.shortDesc);
-
-  // 3. TEXT INJECTION (The Specification Sheet)
+  
+  // 3. TEXT INJECTION
   safeSetText('product-title', item.title);
   safeSetText('product-tag', item.tag);
   safeSetText('product-short-desc', item.shortDesc);
   safeSetText('product-desc', item.description);
-  safeSetText('product-price', `£${item.price.toFixed(2)}`); // Grand Vision: Standardized Currency
+  safeSetText('product-price', `£${item.price.toFixed(2)}`);
   
-  // 4. LORE INJECTION ("Quiet Mythic Depth")
-  safeSetText('product-lore', `"${item.lore}"`); 
-
+  // 4. LORE INJECTION
+  safeSetText('product-lore', `"${item.lore}"`);
+  
   // 5. NAVIGATION ALIGNMENT
   safeSetText('breadcrumb-category', capitalize(item.category));
   safeSetText('breadcrumb-title', item.title);
   
   const catLink = document.getElementById('link-category');
   if (catLink) catLink.href = `../${item.category}/index.html`;
-
+  
+  // ✅ FIX: Added null check before setting attribute
   const tag = document.getElementById('product-tag');
-  if (tag) tag.setAttribute('data-variant', item.category);
-
-  // 6. ACTION LOGIC ("Elevator Pitch": Instant Download)
+  if (tag) {
+    tag.setAttribute('data-variant', item.category);
+  }
+  
+  // 6. ACTION LOGIC
   const buyBtn = document.getElementById('btn-action');
   if (buyBtn) {
     buyBtn.textContent = item.actionBtn || "Secure Instant Download";
-    
-    // SIMULATION: In a real app, this connects to Stripe.
-    // Here, it fulfills the promise of "Instant Download" by going to Success page.
     buyBtn.onclick = () => {
-      // Optional: Save to local storage to simulate "Inventory" population
-      addToLocalInventory(item.title);
+      addToLocalInventory(item);
       window.location.href = '../checkout/success.html';
     };
   }
-
+  
   // 7. VISUALS
   const preview = document.getElementById('product-preview');
   if (preview && item.previewIcon) {
-    // Uses the theme color for the icon to ensure consistency
     preview.innerHTML = `<i class="ph ${item.previewIcon}" style="font-size: 5rem; color: var(--accent-primary); opacity: 0.9;"></i>`;
   }
-
-  // 8. ASSET LIST (What's Inside)
+  
+  // 8. ASSET LIST
   const featureList = document.getElementById('product-features');
   if (featureList && item.features) {
-    featureList.innerHTML = item.features.map(f => 
+    featureList.innerHTML = item.features.map(f =>
       `<li style="display: flex; gap: 8px; align-items: flex-start;"><i class="ph ph-check" style="color: var(--accent-primary); margin-top: 4px;"></i><span>${f}</span></li>`
     ).join('');
   }
-
-  // 9. TECHNICAL SPECIFICATIONS ("Vetted for Usability")
-  // Handles Code Previews for Developers
+  
+  // 9. TECHNICAL SPECIFICATIONS
   const codeContainer = document.getElementById('code-preview-container');
   const codeSnippet = document.getElementById('code-snippet');
   
@@ -104,8 +99,7 @@ function loadProduct(item) {
     codeContainer.style.display = 'flex';
     codeSnippet.textContent = item.codePreview;
   }
-
-  // Handles File Specs (Format, Version)
+  
   if (item.specs) {
     safeSetText('spec-format', item.specs.format || "ZIP / PDF");
     safeSetText('spec-version', item.specs.version || "1.0.0");
@@ -157,7 +151,7 @@ function updatePageMeta(title, desc) {
   // Update Tab Title
   document.title = `${title} | Kynar Universe`;
   
-  // Update Description for SEO
+  // ✅ FIX: Check if meta description exists before creating
   let metaDesc = document.querySelector('meta[name="description"]');
   if (!metaDesc) {
     metaDesc = document.createElement('meta');
@@ -165,10 +159,44 @@ function updatePageMeta(title, desc) {
     document.head.appendChild(metaDesc);
   }
   metaDesc.content = desc;
+  
+  // ✅ BONUS: Update Open Graph tags if they exist
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.content = title;
+  
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.content = desc;
 }
 
-// Simulates adding item to the "Inventory" (Local Storage)
-function addToLocalInventory(itemName) {
-  // This is a simple mock for the "Inventory" concept
-  console.log(`[Universe] ${itemName} added to inventory.`);
+// ✅ FIX: Actually save items to localStorage
+function addToLocalInventory(item) {
+  try {
+    // Get existing inventory
+    let inventory = localStorage.getItem('kynar_inventory');
+    let items = inventory ? JSON.parse(inventory) : [];
+    
+    // Check if item already exists (prevent duplicates)
+    const exists = items.some(i => i.id === item.id);
+    if (exists) {
+      console.log(`[Universe] ${item.title} already in inventory.`);
+      return;
+    }
+    
+    // Add new item with timestamp
+    items.push({
+      id: item.id,
+      title: item.title,
+      category: item.category,
+      price: item.price,
+      purchasedAt: new Date().toISOString()
+    });
+    
+    // Save back to localStorage
+    localStorage.setItem('kynar_inventory', JSON.stringify(items));
+    console.log(`[Universe] ${item.title} added to inventory.`);
+    
+  } catch (error) {
+    console.error('[Universe] Failed to save to inventory:', error);
+    // Fail gracefully - don't block checkout
+  }
 }

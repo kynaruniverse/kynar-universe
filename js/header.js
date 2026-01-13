@@ -23,7 +23,7 @@ function injectHeader() {
     <div class="container header-inner">
       
       <a href="${homeLink}" class="header-logo" aria-label="Kynar Universe Home">
-        <img src="${rootPath}assets/logo.png" alt="Kynar Logo" style="height: 24px; width: auto;">
+        <img src="${rootPath}assets/logo.svg" alt="Kynar Logo" style="height: 24px; width: auto;">
         <span style="font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em;">Kynar Universe</span>
       </a>
 

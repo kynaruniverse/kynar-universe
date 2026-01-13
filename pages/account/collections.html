@@ -2,20 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
+               style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
+               font-src 'self' https://fonts.gstatic.com; 
+               img-src 'self' data: https:; 
+               connect-src 'self';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <title>My Inventory | Kynar Universe</title>
   
   <meta name="description" content="Your centralized hub for digital upgrades. Access your production-ready scripts, planners, and verified tools here.">
   
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3" integrity="sha384-hiKKzPWrwThyepBYcEjt4rzb2Xw5k8w1YWCgv0v1lh8FwLKwQAs1Z4yPmBifZZl8" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
@@ -84,5 +93,73 @@
   <script type="module" src="../../js/header.js"></script>
   <script type="module" src="../../js/search.js"></script>
 
+  <!-- ✅ NEW: Load inventory on page load -->
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      loadInventory();
+    });
+
+    function loadInventory() {
+      try {
+        const inventory = localStorage.getItem('kynar_inventory');
+        const items = inventory ? JSON.parse(inventory) : [];
+        
+        if (items.length === 0) {
+          // Keep the empty state that's already in HTML
+          return;
+        }
+        
+        // Replace empty state with actual inventory
+        const container = document.querySelector('section.card');
+        if (!container) return;
+        
+        container.innerHTML = `
+          <div class="stack-md">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h2 class="text-h3">Your Upgrades (${items.length})</h2>
+              <button onclick="clearInventory()" class="btn-tertiary" style="color: var(--color-error);">
+                <i class="ph ph-trash"></i> Clear All
+              </button>
+            </div>
+            
+            <div style="display: grid; gap: var(--space-md);">
+              ${items.map(item => `
+                <div class="card" style="padding: var(--space-md);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="stack-xs">
+                      <h3 class="text-body" style="font-weight: 600;">${item.title}</h3>
+                      <span class="text-micro" style="opacity: 0.6;">
+                        ${item.category.toUpperCase()} • Purchased ${new Date(item.purchasedAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div style="text-align: right;">
+                      <span class="text-body" style="font-weight: 600; color: var(--accent-primary);">
+                        £${item.price.toFixed(2)}
+                      </span>
+                      <br>
+                      <a href="#" class="text-micro" style="text-decoration: underline; margin-top: 4px; display: inline-block;">
+                        <i class="ph ph-download-simple"></i> Download
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        
+      } catch (error) {
+        console.error('[Universe] Failed to load inventory:', error);
+      }
+    }
+
+    // Expose to window for button onclick
+    window.clearInventory = function() {
+      if (confirm('Are you sure? This will remove all items from your inventory.')) {
+        localStorage.removeItem('kynar_inventory');
+        location.reload();
+      }
+    };
+  </script>
 </body>
 </html>
