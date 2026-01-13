@@ -206,9 +206,9 @@ function resolvePath(item) {
   }
 
   if (item.type === 'product') {
-    return `${prefix}product/index.html?id=${item.id}`;
+    return `${prefix}product.html?id=${item.id}`;
   } else {
-    return `${prefix}guide/index.html?guide=${item.id}`; 
+    return `${prefix}guide.html?guide=${item.id}`; 
   }
 }
 

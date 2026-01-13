@@ -106,20 +106,6 @@ function loadProduct(item) {
   }
 }
 
-function loadProduct(item) {
-  // ... all existing code ...
-  
-  if (item.specs) {
-    safeSetText('spec-format', item.specs.format || "ZIP / PDF");
-    safeSetText('spec-version', item.specs.version || "1.0.0");
-  }
-  
-  // ✅ ADD THIS: Inject structured data for SEO
-  import('./components/structured-data.js').then(module => {
-    module.injectStructuredData('product', item);
-  });
-}
-
 /* =========================================
    KNOWLEDGE LOADER (Guides)
    "The Hub" Logic
@@ -138,10 +124,6 @@ function loadGuide(item) {
   
   const contentBox = document.getElementById('guide-content');
   if (contentBox) contentBox.innerHTML = item.content;
-  // ✅ ADD THIS: Inject structured data for SEO
-  import('./components/structured-data.js').then(module => {
-    module.injectStructuredData('article', item);
-  });
 }
 
 /* =========================================
