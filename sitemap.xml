@@ -2,10 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.kynaruniverse.co.uk/</loc>
-    <lastmod>2023-10-27</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <priority>1.00</priority>
   </url>
   
+  <!-- Department Pages -->
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/tools/</loc>
     <priority>0.80</priority>
@@ -18,9 +19,44 @@
     <loc>https://www.kynaruniverse.co.uk/pages/home/</loc>
     <priority>0.80</priority>
   </url>
-
+  
+  <!-- Hub & Support -->
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/pages/hub/</loc>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/pages/support/</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/pages/about/</loc>
+    <priority>0.60</priority>
+  </url>
+  
+  <!-- Template Pages (dynamic content - lower priority) -->
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/pages/product/</loc>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/pages/guide/</loc>
+    <priority>0.50</priority>
+  </url>
+  
+  <!-- Account & Settings -->
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/account/</loc>
     <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/pages/settings/</loc>
+    <priority>0.40</priority>
+  </url>
+  
+  <!-- Legal -->
+  <url>
+    <loc>https://www.kynaruniverse.co.uk/pages/legal/privacy.html</loc>
+    <priority>0.30</priority>
   </url>
 </urlset>
