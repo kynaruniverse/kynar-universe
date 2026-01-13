@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
   <meta http-equiv="Content-Security-Policy" 
       content="default-src 'self'; 
                script-src 'self' https://unpkg.com https://cdn.jsdelivr.net; 
@@ -42,12 +46,16 @@
   <link rel="stylesheet" href="css/components.css">
 
   <style>
+    html, body {
+      overscroll-behavior: none !important;
+      overscroll-behavior-y: none !important;
+      background-color: #0a0a0a; /* Prevents white flash */
+    }
     .hero-logo-glow {
       filter: drop-shadow(0 0 25px var(--accent-glow)); 
       animation: floatLogo 6s ease-in-out infinite;
       image-rendering: -webkit-optimize-contrast;
     }
-
     @keyframes floatLogo {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
