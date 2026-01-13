@@ -1,123 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
                script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
                style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
                font-src 'self' https://fonts.gstatic.com; 
                img-src 'self' data: https:; 
-               connect-src 'self';">
+               connect-src 'self' https://*.supabase.co;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+  
   <title>The Inventory | Kynar Universe</title>
   
-  <meta name="description" content="Access your personal inventory of digital upgrades. The centralized hub for your scripts, planners, and verified tools.">
+  <meta name="description" content="Access your personal inventory of digital upgrades.">
   
   <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3" crossorigin="anonymous"></script>
   
-  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3" integrity="sha384-hiKKzPWrwThyepBYcEjt4rzb2Xw5k8w1YWCgv0v1lh8FwLKwQAs1Z4yPmBifZZl8" crossorigin="anonymous"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
 </head>
 
 <body data-theme="accounts">
-
+  
   <a href="#main-content" class="skip-link">Skip to content</a>
-
-  <main id="main-content" class="container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: var(--space-xl); padding-bottom: var(--space-xl);">
-    <div id="breadcrumb-nav"></div>
+  
+  <main id="main-content" class="container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: var(--space-xl) 0;">
+    
     <nav style="position: absolute; top: var(--space-md); left: var(--space-md); z-index: 10;">
       <a href="../../index.html" class="btn-tertiary">← Return</a>
     </nav>
-
+    
     <div class="card stack-lg animate-enter" style="max-width: 400px; margin: 0 auto; width: 100%; border-top: 4px solid var(--pal-account-blue);">
       
       <header class="stack-sm" style="text-align: center;">
         <span class="text-micro" style="color: var(--pal-account-blue);">The Inventory</span>
-        <h1 class="text-h2">Access Your Upgrades</h1>
-        <p class="text-body" style="font-size: 0.95rem;">
-          Enter your details to manage your scripts, planners, and tools.
+        <h1 class="text-h2" id="form-title">Access Your Upgrades</h1>
+        <p class="text-body" style="font-size: 0.95rem;" id="form-desc">
+          Enter your details to unlock your personal inventory.
         </p>
       </header>
-
-      <form class="stack-md" onsubmit="return validateLogin(event);">
-
+      
+      <form id="auth-form" class="stack-md">
         
         <div class="form-group">
           <label for="email" class="text-micro" style="display: block; margin-bottom: 8px;">Email Address</label>
           <div style="position: relative;">
-            <input type="email" id="email" class="input" placeholder="traveler@example.com" style="padding-left: 44px;" aria-label="Email Address">
+            <input type="email" id="email" class="input" placeholder="traveler@example.com" style="padding-left: 44px;" required>
             <i class="ph ph-envelope-simple" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;"></i>
           </div>
         </div>
-
+        
         <div class="form-group">
           <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
             <label for="password" class="text-micro">Password</label>
-            <a href="#" class="text-micro" style="text-transform: none; opacity: 0.6;">Forgot?</a>
+            <button type="button" id="toggle-mode-btn" class="text-micro btn-tertiary" style="padding: 0; background: none; color: var(--pal-account-blue);">
+              Need an account?
+            </button>
           </div>
           <div style="position: relative;">
-            <input type="password" id="password" class="input" placeholder="••••••••" style="padding-left: 44px;" aria-label="Password">
+            <input type="password" id="password" class="input" placeholder="••••••••" style="padding-left: 44px;" required minlength="6">
             <i class="ph ph-lock-key" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;"></i>
           </div>
         </div>
-
+        
+        <div id="auth-message" class="text-micro" style="color: var(--color-error); text-align: center; min-height: 1.2em;"></div>
+        
         <div class="stack-sm" style="margin-top: var(--space-sm);">
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Open Inventory</button>
+          <button type="submit" id="submit-btn" class="btn-primary" style="width: 100%; justify-content: center;">
+            <i class="ph ph-sign-in"></i> <span id="btn-text">Open Inventory</span>
+          </button>
         </div>
-
+        
       </form>
-
+      
       <div style="text-align: center; border-top: 1px solid var(--border-subtle); padding-top: var(--space-md);">
         <p class="text-micro" style="opacity: 0.5; margin-bottom: var(--space-sm);">New to the Universe?</p>
         <div style="display: flex; gap: var(--space-sm); justify-content: center;">
-           <a href="../../index.html#departments" class="btn-tertiary">Browse Departments</a>
-           <span style="opacity: 0.3;">|</span>
-           <a href="collections.html" class="btn-tertiary">View Demo</a>
+          <a href="../../index.html#departments" class="btn-tertiary">Browse Departments</a>
         </div>
       </div>
-
+      
     </div>
-
+    
   </main>
-
+  
   <script type="module" src="../../js/app.js"></script>
-  <script type="module" src="../../js/footer.js"></script>
-  <script type="module" src="../../js/breadcrumb.js"></script>
+  
   <script>
-    function validateLogin(event) {
-      event.preventDefault();
+    // 1. CONFIGURE YOUR SUPABASE KEYS HERE
+    const SUPABASE_URL = 'https://wtmshxqojvafphokscze.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0bXNoeHFvanZhZnBob2tzY3plIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMjAzOTIsImV4cCI6MjA4Mzg5NjM5Mn0.278Q8WU3AZM6OmFLdCpQXB2zvV4fgJfMCB0bsYre1X0';
     
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+    // Initialize Supabase
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
-      // Basic validation
-      if (!email || !password) {
-        alert('Please fill in all fields');
-        return false;
+    // State Variables
+    let isLoginMode = true;
+    const form = document.getElementById('auth-form');
+    const emailInput = document.getElementById('email');
+    const passInput = document.getElementById('password');
+    const messageBox = document.getElementById('auth-message');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const title = document.getElementById('form-title');
+    const toggleBtn = document.getElementById('toggle-mode-btn');
+    
+    // 2. CHECK IF ALREADY LOGGED IN
+    async function checkSession() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        window.location.href = 'collections.html'; // Redirect if valid session
       }
+    }
+    checkSession();
     
-      if (!email.includes('@')) {
-        alert('Please enter a valid email address');
-        return false;
+    // 3. TOGGLE SIGN UP / LOGIN
+    toggleBtn.addEventListener('click', () => {
+      isLoginMode = !isLoginMode;
+      if (isLoginMode) {
+        title.innerText = 'Access Your Upgrades';
+        btnText.innerText = 'Open Inventory';
+        toggleBtn.innerText = 'Need an account?';
+        messageBox.innerText = '';
+      } else {
+        title.innerText = 'Join the Universe';
+        btnText.innerText = 'Create Account';
+        toggleBtn.innerText = 'Already have an account?';
+        messageBox.innerText = '';
       }
+    });
     
-      // If validation passes, redirect
-      window.location.href = 'collections.html';
-      return true;
+    // 4. HANDLE SUBMIT
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      messageBox.innerText = '';
+      
+      const email = emailInput.value;
+      const password = passInput.value;
+      
+      try {
+        if (isLoginMode) {
+          // LOGIN LOGIC
+          const { data, error } = await sb.auth.signInWithPassword({
+            email: email,
+            password: password,
+          });
+          if (error) throw error;
+          
+          // Success
+          window.location.href = 'collections.html';
+          
+        } else {
+          // SIGN UP LOGIC
+          const { data, error } = await sb.auth.signUp({
+            email: email,
+            password: password,
+          });
+          if (error) throw error;
+          
+          // Check if email confirmation is required (Supabase default)
+          if (data.user && !data.session) {
+            alert('Confirmation email sent! Please check your inbox.');
+            isLoginMode = true; // Switch back to login
+            toggleBtn.click(); // Reset UI
+          } else {
+            window.location.href = 'collections.html';
+          }
+        }
+      } catch (error) {
+        messageBox.style.color = 'var(--color-error)';
+        messageBox.innerText = error.message;
+      } finally {
+        setLoading(false);
+      }
+    });
+    
+    function setLoading(isLoading) {
+      if (isLoading) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
+        btnText.innerText = 'Processing...';
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        btnText.innerText = isLoginMode ? 'Open Inventory' : 'Create Account';
+      }
     }
   </script>
-  
 </body>
+
 </html>
