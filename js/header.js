@@ -1,6 +1,6 @@
 /* KYNAR HEADER ENGINE (js/header.js)
    Injects the Glass Navigation Bar and handles Atmosphere Toggling.
-   Status: FINAL MASTER (REMIX ICON ENGINE)
+   Status: FINAL MASTER (REMIX ICON ENGINE + PHYSICS ENFORCER)
 */
 
 /* KYNAR AUTO-LOADER
@@ -8,13 +8,21 @@
    No JS execution required for icons to appear.
 */
 (function loadIcons() {
-  // Check if Remix is already loaded to prevent duplicates
   if (document.querySelector('link[href*="remixicon"]')) return;
-
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = 'https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css';
   document.head.appendChild(link);
+})();
+
+/* PHYSICS ENFORCER (The "Blue Bar" Killer)
+   Forces the browser to stop overscroll glowing via JS.
+   This runs on every page automatically.
+*/
+(function enforcePhysics() {
+  document.documentElement.style.overscrollBehavior = 'none';
+  document.body.style.overscrollBehavior = 'none';
+  document.body.style.minHeight = '100vh'; // Ensures body fills screen
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -80,11 +88,11 @@ function updateThemeIcon() {
   icon.className = ''; 
 
   if (current === 'light') {
-    icon.className = 'ri-moon-line'; // Moon (Click to go Dark)
+    icon.className = 'ri-moon-line'; 
   } else if (current === 'dark') {
-    icon.className = 'ri-sun-line';  // Sun (Click to go Light)
+    icon.className = 'ri-sun-line';  
   } else if (current === 'starwalker') {
-    icon.className = 'ri-shining-2-line'; // The "Starwalker" Star
+    icon.className = 'ri-shining-2-line'; 
   } else {
     icon.className = 'ri-sun-line';
   }
@@ -100,29 +108,22 @@ function toggleTheme() {
   } else if (current === 'light') {
     next = 'dark';
   } else if (current === 'starwalker') {
-    // If in Secret Mode, exit back to standard Dark Mode
     next = 'dark';
   }
   
-  window.setTheme(next); // Uses the main app.js engine
+  window.setTheme(next); 
   updateThemeIcon();
 }
 
 /* HELPER: Smart Path Resolution */
 function resolveRootPath() {
   const path = window.location.pathname;
-  
-  // 1. Root
   if (!path.includes('/pages/')) {
     return './'; 
   }
-  
-  // 2. Deep Category
   const parts = path.split('/pages/')[1];
   if (parts && parts.includes('/')) {
     return '../../';
   }
-  
-  // 3. Shallow Page
   return '../';
 }
