@@ -2,6 +2,21 @@
    Injects the Glass Navigation Bar and handles Atmosphere Toggling.
    Status: FINAL MASTER (Aligned with "Inventory" & "Starwalker" Logic)
 */
+/* KYNAR AUTO-LOADER
+   Injects the icon library automatically so you don't have to edit 16 HTML files.
+*/
+(function loadIcons() {
+  if (document.querySelector('script[src*="phosphor-icons"]')) return; // Already exists? Skip.
+
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/@phosphor-icons/web@2.0.3';
+  script.crossOrigin = 'anonymous';
+  script.onload = () => {
+    // Force refresh icons once loaded in case the header rendered first
+    if (window.PhosphorIcons) window.PhosphorIcons.replace();
+  };
+  document.head.appendChild(script);
+})();
 
 document.addEventListener('DOMContentLoaded', () => {
   injectHeader();
