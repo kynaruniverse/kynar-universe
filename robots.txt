@@ -1,38 +1,50 @@
-# Kynar Universe - Crawler Instructions
-# Updated: 2026-01-14
+# KYNAR UNIVERSE ROBOTS (robots.txt)
+# Controls where search engines are allowed to go.
+# Status: FINAL MASTER
 
 User-agent: *
 Allow: /
 
-# Prevent crawling of user-specific pages
+# 1. Block User-Specific Areas
 Disallow: /pages/account/
 Disallow: /pages/settings/
 Disallow: /pages/checkout/
 Disallow: /pages/onboarding/
 
-# Prevent crawling of system files
+# 2. Block System/Error Pages from Search Results
+Disallow: /404.html
+Disallow: /pages/checkout/success.html
 Disallow: /sw.js
+
+# 3. Block Data Files (Safety)
+# Note: Ensure your manifest is named 'site.webmanifest' not '.json'
 Disallow: /*.json$
 
-# Allow crawling of assets for image search
+# 4. Allow Assets for Image Search
 Allow: /assets/*.jpg
 Allow: /assets/*.png
 Allow: /assets/*.svg
+Allow: /assets/*.webp
 
-# Crawl delay (be nice to servers)
-Crawl-delay: 1
-
-# Sitemap location
+# 5. Sitemap Location
 Sitemap: https://www.kynaruniverse.co.uk/sitemap.xml
 
-# Special instructions for specific bots
+# --- BOT SPECIFIC RULES ---
+
+# Google (General)
 User-agent: Googlebot
 Allow: /
 
+# Google (Images)
 User-agent: Googlebot-Image
 Allow: /assets/
 
-# Block AI scrapers (optional - your choice)
+# Bing / Yahoo (Politeness)
+User-agent: Bingbot
+Crawl-delay: 1
+
+# --- AI SCRAPER BLOCKING (Optional) ---
+# Prevents your content from being used to train generic AI models
 User-agent: GPTBot
 Disallow: /
 
@@ -40,4 +52,13 @@ User-agent: ChatGPT-User
 Disallow: /
 
 User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: FacebookBot
 Disallow: /

@@ -1,21 +1,20 @@
 /* KYNAR HEADER ENGINE (js/header.js)
    Injects the Glass Navigation Bar and handles Atmosphere Toggling.
-   Status: FINAL MASTER (Aligned with "Inventory" & "Starwalker" Logic)
+   Status: FINAL MASTER (REMIX ICON ENGINE)
 */
+
 /* KYNAR AUTO-LOADER
-   Injects the icon library automatically so you don't have to edit 16 HTML files.
+   Injects the REMIX ICON library automatically.
+   No JS execution required for icons to appear.
 */
 (function loadIcons() {
-  if (document.querySelector('script[src*="phosphor-icons"]')) return; // Already exists? Skip.
+  // Check if Remix is already loaded to prevent duplicates
+  if (document.querySelector('link[href*="remixicon"]')) return;
 
-  const script = document.createElement('script');
-  script.src = 'https://unpkg.com/@phosphor-icons/web@2.0.3';
-  script.crossOrigin = 'anonymous';
-  script.onload = () => {
-    // Force refresh icons once loaded in case the header rendered first
-    if (window.PhosphorIcons) window.PhosphorIcons.replace();
-  };
-  document.head.appendChild(script);
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css';
+  document.head.appendChild(link);
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,15 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function injectHeader() {
   // 1. Resolve Paths (Smart Navigation)
   const rootPath = resolveRootPath();
-  const accountPath = `${rootPath}pages/account/index.html`; // Points to "The Inventory"
+  const accountPath = `${rootPath}pages/account/index.html`; 
   const homeLink = `${rootPath}index.html`;
 
   // 2. Create the Header Element
   const header = document.createElement('header');
   header.className = 'glass-header animate-enter';
   
-  // 3. The Clean HTML
-  // Uses .header-inner for layout and .header-btn for the 44px tactile targets
+  // 3. The Clean HTML (REMIX ICONS)
   header.innerHTML = `
     <div class="container header-inner">
       
@@ -45,15 +43,15 @@ function injectHeader() {
       <div class="header-actions">
         
         <button onclick="toggleSearch()" class="header-btn" aria-label="Search Universe">
-          <i class="ph ph-magnifying-glass"></i>
+          <i class="ri-search-2-line"></i>
         </button>
         
         <button id="theme-toggle" class="header-btn" aria-label="Toggle Atmosphere">
-          <i class="ph ph-moon" id="theme-icon"></i>
+          <i class="ri-moon-line" id="theme-icon"></i>
         </button>
 
         <a href="${accountPath}" class="header-btn" aria-label="Open Inventory">
-          <i class="ph ph-user"></i>
+          <i class="ri-user-3-line"></i>
         </a>
 
       </div>
@@ -61,20 +59,38 @@ function injectHeader() {
     </div>
   `;
 
-  // 4. Inject at the top of the body
+  // 4. Inject
   document.body.insertBefore(header, document.body.firstChild);
 
   // 5. Attach Logic
   document.getElementById('theme-toggle').onclick = toggleTheme;
   
-  // 6. Initialize State
+  // 6. Initialize Icon State
   updateThemeIcon();
 }
 
-/* HELPER: Toggle Atmosphere
-   Cycles: Light <-> Dark.
-   If user is in "Starwalker" (Secret) mode, clicking this returns them to reality (Dark).
-*/
+/* HELPER: Update Icon State (REMIX VERSION) */
+function updateThemeIcon() {
+  const icon = document.getElementById('theme-icon');
+  if (!icon) return;
+
+  const current = document.documentElement.getAttribute('data-mode') || 'dark';
+  
+  // Reset base class
+  icon.className = ''; 
+
+  if (current === 'light') {
+    icon.className = 'ri-moon-line'; // Moon (Click to go Dark)
+  } else if (current === 'dark') {
+    icon.className = 'ri-sun-line';  // Sun (Click to go Light)
+  } else if (current === 'starwalker') {
+    icon.className = 'ri-shining-2-line'; // The "Starwalker" Star
+  } else {
+    icon.className = 'ri-sun-line';
+  }
+}
+
+/* HELPER: Toggle Atmosphere */
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-mode') || 'dark';
   let next = 'dark';
@@ -92,47 +108,21 @@ function toggleTheme() {
   updateThemeIcon();
 }
 
-/* HELPER: Update Icon State
-   Handles Sun, Moon, and the Secret Starwalker Icon.
-*/
-function updateThemeIcon() {
-  const icon = document.getElementById('theme-icon');
-  if (!icon) return;
-
-  const current = document.documentElement.getAttribute('data-mode') || 'dark';
-  
-  // Reset base class
-  icon.className = 'ph';
-
-  if (current === 'light') {
-    icon.classList.add('ph-moon'); // Show Moon (to switch to Dark)
-  } else if (current === 'dark') {
-    icon.classList.add('ph-sun');  // Show Sun (to switch to Light)
-  } else if (current === 'starwalker') {
-    icon.classList.add('ph-star-four'); // Show Star (Secret State)
-  } else {
-    // Fallback for Auto
-    icon.classList.add('ph-sun');
-  }
-}
-
-/* HELPER: Smart Path Resolution
-   Handles root (./), deep pages (../../), and shallow pages (../)
-*/
+/* HELPER: Smart Path Resolution */
 function resolveRootPath() {
   const path = window.location.pathname;
   
-  // 1. Root (index.html)
+  // 1. Root
   if (!path.includes('/pages/')) {
     return './'; 
   }
   
-  // 2. Deep Category (pages/tools/index.html)
+  // 2. Deep Category
   const parts = path.split('/pages/')[1];
   if (parts && parts.includes('/')) {
     return '../../';
   }
   
-  // 3. Shallow Page (pages/legal.html)
+  // 3. Shallow Page
   return '../';
 }

@@ -1,7 +1,7 @@
 /* KYNAR UNIVERSE SEARCH ENGINE (js/search.js)
    "The Lens."
    Allows instant querying of the centralized Inventory and Knowledge Library.
-   Status: FINAL MASTER (Aligned with Header & Data Engine)
+   Status: FINAL MASTER (REMIX ICON ENGINE)
 */
 
 import { KYNAR_DATA } from './data.js';
@@ -20,27 +20,28 @@ function injectSearchUI() {
   overlay.id = 'search-overlay';
   overlay.className = 'search-overlay';
   
+  // ALIGNMENT: Updated to Remix Icons (ri-)
   overlay.innerHTML = `
     <div class="search-container stack-md animate-enter">
       
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div style="display:flex; align-items:center; gap: 8px;">
-          <i class="ph ph-planet" style="color: var(--accent-primary);"></i>
+          <i class="ri-planet-line" style="color: var(--accent-primary); font-size: 1.25rem;"></i>
           <h2 class="text-h3" style="margin:0;">Search Universe</h2>
         </div>
         <button class="btn-tertiary" onclick="toggleSearch()">
-          <i class="ph ph-x"></i> Close
+          <i class="ri-close-line"></i> Close
         </button>
       </div>
       
       <div style="position: relative;">
         <input type="text" id="search-input" class="search-input" placeholder="Find scripts, planners, and guides..." autocomplete="off">
-        <i class="ph ph-magnifying-glass" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
+        <i class="ri-search-2-line" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
       </div>
       
       <div id="search-results" class="search-results stack-sm" style="max-height: 60vh; overflow-y: auto; padding-right: 4px;">
         <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
-          <i class="ph ph-telescope" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
+          <i class="ri-eye-2-line" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
           <p class="text-body">Explore the Digital Department Store.</p>
           <p class="text-micro">Type to access verified tools and knowledge.</p>
         </div>
@@ -59,44 +60,48 @@ function injectSearchUI() {
   const input = document.getElementById('search-input');
   input.addEventListener('input', (e) => handleSearch(e.target.value));
   
+  // KEYBOARD SUPPORT
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSearch();
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
       openSearch();
     }
-  });
-}
-// Enhanced keyboard navigation
-  document.addEventListener('keydown', (e) => {
+    
+    // Arrow Key Navigation
     const overlay = document.getElementById('search-overlay');
     if (!overlay.classList.contains('active')) return;
     
-    // Arrow key navigation through results
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      e.preventDefault();
       const results = document.querySelectorAll('.search-result-card');
       if (results.length === 0) return;
       
+      // Stop page scroll
+      e.preventDefault();
+      
       const focused = document.activeElement;
+      // Convert NodeList to Array to find index
       const currentIndex = Array.from(results).indexOf(focused);
       
       let nextIndex;
       if (e.key === 'ArrowDown') {
-        nextIndex = currentIndex < results.length - 1 ? currentIndex + 1 : 0;
+        nextIndex = (currentIndex < results.length - 1) ? currentIndex + 1 : 0;
       } else {
-        nextIndex = currentIndex > 0 ? currentIndex - 1 : results.length - 1;
+        nextIndex = (currentIndex > 0) ? currentIndex - 1 : results.length - 1;
       }
       
       results[nextIndex].focus();
     }
     
-    // Enter to open first result
+    // Enter to open
     if (e.key === 'Enter' && e.target.id === 'search-input') {
+      e.preventDefault();
       const firstResult = document.querySelector('.search-result-card');
       if (firstResult) firstResult.click();
     }
   });
+}
+
 /* =========================================
    2. VISIBILITY LOGIC
    ========================================= */
@@ -130,17 +135,17 @@ function closeSearch() {
 function resetResults() {
   document.getElementById('search-results').innerHTML = `
     <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
-      <i class="ph ph-telescope" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
+      <i class="ri-eye-2-line" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
       <p class="text-body">Explore the Digital Department Store.</p>
     </div>`;
 }
 
 /* =========================================
    3. SEARCH ALGORITHM (OPTIMIZED)
-   Flattens the data ONCE, not on every keystroke.
+   Flattens the data ONCE on load.
    ========================================= */
 
-// 1. CACHE THE INDEX (Performance Fix)
+// 1. CACHE THE INDEX
 const allItems = [
   ...KYNAR_DATA.products.map(item => ({ ...item, type: 'product' })),
   ...KYNAR_DATA.guides.map(item => ({ ...item, type: 'guide' }))
@@ -155,7 +160,7 @@ function handleSearch(query) {
     return;
   }
 
-  // 2. FILTER THE CACHED INDEX (Fast)
+  // 2. FILTER THE CACHED INDEX
   const matches = allItems.filter(item => {
     return (
       item.title.toLowerCase().includes(term) || 
@@ -164,18 +169,8 @@ function handleSearch(query) {
       item.category.toLowerCase().includes(term)
     );
   });
-  
-  // Show loading state for better UX
-  if (term.length >= 2) {
-    resultsContainer.innerHTML = `
-      <div style="text-align:center; padding: 2rem;">
-        <div class="icon-box" style="margin: 0 auto; animation: pulse 1.5s ease-in-out infinite;">
-          <i class="ph ph-magnifying-glass"></i>
-        </div>
-        <p class="text-micro" style="margin-top: 12px;">Searching...</p>
-      </div>`;
-  }
 
+  // 3. RENDER RESULTS
   if (matches.length === 0) {
     resultsContainer.innerHTML = `
       <div style="text-align:center; opacity:0.5; padding: 2rem;">
@@ -188,40 +183,47 @@ function handleSearch(query) {
 }
 
 /* =========================================
-   4. RENDERER
+   4. RENDERER (REMIX ICON READY)
    ========================================= */
 function renderResultCard(item) {
   const link = resolvePath(item);
   
-  let iconClass = 'ph-cube';
+  // Default Remix Icons
+  let iconClass = 'ri-box-3-line'; 
   let subText = '';
   let badge = '';
 
   if (item.type === 'product') {
-    iconClass = item.previewIcon || 'ph-package';
+    // Use the icon from data.js (already updated to ri-) or fallback
+    iconClass = item.previewIcon || 'ri-archive-line';
     subText = `Verified Tool • ${capitalize(item.category)}`;
     badge = `<span style="font-weight: 600; color: var(--accent-primary);">£${item.price.toFixed(2)}</span>`;
   } else {
-    iconClass = 'ph-book-open';
+    iconClass = 'ri-book-open-line';
     subText = `Knowledge Record • ${item.readTime}`;
     badge = `<span style="font-size: 0.8rem; opacity: 0.7;">Read Guide</span>`;
   }
 
+  // NOTE: Removed "ph" prefix class to support pure Remix classes
   return `
     <a href="${link}" class="card search-result-card animate-enter" onclick="closeSearch()">
       <div style="display:flex; align-items:center; gap:var(--space-md);">
+        
         <div style="width:40px; height:40px; border-radius:50%; background:var(--bg-page); display:flex; align-items:center; justify-content:center; flex-shrink: 0; border: 1px solid var(--border-subtle);">
-          <i class="ph ${iconClass}" style="font-size:1.25rem; color:var(--text-main); opacity: 0.8;"></i>
+          <i class="${iconClass}" style="font-size:1.25rem; color:var(--text-main); opacity: 0.8;"></i>
         </div>
+        
         <div class="stack-xs" style="flex:1;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
              <h4 class="text-body" style="font-weight:600; font-size:0.95rem; margin:0;">${item.title}</h4>
              ${badge}
           </div>
+          
           <div style="display:flex; justify-content:space-between; font-size: 0.8rem; opacity: 0.6; margin-top: 2px;">
             <span>${subText}</span>
           </div>
         </div>
+
       </div>
     </a>
   `;

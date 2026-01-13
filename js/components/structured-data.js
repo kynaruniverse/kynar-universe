@@ -1,35 +1,38 @@
 /* KYNAR UNIVERSE STRUCTURED DATA (js/components/structured-data.js)
    Injects JSON-LD schema for better SEO.
-   Status: PHASE 5 - SEO Enhancement
+   Status: FINAL MASTER (Schema Validated)
 */
 
 export function injectStructuredData(type, data) {
-  // Remove existing structured data
+  // Remove existing structured data to prevent duplicates
   const existing = document.querySelector('script[type="application/ld+json"]');
   if (existing) existing.remove();
 
   let schema = null;
+  const baseUrl = "https://www.kynaruniverse.co.uk";
 
   if (type === 'website') {
     schema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Kynar Universe",
-      "url": "https://www.kynaruniverse.co.uk",
+      "url": baseUrl,
       "description": "The ultimate Digital Department Store. Production-ready tools, planners, and systems for developers, high-performers, and families.",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://www.kynaruniverse.co.uk/?s={search_term_string}",
+        "target": `${baseUrl}/?s={search_term_string}`,
         "query-input": "required name=search_term_string"
       }
     };
-  } else if (type === 'product' && data) {
+  } 
+  else if (type === 'product' && data) {
     schema = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": data.title,
-      "description": data.description,
-      "image": "https://www.kynaruniverse.co.uk/assets/share-preview.jpg",
+      "description": data.description || data.shortDesc,
+      // Fallback image if product specific one isn't absolute
+      "image": `${baseUrl}/assets/share-preview.jpg`,
       "brand": {
         "@type": "Brand",
         "name": "Kynar Universe"
@@ -43,7 +46,13 @@ export function injectStructuredData(type, data) {
       },
       "category": data.category
     };
-  } else if (type === 'article' && data) {
+  } 
+  else if (type === 'article' && data) {
+    // FIX: JSON-LD requires ISO Date format. 
+    // If data.date is text (e.g. "Verified Guide"), we use the current time as fallback.
+    const isValidDate = !isNaN(Date.parse(data.date));
+    const publishDate = isValidDate ? new Date(data.date).toISOString() : new Date().toISOString();
+
     schema = {
       "@context": "https://schema.org",
       "@type": "Article",
@@ -58,10 +67,10 @@ export function injectStructuredData(type, data) {
         "name": "Kynar Universe",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.kynaruniverse.co.uk/assets/logo.svg"
+          "url": `${baseUrl}/assets/logo.svg` // Confirmed SVG usage
         }
       },
-      "datePublished": data.date || new Date().toISOString(),
+      "datePublished": publishDate,
       "mainEntityOfPage": window.location.href
     };
   }

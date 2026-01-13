@@ -1,7 +1,19 @@
-# Redirect old URLs to new structure
-/pages/product.html  /pages/product/index.html  301
-/pages/guide.html    /pages/guide/index.html    301
+# KYNAR UNIVERSE REDIRECTS
+# Status: FINAL (Maps old folders to new files)
 
-# Preserve query parameters
-/pages/product.html?*  /pages/product/index.html?:splat  301
-/pages/guide.html?*    /pages/guide/index.html?:splat    301
+# 1. Product Redirects
+# If someone tries to access the folder, send them to the file
+/pages/product/   /pages/product.html   301
+/pages/product    /pages/product.html   301
+
+# 2. Guide Redirects
+/pages/guide/     /pages/guide.html     301
+/pages/guide      /pages/guide.html     301
+
+# 3. Handle Query Parameters (Netlify handles this automatically, but for safety:)
+/pages/product/* /pages/product.html   200
+/pages/guide/* /pages/guide.html     200
+
+# 4. SPA Fallback (Optional, but good for safety)
+# If a page isn't found, show the custom 404
+/* /404.html   404

@@ -1,6 +1,6 @@
 /* KYNAR ONBOARDING PAGE LOGIC (js/pages/onboarding.js)
    Handles the multi-step onboarding wizard.
-   Status: PHASE 3 - Extracted from inline script
+   Status: FINAL MASTER (Logic Only - No Visuals)
 */
 
 let selectedCategory = null;

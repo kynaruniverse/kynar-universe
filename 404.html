@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
                script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
-               font-src 'self' https://fonts.gstatic.com; 
+               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+               font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -14,34 +14,29 @@
   <title>Sector Uncharted | Kynar Universe</title>
   
   <meta name="robots" content="noindex, follow">
-
+  
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   
-  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"
-      integrity="sha384-hiKKzPWrwThyepBYcEjt4rzb2Xw5k8w1YWCgv0v1lh8FwLKwQAs1Z4yPmBifZZl8" 
-      crossorigin="anonymous">
-  </script>
-
-  <link rel="stylesheet" href="/css/tokens.css">
-  <link rel="stylesheet" href="/css/global.css">
-  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
+  
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
 
 <body data-theme="accounts">
-
+  
   <main class="container" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--space-md);">
     
     <div class="card stack-lg animate-enter" style="max-width: 500px; padding: var(--space-xl); border-top: 4px solid var(--text-muted);">
       
       <div class="icon-box" style="width: 80px; height: 80px; font-size: 3rem; margin: 0 auto; background: var(--bg-page); border-color: var(--border-subtle);">
-        <i class="ph ph-telescope" style="color: var(--text-muted);"></i>
+        <i class="ri-compass-discover-line" style="color: var(--text-muted);"></i>
       </div>
       
       <div class="stack-sm">
@@ -50,46 +45,47 @@
           You have reached an empty aisle of the Digital Department Store.
         </p>
       </div>
-
+      
       <div class="stack-sm" style="background: var(--bg-page); padding: var(--space-md); border-radius: var(--radius-md); text-align: left; border: 1px solid var(--border-subtle);">
         <span class="text-micro" style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Suggested Trajectories</span>
         <ul class="text-body" style="font-size: 0.95rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
           
           <li style="display: flex; gap: 12px; align-items: center;">
-            <i class="ph ph-wrench" style="color: var(--pal-tools-core);"></i>
-            <span>Looking for <strong>Tools</strong>? <a href="/pages/tools/index.html" style="text-decoration: underline;">Browse Scripts</a></span>
+            <i class="ri-tools-line" style="color: var(--pal-tools-core);"></i>
+            <span>Looking for <strong>Tools</strong>? <a href="pages/tools/index.html" style="text-decoration: underline;">Browse Scripts</a></span>
           </li>
           
           <li style="display: flex; gap: 12px; align-items: center;">
-            <i class="ph ph-plant" style="color: var(--pal-living-green);"></i>
-            <span>Looking for <strong>Growth</strong>? <a href="/pages/living/index.html" style="text-decoration: underline;">View Planners</a></span>
+            <i class="ri-seedling-line" style="color: var(--pal-living-green);"></i>
+            <span>Looking for <strong>Growth</strong>? <a href="pages/living/index.html" style="text-decoration: underline;">View Planners</a></span>
           </li>
-
+          
           <li style="display: flex; gap: 12px; align-items: center;">
-            <i class="ph ph-house-line" style="color: var(--pal-home-core);"></i>
-            <span>Looking for <strong>Family</strong>? <a href="/pages/home/index.html" style="text-decoration: underline;">Visit Home</a></span>
+            <i class="ri-home-4-line" style="color: var(--pal-home-core);"></i>
+            <span>Looking for <strong>Family</strong>? <a href="pages/home/index.html" style="text-decoration: underline;">Visit Home</a></span>
           </li>
-
+          
         </ul>
       </div>
-
+      
       <div style="opacity: 0.8; margin-top: var(--space-xs);">
         <p class="text-lore">"The path flickered, but the Universe remains."</p>
       </div>
-
+      
       <div style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
-        <a href="/index.html" class="btn-primary">Return to Hub</a>
+        <a href="index.html" class="btn-primary">Return to Hub</a>
         <button onclick="toggleSearch()" class="btn-tertiary">
-          <i class="ph ph-magnifying-glass"></i> Search Universe
+          <i class="ri-search-2-line"></i> Search Universe
         </button>
       </div>
-
+      
     </div>
-
+    
   </main>
+  
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/search.js"></script>
+  
+</body>
 
-  <script type="module" src="/js/app.js"></script>
-  <script type="module" src="/js/search.js"></script>
-
-  <script type="module" src="js/footer.js"></script>
-</body></html>
+</html>

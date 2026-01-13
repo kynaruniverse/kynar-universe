@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
                script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
-               font-src 'self' https://fonts.gstatic.com; 
+               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+               font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self' https://*.supabase.co;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -16,11 +16,15 @@
   <meta name="description" content="Access your personal inventory of digital upgrades.">
   
   <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3" crossorigin="anonymous"></script>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
   
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
@@ -55,7 +59,7 @@
           <label for="email" class="text-micro" style="display: block; margin-bottom: 8px;">Email Address</label>
           <div style="position: relative;">
             <input type="email" id="email" class="input" placeholder="traveler@example.com" style="padding-left: 44px;" required>
-            <i class="ph ph-envelope-simple" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;"></i>
+            <i class="ri-mail-line" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;"></i>
           </div>
         </div>
         
@@ -68,7 +72,7 @@
           </div>
           <div style="position: relative;">
             <input type="password" id="password" class="input" placeholder="••••••••" style="padding-left: 44px;" required minlength="6">
-            <i class="ph ph-lock-key" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;"></i>
+            <i class="ri-lock-password-line" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.25rem;"></i>
           </div>
         </div>
         
@@ -76,7 +80,7 @@
         
         <div class="stack-sm" style="margin-top: var(--space-sm);">
           <button type="submit" id="submit-btn" class="btn-primary" style="width: 100%; justify-content: center;">
-            <i class="ph ph-sign-in"></i> <span id="btn-text">Open Inventory</span>
+            <i class="ri-login-circle-line"></i> <span id="btn-text">Open Inventory</span>
           </button>
         </div>
         
@@ -119,7 +123,8 @@
     async function checkSession() {
       const { data: { session } } = await sb.auth.getSession();
       if (session) {
-        window.location.href = 'collections.html'; // Redirect if valid session
+        // Redirect if valid session
+        window.location.href = 'collections.html'; 
       }
     }
     checkSession();

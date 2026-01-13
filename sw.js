@@ -1,12 +1,14 @@
 /* KYNAR UNIVERSE SERVICE WORKER (sw.js)
    Enables offline functionality and faster repeat visits.
-   Status: PHASE 5 - Production Ready
+   Status: PHASE 5 - Production Ready (Remix Icon & CDN Compatible)
 */
 
-const CACHE_NAME = 'kynar-universe-v1.0';
-const RUNTIME_CACHE = 'kynar-runtime-v1.0';
+// Bump version to force update for existing users
+const CACHE_NAME = 'kynar-universe-v1.2'; 
+const RUNTIME_CACHE = 'kynar-runtime-v1.2';
 
-// Assets to cache on install
+// Assets to cache immediately on install
+// NOTE: If any single file here 404s, the Service Worker fails to install.
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -15,11 +17,14 @@ const PRECACHE_ASSETS = [
   '/css/global.css',
   '/css/components.css',
   '/js/app.js',
-  '/js/data.js',
+  '/js/loader.js',
   '/js/header.js',
   '/js/search.js',
-  '/js/components/footer.js',
-  '/js/components/breadcrumb.js',
+  '/js/footer.js',
+  '/js/breadcrumb.js',
+  '/js/data.js',
+  '/js/analytics.js',                  // <--- ADDED: Critical for offline app.js
+  '/js/components/structured-data.js',
   '/assets/logo.svg',
   '/assets/favicon.ico',
   '/pages/tools/index.html',
@@ -33,7 +38,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('[SW] Precaching assets');
+        console.log('[SW] Precaching core assets');
         return cache.addAll(PRECACHE_ASSETS);
       })
       .then(() => self.skipWaiting())
@@ -58,30 +63,39 @@ self.addEventListener('activate', (event) => {
 
 // Fetch - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
+  // 1. Skip non-GET requests
   if (event.request.method !== 'GET') return;
   
-  // Skip external requests
-  if (!event.request.url.startsWith(self.location.origin)) return;
+  const url = new URL(event.request.url);
 
+  // 2. LOGIC: What external domains do we allow?
+  // We allow self (our site) AND the Remix Icon CDN.
+  const isOrigin = url.origin === self.location.origin;
+  const isRemixCDN = url.hostname === 'cdn.jsdelivr.net';
+
+  // If it's external and NOT our allowed CDNs, ignore it.
+  if (!isOrigin && !isRemixCDN) return;
+
+  // 3. CACHE STRATEGY: Stale-While-Revalidate
   event.respondWith(
     caches.match(event.request)
       .then(cachedResponse => {
+        
+        // Return cached response immediately if found
         if (cachedResponse) {
           return cachedResponse;
         }
 
-        // Clone request because it can only be used once
+        // Network Fallback
         return fetch(event.request.clone())
           .then(response => {
-            // Don't cache invalid responses
-            if (!response || response.status !== 200 || response.type !== 'basic') {
+            // Check for valid response (Basic for local, CORS for CDN)
+            if (!response || response.status !== 200 || (response.type !== 'basic' && response.type !== 'cors')) {
               return response;
             }
 
-            // Clone response because it can only be used once
+            // Cache the new resource
             const responseToCache = response.clone();
-
             caches.open(RUNTIME_CACHE)
               .then(cache => {
                 cache.put(event.request, responseToCache);
@@ -90,8 +104,10 @@ self.addEventListener('fetch', (event) => {
             return response;
           })
           .catch(() => {
-            // Return offline page if available
-            return caches.match('/404.html');
+            // Offline Fallback for Navigation requests
+            if (event.request.mode === 'navigate') {
+              return caches.match('/404.html');
+            }
           });
       })
   );
