@@ -1,0 +1,7 @@
+# Redirect old URLs to new structure
+/pages/product.html  /pages/product/index.html  301
+/pages/guide.html    /pages/guide/index.html    301
+
+# Preserve query parameters
+/pages/product.html?*  /pages/product/index.html?:splat  301
+/pages/guide.html?*    /pages/guide/index.html?:splat    301
