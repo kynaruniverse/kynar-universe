@@ -2,19 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
+               style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
+               font-src 'self' https://fonts.gstatic.com; 
+               img-src 'self' data: https:; 
+               connect-src 'self';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   
   <title>Sector Uncharted | Kynar Universe</title>
   
   <meta name="robots" content="noindex, follow">
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='none'/><circle cx='128' cy='128' r='96' fill='none' stroke='%238FB7FF' stroke-miterlimit='10' stroke-width='16'/><circle cx='128' cy='128' r='40' fill='%238FB7FF'/><line x1='160' y1='64' x2='160' y2='64' fill='none' stroke='%238FB7FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/></svg>">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"
+      integrity="sha384-hiKKzPWrwThyepBYcEjt4rzb2Xw5k8w1YWCgv0v1lh8FwLKwQAs1Z4yPmBifZZl8" 
+      crossorigin="anonymous">
+  </script>
 
   <link rel="stylesheet" href="/css/tokens.css">
   <link rel="stylesheet" href="/css/global.css">
@@ -73,15 +86,10 @@
 
     </div>
 
-    <footer style="margin-top: var(--space-xl); opacity: 0.6; text-align: center;">
-       <p class="text-lore" style="font-size: 0.75rem; opacity: 0.3;">
-        "Look to the stars in your settings."
-      </p>
-    </footer>
-
   </main>
 
   <script type="module" src="/js/app.js"></script>
   <script type="module" src="/js/search.js"></script>
-</body>
-</html>
+
+  <script type="module" src="js/footer.js"></script>
+</body></html>
