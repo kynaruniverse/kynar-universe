@@ -67,7 +67,36 @@ function injectSearchUI() {
     }
   });
 }
-
+// Enhanced keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const overlay = document.getElementById('search-overlay');
+    if (!overlay.classList.contains('active')) return;
+    
+    // Arrow key navigation through results
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const results = document.querySelectorAll('.search-result-card');
+      if (results.length === 0) return;
+      
+      const focused = document.activeElement;
+      const currentIndex = Array.from(results).indexOf(focused);
+      
+      let nextIndex;
+      if (e.key === 'ArrowDown') {
+        nextIndex = currentIndex < results.length - 1 ? currentIndex + 1 : 0;
+      } else {
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : results.length - 1;
+      }
+      
+      results[nextIndex].focus();
+    }
+    
+    // Enter to open first result
+    if (e.key === 'Enter' && e.target.id === 'search-input') {
+      const firstResult = document.querySelector('.search-result-card');
+      if (firstResult) firstResult.click();
+    }
+  });
 /* =========================================
    2. VISIBILITY LOGIC
    ========================================= */
@@ -135,6 +164,17 @@ function handleSearch(query) {
       item.category.toLowerCase().includes(term)
     );
   });
+  
+  // Show loading state for better UX
+  if (term.length >= 2) {
+    resultsContainer.innerHTML = `
+      <div style="text-align:center; padding: 2rem;">
+        <div class="icon-box" style="margin: 0 auto; animation: pulse 1.5s ease-in-out infinite;">
+          <i class="ph ph-magnifying-glass"></i>
+        </div>
+        <p class="text-micro" style="margin-top: 12px;">Searching...</p>
+      </div>`;
+  }
 
   if (matches.length === 0) {
     resultsContainer.innerHTML = `

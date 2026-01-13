@@ -4,12 +4,16 @@
 */
 
 import { KYNAR_DATA } from './data.js';
+import { Analytics } from './analytics.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   injectIconSystem(); // Visuals
   initLoreSystem();   // Narrative
   initMotionSystem(); // Cinematic Feel
+  initScrollProgress(); // Add scroll indicator
   initThemeSystem();  // Atmosphere
+  initLazyImages();
+  initImageErrorHandling();
 });
 
 /* =========================================
@@ -93,6 +97,30 @@ function initMotionSystem() {
 }
 
 /* =========================================
+   2B. SCROLL PROGRESS INDICATOR
+   Shows reading progress on long pages
+   ========================================= */
+function initScrollProgress() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  // Create progress bar
+  const progressBar = document.createElement('div');
+  progressBar.className = 'scroll-progress';
+  document.body.appendChild(progressBar);
+
+  // Update on scroll
+  window.addEventListener('scroll', () => {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight - windowHeight;
+    const scrolled = window.scrollY;
+    const progress = (scrolled / documentHeight) * 100;
+    
+    progressBar.style.width = `${Math.min(progress, 100)}%`;
+  }, { passive: true });
+}
+
+/* =========================================
    3. SYSTEM FEEDBACK (Toasts)
    "Soft feedback" for user actions (Save, Copy, Theme Change).
    ========================================= */
@@ -105,35 +133,60 @@ function showToast(message, type = 'normal') {
     container.className = 'toast-container';
     document.body.appendChild(container);
   }
-
-  const toast = document.createElement('div');
-  toast.className = 'toast animate-enter'; // Reuse animation class
   
-  // Icon Mapping based on Tokens
-  let icon = '<i class="ph ph-info"></i>'; // Default
+  const toast = document.createElement('div');
+  toast.className = 'toast animate-enter';
+  
+  let icon = '<i class="ph ph-info"></i>';
   if (type === 'success') {
-      icon = '<i class="ph ph-check-circle" style="color:var(--color-success)"></i>';
+    icon = '<i class="ph ph-check-circle" style="color:var(--color-success)"></i>';
   } else if (type === 'error') {
-      icon = '<i class="ph ph-warning-circle" style="color:var(--color-error)"></i>';
+    icon = '<i class="ph ph-warning-circle" style="color:var(--color-error)"></i>';
   } else if (type === 'starwalker') {
-      icon = '<i class="ph ph-star-four" style="color:var(--accent-primary)"></i>';
+    icon = '<i class="ph ph-star-four" style="color:var(--accent-primary)"></i>';
   }
-
-  toast.innerHTML = `${icon}<span>${message}</span>`;
+  
+  toast.innerHTML = `
+    ${icon}
+    <span>${message}</span>
+    <button onclick="this.parentElement.remove()" class="btn-tertiary" style="padding: 4px 8px; margin-left: auto;">
+      <i class="ph ph-x" style="font-size: 0.9rem;"></i>
+    </button>
+  `;
+  toast.style.display = 'flex';
+  toast.style.alignItems = 'center';
+  toast.style.gap = '12px';
+  
   container.appendChild(toast);
-
-  // Auto-Dismiss Logic
+  
+  // Auto-dismiss with visual countdown
+  const dismissTime = 3000;
+  let startTime = Date.now();
+  
+  const progressBar = document.createElement('div');
+  progressBar.style.cssText = `
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent-primary);
+    width: 100%;
+    opacity: 0.5;
+    transition: width ${dismissTime}ms linear;
+  `;
+  toast.style.position = 'relative';
+  toast.appendChild(progressBar);
+  
+  requestAnimationFrame(() => {
+    progressBar.style.width = '0%';
+  });
+  
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateY(10px)';
-    // Remove from DOM after transition
-    setTimeout(() => toast.remove(), 300); 
-  }, 3000);
+    setTimeout(() => toast.remove(), 300);
+  }, dismissTime);
 }
-
-// Expose to window so inline HTML (buttons) can call it
-window.showToast = showToast;
-
 /* =========================================
    4. ATMOSPHERE SYSTEM (Themes)
    Handles Light, Dark, and the Secret "Starwalker" Mode.
@@ -157,7 +210,7 @@ function setTheme(mode) {
   } else {
     document.documentElement.setAttribute('data-mode', mode);
     localStorage.setItem('kynar_mode', mode);
-    
+    Analytics.trackThemeChange(mode)
     // Feedback Logic
     if (mode === 'starwalker') {
       showToast('Starwalker Mode Engaged.', 'starwalker');
@@ -171,3 +224,78 @@ function setTheme(mode) {
 
 // Expose to window so Settings Page and Header can call it
 window.setTheme = setTheme;
+
+/* =========================================
+   5. SERVICE WORKER REGISTRATION
+   Enables offline functionality and caching
+   ========================================= */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('[Universe] Service Worker registered:', registration.scope);
+      })
+      .catch(error => {
+        console.log('[Universe] Service Worker registration failed:', error);
+      });
+  });
+}
+
+/* =========================================
+   IMAGE LAZY LOADING HANDLER
+   ========================================= */
+function initLazyImages() {
+  const images = document.querySelectorAll('img[loading="lazy"]');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.classList.add('loaded');
+          imageObserver.unobserve(img);
+        }
+      });
+    });
+    
+    images.forEach(img => imageObserver.observe(img));
+  } else {
+    // Fallback for older browsers
+    images.forEach(img => img.classList.add('loaded'));
+  }
+}
+
+/* =========================================
+   IMAGE ERROR HANDLING
+   Replaces broken images with placeholder
+   ========================================= */
+function initImageErrorHandling() {
+  document.addEventListener('error', (e) => {
+    if (e.target.tagName === 'IMG') {
+      e.target.style.display = 'none';
+      
+      // Create placeholder
+      const placeholder = document.createElement('div');
+      placeholder.className = 'image-placeholder';
+      placeholder.innerHTML = `
+        <div style="
+          width: 100%;
+          aspect-ratio: 16/9;
+          background: var(--bg-surface);
+          border: 1px dashed var(--border-subtle);
+          border-radius: var(--radius-md);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          gap: 8px;
+        ">
+          <i class="ph ph-image-broken" style="font-size: 2rem; opacity: 0.3;"></i>
+          <span class="text-micro" style="opacity: 0.5;">Image unavailable</span>
+        </div>
+      `;
+      
+      e.target.parentNode.insertBefore(placeholder, e.target);
+    }
+  }, true);
+}

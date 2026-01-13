@@ -19,7 +19,10 @@ function loadInventory() {
     
     // Replace empty state with actual inventory
     const container = document.querySelector('section.card');
-    if (!container) return;
+    if (!container) {
+      console.error('[Inventory] Container element not found');
+      return;
+    }
     
     container.innerHTML = `
       <div class="stack-md">

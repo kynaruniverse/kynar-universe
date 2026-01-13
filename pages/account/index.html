@@ -51,7 +51,8 @@
         </p>
       </header>
 
-      <form class="stack-md" onsubmit="event.preventDefault(); window.location.href='collections.html';">
+      <form class="stack-md" onsubmit="return validateLogin(event);">
+
         
         <div class="form-group">
           <label for="email" class="text-micro" style="display: block; margin-bottom: 8px;">Email Address</label>
@@ -94,5 +95,29 @@
   <script type="module" src="../../js/app.js"></script>
   <script type="module" src="../../js/footer.js"></script>
   <script type="module" src="../../js/breadcrumb.js"></script>
+  <script>
+    function validateLogin(event) {
+      event.preventDefault();
+    
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+    
+      // Basic validation
+      if (!email || !password) {
+        alert('Please fill in all fields');
+        return false;
+      }
+    
+      if (!email.includes('@')) {
+        alert('Please enter a valid email address');
+        return false;
+      }
+    
+      // If validation passes, redirect
+      window.location.href = 'collections.html';
+      return true;
+    }
+  </script>
+  
 </body>
 </html>
