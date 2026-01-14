@@ -645,3 +645,39 @@ kbd {
 }
 
 .link-btn:hover { opacity: 1; }
+
+
+/* Glass Header Positioning */
+.glass-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: var(--z-header); /* Use token from tokens.css */
+  background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-sm) 0;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Footer Styling */
+.kynar-footer {
+  margin-top: var(--space-section);
+  padding: var(--space-xl) 0;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin: var(--space-md) 0;
+}
+
+.footer-sep { opacity: 0.2; }

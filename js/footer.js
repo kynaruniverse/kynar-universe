@@ -1,14 +1,8 @@
-/* KYNAR UNIVERSE FOOTER COMPONENT (js/footer.js)
-   Universal footer injection with lore integration and utility links.
-   Status: EVOLVED MASTER (Clean UI + Navigation Support)
-*/
-
+/* KYNAR UNIVERSE FOOTER COMPONENT (js/footer.js) */
 (function() {
   'use strict';
 
-  document.addEventListener('DOMContentLoaded', () => {
-    injectFooter();
-  });
+  document.addEventListener('DOMContentLoaded', injectFooter);
 
   function injectFooter() {
     if (document.querySelector('.kynar-footer')) return;
@@ -19,15 +13,12 @@
     
     footer.innerHTML = `
       <div class="container stack-lg">
-        
-        <p class="text-lore footer-whisper">
-          "One Universe. Infinite Solutions."
-        </p>
+        <p class="text-lore footer-whisper">"One Universe. Infinite Solutions."</p>
         
         <div class="footer-nav">
           <a href="${rootPath}pages/about/index.html" class="text-micro">About</a>
           <span class="footer-sep">•</span>
-          <a href="${rootPath}pages/support/index.html" class="text-micro">Support</a>
+          <a href="${rootPath}pages/about/support.html" class="text-micro">Support</a>
           <span class="footer-sep">•</span>
           <a href="${rootPath}pages/legal/privacy.html" class="text-micro">Privacy</a>
         </div>
@@ -46,7 +37,6 @@
     
     document.body.appendChild(footer);
 
-    // Attach Back to Top logic
     const topBtn = document.getElementById('back-to-top');
     if (topBtn) {
       topBtn.addEventListener('click', () => {
@@ -61,5 +51,4 @@
     const parts = path.split('/pages/')[1];
     return (parts && parts.includes('/')) ? '../../' : '../';
   }
-
 })();
