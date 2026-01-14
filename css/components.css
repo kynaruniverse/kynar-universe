@@ -22,23 +22,26 @@
   cursor: pointer;
   border: none;
   text-decoration: none;
+  user-select: none;
   
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              box-shadow 0.2s ease, 
+              background-color 0.2s ease;
 }
 
 .btn:active {
-  transform: scale(0.97) translateY(1px); /* Satisfying "click" feel */
+  transform: scale(0.96); /* Satisfying "click" feel */
 }
 
 /* Primary: Confident & Warm */
 .btn-primary {
   background-color: var(--text-main); /* High contrast */
   color: var(--bg-page);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft lift */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
 }
 
 /* Secondary: Supportive */
@@ -61,6 +64,12 @@
 .btn-tertiary:hover {
   color: var(--text-main);
   background-color: var(--bg-surface-hover);
+}
+
+/* Full Width for Mobile */
+.btn-block {
+  width: 100%;
+  display: flex;
 }
 
 /* =========================================
@@ -101,6 +110,11 @@
   box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent-primary);
 }
 
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
 /* =========================================
    3. TAGS (Category Identifiers)
    ========================================= */
@@ -122,29 +136,24 @@
 }
 
 /* Contextual Variants (Department Colors) */
-
-/* TOOLS: Electric Blue */
 .tag[data-variant="tools"] {
   background-color: var(--pal-tools-surface);
   color: var(--pal-tools-core);
   border-color: rgba(59, 130, 246, 0.3);
 }
 
-/* LIVING: Emerald Green */
-.tag[data-variant="living"] {
-  background-color: var(--pal-living-surface);
-  color: var(--pal-living-green);
+.tag[data-variant="life"] {
+  background-color: var(--pal-life-surface);
+  color: var(--pal-life-green);
   border-color: rgba(16, 185, 129, 0.3);
 }
 
-/* HOME: Amber/Gold */
 .tag[data-variant="home"], .tag[data-variant="family"] {
   background-color: var(--pal-home-surface);
   color: var(--pal-home-core);
   border-color: rgba(245, 158, 11, 0.3);
 }
 
-/* HUB: Mystic Purple */
 .tag[data-variant="hub"] {
   background-color: var(--pal-hub-surface);
   color: var(--pal-hub-core);
@@ -169,6 +178,7 @@
 }
 .breadcrumb a:hover {
   color: var(--text-main);
+  border-bottom-color: var(--accent-primary);
 }
 
 /* =========================================
@@ -198,10 +208,10 @@
   color: var(--pal-tools-core);
 }
 
-.card[data-variant="living"] .icon-box {
-  background: var(--pal-living-surface);
+.card[data-variant="life"] .icon-box {
+  background: var(--pal-life-surface);
   border-color: rgba(16, 185, 129, 0.2);
-  color: var(--pal-living-core);
+  color: var(--pal-life-core);
 }
 
 .card[data-variant="home"] .icon-box {
@@ -223,7 +233,7 @@
 }
 
 /* =========================================
-   6. TECHNICAL COMPONENTS
+   6. TECHNICAL & UTILITY COMPONENTS
    ========================================= */
 /* Code Block for Tech Specs */
 .code-block {
@@ -241,3 +251,73 @@
 .code-block[data-context="tools"] {
   border-left: 3px solid var(--pal-tools-core);
 }
+
+/* Dividers */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-subtle);
+  margin: var(--space-md) 0;
+}
+
+/* =========================================
+   7. MODAL / DIALOG (For Quick Actions)
+   ========================================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.modal-backdrop.active .modal-content {
+  transform: translateY(0);
+}
+
+/* =========================================
+   8. SKELETON LOADING (Perceived Speed)
+   ========================================= */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface) 25%,
+    var(--bg-surface-hover) 50%,
+    var(--bg-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-load 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-load {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.text-skeleton { height: 1em; width: 80%; margin-bottom: 0.5em; opacity: 0.5; }
+.card-skeleton { height: 200px; border-radius: var(--radius-lg); }

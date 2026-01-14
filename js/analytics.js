@@ -1,37 +1,50 @@
-/* KYNAR UNIVERSE ANALYTICS (js/analytics.js)
-   Privacy-focused event tracking
-   Status: PRODUCTION READY
+/* KYNAR ANALYTICS ENGINE (js/analytics.js)
+   The Privacy-First Observation Deck.
+   Currently in "Dev Mode" (Console Logging only).
+   Status: FINAL MASTER
 */
 
 export const Analytics = {
-  // Track page views
-  trackPageView(pageName) {
-    console.log(`[Analytics] Page View: ${pageName}`);
-    // Add your analytics service here (Plausible, Fathom, etc.)
-  },
   
-  // Track product views
-  trackProductView(productId, productName) {
-    console.log(`[Analytics] Product View: ${productName} (${productId})`);
+  /**
+   * Initialize the Analytics Engine
+   * (e.g., Load Plausible/Google Analytics scripts here later)
+   */
+  init: () => {
+    console.log('[Universe] Analytics: Initialized (Privacy Mode)');
   },
-  
-  // Track purchases
-  trackPurchase(productId, productName, price) {
-    console.log(`[Analytics] Purchase: ${productName} - £${price}`);
+
+  /**
+   * Track specific user actions
+   * @param {string} eventName - Name of the action (e.g., 'Download')
+   * @param {object} props - Extra details (e.g., { item: 'Finance Tracker' })
+   */
+  trackEvent: (eventName, props = {}) => {
+    // DEV MODE: Log to console
+    console.log(`[Analytics] Event: ${eventName}`, props);
+
+    // FUTURE INTEGRATION EXAMPLE:
+    // if(window.plausible) window.plausible(eventName, { props });
   },
-  
-  // Track search queries
-  trackSearch(query, resultsCount) {
-    console.log(`[Analytics] Search: "${query}" - ${resultsCount} results`);
+
+  /**
+   * Track Page Views (SPA Support)
+   * Call this when navigating between dynamic pages
+   */
+  trackPageView: (path) => {
+    console.log(`[Analytics] Page View: ${path}`);
   },
-  
-  // Track theme changes
-  trackThemeChange(theme) {
-    console.log(`[Analytics] Theme Change: ${theme}`);
+
+  /**
+   * Specific: Track Theme/Atmosphere Changes
+   */
+  trackThemeChange: (mode) => {
+    console.log(`[Analytics] Atmosphere Shift: ${mode}`);
+    // You could save this to user preferences in DB later
   }
 };
 
-// Auto-track page views
+// Auto-Init on Load
 document.addEventListener('DOMContentLoaded', () => {
-  Analytics.trackPageView(document.title);
+  Analytics.init();
 });

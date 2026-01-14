@@ -8,24 +8,29 @@
   <meta http-equiv="Content-Security-Policy" 
       content="default-src 'self'; 
                script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
+               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self' https://*.supabase.co;">
-
 
   <title>One Universe. Infinite Digital Solutions. | Kynar Universe</title>
   <meta name="description" content="The premier marketplace for high-quality digital essentials. Download verified Python scripts, planners, and household systems.">
   
   <meta property="og:title" content="Kynar Universe | Digital Department Store">
-  <meta property="og:image" content="assets/share-preview.jpg">
+  <meta property="og:description" content="No filler. Just verified digital tools for developers, creators, and families.">
+  <meta property="og:image" content="assets/share-preview.png">
+  <meta property="og:url" content="https://www.kynaruniverse.co.uk">
+
   <link rel="icon" href="assets/favicon.ico">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&family=Fira+Code&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="assets/phosphor.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/global.css">
@@ -33,74 +38,101 @@
 </head>
 
 <body>
+  <a href="#main-content" class="skip-link">Skip to Content</a>
+
+  <div id="search-mount"></div>
+  <header id="app-header" class="glass-header"></header>
+
   <main id="main-content" class="container">
     
-    <section class="hero-soul stack-xl animate-enter">
+    <section class="hero-soul stack-xl animate-enter" style="padding-top: var(--space-xl); padding-bottom: var(--space-xl);">
       
-      <div class="hero-header-content">
+      <div class="stack-md" style="text-align: center; align-items: center;">
         <img src="assets/logo.svg" 
              alt="Kynar Universe Logo" 
-             class="hero-logo-glow" 
-             width="120" height="120">
+             width="100" height="100"
+             style="filter: drop-shadow(0 0 20px var(--accent-glow));">
              
         <h1 class="text-h1">
           One Universe.<br>
-          <span>Infinite Digital Solutions.</span>
+          <span style="color: var(--text-body); font-family: var(--font-primary); font-size: 0.6em; letter-spacing: -0.02em;">Infinite Digital Solutions.</span>
         </h1>
 
-        <p class="text-body">
+        <p class="text-body" style="margin: 0 auto;">
           The ultimate <strong>Digital Department Store</strong>. We reject digital filler, providing verified tools for developers, high-performers, and families.
         </p>
 
-        <div class="hero-actions">
-           <a href="#departments" class="btn-primary" data-track="Hero Browse">Browse Departments</a>
-           <a href="pages/onboarding/index.html" class="btn-secondary" data-track="Hero Start">Start Protocol</a>
+        <div class="hero-actions" style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
+           <a href="#departments" class="btn-primary">
+             <i class="ph ph-squares-four"></i> Browse Departments
+           </a>
+           <a href="pages/onboarding/index.html" class="btn-secondary">
+             Start Protocol
+           </a>
         </div>
       </div>
 
     </section>
 
-    <section id="departments" class="stack-md animate-enter delay-1">
+    <section id="departments" class="stack-md animate-enter delay-1" style="padding-bottom: var(--space-section);">
       
-      <h2 class="text-micro">Select Department</h2>
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <h2 class="text-micro">Select Department</h2>
+        <span class="text-micro" style="opacity: 0.5;">03 Active</span>
+      </div>
 
-      <a href="pages/tools/index.html" class="card" data-variant="tools" data-track="Dept: Tools">
-        <div class="card-inner">
-          <div class="icon-box"><i class="ri-code-s-slash-line"></i></div>
-          <div class="stack-xs">
-            <h3 class="text-h3">KYNAR Tools</h3> 
-            <p class="text-body">Python automation, business intelligence, and developer blueprints.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-md);">
+        
+        <a href="pages/tools/index.html" class="card" data-variant="tools">
+          <div class="stack-md">
+            <div class="icon-box"><i class="ph ph-code"></i></div>
+            <div class="stack-xs">
+              <h3 class="text-h3">KYNAR Tools</h3> 
+              <p class="text-body" style="font-size: 0.9rem;">Python automation, business intelligence, and developer blueprints.</p>
+            </div>
+            <div style="margin-top: auto;">
+              <span class="tag" data-variant="tools">Development</span>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
 
-      <a href="pages/living/index.html" class="card" data-variant="living" data-track="Dept: Living">
-        <div class="card-inner">
-          <div class="icon-box"><i class="ri-flashlight-line"></i></div>
-          <div class="stack-xs">
-            <h3 class="text-h3">KYNAR Living</h3>
-            <p class="text-body">LifeOS planners, finance trackers, and high-performance systems.</p>
+        <a href="pages/life/index.html" class="card" data-variant="life">
+          <div class="stack-md">
+            <div class="icon-box"><i class="ph ph-plant"></i></div>
+            <div class="stack-xs">
+              <h3 class="text-h3">KYNAR Life</h3>
+              <p class="text-body" style="font-size: 0.9rem;">LifeOS planners, finance trackers, and high-performance systems.</p>
+            </div>
+            <div style="margin-top: auto;">
+              <span class="tag" data-variant="life">Lifestyle</span>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
 
-      <a href="pages/home/index.html" class="card" data-variant="home" data-track="Dept: Home">
-        <div class="card-inner">
-          <div class="icon-box"><i class="ri-home-4-line"></i></div>
-          <div class="stack-xs">
-            <h3 class="text-h3">KYNAR Home</h3>
-            <p class="text-body">Educational bundles, chore management, and family activity packs.</p>
+        <a href="pages/home/index.html" class="card" data-variant="home">
+          <div class="stack-md">
+            <div class="icon-box"><i class="ph ph-house-line"></i></div>
+            <div class="stack-xs">
+              <h3 class="text-h3">KYNAR Home</h3>
+              <p class="text-body" style="font-size: 0.9rem;">Educational bundles, chore management, and family activity packs.</p>
+            </div>
+            <div style="margin-top: auto;">
+              <span class="tag" data-variant="home">Family</span>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
 
-      <a href="pages/account/index.html" class="btn-tertiary" style="align-self: center;" data-track="Quick Inventory">
-        <i class="ri-archive-line"></i> <span>Open Your Inventory</span>
-      </a>
+      </div>
+
+      <div style="text-align: center; margin-top: var(--space-lg);">
+        <a href="pages/account/index.html" class="btn-tertiary">
+          <i class="ph ph-archive-box"></i> <span>Open Your Inventory</span>
+        </a>
+      </div>
 
     </section>
     
-    <section class="stack-md animate-enter delay-2 manifesto-section">
+    <section class="card stack-md animate-enter delay-2" style="background: var(--bg-panel); border-color: var(--border-subtle);">
       <span class="text-micro" style="color: var(--accent-primary);">The Kynar Protocol</span>
       <h2 class="text-h2">No Digital Filler.</h2>
       <p class="text-body">
@@ -110,6 +142,8 @@
 
   </main>
   
+  <footer id="app-footer" style="margin-top: var(--space-section);"></footer>
+
   <script type="module" src="js/app.js"></script>
   <script type="module" src="js/header.js"></script> 
   <script type="module" src="js/search.js"></script>

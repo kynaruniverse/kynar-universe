@@ -1,6 +1,6 @@
 /* KYNAR HEADER ENGINE (js/header.js)
    Injects the Glass Navigation Bar and handles Atmosphere Toggling.
-   Status: FINAL MASTER (Aligned with "Inventory" & "Starwalker" Logic)
+   Status: FINAL MASTER (Smart Auth Routing)
 */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,18 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function injectHeader() {
+  // 0. Locate the Mount Point (Defined in index.html)
+  const headerMount = document.getElementById('app-header');
+  if (!headerMount) {
+    console.error('[Universe] Header mount point missing.');
+    return;
+  }
+
   // 1. Resolve Paths (Smart Navigation)
   const rootPath = resolveRootPath();
-  const accountPath = `${rootPath}pages/account/index.html`; // Points to "The Inventory"
   const homeLink = `${rootPath}index.html`;
 
-  // 2. Create the Header Element
-  const header = document.createElement('header');
-  header.className = 'glass-header animate-enter';
-  
-  // 3. The Clean HTML
-  // Uses .header-inner for layout and .header-btn for the 44px tactile targets
-  header.innerHTML = `
+  // 2. The Clean HTML
+  // We inject directly into the existing <header> tag
+  headerMount.innerHTML = `
     <div class="container header-inner">
       
       <a href="${homeLink}" class="header-logo" aria-label="Kynar Universe Home">
@@ -29,7 +31,7 @@ function injectHeader() {
 
       <div class="header-actions">
         
-        <button onclick="toggleSearch()" class="header-btn" aria-label="Search Universe">
+        <button id="btn-search-trigger" class="header-btn" aria-label="Search Universe">
           <i class="ph ph-magnifying-glass"></i>
         </button>
         
@@ -37,23 +39,53 @@ function injectHeader() {
           <i class="ph ph-moon" id="theme-icon"></i>
         </button>
 
-        <a href="${accountPath}" class="header-btn" aria-label="Open Inventory">
+        <button id="btn-account-trigger" class="header-btn" aria-label="Open Account">
           <i class="ph ph-user"></i>
-        </a>
+        </button>
 
       </div>
 
     </div>
   `;
 
-  // 4. Inject at the top of the body
-  document.body.insertBefore(header, document.body.firstChild);
-
-  // 5. Attach Logic
+  // 3. Attach Logic
+  
+  // Theme Toggle
   document.getElementById('theme-toggle').onclick = toggleTheme;
   
-  // 6. Initialize State
+  // Search Trigger
+  const searchBtn = document.getElementById('btn-search-trigger');
+  searchBtn.onclick = () => {
+    if (window.toggleSearch) {
+      window.toggleSearch();
+    } else {
+      console.warn('[Universe] Search module not ready.');
+    }
+  };
+
+  // Account Trigger (Smart Auth Check)
+  const accountBtn = document.getElementById('btn-account-trigger');
+  accountBtn.onclick = () => {
+    handleAccountNavigation(rootPath);
+  };
+  
+  // 4. Initialize State
   updateThemeIcon();
+}
+
+/* HELPER: Smart Account Navigation 
+   Checks if user is logged in before deciding destination.
+*/
+function handleAccountNavigation(rootPath) {
+  // Check for session marker (set by auth.js)
+  // In a full production app, you might check supabase.auth.getSession() here too
+  const isLoggedIn = localStorage.getItem('kynar_session');
+
+  if (isLoggedIn) {
+    window.location.href = `${rootPath}pages/account/index.html`;
+  } else {
+    window.location.href = `${rootPath}pages/login.html`;
+  }
 }
 
 /* HELPER: Toggle Atmosphere
@@ -61,6 +93,9 @@ function injectHeader() {
    If user is in "Starwalker" (Secret) mode, clicking this returns them to reality (Dark).
 */
 function toggleTheme() {
+  // Check if window.setTheme exists (from app.js)
+  if (!window.setTheme) return;
+
   const current = document.documentElement.getAttribute('data-mode') || 'dark';
   let next = 'dark';
 
@@ -73,7 +108,7 @@ function toggleTheme() {
     next = 'dark';
   }
   
-  window.setTheme(next); // Uses the main app.js engine
+  window.setTheme(next); 
   updateThemeIcon();
 }
 
@@ -95,6 +130,7 @@ function updateThemeIcon() {
     icon.classList.add('ph-sun');  // Show Sun (to switch to Light)
   } else if (current === 'starwalker') {
     icon.classList.add('ph-star-four'); // Show Star (Secret State)
+    icon.style.color = 'var(--pal-star-gold)'; // Gold Tint
   } else {
     // Fallback for Auto
     icon.classList.add('ph-sun');

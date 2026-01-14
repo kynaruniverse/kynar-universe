@@ -202,7 +202,7 @@ code, pre {
 
 /* Category Borders (The "Soul" Colors) */
 .card[data-variant="tools"] { border-left: 2px solid var(--pal-tools-core); }
-.card[data-variant="living"] { border-left: 2px solid var(--pal-living-core); }
+.card[data-variant="life"] { border-left: 2px solid var(--pal-life-core); }
 .card[data-variant="home"] { border-left: 2px solid var(--pal-home-core); }
 .card[data-variant="hub"] { border-left: 2px solid var(--pal-hub-core); }
 
