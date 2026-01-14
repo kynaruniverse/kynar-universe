@@ -1,113 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#2dd4bf"> <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
-               script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
-               font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
-               img-src 'self' data: https:; 
-               connect-src 'self' https://*.supabase.co;">
-
-
-  <title>Support | The Kynar Protocol</title>
-  <meta name="description" content="Expert assistance for your digital upgrades. Troubleshooting, documentation, and direct support for Kynar Universe tools.">
+  <title>Support Signal | Kynar Universe</title>
   
-  <link rel="icon" href="../../assets/favicon.ico">
+  <link rel="stylesheet" href="../../assets/phosphor.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 </head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to Content</a>
+  <header id="app-header" class="glass-header"></header>
 
-<body data-theme="about">
+  <main id="main-content" class="container" style="padding-top: var(--space-xl); max-width: 600px;">
+    
+    <div class="stack-xl animate-enter">
+      <div style="text-align: center;">
+        <i class="ph ph-life-buoy" style="font-size: 3rem; color: var(--accent-primary);"></i>
+        <h1 class="text-h1">Open a Channel</h1>
+        <p class="text-body">Encountering an anomaly? Send a signal.</p>
+      </div>
 
-  <main id="main-content" class="container stack-xl">
-    
-    <div id="breadcrumb-nav"></div>
-    
-    <header class="stack-md animate-enter">
-      <div class="icon-box">
-        <i class="ri-lifebuoy-line"></i>
-      </div>
-      
-      <h1 class="text-h1">Universe Support</h1>
-      <p class="text-body text-body-lg">
-        We ensure your digital upgrades are deployment-ready. Access answers, technical documentation, and direct traveler assistance.
-      </p>
-      
-      <div class="lore-border" style="border-color: var(--pal-about-coral);">
-        <p class="text-lore">"No traveler is left behind."</p>
-      </div>
-    </header>
-    
-    <section class="stack-lg animate-enter delay-1">
-      <div class="stack-md">
-        <h2 class="text-h3">Common Inquiries</h2>
-        
-        <div class="card flex-row-start" data-variant="about">
-          <div class="icon-box sm">
-            <i class="ri-download-line" style="color: var(--pal-about-coral);"></i>
-          </div>
-          <div class="stack-xs">
-            <h3 class="text-body bold">Where are my upgrades?</h3>
-            <p class="text-body-sm">
-              Instant downloads are sent via email immediately. For safekeeping, all tools are mirrored in your <a href="../account/index.html" class="accent-link">Inventory</a>.
-            </p>
-          </div>
-        </div>
-        
-        <div class="card flex-row-start" data-variant="about">
-          <div class="icon-box sm">
-            <i class="ri-smartphone-line" style="color: var(--pal-about-coral);"></i>
-          </div>
-          <div class="stack-xs">
-            <h3 class="text-body bold">Device Compatibility</h3>
-            <p class="text-body-sm">
-              Verified for cross-platform utility. PDF planners work on tablet/print; Python scripts are tested for Windows, macOS, and Linux.
-            </p>
-          </div>
-        </div>
-        
-        <div class="card flex-row-start" data-variant="about">
-          <div class="icon-box sm">
-            <i class="ri-book-mark-line" style="color: var(--pal-about-coral);"></i>
-          </div>
-          <div class="stack-xs">
-            <h3 class="text-body bold">How do I use these tools?</h3>
-            <p class="text-body-sm">
-              We teach systems, not just files. Visit <a href="../hub/index.html" class="accent-link">The Hub</a> for verified implementation guides.
-            </p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="support-footer animate-enter delay-2">
+      <form class="card stack-md" onsubmit="event.preventDefault(); alert('Signal Transmitted. Response time: < 24h.');">
         <div class="stack-sm">
-          <h2 class="text-h3">Direct Assistance</h2>
-          <p class="text-body">
-            If you encounter an issue with a verified tool, our technical team is ready to respond.
-          </p>
+          <label class="text-micro">Your Email</label>
+          <input type="email" class="input" placeholder="pilot@example.com" required>
         </div>
         
-        <a href="mailto:support@kynaruniverse.co.uk" class="btn-primary" data-track="Contact Support">
-          <i class="ri-mail-send-line"></i> Contact Support
-        </a>
+        <div class="stack-sm">
+          <label class="text-micro">Message</label>
+          <textarea class="input" rows="5" placeholder="Describe the anomaly..." required></textarea>
+        </div>
+
+        <button class="btn-primary w-full" style="justify-content: center;">
+          Transmit Signal
+        </button>
+      </form>
+
+      <div style="text-align: center;">
+        <p class="text-micro" style="opacity: 0.6;">Direct Frequency: support@kynaruniverse.co.uk</p>
       </div>
-    </section>
-    
+    </div>
+
   </main>
   
-  <script type="module" src="../../js/app.js"></script>
-  <script type="module" src="../../js/header.js"></script>
-  <script type="module" src="../../js/search.js"></script>
-  <script type="module" src="../../js/footer.js"></script>
-  <script type="module" src="../../js/breadcrumb.js"></script>
+  <footer id="app-footer" style="margin-top: var(--space-section);"></footer>
 
+  <script type="module" src="../../js/app.js"></script>
+  <script type="module" src="../../js/header.js"></script> 
+  <script type="module" src="../../js/footer.js"></script>
+  <script type="module" src="../../js/search.js"></script>
 </body>
 </html>
