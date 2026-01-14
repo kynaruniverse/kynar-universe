@@ -616,3 +616,32 @@ kbd {
 .hero-icon-display:hover {
   transform: scale(1.05);
 }
+
+/* Auth Specific Transitions */
+.animate-enter {
+    animation: authSlideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes authSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.error-msg {
+    min-height: 20px;
+    font-size: var(--size-micro);
+    color: var(--accent-error);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: var(--accent-primary);
+    cursor: pointer;
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+.link-btn:hover { opacity: 1; }
