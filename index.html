@@ -1,159 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="dark">
 <head>
   <meta charset="UTF-8">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0a0a0a">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   <meta http-equiv="Content-Security-Policy" 
       content="default-src 'self'; 
-               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+               script-src 'self' https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <title>One Universe. Infinite Digital Solutions. | Kynar Universe</title>
+  <meta name="description" content="The premier marketplace for high-quality digital essentials. Download verified Python scripts, planners, and household systems.">
   
-  <meta name="description" content="The premier marketplace for high-quality digital essentials. From Python scripts to digital planners, download verified solutions to work smarter, live better, and play harder.">
-  <meta name="author" content="Kynar Universe">
-  
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://kynaruniverse.co.uk/">
-  <meta property="og:title" content="One Universe. Infinite Digital Solutions.">
-  <meta property="og:description" content="The ultimate Digital Department Store. We reject digital filler. Download verified tools for developers, high-performers, and families.">
-  <meta property="og:image" content="https://kynaruniverse.co.uk/assets/share-preview.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://kynaruniverse.co.uk/assets/share-preview.jpg">
-  
-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <meta property="og:title" content="Kynar Universe | Digital Department Store">
+  <meta property="og:image" content="assets/share-preview.jpg">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
-
+  
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/components.css">
-
-  <style>
-    /* Logo Animation */
-    .hero-logo-glow {
-      filter: drop-shadow(0 0 25px var(--accent-glow)); 
-      animation: floatLogo 6s ease-in-out infinite;
-      image-rendering: -webkit-optimize-contrast;
-    }
-    @keyframes floatLogo {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-  </style>
 </head>
 
 <body>
- 
-  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <main id="main-content" class="container">
     
-    <header class="stack-md animate-enter" style="text-align: center; align-items: center; margin-bottom: var(--space-xl); padding-top: var(--space-lg);">
-  
-      <div style="margin-bottom: var(--space-md);">
+    <section class="hero-soul stack-xl animate-enter">
+      
+      <div class="hero-header-content">
         <img src="assets/logo.svg" 
              alt="Kynar Universe Logo" 
-             class="hero-logo-glow"
-             style="width: 120px; height: auto; opacity: 1;">
+             class="hero-logo-glow" 
+             width="120" height="120">
+             
+        <h1 class="text-h1">
+          One Universe.<br>
+          <span>Infinite Digital Solutions.</span>
+        </h1>
+
+        <p class="text-body">
+          The ultimate <strong>Digital Department Store</strong>. We reject digital filler, providing verified tools for developers, high-performers, and families.
+        </p>
+
+        <div class="hero-actions">
+           <a href="#departments" class="btn-primary" data-track="Hero Browse">Browse Departments</a>
+           <a href="pages/onboarding/index.html" class="btn-secondary" data-track="Hero Start">Start Protocol</a>
+        </div>
       </div>
 
-      <h1 class="text-h1" style="line-height: 1.1; margin-bottom: var(--space-xs);">
-        One Universe.<br>
-        <span style="color: var(--accent-primary);">Infinite Digital Solutions.</span>
-      </h1>
-
-      <p class="text-body" style="font-size: 1.15rem; max-width: 60ch; opacity: 0.9; margin: 0 auto;">
-        The ultimate <strong>Digital Department Store</strong>. We are building the world's largest library of downloadable tools—serving everyone from coders to parents. Download your upgrade.
-      </p>
-
-      <div style="margin-top: var(--space-md); display: flex; gap: var(--space-sm); justify-content: center;">
-         <a href="#departments" class="btn-primary">Browse Departments</a>
-      </div>
-
-    </header>
+    </section>
 
     <section id="departments" class="stack-md animate-enter delay-1">
-  
-      <a href="pages/tools/index.html" class="card" data-variant="tools">
-        <div style="display: flex; align-items: center; gap: var(--space-md);">
       
-          <div class="icon-box">
-            <i class="ri-code-s-slash-line"></i> 
-          </div>
+      <h2 class="text-micro">Select Department</h2>
 
+      <a href="pages/tools/index.html" class="card" data-variant="tools" data-track="Dept: Tools">
+        <div class="card-inner">
+          <div class="icon-box"><i class="ri-code-s-slash-line"></i></div>
           <div class="stack-xs">
-            <h2 class="text-h3" style="margin: 0;">KYNAR Tools</h2> 
-            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.8;">
-              Empowering developers and entrepreneurs with production-ready Python scripts, automation workflows, and business intelligence templates.
-            </p>
+            <h3 class="text-h3">KYNAR Tools</h3> 
+            <p class="text-body">Python automation, business intelligence, and developer blueprints.</p>
           </div>
-      
         </div>
       </a>
 
-      <a href="pages/living/index.html" class="card" data-variant="living">
-        <div style="display: flex; align-items: center; gap: var(--space-md);">
-      
-          <div class="icon-box">
-            <i class="ri-flashlight-line"></i> 
-          </div>
-
+      <a href="pages/living/index.html" class="card" data-variant="living" data-track="Dept: Living">
+        <div class="card-inner">
+          <div class="icon-box"><i class="ri-flashlight-line"></i></div>
           <div class="stack-xs">
-            <h2 class="text-h3" style="margin: 0;">KYNAR Living</h2>
-            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.8;">
-              Bringing clarity to daily chaos with digital planners, finance trackers, and wellness systems designed for high-performance living.
-            </p>
+            <h3 class="text-h3">KYNAR Living</h3>
+            <p class="text-body">LifeOS planners, finance trackers, and high-performance systems.</p>
           </div>
-      
         </div>
       </a>
 
-      <a href="pages/home/index.html" class="card" data-variant="home">
-        <div style="display: flex; align-items: center; gap: var(--space-md);">
-      
-          <div class="icon-box">
-            <i class="ri-home-4-line"></i>
-          </div>
-
+      <a href="pages/home/index.html" class="card" data-variant="home" data-track="Dept: Home">
+        <div class="card-inner">
+          <div class="icon-box"><i class="ri-home-4-line"></i></div>
           <div class="stack-xs">
-            <h2 class="text-h3" style="margin: 0;">KYNAR Home</h2>
-            <p class="text-body" style="font-size: 0.95rem; margin: 0; opacity: 0.8;">
-              Supporting households with educational learning bundles, creative activity packs, and home management tools.
-            </p>
+            <h3 class="text-h3">KYNAR Home</h3>
+            <p class="text-body">Educational bundles, chore management, and family activity packs.</p>
           </div>
-      
         </div>
       </a>
 
-      <a href="pages/account/index.html" class="card" style="border-left: none; text-align: center; opacity: 0.7; padding: var(--space-sm);">
-        <span class="text-micro" style="letter-spacing: 0.1em;">Open Your Inventory</span>
+      <a href="pages/account/index.html" class="btn-tertiary" style="align-self: center;" data-track="Quick Inventory">
+        <i class="ri-archive-line"></i> <span>Open Your Inventory</span>
       </a>
 
     </section>
     
-    <section class="animate-enter delay-2" style="margin-top: var(--space-xl); padding: var(--space-lg) 0; border-top: 1px solid var(--border-subtle); text-align: center;">
-  
-      <span class="text-micro" style="color: var(--accent-primary);">Global Standard for Digital Utility</span>
-      <h3 class="text-h2" style="margin-top: var(--space-sm); font-size: 1.5rem;">No Digital Filler.</h3>
-  
-      <p class="text-body" style="margin: var(--space-sm) auto; max-width: 65ch; opacity: 0.8;">
-        We believe that the right digital tool can change your day. At KYNAR Universe, every script, template, and workbook is vetted for usability, quality, and impact. 
-        We are democratizing access to productivity—one instant download at a time.
+    <section class="stack-md animate-enter delay-2 manifesto-section">
+      <span class="text-micro" style="color: var(--accent-primary);">The Kynar Protocol</span>
+      <h2 class="text-h2">No Digital Filler.</h2>
+      <p class="text-body">
+        Every script, template, and system is vetted for impact. We are democratizing access to professional utility—one instant download at a time.
       </p>
-
     </section>
 
   </main>
@@ -162,5 +113,10 @@
   <script type="module" src="js/header.js"></script> 
   <script type="module" src="js/search.js"></script>
   <script type="module" src="js/footer.js"></script>
+
+  <script type="module">
+    import { injectStructuredData } from './js/components/structured-data.js';
+    injectStructuredData('website');
+  </script>
 </body>
 </html>

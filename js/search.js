@@ -1,18 +1,23 @@
 /* KYNAR UNIVERSE SEARCH ENGINE (js/search.js)
-   "The Lens."
-   Allows instant querying of the centralized Inventory and Knowledge Library.
-   Status: FINAL MASTER (REMIX ICON ENGINE)
+   Status: EVOLVED MASTER (Debounced + Full Keyboard Navigation)
 */
 
 import { KYNAR_DATA } from './data.js';
 
+// 1. INDEXING
+const SEARCH_INDEX = [
+  ...KYNAR_DATA.products.map(p => ({ ...p, type: 'product', searchable: `${p.title} ${p.shortDesc} ${p.keywords?.join(' ') || ''}` })),
+  ...KYNAR_DATA.guides.map(g => ({ ...g, type: 'guide', searchable: `${g.title} ${g.shortDesc}` }))
+];
+
+let searchDebounceTimer;
+let activeResultIndex = -1;
+
 document.addEventListener('DOMContentLoaded', () => {
   injectSearchUI();
+  attachListeners();
 });
 
-/* =========================================
-   1. INJECT THE LENS (OVERLAY)
-   ========================================= */
 function injectSearchUI() {
   if (document.getElementById('search-overlay')) return;
 
@@ -20,240 +25,173 @@ function injectSearchUI() {
   overlay.id = 'search-overlay';
   overlay.className = 'search-overlay';
   
-  // ALIGNMENT: Updated to Remix Icons (ri-)
   overlay.innerHTML = `
     <div class="search-container stack-md animate-enter">
-      
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div style="display:flex; align-items:center; gap: 8px;">
-          <i class="ri-planet-line" style="color: var(--accent-primary); font-size: 1.25rem;"></i>
-          <h2 class="text-h3" style="margin:0;">Search Universe</h2>
+      <header class="search-header">
+        <div class="flex-center gap-sm">
+          <i class="ri-planet-line accent-text"></i>
+          <h2 class="text-h3">Search Universe</h2>
         </div>
-        <button class="btn-tertiary" onclick="toggleSearch()">
-          <i class="ri-close-line"></i> Close
+        <button id="close-search" class="btn-tertiary sm">
+          <i class="ri-close-line"></i>
         </button>
+      </header>
+      
+      <div class="search-input-wrapper">
+        <input type="text" id="search-input" class="search-input" placeholder="Search blueprints, tools, or guides..." autocomplete="off">
+        <div class="search-spinner" id="search-spinner"></div>
       </div>
       
-      <div style="position: relative;">
-        <input type="text" id="search-input" class="search-input" placeholder="Find scripts, planners, and guides..." autocomplete="off">
-        <i class="ri-search-2-line" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
-      </div>
-      
-      <div id="search-results" class="search-results stack-sm" style="max-height: 60vh; overflow-y: auto; padding-right: 4px;">
-        <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
-          <i class="ri-eye-2-line" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
-          <p class="text-body">Explore the Digital Department Store.</p>
-          <p class="text-micro">Type to access verified tools and knowledge.</p>
+      <div id="search-results" class="search-results-area custom-scrollbar">
+        <div class="search-placeholder">
+          <i class="ri-search-eye-line"></i>
+          <p class="text-body">Awaiting Input...</p>
         </div>
       </div>
 
-      <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; display: flex; justify-content: space-between; opacity: 0.5;">
-        <span class="text-micro">Press ESC to close</span>
-        <span class="text-micro">Kynar Universe</span>
-      </div>
-
+      <footer class="search-footer flex-between">
+        <div class="flex-center gap-sm">
+          <kbd>ESC</kbd> <span class="text-micro">Close</span>
+          <kbd>↑↓</kbd> <span class="text-micro">Navigate</span>
+          <kbd>↵</kbd> <span class="text-micro">Select</span>
+        </div>
+        <span class="text-micro muted">Kynar_OS v2.1</span>
+      </footer>
     </div>
   `;
   
   document.body.appendChild(overlay);
-
-  const input = document.getElementById('search-input');
-  input.addEventListener('input', (e) => handleSearch(e.target.value));
-  
-  // KEYBOARD SUPPORT
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeSearch();
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault();
-      openSearch();
-    }
-    
-    // Arrow Key Navigation
-    const overlay = document.getElementById('search-overlay');
-    if (!overlay.classList.contains('active')) return;
-    
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      const results = document.querySelectorAll('.search-result-card');
-      if (results.length === 0) return;
-      
-      // Stop page scroll
-      e.preventDefault();
-      
-      const focused = document.activeElement;
-      // Convert NodeList to Array to find index
-      const currentIndex = Array.from(results).indexOf(focused);
-      
-      let nextIndex;
-      if (e.key === 'ArrowDown') {
-        nextIndex = (currentIndex < results.length - 1) ? currentIndex + 1 : 0;
-      } else {
-        nextIndex = (currentIndex > 0) ? currentIndex - 1 : results.length - 1;
-      }
-      
-      results[nextIndex].focus();
-    }
-    
-    // Enter to open
-    if (e.key === 'Enter' && e.target.id === 'search-input') {
-      e.preventDefault();
-      const firstResult = document.querySelector('.search-result-card');
-      if (firstResult) firstResult.click();
-    }
-  });
 }
 
-/* =========================================
-   2. VISIBILITY LOGIC
-   ========================================= */
-function toggleSearch() {
-  const overlay = document.getElementById('search-overlay');
-  if (overlay.classList.contains('active')) {
-    closeSearch();
-  } else {
-    openSearch();
-  }
-}
-window.toggleSearch = toggleSearch;
-
-function openSearch() {
-  const overlay = document.getElementById('search-overlay');
-  overlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
-  setTimeout(() => document.getElementById('search-input').focus(), 100);
-}
-
-function closeSearch() {
-  const overlay = document.getElementById('search-overlay');
-  overlay.classList.remove('active');
-  document.body.style.overflow = '';
-  setTimeout(() => {
-    document.getElementById('search-input').value = '';
-    resetResults();
-  }, 300);
-}
-
-function resetResults() {
-  document.getElementById('search-results').innerHTML = `
-    <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
-      <i class="ri-eye-2-line" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
-      <p class="text-body">Explore the Digital Department Store.</p>
-    </div>`;
-}
-
-/* =========================================
-   3. SEARCH ALGORITHM (OPTIMIZED)
-   Flattens the data ONCE on load.
-   ========================================= */
-
-// 1. CACHE THE INDEX
-const allItems = [
-  ...KYNAR_DATA.products.map(item => ({ ...item, type: 'product' })),
-  ...KYNAR_DATA.guides.map(item => ({ ...item, type: 'guide' }))
-];
-
+/**
+ * 2. CORE SEARCH LOGIC (Debounced)
+ */
 function handleSearch(query) {
-  const resultsContainer = document.getElementById('search-results');
+  const container = document.getElementById('search-results');
   const term = query.toLowerCase().trim();
+  activeResultIndex = -1;
 
   if (term.length < 2) {
-    if (term.length === 0) resetResults();
+    container.innerHTML = `<div class="search-placeholder"><i class="ri-search-eye-line"></i><p class="text-body">Keep typing...</p></div>`;
     return;
   }
 
-  // 2. FILTER THE CACHED INDEX
-  const matches = allItems.filter(item => {
-    return (
-      item.title.toLowerCase().includes(term) || 
-      (item.tag && item.tag.toLowerCase().includes(term)) ||
-      (item.subCategory && item.subCategory.toLowerCase().includes(term)) ||
-      item.category.toLowerCase().includes(term)
-    );
-  });
+  const matches = SEARCH_INDEX.filter(item => item.searchable.toLowerCase().includes(term));
 
-  // 3. RENDER RESULTS
   if (matches.length === 0) {
-    resultsContainer.innerHTML = `
-      <div style="text-align:center; opacity:0.5; padding: 2rem;">
-        <p class="text-body">Sector Uncharted.</p>
-        <p class="text-micro" style="margin-top:8px;">Try "Automation", "Wellness", or "Planner".</p>
+    container.innerHTML = `
+      <div class="search-placeholder">
+        <p class="text-body">Sector Uncharted</p>
+        <p class="text-micro muted">Try searching for "Python" or "Planner"</p>
       </div>`;
   } else {
-    resultsContainer.innerHTML = matches.map(item => renderResultCard(item)).join('');
+    container.innerHTML = matches.map((item, idx) => renderResult(item, term, idx)).join('');
   }
 }
 
-/* =========================================
-   4. RENDERER (REMIX ICON READY)
-   ========================================= */
-function renderResultCard(item) {
-  const link = resolvePath(item);
+function renderResult(item, term, index) {
+  const path = resolvePath(item);
+  const icon = item.type === 'guide' ? 'ri-book-open-line' : 'ri-box-3-line';
+  const price = item.type === 'product' ? `£${item.price.toFixed(2)}` : 'Guide';
   
-  // Default Remix Icons
-  let iconClass = 'ri-box-3-line'; 
-  let subText = '';
-  let badge = '';
+  // Highlighting
+  const regex = new RegExp(`(${term})`, 'gi');
+  const highlightedTitle = item.title.replace(regex, '<mark>$1</mark>');
 
-  if (item.type === 'product') {
-    // Use the icon from data.js (already updated to ri-) or fallback
-    iconClass = item.previewIcon || 'ri-archive-line';
-    subText = `Verified Tool • ${capitalize(item.category)}`;
-    badge = `<span style="font-weight: 600; color: var(--accent-primary);">£${item.price.toFixed(2)}</span>`;
-  } else {
-    iconClass = 'ri-book-open-line';
-    subText = `Knowledge Record • ${item.readTime}`;
-    badge = `<span style="font-size: 0.8rem; opacity: 0.7;">Read Guide</span>`;
-  }
-
-  // NOTE: Removed "ph" prefix class to support pure Remix classes
   return `
-    <a href="${link}" class="card search-result-card animate-enter" onclick="closeSearch()">
-      <div style="display:flex; align-items:center; gap:var(--space-md);">
-        
-        <div style="width:40px; height:40px; border-radius:50%; background:var(--bg-page); display:flex; align-items:center; justify-content:center; flex-shrink: 0; border: 1px solid var(--border-subtle);">
-          <i class="${iconClass}" style="font-size:1.25rem; color:var(--text-main); opacity: 0.8;"></i>
-        </div>
-        
-        <div class="stack-xs" style="flex:1;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-             <h4 class="text-body" style="font-weight:600; font-size:0.95rem; margin:0;">${item.title}</h4>
-             ${badge}
+    <a href="${path}" class="search-item card" data-index="${index}">
+      <div class="search-item-inner">
+        <div class="icon-box sm"><i class="${icon}"></i></div>
+        <div class="search-item-content">
+          <div class="flex-between">
+            <h4 class="text-body bold">${highlightedTitle}</h4>
+            <span class="text-micro accent-text">${price}</span>
           </div>
-          
-          <div style="display:flex; justify-content:space-between; font-size: 0.8rem; opacity: 0.6; margin-top: 2px;">
-            <span>${subText}</span>
-          </div>
+          <span class="text-micro muted">${item.category}</span>
         </div>
-
       </div>
     </a>
   `;
 }
 
-/* =========================================
-   5. UTILITIES
-   ========================================= */
-function resolvePath(item) {
-  const path = window.location.pathname;
-  let prefix = '';
+/**
+ * 3. LISTENERS & ACCESSIBILITY
+ */
+function attachListeners() {
+  const input = document.getElementById('search-input');
+  const overlay = document.getElementById('search-overlay');
 
-  if (!path.includes('/pages/')) {
-    prefix = 'pages/';
-  } else {
-    const parts = path.split('/pages/')[1];
-    if (parts && parts.includes('/')) {
-      prefix = '../';
-    } else {
-      prefix = '';
+  // Input with Debounce
+  input.oninput = (e) => {
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => handleSearch(e.target.value), 250);
+  };
+
+  // Close Events
+  document.getElementById('close-search').onclick = closeSearch;
+  overlay.onclick = (e) => { if (e.target === overlay) closeSearch(); };
+
+  // Global Shortcuts & Navigation
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
     }
-  }
 
-  if (item.type === 'product') {
-    return `${prefix}product.html?id=${item.id}`;
-  } else {
-    return `${prefix}guide.html?guide=${item.id}`; 
+    if (!overlay.classList.contains('active')) return;
+
+    if (e.key === 'Escape') closeSearch();
+    
+    // Keyboard Navigation Logic
+    const results = document.querySelectorAll('.search-item');
+    if (results.length > 0) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activeResultIndex = Math.min(activeResultIndex + 1, results.length - 1);
+        updateActiveResult(results);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activeResultIndex = Math.max(activeResultIndex - 1, 0);
+        updateActiveResult(results);
+      } else if (e.key === 'Enter' && activeResultIndex > -1) {
+        e.preventDefault();
+        results[activeResultIndex].click();
+      }
+    }
+  });
+}
+
+function updateActiveResult(results) {
+  results.forEach(el => el.classList.remove('is-active'));
+  if (activeResultIndex > -1) {
+    const activeEl = results[activeResultIndex];
+    activeEl.classList.add('is-active');
+    activeEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 }
 
-function capitalize(s) {
-  return s && s[0].toUpperCase() + s.slice(1);
+/* --- STATE MANAGEMENT --- */
+
+export function openSearch() {
+  const overlay = document.getElementById('search-overlay');
+  overlay.classList.add('active');
+  document.body.classList.add('no-scroll');
+  setTimeout(() => document.getElementById('search-input').focus(), 100);
+}
+
+export function closeSearch() {
+  const overlay = document.getElementById('search-overlay');
+  overlay.classList.remove('active');
+  document.body.classList.remove('no-scroll');
+}
+
+window.toggleSearch = () => {
+  const overlay = document.getElementById('search-overlay');
+  overlay.classList.contains('active') ? closeSearch() : openSearch();
+};
+
+function resolvePath(item) {
+  const isInternal = window.location.pathname.includes('/pages/');
+  const prefix = isInternal ? (window.location.pathname.split('/pages/')[1].includes('/') ? '../../' : '../') : 'pages/';
+  return `${prefix}${item.type}.html?${item.type === 'product' ? 'id' : 'guide'}=${item.id}`;
 }

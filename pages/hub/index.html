@@ -1,95 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#8b5cf6"> <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+               script-src 'self' https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>The Hub | Knowledge Library | Kynar Universe</title>
+  <meta name="description" content="The Kynar Knowledge Library. Verified guides and actionable insights to help you work smarter and live better. No digital filler.">
   
-  <title>The Hub | Knowledge & Community</title>
-  
-  <meta name="description" content="The KYNAR Knowledge Library. Verified guides, stories, and ideas to help you work smarter, live better, and play harder. No digital filler.">
-  
-  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
-  
+  <link rel="icon" href="../../assets/favicon.ico">
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 </head>
 
 <body data-theme="hub">
-  
 
-  
-  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <main id="main-content" class="container stack-xl">
     
     <div id="breadcrumb-nav"></div>
     
-    <header class="stack-md animate-enter delay-1">
-      
-      <div class="icon-box" style="background: var(--pal-hub-surface); border-color: rgba(139, 92, 246, 0.2); color: var(--pal-hub-core);">
+    <header class="stack-md animate-enter">
+      <div class="icon-box">
         <i class="ri-compass-3-line"></i>
       </div>
       
       <h1 class="text-h1">The Hub</h1>
       
-      <p class="text-body" style="font-size: 1.1rem; max-width: 55ch;">
-        The library of ideas and stories. We democratize access to productivity by sharing the knowledge behind the tools.
-        <br><br>
-        <span style="opacity: 0.8; font-size: 1rem;">Verified guides to help you work smarter and live better.</span>
+      <p class="text-body">
+        The library of ideas and stories. We democratize access to productivity by sharing the knowledge behind the tools. Verified guides to help you work smarter and live better.
       </p>
       
-      <div style="opacity: 0.8; margin-top: var(--space-sm); border-left: 2px solid var(--pal-hub-core); padding-left: var(--space-sm);">
-        <p class="text-lore">"The library of stories and lost knowledge."</p>
-      </div>
+      <p class="text-lore">"The library of stories and lost knowledge."</p>
     </header>
     
-    <section class="stack-md animate-enter delay-2">
-      <h2 class="text-h3">Latest Guides</h2>
+    <section class="stack-md animate-enter delay-1">
+      <div class="section-header">
+        <h2 class="text-h3">Knowledge Records</h2>
+        <span class="text-micro">Verified Guides</span>
+      </div>
       
-      <div style="display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <div class="grid-auto">
         
-        <a href="../guide.html?guide=start-journaling" class="card" data-variant="hub">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <a href="../guide.html?guide=start-journaling" class="card" data-variant="hub" data-track="Read: Journaling Systems">
+          <div class="card-inner-split">
             <div class="stack-sm">
               <h3 class="text-h3">Journaling Systems</h3>
-              <p class="text-body" style="font-size: 0.9rem;">
-                How to build a habit that actually sticks.
+              <p class="text-body-sm">
+                How to build a mental clarity habit that actually sticks.
               </p>
-              <span class="text-micro" style="margin-top: var(--space-sm); color: var(--pal-hub-core);">Read Guide →</span>
+              <span class="text-micro accent-link">Read Guide →</span>
             </div>
             
-            <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem;">
+            <div class="icon-box sm">
               <i class="ri-book-open-line"></i>
             </div>
           </div>
         </a>
         
-        <a href="../guide.html?guide=calm-morning-routine" class="card" data-variant="hub">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <a href="../guide.html?guide=calm-morning-routine" class="card" data-variant="hub" data-track="Read: Morning Protocols">
+          <div class="card-inner-split">
             <div class="stack-sm">
               <h3 class="text-h3">Morning Protocols</h3>
-              <p class="text-body" style="font-size: 0.9rem;">
-                Reclaim your mornings from the chaos.
+              <p class="text-body-sm">
+                Reclaim your mornings from digital chaos and noise.
               </p>
-              <span class="text-micro" style="margin-top: var(--space-sm); color: var(--pal-hub-core);">Read Guide →</span>
+              <span class="text-micro accent-link">Read Guide →</span>
             </div>
             
-            <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem;">
+            <div class="icon-box sm">
               <i class="ri-cup-line"></i>
             </div>
           </div>
@@ -105,6 +94,6 @@
   <script type="module" src="../../js/search.js"></script>
   <script type="module" src="../../js/footer.js"></script>
   <script type="module" src="../../js/breadcrumb.js"></script>
-</body>
 
+</body>
 </html>

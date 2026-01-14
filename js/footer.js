@@ -1,70 +1,65 @@
 /* KYNAR UNIVERSE FOOTER COMPONENT (js/footer.js)
-   Universal footer injection with lore system integration.
-   Status: FINAL MASTER (Path-Safe & Git-Ready)
+   Universal footer injection with lore integration and utility links.
+   Status: EVOLVED MASTER (Clean UI + Navigation Support)
 */
 
-document.addEventListener('DOMContentLoaded', () => {
-  injectFooter();
-});
+(function() {
+  'use strict';
 
-function injectFooter() {
-  // Check if footer already exists
-  if (document.querySelector('.kynar-footer')) return;
-  
-  // 1. Resolve Root Path (Prevents broken links on sub-pages)
-  const rootPath = resolveRootPath();
-  
-  const footer = document.createElement('footer');
-  footer.className = 'kynar-footer';
-  
-  // Using specific styles to ensure spacing consistency
-  footer.style.cssText = `
-    margin-top: var(--space-section);
-    padding: var(--space-xl) 0 var(--space-lg);
-    border-top: 1px solid var(--border-subtle);
-    text-align: center;
-  `;
-  
-  footer.innerHTML = `
-    <div class="container stack-md">
-      <p class="text-lore" style="margin-bottom: var(--space-md);">
-        "One Universe. Infinite Solutions."
-      </p>
-      
-      <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; opacity: 0.6;">
-        <a href="${rootPath}pages/about/index.html" class="text-micro" style="text-decoration: none; color: var(--text-main);">About</a>
-        <span>•</span>
-        <a href="${rootPath}pages/support/index.html" class="text-micro" style="text-decoration: none; color: var(--text-main);">Support</a>
-        <span>•</span>
-        <a href="${rootPath}pages/legal/privacy.html" class="text-micro" style="text-decoration: none; color: var(--text-main);">Privacy</a>
+  document.addEventListener('DOMContentLoaded', () => {
+    injectFooter();
+  });
+
+  function injectFooter() {
+    if (document.querySelector('.kynar-footer')) return;
+    
+    const rootPath = resolveRootPath();
+    const footer = document.createElement('footer');
+    footer.className = 'kynar-footer animate-enter';
+    
+    footer.innerHTML = `
+      <div class="container stack-lg">
+        
+        <p class="text-lore footer-whisper">
+          "One Universe. Infinite Solutions."
+        </p>
+        
+        <div class="footer-nav">
+          <a href="${rootPath}pages/about/index.html" class="text-micro">About</a>
+          <span class="footer-sep">•</span>
+          <a href="${rootPath}pages/support/index.html" class="text-micro">Support</a>
+          <span class="footer-sep">•</span>
+          <a href="${rootPath}pages/legal/privacy.html" class="text-micro">Privacy</a>
+        </div>
+
+        <div class="footer-actions">
+          <button id="back-to-top" class="btn-tertiary" aria-label="Return to top">
+            <i class="ri-arrow-up-line"></i> <span class="text-micro">Top</span>
+          </button>
+        </div>
+        
+        <p class="text-micro copyright">
+          © ${new Date().getFullYear()} Kynar Universe. <span class="mobile-hide">All Rights Reserved.</span>
+        </p>
       </div>
-      
-      <p class="text-micro" style="margin-top: var(--space-sm); opacity: 0.4;">
-        © ${new Date().getFullYear()} Kynar Universe. All Rights Reserved.
-      </p>
-    </div>
-  `;
-  
-  document.body.appendChild(footer);
-}
+    `;
+    
+    document.body.appendChild(footer);
 
-/* HELPER: Smart Path Resolution
-   Ensures links work from deeply nested folders (e.g. tools/index.html)
-*/
-function resolveRootPath() {
-  const path = window.location.pathname;
-  
-  // 1. Root (index.html)
-  if (!path.includes('/pages/')) {
-    return './'; 
+    // Attach Back to Top logic
+    const topBtn = document.getElementById('back-to-top');
+    if (topBtn) {
+      topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
   }
-  
-  // 2. Deep Category (pages/tools/index.html)
-  const parts = path.split('/pages/')[1];
-  if (parts && parts.includes('/')) {
-    return '../../';
+
+  function resolveRootPath() {
+    const path = window.location.pathname;
+    if (!path.includes('/pages/')) return './'; 
+    const parts = path.split('/pages/')[1];
+    return (parts && parts.includes('/')) ? '../../' : '../';
   }
-  
-  // 3. Shallow Page (pages/legal.html)
-  return '../';
-}
+
+})();

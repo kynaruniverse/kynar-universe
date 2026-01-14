@@ -1,215 +1,125 @@
 /* KYNAR DESIGN TOKENS (css/tokens.css)
-   Source of Truth for the "One Universe" Visual Language.
-   Status: FINAL MASTER (Aligned with Departments & Secret Modes)
+   Status: EVOLVED MASTER (Motion Ready + Shadow Stacks)
 */
 
 :root {
   /* =========================================
      1. TYPOGRAPHY SYSTEM
      ========================================= */
-  /* Main UI: Clean, modern, trustworthy */
   --font-primary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-  /* Storytelling: Editorial, mythic (The "Whispers") */
   --font-secondary: "Lora", Georgia, serif; 
-  /* Technical: Code snippets, version numbers */
   --font-mono: "Fira Code", monospace; 
 
-  /* Responsive Type Scale */
   --text-h1: clamp(2.5rem, 5vw, 4rem);      
   --text-h2: clamp(1.75rem, 3vw, 2.5rem); 
   --text-h3: 1.25rem;                     
   --text-body: 1rem;                      
-  --text-micro: 0.875rem;                 
+  --text-micro: 0.8125rem; /* Slightly tighter */
   
   --leading-tight: 1.2;
   --leading-base: 1.6;  
-  --leading-loose: 1.8;
 
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600; 
   
   /* =========================================
-     2. SPACING SCALE (4px Base)
+     2. SPACING & LAYOUT
      ========================================= */
   --space-xs: 4px;
   --space-sm: 8px;
-  --space-md-sm: 12px;
   --space-md: 16px;
-  --space-md-lg: 24px;
   --space-lg: 32px;
   --space-xl: 48px;
-  --space-2xl: 64px;
-  --space-section: 96px; /* Dramatic section breaks */
+  --space-section: clamp(64px, 10vw, 128px);
   
-  /* MOBILE SAFETY (Notch & Home Bar) */
-  --safe-top: env(safe-area-inset-top, 20px);
-  --safe-bottom: env(safe-area-inset-bottom, 20px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
 
-  /* INTERACTION STANDARDS */
-  --touch-target: 44px; /* Minimum tap size */
+  --touch-target: 48px; /* High-precision tap size */
+  --grid-max-width: 1100px;
 
   /* =========================================
-     3. SHAPE & DEPTH
+     3. Z-INDEX (The Layer Cake)
      ========================================= */
-  --radius-sm: 4px;
-  --radius-md: 12px;   
-  --radius-lg: 24px;  /* Smooth "iOS-like" corners */
-  --radius-pill: 999px; 
-
-  --grid-max-width: 1200px;
-  --grid-gutter: var(--space-md);
-  
+  --z-negative: -1;
+  --z-base: 1;
   --z-header: 1000;
   --z-overlay: 2000;
+  --z-toast: 3000; /* Toasts always win */
 
   /* =========================================
-     4. COLOR PALETTE: THE DEEP UNIVERSE
+     4. MOTION (Physics Engine)
      ========================================= */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --transition-fast: 200ms var(--ease-out-expo);
+  --transition-base: 400ms var(--ease-out-expo);
 
-  /* THE CANVAS (Default Dark Mode) */
-  --bg-page: #0a0a0a;  /* Void Black */
-  --bg-panel: #141414; /* Offset Black */
-  --bg-surface: rgba(255, 255, 255, 0.03); /* Glass */
-  --bg-surface-hover: rgba(255, 255, 255, 0.08); /* Brighter Glass */
+  /* =========================================
+     5. COLOR PALETTE (VOID BLACK - Default)
+     ========================================= */
+  --bg-page: #0a0a0a;
+  --bg-surface: rgba(255, 255, 255, 0.04);
+  --bg-surface-hover: rgba(255, 255, 255, 0.08);
   
-  /* THE INK (Text) */
-  --text-main: #ededed;  /* Soft White */
-  --text-body: #a1a1aa;  /* Silver */
-  --text-muted: #52525b; /* Zinc */
-  --text-inverse: #0a0a0a; /* Black Text on White Buttons */
+  --text-main: #ffffff;
+  --text-body: #a1a1aa;
+  --text-muted: #52525b;
   
-  /* UTILITIES */
-  --border-subtle: rgba(255, 255, 255, 0.1);
-  --border-highlight: rgba(255, 255, 255, 0.2);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-highlight: rgba(255, 255, 255, 0.15);
   --glass-blur: blur(16px);
-  --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   
-  /* STATUS */
-  --color-success: #10b981; /* Emerald */
-  --color-error: #ef4444;   /* Red */
-  --color-info: #3b82f6;    /* Blue */
+  /* SHADOW STACKS (Physical Depth) */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1);
 
-  /* --- DEPARTMENT SOULS (The 3 Worlds) --- */
+  /* DEPARTMENT SOULS */
+  --pal-tools: #3b82f6;   --pal-tools-glow: rgba(59, 130, 246, 0.3);
+  --pal-living: #10b981;  --pal-living-glow: rgba(16, 185, 129, 0.3);
+  --pal-home: #f59e0b;    --pal-home-glow: rgba(245, 158, 11, 0.3);
+  --pal-hub: #8b5cf6;     --pal-hub-glow: rgba(139, 92, 246, 0.3);
+  --pal-star: #FFD700;    --pal-star-glow: rgba(255, 215, 0, 0.4);
 
-  /* TOOLS (Electric Blue) */
-  --pal-tools-core: #3b82f6;
-  --pal-tools-glow: rgba(59, 130, 246, 0.4);
-  --pal-tools-surface: rgba(59, 130, 246, 0.1);
-  --pal-tools-white: #eff6ff;
-
-  /* LIVING (Emerald Green) */
-  --pal-living-core: #10b981;
-  --pal-living-green: #10b981; /* Explicit naming */
-  --pal-living-glow: rgba(16, 185, 129, 0.4);
-  --pal-living-surface: rgba(16, 185, 129, 0.1);
-  --pal-living-meadow: #ecfdf5;
-
-  /* HOME (Amber/Gold) */
-  --pal-home-core: #f59e0b;
-  --pal-home-glow: rgba(245, 158, 11, 0.4);
-  --pal-home-surface: rgba(245, 158, 11, 0.1);
-  --pal-home-highlight: #fbbf24;
-  --pal-family-beige: #fffbeb;
-
-  /* HUB (Mystic Purple) */
-  --pal-hub-core: #8b5cf6;
-  --pal-hub-glow: rgba(139, 92, 246, 0.4);
-  --pal-hub-surface: rgba(139, 92, 246, 0.1);
-  --pal-hub-base: #f5f3ff;
-  
-  /* ACCOUNTS/SUPPORT (Neutral/Teal) */
-  --pal-account-core: #d4d4d8;
-  --pal-account-blue: #3b82f6;
-  --pal-account-neutral: #52525b;
-  --pal-about-mint: #2dd4bf; 
-  --pal-about-coral: #fb7185;
-  --pal-about-sky: #38bdf8;
-  --neutral-ink: #18181b;
-
-  /* STARWALKER (Secret Mode) */
-  --pal-star-gold: #FFD700;
-  --pal-star-glow: rgba(255, 215, 0, 0.5);
+  /* STATUS COLORS */
+  --color-success: #10b981;
+  --color-error: #ef4444;
 }
 
 /* =========================================
-   5. SEMANTIC THEME ENGINE
-   Matches the 'data-theme' set by loader.js
+   6. DYNAMIC THEME ENGINE
    ========================================= */
-
-/* DEFAULT (Fallback) */
-:root {
-  --accent-primary: var(--pal-tools-core);
-  --accent-glow: var(--pal-tools-glow);
-}
-
-/* TOOLS */
-[data-theme="tools"] {
-  --accent-primary: var(--pal-tools-core);
-  --accent-glow: var(--pal-tools-glow);
-}
-
-/* LIVING */
-[data-theme="living"] {
-  --accent-primary: var(--pal-living-core);
-  --accent-glow: var(--pal-living-glow);
-}
-
-/* HOME */
-[data-theme="home"], [data-theme="home-category"] {
-  --accent-primary: var(--pal-home-core);
-  --accent-glow: var(--pal-home-glow);
-}
-
-/* HUB */
-[data-theme="hub"] {
-  --accent-primary: var(--pal-hub-core);
-  --accent-glow: var(--pal-hub-glow);
-}
-
-/* ACCOUNTS */
-[data-theme="accounts"] {
-  --accent-primary: var(--pal-account-blue);
-}
-
-/* ABOUT */
-[data-theme="about"] {
-  --accent-primary: var(--pal-about-mint);
-}
+[data-theme="tools"]  { --accent-primary: var(--pal-tools);  --accent-glow: var(--pal-tools-glow); }
+[data-theme="living"] { --accent-primary: var(--pal-living); --accent-glow: var(--pal-living-glow); }
+[data-theme="home"]   { --accent-primary: var(--pal-home);   --accent-glow: var(--pal-home-glow); }
+[data-theme="hub"]    { --accent-primary: var(--pal-hub);    --accent-glow: var(--pal-hub-glow); }
 
 /* =========================================
-   6. ATMOSPHERE OVERRIDES (Light / Dark / Secret)
-   Matches 'data-mode' set by app.js/header.js
+   7. ATMOSPHERE OVERRIDES
    ========================================= */
 
-/* LIGHT MODE */
+/* LIGHT MODE: Warm Paper Experience */
 :root[data-mode="light"] {
-  --bg-page: #fdfbf7; /* Warm Paper */
-  --bg-panel: #f4f4f5;
-  --bg-surface: #ffffff;
-  --bg-surface-hover: #f4f4f5;
-  
+  --bg-page: #fdfbf7;
+  --bg-surface: rgba(0, 0, 0, 0.03);
+  --bg-surface-hover: rgba(0, 0, 0, 0.06);
   --text-main: #18181b;
-  --text-body: #52525b;
-  --text-muted: #71717a;
-  --text-inverse: #ffffff;
-
-  --border-subtle: #e4e4e7;
-  --border-highlight: #d4d4d8;
-  --glass-blur: blur(0px); /* Clean look for light mode */
-  
-  /* Adjust glows to be subtle */
-  --pal-tools-glow: rgba(59, 130, 246, 0.1);
+  --text-body: #4b5563;
+  --text-muted: #9ca3af;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-highlight: rgba(0, 0, 0, 0.1);
+  --glass-blur: blur(8px);
 }
 
-/* STARWALKER MODE (Secret) */
+/* STARWALKER MODE: Obsidian & Gold */
 :root[data-mode="starwalker"] {
-  --bg-page: #050505; /* Absolute Void */
-  --accent-primary: var(--pal-star-gold);
+  --bg-page: #050505;
+  --accent-primary: var(--pal-star);
   --accent-glow: var(--pal-star-glow);
-  --text-main: #fffcf0; /* Starlight White */
-  --border-subtle: rgba(255, 215, 0, 0.15); /* Gold Dust Borders */
+  --text-main: #fffdf2;
+  --border-subtle: rgba(255, 215, 0, 0.12);
 }

@@ -1,9 +1,13 @@
-# Kynar Universe Security Configuration
+# KYNAR UNIVERSE SECURITY CONFIGURATION
+# Standard: RFC 9116
 # Status: ACTIVE
 
 Contact: mailto:support@kynaruniverse.co.uk
 Preferred-Languages: en
 Policy: https://www.kynaruniverse.co.uk/pages/legal/privacy.html
 Expires: 2027-01-01T00:00:00.000Z
+
+# If you find a gap in the Universe, we want to hear about it.
+# Acknowledgments: https://www.kynaruniverse.co.uk/pages/about/credits.html
 
 # "One Universe. Infinite Solutions."

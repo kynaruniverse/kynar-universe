@@ -1,111 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#3b82f6"> <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+               script-src 'self' https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  
+
   <title>KYNAR Tools | Developer & Business Solutions</title>
+  <meta name="description" content="Production-ready Python scripts, automation workflows, and business intelligence templates. Download your upgrade for professional efficiency.">
   
-  <meta name="description" content="Empowering developers and entrepreneurs with production-ready Python scripts, automation workflows, and business intelligence templates.">
-  
-  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
-  
+  <link rel="icon" href="../../assets/favicon.ico">
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 </head>
 
 <body data-theme="tools">
-  
 
-  
-  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <main id="main-content" class="container stack-xl">
     
     <div id="breadcrumb-nav"></div>
     
-    <header class="stack-md animate-enter delay-1">
-      
-      <div class="icon-box" style="background: var(--pal-tools-surface); border-color: rgba(59, 130, 246, 0.2); color: var(--pal-tools-core);">
+    <header class="stack-md animate-enter">
+      <div class="icon-box">
         <i class="ri-tools-line"></i>
       </div>
       
       <h1 class="text-h1">KYNAR Tools</h1>
       
-      <p class="text-body" style="font-size: 1.1rem; max-width: 55ch;">
+      <p class="text-body">
         Empowering developers and entrepreneurs with production-ready Python scripts, automation workflows, and business intelligence templates.
-        <br><br>
-        <span style="opacity: 0.8; font-size: 1rem;">From automating a business workflow to complex data analysis.</span>
       </p>
       
-      <div style="opacity: 0.8; margin-top: var(--space-sm); border-left: 2px solid var(--pal-tools-core); padding-left: var(--space-sm);">
-        <p class="text-lore">"Blueprints and engines for your best work."</p>
-      </div>
+      <p class="text-lore">"Blueprints and engines for your best work."</p>
     </header>
     
-    <section class="stack-md animate-enter delay-2">
-      <h2 class="text-h3">Collections</h2>
+    <section class="stack-md animate-enter delay-1">
+      <div class="section-header">
+        <h2 class="text-h3">Production Assets</h2>
+        <span class="text-micro">Verified Code & Data</span>
+      </div>
       
-      <div style="display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <div class="grid-auto">
         
-        <a href="../product.html?id=python-automation-bundle" class="card" data-variant="tools">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <a href="../product.html?id=python-automation-bundle" class="card" data-variant="tools" data-track="View: Python Scripts">
+          <div class="card-inner-split">
             <div class="stack-sm">
               <h3 class="text-h3">Automation & Scripts</h3>
-              <p class="text-body" style="font-size: 0.9rem;">
-                Python scripts and workflows to save time at work.
+              <p class="text-body-sm">
+                Python scripts and workflows designed to eliminate repetitive tasks.
               </p>
-              <span class="text-micro" style="margin-top: var(--space-sm); color: var(--pal-tools-core);">View Scripts →</span>
+              <span class="text-micro accent-link">View Scripts →</span>
             </div>
             
-            <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem;">
+            <div class="icon-box sm">
               <i class="ri-code-s-slash-line"></i>
             </div>
           </div>
         </a>
         
-        <a href="../product.html?id=business-intelligence" class="card" data-variant="tools">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <a href="../product.html?id=business-intelligence" class="card" data-variant="tools" data-track="View: Business Intelligence">
+          <div class="card-inner-split">
             <div class="stack-sm">
               <h3 class="text-h3">Business Intelligence</h3>
-              <p class="text-body" style="font-size: 0.9rem;">
-                Templates for data analysis and smarter decisions.
+              <p class="text-body-sm">
+                Advanced templates for financial modeling and data-driven decisions.
               </p>
-              <span class="text-micro" style="margin-top: var(--space-sm); color: var(--pal-tools-core);">View Templates →</span>
+              <span class="text-micro accent-link">View Templates →</span>
             </div>
             
-            <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem;">
+            <div class="icon-box sm">
               <i class="ri-bar-chart-box-line"></i>
             </div>
           </div>
         </a>
-        
-        <a href="../product.html?id=creative-assets" class="card" data-variant="tools">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+
+        <a href="../product.html?id=creative-assets" class="card" data-variant="tools" data-track="View: Creative Assets">
+          <div class="card-inner-split">
             <div class="stack-sm">
               <h3 class="text-h3">Creative Assets</h3>
-              <p class="text-body" style="font-size: 0.9rem;">
-                Design resources for making and shaping.
+              <p class="text-body-sm">
+                Curated UI kits and design resources for builders and makers.
               </p>
-              <span class="text-micro" style="margin-top: var(--space-sm); color: var(--pal-tools-core);">View Assets →</span>
+              <span class="text-micro accent-link">View Assets →</span>
             </div>
             
-            <div class="icon-box" style="width: 40px; height: 40px; font-size: 1.25rem;">
+            <div class="icon-box sm">
               <i class="ri-brush-line"></i>
             </div>
           </div>
@@ -121,6 +110,6 @@
   <script type="module" src="../../js/search.js"></script>
   <script type="module" src="../../js/footer.js"></script>
   <script type="module" src="../../js/breadcrumb.js"></script>
-</body>
 
+</body>
 </html>

@@ -1,19 +1,20 @@
 # KYNAR UNIVERSE REDIRECTS
-# Status: FINAL (Maps old folders to new files)
+# Status: EVOLVED MASTER (Netlify Optimized)
 
-# 1. Product Redirects
-# If someone tries to access the folder, send them to the file
-/pages/product/   /pages/product.html   301
-/pages/product    /pages/product.html   301
+# 1. Clean URL Mapping (Standardizing the Universe)
+/pages/product/    /pages/product.html   301
+/pages/guide/      /pages/guide.html     301
 
-# 2. Guide Redirects
-/pages/guide/     /pages/guide.html     301
-/pages/guide      /pages/guide.html     301
-
-# 3. Handle Query Parameters (Netlify handles this automatically, but for safety:)
+# 2. Dynamic Rewrites (The "Pretty URL" Engine)
+# This allows /pages/product/automation-script to serve product.html
 /pages/product/* /pages/product.html   200
 /pages/guide/* /pages/guide.html     200
 
-# 4. SPA Fallback (Optional, but good for safety)
-# If a page isn't found, show the custom 404
-/* /404.html   404
+# 3. Handle specific Account & Hub paths
+/inventory         /pages/account/collections.html   301
+/support           /pages/about/support.html         301
+/mission           /pages/about/index.html           301
+
+# 4. Global 404 Fallback (Sector Uncharted)
+# This ensures that any broken path leads back to your custom 404 page
+/* /404.html             404

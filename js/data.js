@@ -1,16 +1,16 @@
 /* KYNAR UNIVERSE DATA ENGINE (js/data.js)
    Source of Truth for the Digital Department Store.
-   Status: FINAL MASTER (REMIX ICONS UPDATED)
+   Status: EVOLVED MASTER (Search Optimized + Utility Helpers)
 */
 
 export const KYNAR_DATA = {
   
   // =========================================
-  // 1. PRODUCT CATALOGUE (The Inventory)
+  // 1. PRODUCT CATALOGUE
   // =========================================
   products: [
     
-    // --- DEPARTMENT: KYNAR TOOLS (Developers & Entrepreneurs) ---
+    // --- DEPARTMENT: KYNAR TOOLS ---
     {
       id: "python-automation-bundle",
       category: "tools",
@@ -42,11 +42,11 @@ def organize_directory():
         if filename.endswith(".pdf"):
             shutil.move(filename, DOCS_DIR)
             print(f"Moved: {filename}")`,
-      
-      buyUrl: "#", // Phase 1 Placeholder
+      buyUrl: "#",
       actionBtn: "Secure Instant Download",
-      previewIcon: "ri-code-s-slash-line", // REMIX ICON
-      image: "assets/products/script-preview.png"
+      previewIcon: "ri-code-s-slash-line",
+      image: "assets/products/script-preview.png",
+      keywords: ["code", "developer", "script", "coding", "programming"]
     },
     {
       id: "business-intelligence",
@@ -71,8 +71,9 @@ def organize_directory():
       },
       buyUrl: "#",
       actionBtn: "Download Template",
-      previewIcon: "ri-bar-chart-box-line", // REMIX ICON
-      image: "assets/products/finance-sheet.png"
+      previewIcon: "ri-bar-chart-box-line",
+      image: "assets/products/finance-sheet.png",
+      keywords: ["excel", "spreadsheet", "money", "startup", "accounting"]
     },
     {
       id: "creative-assets",
@@ -97,12 +98,13 @@ def organize_directory():
       },
       buyUrl: "#",
       actionBtn: "Download Assets",
-      previewIcon: "ri-brush-line", // REMIX ICON
-      image: "assets/products/creative.png"
+      previewIcon: "ri-brush-line",
+      image: "assets/products/creative.png",
+      keywords: ["ui", "ux", "figma", "images", "art"]
     },
     
 
-    // --- DEPARTMENT: KYNAR LIVING (High Performers) ---
+    // --- DEPARTMENT: KYNAR LIVING ---
     {
       id: "finance-tracker",
       category: "living",
@@ -126,8 +128,9 @@ def organize_directory():
       },
       buyUrl: "#",
       actionBtn: "Get Dashboard",
-      previewIcon: "ri-money-dollar-circle-line", // REMIX ICON
-      image: "assets/products/finance-tracker.png"
+      previewIcon: "ri-money-dollar-circle-line",
+      image: "assets/products/finance-tracker.png",
+      keywords: ["budget", "money", "savings", "planner", "excel"]
     },
     {
       id: "morning-mindset-journal",
@@ -152,11 +155,12 @@ def organize_directory():
       },
       buyUrl: "#",
       actionBtn: "Download Journal",
-      previewIcon: "ri-sun-line", // REMIX ICON
-      image: "assets/products/journal.png"
+      previewIcon: "ri-sun-line",
+      image: "assets/products/journal.png",
+      keywords: ["mindfulness", "mental health", "diary", "planner"]
     },
 
-    // --- DEPARTMENT: KYNAR HOME (Parents & Families) ---
+    // --- DEPARTMENT: KYNAR HOME ---
     {
       id: "kids-bundles",
       category: "home",
@@ -180,8 +184,9 @@ def organize_directory():
       },
       buyUrl: "#",
       actionBtn: "Download Bundle",
-      previewIcon: "ri-emotion-happy-line", // REMIX ICON
-      image: "assets/products/kids-pack.png"
+      previewIcon: "ri-emotion-happy-line",
+      image: "assets/products/kids-pack.png",
+      keywords: ["children", "school", "coloring", "games", "toddler"]
     },
     {
       id: "home-management",
@@ -206,13 +211,14 @@ def organize_directory():
       },
       buyUrl: "#",
       actionBtn: "Get Organized",
-      previewIcon: "ri-home-4-line", // REMIX ICON
-      image: "assets/products/home-org.png"
+      previewIcon: "ri-home-4-line",
+      image: "assets/products/home-org.png",
+      keywords: ["cleaning", "food", "kitchen", "organization", "planner"]
     }
   ],
 
   // =========================================
-  // 2. KNOWLEDGE LIBRARY (The Hub)
+  // 2. KNOWLEDGE LIBRARY
   // =========================================
   guides: [
     {
@@ -248,7 +254,7 @@ def organize_directory():
   ],
 
   // =========================================
-  // 3. WHISPERS (The Lore)
+  // 3. WHISPERS (Lore)
   // =========================================
   lore: {
     tools: [
@@ -274,9 +280,42 @@ def organize_directory():
   }
 };
 
-/* HELPER FUNCTIONS */
+/* --- EVOLVED HELPER FUNCTIONS --- */
+
+/**
+ * Finds a single product by ID
+ */
 export function getProductById(id) {
   return KYNAR_DATA.products.find(p => p.id === id);
+}
+
+/**
+ * Gets all products for a specific category (tools, living, home)
+ */
+export function getProductsByCategory(category) {
+  return KYNAR_DATA.products.filter(p => p.category === category);
+}
+
+/**
+ * Basic Search: Checks title, description, and keywords
+ */
+export function searchProducts(query) {
+  const q = query.toLowerCase();
+  return KYNAR_DATA.products.filter(p => 
+    p.title.toLowerCase().includes(q) || 
+    p.description.toLowerCase().includes(q) ||
+    (p.keywords && p.keywords.some(k => k.toLowerCase().includes(q)))
+  );
+}
+
+/**
+ * Formats price to GBP (Change 'GBP' to 'USD' if needed)
+ */
+export function formatPrice(price) {
+  return new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP'
+  }).format(price);
 }
 
 export function getGuideById(id) {

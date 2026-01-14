@@ -1,31 +1,51 @@
 /* KYNAR UNIVERSE CORE ENGINE (js/app.js)
    The central nervous system. Handles Atmosphere, Motion, and System Feedback.
-   Status: FINAL MASTER (REMIX ICON ALIGNED)
+   Status: EVOLVED MASTER (Performance Optimized + Fault Tolerant)
 */
 
-import { KYNAR_DATA } from './data.js';
-import { Analytics } from './analytics.js'; 
+// SAFELY IMPORT MODULES
+let KYNAR_DATA = {};
+let Analytics = { trackThemeChange: () => {} }; // Dummy fallback
 
-// CRITICAL: Make Analytics global so HTML files can use it (e.g. onclick="Analytics.track...")
+try {
+  const dataModule = await import('./data.js');
+  KYNAR_DATA = dataModule.KYNAR_DATA || {};
+} catch (e) { console.warn('Universe Data Missing - Lore System Disabled'); }
+
+try {
+  const analyticsModule = await import('./analytics.js');
+  Analytics = analyticsModule.Analytics || Analytics;
+} catch (e) { console.warn('Analytics Module Missing - Tracking Disabled'); }
+
+// CRITICAL GLOBAL EXPOSURE (For HTML onclick events)
 window.Analytics = Analytics;
 
 document.addEventListener('DOMContentLoaded', () => {
-  injectIconSystem(); // Visuals (Fallback)
-  initLoreSystem();   // Narrative
-  initMotionSystem(); // Cinematic Feel
-  initScrollProgress(); // Add scroll indicator
-  initThemeSystem();  // Atmosphere
-  initLazyImages();
-  initImageErrorHandling();
+  injectIconSystem();   // Visuals
+  initLoreSystem();     // Narrative
+  initMotionSystem();   // Cinematic Feel
+  initScrollProgress(); // Performance-Optimized Scroll Bar
+  initThemeSystem();    // Atmosphere
+  initLazyImages();     // Speed
+  initImageErrorHandling(); // Resilience
+  // Personalized Greeting based on Onboarding Choice
+const userPath = localStorage.getItem('kynar_user_path');
+if (userPath) {
+  const heroSpan = document.querySelector('.hero-logo-glow + h1 span'); 
+  if (heroSpan) {
+    // If they chose 'tools', emphasize 'Infinite Solutions' in their color
+    heroSpan.style.color = `var(--accent-primary)`;
+    console.log(`[Universe] Personalizing for path: ${userPath}`);
+  }
+}
+
 });
 
 /* =========================================
-   0. ICON SYSTEM INJECTOR (REMIX ICONS)
-   Ensures the visual language is always present.
+   0. ICON SYSTEM INJECTOR
    ========================================= */
 function injectIconSystem() {
   if (document.querySelector('link[href*="remixicon"]')) return;
-  
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = 'https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css';
@@ -34,85 +54,98 @@ function injectIconSystem() {
 
 /* =========================================
    1. THE LORE SYSTEM
-   Pulls from KYNAR_DATA to inject the "Whispers" into the footer.
    ========================================= */
 function initLoreSystem() {
+  const footerLore = document.querySelector('.text-lore');
+  if (!footerLore || !KYNAR_DATA.lore) return;
+
   const body = document.body;
   let currentTheme = body.getAttribute('data-theme') || 'home';
+  
+  // Normalization logic
   if (currentTheme === 'home-category') currentTheme = 'home';
   if (currentTheme === 'hub') currentTheme = 'general';
   
-  const footerLore = document.querySelector('.text-lore');
+  const themePhrases = KYNAR_DATA.lore[currentTheme] || [];
+  const globalPhrases = KYNAR_DATA.lore.general || []; 
+  const combinedPool = [...themePhrases, ...globalPhrases];
   
-  if (footerLore && KYNAR_DATA && KYNAR_DATA.lore) {
-    const themePhrases = KYNAR_DATA.lore[currentTheme] || [];
-    const globalPhrases = KYNAR_DATA.lore.general || []; 
-    const combinedPool = [...themePhrases, ...globalPhrases];
-    
-    if (combinedPool.length > 0) {
-      const randomPhrase = combinedPool[Math.floor(Math.random() * combinedPool.length)];
-      footerLore.textContent = `"${randomPhrase}"`;
-    }
+  if (combinedPool.length > 0) {
+    const randomPhrase = combinedPool[Math.floor(Math.random() * combinedPool.length)];
+    footerLore.textContent = `"${randomPhrase}"`;
+    footerLore.style.opacity = '1'; // Ensure visibility
   }
 }
 
 /* =========================================
-   2. THE MOTION SYSTEM
-   Handles the "Waterfall" reveal effect.
+   2. THE MOTION SYSTEM (Waterfall Effect)
+   Updated to support specific classes AND "data-animate" attribute.
    ========================================= */
 function initMotionSystem() {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-  
-  const observer = new IntersectionObserver((entries, observer) => {
+  const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target); 
+        obs.unobserve(entry.target); 
       }
     });
-  }, observerOptions);
+  }, { threshold: 0.1, rootMargin: '50px' });
 
-  const animatedElements = document.querySelectorAll('.card, .text-body, section, h2, header, .animate-enter');
+  // Select standard elements PLUS anything with data-animate="true"
+  const elements = document.querySelectorAll('.card, .text-body, section, h2, header, .animate-enter, [data-animate]');
   
-  animatedElements.forEach((el, index) => {
+  elements.forEach((el, index) => {
     el.classList.add('scroll-fade-item');
-    const delay = Math.min((index % 5) * 50, 500); 
+    // Staggered delay for a natural "waterfall" feel
+    // Capped at 300ms so the user doesn't wait too long
+    const delay = Math.min((index % 5) * 50, 300); 
     el.style.transitionDelay = `${delay}ms`; 
     observer.observe(el);
   });
 }
 
 /* =========================================
-   2B. SCROLL PROGRESS INDICATOR
+   2B. SCROLL PROGRESS (High Performance)
+   Uses requestAnimationFrame to prevent lag on 120Hz screens.
    ========================================= */
 function initScrollProgress() {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const progressBar = document.createElement('div');
-  progressBar.className = 'scroll-progress';
-  document.body.appendChild(progressBar);
+  // Create bar if it doesn't exist
+  let progressBar = document.querySelector('.scroll-progress');
+  if (!progressBar) {
+    progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress';
+    document.body.appendChild(progressBar);
+  }
+
+  let ticking = false;
 
   window.addEventListener('scroll', () => {
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight - windowHeight;
-    const scrolled = window.scrollY;
-    const progress = (scrolled / documentHeight) * 100;
-    
-    progressBar.style.width = `${Math.min(progress, 100)}%`;
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const winHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight - winHeight;
+        const scrolled = window.scrollY;
+        
+        // Prevent division by zero
+        const progress = docHeight > 0 ? (scrolled / docHeight) * 100 : 0;
+        progressBar.style.width = `${Math.min(progress, 100)}%`;
+        
+        ticking = false;
+      });
+      ticking = true;
+    }
   }, { passive: true });
 }
 
 /* =========================================
    3. SYSTEM FEEDBACK (Toasts)
-   REMIX ICON UPDATED
    ========================================= */
 function showToast(message, type = 'normal') {
   let container = document.querySelector('.toast-container');
-  
   if (!container) {
     container = document.createElement('div');
     container.className = 'toast-container';
@@ -122,64 +155,57 @@ function showToast(message, type = 'normal') {
   const toast = document.createElement('div');
   toast.className = 'toast animate-enter';
   
-  // REMIX ICONS MAPPING
-  let icon = '<i class="ri-information-line"></i>';
-  if (type === 'success') {
-    icon = '<i class="ri-checkbox-circle-line" style="color:var(--color-success)"></i>';
-  } else if (type === 'error') {
-    icon = '<i class="ri-error-warning-line" style="color:var(--color-error)"></i>';
-  } else if (type === 'starwalker') {
-    icon = '<i class="ri-shining-2-line" style="color:var(--accent-primary)"></i>';
-  }
+  // Icon Mapping
+  const icons = {
+    normal: '<i class="ri-information-line"></i>',
+    success: '<i class="ri-checkbox-circle-line" style="color:var(--color-success)"></i>',
+    error: '<i class="ri-error-warning-line" style="color:var(--color-error)"></i>',
+    starwalker: '<i class="ri-shining-2-line" style="color:var(--accent-primary)"></i>'
+  };
+  
+  const iconHtml = icons[type] || icons.normal;
   
   toast.innerHTML = `
-    ${icon}
+    ${iconHtml}
     <span>${message}</span>
-    <button onclick="this.parentElement.remove()" class="btn-tertiary" style="padding: 4px 8px; margin-left: auto;">
-      <i class="ri-close-line" style="font-size: 0.9rem;"></i>
+    <button class="btn-tertiary close-toast" aria-label="Dismiss">
+      <i class="ri-close-line"></i>
     </button>
   `;
-  toast.style.display = 'flex';
-  toast.style.alignItems = 'center';
-  toast.style.gap = '12px';
+
+  // Attach click listener for close button
+  toast.querySelector('.close-toast').onclick = () => removeToast(toast);
+
+  // Auto-Dismiss Bar
+  const dismissTime = 3000;
+  const timerBar = document.createElement('div');
+  timerBar.className = 'toast-timer'; // Define styles in CSS for cleaner JS
+  timerBar.style.cssText = `position:absolute; bottom:0; left:0; height:2px; background:var(--accent-primary); width:100%; opacity:0.5; transition:width ${dismissTime}ms linear;`;
   
+  toast.appendChild(timerBar);
   container.appendChild(toast);
   
-  // Auto-dismiss
-  const dismissTime = 3000;
-  
-  const progressBar = document.createElement('div');
-  progressBar.style.cssText = `
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    background: var(--accent-primary);
-    width: 100%;
-    opacity: 0.5;
-    transition: width ${dismissTime}ms linear;
-  `;
-  toast.style.position = 'relative';
-  toast.appendChild(progressBar);
-  
-  requestAnimationFrame(() => {
-    progressBar.style.width = '0%';
-  });
-  
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(10px)';
-    setTimeout(() => toast.remove(), 300);
-  }, dismissTime);
+  // Trigger Animation
+  requestAnimationFrame(() => { timerBar.style.width = '0%'; });
+  setTimeout(() => removeToast(toast), dismissTime);
 }
 
-// Make showToast global too, just in case
+function removeToast(toast) {
+  if (!toast) return;
+  toast.style.opacity = '0';
+  toast.style.transform = 'translateY(10px)';
+  setTimeout(() => {
+    if (toast.parentNode) toast.parentNode.removeChild(toast);
+  }, 300);
+}
+
 window.showToast = showToast;
 
 /* =========================================
    4. ATMOSPHERE SYSTEM (Themes)
    ========================================= */
 function initThemeSystem() {
+  // We check for saved preference, but we DO NOT force it if it conflicts.
   const savedMode = localStorage.getItem('kynar_mode');
   if (savedMode) {
     document.documentElement.setAttribute('data-mode', savedMode);
@@ -190,93 +216,63 @@ function setTheme(mode) {
   if (mode === 'auto') {
     document.documentElement.removeAttribute('data-mode');
     localStorage.removeItem('kynar_mode');
-    showToast('System atmosphere synced.');
+    showToast('System synced to device.');
   } else {
     document.documentElement.setAttribute('data-mode', mode);
     localStorage.setItem('kynar_mode', mode);
     
-    // Safely call analytics if available
-    if (typeof Analytics !== 'undefined') Analytics.trackThemeChange(mode);
-
-    if (mode === 'starwalker') {
-      showToast('Starwalker Mode Engaged.', 'starwalker');
-    } else if (mode === 'light') {
-      showToast('Daylight atmosphere applied.');
-    } else {
-      showToast('Midnight atmosphere applied.');
+    // Analytics Tracking
+    if (Analytics && typeof Analytics.trackThemeChange === 'function') {
+      Analytics.trackThemeChange(mode);
     }
+
+    // Feedback
+    const messages = {
+      starwalker: 'Starwalker Mode Engaged.',
+      light: 'Daylight atmosphere applied.',
+      dark: 'Midnight atmosphere applied.'
+    };
+    showToast(messages[mode] || 'Atmosphere updated.', mode === 'starwalker' ? 'starwalker' : 'normal');
   }
 }
 
 window.setTheme = setTheme;
 
 /* =========================================
-   5. SERVICE WORKER REGISTRATION
+   5. SERVICE WORKER & UTILS
    ========================================= */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        // console.log('[Universe] Service Worker registered');
-      })
-      .catch(error => {
-        // console.log('[Universe] SW failed:', error);
-      });
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
 }
 
-/* =========================================
-   IMAGE LAZY LOADING
-   ========================================= */
 function initLazyImages() {
   const images = document.querySelectorAll('img[loading="lazy"]');
-  
   if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const img = entry.target;
-          img.classList.add('loaded');
-          imageObserver.unobserve(img);
+          entry.target.classList.add('loaded');
+          obs.unobserve(entry.target);
         }
       });
     });
-    
-    images.forEach(img => imageObserver.observe(img));
+    images.forEach(img => observer.observe(img));
   } else {
     images.forEach(img => img.classList.add('loaded'));
   }
 }
 
-/* =========================================
-   IMAGE ERROR HANDLING (REMIX ICON UPDATED)
-   ========================================= */
 function initImageErrorHandling() {
   document.addEventListener('error', (e) => {
     if (e.target.tagName === 'IMG') {
       e.target.style.display = 'none';
-      
-      const placeholder = document.createElement('div');
-      placeholder.className = 'image-placeholder';
-      placeholder.innerHTML = `
-        <div style="
-          width: 100%;
-          aspect-ratio: 16/9;
-          background: var(--bg-surface);
-          border: 1px dashed var(--border-subtle);
-          border-radius: var(--radius-md);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          gap: 8px;
-        ">
-          <i class="ri-image-2-line" style="font-size: 2rem; opacity: 0.3;"></i>
-          <span class="text-micro" style="opacity: 0.5;">Image unavailable</span>
-        </div>
-      `;
-      
-      e.target.parentNode.insertBefore(placeholder, e.target);
+      // Create a subtle placeholder
+      const p = document.createElement('div');
+      p.className = 'image-placeholder';
+      p.innerHTML = `<i class="ri-image-2-line"></i>`;
+      e.target.parentNode.insertBefore(p, e.target);
     }
   }, true);
 }

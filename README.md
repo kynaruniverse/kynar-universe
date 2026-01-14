@@ -1,89 +1,63 @@
-# Kynar Universe (v2.2)
-**One Universe. Infinite Solutions.**
-
-The source code for [www.kynaruniverse.co.uk](https://www.kynaruniverse.co.uk).
-
-## 🪐 The Grand Vision
-Kynar Universe is a centralized digital department store designed to eliminate digital filler. It operates with a modular component architecture using vanilla JavaScript ES6 modules and a Supabase backend.
-
-## 🏛️ Departments
-1. **Tools:** Python automation, business intelligence, dev workflows.
-2. **Living:** High-performance planners, finance trackers, wellness systems.
-3. **Home:** Educational bundles, family management, creative assets.
-4. **Hub:** Knowledge library with verified guides and protocols.
-
-## 📁 File Structure
-kynaruniverse/
-├── assets/              # Images, icons, and media
-│   ├── logo.svg         # Main logo
-│   ├── favicon.ico      # Browser favicon
-│   └── android-chrome* # PWA Icons
-│
-├── css/                 # Styling system
-│   ├── tokens.css       # Design tokens (colors, spacing, typography)
-│   ├── global.css       # Base styles, layout, and glassmorphism
-│   └── components.css   # Reusable UI components
-│
-├── js/                  # JavaScript modules
-│   ├── app.js           # Core engine (themes, animations, toasts)
-│   ├── data.js          # Product catalog and content data
-│   ├── loader.js        # Dynamic content loader
-│   ├── search.js        # Search overlay functionality
-│   ├── header.js        # Glass navigation bar
-│   ├── footer.js        # Universal footer
-│   ├── breadcrumb.js    # Auto-generated breadcrumbs
-│   ├── components/      # Structured Data & Utilities
-│   │   └── structured-data.js 
-│   └── pages/           # Page-specific logic
-│       ├── settings.js   # Settings page logic
-│       └── onboarding.js # Onboarding wizard logic
-│
-├── pages/               # All site pages
-│   ├── tools/           # Developer tools department
-│   ├── living/          # High-performance living
-│   ├── home/            # Family & household
-│   ├── hub/             # Knowledge library
-│   ├── about/           # Mission & vision
-│   ├── support/         # Help center
-│   ├── account/         # Login & Inventory (Supabase Auth)
-│   ├── settings/        # User preferences
-│   ├── legal/           # Privacy & terms
-│   ├── onboarding/      # First-time setup
-│   ├── checkout/        # Purchase confirmation
-│   ├── product.html     # Dynamic Product Template (Master)
-│   ├── guide.html       # Dynamic Guide Template (Master)
-│   └── shortcuts.html   # Keyboard Shortcuts reference
-│
-├── .well-known/         # Security & verification
-├── index.html           # Homepage
-├── 404.html             # Error page
-├── sitemap.xml          # SEO sitemap
-├── robots.txt           # Crawler instructions
-├── site.webmanifest     # PWA manifest
-└── sw.js                # Service Worker (Offline capabilities)
-
-## 🛠️ Tech Stack
-* **Core:** Semantic HTML5, CSS3 Custom Properties, Vanilla ES6 Modules
-* **Backend:** Supabase (Auth & Database)
-* **Icons:** Remix Icons (via CDN)
-* **PWA:** Service Worker + Web Manifest
-* **Hosting:** GitHub Pages / Netlify / Vercel ready
-
-## 🎨 Design System
-- **Themes:** Light, Dark, and secret "Starwalker" mode.
-- **Colors:** Department-specific palettes (Blue/Tools, Green/Living, Gold/Home, Purple/Hub).
-- **Typography:** Inter (UI), Lora (Editorial), Fira Code (Technical).
-- **Spacing:** 4px base scale with CSS custom properties.
-
-## 🚀 Development
-
-### Local Development
-```bash
-# Clone repository
-git clone [https://github.com/yourusername/kynaruniverse.git](https://github.com/yourusername/kynaruniverse.git)
-
-# Serve locally (Python)
+​🪐 KYNAR UNIVERSE (v2.2)
+​One Universe. Infinite Digital Solutions.
+​Official source code for www.kynaruniverse.co.uk.
+Status: EVOLVED MASTER — PWA & Supabase Integrated
+​🏛️ The Architecture
+​Kynar Universe is a centralized digital department store designed to eliminate "digital filler" by providing only verified, high-utility assets. The system is built on a Modular Vanilla JS Engine—prioritizing performance, accessibility, and a premium "Glass" interface without the overhead of heavy frameworks.
+​🌐 Core Departments
+​Tools: Python automation, business intelligence, and developer blueprints.
+​Living: LifeOS planners, finance trackers, and wellness protocols.
+​Home: Educational bundles, chore systems, and creative activity packs.
+​Hub: The Knowledge Library—editorial guides for implementing your upgrades.
+​📁 File Structure
+​kynaruniverse/
+├── assets/ # Logos, Department Icons, PWA Manifest Icons
+├── css/ # Design System
+│ ├── tokens.css # Source of Truth: Colors, Spacing, Typography
+│ ├── global.css # Layout Physics & Glassmorphism (Skip-link removed)
+│ └── components.css # Reusable UI (Cards, Buttons, Toasts)
+├── js/ # Logic Spoke
+│ ├── app.js # The Core Engine (Theme, Motion, Haptics)
+│ ├── data.js # The Library: Product & Guide Catalog
+│ ├── loader.js # Content Injection (Master Templates)
+│ ├── search.js # Debounced Global Search & Keyboard Nav
+│ ├── pages/ # Page-Specific Logic (Auth, Onboarding, Settings)
+│ └── components/ # Structured Data & Analytics
+├── pages/ # Functional Spokes (Category & Utility)
+│ ├── tools/ # Tools Dept
+│ ├── living/ # Living Dept
+│ ├── home/ # Home Dept
+│ ├── hub/ # The Hub Dept
+│ ├── about/ # Mission & Support
+│ ├── account/ # Supabase Auth & Secure Inventory
+│ ├── legal/ # Privacy & Compliance
+│ ├── product.html # Master Product Template (Dynamic)
+│ └── guide.html # Master Guide Template (Dynamic)
+├── index.html # Gateway to the Universe
+├── 404.html # "Sector Uncharted" Error Recovery
+├── site.webmanifest # PWA Configuration
+└── sitemap.xml # Search Engine Map
+​🛠️ Tech Stack & Standards
+​Frontend: HTML5 (Semantic), CSS3 (Custom Properties), Vanilla ES6 Modules.
+​Backend: Supabase (Auth & Database).
+​Icons: Remix Icon (CDN-based).
+​Design System: High-fidelity Glassmorphism with 4 Theme Modes (Auto, Daylight, Midnight, Starwalker).
+​SEO: JSON-LD Structured Data, OpenGraph metadata, and Google-safe crawling.
+​🚀 Development & Deployment
+​Local Calibration
+​To run the Universe locally, use a local server to support ES6 Module imports and avoid CORS issues:
+​Using Python
 python3 -m http.server 8000
-
-# Or use Node.js
-npx http-server -p 8000
+​Using Node.js
+npx http-server
+​Environment Configuration
+​Ensure your js/pages/auth.js and js/pages/collections.js are configured with your Supabase credentials:
+​SUPABASE_URL: Your project endpoint.
+​SUPABASE_ANON_KEY: Your public anonymous key.
+​Deployment Note
+​The Kynar Universe is optimized for Root Directory Hosting. Because of absolute pathing used in the 404.html and site.webmanifest, ensure the site is hosted at the root (e.g., https://kynaruniverse.co.uk/) rather than a subdirectory to maintain asset integrity during error recovery.
+​📜 The Kynar Protocol
+​Utility First: If a tool doesn't save time or add tangible value, it is filler.
+​Privacy is Currency: We collect only what is strictly necessary for digital delivery.
+​One Universe: A unified, high-fidelity design language across all departments and devices.
+​© 2026 Kynar Universe. One Universe. Infinite Solutions.

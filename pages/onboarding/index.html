@@ -1,194 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
-               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="robots" content="noindex">
+  
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
+               script-src 'self' https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+  
   <title>Initialize Workspace | Kynar Universe</title>
   
-  <meta name="robots" content="noindex">
-  
-  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
-
+  <link rel="icon" href="../../assets/favicon.ico">
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
-
-  <style>
-    /* Wizard Specific Styles */
-    .step { display: none; }
-    .step.active { display: flex; animation: fadeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
-    
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-subtle); transition: background 0.3s; }
-    .dot.active { background: var(--accent-primary); transform: scale(1.2); }
-
-    /* Selection Card Interaction */
-    .option-card {
-      text-align: left; 
-      width: 100%; 
-      cursor: pointer; 
-      transition: all 0.2s ease;
-      border: 2px solid transparent;
-      padding: 16px;
-    }
-    .option-card:hover {
-      background-color: var(--bg-surface-hover);
-      transform: translateX(4px);
-    }
-    .option-card.selected {
-      border-color: var(--accent-primary);
-      background-color: var(--bg-surface-hover);
-      box-shadow: var(--shadow-md);
-    }
-  </style>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 </head>
 
-<body data-theme="accounts">
-
-  <main class="container" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; max-width: 500px; padding: var(--space-xl) var(--space-md);">
-    <div id="breadcrumb-nav"></div>
-    <div id="step-1" class="step active stack-lg" style="text-align: center; align-items: center;">
-      
-      <div class="icon-box" style="width: 64px; height: 64px; font-size: 2rem; margin-bottom: var(--space-sm);">
+<body data-theme="accounts" class="onboarding-page">
+  
+  <main class="container narrow stack-xl flex-center">
+    
+    <div id="step-1" class="step active stack-lg align-center">
+      <div class="icon-box lg animate-pulse">
         <i class="ri-earth-line"></i>
       </div>
       
-      <div class="stack-sm">
+      <div class="stack-sm text-center">
         <h1 class="text-h1">One Universe.<br>Infinite Solutions.</h1>
-        <p class="text-body" style="font-size: 1.1rem; opacity: 0.8;">
-          Welcome to the ultimate Digital Department Store.<br>Let's calibrate your experience.
+        <p class="text-body-lg">
+          Welcome to the Digital Department Store.<br>Let's calibrate your experience.
         </p>
       </div>
       
-      <button onclick="nextStep(2)" class="btn-primary" style="width: 100%; justify-content: center;">Initialize Workspace</button>
+      <button onclick="nextStep(2)" class="btn-primary w-full">Initialize Workspace</button>
     </div>
-
+    
     <div id="step-2" class="step stack-lg">
-      <div class="stack-sm">
-        <span class="tag">Calibration 1 of 3</span>
-        <h2 class="text-h2">What is your primary focus?</h2>
+      <header class="stack-sm">
+        <span class="tag">Calibration 1 of 2</span>
+        <h2 class="text-h2">Primary Focus</h2>
         <p class="text-body">We'll curate the tools you see first.</p>
-      </div>
+      </header>
       
       <div class="stack-sm">
-        
         <button class="card option-card" onclick="selectOption(this, 'tools')">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="icon-box" style="width: 32px; height: 32px; font-size: 1rem; background: var(--pal-tools-surface); color: var(--pal-tools-core);">
-               <i class="ri-code-s-slash-line"></i>
-            </div>
-            <div>
-              <h3 class="text-h3" style="margin:0; font-size: 1rem;">Developer & Creator</h3>
-              <p class="text-micro" style="text-transform: none;">I need scripts and blueprints.</p>
+          <div class="card-inner-split">
+            <div class="icon-box sm tools"><i class="ri-code-s-slash-line"></i></div>
+            <div class="stack-xs">
+              <h3 class="text-body bold">Developer & Creator</h3>
+              <p class="text-micro">I need scripts and blueprints.</p>
             </div>
           </div>
         </button>
-
+        
         <button class="card option-card" onclick="selectOption(this, 'living')">
-           <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="icon-box" style="width: 32px; height: 32px; font-size: 1rem; background: var(--pal-living-surface); color: var(--pal-living-green);">
-               <i class="ri-flashlight-line"></i>
-            </div>
-            <div>
-              <h3 class="text-h3" style="margin:0; font-size: 1rem;">High Performance</h3>
-              <p class="text-micro" style="text-transform: none;">I need clarity and systems.</p>
+          <div class="card-inner-split">
+            <div class="icon-box sm living"><i class="ri-flashlight-line"></i></div>
+            <div class="stack-xs">
+              <h3 class="text-body bold">High Performance</h3>
+              <p class="text-micro">I need clarity and systems.</p>
             </div>
           </div>
         </button>
-
+        
         <button class="card option-card" onclick="selectOption(this, 'home')">
-           <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="icon-box" style="width: 32px; height: 32px; font-size: 1rem; background: var(--pal-home-surface); color: var(--pal-home-core);">
-               <i class="ri-home-4-line"></i>
-            </div>
-            <div>
-              <h3 class="text-h3" style="margin:0; font-size: 1rem;">Family & Household</h3>
-              <p class="text-micro" style="text-transform: none;">I need organization at home.</p>
+          <div class="card-inner-split">
+            <div class="icon-box sm home"><i class="ri-home-4-line"></i></div>
+            <div class="stack-xs">
+              <h3 class="text-body bold">Family & Household</h3>
+              <p class="text-micro">I need organization at home.</p>
             </div>
           </div>
         </button>
-
       </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
+      
+      <div class="flex-between align-center">
         <button onclick="nextStep(1)" class="btn-tertiary">Back</button>
-        <button onclick="nextStep(3)" class="btn-primary" id="btn-step-2" disabled style="opacity: 0.5;">Next</button>
+        <button onclick="nextStep(3)" class="btn-primary" id="btn-step-2" disabled>Next</button>
       </div>
     </div>
-
+    
     <div id="step-3" class="step stack-lg">
-      <div class="stack-sm">
-        <span class="tag">Calibration 2 of 3</span>
-        <h2 class="text-h2">Our Standard</h2>
+      <header class="stack-sm">
+        <span class="tag">Calibration 2 of 2</span>
+        <h2 class="text-h2">The Standard</h2>
         <p class="text-body">A promise before you enter.</p>
-      </div>
+      </header>
       
-      <div class="card" style="border-left: 4px solid var(--accent-primary);">
+      <div class="card manifesto-highlight">
         <h3 class="text-h3">No Digital Filler.</h3>
-        <p class="text-body" style="font-size: 0.95rem; margin-top: 8px;">
-          We believe the right tool can change your day. Every script, template, and workbook here is verified for usability and impact.
+        <p class="text-body-sm">
+          We believe the right tool can change your day. Every script, template, and system here is verified for usability and impact.
         </p>
       </div>
-
-      <div class="form-group" style="margin-top: 8px;">
-         <label class="text-micro" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-           <input type="checkbox" onchange="document.getElementById('btn-step-3').disabled = !this.checked">
-           I accept the standard.
-         </label>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center;">
+      
+      <label class="custom-checkbox">
+        <input type="checkbox" onchange="document.getElementById('btn-step-3').disabled = !this.checked">
+        <span class="text-micro">I accept the standard.</span>
+      </label>
+      
+      <div class="flex-between align-center">
         <button onclick="nextStep(2)" class="btn-tertiary">Back</button>
-        <button onclick="nextStep(4)" class="btn-primary" id="btn-step-3" disabled style="opacity: 0.5;">Continue</button>
+        <button onclick="nextStep(4)" class="btn-primary" id="btn-step-3" disabled>Continue</button>
       </div>
     </div>
-
-    <div id="step-4" class="step stack-lg" style="text-align: center; align-items: center;">
-      
-      <div class="icon-box" style="width: 64px; height: 64px; font-size: 2rem; background: var(--bg-surface); color: var(--pal-home-highlight);">
-         <i class="ri-shining-2-line"></i>
+    
+    <div id="step-4" class="step stack-lg align-center">
+      <div class="icon-box lg starwalker-glow">
+        <i class="ri-shining-2-line"></i>
       </div>
-
-      <div class="stack-sm">
+      
+      <div class="stack-sm text-center">
         <h1 class="text-h2">System Ready.</h1>
-        <p class="text-body">Your digital upgrades await.<br>The world is open to you.</p>
+        <p class="text-body">Your upgrades await.<br>The Universe is open.</p>
       </div>
       
-      <button onclick="finishOnboarding()" class="btn-primary" style="width: 100%; justify-content: center;">Enter Kynar Universe</button>
+      <button onclick="finishOnboarding()" class="btn-primary w-full">Enter Kynar Universe</button>
       
-      <p class="text-lore" style="font-size: 0.75rem; opacity: 0.3; margin-top: var(--space-md);">
+      <p class="text-lore text-micro muted">
         "Look to the stars in your settings."
       </p>
     </div>
-
-    <div style="display: flex; gap: 8px; justify-content: center; margin-top: var(--space-xl);">
+    
+    <footer class="onboarding-progress">
       <div id="dot-1" class="dot active"></div>
       <div id="dot-2" class="dot"></div>
       <div id="dot-3" class="dot"></div>
       <div id="dot-4" class="dot"></div>
-    </div>
-
+    </footer>
+    
   </main>
-
+  
   <script type="module" src="../../js/app.js"></script>
   <script type="module" src="../../js/pages/onboarding.js"></script>
-
 </body>
+
 </html>
