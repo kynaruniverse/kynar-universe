@@ -1,54 +1,44 @@
-/* KYNAR UNIVERSE FOOTER COMPONENT (js/footer.js) */
-(function() {
-  'use strict';
+/* KYNAR UNIVERSE FOOTER COMPONENT (js/footer.js)
+   Universal footer injection with lore system integration.
+   Status: FINAL MASTER
+*/
 
-  document.addEventListener('DOMContentLoaded', injectFooter);
+document.addEventListener('DOMContentLoaded', () => {
+  injectFooter();
+});
 
-  function injectFooter() {
-    if (document.querySelector('.kynar-footer')) return;
-    
-    const rootPath = resolveRootPath();
-    const footer = document.createElement('footer');
-    footer.className = 'kynar-footer animate-enter';
-    
-    footer.innerHTML = `
-      <div class="container stack-lg">
-        <p class="text-lore footer-whisper">"One Universe. Infinite Solutions."</p>
-        
-        <div class="footer-nav">
-          <a href="${rootPath}pages/about/index.html" class="text-micro">About</a>
-          <span class="footer-sep">•</span>
-          <a href="${rootPath}pages/about/support.html" class="text-micro">Support</a>
-          <span class="footer-sep">•</span>
-          <a href="${rootPath}pages/legal/privacy.html" class="text-micro">Privacy</a>
-        </div>
-
-        <div class="footer-actions">
-          <button id="back-to-top" class="btn-tertiary" aria-label="Return to top">
-            <i class="ri-arrow-up-line"></i> <span class="text-micro">Top</span>
-          </button>
-        </div>
-        
-        <p class="text-micro copyright">
-          © ${new Date().getFullYear()} Kynar Universe. <span class="mobile-hide">All Rights Reserved.</span>
-        </p>
+function injectFooter() {
+  // Check if footer already exists
+  if (document.querySelector('.kynar-footer')) return;
+  
+  const footer = document.createElement('footer');
+  footer.className = 'kynar-footer';
+  footer.style.cssText = `
+    margin-top: var(--space-section);
+    padding: var(--space-xl) 0 var(--space-lg);
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+  `;
+  
+  footer.innerHTML = `
+    <div class="container stack-md">
+      <p class="text-lore" style="margin-bottom: var(--space-md);">
+        "One Universe. Infinite Solutions."
+      </p>
+      
+      <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; opacity: 0.6;">
+        <a href="/pages/about/index.html" class="text-micro" style="text-decoration: none;">About</a>
+        <span>•</span>
+        <a href="/pages/support/index.html" class="text-micro" style="text-decoration: none;">Support</a>
+        <span>•</span>
+        <a href="/pages/legal/privacy.html" class="text-micro" style="text-decoration: none;">Privacy</a>
       </div>
-    `;
-    
-    document.body.appendChild(footer);
-
-    const topBtn = document.getElementById('back-to-top');
-    if (topBtn) {
-      topBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
-  }
-
-  function resolveRootPath() {
-    const path = window.location.pathname;
-    if (!path.includes('/pages/')) return './'; 
-    const parts = path.split('/pages/')[1];
-    return (parts && parts.includes('/')) ? '../../' : '../';
-  }
-})();
+      
+      <p class="text-micro" style="margin-top: var(--space-sm); opacity: 0.4;">
+        © ${new Date().getFullYear()} Kynar Universe. All Rights Reserved.
+      </p>
+    </div>
+  `;
+  
+  document.body.appendChild(footer);
+}

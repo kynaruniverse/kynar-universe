@@ -1,16 +1,16 @@
 /* KYNAR UNIVERSE DATA ENGINE (js/data.js)
    Source of Truth for the Digital Department Store.
-   Status: EVOLVED MASTER (Search Optimized + Utility Helpers)
+   Status: FINAL MASTER (Aligned with Grand Vision & Elevator Pitch)
 */
 
 export const KYNAR_DATA = {
   
   // =========================================
-  // 1. PRODUCT CATALOGUE
+  // 1. PRODUCT CATALOGUE (The Inventory)
   // =========================================
   products: [
     
-    // --- DEPARTMENT: KYNAR TOOLS ---
+    // --- DEPARTMENT: KYNAR TOOLS (Developers & Entrepreneurs) ---
     {
       id: "python-automation-bundle",
       category: "tools",
@@ -27,11 +27,13 @@ export const KYNAR_DATA = {
         "PDF Text Extractor",
         "Config.yaml for Custom Rules"
       ],
+      // Technical Specs for the "Specification Sheet"
       specs: {
         format: "Python (.py)",
         version: "v2.4 (Stable)",
         os: "Windows / macOS / Linux"
       },
+      // Code Preview for the "Tech Specs" card
       codePreview: `import os
 import shutil
 
@@ -42,11 +44,10 @@ def organize_directory():
         if filename.endswith(".pdf"):
             shutil.move(filename, DOCS_DIR)
             print(f"Moved: {filename}")`,
-      buyUrl: "#",
+      
       actionBtn: "Secure Instant Download",
-      previewIcon: "ri-code-s-slash-line",
-      image: "assets/products/script-preview.png",
-      keywords: ["code", "developer", "script", "coding", "programming"]
+      previewIcon: "ph-code",
+      image: "assets/products/script-preview.png"
     },
     {
       id: "business-intelligence",
@@ -69,12 +70,11 @@ def organize_directory():
         version: "2025 Edition",
         license: "Commercial Use"
       },
-      buyUrl: "#",
       actionBtn: "Download Template",
-      previewIcon: "ri-bar-chart-box-line",
-      image: "assets/products/finance-sheet.png",
-      keywords: ["excel", "spreadsheet", "money", "startup", "accounting"]
+      previewIcon: "ph-chart-bar",
+      image: "assets/products/finance-sheet.png"
     },
+    
     {
       id: "creative-assets",
       category: "tools",
@@ -96,15 +96,13 @@ def organize_directory():
         size: "1.2 GB",
         license: "Commercial Use"
       },
-      buyUrl: "#",
       actionBtn: "Download Assets",
-      previewIcon: "ri-brush-line",
-      image: "assets/products/creative.png",
-      keywords: ["ui", "ux", "figma", "images", "art"]
+      previewIcon: "ph-paint-brush-broad", // This was referenced in your HTML icon
+      image: "assets/products/creative.png"
     },
     
 
-    // --- DEPARTMENT: KYNAR LIVING ---
+    // --- DEPARTMENT: KYNAR LIVING (High Performers) ---
     {
       id: "finance-tracker",
       category: "living",
@@ -126,11 +124,9 @@ def organize_directory():
         compatibility: "Mobile & Desktop",
         license: "Personal Use"
       },
-      buyUrl: "#",
       actionBtn: "Get Dashboard",
-      previewIcon: "ri-money-dollar-circle-line",
-      image: "assets/products/finance-tracker.png",
-      keywords: ["budget", "money", "savings", "planner", "excel"]
+      previewIcon: "ph-currency-dollar",
+      image: "assets/products/finance-tracker.png"
     },
     {
       id: "morning-mindset-journal",
@@ -153,14 +149,12 @@ def organize_directory():
         pages: "120 Pages",
         license: "Personal Use"
       },
-      buyUrl: "#",
       actionBtn: "Download Journal",
-      previewIcon: "ri-sun-line",
-      image: "assets/products/journal.png",
-      keywords: ["mindfulness", "mental health", "diary", "planner"]
+      previewIcon: "ph-sun",
+      image: "assets/products/journal.png"
     },
 
-    // --- DEPARTMENT: KYNAR HOME ---
+    // --- DEPARTMENT: KYNAR HOME (Parents & Families) ---
     {
       id: "kids-bundles",
       category: "home",
@@ -182,11 +176,9 @@ def organize_directory():
         ageGroup: "4-7 Years",
         license: "Household Use"
       },
-      buyUrl: "#",
       actionBtn: "Download Bundle",
-      previewIcon: "ri-emotion-happy-line",
-      image: "assets/products/kids-pack.png",
-      keywords: ["children", "school", "coloring", "games", "toddler"]
+      previewIcon: "ph-smiley-sticker",
+      image: "assets/products/kids-pack.png"
     },
     {
       id: "home-management",
@@ -209,16 +201,14 @@ def organize_directory():
         version: "v1.0",
         license: "Household Use"
       },
-      buyUrl: "#",
       actionBtn: "Get Organized",
-      previewIcon: "ri-home-4-line",
-      image: "assets/products/home-org.png",
-      keywords: ["cleaning", "food", "kitchen", "organization", "planner"]
+      previewIcon: "ph-house",
+      image: "assets/products/home-org.png"
     }
   ],
 
   // =========================================
-  // 2. KNOWLEDGE LIBRARY
+  // 2. KNOWLEDGE LIBRARY (The Hub)
   // =========================================
   guides: [
     {
@@ -254,7 +244,7 @@ def organize_directory():
   ],
 
   // =========================================
-  // 3. WHISPERS (Lore)
+  // 3. WHISPERS (The Lore)
   // =========================================
   lore: {
     tools: [
@@ -280,42 +270,9 @@ def organize_directory():
   }
 };
 
-/* --- EVOLVED HELPER FUNCTIONS --- */
-
-/**
- * Finds a single product by ID
- */
+/* HELPER FUNCTIONS */
 export function getProductById(id) {
   return KYNAR_DATA.products.find(p => p.id === id);
-}
-
-/**
- * Gets all products for a specific category (tools, living, home)
- */
-export function getProductsByCategory(category) {
-  return KYNAR_DATA.products.filter(p => p.category === category);
-}
-
-/**
- * Basic Search: Checks title, description, and keywords
- */
-export function searchProducts(query) {
-  const q = query.toLowerCase();
-  return KYNAR_DATA.products.filter(p => 
-    p.title.toLowerCase().includes(q) || 
-    p.description.toLowerCase().includes(q) ||
-    (p.keywords && p.keywords.some(k => k.toLowerCase().includes(q)))
-  );
-}
-
-/**
- * Formats price to GBP (Change 'GBP' to 'USD' if needed)
- */
-export function formatPrice(price) {
-  return new Intl.NumberFormat('en-GB', {
-    style: 'currency',
-    currency: 'GBP'
-  }).format(price);
 }
 
 export function getGuideById(id) {

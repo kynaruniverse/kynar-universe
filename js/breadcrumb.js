@@ -1,119 +1,86 @@
-/* KYNAR UNIVERSE BREADCRUMB COMPONENT (js/breadcrumb.js)
-   Auto-generates navigation and injects SEO Schema.
-   Status: EVOLVED MASTER (SEO Optimized + Smart Formatting)
+/* KYNAR UNIVERSE BREADCRUMB COMPONENT (js/components/breadcrumb.js)
+   Auto-generates breadcrumb navigation based on URL path.
+   Status: PHASE 3 - Deduplication
 */
 
 export function injectBreadcrumb() {
+  // Check if breadcrumb placeholder exists
   const placeholder = document.getElementById('breadcrumb-nav');
   if (!placeholder) return;
   
-  // 1. Clean the path
-  const rawPath = window.location.pathname;
-  const segments = rawPath.split('/').filter(s => s && s !== 'index.html' && s !== 'pages');
-  const rootPath = resolveRoot(rawPath);
-
-  // 2. Build the Visual Breadcrumb
-  let html = `<nav class="breadcrumb animate-enter" aria-label="Breadcrumb">`;
+  const path = window.location.pathname;
+  const segments = path.split('/').filter(s => s && s !== 'index.html');
   
-  // A. The "Back" Button Logic
-  // If we are deep (e.g. Tools -> Product), show "Back". If top level, show "Home".
-  const backLabel = segments.length > 1 ? 'Back' : 'Home';
-  html += `
-    <a href="${rootPath}index.html" class="btn-tertiary back-link">
-      <i class="ri-arrow-left-line"></i> ${backLabel}
-    </a>
-    <span class="breadcrumb-separator">/</span>
-  `;
-
-  // B. Intermediate Segments
-  let cumulativePath = rootPath + 'pages/';
+  // Build breadcrumb HTML
+  let breadcrumbHTML = '<nav class="breadcrumb animate-enter" aria-label="Breadcrumb">';
   
-  segments.forEach((segment, index) => {
-    const isLast = index === segments.length - 1;
-    const displayName = formatSegment(segment);
+  // Always start with Home
+  breadcrumbHTML += `<a href="${getRootPath()}index.html" class="btn-tertiary" style="padding-left:0;">`;
+  
+  // Check if we're on a deep page
+  if (segments.length > 1) {
+    breadcrumbHTML += `<i class="ph ph-arrow-left"></i> Home`;
+  } else {
+    breadcrumbHTML += `<i class="ph ph-arrow-left"></i> Return`;
+  }
+  
+  breadcrumbHTML += `</a>`;
+  
+  // Add intermediate segments
+  let currentPath = '';
+  for (let i = 0; i < segments.length - 1; i++) {
+    const segment = segments[i];
+    if (segment === 'pages') continue;
     
-    // Update path for the next link
-    // Note: We construct relative paths to ensure offline/local compatibility
-    if (index > 0) cumulativePath += `${segment}/`;
-
-    if (isLast) {
-      // Current Page (Not clickable, styled as active)
-      html += `<span class="text-micro breadcrumb-current" aria-current="page">${displayName}</span>`;
-    } else {
-      // Parent Category (Clickable)
-      html += `
-        <a href="${cumulativePath}index.html" class="btn-tertiary">
-          ${displayName}
-        </a>
-        <span class="breadcrumb-separator">/</span>
-      `;
+    currentPath += `/${segment}`;
+    breadcrumbHTML += `<span style="opacity: 0.3;">/</span>`;
+    breadcrumbHTML += `<a href="${getRootPath()}pages/${segment}/index.html" class="btn-tertiary" style="padding-left:0;">`;
+    breadcrumbHTML += capitalize(segment);
+    breadcrumbHTML += `</a>`;
+  }
+  
+  // Add current page (non-linked)
+  if (segments.length > 0) {
+    const lastSegment = segments[segments.length - 1].replace('.html', '');
+    if (lastSegment !== 'pages') {
+      breadcrumbHTML += `<span style="opacity: 0.3;">/</span>`;
+      breadcrumbHTML += `<span class="text-micro" style="opacity: 0.6;">${capitalize(lastSegment)}</span>`;
     }
-  });
+  }
   
-  html += `</nav>`;
-  placeholder.outerHTML = html;
-
-  // 3. Inject SEO Schema (Invisible to user, visible to Google)
-  injectSchema(segments);
+  breadcrumbHTML += '</nav>';
+  
+  placeholder.outerHTML = breadcrumbHTML;
 }
 
-/* --- HELPERS --- */
-
-/**
- * Calculates how many folders deep we are to find Root
- */
-function resolveRoot(path) {
+function getRootPath() {
+  const path = window.location.pathname;
   if (!path.includes('/pages/')) return './';
-  // Count how many slashes appear after '/pages/'
   const depth = (path.split('/pages/')[1].match(/\//g) || []).length;
-  // If depth is 0 (pages/tools), go back 2 levels. If 1, go back 3.
-  return '../'.repeat(depth + 1); 
+  return '../'.repeat(depth + 1);
 }
 
-/**
- * Turns "finance-tracker" into "Finance Tracker"
- */
-function formatSegment(str) {
+function capitalize(str) {
   if (!str) return '';
-  
-  // Dictionary for specific overrides
-  const dictionary = {
-    'tools': 'Kynar Tools',
-    'living': 'Kynar Living', 
-    'home': 'Kynar Home',
+  // Handle special cases
+  const specialCases = {
+    'tools': 'Tools',
+    'living': 'Living', 
+    'home': 'Home',
+    'account': 'Account',
     'hub': 'The Hub',
-    'faq': 'FAQ'
+    'about': 'About',
+    'support': 'Support',
+    'settings': 'Settings',
+    'legal': 'Legal',
+    'onboarding': 'Onboarding',
+    'checkout': 'Checkout',
+    'product': 'Product',
+    'guide': 'Guide',
+    'collections': 'Inventory'
   };
-
-  if (dictionary[str.toLowerCase()]) return dictionary[str.toLowerCase()];
-
-  // Standard formatting: Replace hyphens with spaces & Capitalize Words
-  return str
-    .replace(/-/g, ' ')
-    .replace(/\b\w/g, l => l.toUpperCase());
+  
+  return specialCases[str.toLowerCase()] || str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-/**
- * Generates JSON-LD for Google Search Results
- */
-function injectSchema(segments) {
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": segments.map((segment, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": formatSegment(segment),
-      // In a real deployed site, this should be the absolute URL (https://...)
-      // For now, we leave item undefined to prevent relative path errors in Schema
-    }))
-  };
-
-  const script = document.createElement('script');
-  script.type = 'application/ld+json';
-  script.text = JSON.stringify(schema);
-  document.head.appendChild(script);
-}
-
-// Auto-run if loaded directly
 document.addEventListener('DOMContentLoaded', injectBreadcrumb);
