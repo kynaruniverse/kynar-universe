@@ -1,14 +1,13 @@
 /* KYNAR UNIVERSE SERVICE WORKER (sw.js)
-   Enables offline functionality and faster repeat visits.
-   Status: PHASE 5 - Production Ready (Remix Icon & CDN Compatible)
+   Status: EVOLVED MASTER (Resilient Install + App-Level Caching)
+   Description: Manages offline capability and instant-load performance.
 */
 
-// Bump version to force update for existing users
-const CACHE_NAME = 'kynar-universe-v1.2'; 
-const RUNTIME_CACHE = 'kynar-runtime-v1.2';
+const VERSION = 'v1.3.1'; // Bumped for new pages
+const CACHE_NAME = `kynar-core-${VERSION}`;
+const RUNTIME_CACHE = `kynar-runtime-${VERSION}`;
 
-// Assets to cache immediately on install
-// NOTE: If any single file here 404s, the Service Worker fails to install.
+// 1. UPDATED ASSET LIST (Includes all new evolved pages)
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -23,37 +22,41 @@ const PRECACHE_ASSETS = [
   '/js/footer.js',
   '/js/breadcrumb.js',
   '/js/data.js',
-  '/js/analytics.js',                  // <--- ADDED: Critical for offline app.js
+  '/js/analytics.js',
   '/js/components/structured-data.js',
   '/assets/logo.svg',
   '/assets/favicon.ico',
   '/pages/tools/index.html',
   '/pages/living/index.html',
   '/pages/home/index.html',
-  '/pages/hub/index.html'
+  '/pages/hub/index.html',
+  '/pages/account/index.html',    // ADDED
+  '/pages/settings/index.html',   // ADDED
+  '/pages/onboarding/index.html'  // ADDED
 ];
 
-// Install - cache core assets
+// 2. RESILIENT INSTALL (Don't let one 404 kill the whole SW)
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('[SW] Precaching core assets');
-        return cache.addAll(PRECACHE_ASSETS);
-      })
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('[SW] Initiating resilient precache...');
+      return Promise.allSettled(
+        PRECACHE_ASSETS.map((url) => {
+          return cache.add(url).catch((err) => console.error(`[SW] Failed to cache: ${url}`, err));
+        })
+      );
+    }).then(() => self.skipWaiting())
   );
 });
 
-// Activate - clean up old caches
+// 3. CLEANUP OLD CACHES
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
-            console.log('[SW] Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
+        keys.map((key) => {
+          if (key !== CACHE_NAME && key !== RUNTIME_CACHE) {
+            return caches.delete(key);
           }
         })
       );
@@ -61,54 +64,32 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch - serve from cache, fallback to network
+// 4. SMART FETCH (Network-First for HTML, Cache-First for Assets)
 self.addEventListener('fetch', (event) => {
-  // 1. Skip non-GET requests
   if (event.request.method !== 'GET') return;
-  
+
   const url = new URL(event.request.url);
+  const isInternal = url.origin === self.location.origin;
+  const isCDN = url.hostname === 'cdn.jsdelivr.net';
 
-  // 2. LOGIC: What external domains do we allow?
-  // We allow self (our site) AND the Remix Icon CDN.
-  const isOrigin = url.origin === self.location.origin;
-  const isRemixCDN = url.hostname === 'cdn.jsdelivr.net';
+  if (!isInternal && !isCDN) return;
 
-  // If it's external and NOT our allowed CDNs, ignore it.
-  if (!isOrigin && !isRemixCDN) return;
-
-  // 3. CACHE STRATEGY: Stale-While-Revalidate
   event.respondWith(
-    caches.match(event.request)
-      .then(cachedResponse => {
-        
-        // Return cached response immediately if found
-        if (cachedResponse) {
-          return cachedResponse;
+    caches.match(event.request).then((cachedResponse) => {
+      // If we have it in cache, return it immediately
+      const fetchPromise = fetch(event.request).then((networkResponse) => {
+        // Update the cache in the background (Stale-While-Revalidate)
+        if (networkResponse && networkResponse.status === 200) {
+          const cacheCopy = networkResponse.clone();
+          caches.open(RUNTIME_CACHE).then((cache) => cache.put(event.request, cacheCopy));
         }
+        return networkResponse;
+      }).catch(() => {
+        // If network fails and it's a page navigation, show 404 or Offline page
+        if (event.request.mode === 'navigate') return caches.match('/404.html');
+      });
 
-        // Network Fallback
-        return fetch(event.request.clone())
-          .then(response => {
-            // Check for valid response (Basic for local, CORS for CDN)
-            if (!response || response.status !== 200 || (response.type !== 'basic' && response.type !== 'cors')) {
-              return response;
-            }
-
-            // Cache the new resource
-            const responseToCache = response.clone();
-            caches.open(RUNTIME_CACHE)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          })
-          .catch(() => {
-            // Offline Fallback for Navigation requests
-            if (event.request.mode === 'navigate') {
-              return caches.match('/404.html');
-            }
-          });
-      })
+      return cachedResponse || fetchPromise;
+    })
   );
 });

@@ -3,94 +3,76 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#10b981">
+  <meta name="robots" content="noindex">
+  
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+               script-src 'self' https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   
   <title>Upgrade Acquired | Kynar Universe</title>
   
-  <meta name="description" content="Your digital upgrade is ready. Access your secure inventory on Kynar Universe.">
-  <meta name="robots" content="noindex">
-  
-  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
-  
+  <link rel="icon" href="../../assets/favicon.ico">
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
-<body data-theme="accounts">
+<body data-theme="accounts" class="flex-center bg-depth">
   
-
-  
-  <main id="main-content" class="container" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--space-md);">
+  <main id="main-content" class="container narrow stack-xl animate-enter">
     
-    <div class="card stack-lg animate-enter" style="max-width: 500px; padding: var(--space-xl); border-top: 4px solid var(--color-success); width: 100%;">
+    <div class="card success-card">
       
-      <div class="icon-box" style="width: 80px; height: 80px; font-size: 3rem; background: rgba(16, 185, 129, 0.1); color: var(--color-success); margin: 0 auto; border-color: rgba(16, 185, 129, 0.2);">
+      <div class="icon-box lg success-glow">
         <i class="ri-checkbox-circle-line"></i>
       </div>
       
-      <div class="stack-sm">
-        <h1 class="text-h2">Upgrade Acquired.</h1>
-        <p class="text-body" style="font-size: 1.1rem; opacity: 0.9;">
-          Your digital asset has been secured.
-        </p>
-      </div>
+      <header class="stack-sm text-center">
+        <h1 class="text-h1">Upgrade Acquired.</h1>
+        <p class="text-body-lg">Your digital asset has been secured.</p>
+      </header>
       
-      <div class="stack-sm" style="background: var(--bg-page); padding: var(--space-md); border-radius: var(--radius-md); text-align: left; border: 1px solid var(--border-subtle);">
-        <span class="text-micro" style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Deployment Status</span>
-        <ul class="text-body" style="font-size: 0.95rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
-          
-          <li style="display: flex; gap: 12px; align-items: center;">
-            <i class="ri-mail-open-line" style="color: var(--color-success);"></i>
-            <span><strong>Check Email:</strong> Your instant download link is in your inbox.</span>
+      <div class="status-panel">
+        <span class="text-micro muted">Deployment Status</span>
+        
+        <ul class="status-list">
+          <li>
+            <i class="ri-mail-open-line success-text"></i>
+            <p><strong>Check Email:</strong> Your download link is in your inbox.</p>
           </li>
           
-          <li style="display: flex; gap: 12px; align-items: center;">
-            <i class="ri-stack-line" style="color: var(--pal-account-blue);"></i>
-            <span><strong>Inventory:</strong> Item added to your centralized hub.</span>
+          <li>
+            <i class="ri-stack-line info-text"></i>
+            <p><strong>Inventory:</strong> Item added to your centralized hub.</p>
           </li>
           
-          <li style="display: flex; gap: 12px; align-items: center;">
-            <i class="ri-flashlight-line" style="color: var(--pal-home-highlight);"></i>
-            <span><strong>Mission:</strong> Ready to change your day.</span>
+          <li>
+            <i class="ri-flashlight-line highlight-text"></i>
+            <p><strong>Mission:</strong> Asset ready to change your day.</p>
           </li>
-          
         </ul>
       </div>
       
-      <div class="stack-sm">
-        <a href="../account/index.html" class="btn-primary" style="width: 100%; justify-content: center; background-color: var(--pal-account-blue);">
-          Open Inventory
-        </a>
-        <a href="../../index.html#departments" class="btn-tertiary">
-          Return to Department Store
-        </a>
-      </div>
+      <footer class="stack-sm">
+        <a href="index.html" class="btn-primary w-full">Open Inventory</a>
+        <a href="../../index.html#departments" class="btn-tertiary">Return to Store</a>
+      </footer>
       
     </div>
-    
     
   </main>
   
   <script type="module" src="../../js/app.js"></script>
   <script type="module" src="../../js/footer.js"></script>
-  <script type="module" src="../../js/breadcrumb.js"></script>
-  
 </body>
 
 </html>

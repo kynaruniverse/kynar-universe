@@ -1,50 +1,46 @@
 # KYNAR UNIVERSE ROBOTS (robots.txt)
-# Controls where search engines are allowed to go.
-# Status: FINAL MASTER
+# Status: EVOLVED MASTER (Verified for PWA & AI Protection)
 
 User-agent: *
-Allow: /
 
-# 1. Block User-Specific Areas
-Disallow: /pages/account/
+# 1. Block Private/User-Specific Directories
+# We block the folders but allow the specific entrance page (Login)
+Disallow: /pages/account/collections.html
+Disallow: /pages/account/success.html
 Disallow: /pages/settings/
-Disallow: /pages/checkout/
 Disallow: /pages/onboarding/
 
-# 2. Block System/Error Pages from Search Results
+# 2. Block System & Error Pages
 Disallow: /404.html
-Disallow: /pages/checkout/success.html
 Disallow: /sw.js
 
-# 3. Block Data Files (Safety)
-# Note: Ensure your manifest is named 'site.webmanifest' not '.json'
-Disallow: /*.json$
+# 3. Security: Block sensitive file types but allow Manifest
+Disallow: /config/
+Disallow: /*.log$
+Disallow: /*.php$
+Allow: /site.webmanifest
 
-# 4. Allow Assets for Image Search
-Allow: /assets/*.jpg
-Allow: /assets/*.png
-Allow: /assets/*.svg
-Allow: /assets/*.webp
+# 4. Global Asset Access (Ensures high-fidelity rendering)
+Allow: /css/*.css
+Allow: /js/*.js
+Allow: /assets/
 
-# 5. Sitemap Location
+# 5. Sitemap Link
 Sitemap: https://www.kynaruniverse.co.uk/sitemap.xml
 
 # --- BOT SPECIFIC RULES ---
 
-# Google (General)
+# Googlebot needs to render JS to see your 'Glass UI'
 User-agent: Googlebot
-Allow: /
+Allow: /js/
+Allow: /css/
 
-# Google (Images)
-User-agent: Googlebot-Image
-Allow: /assets/
-
-# Bing / Yahoo (Politeness)
-User-agent: Bingbot
+# Bingbot Politeness
+User-agent: bingbot
 Crawl-delay: 1
 
-# --- AI SCRAPER BLOCKING (Optional) ---
-# Prevents your content from being used to train generic AI models
+# --- AI SCRAPER PROTECTIONS ---
+# Protecting Kynar Knowledge Records from unauthorized training
 User-agent: GPTBot
 Disallow: /
 
@@ -57,7 +53,10 @@ Disallow: /
 User-agent: anthropic-ai
 Disallow: /
 
-User-agent: Omgilibot
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Google-Extended
 Disallow: /
 
 User-agent: FacebookBot

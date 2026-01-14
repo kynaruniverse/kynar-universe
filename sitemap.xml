@@ -4,65 +4,58 @@
   <url>
     <loc>https://www.kynaruniverse.co.uk/index.html</loc>
     <lastmod>2026-01-14</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.00</priority>
   </url>
   
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/tools/index.html</loc>
     <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/living/index.html</loc>
     <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/home/index.html</loc>
     <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/hub/index.html</loc>
     <lastmod>2026-01-14</lastmod>
-    <priority>0.80</priority>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://www.kynaruniverse.co.uk/pages/support/index.html</loc>
-    <priority>0.60</priority>
-  </url>
-  <url>
     <loc>https://www.kynaruniverse.co.uk/pages/about/index.html</loc>
+    <lastmod>2026-01-14</lastmod>
     <priority>0.70</priority>
   </url>
-  
   <url>
-    <loc>https://www.kynaruniverse.co.uk/pages/product.html</loc>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://www.kynaruniverse.co.uk/pages/guide.html</loc>
-    <priority>0.50</priority>
+    <loc>https://www.kynaruniverse.co.uk/pages/about/support.html</loc>
+    <priority>0.60</priority>
   </url>
   
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/account/index.html</loc>
     <priority>0.50</priority>
   </url>
-  <url>
-    <loc>https://www.kynaruniverse.co.uk/pages/settings/index.html</loc>
-    <priority>0.40</priority>
-  </url>
+  
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/shortcuts.html</loc>
     <priority>0.30</priority>
   </url>
-  
   <url>
     <loc>https://www.kynaruniverse.co.uk/pages/legal/privacy.html</loc>
     <lastmod>2026-01-01</lastmod>
-    <priority>0.30</priority>
+    <priority>0.20</priority>
   </url>
 
 </urlset>

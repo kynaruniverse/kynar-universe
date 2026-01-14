@@ -1,104 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+               script-src 'self' https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self';">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>Digital Asset Specification | Kynar Universe</title>
   
-  <title>Digital Asset Details | Kynar Universe</title>
-  <meta property="og:image" content="https://kynaruniverse.co.uk/assets/share-preview.jpg">
-  <meta name="twitter:image" content="https://kynaruniverse.co.uk/assets/share-preview.jpg">
-  <meta name="description" content="View specification for this verified digital asset. Secure instant download available.">
-  <meta property="og:title" content="Digital Upgrade | Kynar Universe">
-  <meta property="og:description" content="Production-ready tools for a smarter workflow. Verified for usability and impact.">
-  
-  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-  
-  
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
-  
-  <link rel="stylesheet" href="../../css/tokens.css">
-  <link rel="stylesheet" href="../../css/global.css">
-  <link rel="stylesheet" href="../../css/components.css">
 </head>
 
-<body data-theme="tools">
-  
-
-  
-  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+<body data-theme="tools"> <main id="main-content" class="container stack-xl">
     
     <div id="breadcrumb-nav"></div>
     
-    <header class="stack-md animate-enter delay-1">
-      <div style="display: flex; align-items: center; justify-content: space-between;">
-        <div style="display: flex; gap: 8px; align-items: center;">
+    <header class="stack-md animate-enter">
+      <div class="product-meta-row">
+        <div class="meta-group">
           <span id="product-tag" class="tag" data-variant="tools">Loading...</span>
-          <span class="text-micro" style="opacity: 0.6; display: flex; align-items: center; gap: 4px;">
-            <i class="ri-verified-badge-fill" style="color: var(--accent-primary);"></i> Verified Utility
+          <span class="text-micro verified-label">
+            <i class="ri-verified-badge-fill"></i> Verified Utility
           </span>
         </div>
-        <span id="product-price" class="text-h3" style="color: var(--accent-primary);">£--.--</span>
+        <span id="product-price" class="text-h3 accent-text">£--.--</span>
       </div>
       
       <h1 class="text-h1" id="product-title">Retrieving Asset...</h1>
       
-      <p class="text-body" style="font-size: 1.15rem; max-width: 60ch; opacity: 0.9;" id="product-short-desc">
-        We are fetching the specifications for this tool from the Kynar Archive.
+      <p class="text-body text-body-lg" id="product-short-desc">
+        Connecting to the Kynar Archive to fetch specifications...
       </p>
       
-      <div style="opacity: 0.8; margin-top: var(--space-xs); border-left: 2px solid var(--accent-primary); padding-left: var(--space-sm);">
+      <div class="lore-border">
         <p class="text-lore" id="product-lore">"..."</p>
       </div>
       
-      <div style="margin-top: var(--space-md); display: flex; gap: var(--space-sm); flex-wrap: wrap;">
-        <button id="btn-action" class="btn-primary" aria-label="Purchase and Download">
+      <div class="action-row">
+        <button id="btn-action" class="btn-primary" data-track="Product Purchase">
           Secure Instant Download
         </button>
-        <button class="btn-tertiary" style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        <button class="btn-secondary" data-track="Documentation View">
           View Documentation
         </button>
       </div>
       
-      <p class="text-micro" style="opacity: 0.5; margin-top: 4px;">
-        <i class="ri-shield-check-line"></i> Vetted for usability and impact.
+      <p class="text-micro security-note">
+        <i class="ri-shield-check-line"></i> Vetted for usability and digital impact.
       </p>
     </header>
-    
-    <div id="product-preview" class="card animate-enter delay-2" style="min-height: 350px; display: flex; align-items: center; justify-content: center; background: var(--bg-surface); border: 1px dashed var(--border-subtle); position: relative; overflow: hidden;">
-      <div style="text-align: center; opacity: 0.3;">
-        <i class="ri-image-2-line" style="font-size: 3rem;"></i>
-        <p class="text-micro">Loading Preview...</p>
+
+    <div id="product-preview" class="card preview-stage animate-enter delay-1">
+      <div class="preview-placeholder">
+        <i class="ri-image-2-line"></i>
+        <p class="text-micro">Generating Preview...</p>
       </div>
     </div>
     
-    <section class="animate-enter delay-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
+    <section class="grid-auto animate-enter delay-2">
       
       <div class="stack-lg">
         <div class="stack-sm">
           <h2 class="text-h3">Solution Overview</h2>
-          <p class="text-body" id="product-desc" style="opacity: 0.8;">
-            Description loading...
+          <p class="text-body" id="product-desc">
+            Initializing description field...
           </p>
         </div>
         
         <div class="stack-sm">
           <h2 class="text-h3">Included Assets</h2>
-          <ul id="product-features" class="text-body" style="padding-left: 1.5rem; display: flex; flex-direction: column; gap: 12px; opacity: 0.8;">
-            <li>Scanning file list...</li>
+          <ul id="product-features" class="feature-list">
+            <li>Scanning package manifest...</li>
           </ul>
         </div>
       </div>
@@ -106,27 +91,27 @@
       <div class="stack-lg">
         
         <div id="code-preview-container" class="stack-sm" style="display: none;">
-          <h2 class="text-h3">Code Preview</h2>
-          <div class="code-block" data-context="tools" style="padding: 16px; border-radius: var(--radius-md); background: #0d1117; border: 1px solid var(--border-subtle);">
-            <pre><code id="code-snippet" style="font-family: 'Fira Code', monospace; font-size: 0.85rem; color: #c9d1d9;"># Loading snippet...</code></pre>
+          <h2 class="text-h3">Logic Preview</h2>
+          <div class="code-block" data-context="tools">
+            <pre><code id="code-snippet"># Loading snippet...</code></pre>
           </div>
         </div>
         
-        <div class="card" style="background: var(--bg-surface);">
+        <div class="card spec-card">
           <div class="stack-sm">
-            <h3 class="text-h3" style="font-size: 1rem;">Technical Specifications</h3>
-            <div id="tech-specs" class="text-micro" style="display: flex; flex-direction: column; gap: 12px; opacity: 0.7;">
-              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+            <h3 class="text-h3 sm">Technical Specs</h3>
+            <div id="tech-specs" class="spec-table">
+              <div class="spec-row">
                 <span>Format</span>
-                <span id="spec-format" style="font-weight: 600;">ZIP / PDF</span>
+                <span id="spec-format" class="val">ZIP / PDF</span>
               </div>
-              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+              <div class="spec-row">
                 <span>Version</span>
-                <span id="spec-version" style="font-weight: 600;">1.0.0</span>
+                <span id="spec-version" class="val">1.0.0</span>
               </div>
-              <div style="display: flex; justify-content: space-between;">
+              <div class="spec-row">
                 <span>License</span>
-                <span style="font-weight: 600;">Personal Use</span>
+                <span class="val">Commercial Use</span>
               </div>
             </div>
           </div>
@@ -145,5 +130,4 @@
   <script type="module" src="../js/footer.js"></script>
   <script type="module" src="../js/breadcrumb.js"></script>
 </body>
-
 </html>

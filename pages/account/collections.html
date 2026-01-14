@@ -3,87 +3,62 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#3b82f6">
+  
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-               script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' https://fonts.googleapis.com 'unsafe-inline' https://cdn.jsdelivr.net; 
+               script-src 'self' https://cdn.jsdelivr.net; 
+               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
                font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
                img-src 'self' data: https:; 
                connect-src 'self' https://*.supabase.co;">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  
   <title>My Inventory | Kynar Universe</title>
   
-  <meta name="description" content="Your centralized hub for digital upgrades.">
-  
-  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css">
-  
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
+  <link rel="icon" href="../../assets/favicon.ico">
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body data-theme="accounts">
   
-
-  
-  <main id="main-content" class="container stack-xl" style="padding-top: var(--space-section); padding-bottom: var(--space-section);">
+  <main id="main-content" class="container stack-xl">
     
-    <nav style="display: flex; justify-content: space-between; align-items: center;" class="animate-enter">
+    <nav class="flex-between animate-enter">
       <div id="breadcrumb-nav"></div>
       
-      <div style="display: flex; gap: var(--space-sm);">
-        <button id="logout-btn" class="btn-tertiary" style="color: var(--text-muted);">
-          Logout <i class="ri-logout-box-r-line"></i>
-        </button>
+      <div class="nav-actions">
         <a href="../settings/index.html" class="btn-tertiary" aria-label="Settings">
-          Settings <i class="ri-settings-3-line"></i>
+          <i class="ri-settings-3-line"></i> <span>Settings</span>
         </a>
+        <button id="logout-btn" class="btn-tertiary logout-btn">
+          <span>Logout</span> <i class="ri-logout-box-r-line"></i>
+        </button>
       </div>
     </nav>
     
     <header class="stack-md animate-enter delay-1">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span class="text-micro" style="color: var(--pal-account-blue);">The Inventory</span>
-        <span class="text-micro" style="opacity: 0.4;">|</span>
-        <span class="text-micro" id="user-identity" style="opacity: 0.6;">Verifying Identity...</span>
+      <div class="user-meta">
+        <span class="text-micro accent-text">The Inventory</span>
+        <span class="separator">|</span>
+        <span class="text-micro" id="user-identity">Authenticating...</span>
       </div>
       
       <h1 class="text-h1">Your Digital Assets</h1>
-      <p class="text-body" style="font-size: 0.95rem; opacity: 0.8;">
-        Your personal library of verified tools and upgrades.
-      </p>
+      <p class="text-body">Your personal library of verified tools and upgrades.</p>
     </header>
     
-    <section id="inventory-container" class="card animate-enter delay-2" style="text-align: center; padding: var(--space-xl) var(--space-md); border-top: 4px solid var(--pal-account-neutral);">
-      <div class="stack-md" style="align-items: center;">
-        
-        <div class="icon-box" style="width: 80px; height: 80px; font-size: 2.5rem; background: var(--bg-page); border-color: var(--border-subtle);">
-          <i class="ri-stack-line" style="color: var(--text-muted);"></i>
-        </div>
-        
-        <div class="stack-sm">
-          <h2 class="text-h3">Ready for Upgrades</h2>
-          <p class="text-body" style="max-width: 45ch; margin: 0 auto; opacity: 0.8;">
-            Your centralized hub is currently empty. Visit the Digital Department Store to find production-ready scripts, planners, and tools.
-          </p>
-        </div>
-        
-        <div style="margin-top: var(--space-sm);">
-          <a href="../../index.html#departments" class="btn-primary" style="background-color: var(--pal-account-blue);">Browse Departments</a>
-        </div>
-        
+    <section id="inventory-container" class="card inventory-stage animate-enter delay-2">
+      <div class="loading-pulse">
+        <div class="icon-box md"></div>
+        <div class="skeleton-text"></div>
       </div>
     </section>
     
@@ -91,108 +66,10 @@
   
   <script type="module" src="../../js/app.js"></script>
   <script type="module" src="../../js/header.js"></script>
-  <script type="module" src="../../js/search.js"></script>
   <script type="module" src="../../js/footer.js"></script>
   <script type="module" src="../../js/breadcrumb.js"></script>
   
-  <script>
-    // 1. CONFIGURE SUPABASE (REQUIRED)
-    const SUPABASE_URL = 'https://wtmshxqojvafphokscze.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0bXNoeHFvanZhZnBob2tzY3plIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMjAzOTIsImV4cCI6MjA4Mzg5NjM5Mn0.278Q8WU3AZM6OmFLdCpQXB2zvV4fgJfMCB0bsYre1X0';
-    
-    // Ensure Supabase is loaded
-    if (typeof supabase !== 'undefined') {
-      const { createClient } = supabase;
-      const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      
-      // 2. SECURITY CHECK (The Bouncer)
-      async function initPage() {
-        const { data: { session } } = await sb.auth.getSession();
-        
-        if (!session) {
-          // Not logged in? Redirect to Login Page (index.html)
-          window.location.href = 'index.html';
-          return;
-        }
-        
-        // Logged in? Update UI
-        document.getElementById('user-identity').innerText = session.user.email;
-        
-        // Load Inventory Data (Hybrid Mode: Auth + LocalStorage)
-        loadInventory();
-      }
-      
-      // 3. LOGOUT HANDLER
-      const logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', async () => {
-          await sb.auth.signOut();
-          window.location.href = 'index.html';
-        });
-      }
-      
-      // Run on Load
-      document.addEventListener('DOMContentLoaded', initPage);
-    } else {
-      console.error('Supabase library not loaded.');
-    }
-    
-    // 4. INVENTORY RENDERER (Your Existing Logic)
-    function loadInventory() {
-      try {
-        const inventory = localStorage.getItem('kynar_inventory');
-        const items = inventory ? JSON.parse(inventory) : [];
-        
-        if (items.length === 0) return; // Keep default empty state
-        
-        const container = document.getElementById('inventory-container');
-        
-        // Render List
-        container.innerHTML = `
-          <div class="stack-md" style="text-align: left;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-sm);">
-              <h2 class="text-h3">Purchased Items (${items.length})</h2>
-              <button onclick="clearInventory()" class="btn-tertiary" style="color: var(--color-error); font-size: 0.85rem;">
-                Clear List
-              </button>
-            </div>
-            
-            <div style="display: grid; gap: var(--space-md);">
-              ${items.map(item => `
-                <div class="card" style="padding: var(--space-md); border-left: 2px solid var(--pal-account-blue);">
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div class="stack-xs">
-                      <h3 class="text-body" style="font-weight: 600; margin:0;">${item.title}</h3>
-                      <span class="text-micro" style="opacity: 0.6;">
-                        ${item.category ? item.category.toUpperCase() : 'ASSET'} • Verified Purchase
-                      </span>
-                    </div>
-                    <div style="text-align: right;">
-                       <a href="#" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;">
-                        <i class="ri-download-line"></i> Download
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
-        
-      } catch (error) {
-        console.error('Inventory Error:', error);
-      }
-    }
-    
-    // Expose Clear Function
-    window.clearInventory = function() {
-      if (confirm('Clear local history?')) {
-        localStorage.removeItem('kynar_inventory');
-        location.reload();
-      }
-    };
-  </script>
-  
+  <script type="module" src="../../js/pages/collections.js"></script>
 </body>
 
 </html>
