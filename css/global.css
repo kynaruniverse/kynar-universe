@@ -2,12 +2,6 @@
    The visual physics engine. Handles Layout, Typography, Atmosphere, and the Glass Interface.
    Status: FINAL MASTER (Deep Atmosphere / Glass / Starwalker Ready)
 */
-/* NUCLEAR OVERSCROLL KILLER */
-/* Applies to the root, the body, and the main wrapper */
-:root, html, body, main, #main-content {
-  overscroll-behavior: none !important;
-  overscroll-behavior-y: none !important;
-}
 
 /* =========================================
    1. RESET & BASE (The Foundation)
