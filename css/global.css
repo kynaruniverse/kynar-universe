@@ -16,8 +16,6 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   
-  /* FIX: Disables the blue Android overscroll glow */
-  overscroll-behavior-y: none; 
 }
 
 body {
@@ -25,9 +23,6 @@ body {
   color: var(--text-main);
   font-family: var(--font-primary);
   line-height: var(--leading-base);
-  
-  /* FIX: Double-lock to prevent bounce on all devices */
-  overscroll-behavior-y: none;
   
   /* MOBILE SAFETY: Handle Notches and Home Bars */
   padding-left: var(--safe-left);
@@ -274,7 +269,7 @@ code, pre {
   left: 0;
   width: 0%;
   height: 3px;
-  background: linear-gradient(90deg, #3b82f6, #10b981);
+  background: var(--accent-primary);
   z-index: calc(var(--z-header) + 1);
   transition: width 0.1s ease-out;
   opacity: 0.8;
