@@ -1,6 +1,6 @@
 /* KYNAR UNIVERSE DATA ENGINE (js/data.js)
    Source of Truth for the Digital Department Store.
-   Status: FINAL MASTER (Aligned with Grand Vision & Elevator Pitch)
+   Status: FINAL MASTER (Pre-Launch Mode Configured)
 */
 
 export const KYNAR_DATA = {
@@ -17,6 +17,7 @@ export const KYNAR_DATA = {
       subCategory: "Automation",
       title: "Python Workflow Automator",
       price: 15.00,
+      status: "upcoming", // Flag for UI logic
       tag: "Production-Ready Script",
       shortDesc: "Automate your file management and data entry tasks instantly.",
       lore: "Blueprints for your best work.",
@@ -27,7 +28,6 @@ export const KYNAR_DATA = {
         "PDF Text Extractor",
         "Config.yaml for Custom Rules"
       ],
-      // Technical Specs for the "Specification Sheet"
       specs: {
         format: "Python (.py)",
         version: "v2.4 (Stable)",
@@ -45,7 +45,7 @@ def organize_directory():
             shutil.move(filename, DOCS_DIR)
             print(f"Moved: {filename}")`,
       
-      actionBtn: "Secure Instant Download",
+      actionBtn: "Join Waitlist",
       previewIcon: "ph-code",
       image: "assets/products/script-preview.png"
     },
@@ -55,6 +55,7 @@ def organize_directory():
       subCategory: "Business",
       title: "Startup Financial Model",
       price: 25.00,
+      status: "upcoming",
       tag: "Business Intelligence",
       shortDesc: "A master spreadsheet for forecasting revenue and runway.",
       lore: "Data is clarity.",
@@ -70,7 +71,7 @@ def organize_directory():
         version: "2025 Edition",
         license: "Commercial Use"
       },
-      actionBtn: "Download Template",
+      actionBtn: "Notify Me",
       previewIcon: "ph-chart-bar",
       image: "assets/products/finance-sheet.png"
     },
@@ -81,6 +82,7 @@ def organize_directory():
       subCategory: "Design",
       title: "Creator Asset Pack",
       price: 18.00,
+      status: "upcoming",
       tag: "Design Assets",
       shortDesc: "High-fidelity textures, fonts, and icons for UI design.",
       lore: "Shape your reality.",
@@ -96,19 +98,20 @@ def organize_directory():
         size: "1.2 GB",
         license: "Commercial Use"
       },
-      actionBtn: "Download Assets",
-      previewIcon: "ph-paint-brush-broad", // This was referenced in your HTML icon
+      actionBtn: "Join Waitlist",
+      previewIcon: "ph-paint-brush-broad",
       image: "assets/products/creative.png"
     },
     
 
-    // --- DEPARTMENT: KYNAR LIVING (High Performers) ---
+    // --- DEPARTMENT: KYNAR LIFE (High Performers) ---
     {
       id: "finance-tracker",
-      category: "living",
+      category: "life",
       subCategory: "Finance",
       title: "LifeOS Finance Tracker",
       price: 12.00,
+      status: "upcoming",
       tag: "System",
       shortDesc: "Bring clarity to your daily chaos with zero-based budgeting.",
       lore: "Maps for inner growth.",
@@ -124,16 +127,17 @@ def organize_directory():
         compatibility: "Mobile & Desktop",
         license: "Personal Use"
       },
-      actionBtn: "Get Dashboard",
+      actionBtn: "Join Waitlist",
       previewIcon: "ph-currency-dollar",
       image: "assets/products/finance-tracker.png"
     },
     {
       id: "morning-mindset-journal",
-      category: "living",
+      category: "life",
       subCategory: "Wellness",
       title: "The Clarity Journal",
       price: 8.00,
+      status: "upcoming",
       tag: "Wellness",
       shortDesc: "A 5-minute protocol to set a calm tone for the day.",
       lore: "Quiet clarity in a noisy world.",
@@ -149,7 +153,7 @@ def organize_directory():
         pages: "120 Pages",
         license: "Personal Use"
       },
-      actionBtn: "Download Journal",
+      actionBtn: "Notify Me",
       previewIcon: "ph-sun",
       image: "assets/products/journal.png"
     },
@@ -161,6 +165,7 @@ def organize_directory():
       subCategory: "Education",
       title: "Rainy-Day Activity Pack",
       price: 6.00,
+      status: "upcoming",
       tag: "Family",
       shortDesc: "Educational printables to keep toddlers engaged and learning.",
       lore: "Foundations for a calm home.",
@@ -176,7 +181,7 @@ def organize_directory():
         ageGroup: "4-7 Years",
         license: "Household Use"
       },
-      actionBtn: "Download Bundle",
+      actionBtn: "Join Waitlist",
       previewIcon: "ph-smiley-sticker",
       image: "assets/products/kids-pack.png"
     },
@@ -186,6 +191,7 @@ def organize_directory():
       subCategory: "Management",
       title: "Family Command Center",
       price: 10.00,
+      status: "upcoming",
       tag: "Management",
       shortDesc: "Meal planners and chore charts for busy households.",
       lore: "Order brings peace.",
@@ -201,7 +207,7 @@ def organize_directory():
         version: "v1.0",
         license: "Household Use"
       },
-      actionBtn: "Get Organized",
+      actionBtn: "Notify Me",
       previewIcon: "ph-house",
       image: "assets/products/home-org.png"
     }
@@ -252,7 +258,7 @@ def organize_directory():
       "Blueprints for the builders.",
       "Optimize your reality."
     ],
-    living: [
+    life: [
       "Clarity is a weapon.",
       "Maps for inner growth.",
       "Silence the noise."
@@ -277,4 +283,8 @@ export function getProductById(id) {
 
 export function getGuideById(id) {
   return KYNAR_DATA.guides.find(g => g.id === id);
+}
+
+export function getProductsByCategory(category) {
+    return KYNAR_DATA.products.filter(p => p.category === category);
 }

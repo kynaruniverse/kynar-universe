@@ -1,96 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-mode="dark" data-theme="accounts">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#3b82f6">
+  <title>My Inventory | Kynar Universe</title>
   
-  <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
-               script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
-               font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
-               img-src 'self' data: https:; 
-               connect-src 'self' https://*.supabase.co;">
+  <link rel="stylesheet" href="../../assets/phosphor.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  
-  <title>The Inventory Gateway | Kynar Universe</title>
-  
-  <link rel="icon" href="../../assets/favicon.ico">
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body data-theme="accounts" class="auth-page">
-  
-  <main id="main-content" class="container auth-flex">
+<body>
+  <a href="#main-content" class="skip-link">Skip to Content</a>
+  <div id="search-mount"></div>
+  <header id="app-header" class="glass-header"></header>
+
+  <main id="main-content" class="container" style="padding-top: var(--space-xl); min-height: 80vh;">
     
-    <nav class="auth-nav">
-      <a href="../../index.html" class="btn-tertiary">
-        <i class="ri-arrow-left-line"></i> Exit Gateway
-      </a>
-    </nav>
-    
-    <div class="card auth-card animate-enter">
-      
-      <header class="stack-sm align-center">
-        <div class="icon-box sm accent">
-          <i class="ri-shield-user-line"></i>
+    <section class="stack-md animate-enter">
+      <div class="breadcrumb">
+        <a href="../../index.html">Universe</a>
+        <i class="ph ph-caret-right"></i>
+        <span style="color: var(--pal-account-blue);">Inventory</span>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-lg);">
+        <div>
+          <h1 class="text-h1" style="color: var(--pal-account-blue);">Digital Vault</h1>
+          <p class="text-body">Manage your licenses, downloads, and receipts.</p>
         </div>
-        <h1 class="text-h2" id="form-title">Access Inventory</h1>
-        <p class="text-body-sm" id="form-desc">Unlock your verified digital upgrades.</p>
-      </header>
-      
-      <form id="auth-form" class="stack-md">
-        
-        <div class="form-group">
-          <label for="email" class="text-micro">Email Address</label>
-          <div class="input-wrapper">
-            <i class="ri-mail-line"></i>
-            <input type="email" id="email" class="input" placeholder="traveler@example.com" required>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <div class="flex-between">
-            <label for="password" class="text-micro">Password</label>
-            <button type="button" id="toggle-mode-btn" class="text-micro link-btn">
-              Need an account?
-            </button>
-          </div>
-          <div class="input-wrapper">
-            <i class="ri-lock-password-line"></i>
-            <input type="password" id="password" class="input" placeholder="••••••••" required minlength="6">
-          </div>
-        </div>
-        
-        <div id="auth-message" class="error-msg"></div>
-        
-        <button type="submit" id="submit-btn" class="btn-primary w-full">
-          <span id="btn-text">Open Inventory</span>
+        <button onclick="logout()" class="btn-tertiary">
+          <i class="ph ph-sign-out"></i> Sign Out
         </button>
-        
-      </form>
-      
-      <footer class="auth-footer">
-        <p class="text-micro">Protected by Kynar Encryption</p>
-      </footer>
-      
-    </div>
-    
+      </div>
+    </section>
+
+    <section id="inventory-mount" class="animate-enter delay-1" style="margin-top: var(--space-xl);">
+      <div class="skeleton card-skeleton" style="height: 100px; margin-bottom: 1rem;"></div>
+      <div class="skeleton card-skeleton" style="height: 100px;"></div>
+    </section>
+
+    <section class="card stack-sm" style="margin-top: var(--space-section); border-style: dashed; opacity: 0.7;">
+      <h3 class="text-micro"><i class="ph ph-wrench"></i> Developer Tools</h3>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button onclick="simulatePurchase('python-automation-bundle')" class="btn-secondary" style="font-size: 0.8rem;">
+          + Add Tools Bundle
+        </button>
+        <button onclick="simulatePurchase('finance-tracker')" class="btn-secondary" style="font-size: 0.8rem;">
+          + Add Finance Tracker
+        </button>
+        <button onclick="clearInventory()" class="btn-tertiary" style="font-size: 0.8rem; color: var(--color-error);">
+          Clear All
+        </button>
+      </div>
+    </section>
+
   </main>
   
-  <script type="module" src="../../js/app.js"></script>
-  <script type="module" src="../../js/pages/auth.js"></script>
-  
-</body>
+  <footer id="app-footer" style="margin-top: var(--space-section);"></footer>
 
+  <script type="module" src="../../js/app.js"></script>
+  <script type="module" src="../../js/header.js"></script> 
+  <script type="module" src="../../js/search.js"></script>
+  <script type="module" src="../../js/footer.js"></script>
+
+  <script type="module">
+    import { getProductById } from '../../js/data.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadInventory();
+    });
+
+    function loadInventory() {
+      const mount = document.getElementById('inventory-mount');
+      
+      // 1. Get Inventory from LocalStorage
+      const inventory = JSON.parse(localStorage.getItem('kynar_inventory') || '[]');
+
+      // 2. Empty State
+      if (inventory.length === 0) {
+        mount.innerHTML = `
+          <div style="text-align: center; padding: 4rem 0; opacity: 0.6;">
+            <i class="ph ph-archive-box" style="font-size: 3rem; margin-bottom: var(--space-md);"></i>
+            <h2 class="text-h3">Vault Empty</h2>
+            <p class="text-body" style="margin-bottom: var(--space-md);">You haven't acquired any digital assets yet.</p>
+            <a href="../../index.html#departments" class="btn-primary">Browse Store</a>
+          </div>
+        `;
+        return;
+      }
+
+      // 3. Hydrate Data (Map IDs to Real Products)
+      const items = inventory.map(id => getProductById(id)).filter(item => item !== undefined);
+
+      // 4. Render Grid
+      mount.innerHTML = `
+        <div style="display: grid; gap: var(--space-md);">
+          ${items.map(item => `
+            <div class="card" style="padding: var(--space-md);">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                
+                <div style="display: flex; gap: var(--space-md); align-items: center;">
+                  <div class="icon-box" style="width: 48px; height: 48px;">
+                    <i class="ph ${item.previewIcon}"></i>
+                  </div>
+                  <div class="stack-xs">
+                    <h3 class="text-body" style="font-weight: 600;">${item.title}</h3>
+                    <span class="text-micro" style="opacity: 0.6;">
+                      ${item.category.toUpperCase()} • License Active
+                    </span>
+                  </div>
+                </div>
+
+                <div style="text-align: right; display: flex; gap: 8px;">
+                   <button class="btn-secondary" onclick="alert('Downloading ${item.title}...')">
+                     <i class="ph ph-download-simple"></i> Download
+                   </button>
+                   <a href="../product.html?id=${item.id}" class="btn-tertiary" aria-label="View Details">
+                     <i class="ph ph-arrow-right"></i>
+                   </a>
+                </div>
+
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // EXPOSE FUNCTIONS TO WINDOW (For the Dev Tools Buttons)
+    window.simulatePurchase = function(id) {
+      const current = JSON.parse(localStorage.getItem('kynar_inventory') || '[]');
+      if (!current.includes(id)) {
+        current.push(id);
+        localStorage.setItem('kynar_inventory', JSON.stringify(current));
+        loadInventory(); // Reload UI
+        if(window.showToast) window.showToast(`Purchased: ${id}`, 'success');
+      } else {
+        if(window.showToast) window.showToast('Item already owned.');
+      }
+    };
+
+    window.clearInventory = function() {
+      localStorage.removeItem('kynar_inventory');
+      loadInventory();
+      if(window.showToast) window.showToast('Inventory Cleared.');
+    };
+
+    window.logout = function() {
+      // For now, just clear inventory to simulate logout
+      if(confirm('Disconnect from Universe?')) {
+        localStorage.clear();
+        window.location.href = '../../index.html';
+      }
+    };
+  </script>
+</body>
 </html>

@@ -1,134 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Loading Product... | Kynar Universe</title>
   
-  <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
-               script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
-               font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
-               img-src 'self' data: https:; 
-               connect-src 'self' https://*.supabase.co;">
+  <link rel="stylesheet" href="../assets/phosphor.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-
-  <title>Digital Asset Specification | Kynar Universe</title>
-  
-  <link rel="icon" href="../assets/favicon.ico">
   <link rel="stylesheet" href="../css/tokens.css">
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/components.css">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 </head>
 
-<body data-theme="tools"> <main id="main-content" class="container stack-xl">
-    
-    <div id="breadcrumb-nav"></div>
-    
-    <header class="stack-md animate-enter">
-      <div class="product-meta-row">
-        <div class="meta-group">
-          <span id="product-tag" class="tag" data-variant="tools">Loading...</span>
-          <span class="text-micro verified-label">
-            <i class="ri-verified-badge-fill"></i> Verified Utility
-          </span>
-        </div>
-        <span id="product-price" class="text-h3 accent-text">£--.--</span>
-      </div>
-      
-      <h1 class="text-h1" id="product-title">Retrieving Asset...</h1>
-      
-      <p class="text-body text-body-lg" id="product-short-desc">
-        Connecting to the Kynar Archive to fetch specifications...
-      </p>
-      
-      <div class="lore-border">
-        <p class="text-lore" id="product-lore">"..."</p>
-      </div>
-      
-      <div class="action-row">
-        <button id="btn-action" class="btn-primary" data-track="Product Purchase">
-          Secure Instant Download
-        </button>
-        <button class="btn-secondary" data-track="Documentation View">
-          View Documentation
-        </button>
-      </div>
-      
-      <p class="text-micro security-note">
-        <i class="ri-shield-check-line"></i> Vetted for usability and digital impact.
-      </p>
-    </header>
+<body>
+  <a href="#main-content" class="skip-link">Skip to Content</a>
+  <div id="search-mount"></div>
+  <header id="app-header" class="glass-header"></header>
 
-    <div id="product-preview" class="card preview-stage animate-enter delay-1">
-      <div class="preview-placeholder">
-        <i class="ri-image-2-line"></i>
-        <p class="text-micro">Generating Preview...</p>
+  <main id="main-content" class="container" style="padding-top: var(--space-xl); min-height: 80vh;">
+    
+    <div id="product-app" class="animate-enter">
+      
+      <div class="stack-md" style="align-items: center; justify-content: center; padding: 4rem 0;">
+        <div class="skeleton card-skeleton" style="width: 100%; max-width: 400px; height: 300px;"></div>
+        <div class="skeleton text-skeleton" style="width: 200px;"></div>
       </div>
+
     </div>
-    
-    <section class="grid-auto animate-enter delay-2">
-      
-      <div class="stack-lg">
-        <div class="stack-sm">
-          <h2 class="text-h3">Solution Overview</h2>
-          <p class="text-body" id="product-desc">
-            Initializing description field...
-          </p>
-        </div>
-        
-        <div class="stack-sm">
-          <h2 class="text-h3">Included Assets</h2>
-          <ul id="product-features" class="feature-list">
-            <li>Scanning package manifest...</li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="stack-lg">
-        
-        <div id="code-preview-container" class="stack-sm" style="display: none;">
-          <h2 class="text-h3">Logic Preview</h2>
-          <div class="code-block" data-context="tools">
-            <pre><code id="code-snippet"># Loading snippet...</code></pre>
-          </div>
-        </div>
-        
-        <div class="card spec-card">
-          <div class="stack-sm">
-            <h3 class="text-h3 sm">Technical Specs</h3>
-            <div id="tech-specs" class="spec-table">
-              <div class="spec-row">
-                <span>Format</span>
-                <span id="spec-format" class="val">ZIP / PDF</span>
-              </div>
-              <div class="spec-row">
-                <span>Version</span>
-                <span id="spec-version" class="val">1.0.0</span>
-              </div>
-              <div class="spec-row">
-                <span>License</span>
-                <span class="val">Commercial Use</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-      </div>
-      
-    </section>
-    
+
   </main>
   
+  <footer id="app-footer" style="margin-top: var(--space-section);"></footer>
+
   <script type="module" src="../js/app.js"></script>
-  <script type="module" src="../js/header.js"></script>
+  <script type="module" src="../js/header.js"></script> 
   <script type="module" src="../js/search.js"></script>
-  <script type="module" src="../js/loader.js"></script>
   <script type="module" src="../js/footer.js"></script>
-  <script type="module" src="../js/breadcrumb.js"></script>
+
+  <script type="module">
+    import { getProductById } from '../js/data.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initProductPage();
+    });
+
+    function initProductPage() {
+      // 1. Get ID from URL (e.g., product.html?id=finance-tracker)
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('id');
+
+      if (!productId) {
+        window.location.href = '../404.html'; // No ID? Go to 404
+        return;
+      }
+
+      // 2. Fetch Data
+      const product = getProductById(productId);
+
+      if (!product) {
+        renderNotFound();
+        return;
+      }
+
+      // 3. Set Page Theme (Department Color)
+      // If category is 'tools', the page turns Blue. If 'life', Green.
+      document.documentElement.setAttribute('data-theme', product.category);
+      document.title = `${product.title} | Kynar Universe`;
+
+      // 4. Render Content
+      renderProduct(product);
+    }
+
+    function renderProduct(product) {
+      const container = document.getElementById('product-app');
+      
+      // Fix Image Path (We are in /pages, so assets are ../assets)
+      const imagePath = `../${product.image}`;
+      
+      // Feature List HTML
+      const featuresHtml = product.features.map(f => 
+        `<li style="display: flex; gap: 8px; align-items: center;">
+           <i class="ph ph-check" style="color: var(--accent-primary);"></i> 
+           ${f}
+         </li>`
+      ).join('');
+
+      // Tech Specs HTML (If they exist)
+      let specsHtml = '';
+      if (product.specs) {
+        specsHtml = `
+          <div class="card stack-sm" style="margin-top: var(--space-lg);">
+            <h3 class="text-micro">Technical Specifications</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.9rem;">
+              ${Object.entries(product.specs).map(([key, value]) => `
+                <div style="color: var(--text-muted); text-transform: capitalize;">${key}</div>
+                <div style="color: var(--text-main); font-family: var(--font-mono);">${value}</div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Button Logic (Waitlist vs Buy)
+      const btnText = product.status === 'upcoming' ? 'Join Waitlist' : `Purchase • £${product.price.toFixed(2)}`;
+      const btnIcon = product.status === 'upcoming' ? 'ph-hourglass' : 'ph-download-simple';
+      
+      // THE LAYOUT
+      container.innerHTML = `
+        <div class="breadcrumb" style="margin-bottom: var(--space-lg);">
+          <a href="../index.html">Universe</a>
+          <i class="ph ph-caret-right"></i>
+          <a href="index.html">Store</a>
+          <i class="ph ph-caret-right"></i>
+          <span style="color: var(--text-main);">${product.title}</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-xl);">
+          
+          <div class="stack-md">
+            <div class="card" style="padding: 0; overflow: hidden; position: relative; aspect-ratio: 4/3;">
+               <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg-surface); z-index: 0;">
+                 <i class="ph ${product.previewIcon || 'ph-package'}" style="font-size: 4rem; opacity: 0.2;"></i>
+               </div>
+               <img src="${imagePath}" alt="${product.title}" 
+                    style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1;"
+                    onerror="this.style.display='none'">
+            </div>
+
+            ${product.codePreview ? `
+              <div class="code-block" data-context="${product.category}">
+                <pre><code>${product.codePreview}</code></pre>
+              </div>
+            ` : ''}
+          </div>
+
+          <div class="stack-md">
+            
+            <div class="stack-xs">
+              <span class="tag" data-variant="${product.category}">${product.subCategory}</span>
+              <h1 class="text-h1">${product.title}</h1>
+              <p class="text-lore" style="font-size: 1.1rem;">${product.lore}</p>
+            </div>
+
+            <p class="text-body" style="font-size: 1.05rem; line-height: 1.7;">
+              ${product.description}
+            </p>
+
+            <ul class="text-body stack-xs" style="margin-top: var(--space-md);">
+              ${featuresHtml}
+            </ul>
+
+            <div style="margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--border-subtle);">
+              <button class="btn-primary btn-block" onclick="alert('Demo: Checkout Flow Triggered')">
+                <i class="ph ${btnIcon}"></i> ${btnText}
+              </button>
+              <p class="text-micro" style="text-align: center; margin-top: 8px; opacity: 0.6;">
+                Secure Checkout via Stripe • Instant Delivery
+              </p>
+            </div>
+
+            ${specsHtml}
+
+          </div>
+
+        </div>
+      `;
+      
+      // Re-trigger animations for new content
+      // We look for the global app function if it exists
+      if(window.initMotionSystem) window.initMotionSystem();
+    }
+
+    function renderNotFound() {
+      const container = document.getElementById('product-app');
+      container.innerHTML = `
+        <div style="text-align: center; padding: 4rem 0;">
+          <i class="ph ph-mask-sad" style="font-size: 3rem; margin-bottom: var(--space-md); color: var(--text-muted);"></i>
+          <h1 class="text-h2">Product Not Found</h1>
+          <p class="text-body">The item you are looking for has been moved or de-listed.</p>
+          <a href="../index.html" class="btn-secondary" style="margin-top: var(--space-md);">Return to Universe</a>
+        </div>
+      `;
+    }
+  </script>
 </body>
 </html>

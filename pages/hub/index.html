@@ -1,100 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="dark" data-theme="hub">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#8b5cf6"> <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
-               script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; 
-               style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
-               font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
-               img-src 'self' data: https:; 
-               connect-src 'self' https://*.supabase.co;">
-
-
-  <title>The Hub | Knowledge Library | Kynar Universe</title>
-  <meta name="description" content="The Kynar Knowledge Library. Verified guides and actionable insights to help you work smarter and live better. No digital filler.">
+  <title>The Hub | Knowledge Library</title>
   
-  <link rel="icon" href="../../assets/favicon.ico">
+  <link rel="stylesheet" href="../../assets/phosphor.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 </head>
 
-<body data-theme="hub">
+<body>
+  <a href="#main-content" class="skip-link">Skip to Content</a>
+  <div id="search-mount"></div>
+  <header id="app-header" class="glass-header"></header>
 
-  <main id="main-content" class="container stack-xl">
+  <main id="main-content" class="container" style="padding-top: var(--space-xl); min-height: 80vh;">
     
-    <div id="breadcrumb-nav"></div>
-    
-    <header class="stack-md animate-enter">
-      <div class="icon-box">
-        <i class="ri-compass-3-line"></i>
+    <section class="stack-md animate-enter">
+      <div class="breadcrumb">
+        <a href="../../index.html">Universe</a>
+        <i class="ph ph-caret-right"></i>
+        <span style="color: var(--pal-hub-core);">The Hub</span>
       </div>
-      
-      <h1 class="text-h1">The Hub</h1>
-      
-      <p class="text-body">
-        The library of ideas and stories. We democratize access to productivity by sharing the knowledge behind the tools. Verified guides to help you work smarter and live better.
-      </p>
-      
-      <p class="text-lore">"The library of stories and lost knowledge."</p>
-    </header>
-    
-    <section class="stack-md animate-enter delay-1">
-      <div class="section-header">
-        <h2 class="text-h3">Knowledge Records</h2>
-        <span class="text-micro">Verified Guides</span>
-      </div>
-      
-      <div class="grid-auto">
-        
-        <a href="../guide.html?guide=start-journaling" class="card" data-variant="hub" data-track="Read: Journaling Systems">
-          <div class="card-inner-split">
-            <div class="stack-sm">
-              <h3 class="text-h3">Journaling Systems</h3>
-              <p class="text-body-sm">
-                How to build a mental clarity habit that actually sticks.
-              </p>
-              <span class="text-micro accent-link">Read Guide →</span>
-            </div>
-            
-            <div class="icon-box sm">
-              <i class="ri-book-open-line"></i>
-            </div>
-          </div>
-        </a>
-        
-        <a href="../guide.html?guide=calm-morning-routine" class="card" data-variant="hub" data-track="Read: Morning Protocols">
-          <div class="card-inner-split">
-            <div class="stack-sm">
-              <h3 class="text-h3">Morning Protocols</h3>
-              <p class="text-body-sm">
-                Reclaim your mornings from digital chaos and noise.
-              </p>
-              <span class="text-micro accent-link">Read Guide →</span>
-            </div>
-            
-            <div class="icon-box sm">
-              <i class="ri-cup-line"></i>
-            </div>
-          </div>
-        </a>
-        
+
+      <div style="padding: var(--space-lg) 0; border-bottom: 1px solid var(--border-subtle);">
+        <h1 class="text-h1" style="color: var(--pal-hub-core);">The Hub</h1>
+        <p class="text-body" style="max-width: 60ch;">
+          The central library of Kynar Universe. Verified protocols, user guides, and 
+          philosophical frameworks for digital minimalism.
+        </p>
       </div>
     </section>
-    
+
+    <section id="hub-grid" class="animate-enter delay-1" style="
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+      gap: var(--space-md);
+      margin-top: var(--space-xl);
+    ">
+      <div class="skeleton card-skeleton"></div>
+      <div class="skeleton card-skeleton"></div>
+    </section>
+
   </main>
   
+  <footer id="app-footer" style="margin-top: var(--space-section);"></footer>
+
   <script type="module" src="../../js/app.js"></script>
-  <script type="module" src="../../js/header.js"></script>
+  <script type="module" src="../../js/header.js"></script> 
   <script type="module" src="../../js/search.js"></script>
   <script type="module" src="../../js/footer.js"></script>
-  <script type="module" src="../../js/breadcrumb.js"></script>
 
+  <script type="module">
+    import { KYNAR_DATA } from '../../js/data.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHub();
+    });
+
+    function renderHub() {
+      const grid = document.getElementById('hub-grid');
+      const guides = KYNAR_DATA.guides || [];
+
+      if (guides.length === 0) {
+        grid.innerHTML = `<p class="text-body" style="opacity: 0.6;">Library initialization pending.</p>`;
+        return;
+      }
+
+      grid.innerHTML = guides.map(g => `
+        <a href="../../guide.html?guide=${g.id}" class="card" data-variant="hub">
+          <div class="stack-md">
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div class="icon-box">
+                <i class="ph ph-book-open"></i>
+              </div>
+              <span class="text-micro" style="opacity: 0.7;">${g.readTime}</span>
+            </div>
+
+            <div class="stack-xs">
+              <h3 class="text-h3">${g.title}</h3>
+              <p class="text-body" style="font-size: 0.9rem;">
+                ${g.shortDesc}
+              </p>
+            </div>
+
+            <div style="margin-top: auto; padding-top: var(--space-sm);">
+              <span class="text-micro" style="color: var(--pal-hub-core);">
+                Read Protocol <i class="ph ph-arrow-right"></i>
+              </span>
+            </div>
+
+          </div>
+        </a>
+      `).join('');
+      
+      if(window.initMotionSystem) window.initMotionSystem();
+    }
+  </script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-mode="dark" data-theme="tools">
+<html lang="en" data-mode="dark" data-theme="life">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>KYNAR Tools | Developer Blueprints</title>
+  <title>KYNAR Life | High Performance Systems</title>
   
   <link rel="stylesheet" href="../../assets/phosphor.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -11,6 +11,13 @@
   <link rel="stylesheet" href="../../css/tokens.css">
   <link rel="stylesheet" href="../../css/global.css">
   <link rel="stylesheet" href="../../css/components.css">
+  
+  <style>
+    :root[data-theme="life"] {
+      --accent-primary: var(--pal-life-core); /* Using existing Green variable */
+      --accent-glow: var(--pal-life-glow);
+    }
+  </style>
 </head>
 
 <body>
@@ -24,19 +31,19 @@
       <div class="breadcrumb">
         <a href="../../index.html">Universe</a>
         <i class="ph ph-caret-right"></i>
-        <span style="color: var(--pal-tools-core);">Tools</span>
+        <span style="color: var(--pal-life-core);">Life</span>
       </div>
 
       <div style="padding: var(--space-lg) 0; border-bottom: 1px solid var(--border-subtle);">
-        <h1 class="text-h1" style="color: var(--pal-tools-core);">Department: Tools</h1>
+        <h1 class="text-h1" style="color: var(--pal-life-core);">Department: Life</h1>
         <p class="text-body" style="max-width: 60ch;">
-          Verified Python scripts, business intelligence spreadsheets, and deployment blueprints. 
-          Stop reinventing the wheel.
+          Systems for clarity. Finance trackers, mindset journals, and life operating systems 
+          designed to silence the noise.
         </p>
       </div>
     </section>
 
-    <section id="tools-grid" class="animate-enter delay-1" style="
+    <section id="life-grid" class="animate-enter delay-1" style="
       display: grid; 
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
       gap: var(--space-md);
@@ -60,25 +67,26 @@
     import { getProductsByCategory } from '../../js/data.js';
 
     document.addEventListener('DOMContentLoaded', () => {
-      renderTools();
+      renderLife();
     });
 
-    function renderTools() {
-      const grid = document.getElementById('tools-grid');
-      const products = getProductsByCategory('tools');
+    function renderLife() {
+      const grid = document.getElementById('life-grid');
+      // IMPORTANT: We now ask for "life", not "life"
+      const products = getProductsByCategory('life');
 
       if (products.length === 0) {
-        grid.innerHTML = `<p class="text-body" style="opacity: 0.6;">No tools initialized yet.</p>`;
+        grid.innerHTML = `<p class="text-body" style="opacity: 0.6;">No systems initialized yet.</p>`;
         return;
       }
 
       grid.innerHTML = products.map(p => `
-        <a href="../product.html?id=${p.id}" class="card" data-variant="tools">
+        <a href="../product.html?id=${p.id}" class="card" data-variant="life">
           <div class="stack-md">
             
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
               <div class="icon-box">
-                <i class="ph ${p.previewIcon || 'ph-code'}"></i>
+                <i class="ph ${p.previewIcon || 'ph-plant'}"></i>
               </div>
               ${p.status === 'upcoming' 
                 ? `<span class="tag">Upcoming</span>` 
@@ -94,8 +102,8 @@
             </div>
 
             <div style="margin-top: auto; padding-top: var(--space-sm);">
-              <span class="text-micro" style="color: var(--pal-tools-core);">
-                View Blueprint <i class="ph ph-arrow-right"></i>
+              <span class="text-micro" style="color: var(--pal-life-core);">
+                View System <i class="ph ph-arrow-right"></i>
               </span>
             </div>
 
@@ -103,7 +111,6 @@
         </a>
       `).join('');
       
-      // Re-trigger animations
       if(window.initMotionSystem) window.initMotionSystem();
     }
   </script>
