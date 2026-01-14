@@ -1,5 +1,6 @@
 /* KYNAR UNIVERSE GLOBAL STYLES (css/global.css)
-   Status: EVOLVED MASTER (Skip-Link Removed / Physics Preserved)
+   The visual physics engine. Handles Layout, Typography, Atmosphere, and the Glass Interface.
+   Status: FINAL MASTER (Deep Atmosphere / Glass / Starwalker Ready)
 */
 
 /* =========================================
@@ -21,9 +22,13 @@ body {
   color: var(--text-main);
   font-family: var(--font-primary);
   line-height: var(--leading-base);
+  
+  /* MOBILE SAFETY: Handle Notches and Home Bars */
   padding-left: var(--safe-left);
   padding-right: var(--safe-right);
+  /* Top padding is handled by the sticky header */
   
+  /* THE UNIVERSE GRADIENT: Subtle depth */
   background-image: 
     radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%), 
     radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05), transparent 25%);
@@ -31,12 +36,14 @@ body {
 
   transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img {
   max-width: 100%;
   display: block;
   border-radius: var(--radius-sm);
+  loading: lazy; /* Native lazy loading */
 }
 
 img[loading="lazy"] {
@@ -70,37 +77,67 @@ a {
   background-color: var(--border-subtle);
   border-radius: var(--radius-pill);
 }
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
 
 /* =========================================
-   2. TYPOGRAPHY SYSTEM
+   2. TYPOGRAPHY SYSTEM (The Voice)
    ========================================= */
 h1, h2, h3 {
   margin-bottom: var(--space-sm);
   letter-spacing: -0.02em;
 }
 
+/* "Warm Clarity" - Headlines */
 .text-h1 {
   font-family: var(--font-secondary);
   font-size: var(--text-h1);
   font-weight: 400;
   line-height: 1.1;
+  color: var(--text-main);
+}
+
+.text-h2 {
+  font-family: var(--font-secondary);
+  font-size: var(--text-h2);
+  font-weight: 400;
+}
+
+.text-h3 {
+  font-family: var(--font-primary);
+  font-size: var(--text-h3);
+  font-weight: 600;
 }
 
 .text-body {
   font-family: var(--font-primary);
   font-size: var(--text-body);
-  color: var(--text-main);
+  color: var(--text-body);
   opacity: 0.9;
-  max-width: 60ch;
+  max-width: 60ch; /* Optimum reading length */
+}
+
+.text-micro {
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  opacity: 0.7;
 }
 
 .text-lore {
   font-family: var(--font-secondary);
   font-style: italic;
-  font-size: 1.1rem;
-  color: var(--accent-primary);
-  opacity: 0;
-  transition: opacity 1s ease;
+  font-size: 1rem;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+/* Technical Data */
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
 }
 
 /* =========================================
@@ -113,113 +150,461 @@ h1, h2, h3 {
   padding: 0 var(--space-md);
 }
 
+/* Vertical Stacks */
+.stack-xl { display: flex; flex-direction: column; gap: var(--space-xl); }
+.stack-lg { display: flex; flex-direction: column; gap: var(--space-lg); }
 .stack-md { display: flex; flex-direction: column; gap: var(--space-md); }
 .stack-sm { display: flex; flex-direction: column; gap: var(--space-sm); }
+.stack-xs { display: flex; flex-direction: column; gap: var(--space-xs); }
 
 /* =========================================
-   4. THE GLASS INTERFACE
+   4. THE GLASS CARDS (Portals)
    ========================================= */
 .card {
-  background: var(--bg-surface);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+  /* Volume Gradient */
+  background: linear-gradient(
+    180deg, 
+    rgba(255, 255, 255, 0.05) 0%, 
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  
+  /* Lighting & Edges */
   border: 1px solid var(--border-subtle);
-  border-top: 1px solid var(--border-highlight);
+  border-top: 1px solid var(--border-highlight); /* Highlight top edge */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Lift */
+  
   border-radius: var(--radius-lg);
   padding: var(--space-md);
   
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
-              box-shadow 0.3s ease, 
-              background 0.3s ease;
-  will-change: transform;
+  /* Glass Blur */
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
+/* Interaction: Lift & Glow */
 .card:hover {
-  transform: translateY(-6px);
-  background: var(--bg-surface-hover);
-  box-shadow: 0 12px 30px -10px rgba(0,0,0,0.6);
+  transform: translateY(-4px) scale(1.01);
+  background: linear-gradient(
+    180deg, 
+    rgba(255, 255, 255, 0.08) 0%, 
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border-color: var(--text-muted);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
 }
 
-.glass-header {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-header);
-  background: rgba(10, 10, 10, 0.75);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-/* =========================================
-   5. STARWALKER MODE
-   ========================================= */
-:root[data-mode="starwalker"] body {
-  background-image: 
-    radial-gradient(circle at 15% 50%, rgba(255, 215, 0, 0.05), transparent 30%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-blend-mode: overlay;
-}
-
-:root[data-mode="starwalker"] .card {
-  border-color: rgba(255, 215, 0, 0.3);
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.05);
-}
+/* Category Borders (The "Soul" Colors) */
+.card[data-variant="tools"] { border-left: 2px solid var(--pal-tools-core); }
+.card[data-variant="living"] { border-left: 2px solid var(--pal-living-core); }
+.card[data-variant="home"] { border-left: 2px solid var(--pal-home-core); }
+.card[data-variant="hub"] { border-left: 2px solid var(--pal-hub-core); }
 
 /* =========================================
-   6. FIX: HERO SPACING ADJUSTMENT
+   5. HERO SOUL (Atmosphere)
    ========================================= */
-main {
-  padding-top: 0 !important;
-}
-
 .hero-soul {
   position: relative;
   z-index: 1;
-  padding-top: var(--space-md) !important; 
-  margin-top: 0 !important;
 }
 
-.hero-soul img {
-  margin-top: -10px;
+.hero-soul::before {
+  content: '';
+  position: absolute;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  
+  /* Dynamic Glow based on current Theme */
+  background: radial-gradient(circle at center, var(--accent-glow), transparent 70%);
+  
+  opacity: 0.4; 
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(80px);
+  animation: soulPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes soulPulse {
+  0% { opacity: 0.3; transform: translateX(-50%) scale(0.95); }
+  100% { opacity: 0.5; transform: translateX(-50%) scale(1.05); }
 }
 
 /* =========================================
-   7. ANIMATIONS
+   6. GLASS HEADER (Navigation)
    ========================================= */
-.animate-enter {
-  opacity: 0;
-  transform: translateY(24px);
+.glass-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  
+  /* Adapts to Mobile Notch */
+  height: calc(64px + var(--safe-top));
+  padding-top: var(--safe-top);
+  
+  z-index: var(--z-header);
+  
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  
+  transition: transform 0.3s ease, background 0.3s ease;
 }
-
-.animate-enter.is-visible {
-  animation: kynarFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes kynarFadeUp {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* UNIVERSAL GRID HELPER */
-.grid-auto {
-  display: grid; 
-  gap: var(--space-md); 
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.card-inner-split {
-  display: flex; 
-  justify-content: space-between; 
-  align-items: flex-start;
-  gap: var(--space-md);
-}
-
-.text-body-sm {
-  font-size: 0.9rem;
+/* Scroll Progress Indicator */
+.scroll-progress {
+  position: fixed;
+  top: calc(64px + var(--safe-top));
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--accent-primary);
+  z-index: calc(var(--z-header) + 1);
+  transition: width 0.1s ease-out;
   opacity: 0.8;
 }
 
-.accent-link {
-  margin-top: var(--space-sm); 
-  color: var(--accent-primary);
-  display: inline-block;
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    display: none;
+  }
+}
+
+/* Header Inner Layout */
+.header-inner {
+  height: 100%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
+
+/* Branding */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 8px 0;
+  transition: opacity 0.2s;
+}
+
+.header-logo:hover {
+  opacity: 0.8;
+}
+
+/* The Glowing Dot */
+.logo-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent-glow);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Controls Container */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tactile Header Buttons */
+.header-btn {
+  width: var(--touch-target);
+  height: var(--touch-target);
+  
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  
+  transition: all 0.2s ease;
+  font-size: 1.25rem;
+}
+
+.header-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-main);
+  border-color: var(--border-subtle);
+  transform: translateY(-1px);
+}
+
+.header-btn:active {
+  transform: translateY(1px) scale(0.95);
+  background: var(--border-subtle);
+}
+
+/* Light Mode Header Override */
+@media (prefers-color-scheme: light) {
+  :root[data-mode="light"] .glass-header {
+    background: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* =========================================
+   7. BUTTONS & INPUTS
+   ========================================= */
+.btn-primary {
+  background: var(--text-main);
+  color: var(--bg-page);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover {
+  border-color: var(--text-muted);
+  background: var(--bg-surface-hover);
+}
+
+.btn-tertiary {
+  background: transparent;
+  border: none;
+  color: var(--text-body);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-tertiary:hover {
+  color: var(--text-main);
+  background: var(--bg-surface-hover);
+}
+
+.input {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent-primary);
+}
+
+/* =========================================
+   8. UTILITIES (Search, Toast, Skip Link)
+   ========================================= */
+   
+/* Skip Link for A11Y */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 10px;
+  background: var(--accent-primary);
+  color: var(--bg-page);
+  padding: 12px 16px;
+  z-index: 9999;
+  transition: top 0.2s;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.skip-link:focus {
+  top: calc(var(--safe-top) + 10px);
+  outline: 3px solid var(--bg-page);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}
+
+/* Search Overlay */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: var(--z-overlay);
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 100px;
+  
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.search-overlay.active { opacity: 1; pointer-events: all; }
+
+.search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 1.5rem;
+  font-family: var(--font-secondary);
+  color: var(--text-main);
+  padding: 16px 0;
+}
+.search-input:focus { outline: none; border-color: var(--accent-primary); }
+
+/* Toasts */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+.toast {
+  background: #1a1a1a;
+  border: 1px solid var(--border-subtle);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  display: flex; align-items: center; gap: 12px;
+  opacity: 0; transform: translateY(20px);
+  animation: toastEnter 0.4s forwards;
+}
+
+@keyframes toastEnter { to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   9. ANIMATIONS
+   ========================================= */
+.animate-enter {
+  animation: fadeUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   10. STARWALKER MODE (Secret Ultra-Premium)
+   ========================================= */
+:root[data-mode="starwalker"] .card {
+  border-color: rgba(255, 215, 0, 0.3);
+  background: linear-gradient(
+    180deg, 
+    rgba(255, 215, 0, 0.05) 0%, 
+    rgba(0, 0, 0, 0) 100%
+  );
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.05);
+}
+
+:root[data-mode="starwalker"] ::selection {
+  background: #FFD700;
+  color: #000000;
+}
+
+:root[data-mode="starwalker"] .glass-header {
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  background: rgba(5, 5, 5, 0.9);
+}
+
+:root[data-mode="starwalker"] .hero-soul::before {
+  background: radial-gradient(circle at center, #FFD700, transparent 70%);
+  opacity: 0.1;
+}
+
+/* =========================================
+   PRINT STYLES
+   Optimize for physical printing
+   ========================================= */
+@media print {
+  /* Hide non-essential elements */
+  .glass-header,
+  .search-overlay,
+  .toast-container,
+  .btn-primary,
+  .btn-secondary,
+  .btn-tertiary,
+  .skip-link {
+    display: none !important;
+  }
+  
+  /* Optimize colors for print */
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .card {
+    border: 1px solid #ccc;
+    background: white;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+  
+  a {
+    text-decoration: underline;
+    color: black;
+  }
+  
+  /* Show URLs for links */
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+  
+  /* Prevent page breaks inside important elements */
+  h1, h2, h3,
+  .code-block,
+  .icon-box {
+    page-break-inside: avoid;
+  }
 }

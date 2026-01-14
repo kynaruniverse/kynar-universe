@@ -1,12 +1,13 @@
 /* KYNAR UNIVERSE SEARCH ENGINE (js/search.js)
-   Status: EVOLVED MASTER (Pretty URLs + CSP Compliant)
+   "The Lens."
+   Allows instant querying of the centralized Inventory and Knowledge Library.
+   Status: FINAL MASTER (Aligned with Header & Data Engine)
 */
 
 import { KYNAR_DATA } from './data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   injectSearchUI();
-  setupKeyboardListeners();
 });
 
 /* =========================================
@@ -21,53 +22,132 @@ function injectSearchUI() {
   
   overlay.innerHTML = `
     <div class="search-container stack-md animate-enter">
-      <div class="flex-between">
-        <div class="flex-center" style="gap: 8px;">
-          <i class="ri-planet-line" style="color: var(--accent-primary); font-size: 1.25rem;"></i>
-          <h2 class="text-h3">Search Universe</h2>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap: 8px;">
+          <i class="ph ph-planet" style="color: var(--accent-primary);"></i>
+          <h2 class="text-h3" style="margin:0;">Search Universe</h2>
         </div>
-        <button id="close-search-btn" class="btn-tertiary">
-          <i class="ri-close-line"></i> Close
+        <button class="btn-tertiary" onclick="toggleSearch()">
+          <i class="ph ph-x"></i> Close
         </button>
       </div>
       
       <div style="position: relative;">
-        <input type="text" id="search-input" class="search-input" placeholder="Find tools, planners, and guides..." autocomplete="off">
-        <i class="ri-search-2-line" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
+        <input type="text" id="search-input" class="search-input" placeholder="Find scripts, planners, and guides..." autocomplete="off">
+        <i class="ph ph-magnifying-glass" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
       </div>
       
-      <div id="search-results" class="search-results-area stack-sm">
-        <div class="search-placeholder">
-          <i class="ri-eye-2-line"></i>
+      <div id="search-results" class="search-results stack-sm" style="max-height: 60vh; overflow-y: auto; padding-right: 4px;">
+        <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
+          <i class="ph ph-telescope" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
           <p class="text-body">Explore the Digital Department Store.</p>
-          <p class="text-micro">Type to access verified assets.</p>
+          <p class="text-micro">Type to access verified tools and knowledge.</p>
         </div>
       </div>
 
       <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; display: flex; justify-content: space-between; opacity: 0.5;">
-        <span class="text-micro">ESC to close • CTRL+K to open</span>
+        <span class="text-micro">Press ESC to close</span>
         <span class="text-micro">Kynar Universe</span>
       </div>
+
     </div>
   `;
   
   document.body.appendChild(overlay);
 
-  // CSP COMPLIANT LISTENERS
-  document.getElementById('close-search-btn')?.addEventListener('click', toggleSearch);
-  document.getElementById('search-input')?.addEventListener('input', (e) => handleSearch(e.target.value));
+  const input = document.getElementById('search-input');
+  input.addEventListener('input', (e) => handleSearch(e.target.value));
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSearch();
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+}
+// Enhanced keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const overlay = document.getElementById('search-overlay');
+    if (!overlay.classList.contains('active')) return;
+    
+    // Arrow key navigation through results
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const results = document.querySelectorAll('.search-result-card');
+      if (results.length === 0) return;
+      
+      const focused = document.activeElement;
+      const currentIndex = Array.from(results).indexOf(focused);
+      
+      let nextIndex;
+      if (e.key === 'ArrowDown') {
+        nextIndex = currentIndex < results.length - 1 ? currentIndex + 1 : 0;
+      } else {
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : results.length - 1;
+      }
+      
+      results[nextIndex].focus();
+    }
+    
+    // Enter to open first result
+    if (e.key === 'Enter' && e.target.id === 'search-input') {
+      const firstResult = document.querySelector('.search-result-card');
+      if (firstResult) firstResult.click();
+    }
+  });
+/* =========================================
+   2. VISIBILITY LOGIC
+   ========================================= */
+function toggleSearch() {
+  const overlay = document.getElementById('search-overlay');
+  if (overlay.classList.contains('active')) {
+    closeSearch();
+  } else {
+    openSearch();
+  }
+}
+window.toggleSearch = toggleSearch;
+
+function openSearch() {
+  const overlay = document.getElementById('search-overlay');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('search-input').focus(), 100);
+}
+
+function closeSearch() {
+  const overlay = document.getElementById('search-overlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    document.getElementById('search-input').value = '';
+    resetResults();
+  }, 300);
+}
+
+function resetResults() {
+  document.getElementById('search-results').innerHTML = `
+    <div style="text-align:center; opacity:0.6; padding: 3rem 1rem;">
+      <i class="ph ph-telescope" style="font-size: 2rem; margin-bottom: 12px; opacity: 0.5;"></i>
+      <p class="text-body">Explore the Digital Department Store.</p>
+    </div>`;
 }
 
 /* =========================================
-   2. SEARCH ALGORITHM & CACHING
+   3. SEARCH ALGORITHM (OPTIMIZED)
+   Flattens the data ONCE, not on every keystroke.
    ========================================= */
+
+// 1. CACHE THE INDEX (Performance Fix)
 const allItems = [
   ...KYNAR_DATA.products.map(item => ({ ...item, type: 'product' })),
   ...KYNAR_DATA.guides.map(item => ({ ...item, type: 'guide' }))
 ];
 
 function handleSearch(query) {
-  const container = document.getElementById('search-results');
+  const resultsContainer = document.getElementById('search-results');
   const term = query.toLowerCase().trim();
 
   if (term.length < 2) {
@@ -75,42 +155,72 @@ function handleSearch(query) {
     return;
   }
 
-  const matches = allItems.filter(item => 
-    item.title.toLowerCase().includes(term) || 
-    (item.tag && item.tag.toLowerCase().includes(term)) ||
-    item.category.toLowerCase().includes(term)
-  );
+  // 2. FILTER THE CACHED INDEX (Fast)
+  const matches = allItems.filter(item => {
+    return (
+      item.title.toLowerCase().includes(term) || 
+      (item.tag && item.tag.toLowerCase().includes(term)) ||
+      (item.subCategory && item.subCategory.toLowerCase().includes(term)) ||
+      item.category.toLowerCase().includes(term)
+    );
+  });
+  
+  // Show loading state for better UX
+  if (term.length >= 2) {
+    resultsContainer.innerHTML = `
+      <div style="text-align:center; padding: 2rem;">
+        <div class="icon-box" style="margin: 0 auto; animation: pulse 1.5s ease-in-out infinite;">
+          <i class="ph ph-magnifying-glass"></i>
+        </div>
+        <p class="text-micro" style="margin-top: 12px;">Searching...</p>
+      </div>`;
+  }
 
   if (matches.length === 0) {
-    container.innerHTML = `
-      <div class="search-placeholder">
+    resultsContainer.innerHTML = `
+      <div style="text-align:center; opacity:0.5; padding: 2rem;">
         <p class="text-body">Sector Uncharted.</p>
-        <p class="text-micro">Try "Automation", "Wellness", or "Planner".</p>
+        <p class="text-micro" style="margin-top:8px;">Try "Automation", "Wellness", or "Planner".</p>
       </div>`;
   } else {
-    container.innerHTML = matches.map(item => renderResultCard(item)).join('');
+    resultsContainer.innerHTML = matches.map(item => renderResultCard(item)).join('');
   }
 }
 
+/* =========================================
+   4. RENDERER
+   ========================================= */
 function renderResultCard(item) {
   const link = resolvePath(item);
-  const isProduct = item.type === 'product';
-  const iconClass = isProduct ? (item.previewIcon || 'ri-archive-line') : 'ri-book-open-line';
-  const subText = isProduct ? `Verified Tool • ${item.category}` : `Knowledge Record • ${item.readTime}`;
-  const badgeText = isProduct ? `£${item.price.toFixed(2)}` : 'Read Guide';
+  
+  let iconClass = 'ph-cube';
+  let subText = '';
+  let badge = '';
+
+  if (item.type === 'product') {
+    iconClass = item.previewIcon || 'ph-package';
+    subText = `Verified Tool • ${capitalize(item.category)}`;
+    badge = `<span style="font-weight: 600; color: var(--accent-primary);">£${item.price.toFixed(2)}</span>`;
+  } else {
+    iconClass = 'ph-book-open';
+    subText = `Knowledge Record • ${item.readTime}`;
+    badge = `<span style="font-size: 0.8rem; opacity: 0.7;">Read Guide</span>`;
+  }
 
   return `
-    <a href="${link}" class="card search-result-card" data-variant="${item.category}">
-      <div class="flex-center" style="gap:var(--space-md); text-align: left;">
-        <div class="icon-box sm">
-          <i class="${iconClass}"></i>
+    <a href="${link}" class="card search-result-card animate-enter" onclick="closeSearch()">
+      <div style="display:flex; align-items:center; gap:var(--space-md);">
+        <div style="width:40px; height:40px; border-radius:50%; background:var(--bg-page); display:flex; align-items:center; justify-content:center; flex-shrink: 0; border: 1px solid var(--border-subtle);">
+          <i class="ph ${iconClass}" style="font-size:1.25rem; color:var(--text-main); opacity: 0.8;"></i>
         </div>
-        <div style="flex:1;">
-          <div class="flex-between">
-             <h4 class="text-body bold">${item.title}</h4>
-             <span class="text-micro bold" style="color:var(--accent-primary);">${badgeText}</span>
+        <div class="stack-xs" style="flex:1;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+             <h4 class="text-body" style="font-weight:600; font-size:0.95rem; margin:0;">${item.title}</h4>
+             ${badge}
           </div>
-          <p class="text-micro muted">${subText}</p>
+          <div style="display:flex; justify-content:space-between; font-size: 0.8rem; opacity: 0.6; margin-top: 2px;">
+            <span>${subText}</span>
+          </div>
         </div>
       </div>
     </a>
@@ -118,62 +228,30 @@ function renderResultCard(item) {
 }
 
 /* =========================================
-   3. VISIBILITY & NAVIGATION
+   5. UTILITIES
    ========================================= */
-export function toggleSearch() {
-  const overlay = document.getElementById('search-overlay');
-  if (!overlay) return;
-  
-  const isActive = overlay.classList.toggle('active');
-  document.body.style.overflow = isActive ? 'hidden' : '';
-  
-  if (isActive) {
-    setTimeout(() => document.getElementById('search-input')?.focus(), 100);
-  } else {
-    document.getElementById('search-input').value = '';
-    resetResults();
-  }
-}
-window.toggleSearch = toggleSearch;
-
-function resetResults() {
-  const res = document.getElementById('search-results');
-  if (res) res.innerHTML = `<div class="search-placeholder"><i class="ri-eye-2-line"></i><p class="text-body">Explore the Digital Department Store.</p></div>`;
-}
-
 function resolvePath(item) {
   const path = window.location.pathname;
-  let prefix = !path.includes('/pages/') ? 'pages/' : 
-               (path.split('/pages/')[1]?.includes('/') ? '../' : '');
+  let prefix = '';
 
-  // SUPPORT PRETTY URLS: Using /slug instead of .html?id=
-  const folder = item.type === 'product' ? 'product' : 'guide';
-  return `${prefix}${folder}/${item.id}`;
+  if (!path.includes('/pages/')) {
+    prefix = 'pages/';
+  } else {
+    const parts = path.split('/pages/')[1];
+    if (parts && parts.includes('/')) {
+      prefix = '../';
+    } else {
+      prefix = '';
+    }
+  }
+
+  if (item.type === 'product') {
+    return `${prefix}product.html?id=${item.id}`;
+  } else {
+    return `${prefix}guide.html?guide=${item.id}`; 
+  }
 }
 
-function setupKeyboardListeners() {
-  document.addEventListener('keydown', (e) => {
-    const overlay = document.getElementById('search-overlay');
-    if (e.key === 'Escape') toggleSearch();
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault();
-      toggleSearch();
-    }
-    
-    if (overlay?.classList.contains('active')) {
-      const results = document.querySelectorAll('.search-result-card');
-      const focused = document.activeElement;
-      const index = Array.from(results).indexOf(focused);
-
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        results[index < results.length - 1 ? index + 1 : 0].focus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        results[index > 0 ? index - 1 : results.length - 1].focus();
-      } else if (e.key === 'Enter' && e.target.id === 'search-input') {
-        results[0]?.click();
-      }
-    }
-  });
+function capitalize(s) {
+  return s && s[0].toUpperCase() + s.slice(1);
 }

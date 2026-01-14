@@ -1,151 +1,133 @@
 /* KYNAR UNIVERSE CORE ENGINE (js/app.js)
    The central nervous system. Handles Atmosphere, Motion, and System Feedback.
-   Status: EVOLVED MASTER (Performance Optimized + Fault Tolerant)
+   Status: FINAL MASTER (Aligned with "Grand Vision" & "No Digital Filler")
 */
 
-// SAFELY IMPORT MODULES
-let KYNAR_DATA = {};
-let Analytics = { trackThemeChange: () => {} }; // Dummy fallback
-
-try {
-  const dataModule = await import('./data.js');
-  KYNAR_DATA = dataModule.KYNAR_DATA || {};
-} catch (e) { console.warn('Universe Data Missing - Lore System Disabled'); }
-
-try {
-  const analyticsModule = await import('./analytics.js');
-  Analytics = analyticsModule.Analytics || Analytics;
-} catch (e) { console.warn('Analytics Module Missing - Tracking Disabled'); }
-
-// CRITICAL GLOBAL EXPOSURE (For HTML onclick events)
-window.Analytics = Analytics;
+import { KYNAR_DATA } from './data.js';
+import { Analytics } from './analytics.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  injectIconSystem();   // Visuals
-  initLoreSystem();     // Narrative
-  initMotionSystem();   // Cinematic Feel
-  initScrollProgress(); // Performance-Optimized Scroll Bar
-  initThemeSystem();    // Atmosphere
-  initLazyImages();     // Speed
-  initImageErrorHandling(); // Resilience
-  // Personalized Greeting based on Onboarding Choice
-const userPath = localStorage.getItem('kynar_user_path');
-if (userPath) {
-  const heroSpan = document.querySelector('.hero-logo-glow + h1 span'); 
-  if (heroSpan) {
-    // If they chose 'tools', emphasize 'Infinite Solutions' in their color
-    heroSpan.style.color = `var(--accent-primary)`;
-    console.log(`[Universe] Personalizing for path: ${userPath}`);
-  }
-}
-
+  injectIconSystem(); // Visuals
+  initLoreSystem();   // Narrative
+  initMotionSystem(); // Cinematic Feel
+  initScrollProgress(); // Add scroll indicator
+  initThemeSystem();  // Atmosphere
+  initLazyImages();
+  initImageErrorHandling();
 });
 
 /* =========================================
    0. ICON SYSTEM INJECTOR
+   Ensures the visual language (Phosphor Icons) is always present.
    ========================================= */
 function injectIconSystem() {
-  if (document.querySelector('link[href*="remixicon"]')) return;
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css';
-  document.head.appendChild(link);
-}
-
-/* =========================================
-   1. THE LORE SYSTEM
-   ========================================= */
-function initLoreSystem() {
-  const footerLore = document.querySelector('.text-lore');
-  if (!footerLore || !KYNAR_DATA.lore) return;
-
-  const body = document.body;
-  let currentTheme = body.getAttribute('data-theme') || 'home';
-  
-  // Normalization logic
-  if (currentTheme === 'home-category') currentTheme = 'home';
-  if (currentTheme === 'hub') currentTheme = 'general';
-  
-  const themePhrases = KYNAR_DATA.lore[currentTheme] || [];
-  const globalPhrases = KYNAR_DATA.lore.general || []; 
-  const combinedPool = [...themePhrases, ...globalPhrases];
-  
-  if (combinedPool.length > 0) {
-    const randomPhrase = combinedPool[Math.floor(Math.random() * combinedPool.length)];
-    footerLore.textContent = `"${randomPhrase}"`;
-    footerLore.style.opacity = '1'; // Ensure visibility
+  if (!document.getElementById('phosphor-icons')) {
+    const script = document.createElement('script');
+    script.id = 'phosphor-icons';
+    script.src = 'https://unpkg.com/@phosphor-icons/web';
+    script.async = true;
+    document.head.appendChild(script);
   }
 }
 
 /* =========================================
-   2. THE MOTION SYSTEM (Waterfall Effect)
-   Updated to support specific classes AND "data-animate" attribute.
+   1. THE LORE SYSTEM
+   Pulls from KYNAR_DATA to inject the "Whispers" into the footer.
+   Aligned with: "A space, not a screen."
+   ========================================= */
+function initLoreSystem() {
+  const body = document.body;
+  
+  // LOGIC: Map specific page themes back to their parent lore category
+  // e.g., 'home-category' (Beige) uses the 'home' lore pool.
+  let currentTheme = body.getAttribute('data-theme') || 'home';
+  if (currentTheme === 'home-category') currentTheme = 'home';
+  if (currentTheme === 'hub') currentTheme = 'general'; // Hub uses general wisdom
+  
+  const footerLore = document.querySelector('.text-lore');
+  
+  // Safety Check: Ensure the element and data exist
+  if (footerLore && KYNAR_DATA && KYNAR_DATA.lore) {
+    const themePhrases = KYNAR_DATA.lore[currentTheme] || [];
+    const globalPhrases = KYNAR_DATA.lore.general || []; 
+    
+    // Mix specific theme lore with general universe lore for variety
+    const combinedPool = [...themePhrases, ...globalPhrases];
+    
+    if (combinedPool.length > 0) {
+      const randomPhrase = combinedPool[Math.floor(Math.random() * combinedPool.length)];
+      // Inject with quotes for that "Whisper" effect
+      footerLore.textContent = `"${randomPhrase}"`;
+    }
+  }
+}
+
+/* =========================================
+   2. THE MOTION SYSTEM
+   Handles the "Waterfall" reveal effect on page load.
+   Aligned with: "Guided World" (Gentle, not jarring).
    ========================================= */
 function initMotionSystem() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // Accessibility: Respect user preference for reduced motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
 
-  const observer = new IntersectionObserver((entries, obs) => {
+  const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+  
+  const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
-        obs.unobserve(entry.target); 
+        observer.unobserve(entry.target); // Efficiency: Stop watching once visible
       }
     });
-  }, { threshold: 0.1, rootMargin: '50px' });
+  }, observerOptions);
 
-  // Select standard elements PLUS anything with data-animate="true"
-  const elements = document.querySelectorAll('.card, .text-body, section, h2, header, .animate-enter, [data-animate]');
+  // Targets: Cards, Text Blocks, Headers, Sections
+  const animatedElements = document.querySelectorAll('.card, .text-body, section, h2, header, .animate-enter');
   
-  elements.forEach((el, index) => {
+  animatedElements.forEach((el, index) => {
     el.classList.add('scroll-fade-item');
-    // Staggered delay for a natural "waterfall" feel
-    // Capped at 300ms so the user doesn't wait too long
-    const delay = Math.min((index % 5) * 50, 300); 
+    // Logic: Stagger delay slightly for a premium "waterfall" feel
+    // Cap it at 500ms so the user doesn't wait too long
+    const delay = Math.min((index % 5) * 50, 500); 
     el.style.transitionDelay = `${delay}ms`; 
     observer.observe(el);
   });
 }
 
 /* =========================================
-   2B. SCROLL PROGRESS (High Performance)
-   Uses requestAnimationFrame to prevent lag on 120Hz screens.
+   2B. SCROLL PROGRESS INDICATOR
+   Shows reading progress on long pages
    ========================================= */
 function initScrollProgress() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
 
-  // Create bar if it doesn't exist
-  let progressBar = document.querySelector('.scroll-progress');
-  if (!progressBar) {
-    progressBar = document.createElement('div');
-    progressBar.className = 'scroll-progress';
-    document.body.appendChild(progressBar);
-  }
+  // Create progress bar
+  const progressBar = document.createElement('div');
+  progressBar.className = 'scroll-progress';
+  document.body.appendChild(progressBar);
 
-  let ticking = false;
-
+  // Update on scroll
   window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const winHeight = window.innerHeight;
-        const docHeight = document.documentElement.scrollHeight - winHeight;
-        const scrolled = window.scrollY;
-        
-        // Prevent division by zero
-        const progress = docHeight > 0 ? (scrolled / docHeight) * 100 : 0;
-        progressBar.style.width = `${Math.min(progress, 100)}%`;
-        
-        ticking = false;
-      });
-      ticking = true;
-    }
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight - windowHeight;
+    const scrolled = window.scrollY;
+    const progress = (scrolled / documentHeight) * 100;
+    
+    progressBar.style.width = `${Math.min(progress, 100)}%`;
   }, { passive: true });
 }
 
 /* =========================================
    3. SYSTEM FEEDBACK (Toasts)
+   "Soft feedback" for user actions (Save, Copy, Theme Change).
    ========================================= */
 function showToast(message, type = 'normal') {
   let container = document.querySelector('.toast-container');
+  
+  // Create container if it doesn't exist yet
   if (!container) {
     container = document.createElement('div');
     container.className = 'toast-container';
@@ -155,124 +137,165 @@ function showToast(message, type = 'normal') {
   const toast = document.createElement('div');
   toast.className = 'toast animate-enter';
   
-  // Icon Mapping
-  const icons = {
-    normal: '<i class="ri-information-line"></i>',
-    success: '<i class="ri-checkbox-circle-line" style="color:var(--color-success)"></i>',
-    error: '<i class="ri-error-warning-line" style="color:var(--color-error)"></i>',
-    starwalker: '<i class="ri-shining-2-line" style="color:var(--accent-primary)"></i>'
-  };
-  
-  const iconHtml = icons[type] || icons.normal;
+  let icon = '<i class="ph ph-info"></i>';
+  if (type === 'success') {
+    icon = '<i class="ph ph-check-circle" style="color:var(--color-success)"></i>';
+  } else if (type === 'error') {
+    icon = '<i class="ph ph-warning-circle" style="color:var(--color-error)"></i>';
+  } else if (type === 'starwalker') {
+    icon = '<i class="ph ph-star-four" style="color:var(--accent-primary)"></i>';
+  }
   
   toast.innerHTML = `
-    ${iconHtml}
+    ${icon}
     <span>${message}</span>
-    <button class="btn-tertiary close-toast" aria-label="Dismiss">
-      <i class="ri-close-line"></i>
+    <button onclick="this.parentElement.remove()" class="btn-tertiary" style="padding: 4px 8px; margin-left: auto;">
+      <i class="ph ph-x" style="font-size: 0.9rem;"></i>
     </button>
   `;
-
-  // Attach click listener for close button
-  toast.querySelector('.close-toast').onclick = () => removeToast(toast);
-
-  // Auto-Dismiss Bar
-  const dismissTime = 3000;
-  const timerBar = document.createElement('div');
-  timerBar.className = 'toast-timer'; // Define styles in CSS for cleaner JS
-  timerBar.style.cssText = `position:absolute; bottom:0; left:0; height:2px; background:var(--accent-primary); width:100%; opacity:0.5; transition:width ${dismissTime}ms linear;`;
+  toast.style.display = 'flex';
+  toast.style.alignItems = 'center';
+  toast.style.gap = '12px';
   
-  toast.appendChild(timerBar);
   container.appendChild(toast);
   
-  // Trigger Animation
-  requestAnimationFrame(() => { timerBar.style.width = '0%'; });
-  setTimeout(() => removeToast(toast), dismissTime);
-}
-
-function removeToast(toast) {
-  if (!toast) return;
-  toast.style.opacity = '0';
-  toast.style.transform = 'translateY(10px)';
+  // Auto-dismiss with visual countdown
+  const dismissTime = 3000;
+  let startTime = Date.now();
+  
+  const progressBar = document.createElement('div');
+  progressBar.style.cssText = `
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent-primary);
+    width: 100%;
+    opacity: 0.5;
+    transition: width ${dismissTime}ms linear;
+  `;
+  toast.style.position = 'relative';
+  toast.appendChild(progressBar);
+  
+  requestAnimationFrame(() => {
+    progressBar.style.width = '0%';
+  });
+  
   setTimeout(() => {
-    if (toast.parentNode) toast.parentNode.removeChild(toast);
-  }, 300);
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(10px)';
+    setTimeout(() => toast.remove(), 300);
+  }, dismissTime);
 }
-
-window.showToast = showToast;
-
 /* =========================================
    4. ATMOSPHERE SYSTEM (Themes)
+   Handles Light, Dark, and the Secret "Starwalker" Mode.
    ========================================= */
 function initThemeSystem() {
-  // We check for saved preference, but we DO NOT force it if it conflicts.
   const savedMode = localStorage.getItem('kynar_mode');
+  
+  // Apply saved preference immediately on load
   if (savedMode) {
     document.documentElement.setAttribute('data-mode', savedMode);
   }
 }
 
 function setTheme(mode) {
+  // mode options: 'light', 'dark', 'auto', 'starwalker'
+  
   if (mode === 'auto') {
     document.documentElement.removeAttribute('data-mode');
     localStorage.removeItem('kynar_mode');
-    showToast('System synced to device.');
+    showToast('System atmosphere synced.');
   } else {
     document.documentElement.setAttribute('data-mode', mode);
     localStorage.setItem('kynar_mode', mode);
-    
-    // Analytics Tracking
-    if (Analytics && typeof Analytics.trackThemeChange === 'function') {
-      Analytics.trackThemeChange(mode);
+    Analytics.trackThemeChange(mode)
+    // Feedback Logic
+    if (mode === 'starwalker') {
+      showToast('Starwalker Mode Engaged.', 'starwalker');
+    } else if (mode === 'light') {
+      showToast('Daylight atmosphere applied.');
+    } else {
+      showToast('Midnight atmosphere applied.');
     }
-
-    // Feedback
-    const messages = {
-      starwalker: 'Starwalker Mode Engaged.',
-      light: 'Daylight atmosphere applied.',
-      dark: 'Midnight atmosphere applied.'
-    };
-    showToast(messages[mode] || 'Atmosphere updated.', mode === 'starwalker' ? 'starwalker' : 'normal');
   }
 }
 
+// Expose to window so Settings Page and Header can call it
 window.setTheme = setTheme;
 
 /* =========================================
-   5. SERVICE WORKER & UTILS
+   5. SERVICE WORKER REGISTRATION
+   Enables offline functionality and caching
    ========================================= */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('[Universe] Service Worker registered:', registration.scope);
+      })
+      .catch(error => {
+        console.log('[Universe] Service Worker registration failed:', error);
+      });
   });
 }
 
+/* =========================================
+   IMAGE LAZY LOADING HANDLER
+   ========================================= */
 function initLazyImages() {
   const images = document.querySelectorAll('img[loading="lazy"]');
+  
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries, obs) => {
+    const imageObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('loaded');
-          obs.unobserve(entry.target);
+          const img = entry.target;
+          img.classList.add('loaded');
+          imageObserver.unobserve(img);
         }
       });
     });
-    images.forEach(img => observer.observe(img));
+    
+    images.forEach(img => imageObserver.observe(img));
   } else {
+    // Fallback for older browsers
     images.forEach(img => img.classList.add('loaded'));
   }
 }
 
+/* =========================================
+   IMAGE ERROR HANDLING
+   Replaces broken images with placeholder
+   ========================================= */
 function initImageErrorHandling() {
   document.addEventListener('error', (e) => {
     if (e.target.tagName === 'IMG') {
       e.target.style.display = 'none';
-      // Create a subtle placeholder
-      const p = document.createElement('div');
-      p.className = 'image-placeholder';
-      p.innerHTML = `<i class="ri-image-2-line"></i>`;
-      e.target.parentNode.insertBefore(p, e.target);
+      
+      // Create placeholder
+      const placeholder = document.createElement('div');
+      placeholder.className = 'image-placeholder';
+      placeholder.innerHTML = `
+        <div style="
+          width: 100%;
+          aspect-ratio: 16/9;
+          background: var(--bg-surface);
+          border: 1px dashed var(--border-subtle);
+          border-radius: var(--radius-md);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          gap: 8px;
+        ">
+          <i class="ph ph-image-broken" style="font-size: 2rem; opacity: 0.3;"></i>
+          <span class="text-micro" style="opacity: 0.5;">Image unavailable</span>
+        </div>
+      `;
+      
+      e.target.parentNode.insertBefore(placeholder, e.target);
     }
   }, true);
 }
