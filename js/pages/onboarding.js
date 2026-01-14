@@ -1,110 +1,91 @@
-/* KYNAR ONBOARDING PAGE LOGIC (js/pages/onboarding.js)
-   Status: EVOLVED MASTER (Auto-Progression + Choice Validation)
+/* KYNAR ONBOARDING ENGINE (js/pages/onboarding.js)
+   Status: EVOLVED MASTER (Step-Logic + State Persistence)
 */
 
-(function() {
-  'use strict';
+let currentStep = 1;
+const totalSteps = 4;
 
-  let selectedPath = null;
+document.addEventListener('DOMContentLoaded', () => {
+    // Initial State Check
+    updateStepUI();
+});
 
-  document.addEventListener('DOMContentLoaded', () => {
-    initOnboarding();
-  });
-
-  function initOnboarding() {
-    const container = document.querySelector('.onboarding-container');
-    if (!container) return;
-
-    // 1. Delegate Option Selection
-    container.addEventListener('click', (e) => {
-      const optionBtn = e.target.closest('.option-card');
-      if (optionBtn) {
-        handleSelection(optionBtn);
-      }
+/**
+ * 1. NAVIGATION LOGIC
+ */
+window.nextStep = function(step) {
+    if (step > totalSteps || step < 1) return;
+    
+    // Hide all steps
+    document.querySelectorAll('.step').forEach(el => {
+        el.classList.remove('active');
     });
 
-    // 2. Navigation Listeners (Manual Next/Finish)
-    container.addEventListener('click', (e) => {
-      if (e.target.matches('[data-next-step]')) {
-        const step = e.target.getAttribute('data-next-step');
-        goToStep(step);
-      }
-      
-      if (e.target.matches('#btn-finish')) {
-        completeProtocol();
-      }
-    });
-  }
+    // Show current step
+    const targetStep = document.getElementById(`step-${step}`);
+    if (targetStep) {
+        targetStep.classList.add('active');
+        currentStep = step;
+        updateStepUI();
+    }
+};
 
-  /**
-   * Selection Logic with Auto-Advance
-   */
-  function handleSelection(element) {
-    // UI Update
-    document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+/**
+ * 2. SELECTION LOGIC
+ */
+window.selectOption = function(element, focusType) {
+    // Remove selected class from siblings
+    document.querySelectorAll('.option-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+
+    // Add selected class to clicked element
     element.classList.add('selected');
 
-    // Data Update
-    selectedPath = element.getAttribute('data-category');
-
-    // Visual Feedback (Haptic)
-    if ('vibrate' in navigator) navigator.vibrate(15);
-
-    // Auto-Advance to Step 2 after a brief "acknowledgment" pause
-    setTimeout(() => goToStep(2), 500);
-  }
-
-  /**
-   * Navigation Logic
-   */
-  function goToStep(stepNum) {
-    const targetStep = document.getElementById(`step-${stepNum}`);
-    const targetDot = document.getElementById(`dot-${stepNum}`);
-    
-    if (!targetStep) return;
-
-    // Hide current, show next
-    document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.dot').forEach(el => el.classList.remove('active'));
-    
-    targetStep.classList.add('active');
-    if (targetDot) targetDot.classList.add('active');
-    
-    // Smooth scroll to top of wizard
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  /**
-   * Finalize and Redirect
-   */
-  function completeProtocol() {
-    if (!selectedPath) {
-      if (window.showToast) window.showToast('Please select a path to continue.', 'error');
-      return;
+    // Enable the "Next" button for Step 2
+    const nextBtn = document.getElementById('btn-step-2');
+    if (nextBtn) {
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = '1';
     }
 
-    try {
-      localStorage.setItem('kynar_user_path', selectedPath);
-      
-      // Personalized Toast on exit
-      if (window.showToast) {
-        window.showToast(`Path Established: ${selectedPath.toUpperCase()}`, 'starwalker');
-      }
+    // Store preference locally
+    localStorage.setItem('kynar_user_focus', focusType);
+};
 
-      // Redirect with slight delay for the toast to be seen
-      setTimeout(() => {
+/**
+ * 3. UI SYNC
+ */
+function updateStepUI() {
+    // Update Progress Dots
+    document.querySelectorAll('.dot').forEach((dot, index) => {
+        if (index + 1 === currentStep) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+
+    // Handle Breadcrumbs if they exist
+    const nav = document.getElementById('breadcrumb-nav');
+    if (nav && window.location.pathname.includes('onboarding')) {
+        nav.innerHTML = `<span class="text-micro muted">System / Calibration / Step ${currentStep}</span>`;
+    }
+}
+
+/**
+ * 4. FINALIZATION
+ */
+window.finishOnboarding = function() {
+    // Mark onboarding as complete in localStorage
+    localStorage.setItem('kynar_onboarding_complete', 'true');
+    
+    if (window.showToast) {
+        window.showToast('Workspace Initialized. Welcome traveler.', 'success');
+    }
+
+    // Redirect to the Hub or Dashboard
+    setTimeout(() => {
         window.location.href = '../../index.html';
-      }, 1000);
-      
-    } catch (e) {
-      console.error('Data Sync Error', e);
-      window.location.href = '../../index.html';
-    }
-  }
-
-  // Backwards compatibility for inline HTML calls
-  window.nextStep = goToStep;
-  window.selectOption = (btn, cat) => handleSelection(btn);
-  window.finishOnboarding = completeProtocol;
-
-})();
+    }, 1500);
+};
