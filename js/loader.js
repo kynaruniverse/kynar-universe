@@ -6,6 +6,7 @@ import { getProductById, getGuideById, formatPrice } from './data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
+  // filter(Boolean) removes empty strings from trailing slashes
   const pathParts = window.location.pathname.split('/').filter(Boolean);
   const mainContent = document.querySelector('main');
   
@@ -24,11 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Check path for "Pretty URL" slugs
     if (window.location.pathname.includes('/product')) {
-      if (lastSegment !== 'product.html' && lastSegment !== 'product') {
+      // Ensure we don't treat the page name itself as the ID
+      if (lastSegment && !lastSegment.includes('.html') && lastSegment !== 'product') {
         productId = lastSegment;
       }
     } else if (window.location.pathname.includes('/guide')) {
-      if (lastSegment !== 'guide.html' && lastSegment !== 'guide') {
+      if (lastSegment && !lastSegment.includes('.html') && lastSegment !== 'guide') {
         guideId = lastSegment;
       }
     }
@@ -42,9 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
   else if (guideId) {
     const guide = getGuideById(guideId);
     guide ? loadGuide(guide) : handleNotFound('Knowledge Record');
+  } else {
+    // FALLBACK: If no ID found at all, force a reveal or redirect to 404
+    handleNotFound('Universal');
   }
 
-  // 4. ANIMATED REVEAL
+  // 4. GUARANTEED REVEAL: Ensure opacity is restored even if loading fails
   if (mainContent) {
     requestAnimationFrame(() => {
       mainContent.style.transition = 'opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
@@ -52,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
 
 /* =========================================
    ASSET LOADER (Products)
