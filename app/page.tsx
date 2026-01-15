@@ -9,7 +9,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="px-4 py-12 text-center max-w-2xl mx-auto">
         <h1 className="text-h1-mob md:text-h1-desk font-bold text-home-text mb-4 leading-tight">
-          One Universe v3.<br/>Infinite Solutions.
+          One Universe.<br/>Infinite Solutions v3.
         </h1>
         <p className="text-body text-home-text/80 font-serif italic mb-8">
           Explore calm tools for work, life, and home.
