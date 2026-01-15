@@ -1,290 +1,135 @@
-/* KYNAR UNIVERSE DATA ENGINE (js/data.js)
-   Source of Truth for the Digital Department Store.
-   Status: FINAL MASTER (Pre-Launch Mode Configured)
+/* KYNAR DATA CORE (js/data.js)
+   Status: FINAL (Standardized Schema)
 */
 
 export const KYNAR_DATA = {
-  
-  // =========================================
-  // 1. PRODUCT CATALOGUE (The Inventory)
-  // =========================================
   products: [
-    
-    // --- DEPARTMENT: KYNAR TOOLS (Developers & Entrepreneurs) ---
+    /* --- HOME CATEGORY --- */
     {
-      id: "python-automation-bundle",
-      category: "tools",
-      subCategory: "Automation",
-      title: "Python Workflow Automator",
-      price: 15.00,
-      status: "upcoming", // Flag for UI logic
-      tag: "Production-Ready Script",
-      shortDesc: "Automate your file management and data entry tasks instantly.",
-      lore: "Blueprints for your best work.",
-      description: "Stop wasting time on repetitive tasks. This verified Python bundle watches your directories, sorts files automatically, and cleans up digital clutter. Deployment takes less than 2 minutes.",
-      features: [
-        "Auto-Sort Downloads Folder",
-        "Bulk File Renamer Script",
-        "PDF Text Extractor",
-        "Config.yaml for Custom Rules"
-      ],
-      specs: {
-        format: "Python (.py)",
-        version: "v2.4 (Stable)",
-        os: "Windows / macOS / Linux"
-      },
-      // Code Preview for the "Tech Specs" card
-      codePreview: `import os
-import shutil
-
-# KYNAR AUTOMATION PROTOCOL
-def organize_directory():
-    print("Initiating sort sequence...")
-    for filename in os.listdir(DOWNLOADS):
-        if filename.endswith(".pdf"):
-            shutil.move(filename, DOCS_DIR)
-            print(f"Moved: {filename}")`,
-      
-      actionBtn: "Join Waitlist",
-      previewIcon: "ph-code",
-      image: "assets/products/script-preview.png"
+      id: 'h-01',
+      title: 'Sanctuary OS',
+      category: 'home',
+      subCategory: 'Notion System',
+      price: 24.00,
+      status: 'available',
+      previewIcon: 'ph-house-line',
+      shortDesc: 'The ultimate dashboard for managing your living space, chores, and maintenance.',
+      description: 'Sanctuary OS turns your home maintenance into a self-driving system. Track warranties, schedule repairs, and manage household chores with a beautiful, dark-mode Notion dashboard.',
+      lore: 'For those who treat their environment as an extension of their mind.',
+      features: ['Automated Chore Scheduling', 'Warranty Vault', 'Plant Care Tracker', 'Utility Cost Analysis'],
+      image: 'assets/products/sanctuary-preview.jpg',
+      specs: { format: 'Notion Template', version: '2.4.0', size: '12MB' }
     },
     {
-      id: "business-intelligence",
-      category: "tools",
-      subCategory: "Business",
-      title: "Startup Financial Model",
-      price: 25.00,
-      status: "upcoming",
-      tag: "Business Intelligence",
-      shortDesc: "A master spreadsheet for forecasting revenue and runway.",
-      lore: "Data is clarity.",
-      description: "Don't guess your growth. This pre-built financial model helps entrepreneurs track burn rate, project revenue, and secure funding.",
-      features: [
-        "Revenue Forecasting Tab",
-        "Expense Categorization",
-        "Investor Dashboard View",
-        "Google Sheets / Excel"
-      ],
-      specs: {
-        format: "XLSX / G-Sheets",
-        version: "2025 Edition",
-        license: "Commercial Use"
-      },
-      actionBtn: "Notify Me",
-      previewIcon: "ph-chart-bar",
-      image: "assets/products/finance-sheet.png"
-    },
-    
-    {
-      id: "creative-assets",
-      category: "tools",
-      subCategory: "Design",
-      title: "Creator Asset Pack",
+      id: 'h-02',
+      title: 'Finance Flow',
+      category: 'home',
+      subCategory: 'Finance',
       price: 18.00,
-      status: "upcoming",
-      tag: "Design Assets",
-      shortDesc: "High-fidelity textures, fonts, and icons for UI design.",
-      lore: "Shape your reality.",
-      description: "A curated collection of dark-mode UI elements, noisy gradients, and glass-morphism textures. Perfect for building interfaces that feel alive.",
-      features: [
-        "20+ High-Res Textures",
-        "Figma Component Library",
-        "Custom Icon Set (SVG)",
-        "Commercial License"
-      ],
-      specs: {
-        format: "Figma / PNG / SVG",
-        size: "1.2 GB",
-        license: "Commercial Use"
-      },
-      actionBtn: "Join Waitlist",
-      previewIcon: "ph-paint-brush-broad",
-      image: "assets/products/creative.png"
+      status: 'available',
+      previewIcon: 'ph-currency-gbp',
+      shortDesc: 'Zero-friction expense tracking and budget visualization.',
+      description: 'Stop wrestling with spreadsheets. Finance Flow provides a visual, intuitive interface for tracking income, expenses, and subscription audits.',
+      lore: 'Clarity in finance leads to clarity in life.',
+      features: ['Subscription Audit', 'Monthly Burn Rate', 'Income Streams', 'Tax Estimator'],
+      image: 'assets/products/finance-preview.jpg'
     },
-    
 
-    // --- DEPARTMENT: KYNAR LIFE (High Performers) ---
+    /* --- LIFE CATEGORY --- */
     {
-      id: "finance-tracker",
-      category: "life",
-      subCategory: "Finance",
-      title: "LifeOS Finance Tracker",
+      id: 'l-01',
+      title: 'Odyssey Journal',
+      category: 'life',
+      subCategory: 'Wellness',
       price: 12.00,
-      status: "upcoming",
-      tag: "System",
-      shortDesc: "Bring clarity to your daily chaos with zero-based budgeting.",
-      lore: "Maps for inner growth.",
-      description: "Where does your money go? This high-performance dashboard gives you a clear view of your net worth, monthly spending, and savings goals. No complex setup required.",
-      features: [
-        "Zero-Based Budgeting Layout",
-        "Debt Payoff Calculator",
-        "Subscription Auditor",
-        "Visual Spending Graphs"
-      ],
-      specs: {
-        format: "Digital Spreadsheet",
-        compatibility: "Mobile & Desktop",
-        license: "Personal Use"
-      },
-      actionBtn: "Join Waitlist",
-      previewIcon: "ph-currency-dollar",
-      image: "assets/products/finance-tracker.png"
+      status: 'available',
+      previewIcon: 'ph-compass',
+      shortDesc: 'A stoic journaling system for documenting your personal evolution.',
+      description: 'Based on Stoic principles, the Odyssey Journal helps you process daily events, track habits, and visualize your personal growth over years, not just days.',
+      lore: 'The unexamined life is not worth recording.',
+      features: ['Daily Stoic Prompts', 'Mood Heatmap', 'Habit Streaks', 'Annual Review Template'],
+      image: 'assets/products/journal-preview.jpg'
     },
     {
-      id: "morning-mindset-journal",
-      category: "life",
-      subCategory: "Wellness",
-      title: "The Clarity Journal",
-      price: 8.00,
-      status: "upcoming",
-      tag: "Wellness",
-      shortDesc: "A 5-minute protocol to set a calm tone for the day.",
-      lore: "Quiet clarity in a noisy world.",
-      description: "This isn't just a diary. It's a structured cognitive framework to declutter your mind before you start work. Print it out or use it on your tablet.",
-      features: [
-        "Daily Intention Setting",
-        "Gratitude Framework",
-        "Brain Dump Section",
-        "Printable PDF (A4/Letter)"
-      ],
-      specs: {
-        format: "Interactive PDF",
-        pages: "120 Pages",
-        license: "Personal Use"
-      },
-      actionBtn: "Notify Me",
-      previewIcon: "ph-sun",
-      image: "assets/products/journal.png"
+      id: 'l-02',
+      title: 'Vitals Health',
+      category: 'life',
+      subCategory: 'Health',
+      price: 15.00,
+      status: 'upcoming',
+      previewIcon: 'ph-heart-beat',
+      shortDesc: 'Aggregated health metrics dashboard connecting fitness and nutrition.',
+      description: 'Centralize your health data. Track workouts, meal macros, and sleep cycles in one unified interface designed for high-performers.',
+      lore: 'Your biological machinery requires precision tuning.',
+      features: ['Workout Logs', 'Macro Calculator', 'Sleep Analysis', 'Supplement Stack'],
+      image: 'assets/products/vitals-preview.jpg'
     },
 
-    // --- DEPARTMENT: KYNAR HOME (Parents & Families) ---
+    /* --- TOOLS CATEGORY --- */
     {
-      id: "kids-bundles",
-      category: "home",
-      subCategory: "Education",
-      title: "Rainy-Day Activity Pack",
-      price: 6.00,
-      status: "upcoming",
-      tag: "Family",
-      shortDesc: "Educational printables to keep toddlers engaged and learning.",
-      lore: "Foundations for a calm home.",
-      description: "Stuck inside? Print these vetted activity sheets to turn boredom into learning. Covers basic math, coloring, and logic puzzles for ages 4-6.",
-      features: [
-        "15 Math Logic Puzzles",
-        "Creative Coloring Sheets",
-        "Scavenger Hunt Template",
-        "Parent Guide Included"
-      ],
-      specs: {
-        format: "Print-Ready PDF",
-        ageGroup: "4-7 Years",
-        license: "Household Use"
-      },
-      actionBtn: "Join Waitlist",
-      previewIcon: "ph-smiley-sticker",
-      image: "assets/products/kids-pack.png"
+      id: 't-01',
+      title: 'DevStack UI',
+      category: 'tools',
+      subCategory: 'Code',
+      price: 45.00,
+      status: 'available',
+      previewIcon: 'ph-code',
+      shortDesc: 'A library of copy-paste Tailwind & Alpine.js components.',
+      description: 'Ship faster with 50+ pre-built components. Fully accessible, dark-mode ready, and optimized for minimal bundle size.',
+      lore: 'Do not reinvent the wheel. Reinvent the vehicle.',
+      features: ['50+ Components', 'Tailwind Ready', 'Accessibility Tested', 'Figma Files Included'],
+      image: 'assets/products/devstack-preview.jpg',
+      codePreview: '<div class="card p-6 bg-surface">\n  <h2 class="text-xl font-bold">Deploy</h2>\n  <button class="btn-primary mt-4">Push</button>\n</div>'
     },
     {
-      id: "home-management",
-      category: "home",
-      subCategory: "Management",
-      title: "Family Command Center",
-      price: 10.00,
-      status: "upcoming",
-      tag: "Management",
-      shortDesc: "Meal planners and chore charts for busy households.",
-      lore: "Order brings peace.",
-      description: "Run your home like a well-oiled machine. This bundle includes meal planners, cleaning schedules, and important contact sheets to keep the whole family on the same page.",
-      features: [
-        "Weekly Meal Planner",
-        "Chore Delegation Chart",
-        "Grocery Master List",
-        "Emergency Info Sheet"
-      ],
-      specs: {
-        format: "PDF / Notion Template",
-        version: "v1.0",
-        license: "Household Use"
-      },
-      actionBtn: "Notify Me",
-      previewIcon: "ph-house",
-      image: "assets/products/home-org.png"
+      id: 't-02',
+      title: 'Creator CRM',
+      category: 'tools',
+      subCategory: 'Productivity',
+      price: 29.00,
+      status: 'available',
+      previewIcon: 'ph-users',
+      shortDesc: 'Manage sponsorships, collaborations, and client pipelines.',
+      description: 'The CRM designed for the creator economy. Track deal stages, manage deliverables, and ensure you never miss a payout.',
+      lore: 'Relationships are your most valuable asset class.',
+      features: ['Deal Pipeline', 'Invoice Generator', 'Contact Sync', 'Deliverable Calendar'],
+      image: 'assets/products/crm-preview.jpg'
     }
   ],
-
-  // =========================================
-  // 2. KNOWLEDGE LIBRARY (The Hub)
-  // =========================================
+  
   guides: [
     {
-      id: "start-journaling",
-      title: "Protocol: Habit Formation",
-      category: "hub",
-      date: "Verified Guide",
-      readTime: "3 min read",
-      shortDesc: "How to build a journaling habit that actually sticks.",
-      content: `
-        <h2 class="text-h2">The 2-Minute Rule</h2>
-        <p class="text-body">Most habits fail because they are too big. Your goal is not to write a novel. It is to open the notebook.</p>
-        <br>
-        <h2 class="text-h2">Environment Design</h2>
-        <p class="text-body">Place your Kynar Journal on your pillow every morning. Visual cues trigger action. We reject complexity.</p>
-      `
+      id: 'g-01',
+      title: 'The Automation Mindset',
+      category: 'philosophy',
+      readTime: '5 min read',
+      previewIcon: 'ph-brain'
     },
     {
-      id: "calm-morning-routine",
-      title: "Protocol: The First Hour",
-      category: "hub",
-      date: "Verified Guide",
-      readTime: "5 min read",
-      shortDesc: "Reclaiming your morning from digital noise.",
-      content: `
-        <h2 class="text-h2">Input Deprivation</h2>
-        <p class="text-body">Do not check email for the first 60 minutes. This preserves your cognitive baseline for high-value work.</p>
-        <br>
-        <h2 class="text-h2">The Review</h2>
-        <p class="text-body">Use the Daily Clarity Planner to map your three primary objectives before the chaos begins.</p>
-      `
+      id: 'g-02',
+      title: 'Setting up Supabase',
+      category: 'technical',
+      readTime: '12 min read',
+      previewIcon: 'ph-database'
     }
-  ],
-
-  // =========================================
-  // 3. WHISPERS (The Lore)
-  // =========================================
-  lore: {
-    tools: [
-      "Every tool is a spark.",
-      "Blueprints for the builders.",
-      "Optimize your reality."
-    ],
-    life: [
-      "Clarity is a weapon.",
-      "Maps for inner growth.",
-      "Silence the noise."
-    ],
-    home: [
-      "Foundations of peace.",
-      "A space for what matters.",
-      "Warmth in the details."
-    ],
-    general: [
-      "One Universe. Infinite Solutions.",
-      "No digital filler.",
-      "Download your upgrade."
-    ]
-  }
+  ]
 };
 
-/* HELPER FUNCTIONS */
+// --- DATA ACCESSORS ---
+
 export function getProductById(id) {
   return KYNAR_DATA.products.find(p => p.id === id);
 }
 
-export function getGuideById(id) {
-  return KYNAR_DATA.guides.find(g => g.id === id);
+export function getProductsByCategory(category) {
+  if (category === 'all') return KYNAR_DATA.products;
+  return KYNAR_DATA.products.filter(p => p.category === category);
 }
 
-export function getProductsByCategory(category) {
-    return KYNAR_DATA.products.filter(p => p.category === category);
+export function searchUniverse(term) {
+  const t = term.toLowerCase();
+  return [
+    ...KYNAR_DATA.products.filter(p => p.title.toLowerCase().includes(t)),
+    ...KYNAR_DATA.guides.filter(g => g.title.toLowerCase().includes(t))
+  ];
 }

@@ -172,7 +172,6 @@ function initScrollProgress() {
    ========================================= */
 window.showToast = function(message, type = 'normal') {
   let container = document.querySelector('.toast-container');
-  
   if (!container) {
     container = document.createElement('div');
     container.className = 'toast-container';
@@ -184,42 +183,43 @@ window.showToast = function(message, type = 'normal') {
   
   // Icon Logic
   let iconClass = 'ph-info';
-  let colorStyle = '';
+  let colorVar = ''; // Optimization: Use var, not inline style string
   
-  if (type === 'success') { iconClass = 'ph-check-circle'; colorStyle = 'color:var(--color-success)'; }
-  else if (type === 'error') { iconClass = 'ph-warning-circle'; colorStyle = 'color:var(--color-error)'; }
-  else if (type === 'starwalker') { iconClass = 'ph-star-four'; colorStyle = 'color:var(--pal-star-gold)'; }
+  if (type === 'success') { iconClass = 'ph-check-circle'; colorVar = 'var(--color-success)'; }
+  else if (type === 'error') { iconClass = 'ph-warning-circle'; colorVar = 'var(--color-error)'; }
+  else if (type === 'starwalker') { iconClass = 'ph-star-four'; colorVar = 'var(--pal-star-gold)'; }
   
-  toast.innerHTML = `
-    <i class="ph ${iconClass}" style="font-size: 1.25rem; ${colorStyle}"></i>
-    <span style="font-weight: 500;">${message}</span>
-  `;
+  // SECURITY FIX: Create elements instead of innerHTML
+  const icon = document.createElement('i');
+  icon.className = `ph ${iconClass}`;
+  icon.style.fontSize = '1.25rem';
+  if(colorVar) icon.style.color = colorVar;
+
+  const text = document.createElement('span');
+  text.style.fontWeight = '500';
+  text.textContent = message; // Safe sink
+
+  toast.appendChild(icon);
+  toast.appendChild(text);
   
   container.appendChild(toast);
   
-  // Dismiss Logic
+  // ... (Animation logic remains unchanged)
   const dismissTime = 4000;
-  
-  // Progress Bar
   const bar = document.createElement('div');
-  bar.style.cssText = `
-    position: absolute; bottom: 0; left: 0; height: 3px;
-    background: currentColor; opacity: 0.2; width: 100%;
-    transition: width ${dismissTime}ms linear;
-  `;
+  bar.style.cssText = `position: absolute; bottom: 0; left: 0; height: 3px; background: currentColor; opacity: 0.2; width: 100%; transition: width ${dismissTime}ms linear;`;
   toast.style.position = 'relative';
   toast.style.overflow = 'hidden';
   toast.appendChild(bar);
-  
-  // Trigger animation
+
   requestAnimationFrame(() => { bar.style.width = '0%'; });
-  
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateY(10px)';
     setTimeout(() => toast.remove(), 300);
   }, dismissTime);
 }
+
 
 /* =========================================
    4. ATMOSPHERE SYSTEM (Themes)
