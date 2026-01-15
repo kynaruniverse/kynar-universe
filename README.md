@@ -6,7 +6,7 @@ Status: EVOLVED MASTER — PWA & Supabase Integrated
 ​Kynar Universe is a centralized digital department store designed to eliminate "digital filler" by providing only verified, high-utility assets. The system is built on a Modular Vanilla JS Engine—prioritizing performance, accessibility, and a premium "Glass" interface without the overhead of heavy frameworks.
 ​🌐 Core Departments
 ​Tools: Python automation, business intelligence, and developer blueprints.
-​Living: LifeOS planners, finance trackers, and wellness protocols.
+​life: LifeOS planners, finance trackers, and wellness protocols.
 ​Home: Educational bundles, chore systems, and creative activity packs.
 ​Hub: The Knowledge Library—editorial guides for implementing your upgrades.
 ​📁 File Structure
@@ -25,7 +25,7 @@ Status: EVOLVED MASTER — PWA & Supabase Integrated
 │ └── components/ # Structured Data & Analytics
 ├── pages/ # Functional Spokes (Category & Utility)
 │ ├── tools/ # Tools Dept
-│ ├── living/ # Living Dept
+│ ├── life/ # life Dept
 │ ├── home/ # Home Dept
 │ ├── hub/ # The Hub Dept
 │ ├── about/ # Mission & Support

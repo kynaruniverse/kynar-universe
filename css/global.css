@@ -199,6 +199,16 @@ code, pre {
   border-color: var(--text-muted);
   box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
 }
+.card:hover .card-glow {
+  opacity: 0.15;
+}
+.card:hover .icon-box {
+  transform: scale(1.1) rotate(3deg);
+}
+
+.card:hover .ph-arrow-right {
+  transform: translateX(4px);
+}
 
 /* Category Borders (The "Soul" Colors) */
 .card[data-variant="tools"] { border-left: 2px solid var(--pal-tools-core); }
@@ -560,6 +570,37 @@ code, pre {
   opacity: 0.1;
 }
 
+/* Enhanced mobile touch states */
+@media (hover: none) and (pointer: coarse) {
+  .header-btn:active {
+    transform: scale(0.92);
+    background: var(--accent-surface);
+  }
+  
+  .btn-primary:active,
+  .btn-secondary:active {
+    transform: scale(0.96) !important;
+  }
+}
+
+/* Improved tap target spacing on small screens */
+@media (max-width: 480px) {
+  .header-actions {
+    gap: 4px; /* Tighter spacing on tiny screens */
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* =========================================
    PRINT STYLES
    Optimize for physical printing
@@ -607,4 +648,9 @@ code, pre {
   .icon-box {
     page-break-inside: avoid;
   }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }

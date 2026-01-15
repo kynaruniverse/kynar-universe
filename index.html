@@ -45,29 +45,33 @@
 
   <main id="main-content" class="container">
     
-    <section class="hero-soul stack-xl animate-enter" style="padding-top: var(--space-xl); padding-bottom: var(--space-xl);">
-      
-      <div class="stack-md" style="text-align: center; align-items: center;">
+    <section class="hero-soul stack-xl animate-enter" style="padding-top: var(--space-2xl); padding-bottom: var(--space-2xl);">
+  
+     <div class="stack-lg" style="text-align: center; align-items: center;">
+    
+        <!-- Larger logo with subtle animation -->
         <img src="assets/logo.svg" 
              alt="Kynar Universe Logo" 
-             width="100" height="100"
-             style="filter: drop-shadow(0 0 20px var(--accent-glow));">
-             
-        <h1 class="text-h1">
-          One Universe.<br>
-          <span style="color: var(--text-body); font-family: var(--font-primary); font-size: 0.6em; letter-spacing: -0.02em;">Infinite Digital Solutions.</span>
+             width="120" height="120"
+             style="filter: drop-shadow(0 0 30px var(--accent-glow)); animation: float 6s ease-in-out infinite;">
+         
+        <h1 class="text-h1" style="max-width: 16ch;">
+      One Universe.
+          <span style="display: block; color: var(--text-body); font-family: var(--font-primary); font-size: 0.55em; font-weight: 400; letter-spacing: -0.01em; margin-top: 0.5rem; opacity: 0.85;">
+            Infinite Digital Solutions.
+          </span>
         </h1>
 
-        <p class="text-body" style="margin: 0 auto;">
-          The ultimate <strong>Digital Department Store</strong>. We reject digital filler, providing verified tools for developers, high-performers, and families.
+        <p class="text-body" style="max-width: 48ch; font-size: 1.1rem; line-height: 1.7;">
+          The ultimate <strong style="color: var(--text-main);">Digital Department Store</strong>. We reject digital filler, providing verified tools for developers, high-performers, and families.
         </p>
 
-        <div class="hero-actions" style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
-           <a href="#departments" class="btn-primary">
-             <i class="ph ph-squares-four"></i> Browse Departments
+        <div class="hero-actions" style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; margin-top: var(--space-lg);">
+           <a href="#departments" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.05rem;">
+             <i class="ph ph-squares-four"></i> <span>Browse Departments</span>
            </a>
-           <a href="pages/onboarding/index.html" class="btn-secondary">
-             Start Protocol
+           <a href="pages/onboarding/index.html" class="btn-secondary" style="padding: 1rem 2rem; font-size: 1.05rem;">
+             <span>Start Protocol</span>
            </a>
         </div>
       </div>
@@ -81,48 +85,91 @@
         <span class="text-micro" style="opacity: 0.5;">03 Active</span>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-md);">
-        
-        <a href="pages/tools/index.html" class="card" data-variant="tools">
-          <div class="stack-md">
-            <div class="icon-box"><i class="ph ph-code"></i></div>
-            <div class="stack-xs">
-              <h3 class="text-h3">KYNAR Tools</h3> 
-              <p class="text-body" style="font-size: 0.9rem;">Python automation, business intelligence, and developer blueprints.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-lg);">
+  
+         <!-- TOOLS -->
+          <a href="pages/tools/index.html" class="card" data-variant="tools" style="position: relative; overflow: hidden;">
+            <!-- Glow effect on hover -->
+            <div class="card-glow" style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, var(--pal-tools-glow), transparent 70%); opacity: 0; transition: opacity 0.4s; pointer-events: none; z-index: 0;"></div>
+    
+            <div class="stack-md" style="position: relative; z-index: 1;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div class="icon-box" style="width: 56px; height: 56px; font-size: 1.75rem;">
+                  <i class="ph ph-code"></i>
+                </div>
+                <span class="tag" data-variant="tools">Development</span>
+              </div>
+      
+              <div class="stack-xs">
+                <h3 class="text-h3" style="font-size: 1.5rem;">KYNAR Tools</h3>
+                <p class="text-body" style="font-size: 0.95rem; opacity: 0.85;">
+                  Python automation, business intelligence, and developer blueprints.
+                </p>
+              </div>
+      
+              <div style="margin-top: auto; padding-top: var(--space-sm); opacity: 0.7;">
+                <span class="text-micro" style="display: flex; align-items: center; gap: 6px;">
+                  Explore Department <i class="ph ph-arrow-right"></i>
+                </span>
+              </div>
             </div>
-            <div style="margin-top: auto;">
-              <span class="tag" data-variant="tools">Development</span>
+          </a>
+  
+          <!-- LIFE -->
+          <a href="pages/life/index.html" class="card" data-variant="life" style="position: relative; overflow: hidden;">
+            <div class="card-glow" style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, var(--pal-life-glow), transparent 70%); opacity: 0; transition: opacity 0.4s; pointer-events: none; z-index: 0;"></div>
+    
+            <div class="stack-md" style="position: relative; z-index: 1;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div class="icon-box" style="width: 56px; height: 56px; font-size: 1.75rem;">
+                  <i class="ph ph-plant"></i>
+                </div>
+                <span class="tag" data-variant="life">Lifestyle</span>
+              </div>
+      
+              <div class="stack-xs">
+                <h3 class="text-h3" style="font-size: 1.5rem;">KYNAR Life</h3>
+                <p class="text-body" style="font-size: 0.95rem; opacity: 0.85;">
+                  LifeOS planners, finance trackers, and high-performance systems.
+                </p>
+              </div>
+      
+              <div style="margin-top: auto; padding-top: var(--space-sm); opacity: 0.7;">
+                <span class="text-micro" style="display: flex; align-items: center; gap: 6px;">
+                  Explore Department <i class="ph ph-arrow-right"></i>
+                </span>
+              </div>
             </div>
-          </div>
-        </a>
-
-        <a href="pages/life/index.html" class="card" data-variant="life">
-          <div class="stack-md">
-            <div class="icon-box"><i class="ph ph-plant"></i></div>
-            <div class="stack-xs">
-              <h3 class="text-h3">KYNAR Life</h3>
-              <p class="text-body" style="font-size: 0.9rem;">LifeOS planners, finance trackers, and high-performance systems.</p>
+          </a>
+  
+          <!-- HOME -->
+          <a href="pages/home/index.html" class="card" data-variant="home" style="position: relative; overflow: hidden;">
+            <div class="card-glow" style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, var(--pal-home-glow), transparent 70%); opacity: 0; transition: opacity 0.4s; pointer-events: none; z-index: 0;"></div>
+    
+            <div class="stack-md" style="position: relative; z-index: 1;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div class="icon-box" style="width: 56px; height: 56px; font-size: 1.75rem;">
+                  <i class="ph ph-house-line"></i>
+                </div>
+                <span class="tag" data-variant="home">Family</span>
+              </div>
+      
+              <div class="stack-xs">
+                <h3 class="text-h3" style="font-size: 1.5rem;">KYNAR Home</h3>
+                <p class="text-body" style="font-size: 0.95rem; opacity: 0.85;">
+                  Educational bundles, chore management, and family activity packs.
+                </p>
+              </div>
+      
+              <div style="margin-top: auto; padding-top: var(--space-sm); opacity: 0.7;">
+                <span class="text-micro" style="display: flex; align-items: center; gap: 6px;">
+                  Explore Department <i class="ph ph-arrow-right"></i>
+                </span>
+              </div>
             </div>
-            <div style="margin-top: auto;">
-              <span class="tag" data-variant="life">Lifestyle</span>
-            </div>
-          </div>
-        </a>
-
-        <a href="pages/home/index.html" class="card" data-variant="home">
-          <div class="stack-md">
-            <div class="icon-box"><i class="ph ph-house-line"></i></div>
-            <div class="stack-xs">
-              <h3 class="text-h3">KYNAR Home</h3>
-              <p class="text-body" style="font-size: 0.9rem;">Educational bundles, chore management, and family activity packs.</p>
-            </div>
-            <div style="margin-top: auto;">
-              <span class="tag" data-variant="home">Family</span>
-            </div>
-          </div>
-        </a>
-
-      </div>
+          </a>
+  
+        </div>
 
       <div style="text-align: center; margin-top: var(--space-lg);">
         <a href="pages/account/index.html" class="btn-tertiary">
