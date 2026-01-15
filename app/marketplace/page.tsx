@@ -1,7 +1,22 @@
 import Navbar from '../../components/Navbar';
 import ProductCard from '../../components/ProductCard';
+import { supabase } from '../../lib/supabase';
 
-export default function Marketplace() {
+// This makes the page fetch fresh data every time it rebuilds
+export const revalidate = 0;
+
+export default async function Marketplace() {
+  
+  // 1. Ask the Database for the products
+  const { data: products, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('id', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching products:', error);
+  }
+
   return (
     <main className="min-h-screen bg-home-surface">
       <Navbar />
@@ -18,35 +33,25 @@ export default function Marketplace() {
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          {/* TEST PRODUCT 1 */}
-          <ProductCard 
-            title="The Daily Focus" 
-            category="Tools" 
-            price="12" 
-            summary="A clear, simple planner to organize your day without the noise."
-            image=""
-            slug="daily-focus"
-          />
+          {/* 2. Map over the Real Data */}
+          {products?.map((product) => (
+            <ProductCard 
+              key={product.id}
+              title={product.title} 
+              category={product.category} 
+              price={product.price} 
+              summary={product.summary}
+              image=""
+              slug={product.slug}
+            />
+          ))}
 
-          {/* TEST PRODUCT 2 */}
-          <ProductCard 
-            title="Calm Morning Routine" 
-            category="Life" 
-            price="8" 
-            summary="Guidance for starting your day with intention and quiet energy."
-            image=""
-            slug="calm-morning"
-          />
-
-          {/* TEST PRODUCT 3 */}
-          <ProductCard 
-            title="Family Meal Planner" 
-            category="Home" 
-            price="5" 
-            summary="Simple templates to make weekly meals easy and stress-free."
-            image=""
-            slug="meal-planner"
-          />
+          {/* Fallback if database is empty */}
+          {(!products || products.length === 0) && (
+            <p className="text-center text-gray-500 col-span-full">
+              Loading universe... (or no products found)
+            </p>
+          )}
 
         </div>
       </div>
