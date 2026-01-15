@@ -1,60 +1,56 @@
 import Link from 'next/link';
-import { Download } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
-// Section 5.5 Product Card Specs
 interface ProductCardProps {
   title: string;
-  category: 'Tools' | 'Life' | 'Home';
-  price: string;
+  category: string;
+  price: number;
   summary: string;
-  image: string; // We will use placeholders for now
   slug: string;
+  image?: string; // Optional for now
 }
 
 export default function ProductCard({ title, category, price, summary, slug }: ProductCardProps) {
   
-  // Section 5.1 Color Mapping
-  const categoryColors = {
-    Tools: 'bg-tools-base text-tools-accent',
-    Life: 'bg-life-base text-life-accent',
-    Home: 'bg-home-surface text-home-accent',
-  };
+  // Determine color based on category (Visual System Rule)
+  const isTools = category === 'Tools';
+  const isLife = category === 'Life';
+  
+  // Default to Home palette if not Tools/Life
+  const accentColor = isTools ? 'text-tools-accent' : isLife ? 'text-life-accent' : 'text-cat-home-accent';
+  const bgSurface = isTools ? 'bg-tools-surface' : isLife ? 'bg-life-surface' : 'bg-cat-home-surface';
 
   return (
-    <div className="group flex flex-col bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100">
+    <div className={`group relative flex flex-col h-full ${bgSurface} rounded-card p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg`}>
       
-      {/* 16:9 Image Placeholder */}
-      <div className={`h-48 w-full ${categoryColors[category]} flex items-center justify-center`}>
-        <span className="font-bold opacity-20 text-2xl">{category}</span>
-      </div>
-
-      <div className="p-4 flex flex-col flex-grow">
-        {/* Category Badge */}
-        <span className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
+      {/* 1. Category Badge */}
+      <div className="mb-4">
+        <span className={`text-xs font-bold tracking-wider uppercase ${accentColor} border border-current px-2 py-1 rounded-sm`}>
           {category}
         </span>
-
-        {/* Title */}
-        <h3 className="text-lg font-bold text-home-text mb-2 group-hover:text-signal-cyan transition-colors">
-          {title}
-        </h3>
-
-        {/* Summary */}
-        <p className="text-sm text-gray-500 font-serif line-clamp-2 mb-4 flex-grow">
-          {summary}
-        </p>
-
-        {/* Footer: Price + Button */}
-        <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
-          <span className="font-bold text-lg text-home-text">£{price}</span>
-          
-          <Link href={`/marketplace/product/${slug}`}>
-            <button className="bg-home-text text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-signal-cyan transition-colors">
-              Choose
-            </button>
-          </Link>
-        </div>
       </div>
+
+      {/* 2. Title */}
+      <h3 className="text-xl font-bold font-sans text-primary-text mb-2 group-hover:text-opacity-80">
+        {title}
+      </h3>
+
+      {/* 3. Summary (Truncated to 2 lines) */}
+      <p className="font-serif text-primary-text/70 text-sm leading-relaxed mb-6 flex-grow line-clamp-2">
+        {summary}
+      </p>
+
+      {/* 4. Footer: Price & Action */}
+      <div className="flex items-center justify-between mt-auto pt-4 border-t border-black/5">
+        <span className="text-lg font-bold font-sans text-primary-text">
+          £{price}
+        </span>
+        
+        <Link href={`/marketplace/${slug}`} className="inline-flex items-center text-sm font-medium text-primary-text hover:opacity-70 transition-opacity">
+          Choose <ArrowRight className="ml-1 w-4 h-4" />
+        </Link>
+      </div>
+
     </div>
   );
 }
