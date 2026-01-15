@@ -1,36 +1,96 @@
+"use client";
+
+import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, ShoppingBag } from 'lucide-react';
+import { Menu, X, ShoppingCart, User } from 'lucide-react';
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <nav className="w-full bg-home-base border-b border-white/20 px-4 py-4 sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto flex justify-between items-center">
-        
-        {/* Mobile Menu Icon */}
-        <button className="p-2 -ml-2 text-home-text hover:bg-white/20 rounded-md lg:hidden">
-          <Menu size={24} />
-        </button>
+    <nav className="sticky top-0 z-50 w-full bg-home-surface/90 backdrop-blur-sm border-b border-home-accent/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          
+          {/* LEFT: LOGO */}
+          <div className="flex-shrink-0">
+            <Link href="/" className="text-2xl font-bold font-sans text-primary-text tracking-tight">
+              KYNAR
+            </Link>
+          </div>
 
-        {/* Logo */}
-        <Link href="/" className="text-xl font-bold font-sans tracking-tight">
-          KYNAR UNIVERSE
-        </Link>
+          {/* CENTER: DESKTOP NAVIGATION (Hidden on Mobile) */}
+          <div className="hidden md:flex space-x-8 items-center">
+            <Link href="/" className="text-primary-text hover:text-home-accent font-medium transition-colors">
+              Home
+            </Link>
+            <Link href="/marketplace" className="text-primary-text hover:text-home-accent font-medium transition-colors">
+              Marketplace
+            </Link>
+            <Link href="/guides" className="text-primary-text hover:text-home-accent font-medium transition-colors">
+              Guides
+            </Link>
+          </div>
 
-        {/* Desktop Links */}
-        <div className="hidden lg:flex gap-8 font-sans font-medium">
-          <Link href="/" className="hover:text-signal-cyan transition-colors">Home</Link>
-          <Link href="/marketplace" className="hover:text-signal-cyan transition-colors">Marketplace</Link>
-          <Link href="/guides" className="hover:text-signal-cyan transition-colors">Guides</Link>
+          {/* RIGHT: ICONS (Cart & Menu) */}
+          <div className="flex items-center space-x-6">
+            
+            {/* Account Icon (Desktop Only) */}
+            <Link href="/account" className="hidden md:block text-primary-text hover:text-home-accent">
+              <User size={24} />
+            </Link>
+
+            {/* Cart Icon (Always Visible) */}
+            <Link href="/cart" className="text-primary-text hover:text-home-accent relative">
+              <ShoppingCart size={24} />
+              {/* Badge placeholder - logic can be added later */}
+              <span className="absolute -top-1 -right-1 bg-home-accent text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                0
+              </span>
+            </Link>
+
+            {/* Mobile Menu Button (Hamburger) */}
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="md:hidden text-primary-text hover:text-home-accent focus:outline-none"
+            >
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
-
-        {/* Cart Icon */}
-        <button className="p-2 -mr-2 text-home-text hover:bg-white/20 rounded-md relative">
-          <ShoppingBag size={24} />
-          <span className="absolute top-1 right-0 bg-signal-cyan text-white text-[10px] font-bold px-1.5 rounded-full">
-            0
-          </span>
-        </button>
       </div>
+
+      {/* MOBILE MENU DROPDOWN (Visible when isOpen is true) */}
+      {isOpen && (
+        <div className="md:hidden bg-home-surface border-t border-home-accent/20">
+          <div className="px-4 pt-2 pb-6 space-y-2">
+            <Link href="/" onClick={() => setIsOpen(false)} className="block py-3 text-lg font-medium text-primary-text border-b border-gray-100">
+              Home
+            </Link>
+            <Link href="/marketplace" onClick={() => setIsOpen(false)} className="block py-3 text-lg font-medium text-primary-text border-b border-gray-100">
+              Marketplace
+            </Link>
+            
+            {/* Indented Categories per Spec */}
+            <Link href="/marketplace?category=Tools" onClick={() => setIsOpen(false)} className="block pl-4 py-2 text-base text-gray-600 hover:text-tools-accent">
+              • Tools
+            </Link>
+            <Link href="/marketplace?category=Life" onClick={() => setIsOpen(false)} className="block pl-4 py-2 text-base text-gray-600 hover:text-life-accent">
+              • Life
+            </Link>
+            <Link href="/marketplace?category=Home" onClick={() => setIsOpen(false)} className="block pl-4 py-2 text-base text-gray-600 hover:text-cat-home-accent">
+              • Home
+            </Link>
+
+            <Link href="/guides" onClick={() => setIsOpen(false)} className="block py-3 text-lg font-medium text-primary-text border-b border-gray-100">
+              Guides
+            </Link>
+            <Link href="/account" onClick={() => setIsOpen(false)} className="block py-3 text-lg font-medium text-primary-text">
+              Account
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

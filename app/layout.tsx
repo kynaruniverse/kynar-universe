@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { Outfit, Lora } from "next/font/google";
+import Navbar from "../components/Navbar"; // IMPORT ADDED
 import "./globals.css";
 
-// 1. Configure "Outfit" (Primary UI Font)
 const outfit = Outfit({ 
   subsets: ["latin"],
   variable: "--font-outfit",
   display: "swap",
 });
 
-// 2. Configure "Lora" (Secondary Body Font)
 const lora = Lora({ 
   subsets: ["latin"],
   variable: "--font-lora", 
@@ -28,8 +27,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* Apply variables to body */}
       <body className={`${outfit.variable} ${lora.variable} antialiased bg-home-base text-primary-text`}>
+        <Navbar /> {/* COMPONENT ADDED HERE */}
         {children}
       </body>
     </html>
