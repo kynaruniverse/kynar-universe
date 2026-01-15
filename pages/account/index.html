@@ -32,7 +32,7 @@
           <h1 class="text-h1" style="color: var(--pal-account-blue);">Digital Vault</h1>
           <p class="text-body">Manage your licenses, downloads, and receipts.</p>
         </div>
-        <button onclick="logout()" class="btn-tertiary">
+        <button id="btn-logout" class="btn-tertiary">
           <i class="ph ph-sign-out"></i> Sign Out
         </button>
       </div>
@@ -41,21 +41,6 @@
     <section id="inventory-mount" class="animate-enter delay-1" style="margin-top: var(--space-xl);">
       <div class="skeleton card-skeleton" style="height: 100px; margin-bottom: 1rem;"></div>
       <div class="skeleton card-skeleton" style="height: 100px;"></div>
-    </section>
-
-    <section class="card stack-sm" style="margin-top: var(--space-section); border-style: dashed; opacity: 0.7;">
-      <h3 class="text-micro"><i class="ph ph-wrench"></i> Developer Tools</h3>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button onclick="simulatePurchase('python-automation-bundle')" class="btn-secondary" style="font-size: 0.8rem;">
-          + Add Tools Bundle
-        </button>
-        <button onclick="simulatePurchase('finance-tracker')" class="btn-secondary" style="font-size: 0.8rem;">
-          + Add Finance Tracker
-        </button>
-        <button onclick="clearInventory()" class="btn-tertiary" style="font-size: 0.8rem; color: var(--color-error);">
-          Clear All
-        </button>
-      </div>
     </section>
 
   </main>
@@ -67,96 +52,7 @@
   <script type="module" src="../../js/search.js"></script>
   <script type="module" src="../../js/footer.js"></script>
 
-  <script type="module">
-    import { getProductById } from '../../js/data.js';
+  <script type="module" src="../../js/pages/account.js"></script>
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadInventory();
-    });
-
-    function loadInventory() {
-      const mount = document.getElementById('inventory-mount');
-      
-      // 1. Get Inventory from LocalStorage
-      const inventory = JSON.parse(localStorage.getItem('kynar_inventory') || '[]');
-
-      // 2. Empty State
-      if (inventory.length === 0) {
-        mount.innerHTML = `
-          <div style="text-align: center; padding: 4rem 0; opacity: 0.6;">
-            <i class="ph ph-archive-box" style="font-size: 3rem; margin-bottom: var(--space-md);"></i>
-            <h2 class="text-h3">Vault Empty</h2>
-            <p class="text-body" style="margin-bottom: var(--space-md);">You haven't acquired any digital assets yet.</p>
-            <a href="../../index.html#departments" class="btn-primary">Browse Store</a>
-          </div>
-        `;
-        return;
-      }
-
-      // 3. Hydrate Data (Map IDs to Real Products)
-      const items = inventory.map(id => getProductById(id)).filter(item => item !== undefined);
-
-      // 4. Render Grid
-      mount.innerHTML = `
-        <div style="display: grid; gap: var(--space-md);">
-          ${items.map(item => `
-            <div class="card" style="padding: var(--space-md);">
-              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-                
-                <div style="display: flex; gap: var(--space-md); align-items: center;">
-                  <div class="icon-box" style="width: 48px; height: 48px;">
-                    <i class="ph ${item.previewIcon}"></i>
-                  </div>
-                  <div class="stack-xs">
-                    <h3 class="text-body" style="font-weight: 600;">${item.title}</h3>
-                    <span class="text-micro" style="opacity: 0.6;">
-                      ${item.category.toUpperCase()} • License Active
-                    </span>
-                  </div>
-                </div>
-
-                <div style="text-align: right; display: flex; gap: 8px;">
-                   <button class="btn-secondary" onclick="alert('Downloading ${item.title}...')">
-                     <i class="ph ph-download-simple"></i> Download
-                   </button>
-                   <a href="../product.html?id=${item.id}" class="btn-tertiary" aria-label="View Details">
-                     <i class="ph ph-arrow-right"></i>
-                   </a>
-                </div>
-
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    // EXPOSE FUNCTIONS TO WINDOW (For the Dev Tools Buttons)
-    window.simulatePurchase = function(id) {
-      const current = JSON.parse(localStorage.getItem('kynar_inventory') || '[]');
-      if (!current.includes(id)) {
-        current.push(id);
-        localStorage.setItem('kynar_inventory', JSON.stringify(current));
-        loadInventory(); // Reload UI
-        if(window.showToast) window.showToast(`Purchased: ${id}`, 'success');
-      } else {
-        if(window.showToast) window.showToast('Item already owned.');
-      }
-    };
-
-    window.clearInventory = function() {
-      localStorage.removeItem('kynar_inventory');
-      loadInventory();
-      if(window.showToast) window.showToast('Inventory Cleared.');
-    };
-
-    window.logout = function() {
-      // For now, just clear inventory to simulate logout
-      if(confirm('Disconnect from Universe?')) {
-        localStorage.clear();
-        window.location.href = '../../index.html';
-      }
-    };
-  </script>
 </body>
 </html>

@@ -1,36 +1,28 @@
 /* KYNAR HEADER ENGINE (js/header.js)
-   Injects the Glass Navigation Bar and handles Atmosphere Toggling.
-   Status: FINAL MASTER (Smart Auth Routing)
+   Status: SECURE (Verified Session Routing)
 */
+
+import { supabase } from './supabase.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   injectHeader();
 });
 
 function injectHeader() {
-  // 0. Locate the Mount Point (Defined in index.html)
   const headerMount = document.getElementById('app-header');
-  if (!headerMount) {
-    console.error('[Universe] Header mount point missing.');
-    return;
-  }
+  if (!headerMount) return;
 
-  // 1. Resolve Paths (Smart Navigation)
   const rootPath = resolveRootPath();
   const homeLink = `${rootPath}index.html`;
 
-  // 2. The Clean HTML
-  // We inject directly into the existing <header> tag
   headerMount.innerHTML = `
     <div class="container header-inner">
-      
       <a href="${homeLink}" class="header-logo" aria-label="Kynar Universe Home">
         <img src="${rootPath}assets/logo.svg" alt="Kynar Logo" style="height: 24px; width: auto;">
         <span style="font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em;">Kynar Universe</span>
       </a>
 
       <div class="header-actions">
-        
         <button id="btn-search-trigger" class="header-btn" aria-label="Search Universe">
           <i class="ph ph-magnifying-glass"></i>
         </button>
@@ -42,118 +34,82 @@ function injectHeader() {
         <button id="btn-account-trigger" class="header-btn" aria-label="Open Account">
           <i class="ph ph-user"></i>
         </button>
-
       </div>
-
     </div>
   `;
 
-  // 3. Attach Logic
-  
-  // Theme Toggle
+  // Logic Binding
   document.getElementById('theme-toggle').onclick = toggleTheme;
   
-  // Search Trigger
-  const searchBtn = document.getElementById('btn-search-trigger');
-  searchBtn.onclick = () => {
-    if (window.toggleSearch) {
-      window.toggleSearch();
-    } else {
-      console.warn('[Universe] Search module not ready.');
-    }
+  document.getElementById('btn-search-trigger').onclick = () => {
+    if (window.toggleSearch) window.toggleSearch();
   };
 
-  // Account Trigger (Smart Auth Check)
+  // SECURITY UPGRADE: Async Session Check
   const accountBtn = document.getElementById('btn-account-trigger');
-  accountBtn.onclick = () => {
-    handleAccountNavigation(rootPath);
+  accountBtn.onclick = async () => {
+    // Visual feedback while checking
+    const originalIcon = accountBtn.innerHTML;
+    accountBtn.innerHTML = '<i class="ph ph-spinner" style="animation: spin 1s linear infinite"></i>';
+    
+    try {
+      await handleAccountNavigation(rootPath);
+    } finally {
+      accountBtn.innerHTML = originalIcon;
+    }
   };
   
-  // 4. Initialize State
   updateThemeIcon();
 }
 
-/* HELPER: Smart Account Navigation 
-   Checks if user is logged in before deciding destination.
-*/
-function handleAccountNavigation(rootPath) {
-  // Check for session marker (set by auth.js)
-  // In a full production app, you might check supabase.auth.getSession() here too
-  const isLoggedIn = localStorage.getItem('kynar_session');
+/* HELPER: Secure Navigation Logic */
+async function handleAccountNavigation(rootPath) {
+  // 1. Verify Session with Server (No more localStorage spoofing)
+  const { data } = await supabase.auth.getSession();
 
-  if (isLoggedIn) {
+  if (data.session) {
     window.location.href = `${rootPath}pages/account/index.html`;
   } else {
     window.location.href = `${rootPath}pages/login.html`;
   }
 }
 
-/* HELPER: Toggle Atmosphere
-   Cycles: Light <-> Dark.
-   If user is in "Starwalker" (Secret) mode, clicking this returns them to reality (Dark).
-*/
+/* HELPER: Toggle Atmosphere */
 function toggleTheme() {
-  // Check if window.setTheme exists (from app.js)
   if (!window.setTheme) return;
-
   const current = document.documentElement.getAttribute('data-mode') || 'dark';
   let next = 'dark';
 
-  if (current === 'dark') {
-    next = 'light';
-  } else if (current === 'light') {
-    next = 'dark';
-  } else if (current === 'starwalker') {
-    // If in Secret Mode, exit back to standard Dark Mode
-    next = 'dark';
-  }
+  if (current === 'dark') next = 'light';
+  else if (current === 'light') next = 'dark';
+  else if (current === 'starwalker') next = 'dark';
   
   window.setTheme(next); 
   updateThemeIcon();
 }
 
-/* HELPER: Update Icon State
-   Handles Sun, Moon, and the Secret Starwalker Icon.
-*/
+/* HELPER: Update Icon State */
 function updateThemeIcon() {
   const icon = document.getElementById('theme-icon');
   if (!icon) return;
 
   const current = document.documentElement.getAttribute('data-mode') || 'dark';
-  
-  // Reset base class
   icon.className = 'ph';
 
-  if (current === 'light') {
-    icon.classList.add('ph-moon'); // Show Moon (to switch to Dark)
-  } else if (current === 'dark') {
-    icon.classList.add('ph-sun');  // Show Sun (to switch to Light)
-  } else if (current === 'starwalker') {
-    icon.classList.add('ph-star-four'); // Show Star (Secret State)
-    icon.style.color = 'var(--pal-star-gold)'; // Gold Tint
+  if (current === 'light') icon.classList.add('ph-moon');
+  else if (current === 'dark') icon.classList.add('ph-sun');
+  else if (current === 'starwalker') {
+    icon.classList.add('ph-star-four');
+    icon.style.color = 'var(--pal-star-gold)';
   } else {
-    // Fallback for Auto
     icon.classList.add('ph-sun');
   }
 }
 
-/* HELPER: Smart Path Resolution
-   Handles root (./), deep pages (../../), and shallow pages (../)
-*/
 function resolveRootPath() {
   const path = window.location.pathname;
-  
-  // 1. Root (index.html)
-  if (!path.includes('/pages/')) {
-    return './'; 
-  }
-  
-  // 2. Deep Category (pages/tools/index.html)
+  if (!path.includes('/pages/')) return './';
   const parts = path.split('/pages/')[1];
-  if (parts && parts.includes('/')) {
-    return '../../';
-  }
-  
-  // 3. Shallow Page (pages/legal.html)
+  if (parts && parts.includes('/')) return '../../';
   return '../';
 }
