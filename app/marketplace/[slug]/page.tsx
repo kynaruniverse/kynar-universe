@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Check, FileText, ArrowRight } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
+import AddToCartButton from '../../../components/AddToCartButton';
+
 
 // Force dynamic so we always get the latest price/details
 export const revalidate = 0;
@@ -104,10 +106,9 @@ export default async function ProductPage({ params }: { params: { slug: string }
             {product.summary}
           </p>
 
-          {/* CTA Button */}
-          <button className={`w-full py-4 ${bgAccent} text-white font-medium rounded-btn hover:opacity-90 transition-opacity mb-8 flex items-center justify-center`}>
-            Choose This Tool <ArrowRight className="ml-2 w-5 h-5" />
-          </button>
+          {/* SMART CTA BUTTON */}
+          <AddToCartButton product={product} />
+
 
           {/* Long Description (Rich Text) */}
           <div className="prose prose-blue max-w-none text-primary-text/80">
