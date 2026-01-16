@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { User, ArrowRight, Check, Loader2, AlertCircle, LogOut, Download } from 'lucide-react';
 // FIX: Import the modern client that can read Cookies
 import { createBrowserClient } from '@supabase/ssr';
-import { signInWithEmail } from './login';
+import { signInWithEmail } from './auth';
 
 export default function AccountPage() {
   // 1. INITIALIZE THE "SMART" CLIENT
