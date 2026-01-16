@@ -1,67 +1,151 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { User, ArrowRight, Check, Loader2, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { User, ArrowRight, Check, Loader2, AlertCircle, LogOut, Download } from 'lucide-react';
+import { supabase } from '../../lib/supabase'; // Using your existing helper
 import { signInWithEmail } from './actions';
 
 export default function AccountPage() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  // STATE: 
+  // 'checking' = asking Supabase if you are logged in
+  // 'authenticated' = yes, show Library
+  // 'guest' = no, show Login Form
+  const [viewState, setViewState] = useState<'checking' | 'authenticated' | 'guest'>('checking');
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  // LOGIN FORM STATES
+  const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  // 1. CHECK SESSION ON LOAD
+  useEffect(() => {
+    async function checkSession() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserEmail(user.email || 'Traveler');
+        setViewState('authenticated');
+      } else {
+        setViewState('guest');
+      }
+    }
+    checkSession();
+  }, []);
+
+  // 2. HANDLE LOGIN SUBMIT
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus('loading');
+    setFormStatus('loading');
     setErrorMessage('');
 
     const formData = new FormData(e.currentTarget);
     const result = await signInWithEmail(formData);
 
     if (result?.error) {
-      setStatus('error');
+      setFormStatus('error');
       setErrorMessage(result.error);
     } else {
-      setStatus('success');
+      setFormStatus('success');
     }
   }
 
+  // 3. HANDLE LOGOUT
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    setViewState('guest');
+    setUserEmail(null);
+  }
+
+  // LOADING SCREEN
+  if (viewState === 'checking') {
+    return (
+      <div className="min-h-screen bg-account-base flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-primary-text animate-spin" />
+      </div>
+    );
+  }
+
+  // ------------------------------------------------------------------
+  // VIEW A: THE LIBRARY (Logged In)
+  // ------------------------------------------------------------------
+  if (viewState === 'authenticated') {
+    return (
+      <main className="min-h-screen bg-account-base pb-24">
+        
+        {/* HEADER */}
+        <div className="bg-account-surface border-b border-black/5 px-4 py-8 md:py-12">
+          <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+              <h1 className="text-3xl font-bold font-sans text-primary-text">My Library</h1>
+              <p className="font-serif text-primary-text/60 italic mt-1">
+                Welcome back, {userEmail}
+              </p>
+            </div>
+            <button 
+              onClick={handleLogout}
+              className="px-6 py-2 border border-primary-text/20 rounded-btn hover:bg-white hover:text-red-600 transition-colors flex items-center text-sm font-medium"
+            >
+              <LogOut className="w-4 h-4 mr-2" /> Sign Out
+            </button>
+          </div>
+        </div>
+
+        {/* LIBRARY GRID */}
+        <div className="max-w-4xl mx-auto px-4 py-12">
+          
+          {/* EMPTY STATE (Since we haven't built the purchase history yet) */}
+          <div className="bg-white rounded-card p-12 text-center border border-black/5 shadow-sm">
+            <div className="w-16 h-16 bg-account-base rounded-full flex items-center justify-center mx-auto mb-6 text-primary-text/40">
+              <Download className="w-8 h-8" />
+            </div>
+            <h2 className="text-xl font-bold font-sans text-primary-text mb-2">Your collection is empty</h2>
+            <p className="text-primary-text/60 mb-8 max-w-sm mx-auto">
+              Once you purchase a tool or guide, it will appear here for instant download, forever.
+            </p>
+            <Link 
+              href="/marketplace" 
+              className="inline-flex items-center px-6 py-3 bg-primary-text text-white rounded-btn hover:opacity-90 transition-all"
+            >
+              Browse the Marketplace <ArrowRight className="ml-2 w-4 h-4" />
+            </Link>
+          </div>
+
+        </div>
+      </main>
+    );
+  }
+
+  // ------------------------------------------------------------------
+  // VIEW B: LOGIN FORM (Guest)
+  // ------------------------------------------------------------------
   return (
     <main className="min-h-screen bg-account-base flex flex-col items-center justify-center p-4">
-      
-      {/* CARD CONTAINER */}
       <div className="bg-account-surface w-full max-w-md p-8 rounded-card shadow-sm border border-black/5 text-center">
         
-        {/* ICON */}
         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 text-primary-text shadow-sm">
           <User className="w-8 h-8" />
         </div>
 
-        {/* LORE & WELCOME */}
         <h1 className="text-3xl font-bold font-sans text-primary-text mb-2 tracking-tight">
           Welcome back, traveler.
         </h1>
         
         <p className="font-serif text-primary-text/70 mb-8 leading-relaxed">
-          Your library awaits. Enter your email to access your tools and guides.
+          Your library awaits. Enter your email to access your tools.
         </p>
 
-        {/* SUCCESS STATE */}
-        {status === 'success' ? (
+        {formStatus === 'success' ? (
           <div className="bg-green-50 border border-green-200 rounded-btn p-6 animate-fade-in">
             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
               <Check className="w-6 h-6" />
             </div>
             <h3 className="font-bold text-primary-text mb-2">Magic Link Sent!</h3>
             <p className="text-sm text-primary-text/70">
-              Check your inbox. Click the link to instantly access your library.
-            </p>
-            <p className="text-xs text-primary-text/40 mt-4">
-              (You can close this tab)
+              Check your inbox. Click the link to enter your library.
             </p>
           </div>
         ) : (
-          /* LOGIN FORM */
-          <form onSubmit={handleSubmit} className="space-y-4 text-left">
+          <form onSubmit={handleLogin} className="space-y-4 text-left">
             <div>
               <label htmlFor="email" className="block text-sm font-bold text-primary-text mb-1">Email Address</label>
               <input 
@@ -74,8 +158,7 @@ export default function AccountPage() {
               />
             </div>
 
-            {/* ERROR MESSAGE */}
-            {status === 'error' && (
+            {formStatus === 'error' && (
               <div className="flex items-center text-sm text-red-600 bg-red-50 p-3 rounded-md">
                 <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
                 {errorMessage || "Something went wrong. Please try again."}
@@ -84,10 +167,10 @@ export default function AccountPage() {
             
             <button 
               type="submit"
-              disabled={status === 'loading'}
+              disabled={formStatus === 'loading'}
               className="w-full py-3 bg-primary-text text-white font-medium rounded-btn hover:opacity-90 transition-opacity flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {status === 'loading' ? (
+              {formStatus === 'loading' ? (
                 <>Sending <Loader2 className="ml-2 w-4 h-4 animate-spin" /></>
               ) : (
                 <>Send Access Link <ArrowRight className="ml-2 w-4 h-4" /></>
@@ -96,7 +179,6 @@ export default function AccountPage() {
           </form>
         )}
 
-        {/* FOOTER NUDGE */}
         <div className="mt-8 pt-8 border-t border-black/10">
           <p className="text-sm text-primary-text/60">
             Just browsing? <Link href="/marketplace" className="font-bold underline hover:text-primary-text">Return to the Marketplace</Link>.
