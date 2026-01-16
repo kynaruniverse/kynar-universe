@@ -109,7 +109,7 @@ export default function AccountPage() {
         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 text-primary-text shadow-sm">
           <User className="w-8 h-8" />
         </div>
-        <h1 className="text-3xl font-bold font-sans text-primary-text mb-2 tracking-tight">Welcome back.</h1>
+        <h1 className="text-3xl font-bold font-sans text-primary-text mb-2 tracking-tight">Welcome back 100.</h1>
         <p className="font-serif text-primary-text/70 mb-8 leading-relaxed">Enter your email to access your library.</p>
 
         {formStatus === 'success' ? (
