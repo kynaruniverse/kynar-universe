@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Check, FileText, Download } from 'lucide-react';
+import { ArrowLeft, Check, FileText } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 
 // Force dynamic so we always get the latest price/details
@@ -41,9 +41,21 @@ export default async function ProductPage({ params }: { params: { slug: string }
         
         {/* LEFT COLUMN: Image & Quick Info */}
         <div className="space-y-8">
-          {/* Placeholder Image (Gray Box for now) */}
-          <div className="aspect-video bg-gray-100 rounded-card flex items-center justify-center text-gray-400">
-            <span className="font-serif italic">Product Image</span>
+          
+          {/* PRODUCT IMAGE (Now Connected) */}
+          <div className="aspect-video bg-gray-100 rounded-card overflow-hidden relative shadow-sm">
+            {product.image ? (
+              <img 
+                src={product.image} 
+                alt={product.title} 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              /* Fallback if no image */
+              <div className={`w-full h-full flex items-center justify-center text-gray-400 opacity-20 ${bgAccent}`}>
+                <span className="font-serif italic">Product Image</span>
+              </div>
+            )}
           </div>
 
           <div className="bg-white p-6 rounded-card border border-gray-100 shadow-sm">
@@ -51,10 +63,9 @@ export default async function ProductPage({ params }: { params: { slug: string }
               <FileText className="w-5 h-5 mr-2 opacity-50" /> What's Included
             </h3>
             <ul className="space-y-3">
-              {/* Hardcoded for now - we will make this dynamic later */}
               <li className="flex items-start text-sm text-primary-text/80">
                 <Check className={`w-4 h-4 mr-2 mt-0.5 ${accentColor}`} />
-                Digital Download (ZIP)
+                Digital Download
               </li>
               <li className="flex items-start text-sm text-primary-text/80">
                 <Check className={`w-4 h-4 mr-2 mt-0.5 ${accentColor}`} />
@@ -102,7 +113,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
           <div className="prose prose-blue max-w-none text-primary-text/80">
             <h3 className="font-bold text-lg text-primary-text mb-2">About this tool</h3>
             <p className="whitespace-pre-wrap leading-relaxed">
-              {/* If no description in DB, show fallback */}
               {product.description || "A detailed description will appear here."}
             </p>
           </div>
