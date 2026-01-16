@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-// 1. Define what an "Item" looks like in the cart
 type CartItem = {
   id: number;
   title: string;
@@ -11,22 +10,21 @@ type CartItem = {
   image?: string;
 };
 
-// 2. Define what the "Brain" can do
 type CartContextType = {
   items: CartItem[];
   addToCart: (product: CartItem) => void;
   removeFromCart: (id: number) => void;
+  clearCart: () => void; // <--- NEW CAPABILITY
   totalPrice: number;
   cartCount: number;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// 3. The Provider (The Logic Engine)
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  // A. Load from Local Storage on startup (The Memory)
+  // Load from storage
   useEffect(() => {
     const savedCart = localStorage.getItem('kynar_cart');
     if (savedCart) {
@@ -34,37 +32,39 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // B. Save to Local Storage whenever items change
+  // Save to storage
   useEffect(() => {
     localStorage.setItem('kynar_cart', JSON.stringify(items));
   }, [items]);
 
-  // C. Add Function (Logic: Don't add duplicates)
   const addToCart = (product: CartItem) => {
     setItems((prev) => {
       const exists = prev.find((item) => item.id === product.id);
-      if (exists) return prev; // Already in cart
+      if (exists) return prev;
       return [...prev, product];
     });
   };
 
-  // D. Remove Function
   const removeFromCart = (id: number) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // E. Calculate Totals
+  // NEW: WIPE THE SLATE CLEAN
+  const clearCart = () => {
+    setItems([]);
+    localStorage.removeItem('kynar_cart');
+  };
+
   const totalPrice = items.reduce((sum, item) => sum + item.price, 0);
   const cartCount = items.length;
 
   return (
-    <CartContext.Provider value={{ items, addToCart, removeFromCart, totalPrice, cartCount }}>
+    <CartContext.Provider value={{ items, addToCart, removeFromCart, clearCart, totalPrice, cartCount }}>
       {children}
     </CartContext.Provider>
   );
 }
 
-// 4. Hook to use the cart anywhere
 export function useCart() {
   const context = useContext(CartContext);
   if (context === undefined) {

@@ -1,13 +1,40 @@
 "use client";
 
 import Link from 'next/link';
-import { ShoppingCart, ArrowRight, Trash2, Lock, ShieldCheck } from 'lucide-react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // For redirection
+import { ShoppingCart, ArrowRight, Trash2, Lock, ShieldCheck, Loader2 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { processCheckout } from './actions'; // Import the server action
 
 export default function CartPage() {
-  const { items, removeFromCart, totalPrice } = useCart();
+  const { items, removeFromCart, clearCart, totalPrice } = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const router = useRouter();
 
-  // MODE A: EMPTY CART (The visual we built before)
+  // HANDLE CHECKOUT CLICK
+  async function handleCheckout() {
+    setIsProcessing(true);
+
+    // 1. Get list of IDs/Slugs
+    const productSlugs = items.map(item => item.slug);
+
+    // 2. Call the Server Action
+    const result = await processCheckout(productSlugs);
+
+    if (result.error) {
+      // If error (likely not logged in), redirect to login
+      alert(result.error);
+      router.push('/account'); // Send them to login
+      setIsProcessing(false);
+    } else {
+      // 3. Success!
+      clearCart(); // Wipe the cart
+      router.push('/account'); // Send to Library to see new items
+    }
+  }
+
+  // MODE A: EMPTY CART
   if (items.length === 0) {
     return (
       <main className="min-h-screen bg-account-base flex flex-col items-center justify-center p-4">
@@ -98,12 +125,19 @@ export default function CartPage() {
                 <span>£{totalPrice}</span>
               </div>
 
-              {/* CHECKOUT BUTTON (Placeholder logic for now) */}
-              <button className="w-full py-4 bg-primary-text text-white font-medium rounded-btn hover:opacity-90 transition-all flex items-center justify-center shadow-md mb-4 group">
-                Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              {/* CHECKOUT BUTTON */}
+              <button 
+                onClick={handleCheckout}
+                disabled={isProcessing}
+                className="w-full py-4 bg-primary-text text-white font-medium rounded-btn hover:opacity-90 transition-all flex items-center justify-center shadow-md mb-4 group disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isProcessing ? (
+                  <>Processing <Loader2 className="ml-2 w-5 h-5 animate-spin" /></>
+                ) : (
+                  <>Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" /></>
+                )}
               </button>
 
-              {/* Trust Signals */}
               <div className="flex items-center justify-center space-x-4 text-xs text-primary-text/40">
                 <span className="flex items-center"><Lock size={12} className="mr-1" /> Secure Payment</span>
                 <span className="flex items-center"><ShieldCheck size={12} className="mr-1" /> Instant Access</span>
