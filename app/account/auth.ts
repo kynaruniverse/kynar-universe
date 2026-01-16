@@ -1,20 +1,45 @@
 'use server';
 
-import { createClient } from '@supabase/supabase-js';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
-// 1. SETUP CLIENT
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    auth: { flowType: 'pkce' }
-  }
-);
+// HELPER: Create a client that can actually SET COOKIES
+function createClient() {
+  const cookieStore = cookies();
 
-// 2. SIGN UP (Create Account)
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            // Handle cookie errors in server actions
+          }
+        },
+        remove(name: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value: '', ...options });
+          } catch (error) {
+            // Handle cookie errors
+          }
+        },
+      },
+    }
+  );
+}
+
+// 1. SIGN UP
 export async function signup(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
+  
+  const supabase = createClient();
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -25,10 +50,12 @@ export async function signup(formData: FormData) {
   return { success: true };
 }
 
-// 3. LOG IN (Existing Account)
+// 2. LOG IN
 export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
+
+  const supabase = createClient();
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
@@ -36,5 +63,7 @@ export async function login(formData: FormData) {
   });
 
   if (error) return { error: error.message };
+  
+  // SUCCESS: The cookies are now set automatically by the client above
   return { success: true };
 }
