@@ -2,7 +2,6 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// We create a server-side client to handle the login request safely
 export async function signInWithEmail(formData: FormData) {
   const email = formData.get('email') as string;
   
@@ -11,11 +10,15 @@ export async function signInWithEmail(formData: FormData) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
+  // FIX: Using your dynamic Vercel URL
+  // We will default to the Vercel URL you just created.
+  // REPLACE 'kynar-universe.vercel.app' WITH YOUR EXACT VERCEL DOMAIN IF DIFFERENT
+  const siteUrl = 'https://kynar-universe.vercel.app'; 
+
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      // This tells Supabase where to send the user after they click the email link
-      emailRedirectTo: 'https://kynar-universe.netlify.app/auth/callback',
+      emailRedirectTo: `${siteUrl}/auth/callback`,
     },
   });
 
