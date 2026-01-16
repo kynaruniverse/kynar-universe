@@ -10,7 +10,8 @@ interface ProductCardProps {
   image?: string; // Optional for now
 }
 
-export default function ProductCard({ title, category, price, summary, slug }: ProductCardProps) {
+// FIX 1: Added 'image' to the list of props here
+export default function ProductCard({ title, category, price, summary, slug, image }: ProductCardProps) {
   
   // Determine color based on category (Visual System Rule)
   const isTools = category === 'Tools';
@@ -21,8 +22,25 @@ export default function ProductCard({ title, category, price, summary, slug }: P
   const bgSurface = isTools ? 'bg-tools-surface' : isLife ? 'bg-life-surface' : 'bg-cat-home-surface';
 
   return (
+    // FIX 2: The Card Container starts HERE (This wraps everything)
     <div className={`group relative flex flex-col h-full ${bgSurface} rounded-card p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg`}>
       
+      {/* IMAGE AREA: Use DB image OR a calm visual fallback */}
+      <div className="w-full aspect-video mb-4 overflow-hidden rounded-md bg-gray-100 relative">
+        {image ? (
+          <img 
+            src={image} 
+            alt={title} 
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          /* FALLBACK VISUAL (Shows when no image is in DB) */
+          <div className={`w-full h-full flex items-center justify-center opacity-30 ${category === 'Tools' ? 'bg-tools-accent' : category === 'Life' ? 'bg-life-accent' : 'bg-cat-home-accent'}`}>
+             <span className="font-serif italic text-primary-text/50">Kynar Universe</span>
+          </div>
+        )}
+      </div>
+
       {/* 1. Category Badge */}
       <div className="mb-4">
         <span className={`text-xs font-bold tracking-wider uppercase ${accentColor} border border-current px-2 py-1 rounded-sm`}>

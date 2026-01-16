@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Lora } from "next/font/google";
-import Navbar from "../components/Navbar"; // IMPORT ADDED
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer"; // IMPORT ADDED
 import "./globals.css";
 
 const outfit = Outfit({ 
@@ -27,9 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${lora.variable} antialiased bg-home-base text-primary-text`}>
-        <Navbar /> {/* COMPONENT ADDED HERE */}
-        {children}
+      <body className={`${outfit.variable} ${lora.variable} antialiased bg-home-base text-primary-text flex flex-col min-h-screen`}>
+        <Navbar />
+        <div className="flex-grow">
+          {children}
+        </div>
+        <Footer /> {/* <--- Add this at the bottom */}
       </body>
     </html>
   );
