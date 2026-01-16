@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, ShoppingCart, User } from 'lucide-react';
+import { useCart } from '../context/CartContext'; // <--- 1. IMPORT THE BRAIN
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { cartCount } = useCart(); // <--- 2. CONNECT TO THE BRAIN
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-home-surface/90 backdrop-blur-sm border-b border-home-accent/20">
@@ -19,7 +21,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* CENTER: DESKTOP NAVIGATION (Hidden on Mobile) */}
+          {/* CENTER: DESKTOP NAVIGATION */}
           <div className="hidden md:flex space-x-8 items-center">
             <Link href="/" className="text-primary-text hover:text-home-accent font-medium transition-colors">
               Home
@@ -32,24 +34,27 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* RIGHT: ICONS (Cart & Menu) */}
+          {/* RIGHT: ICONS */}
           <div className="flex items-center space-x-6">
             
-            {/* Account Icon (Desktop Only) */}
+            {/* Account Icon (Desktop) */}
             <Link href="/account" className="hidden md:block text-primary-text hover:text-home-accent">
               <User size={24} />
             </Link>
 
-            {/* Cart Icon (Always Visible) */}
+            {/* Cart Icon (Dynamic) */}
             <Link href="/cart" className="text-primary-text hover:text-home-accent relative">
               <ShoppingCart size={24} />
-              {/* Badge placeholder - logic can be added later */}
-              <span className="absolute -top-1 -right-1 bg-home-accent text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                0
-              </span>
+              
+              {/* 3. SHOW REAL COUNT (Only if greater than 0) */}
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-home-accent text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center animate-pulse">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
-            {/* Mobile Menu Button (Hamburger) */}
+            {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsOpen(!isOpen)} 
               className="md:hidden text-primary-text hover:text-home-accent focus:outline-none"
@@ -60,7 +65,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MOBILE MENU DROPDOWN (Visible when isOpen is true) */}
+      {/* MOBILE MENU DROPDOWN */}
       {isOpen && (
         <div className="md:hidden bg-home-surface border-t border-home-accent/20">
           <div className="px-4 pt-2 pb-6 space-y-2">
@@ -71,7 +76,6 @@ export default function Navbar() {
               Marketplace
             </Link>
             
-            {/* Indented Categories per Spec */}
             <Link href="/marketplace?category=Tools" onClick={() => setIsOpen(false)} className="block pl-4 py-2 text-base text-gray-600 hover:text-tools-accent">
               • Tools
             </Link>
