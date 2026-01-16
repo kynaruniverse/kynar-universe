@@ -77,7 +77,7 @@ export default function AccountPage() {
           <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
               <h1 className="text-3xl font-bold font-sans text-primary-text">My Library</h1>
-              <p className="font-serif text-primary-text/60 italic mt-1">Welcome back, {userEmail}</p>
+              <p className="font-serif text-primary-text/60 italic mt-1">Welcome back 100, {userEmail}</p>
             </div>
             <button onClick={handleLogout} className="px-6 py-2 border border-primary-text/20 rounded-btn hover:bg-white hover:text-red-600 transition-colors flex items-center text-sm font-medium">
               <LogOut className="w-4 h-4 mr-2" /> Sign Out
