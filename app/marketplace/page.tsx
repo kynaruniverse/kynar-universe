@@ -53,7 +53,7 @@ export default async function Marketplace({ searchParams }: { searchParams: { ca
                 price={product.price} 
                 summary={product.summary}
                 slug={product.slug}
-                image="" // We will add images in Phase 3
+                image={product.image}
               />
             ))}
           </div>
