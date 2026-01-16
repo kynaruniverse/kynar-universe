@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Outfit, Lora } from "next/font/google";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer"; // IMPORT ADDED
+import Footer from "../components/Footer";
+import { CartProvider } from "../context/CartContext"; // <--- IMPORT ADDED
 import "./globals.css";
 
 const outfit = Outfit({ 
@@ -29,11 +30,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} ${lora.variable} antialiased bg-home-base text-primary-text flex flex-col min-h-screen`}>
-        <Navbar />
-        <div className="flex-grow">
-          {children}
-        </div>
-        <Footer /> {/* <--- Add this at the bottom */}
+        {/* WRAP EVERYTHING IN CART PROVIDER */}
+        <CartProvider>
+          <Navbar />
+          <div className="flex-grow">
+            {children}
+          </div>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
