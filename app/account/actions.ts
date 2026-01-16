@@ -7,11 +7,15 @@ export async function signInWithEmail(formData: FormData) {
   
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      auth: {
+        flowType: 'pkce', // <--- THIS FIXES THE HASH ISSUE
+      },
+    }
   );
 
-  // UNIVERSAL FIX: Hardcoded URL. 
-  // This MUST match your Netlify URL exactly.
+  // Hardcoded URL (Keep this matching your Netlify URL)
   const siteUrl = 'https://kynar-universe-v1.netlify.app';
 
   const { error } = await supabase.auth.signInWithOtp({

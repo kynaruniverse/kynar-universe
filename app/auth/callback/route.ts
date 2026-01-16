@@ -29,11 +29,12 @@ export async function GET(request: Request) {
     // Exchange the code for a session
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      // Success! Go to the account page
+      // Success! Go to account
       return NextResponse.redirect(`${origin}/account`);
     }
   }
 
-  // Error? Go to home
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+  // ERROR HANDLING:
+  // Instead of going to a 404 page, go back to Account with an error flag
+  return NextResponse.redirect(`${origin}/account?error=AuthFailed`);
 }
