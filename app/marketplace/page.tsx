@@ -1,4 +1,4 @@
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../lib/supabase'; // <--- Fixed "Import" to "import"
 import ProductCard from '../../components/ProductCard';
 import MarketplaceFilters from '../../components/MarketplaceFilters';
 
@@ -38,7 +38,7 @@ export default async function Marketplace({
     console.error('Error fetching products:', error);
   }
 
-  // --- DYNAMIC THEMING LOGIC (THIS WAS MISSING) ---
+  // --- DYNAMIC THEMING LOGIC ---
   let themeClass = "bg-home-base"; // Default Blue
   let headerClass = "border-home-accent/10";
   
@@ -55,7 +55,6 @@ export default async function Marketplace({
   // ------------------------------------------------
 
   return (
-    // USE THE DYNAMIC VARIABLE HERE:
     <main className={`min-h-screen ${themeClass} pb-24 transition-colors duration-700 ease-in-out`}>
       
       {/* HEADER SECTION */}
