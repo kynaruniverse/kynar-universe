@@ -1,95 +1,110 @@
-import { supabase } from '../../lib/supabase';
-import ProductCard from '../../components/ProductCard';
-import MarketplaceFilters from '../../components/MarketplaceFilters'; // <--- IMPORT NEW COMPONENT
+import { notFound } from 'next/navigation';
+import { supabase } from '../../../lib/supabase'; // <--- Note the triple dot (Goes up 3 levels)
+import Link from 'next/link';
+import { ArrowLeft, Check, ShieldCheck, Zap } from 'lucide-react';
+import { getDownloadLink } from '../../../app/account/actions'; // Reuse your download logic if needed
 
-// Force dynamic rendering so search works instantly
+// Force dynamic rendering
 export const revalidate = 0;
 
-export default async function Marketplace({ 
-  searchParams 
-}: { 
-  searchParams: { category?: string; search?: string } 
-}) {
+export default async function ProductPage({ params }: { params: { slug: string } }) {
   
-  // 1. Get filters from URL
-  const categoryFilter = searchParams?.category;
-  const searchFilter = searchParams?.search;
+  // 1. Fetch the specific product
+  const { data: product, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('slug', params.slug)
+    .single();
 
-  // 2. Build the query
-  // Start with base query
-  let query = supabase.from('products').select('*');
-
-  // 3. Apply Category Filter
-  if (categoryFilter && categoryFilter !== 'All') {
-    query = query.eq('category', categoryFilter);
-  }
-
-  // 4. Apply Search Filter (Case-insensitive title search)
-  if (searchFilter) {
-    query = query.ilike('title', `%${searchFilter}%`);
-  }
-
-  // 5. Default Sort (Newest First)
-  query = query.order('id', { ascending: false });
-
-  // 6. Fetch data
-  const { data: products, error } = await query;
-
-  if (error) {
-    console.error('Error fetching products:', error);
+  if (error || !product) {
+    notFound(); // Shows 404 page if product doesn't exist
   }
 
   return (
     <main className="min-h-screen bg-home-base pb-24">
       
-      {/* HEADER SECTION (Dynamic Visuals) */}
-      <div className="bg-home-surface px-4 py-16 text-center border-b border-home-accent/10 mb-8 transition-colors duration-500">
-        <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4 animate-fade-in">
-          {categoryFilter && categoryFilter !== 'All' ? `${categoryFilter}` : 'Marketplace'}
-        </h1>
-        <p className="text-xl font-serif italic text-primary-text/70 max-w-2xl mx-auto">
-          {categoryFilter === 'Tools' && "Clear tools for a brighter workflow."}
-          {categoryFilter === 'Life' && "Explore what helps you learn, grow, and feel inspired."}
-          {categoryFilter === 'Home' && "Warm, simple tools for families and daily comfort."}
-          {(!categoryFilter || categoryFilter === 'All') && "Explore what helps you work, live, and learn."}
-        </p>
+      {/* HEADER / BACK BUTTON */}
+      <div className="max-w-7xl mx-auto px-4 pt-8 mb-8">
+        <Link href="/marketplace" className="inline-flex items-center text-sm font-bold text-primary-text/60 hover:text-home-accent transition-colors">
+          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Marketplace
+        </Link>
       </div>
 
-      {/* MAIN CONTENT */}
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
         
-        {/* CONTROL CENTER (The new Filters) */}
-        <MarketplaceFilters />
-
-        {/* PRODUCT GRID */}
-        {products && products.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in-up">
-            {products.map((product) => (
-              <ProductCard 
-                key={product.id}
-                title={product.title} 
-                category={product.category} 
-                price={product.price} 
-                summary={product.summary}
-                slug={product.slug}
-                image={product.image}
-              />
-            ))}
+        {/* LEFT: IMAGE */}
+        <div className="bg-white p-2 rounded-card border border-black/5 shadow-sm h-fit">
+          <div className="aspect-video bg-gray-100 rounded-md overflow-hidden relative">
+            {product.image ? (
+              <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-primary-text/20 font-bold text-xl">
+                {product.title}
+              </div>
+            )}
+            {/* Category Badge */}
+            <span className="absolute top-4 left-4 px-3 py-1 bg-black/80 text-white text-xs font-bold uppercase tracking-wider rounded-sm backdrop-blur-md">
+              {product.category}
+            </span>
           </div>
-        ) : (
-          /* Empty State (Better UX) */
-          <div className="text-center py-20 bg-white/50 rounded-card border border-white/50">
-            <p className="text-2xl font-bold text-primary-text/40 mb-2">No matches found.</p>
-            <p className="text-primary-text/60 font-serif italic">
-              Try adjusting your search or switching categories.
+        </div>
+
+        {/* RIGHT: DETAILS */}
+        <div>
+          <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4 leading-tight">
+            {product.title}
+          </h1>
+          
+          <div className="flex items-center gap-4 mb-6 text-sm">
+            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full font-bold flex items-center">
+              <Zap className="w-3 h-3 mr-1" /> Instant Download
+            </span>
+            <span className="text-primary-text/60 font-serif italic">
+              Digital License
+            </span>
+          </div>
+
+          <div className="text-3xl font-bold text-primary-text mb-8">
+            £{product.price}
+          </div>
+
+          {/* ACTION BUTTONS */}
+          <div className="flex flex-col gap-4 mb-10">
+            {/* NOTE: This is where we will eventually link the "Add to Cart" logic.
+               For now, we link to the Cart page or simulated checkout.
+            */}
+            <button className="w-full py-4 bg-primary-text text-white font-bold rounded-btn hover:opacity-90 transition-all shadow-md text-lg">
+              Add to Basket
+            </button>
+            <p className="text-center text-xs text-primary-text/40 flex items-center justify-center">
+              <ShieldCheck className="w-3 h-3 mr-1" /> Secure checkout via Kynar Universe
             </p>
-            {/* Reset Button */}
-            <a href="/marketplace" className="inline-block mt-4 text-sm font-bold text-home-accent hover:underline">
-              Clear all filters
-            </a>
           </div>
-        )}
 
+          {/* DESCRIPTION */}
+          <div className="prose prose-lg text-primary-text/80 font-serif">
+            <h3 className="font-sans font-bold text-xl mb-4 text-primary-text">Overview</h3>
+            <p className="whitespace-pre-wrap leading-relaxed">
+              {product.description || product.summary}
+            </p>
+            
+            {/* "What's Included" - Mockup for visual spec */}
+            <div className="mt-8 p-6 bg-white rounded-card border border-black/5 not-prose">
+              <h4 className="font-sans font-bold text-sm uppercase tracking-wider text-primary-text/40 mb-4">Included in download</h4>
+              <ul className="space-y-3">
+                <li className="flex items-center text-primary-text">
+                  <Check className="w-5 h-5 text-green-500 mr-3" />
+                  <span className="font-medium">Main Product File ({product.format || 'PDF'})</span>
+                </li>
+                <li className="flex items-center text-primary-text">
+                  <Check className="w-5 h-5 text-green-500 mr-3" />
+                  <span className="font-medium">Lifetime Updates</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
       </div>
     </main>
   );
