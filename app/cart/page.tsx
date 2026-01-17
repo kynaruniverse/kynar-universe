@@ -13,6 +13,7 @@ export default function CartPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [hasConsented, setHasConsented] = useState(false); 
   const router = useRouter();
+  const dynamic = "force-dynamic";
 
   async function handleCheckout() {
     if (!hasConsented || isProcessing) return;
