@@ -8,13 +8,14 @@ type CartItem = {
   price: number;
   slug: string;
   image?: string;
+  category?: string; // Added category so we can use it for visual logic later if needed
 };
 
 type CartContextType = {
   items: CartItem[];
   addToCart: (product: CartItem) => void;
   removeFromCart: (id: number) => void;
-  clearCart: () => void; // <--- NEW CAPABILITY
+  clearCart: () => void;
   totalPrice: number;
   cartCount: number;
 };
@@ -23,22 +24,33 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false); // <--- THE SAFETY FLAG
 
-  // Load from storage
+  // 1. Load from storage (Only runs once on mount)
   useEffect(() => {
-    const savedCart = localStorage.getItem('kynar_cart');
-    if (savedCart) {
-      setItems(JSON.parse(savedCart));
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('kynar_cart');
+      if (savedCart) {
+        try {
+          setItems(JSON.parse(savedCart));
+        } catch (error) {
+          console.error("Failed to parse cart", error);
+        }
+      }
+      setIsInitialized(true); // <--- Now we are ready to save
     }
   }, []);
 
-  // Save to storage
+  // 2. Save to storage (Only runs if initialized)
   useEffect(() => {
-    localStorage.setItem('kynar_cart', JSON.stringify(items));
-  }, [items]);
+    if (isInitialized) {
+      localStorage.setItem('kynar_cart', JSON.stringify(items));
+    }
+  }, [items, isInitialized]);
 
   const addToCart = (product: CartItem) => {
     setItems((prev) => {
+      // Prevent duplicates based on ID
       const exists = prev.find((item) => item.id === product.id);
       if (exists) return prev;
       return [...prev, product];
@@ -49,13 +61,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // NEW: WIPE THE SLATE CLEAN
   const clearCart = () => {
     setItems([]);
-    localStorage.removeItem('kynar_cart');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('kynar_cart');
+    }
   };
 
-  const totalPrice = items.reduce((sum, item) => sum + item.price, 0);
+  // Calculate total safely
+  const totalPrice = items.reduce((sum, item) => sum + (item.price || 0), 0);
   const cartCount = items.length;
 
   return (
