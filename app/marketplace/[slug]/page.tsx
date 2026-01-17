@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
-import { supabase } from '../../../lib/supabase';
+import { supabase } from '../../../lib/supabase'; // Corrects the path depth
 import Link from 'next/link';
 import { ArrowLeft, Check, ShieldCheck, Zap } from 'lucide-react';
+import AddToCartButton from '../../../components/AddToCartButton'; // Import your actual cart button
 
 // Force dynamic rendering so we always get the latest product details
 export const revalidate = 0;
@@ -14,78 +15,101 @@ export default async function ProductPage({ params }: { params: { slug: string }
     .select('*')
     .eq('slug', params.slug)
     .single();
-  
+
   // 2. Handle missing products (404)
   if (error || !product) {
-    notFound();
+    notFound(); 
   }
+
+  // 3. Determine Theme Colors based on the product's category
+  const isTools = product.category === 'Tools';
+  const isLife = product.category === 'Life';
   
-  // DYNAMIC THEMING
-  let themeClass = "bg-home-base"; // Default
-  let headerClass = "border-home-accent/10";
-  let titleColor = "text-primary-text";
-  
-  if (categoryFilter === 'Tools') {
-    themeClass = "bg-tools-base";
-    headerClass = "border-tools-accent/20";
-  } else if (categoryFilter === 'Life') {
-    themeClass = "bg-life-base";
-    headerClass = "border-life-accent/20";
-  } else if (categoryFilter === 'Home') {
-    themeClass = "bg-cat-home-base";
-    headerClass = "border-cat-home-accent/20";
-  }
-  
+  // Default to Home if not Tools/Life
+  const themeClass = isTools ? 'bg-tools-base' : isLife ? 'bg-life-base' : 'bg-cat-home-base';
+  const accentText = isTools ? 'text-tools-accent' : isLife ? 'text-life-accent' : 'text-cat-home-accent';
+
   return (
-    <main className={`min-h-screen ${themeClass} pb-24 transition-colors duration-700 ease-in-out`}>
+    <main className={`min-h-screen ${themeClass} pb-24 transition-colors duration-700`}>
       
-      {/* HEADER SECTION */}
-      <div className={`bg-white/50 backdrop-blur-sm px-4 py-16 text-center border-b ${headerClass} mb-8 transition-all duration-700`}>
-        <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4 animate-fade-in">
-          {categoryFilter && categoryFilter !== 'All' ? `${categoryFilter}` : 'Marketplace'}
-        </h1>
-        <p className="text-xl font-serif italic text-primary-text/70 max-w-2xl mx-auto animate-fade-in-up">
-          {(!categoryFilter || categoryFilter === 'All') && "Explore what helps you work, live, and learn."}
-          {categoryFilter === 'Tools' && "Clear tools for a brighter workflow."}
-          {categoryFilter === 'Life' && "Explore what helps you learn, grow, and feel inspired."}
-          {categoryFilter === 'Home' && "Warm, simple tools for families and daily comfort."}
-        </p>
+      {/* HEADER / BACK BUTTON */}
+      <div className="max-w-7xl mx-auto px-4 pt-8 mb-8">
+        <Link href="/marketplace" className="inline-flex items-center text-sm font-bold text-primary-text/60 hover:text-primary-text transition-colors">
+          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Marketplace
+        </Link>
       </div>
 
-      {/* MAIN CONTENT */}
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
         
-        {/* FILTERS */}
-        <MarketplaceFilters />
-
-        {/* PRODUCT GRID */}
-        {products && products.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in-up">
-            {products.map((product) => (
-              <ProductCard 
-                key={product.id}
-                title={product.title} 
-                category={product.category} 
-                price={product.price} 
-                summary={product.summary}
-                slug={product.slug}
-                image={product.image}
-              />
-            ))}
+        {/* LEFT: IMAGE */}
+        <div className="bg-white p-2 rounded-card border border-black/5 shadow-sm h-fit">
+          <div className="aspect-video bg-gray-100 rounded-md overflow-hidden relative">
+            {product.image ? (
+              <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
+            ) : (
+              <div className={`w-full h-full flex items-center justify-center bg-gray-50 text-primary-text/20 font-bold text-xl`}>
+                {product.title}
+              </div>
+            )}
+            {/* Category Badge */}
+            <span className="absolute top-4 left-4 px-3 py-1 bg-black/80 text-white text-xs font-bold uppercase tracking-wider rounded-sm backdrop-blur-md">
+              {product.category}
+            </span>
           </div>
-        ) : (
-          /* Empty State */
-          <div className="text-center py-20 bg-white/60 rounded-card border border-white/20 shadow-sm backdrop-blur-md">
-            <p className="text-2xl font-bold text-primary-text/40 mb-2">No matches found.</p>
-            <p className="text-primary-text/60 font-serif italic">
-              Try adjusting your search or switching categories.
+        </div>
+
+        {/* RIGHT: DETAILS */}
+        <div>
+          <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4 leading-tight">
+            {product.title}
+          </h1>
+          
+          <div className="flex items-center gap-4 mb-6 text-sm">
+            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full font-bold flex items-center">
+              <Zap className="w-3 h-3 mr-1" /> Instant Download
+            </span>
+            <span className="text-primary-text/60 font-serif italic">
+              Digital License
+            </span>
+          </div>
+
+          <div className="text-3xl font-bold text-primary-text mb-8">
+            £{product.price}
+          </div>
+
+          {/* ACTION BUTTONS */}
+          <div className="mb-10">
+             {/* This connects to your Context/Cart system */}
+             <AddToCartButton product={product} />
+             
+             <p className="mt-4 text-center text-xs text-primary-text/40 flex items-center justify-center">
+              <ShieldCheck className="w-3 h-3 mr-1" /> Secure checkout via Kynar Universe
             </p>
-            <a href="/marketplace" className="inline-block mt-4 text-sm font-bold text-primary-text/80 hover:underline">
-              Clear all filters
-            </a>
           </div>
-        )}
 
+          {/* DESCRIPTION */}
+          <div className="prose prose-lg text-primary-text/80 font-serif">
+            <h3 className="font-sans font-bold text-xl mb-4 text-primary-text">Overview</h3>
+            <p className="whitespace-pre-wrap leading-relaxed">
+              {product.description || product.summary}
+            </p>
+            
+            <div className="mt-8 p-6 bg-white rounded-card border border-black/5 not-prose">
+              <h4 className="font-sans font-bold text-sm uppercase tracking-wider text-primary-text/40 mb-4">Included in download</h4>
+              <ul className="space-y-3">
+                <li className="flex items-center text-primary-text">
+                  <Check className={`w-5 h-5 ${accentText} mr-3`} />
+                  <span className="font-medium">Main Product File ({product.format || 'PDF'})</span>
+                </li>
+                <li className="flex items-center text-primary-text">
+                  <Check className={`w-5 h-5 ${accentText} mr-3`} />
+                  <span className="font-medium">Lifetime Updates</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
       </div>
     </main>
   );
