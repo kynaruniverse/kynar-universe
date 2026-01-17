@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 
 type CartItem = {
   id: number;
@@ -8,72 +8,107 @@ type CartItem = {
   price: number;
   slug: string;
   image?: string;
-  category?: string; // Added category so we can use it for visual logic later if needed
+  category?: string;
+  quantity: number;
 };
 
 type CartContextType = {
-  items: CartItem[];
-  addToCart: (product: CartItem) => void;
+  cartItems: CartItem[];
+  addToCart: (product: Omit<CartItem, 'quantity'>) => void;
   removeFromCart: (id: number) => void;
+  updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
-  totalPrice: number;
+  cartTotal: number;
   cartCount: number;
+  showSuccess: boolean;
+  setShowSuccess: (show: boolean) => void;
+  lastAddedItem: string;
+  isInitialized: boolean;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [isInitialized, setIsInitialized] = useState(false); // <--- THE SAFETY FLAG
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [lastAddedItem, setLastAddedItem] = useState("");
 
-  // 1. Load from storage (Only runs once on mount)
+  // 1. INITIALIZE FROM LOCAL STORAGE (Mobile Safe)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedCart = localStorage.getItem('kynar_cart');
-      if (savedCart) {
-        try {
-          setItems(JSON.parse(savedCart));
-        } catch (error) {
-          console.error("Failed to parse cart", error);
-        }
+    const savedCart = localStorage.getItem('kynar_cart');
+    if (savedCart) {
+      try {
+        setCartItems(JSON.parse(savedCart));
+      } catch (e) {
+        console.error("Cart sync error");
       }
-      setIsInitialized(true); // <--- Now we are ready to save
     }
+    setIsInitialized(true);
   }, []);
 
-  // 2. Save to storage (Only runs if initialized)
+  // 2. PERSIST CHANGES
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem('kynar_cart', JSON.stringify(items));
+      localStorage.setItem('kynar_cart', JSON.stringify(cartItems));
     }
-  }, [items, isInitialized]);
+  }, [cartItems, isInitialized]);
 
-  const addToCart = (product: CartItem) => {
-    setItems((prev) => {
-      // Prevent duplicates based on ID
+  const addToCart = (product: Omit<CartItem, 'quantity'>) => {
+    setCartItems((prev) => {
       const exists = prev.find((item) => item.id === product.id);
-      if (exists) return prev;
-      return [...prev, product];
+      if (exists) {
+        return prev.map((item) => 
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
     });
+
+    // KINETIC FEEDBACK
+    setLastAddedItem(product.title);
+    setShowSuccess(false); // Reset first for "double tap" feedback
+    setTimeout(() => setShowSuccess(true), 10);
+  };
+
+  const updateQuantity = (id: number, quantity: number) => {
+    setCartItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item))
+          .filter(item => item.quantity > 0)
+    );
   };
 
   const removeFromCart = (id: number) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   const clearCart = () => {
-    setItems([]);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('kynar_cart');
-    }
+    setCartItems([]);
   };
 
-  // Calculate total safely
-  const totalPrice = items.reduce((sum, item) => sum + (item.price || 0), 0);
-  const cartCount = items.length;
+  // PERFORMANCE: Only re-calculate when items change
+  const cartTotal = useMemo(() => 
+    cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0), 
+  [cartItems]);
+
+  const cartCount = useMemo(() => 
+    cartItems.reduce((sum, item) => sum + item.quantity, 0), 
+  [cartItems]);
 
   return (
-    <CartContext.Provider value={{ items, addToCart, removeFromCart, clearCart, totalPrice, cartCount }}>
+    <CartContext.Provider value={{ 
+      cartItems, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity,
+      clearCart, 
+      cartTotal, 
+      cartCount,
+      showSuccess,
+      setShowSuccess,
+      lastAddedItem,
+      isInitialized
+    }}>
       {children}
     </CartContext.Provider>
   );
@@ -81,8 +116,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
   const context = useContext(CartContext);
-  if (context === undefined) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
+  if (context === undefined) throw new Error('useCart error');
   return context;
 }

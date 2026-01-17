@@ -1,39 +1,89 @@
-import Link from 'next/link';
-import { Home, ArrowLeft } from 'lucide-react';
+"use client";
+import React, { useRef } from "react";
+import { motion } from "framer-motion";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Sphere, MeshDistortMaterial, Float, Stars } from "@react-three/drei";
+import Link from "next/link";
+import * as THREE from "three";
+
+function BlackHole() {
+  const meshRef = useRef<THREE.Mesh>(null!);
+  
+  useFrame((state) => {
+    // Rotation adds to the "Swirling Void" effect
+    meshRef.current.rotation.z = state.clock.getElapsedTime() * 0.3;
+  });
+
+  return (
+    <Float speed={3} rotationIntensity={1} floatIntensity={2}>
+      {/* Reduced segments for mobile performance: 64x64 is the sweet spot */}
+      <Sphere ref={meshRef} args={[1, 64, 64]} scale={1.8}>
+        <MeshDistortMaterial
+          color="#050505" 
+          speed={4}
+          distort={0.6} 
+          radius={1}
+          metalness={1}
+          roughness={0.1}
+        />
+      </Sphere>
+    </Float>
+  );
+}
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-home-base flex flex-col items-center justify-center p-4 text-center">
+    <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#050505]">
       
-      {/* Visual Icon */}
-      <div className="w-24 h-24 bg-white/50 rounded-full flex items-center justify-center mb-8 animate-pulse">
-        <span className="text-4xl">🔭</span>
+      {/* 1. COSMIC BACKGROUND */}
+      <div className="absolute inset-0 z-0">
+        <Canvas 
+          camera={{ position: [0, 0, 5], fov: 75 }}
+          dpr={[1, 2]} // High-res on mobile retina screens
+        >
+          <ambientLight intensity={0.1} />
+          {/* Intense Rim Lighting to define the black hole shape */}
+          <pointLight position={[5, 5, 5]} intensity={3} color="#8FB7FF" />
+          <pointLight position={[-5, -5, 5]} intensity={2} color="#A88BFF" />
+          
+          <Stars 
+            radius={100} 
+            depth={50} 
+            count={2500} // Reduced count for mobile smoothness
+            factor={4} 
+            saturation={0} 
+            fade 
+            speed={0.5} 
+          />
+          <BlackHole />
+        </Canvas>
       </div>
 
-      <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4">
-        Drifting in space.
-      </h1>
-      
-      <p className="text-xl font-serif text-primary-text/70 italic max-w-md mx-auto mb-10 leading-relaxed">
-        The page you are looking for has moved or doesn't exist. Let's get you back to solid ground.
-      </p>
+      {/* 2. GLASS CONTENT CARD */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+        className="relative z-10 max-w-lg w-[88%] p-10 md:p-12 text-center rounded-[40px] bg-white/5 backdrop-blur-3xl border border-white/10 shadow-2xl will-change-transform"
+      >
+        <h1 className="text-7xl md:text-9xl font-bold font-sans text-white tracking-tighter mb-2 opacity-10">
+          404
+        </h1>
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">
+          Lost in the Void
+        </h2>
+        <p className="font-serif text-base md:text-lg text-white/50 italic leading-relaxed mb-10 px-4">
+          You have drifted beyond the charted sectors of our universe. 
+          Gravity is pulling you back to safety.
+        </p>
 
-      <div className="flex flex-col md:flex-row gap-4">
         <Link 
-          href="/" 
-          className="inline-flex items-center px-8 py-4 bg-home-accent text-white rounded-btn font-medium hover:opacity-90 transition-all shadow-md"
+          href="/"
+          className="inline-block px-10 py-4 bg-white text-black rounded-full font-bold shadow-xl hover:scale-105 active:scale-95 transition-all duration-300"
         >
-          <Home className="mr-2 w-5 h-5" /> Return Home
+          Return to Universe
         </Link>
-        
-        <Link 
-          href="/marketplace" 
-          className="inline-flex items-center px-8 py-4 bg-white text-primary-text rounded-btn font-medium border border-primary-text/10 hover:bg-gray-50 transition-all"
-        >
-          <ArrowLeft className="mr-2 w-5 h-5" /> Back to Marketplace
-        </Link>
-      </div>
-
-    </div>
+      </motion.div>
+    </main>
   );
 }

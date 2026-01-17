@@ -5,6 +5,8 @@ import { cookies } from 'next/headers';
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
+  // Dynamic redirect: allows users to log in and return to their Cart or Product
+  const next = searchParams.get('next') ?? '/account';
 
   if (code) {
     const cookieStore = cookies();
@@ -17,24 +19,34 @@ export async function GET(request: Request) {
             return cookieStore.get(name)?.value;
           },
           set(name: string, value: string, options: CookieOptions) {
-            cookieStore.set(name, value, options);
+            // Defensive set for mobile browser compatibility
+            try {
+              cookieStore.set({ name, value, ...options });
+            } catch (error) {
+              // Handle edge cases where cookies cannot be set in GET routes
+            }
           },
           remove(name: string, options: CookieOptions) {
-            cookieStore.delete({ name, ...options });
+            try {
+              cookieStore.delete({ name, ...options });
+            } catch (error) {
+              // Handle edge cases
+            }
           },
         },
       }
     );
     
-    // Exchange the code for a session
+    // Exchange the code for a permanent session
     const { error } = await supabase.auth.exchangeCodeForSession(code);
+    
     if (!error) {
-      // Success! Go to account
-      return NextResponse.redirect(`${origin}/account`);
+      // SUCCESS: The user is now part of the Universe
+      // We use absolute URLs for mobile redirect stability
+      return NextResponse.redirect(`${origin}${next}`);
     }
   }
 
-  // ERROR HANDLING:
-  // Instead of going to a 404 page, go back to Account with an error flag
-  return NextResponse.redirect(`${origin}/account?error=AuthFailed`);
+  // ERROR: Return to login with a kinetic error flag for the UI to handle
+  return NextResponse.redirect(`${origin}/account?error=Authentication_Failed`);
 }

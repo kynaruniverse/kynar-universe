@@ -1,8 +1,9 @@
 "use client";
 
-import { useCart } from '../context/CartContext';
-import { ArrowRight, Check } from 'lucide-react';
 import { useState } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
+import { Check, ShoppingBag } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 type Product = {
   id: number;
@@ -17,33 +18,65 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const { addToCart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
 
-  // Determine colors based on category
+  // Category-specific color mapping
   const isTools = product.category === 'Tools';
   const isLife = product.category === 'Life';
-  const bgAccent = isTools ? 'bg-tools-accent' : isLife ? 'bg-life-accent' : 'bg-cat-home-accent';
+  
+  const bgAccent = isTools 
+    ? 'bg-tools-accent' 
+    : isLife 
+    ? 'bg-life-accent' 
+    : 'bg-cat-home-accent';
 
   const handleAdd = () => {
+    if (isAdded) return;
+    
     addToCart(product);
     setIsAdded(true);
-    // Reset the "Added" text after 2 seconds
+    
+    // Reset state after a short delay
     setTimeout(() => setIsAdded(false), 2000);
   };
 
   return (
-    <button 
+    <motion.button 
+      layout
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.96 }}
       onClick={handleAdd}
-      disabled={isAdded}
-      className={`w-full py-4 ${isAdded ? 'bg-green-600' : bgAccent} text-white font-medium rounded-btn hover:opacity-90 transition-all mb-8 flex items-center justify-center disabled:cursor-default`}
+      className={`
+        relative w-full py-4 px-6 mb-8
+        flex items-center justify-center gap-3
+        rounded-btn font-bold tracking-tight
+        transition-colors duration-300 shadow-glass
+        ${isAdded ? 'bg-primary-text text-white' : `${bgAccent} text-primary-text md:text-white`}
+      `}
     >
-      {isAdded ? (
-        <>
-          Added to Basket <Check className="ml-2 w-5 h-5" />
-        </>
-      ) : (
-        <>
-          Choose <ArrowRight className="ml-2 w-5 h-5" />
-        </>
-      )}
-    </button>
+      <AnimatePresence mode="wait">
+        {isAdded ? (
+          <motion.div
+            key="added"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="flex items-center gap-2"
+          >
+            <Check size={18} strokeWidth={3} />
+            <span>In Universe</span>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="idle"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="flex items-center gap-2"
+          >
+            <ShoppingBag size={18} />
+            <span>Choose</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
   );
 }

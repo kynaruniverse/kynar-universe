@@ -2,8 +2,12 @@
 
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
-// HELPER: Create a client that can actually SET COOKIES
+/**
+ * HELPER: Secure Server-Side Client
+ * Handles the cookie exchange between the Kynar Universe and Supabase.
+ */
 function createClient() {
   const cookieStore = cookies();
 
@@ -19,14 +23,14 @@ function createClient() {
           try {
             cookieStore.set({ name, value, ...options });
           } catch (error) {
-            // Handle cookie errors in server actions
+            // Handled by middleware in most SSR cases
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options });
           } catch (error) {
-            // Handle cookie errors
+            // Handled by middleware
           }
         },
       },
@@ -34,7 +38,7 @@ function createClient() {
   );
 }
 
-// 1. SIGN UP
+// 1. ESTABLISH PRESENCE (SIGN UP)
 export async function signup(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -44,13 +48,20 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+    },
   });
 
-  if (error) return { error: error.message };
-  return { success: true };
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath('/', 'layout');
+  return { success: "Verification signal sent. Please check your origin email." };
 }
 
-// 2. LOG IN
+// 2. VERIFY IDENTITY (LOG IN)
 export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -62,8 +73,12 @@ export async function login(formData: FormData) {
     password,
   });
 
-  if (error) return { error: error.message };
+  if (error) {
+    return { error: "Identity verification failed. Please check your credentials." };
+  }
   
-  // SUCCESS: The cookies are now set automatically by the client above
+  // Clear the cache to show logged-in state across the site
+  revalidatePath('/', 'layout');
+  
   return { success: true };
 }

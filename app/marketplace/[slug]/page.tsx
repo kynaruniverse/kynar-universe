@@ -1,122 +1,134 @@
+"use client"; // We turn this to client-side to handle the high-end motion transitions
 import { notFound } from 'next/navigation';
-import { supabase } from '../../../lib/supabase'; // Corrects the path depth
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Check, ShieldCheck, Zap } from 'lucide-react';
-import AddToCartButton from '../../../components/AddToCartButton'; // Import your actual cart button
+import { supabase } from '../../../lib/supabase';
+import AddToCartButton from '../../../components/AddToCartButton';
+import { useEffect, useState } from 'react';
 
-// Force dynamic rendering so we always get the latest product details
-export const revalidate = 0;
+export default function ProductPage({ params }: { params: { slug: string } }) {
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
-  
-  // 1. Fetch the specific product from Supabase
-  const { data: product, error } = await supabase
-    .from('products')
-    .select('*')
-    .eq('slug', params.slug)
-    .single();
+  useEffect(() => {
+    async function getProduct() {
+      const { data } = await supabase
+        .from('products')
+        .select('*')
+        .eq('slug', params.slug)
+        .single();
+      
+      if (!data) return notFound();
+      setProduct(data);
+      setLoading(false);
+    }
+    getProduct();
+  }, [params.slug]);
 
-  // 2. Handle missing products (404)
-  if (error || !product) {
-    notFound(); 
-  }
+  if (loading) return null; // Let the PageLoader handle this
 
-  // 3. Determine Theme Colors based on the product's category
   const isTools = product.category === 'Tools';
   const isLife = product.category === 'Life';
-  
-  // Default to Home if not Tools/Life
   const themeClass = isTools ? 'bg-tools-base' : isLife ? 'bg-life-base' : 'bg-cat-home-base';
   const accentText = isTools ? 'text-tools-accent' : isLife ? 'text-life-accent' : 'text-cat-home-accent';
 
   return (
-    <main className={`min-h-screen ${themeClass} pb-24 transition-colors duration-700`}>
+    <main className={`min-h-screen ${themeClass} pb-32 transition-colors duration-1000 ease-in-out`}>
       
-      {/* HEADER / BACK BUTTON */}
-      <div className="max-w-7xl mx-auto px-4 pt-8 mb-8">
-        <nav className="flex items-center space-x-2 text-sm font-sans text-primary-text/50 mb-4">
-          <Link href="/" className="hover:text-primary-text transition-colors">Home</Link>
-          <span className="text-primary-text/30">&gt;</span>
+      {/* 1. NAVIGATION BREADCRUMBS */}
+      <div className="max-w-7xl mx-auto px-6 pt-12 mb-8">
+        <nav className="flex items-center space-x-2 text-[10px] uppercase font-bold tracking-widest text-primary-text/30 mb-6">
           <Link href="/marketplace" className="hover:text-primary-text transition-colors">Marketplace</Link>
-          <span className="text-primary-text/30">&gt;</span>
-          <span className="text-primary-text font-medium">{product.category}</span>
+          <span>/</span>
+          <span className={accentText}>{product.category}</span>
         </nav>
         
-        <Link href="/marketplace" className="inline-flex items-center text-sm font-bold text-primary-text/60 hover:text-primary-text transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Marketplace
+        <Link href="/marketplace" className="group inline-flex items-center text-sm font-bold text-primary-text/60 hover:text-primary-text transition-colors">
+          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> 
+          Back to Universe
         </Link>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
         
-        {/* LEFT: IMAGE */}
-        <div className="bg-white p-2 rounded-card border border-black/5 shadow-sm h-fit">
-          <div className="aspect-video bg-gray-100 rounded-md overflow-hidden relative">
-            {product.image ? (
-              <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
-            ) : (
-              <div className={`w-full h-full flex items-center justify-center bg-gray-50 text-primary-text/20 font-bold text-xl`}>
-                {product.title}
+        {/* 2. IMAGE SECTOR (The "Flying" Image) */}
+        <div className="relative group">
+          <motion.div 
+            layoutId={`card-${product.slug}`}
+            className="bg-white/40 backdrop-blur-2xl p-3 rounded-[40px] border border-white/40 shadow-glass"
+          >
+            <div className="aspect-square md:aspect-video rounded-[32px] overflow-hidden relative shadow-inner bg-gray-50">
+              <motion.img 
+                layoutId={`image-${product.slug}`}
+                src={product.image} 
+                alt={product.title} 
+                className="w-full h-full object-cover"
+                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+              />
+              <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl text-[10px] font-black uppercase tracking-tighter text-primary-text shadow-sm">
+                {product.category}
               </div>
-            )}
-            {/* Category Badge */}
-            <span className="absolute top-4 left-4 px-3 py-1 bg-black/80 text-white text-xs font-bold uppercase tracking-wider rounded-sm backdrop-blur-md">
-              {product.category}
-            </span>
-          </div>
+            </div>
+          </motion.div>
+          {/* Subtle glow behind image */}
+          <div className={`absolute -inset-4 z-[-1] opacity-20 blur-3xl rounded-[60px] ${isTools ? 'bg-tools-accent' : isLife ? 'bg-life-accent' : 'bg-cat-home-accent'}`} />
         </div>
 
-        {/* RIGHT: DETAILS */}
-        <div>
-          <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4 leading-tight">
-            {product.title}
-          </h1>
-          
-          <div className="flex items-center gap-4 mb-6 text-sm">
-            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full font-bold flex items-center">
-              <Zap className="w-3 h-3 mr-1" /> Instant Download
-            </span>
-            <span className="text-primary-text/60 font-serif italic">
-              Digital License
-            </span>
-          </div>
-
-          <div className="text-3xl font-bold text-primary-text mb-8">
-            £{product.price}
-          </div>
-
-          {/* ACTION BUTTONS */}
-          <div className="mb-10">
-             {/* This connects to your Context/Cart system */}
-             <AddToCartButton product={product} />
-             
-             <p className="mt-4 text-center text-xs text-primary-text/40 flex items-center justify-center">
-              <ShieldCheck className="w-3 h-3 mr-1" /> Secure checkout via Kynar Universe
-            </p>
-          </div>
-
-          {/* DESCRIPTION */}
-          <div className="prose prose-lg text-primary-text/80 font-serif">
-            <h3 className="font-sans font-bold text-xl mb-4 text-primary-text">Overview</h3>
-            <p className="whitespace-pre-wrap leading-relaxed">
-              {product.description || product.summary}
-            </p>
+        {/* 3. DETAILS SECTOR */}
+        <div className="flex flex-col">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <h1 className="text-5xl md:text-7xl font-black font-sans text-primary-text mb-6 tracking-tighter leading-[0.9]">
+              {product.title}
+            </h1>
             
-            <div className="mt-8 p-6 bg-white rounded-card border border-black/5 not-prose">
-              <h4 className="font-sans font-bold text-sm uppercase tracking-wider text-primary-text/40 mb-4">Included in download</h4>
-              <ul className="space-y-3">
-                <li className="flex items-center text-primary-text">
-                  <Check className={`w-5 h-5 ${accentText} mr-3`} />
-                  <span className="font-medium">Main Product File ({product.format || 'PDF'})</span>
-                </li>
-                <li className="flex items-center text-primary-text">
-                  <Check className={`w-5 h-5 ${accentText} mr-3`} />
-                  <span className="font-medium">Lifetime Updates</span>
-                </li>
-              </ul>
+            <div className="flex flex-wrap items-center gap-4 mb-8">
+              <div className="flex items-center px-4 py-2 bg-white/60 backdrop-blur-md rounded-full border border-white/40 shadow-sm text-xs font-bold text-primary-text">
+                <Zap className="w-3 h-3 mr-2 text-home-accent" /> Instant Download
+              </div>
+              <span className="text-sm font-serif italic text-primary-text/40">Digital License</span>
             </div>
-          </div>
 
+            <div className="text-4xl font-black text-primary-text mb-10 tracking-tight">
+              £{product.price}
+            </div>
+
+            {/* ACTION AREA */}
+            <div className="max-w-md">
+               <AddToCartButton product={product} />
+               <p className="mt-4 text-center text-[10px] font-bold uppercase tracking-widest text-primary-text/20 flex items-center justify-center">
+                <ShieldCheck className="w-4 h-4 mr-2" /> Encrypted Checkout
+              </p>
+            </div>
+
+            {/* DESCRIPTION SECTION */}
+            <div className="mt-16 space-y-8">
+              <div className="space-y-4">
+                <h3 className="font-sans font-black text-[10px] uppercase tracking-[0.3em] text-primary-text/30">Overview</h3>
+                <p className="font-serif text-lg md:text-xl text-primary-text/70 leading-relaxed italic">
+                  {product.description || product.summary}
+                </p>
+              </div>
+              
+              <div className="p-8 bg-white/40 backdrop-blur-md rounded-[32px] border border-white/40 shadow-sm">
+                <h4 className="font-sans font-black text-[10px] uppercase tracking-widest text-primary-text/40 mb-6">Manifest Content</h4>
+                <ul className="space-y-4">
+                  <li className="flex items-center text-sm font-bold text-primary-text">
+                    <Check className={`w-5 h-5 ${accentText} mr-4`} strokeWidth={3} />
+                    <span>Universal Access ({product.format || 'Digital Asset'})</span>
+                  </li>
+                  <li className="flex items-center text-sm font-bold text-primary-text">
+                    <Check className={`w-5 h-5 ${accentText} mr-4`} strokeWidth={3} />
+                    <span>Infinite Updates</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </main>
