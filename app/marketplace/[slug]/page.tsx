@@ -1,23 +1,23 @@
 import { notFound } from 'next/navigation';
-import { supabase } from '../../../lib/supabase'; // <--- Note the triple dot (Goes up 3 levels)
+import { supabase } from '../../../lib/supabase'; 
 import Link from 'next/link';
 import { ArrowLeft, Check, ShieldCheck, Zap } from 'lucide-react';
-import { getDownloadLink } from '../../../app/account/actions'; // Reuse your download logic if needed
 
-// Force dynamic rendering
+// Force dynamic rendering so we always get the latest product details
 export const revalidate = 0;
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
   
-  // 1. Fetch the specific product
+  // 1. Fetch the specific product from Supabase
   const { data: product, error } = await supabase
     .from('products')
     .select('*')
     .eq('slug', params.slug)
     .single();
 
+  // 2. Handle missing products (404)
   if (error || !product) {
-    notFound(); // Shows 404 page if product doesn't exist
+    notFound(); 
   }
 
   return (
@@ -38,8 +38,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
             {product.image ? (
               <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-primary-text/20 font-bold text-xl">
-                {product.title}
+              <div className="w-full h-full flex items-center justify-center bg-gray-50 text-primary-text/20 font-bold text-xl">
+                No Image
               </div>
             )}
             {/* Category Badge */}
@@ -70,9 +70,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
           {/* ACTION BUTTONS */}
           <div className="flex flex-col gap-4 mb-10">
-            {/* NOTE: This is where we will eventually link the "Add to Cart" logic.
-               For now, we link to the Cart page or simulated checkout.
-            */}
+            {/* NOTE: We will connect this to the Cart Context in the next step */}
             <button className="w-full py-4 bg-primary-text text-white font-bold rounded-btn hover:opacity-90 transition-all shadow-md text-lg">
               Add to Basket
             </button>
@@ -88,7 +86,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
               {product.description || product.summary}
             </p>
             
-            {/* "What's Included" - Mockup for visual spec */}
+            {/* "What's Included" Box */}
             <div className="mt-8 p-6 bg-white rounded-card border border-black/5 not-prose">
               <h4 className="font-sans font-bold text-sm uppercase tracking-wider text-primary-text/40 mb-4">Included in download</h4>
               <ul className="space-y-3">
