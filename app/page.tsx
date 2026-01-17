@@ -9,7 +9,7 @@ export default function Home() {
       <section className="w-full py-20 md:py-32 text-center px-4">
         <div className="max-w-4xl mx-auto space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold font-sans text-primary-text tracking-tight">
-            One Universe. Infinite Solutions v4.
+            One Universe. Infinite Solutions.
           </h1>
           <p className="text-xl md:text-2xl font-serif text-primary-text/80 italic max-w-2xl mx-auto leading-relaxed">
             A calm, modern digital space where everyday tools help people everywhere work, live, and learn with ease.
