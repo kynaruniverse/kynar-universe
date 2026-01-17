@@ -21,6 +21,7 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(false);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const dynamic = "force-dynamic";
 
   useEffect(() => {
     async function init() {
