@@ -2,8 +2,9 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 
+// ALIGNED: id changed to string to match Supabase UUIDs
 type CartItem = {
-  id: number;
+  id: string; 
   title: string;
   price: number;
   slug: string;
@@ -15,8 +16,8 @@ type CartItem = {
 type CartContextType = {
   cartItems: CartItem[];
   addToCart: (product: Omit<CartItem, 'quantity'>) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeFromCart: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   cartTotal: number;
   cartCount: number;
@@ -36,12 +37,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // 1. INITIALIZE FROM LOCAL STORAGE (Mobile Safe)
   useEffect(() => {
-    const savedCart = localStorage.getItem('kynar_cart');
+    const savedCart = localStorage.getItem('kynar_cart_v1');
     if (savedCart) {
       try {
         setCartItems(JSON.parse(savedCart));
       } catch (e) {
-        console.error("Cart sync error");
+        localStorage.removeItem('kynar_cart_v1');
       }
     }
     setIsInitialized(true);
@@ -50,50 +51,45 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // 2. PERSIST CHANGES
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem('kynar_cart', JSON.stringify(cartItems));
+      localStorage.setItem('kynar_cart_v1', JSON.stringify(cartItems));
     }
   }, [cartItems, isInitialized]);
 
   const addToCart = (product: Omit<CartItem, 'quantity'>) => {
     setCartItems((prev) => {
       const exists = prev.find((item) => item.id === product.id);
-      if (exists) {
-        return prev.map((item) => 
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
+      
+      // KINETIC LOGIC: For digital goods, we cap quantity at 1
+      if (exists) return prev; 
+      
       return [...prev, { ...product, quantity: 1 }];
     });
 
-    // KINETIC FEEDBACK
     setLastAddedItem(product.title);
-    setShowSuccess(false); // Reset first for "double tap" feedback
+    setShowSuccess(false); 
     setTimeout(() => setShowSuccess(true), 10);
   };
 
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = (id: string, quantity: number) => {
     setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item))
-          .filter(item => item.quantity > 0)
+      prev.map((item) => (item.id === id ? { ...item, quantity: 1 } : item))
     );
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   const clearCart = () => {
     setCartItems([]);
+    localStorage.removeItem('kynar_cart_v1');
   };
 
-  // PERFORMANCE: Only re-calculate when items change
   const cartTotal = useMemo(() => 
-    cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0), 
+    cartItems.reduce((sum, item) => sum + item.price, 0), 
   [cartItems]);
 
-  const cartCount = useMemo(() => 
-    cartItems.reduce((sum, item) => sum + item.quantity, 0), 
-  [cartItems]);
+  const cartCount = useMemo(() => cartItems.length, [cartItems]);
 
   return (
     <CartContext.Provider value={{ 
@@ -116,6 +112,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
   const context = useContext(CartContext);
-  if (context === undefined) throw new Error('useCart error');
+  if (context === undefined) throw new Error('useCart must be used within CartProvider');
   return context;
 }

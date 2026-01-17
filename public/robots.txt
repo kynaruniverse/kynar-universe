@@ -1,16 +1,37 @@
+# ==========================================
+# KYNAR UNIVERSE: ROBOTS PROTOCOL
+# ==========================================
+
 User-agent: *
+
+# 1. ALLOWED SECTORS (Public Manifest)
 Allow: /
+Allow: /about
 Allow: /marketplace
+Allow: /marketplace/
 Allow: /guides
+Allow: /guides/
 Allow: /help
 Allow: /terms
 Allow: /privacy
 
-# Block sensitive areas
+# 2. RESTRICTED SECTORS (Private & Technical)
+# We block these to protect user privacy and prevent crawling of empty states
 Disallow: /account
+Disallow: /account/
 Disallow: /cart
+Disallow: /cart/
 Disallow: /api/
+Disallow: /auth/
 Disallow: /maintenance
+Disallow: /_next/
+Disallow: /static/
 
-# Link to your sitemap (Update with your actual URL)
+# 3. SITEMAP SIGNAL
+# Ensure this matches the domain in your sitemap.ts
+Sitemap: https://kynaruniverse.co.uk/sitemap.xml
 Sitemap: https://kynar-universe-v1.netlify.app/sitemap.xml
+
+# ==========================================
+# END PROTOCOL
+# ==========================================

@@ -8,17 +8,32 @@ export default function SuccessToastWrapper() {
   const { showSuccess, setShowSuccess, lastAddedItem } = useCart();
   const pathname = usePathname();
 
-  // SAFETY: If the user changes pages while a toast is active, 
-  // we dismiss it to keep the "Universe" clean and focused.
+  // 1. CLEANSE ON NAVIGATION
+  // If a user jumps from Marketplace to Cart, we clear the toast 
+  // to avoid overlapping with new page logic.
   useEffect(() => {
     setShowSuccess(false);
   }, [pathname, setShowSuccess]);
 
+  // 2. AUTO-DISMISS FAILSAFE
+  // While the component handles its own animation, this ensures 
+  // the CartContext state is reset to "false" after the toast fades.
+  useEffect(() => {
+    if (showSuccess) {
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+      }, 4500); // Slightly longer than the CSS animation for safety
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccess, setShowSuccess]);
+
   return (
-    <SuccessToast 
-      isVisible={showSuccess} 
-      message={lastAddedItem} 
-      onClose={() => setShowSuccess(false)} 
-    />
+    <div className="relative z-[100]">
+      <SuccessToast 
+        isVisible={showSuccess} 
+        message={`${lastAddedItem} integrated into manifest`} 
+        onClose={() => setShowSuccess(false)} 
+      />
+    </div>
   );
 }

@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import UniverseCanvas from "../../components/UniverseCanvas";
 import Link from "next/link";
+import { Sparkles } from "lucide-react";
 
 export default function AboutPage() {
   const containerRef = useRef(null);
@@ -14,9 +15,9 @@ export default function AboutPage() {
   });
 
   // 2. KINETIC COLOR TRANSITION
-  // Smooth the scroll value so the 3D color doesn't "jump" on jerky thumb scrolls
   const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100 });
   
+  // Transitions from Tools (Violet) -> Life (Green) -> Home (Peach)
   const sphereColor = useTransform(
     smoothProgress,
     [0, 0.5, 1],
@@ -24,17 +25,17 @@ export default function AboutPage() {
   );
 
   return (
-    <main ref={containerRef} className="relative bg-home-base">
+    <main ref={containerRef} className="relative bg-home-base transition-colors duration-1000">
       
-      {/* 1. PERSISTENT 3D BACKGROUND (STAYING STICKY) */}
-      <div className="sticky top-0 h-[100dvh] w-full z-0 overflow-hidden opacity-30 md:opacity-50 pointer-events-none">
+      {/* 1. PERSISTENT 3D BACKGROUND (Sticky Layer) */}
+      <div className="sticky top-0 h-[100dvh] w-full z-0 overflow-hidden opacity-40 md:opacity-60 pointer-events-none">
         <UniverseCanvas activeColor={sphereColor as any} />
       </div>
 
-      {/* 2. SCROLL PROGRESS INDICATOR (Mobile UX) */}
+      {/* 2. SCROLL PROGRESS (UK Digital Standard UX) */}
       <motion.div 
         style={{ scaleX: scrollYProgress }}
-        className="fixed top-0 left-0 right-0 h-1 bg-home-accent z-[100] origin-left"
+        className="fixed top-0 left-0 right-0 h-1.5 bg-primary-text z-[100] origin-left"
       />
 
       {/* 3. SCROLLING CONTENT LAYERS */}
@@ -43,17 +44,16 @@ export default function AboutPage() {
         {/* SECTION 1: THE VISION */}
         <section className="min-h-[100dvh] flex items-center justify-center px-6">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="max-w-3xl text-center"
+            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+            className="max-w-5xl text-center"
           >
-            <h1 className="text-5xl md:text-8xl font-black font-sans tracking-tighter mb-8 uppercase leading-[0.9]">
-              One Universe. <br/> Infinite Growth.
+            <h1 className="text-6xl md:text-9xl font-black font-sans tracking-tighter mb-10 uppercase leading-[0.8] text-primary-text">
+              One Universe. <br/> Infinite Flow.
             </h1>
-            <p className="text-lg md:text-2xl font-serif italic text-primary-text/60 leading-relaxed max-w-2xl mx-auto px-4">
-              Kynar was born from a simple realization: the digital world is too loud. 
-              We created a space that breathes—where tools feel like extensions of your intent.
+            <p className="text-xl md:text-3xl font-serif italic text-primary-text/40 leading-relaxed max-w-2xl mx-auto px-4">
+              Kynar was established to solve a single modern problem: <br className="hidden md:block"/> Digital Noise.
             </p>
           </motion.div>
         </section>
@@ -61,39 +61,53 @@ export default function AboutPage() {
         {/* SECTION 2: THE PHILOSOPHY (Glass Card) */}
         <section className="min-h-[100dvh] flex items-center justify-center px-6">
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ margin: "-10% "}}
-            className="max-w-4xl p-8 md:p-16 rounded-[48px] bg-white/40 backdrop-blur-3xl border border-white/40 shadow-glass will-change-transform"
+            viewport={{ margin: "-20%" }}
+            transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+            className="max-w-5xl p-10 md:p-20 rounded-[64px] bg-white/40 backdrop-blur-3xl border border-white/60 shadow-glass relative overflow-hidden"
           >
-            <h2 className="text-3xl md:text-5xl font-black font-sans mb-8 tracking-tighter uppercase text-primary-text">Gently Alive UI</h2>
-            <p className="text-base md:text-xl text-primary-text/70 mb-8 leading-relaxed font-serif italic">
-              We believe in <span className="text-primary-text font-bold not-italic">"Premium Kineticism."</span> Every interaction should feel liquid, responsive, and human. Our design language uses glassmorphism and 3D depth to create a sense of emotional safety.
+            <div className="absolute top-0 right-0 p-10 opacity-10">
+              <Sparkles size={120} />
+            </div>
+
+            <h2 className="text-4xl md:text-6xl font-black font-sans mb-10 tracking-tighter uppercase text-primary-text leading-none">
+              Gently Alive <br/> Interaction
+            </h2>
+            <p className="text-xl md:text-2xl text-primary-text/50 mb-12 leading-relaxed font-serif italic">
+              We believe in <span className="text-primary-text font-black not-italic uppercase tracking-widest text-sm bg-white/50 px-3 py-1 rounded-lg">Kinetic Premium</span> design. Every movement within the universe is calculated to reduce cortisol and increase clarity.
             </p>
-            <div className="flex gap-4">
-               <div className="w-12 h-[2px] bg-tools-accent" />
-               <div className="w-12 h-[2px] bg-life-accent" />
-               <div className="w-12 h-[2px] bg-cat-home-accent" />
+            
+            <div className="flex items-center gap-6">
+               <div className="h-1 w-20 bg-tools-accent rounded-full" />
+               <div className="h-1 w-12 bg-life-accent rounded-full" />
+               <div className="h-1 w-8 bg-cat-home-accent rounded-full" />
             </div>
           </motion.div>
         </section>
 
-        {/* SECTION 3: THE FUTURE */}
+        {/* SECTION 3: THE CALL TO PRESENCE */}
         <section className="min-h-[100dvh] flex items-center justify-center px-6">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="max-w-2xl text-center space-y-10"
+            transition={{ duration: 1 }}
+            className="max-w-3xl text-center space-y-12"
           >
-            <h2 className="text-5xl md:text-7xl font-black font-sans tracking-tighter uppercase leading-none">
-              Your Journey <br/> Starts Here.
+            <h2 className="text-6xl md:text-8xl font-black font-sans tracking-tighter uppercase leading-[0.85] text-primary-text">
+              Establish <br/> Your Presence.
             </h2>
-            <Link 
-              href="/account"
-              className="inline-block px-12 py-5 bg-primary-text text-white rounded-full font-bold shadow-xl hover:scale-105 active:scale-95 transition-all text-sm uppercase tracking-widest"
-            >
-              Establish Presence
-            </Link>
+            <p className="text-lg font-serif italic text-primary-text/30 max-w-md mx-auto">
+              Join the manifest and begin your synchronization with the Kynar system.
+            </p>
+            <div className="pt-6">
+              <Link 
+                href="/account"
+                className="inline-flex items-center px-16 py-6 bg-primary-text text-white rounded-full font-black uppercase tracking-[0.3em] shadow-2xl hover:scale-105 active:scale-95 transition-all text-xs"
+              >
+                Initiate Account
+              </Link>
+            </div>
           </motion.div>
         </section>
 

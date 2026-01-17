@@ -2,7 +2,7 @@ import { supabase } from '../../lib/supabase';
 import ProductCard from '../../components/ProductCard';
 import MarketplaceFilters from '../../components/MarketplaceFilters';
 
-// Force dynamic rendering for instant search/filter updates
+// Ensures search and category filtering happen instantly on the server
 export const revalidate = 0;
 
 export default async function Marketplace({ 
@@ -14,7 +14,7 @@ export default async function Marketplace({
   const categoryFilter = searchParams?.category;
   const searchFilter = searchParams?.search;
 
-  // Build the Supabase Query
+  // 1. DYNAMIC QUERY BUILDING
   let query = supabase.from('products').select('*');
 
   if (categoryFilter && categoryFilter !== 'All') {
@@ -25,13 +25,15 @@ export default async function Marketplace({
     query = query.ilike('title', `%${searchFilter}%`);
   }
 
-  query = query.order('id', { ascending: false });
+  // Optimized Sorting: Show newest assets first
+  query = query.order('created_at', { ascending: false });
 
   const { data: products, error } = await query;
 
-  if (error) console.error('Supabase Error:', error);
+  if (error) console.error('Supabase Universe Error:', error);
 
-  // --- PREMIUM DYNAMIC THEMING ---
+  // 2. PREMIUM DYNAMIC THEMING
+  // These colors match your tailwind.config.ts precisely
   const themes = {
     Tools: { base: "bg-tools-base", header: "border-tools-accent/10", accent: "text-tools-accent" },
     Life: { base: "bg-life-base", header: "border-life-accent/10", accent: "text-life-accent" },
@@ -44,13 +46,13 @@ export default async function Marketplace({
   return (
     <main className={`min-h-screen ${activeTheme.base} pb-32 transition-colors duration-1000 ease-in-out`}>
       
-      {/* 1. DYNAMIC HEADER */}
-      <div className={`bg-white/40 backdrop-blur-md px-6 py-20 text-center border-b ${activeTheme.header} mb-12 transition-all duration-1000`}>
-        <div className="max-w-4xl mx-auto space-y-4">
-           <h1 className="text-5xl md:text-7xl font-black font-sans text-primary-text tracking-tighter animate-fade-in uppercase">
+      {/* 1. DYNAMIC HEADER SECTOR */}
+      <div className={`bg-white/40 backdrop-blur-3xl px-6 py-24 text-center border-b ${activeTheme.header} mb-12 transition-all duration-1000`}>
+        <div className="max-w-4xl mx-auto space-y-6">
+           <h1 className="text-6xl md:text-8xl font-black font-sans text-primary-text tracking-tighter animate-fade-in uppercase leading-none">
             {categoryFilter && categoryFilter !== 'All' ? categoryFilter : 'Marketplace'}
           </h1>
-          <p className="text-lg md:text-2xl font-serif italic text-primary-text/60 leading-relaxed max-w-2xl mx-auto px-4 animate-fade-in-up">
+          <p className="text-xl md:text-2xl font-serif italic text-primary-text/40 leading-relaxed max-w-2xl mx-auto px-4 animate-fade-in-up">
             {(!categoryFilter || categoryFilter === 'All') && "Explore calm tools for work, life, and home."}
             {categoryFilter === 'Tools' && "Clear tools for a brighter, more organized workflow."}
             {categoryFilter === 'Life' && "Resources to help you learn, grow, and feel inspired."}
@@ -62,14 +64,14 @@ export default async function Marketplace({
       {/* 2. MAIN CONTENT SECTOR */}
       <div className="max-w-7xl mx-auto px-6">
         
-        {/* FILTERS COMPONENT */}
-        <div className="mb-12">
+        {/* FILTERS & SEARCH */}
+        <div className="mb-16">
           <MarketplaceFilters />
         </div>
 
-        {/* 3. KINETIC PRODUCT GRID */}
+        {/* 3. PRODUCT GRID */}
         {products && products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-fade-in-up">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             {products.map((product) => (
               <ProductCard 
                 key={product.id}
@@ -83,20 +85,20 @@ export default async function Marketplace({
             ))}
           </div>
         ) : (
-          /* Empty State (Premium Glass Design) */
-          <div className="text-center py-32 bg-white/30 rounded-[40px] border border-white/20 shadow-glass backdrop-blur-xl max-w-2xl mx-auto px-8 animate-fade-in">
-            <div className={`w-16 h-16 ${activeTheme.base} rounded-full mx-auto mb-6 flex items-center justify-center border border-black/5`}>
-               <span className="text-2xl">✨</span>
+          /* EMPTY STATE */
+          <div className="text-center py-32 bg-white/40 rounded-[64px] border border-white/40 shadow-glass backdrop-blur-3xl max-w-2xl mx-auto px-12 animate-fade-in">
+            <div className={`w-20 h-20 ${activeTheme.base} rounded-[28px] mx-auto mb-8 flex items-center justify-center border border-black/5 shadow-sm text-3xl`}>
+               ✨
             </div>
-            <p className="text-2xl font-bold text-primary-text tracking-tight mb-2">The Universe is quiet here.</p>
-            <p className="text-primary-text/50 font-serif italic mb-8">
-              We couldn't find matches for "{searchFilter}" in {categoryFilter || 'all sectors'}.
+            <h2 className="text-4xl font-black text-primary-text tracking-tighter mb-4 uppercase">Sector Empty</h2>
+            <p className="text-primary-text/40 font-serif text-lg italic mb-10 leading-relaxed">
+              We couldn't find matches for "{searchFilter}" in the {categoryFilter || 'Universe'}.
             </p>
             <a 
               href="/marketplace" 
-              className="px-8 py-3 bg-primary-text text-white rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all inline-block"
+              className="px-12 py-5 bg-primary-text text-white rounded-full font-black uppercase tracking-widest text-[10px] shadow-xl hover:scale-105 active:scale-95 transition-all inline-block"
             >
-              Reset Filters
+              Reset Search
             </a>
           </div>
         )}

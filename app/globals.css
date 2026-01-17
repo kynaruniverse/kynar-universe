@@ -7,68 +7,94 @@
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    /* Prevents the "bounce" scroll on iOS that can break 3D layering */
+    overscroll-behavior-y: none;
   }
 
   body {
-    @apply bg-home-base text-primary-text antialiased selection:bg-home-accent/30;
-    min-height: 100vh;
+    @apply bg-home-base text-primary-text antialiased;
+    min-height: 100dvh; /* Using dynamic viewport height for mobile browsers */
     position: relative;
-    /* Optimize for smooth scrolling on mobile */
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* Universal Selection Logic */
+  ::selection {
+    @apply bg-home-accent/30 text-primary-text;
   }
 }
 
-/* 1. THE PREMIUM "GRAIN" TEXTURE (Performance Optimized) */
+/* 1. SECTOR-SPECIFIC SELECTIONS */
+/* These ensure that highlighting text feels native to the current world */
+.bg-tools-base ::selection { @apply bg-tools-accent/30; }
+.bg-life-base ::selection { @apply bg-life-accent/30; }
+.bg-cat-home-base ::selection { @apply bg-cat-home-accent/30; }
+
+/* 2. THE PREMIUM "KYNAR GRAIN" */
+/* We use a high-fidelity SVG noise to give the glassmorphism a tactile, paper-like quality */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
-  opacity: 0.03; /* Lowered for cleaner mobile look */
-  z-index: 50;
+  opacity: 0.04;
+  z-index: 9999;
   pointer-events: none;
-  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-  /* Static noise is easier on the battery than filtered noise */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* 2. GLASSMORPHISM UTILITIES */
+/* 3. GLASSMORPHISM CORE */
 @layer components {
+  .shadow-glass {
+    box-shadow: 
+      0 4px 24px -1px rgba(0, 0, 0, 0.02),
+      0 2px 8px -1px rgba(0, 0, 0, 0.02);
+  }
+
   .glass-card {
-    @apply bg-white/40 backdrop-blur-xl border border-white/20 shadow-glass;
+    @apply bg-white/40 backdrop-blur-3xl border border-white/60 shadow-glass transition-all duration-700;
   }
   
   .glass-nav {
-    @apply bg-white/30 backdrop-blur-2xl border border-white/10;
+    @apply bg-white/20 backdrop-blur-3xl border-b border-white/20 shadow-sm;
   }
 
-  /* Utility to hide scrollbars on mobile-first views */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  /* Smooth reveal for page content */
+  .animate-reveal {
+    animation: reveal 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
   }
 }
 
-/* 3. KINETIC REFINEMENTS */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 4. PERFORMANCE REFINEMENTS */
 canvas {
-  touch-action: none; /* Prevents accidental zooming while playing with the 3D sphere */
+  /* Prevents the browser from trying to "scroll" the canvas on mobile */
+  touch-action: none;
+  /* Optimization for Three.js rendering */
+  image-rendering: -webkit-optimize-contrast;
 }
 
-/* 4. CUSTOM SCROLLBAR (Desktop Only) */
+/* 5. CUSTOM SCROLLBAR (Kinetic Style) */
 @media (min-width: 768px) {
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary-text/10 rounded-full hover:bg-primary-text/30 transition-colors;
+    @apply bg-primary-text/10 rounded-full hover:bg-home-accent/40 transition-all;
   }
 }
 
-/* 5. SELECTION COLOR */
-::selection {
-  @apply bg-home-accent/30 text-primary-text;
+/* Utility to hide scrollbars while maintaining functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

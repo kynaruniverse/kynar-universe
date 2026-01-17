@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ShoppingCart, User } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import CartSidebar from "./CartSidebar";
@@ -20,48 +20,67 @@ export default function Navbar() {
     setIsOpen(false);
   }, [pathname]);
 
+  const navLinks = [
+    { name: 'Marketplace', href: '/marketplace' },
+    { name: 'Guides', href: '/guides' },
+    { name: 'Help', href: '/help' },
+  ];
+
   return (
     <>
-      <nav className="sticky top-4 z-[60] w-[94%] max-w-7xl mx-auto bg-white/40 backdrop-blur-xl border border-white/20 rounded-full shadow-glass transition-all duration-500">
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      <nav className="sticky top-6 z-[60] w-[92%] max-w-7xl mx-auto bg-white/40 backdrop-blur-3xl border border-white/30 rounded-full shadow-glass transition-all duration-500">
+        <div className="px-4 md:px-6">
+          <div className="flex justify-between items-center h-16 md:h-20">
             
             {/* LEFT: MAGNETIC LOGO */}
-            <div className="flex-shrink-0 -ml-2 md:-ml-4 scale-90 md:scale-100">
+            <div className="flex-shrink-0 -ml-1 md:-ml-2 scale-90 md:scale-100">
               <MagneticLogo />
             </div>
 
             {/* CENTER: DESKTOP NAVIGATION */}
-            <div className="hidden md:flex space-x-8 items-center">
-              {['Marketplace', 'Guides', 'Help'].map((item) => (
-                <Link 
-                  key={item}
-                  href={`/${item.toLowerCase()}`} 
-                  className="text-sm font-bold text-primary-text/60 hover:text-primary-text transition-colors tracking-tight"
-                >
-                  {item}
-                </Link>
-              ))}
+            <div className="hidden md:flex space-x-10 items-center">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link 
+                    key={link.name}
+                    href={link.href} 
+                    className={`relative text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${
+                      isActive ? 'text-primary-text' : 'text-primary-text/40 hover:text-primary-text'
+                    }`}
+                  >
+                    {link.name}
+                    {isActive && (
+                      <motion.div 
+                        layoutId="navUnderline"
+                        className="absolute -bottom-1 left-0 right-0 h-[2px] bg-home-accent rounded-full"
+                      />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
 
-            {/* RIGHT: ICONS */}
-            <div className="flex items-center space-x-2 md:space-x-5">
+            {/* RIGHT: ICONS & CTA */}
+            <div className="flex items-center space-x-1 md:space-x-4">
               <Link 
                 href="/account" 
-                className="hidden md:flex p-3 text-primary-text/60 hover:text-primary-text hover:bg-white/20 rounded-full transition-all"
+                className={`hidden md:flex p-3 rounded-full transition-all ${
+                  pathname === '/account' ? 'bg-primary-text text-white shadow-lg' : 'text-primary-text/40 hover:text-primary-text hover:bg-white/40'
+                }`}
               >
-                <User size={20} />
+                <User size={18} />
               </Link>
 
               {/* CART TOGGLE */}
               <button 
                 onClick={() => setIsCartOpen(true)} 
-                className="relative p-3 text-primary-text/80 hover:bg-white/30 active:scale-90 rounded-full transition-all"
+                className="relative p-3 text-primary-text hover:bg-white/40 active:scale-90 rounded-full transition-all group"
                 aria-label="Open Cart"
               >
-                <ShoppingCart size={20} />
+                <ShoppingCart size={20} className="group-hover:rotate-[-10deg] transition-transform" />
                 {cartCount > 0 && (
-                  <span className="absolute top-2 right-2 bg-home-accent text-white text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center shadow-sm animate-pulse">
+                  <span className="absolute top-2 right-2 bg-home-accent text-white text-[9px] font-black rounded-full min-w-[16px] h-4 flex items-center justify-center shadow-sm px-1">
                     {cartCount}
                   </span>
                 )}
@@ -70,7 +89,7 @@ export default function Navbar() {
               {/* MOBILE MENU TOGGLE */}
               <button 
                 onClick={() => setIsOpen(!isOpen)} 
-                className="md:hidden p-3 text-primary-text hover:bg-white/30 active:scale-90 rounded-full transition-all"
+                className="md:hidden p-3 text-primary-text hover:bg-white/40 active:scale-90 rounded-full transition-all"
               >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -82,34 +101,32 @@ export default function Navbar() {
         <AnimatePresence>
           {isOpen && (
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: -20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="md:hidden absolute top-[74px] left-0 right-0 bg-white/70 backdrop-blur-2xl border border-white/20 rounded-[32px] shadow-glass overflow-hidden"
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              className="md:hidden absolute top-[110%] left-0 right-0 bg-white/60 backdrop-blur-3xl border border-white/40 rounded-[40px] shadow-glass overflow-hidden mx-2"
             >
-              <div className="px-8 py-10 space-y-6">
-                <Link href="/marketplace" className="block text-3xl font-bold tracking-tighter text-primary-text">Marketplace</Link>
-                
-                <div className="flex flex-col space-y-4 pl-4 border-l-2 border-primary-text/5">
-                  {[
-                    { label: 'Tools', color: 'text-tools-accent' },
-                    { label: 'Life', color: 'text-life-accent' },
-                    { label: 'Home', color: 'text-cat-home-accent' }
-                  ].map((cat) => (
+              <div className="p-8 space-y-8">
+                <div className="flex flex-col space-y-6">
+                  {navLinks.map((link) => (
                     <Link 
-                      key={cat.label}
-                      href={`/marketplace?category=${cat.label}`} 
-                      className={`text-lg font-medium text-primary-text/50 hover:${cat.color} transition-colors`}
+                      key={link.name}
+                      href={link.href} 
+                      className="text-4xl font-black tracking-tighter text-primary-text flex justify-between items-center group"
                     >
-                      {cat.label}
+                      {link.name}
+                      <ArrowRight className="opacity-0 group-hover:opacity-100 transition-opacity text-home-accent" />
                     </Link>
                   ))}
                 </div>
-
-                <div className="pt-4 space-y-6">
-                  <Link href="/guides" className="block text-2xl font-bold tracking-tighter text-primary-text">Guides</Link>
-                  <Link href="/account" className="block text-2xl font-bold tracking-tighter text-primary-text">Account</Link>
+                
+                <div className="pt-6 border-t border-black/5 flex flex-col space-y-4">
+                  <Link 
+                    href="/account" 
+                    className="w-full py-5 bg-primary-text text-white rounded-full font-bold flex items-center justify-center gap-2 active:scale-95 transition-all uppercase tracking-widest text-xs"
+                  >
+                    <Sparkles size={14} /> Establish Presence
+                  </Link>
                 </div>
               </div>
             </motion.div>
@@ -117,7 +134,7 @@ export default function Navbar() {
         </AnimatePresence>
       </nav>
 
-      {/* GLOBAL OVERLAY COMPONENTS */}
+      {/* CART SIDEBAR OVERLAY */}
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );

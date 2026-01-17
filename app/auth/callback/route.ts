@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  // Dynamic redirect: allows users to log in and return to their Cart or Product
+  // If 'next' is present, we send them there (e.g., back to Cart), otherwise to Account
   const next = searchParams.get('next') ?? '/account';
 
   if (code) {
@@ -19,34 +19,38 @@ export async function GET(request: Request) {
             return cookieStore.get(name)?.value;
           },
           set(name: string, value: string, options: CookieOptions) {
-            // Defensive set for mobile browser compatibility
             try {
               cookieStore.set({ name, value, ...options });
             } catch (error) {
-              // Handle edge cases where cookies cannot be set in GET routes
+              // Middleware will handle session refresh if this fails in a GET
             }
           },
           remove(name: string, options: CookieOptions) {
             try {
-              cookieStore.delete({ name, ...options });
+              cookieStore.set({ name, value: '', ...options });
             } catch (error) {
-              // Handle edge cases
+              // Handle error
             }
           },
         },
       }
     );
     
-    // Exchange the code for a permanent session
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     
     if (!error) {
-      // SUCCESS: The user is now part of the Universe
-      // We use absolute URLs for mobile redirect stability
-      return NextResponse.redirect(`${origin}${next}`);
+      // SUCCESS: Session Established
+      // We append a timestamp to the redirect to force a fresh UI load on mobile
+      const successUrl = new URL(next, origin);
+      successUrl.searchParams.set('verified', 'true');
+      
+      return NextResponse.redirect(successUrl);
     }
   }
 
-  // ERROR: Return to login with a kinetic error flag for the UI to handle
-  return NextResponse.redirect(`${origin}/account?error=Authentication_Failed`);
+  // ERROR: Redirect to Account with kinetic error signal
+  const errorUrl = new URL('/account', origin);
+  errorUrl.searchParams.set('error', 'auth_transmission_failed');
+  
+  return NextResponse.redirect(errorUrl);
 }

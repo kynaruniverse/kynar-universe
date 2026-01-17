@@ -37,44 +37,45 @@ export async function getDownloadLink(productSlug: string) {
   if (!user) return { error: "Access Denied. Please re-verify your identity." };
 
   // B. OWNERSHIP VERIFICATION
-  // Matches user ID against the purchases sector
-  const { data: purchase } = await supabase
+  // We check the 'purchases' table to ensure this user owns this slug
+  const { data: purchase, error: purchaseError } = await supabase
     .from('purchases')
     .select('id')
     .eq('user_id', user.id)
     .eq('product_id', productSlug)
     .single();
 
-  if (!purchase) {
+  if (purchaseError || !purchase) {
     return { error: "Transmission Blocked. This asset is not in your library." };
   }
 
   // C. ASSET LOCATION
   const { data: product } = await supabase
     .from('products')
-    .select('file_path, title')
+    .select('file_path, title, format')
     .eq('slug', productSlug)
     .single();
 
   if (!product || !product.file_path) {
-    return { error: "Asset not found in the vault. Contacting support recommended." };
+    return { error: "Asset not found in the vault. Support origin notified." };
   }
 
   // D. GENERATE SECURE SIGNATURE
-  // Sanitize filename for mobile file systems (No spaces/special chars)
+  // We sanitize the filename so it looks professional when saved to a device
   const safeTitle = product.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  const filename = `${safeTitle}.pdf`; 
+  const extension = (product.format || 'pdf').toLowerCase();
+  const downloadName = `${safeTitle}.${extension}`; 
 
   const { data, error } = await supabase
     .storage
     .from('vault')
     .createSignedUrl(product.file_path, 60, {
-      download: filename, // Forces the 'Save As' dialogue on mobile
+      download: downloadName, // Forces the file to download with the correct name
     });
 
   if (error || !data) {
     console.error("Vault Error:", error);
-    return { error: "Could not mint access key. Please try again." };
+    return { error: "Could not mint access key. The vault is temporarily locked." };
   }
 
   return { url: data.signedUrl };
