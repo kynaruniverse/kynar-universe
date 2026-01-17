@@ -115,7 +115,7 @@ export default function AccountPage() {
           <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
               <h1 className="text-3xl font-bold font-sans text-primary-text">My Library</h1>
-              <p className="font-serif text-primary-text/60 italic mt-1">Welcome back, {userEmail}</p>
+              <p className="font-serif text-primary-text/60 italic mt-1">Welcome back. Your tools are ready for you.</p>
             </div>
             <button onClick={handleLogout} className="px-6 py-2 border border-primary-text/20 rounded-btn hover:bg-white hover:text-red-600 transition-colors flex items-center text-sm font-medium">
               <LogOut className="w-4 h-4 mr-2" /> Sign Out
@@ -163,7 +163,7 @@ export default function AccountPage() {
                <div className="w-16 h-16 bg-account-base rounded-full flex items-center justify-center mx-auto mb-6 text-primary-text/40">
                 <Download className="w-8 h-8" />
               </div>
-              <h2 className="text-xl font-bold font-sans text-primary-text mb-2">Your collection is empty</h2>
+              <h2 className="text-xl font-bold font-sans text-primary-text mb-2">Your library awaits. This space is waiting for you.</h2>
               <Link href="/marketplace" className="inline-flex items-center px-6 py-3 bg-primary-text text-white rounded-btn hover:opacity-90 transition-all mt-4">
                 Browse Marketplace <ArrowRight className="ml-2 w-4 h-4" />
               </Link>

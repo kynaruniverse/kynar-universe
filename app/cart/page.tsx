@@ -139,7 +139,7 @@ export default function CartPage() {
               </button>
 
               <div className="flex items-center justify-center space-x-4 text-xs text-primary-text/40">
-                <span className="flex items-center"><Lock size={12} className="mr-1" /> Secure Payment</span>
+                <span className="flex items-center"><Lock size={12} className="mr-1" /> Secure checkout via Kynar Universe</span>
                 <span className="flex items-center"><ShieldCheck size={12} className="mr-1" /> Instant Access</span>
               </div>
 

@@ -28,7 +28,7 @@ const config: Config = {
         "life-accent": "#8ED9A1", // Green
 
         // 5. HOME WORLD (Category) - Cozy Peach
-        "cat-home-base": "#FFF4EB", // Warm/Cozy
+        "cat-home-base": "#F7FAFF", // Warm/Cozy
         "cat-home-surface": "#FFFFFF",
         "cat-home-accent": "#FFCEB8", // Soft Peach
 

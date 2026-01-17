@@ -29,8 +29,9 @@ export default function HelpPage() {
             </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
-              <span><strong>Refunds:</strong> Digital items are non-refundable, but we will always help fix issues.</span>
-            </li>
+              <span><strong>Refunds:</strong> Digital products are non-refundable. [span_4](start_span)[span_5](start_span)Reply to your receipt for help.</span>
+              
+              </li>
             <li className="flex items-start">
               <span className="mr-2">•</span>
               <span><strong>Formats:</strong> We support PDF, Notion, and Excel.</span>
@@ -43,7 +44,7 @@ export default function HelpPage() {
           <Mail className="w-8 h-8 text-home-accent mb-4" />
           <h2 className="text-xl font-bold font-sans text-primary-text mb-2">Contact Support</h2>
           <p className="text-primary-text/80 mb-6 leading-relaxed">
-            Need help with an order or have a question before buying? We reply within 24 hours.
+            Need help with an order or have a question before buying? Support responds within 24 hours.
           </p>
           <a 
             href="mailto:support@kynaruniverse.co.uk" 
