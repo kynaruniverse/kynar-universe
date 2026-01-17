@@ -8,57 +8,58 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // TYPOGRAPHY SYSTEM
-      fontFamily: {
-        sans: ["var(--font-outfit)", "sans-serif"], // Primary
-        serif: ["var(--font-lora)", "serif"],       // Secondary
-      },
-      // COLOR SYSTEM
       colors: {
-        // Universal
-        "primary-text": "#2A2D32",
-        
-        // SECTION: HOME
-        "home-base": "#CFEAFF", 
+        // 1. PRIMARY TEXT (The Anchor)
+        "primary-text": "#2A2D32", 
+
+        // 2. HOME (Landing / Default) - Airy Blue
+        "home-base": "#CFEAFF",
         "home-surface": "#F7FAFF",
         "home-accent": "#8FB7FF",
-        
-        // SECTION: TOOLS
+
+        // 3. TOOLS WORLD - Technical Violet
         "tools-base": "#F5F7FA",
-        "tools-surface": "#F5F7FA",
+        "tools-surface": "#FFFFFF",
         "tools-accent": "#A88BFF", // Violet
-        
-        // SECTION: LIFE
+
+        // 4. LIFE WORLD - Organic Green
         "life-base": "#E4FFF5",
-        "life-surface": "#E4FFF5",
+        "life-surface": "#FFFFFF",
         "life-accent": "#8ED9A1", // Green
-        
-        // SECTION: HOME (CATEGORY)
-        "cat-home-base": "#F7FAFF",
-        "cat-home-surface": "#F7FAFF",
+
+        // 5. HOME WORLD (Category) - Cozy Peach
+        "cat-home-base": "#FFF4EB", // Warm/Cozy
+        "cat-home-surface": "#FFFFFF",
         "cat-home-accent": "#FFCEB8", // Soft Peach
-        
-        // SECTION: ACCOUNT
+
+        // 6. ACCOUNT - Warm Sand
         "account-base": "#F3E7D6",
-        "account-surface": "#F3E7D6",
+        "account-surface": "#FFFFFF",
       },
-      // SPACING SCALE
-      spacing: {
-        'xs': '4px',
-        'sm': '8px',
-        'md': '16px',
-        'lg': '24px',
-        'xl': '32px',
-        '2xl': '48px',
-        '3xl': '64px',
+      fontFamily: {
+        sans: ['Outfit', 'sans-serif'],
+        serif: ['Lora', 'serif'],
       },
-      // BORDER RADIUS
       borderRadius: {
-        'card': '12px',
         'btn': '6px',
-      }
+        'card': '12px',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };
 export default config;
