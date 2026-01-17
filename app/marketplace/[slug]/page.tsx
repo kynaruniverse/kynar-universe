@@ -1,42 +1,61 @@
-import { notFound } from 'next/navigation';
-import { supabase } from '../../../lib/supabase'; 
-import Link from 'next/link';
-import { ArrowLeft, Check, ShieldCheck, Zap } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
+import ProductCard from '../../components/ProductCard';
+import MarketplaceFilters from '../../components/MarketplaceFilters';
 
-// Force dynamic rendering so we always get the latest product details
+// Force dynamic rendering so search works instantly
 export const revalidate = 0;
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function Marketplace({ 
+  searchParams 
+}: { 
+  searchParams: { category?: string; search?: string } 
+}) {
   
-  // 1. Fetch the specific product from Supabase
-  const { data: product, error } = await supabase
-    .from('products')
-    .select('*')
-    .eq('slug', params.slug)
-    .single();
+  // 1. Get filters from URL
+  const categoryFilter = searchParams?.category;
+  const searchFilter = searchParams?.search;
 
-  // 2. Handle missing products (404)
-  if (error || !product) {
-    notFound(); 
+  // 2. Build the query
+  let query = supabase.from('products').select('*');
+
+  // 3. Apply Category Filter
+  if (categoryFilter && categoryFilter !== 'All') {
+    query = query.eq('category', categoryFilter);
   }
 
- // DYNAMIC THEMING
-  let themeClass = "bg-home-base"; // Default
+  // 4. Apply Search Filter
+  if (searchFilter) {
+    query = query.ilike('title', `%${searchFilter}%`);
+  }
+
+  // 5. Default Sort
+  query = query.order('id', { ascending: false });
+
+  // 6. Fetch data
+  const { data: products, error } = await query;
+
+  if (error) {
+    console.error('Error fetching products:', error);
+  }
+
+  // --- DYNAMIC THEMING LOGIC (THIS WAS MISSING) ---
+  let themeClass = "bg-home-base"; // Default Blue
   let headerClass = "border-home-accent/10";
-  let titleColor = "text-primary-text";
   
   if (categoryFilter === 'Tools') {
-    themeClass = "bg-tools-base";
+    themeClass = "bg-tools-base"; // Violet
     headerClass = "border-tools-accent/20";
   } else if (categoryFilter === 'Life') {
-    themeClass = "bg-life-base";
+    themeClass = "bg-life-base"; // Green
     headerClass = "border-life-accent/20";
   } else if (categoryFilter === 'Home') {
-    themeClass = "bg-cat-home-base";
+    themeClass = "bg-cat-home-base"; // Peach
     headerClass = "border-cat-home-accent/20";
   }
+  // ------------------------------------------------
 
   return (
+    // USE THE DYNAMIC VARIABLE HERE:
     <main className={`min-h-screen ${themeClass} pb-24 transition-colors duration-700 ease-in-out`}>
       
       {/* HEADER SECTION */}
