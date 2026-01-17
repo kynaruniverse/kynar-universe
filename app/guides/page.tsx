@@ -15,7 +15,7 @@ export default function Guides() {
             Guides & Resources
           </h1>
           <p className="text-xl font-serif text-primary-text/80 italic leading-relaxed">
-            Here’s where your story grows. Explore ideas, tutorials, and support for your journey.
+            Explore ideas, tutorials, and support for your journey.
           </p>
         </div>
       </section>
@@ -36,7 +36,7 @@ export default function Guides() {
               New to digital planning? Here is a gentle introduction to setting up your first workspace without the overwhelm.
             </p>
             <span className="inline-flex items-center text-sm font-bold text-primary-text border-b-2 border-life-accent/30 pb-1 group-hover:border-life-accent transition-all">
-              Read Guide <ArrowRight className="ml-2 w-4 h-4" />
+              Learn More <ArrowRight className="ml-2 w-4 h-4" />
             </span>
           </article>
 
@@ -52,7 +52,7 @@ export default function Guides() {
               How to use Kynar tools to create moments of pause in a busy day. Less grinding, more living.
             </p>
             <span className="inline-flex items-center text-sm font-bold text-primary-text border-b-2 border-life-accent/30 pb-1 group-hover:border-life-accent transition-all">
-              Read Guide <ArrowRight className="ml-2 w-4 h-4" />
+              Learn More <ArrowRight className="ml-2 w-4 h-4" />
             </span>
           </article>
 
@@ -69,7 +69,7 @@ export default function Guides() {
           href="/help" 
           className="inline-block px-8 py-3 bg-white border border-primary-text/10 rounded-btn font-medium hover:bg-gray-50 transition-colors"
         >
-          Visit Help Center
+          Help Center
         </Link>
       </section>
 

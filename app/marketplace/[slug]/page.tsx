@@ -34,6 +34,14 @@ export default async function ProductPage({ params }: { params: { slug: string }
       
       {/* HEADER / BACK BUTTON */}
       <div className="max-w-7xl mx-auto px-4 pt-8 mb-8">
+        <nav className="flex items-center space-x-2 text-sm font-sans text-primary-text/50 mb-4">
+          <Link href="/" className="hover:text-primary-text transition-colors">Home</Link>
+          <span className="text-primary-text/30">&gt;</span>
+          <Link href="/marketplace" className="hover:text-primary-text transition-colors">Marketplace</Link>
+          <span className="text-primary-text/30">&gt;</span>
+          <span className="text-primary-text font-medium">{product.category}</span>
+        </nav>
+        
         <Link href="/marketplace" className="inline-flex items-center text-sm font-bold text-primary-text/60 hover:text-primary-text transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Marketplace
         </Link>

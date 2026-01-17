@@ -63,10 +63,10 @@ export default async function Marketplace({
           {categoryFilter && categoryFilter !== 'All' ? `${categoryFilter}` : 'Marketplace'}
         </h1>
         <p className="text-xl font-serif italic text-primary-text/70 max-w-2xl mx-auto animate-fade-in-up">
-          {(!categoryFilter || categoryFilter === 'All') && "Explore what helps you work, live, and learn."}
-          {categoryFilter === 'Tools' && "Clear tools for a brighter workflow."}
-          {categoryFilter === 'Life' && "Explore what helps you learn, grow, and feel inspired."}
-          {categoryFilter === 'Home' && "Warm, simple tools for families and daily comfort."}
+          {(!categoryFilter || categoryFilter === 'All') && "Explore calm tools for work, life, and home."}
+          {categoryFilter === 'Tools' && "Everything you need to build, create, and stay organised. Clear tools for a brighter workflow."}
+          {categoryFilter === 'Life' && "Guides, ideas, and resources for everyday life. Explore what helps you learn, grow, and feel inspired."}
+          {categoryFilter === 'Home' && "Warm, simple tools for families, routines, and daily comfort. A space for the people who matter."}
         </p>
       </div>
 

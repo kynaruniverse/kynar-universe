@@ -41,7 +41,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         </>
       ) : (
         <>
-          Choose This Tool <ArrowRight className="ml-2 w-5 h-5" />
+          Choose <ArrowRight className="ml-2 w-5 h-5" />
         </>
       )}
     </button>

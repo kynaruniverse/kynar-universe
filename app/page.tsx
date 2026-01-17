@@ -19,7 +19,7 @@ export default function Home() {
               href="/marketplace" 
               className="inline-flex items-center px-8 py-4 bg-home-accent text-white rounded-btn font-medium hover:bg-home-accent/90 transition-all hover:scale-105"
             >
-              Start Exploring <ArrowRight className="ml-2 w-5 h-5" />
+              Explore <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
           </div>
         </div>
