@@ -20,89 +20,72 @@ export default async function ProductPage({ params }: { params: { slug: string }
     notFound(); 
   }
 
+ // DYNAMIC THEMING
+  let themeClass = "bg-home-base"; // Default
+  let headerClass = "border-home-accent/10";
+  let titleColor = "text-primary-text";
+  
+  if (categoryFilter === 'Tools') {
+    themeClass = "bg-tools-base";
+    headerClass = "border-tools-accent/20";
+  } else if (categoryFilter === 'Life') {
+    themeClass = "bg-life-base";
+    headerClass = "border-life-accent/20";
+  } else if (categoryFilter === 'Home') {
+    themeClass = "bg-cat-home-base";
+    headerClass = "border-cat-home-accent/20";
+  }
+
   return (
-    <main className="min-h-screen bg-home-base pb-24">
+    <main className={`min-h-screen ${themeClass} pb-24 transition-colors duration-700 ease-in-out`}>
       
-      {/* HEADER / BACK BUTTON */}
-      <div className="max-w-7xl mx-auto px-4 pt-8 mb-8">
-        <Link href="/marketplace" className="inline-flex items-center text-sm font-bold text-primary-text/60 hover:text-home-accent transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Marketplace
-        </Link>
+      {/* HEADER SECTION */}
+      <div className={`bg-white/50 backdrop-blur-sm px-4 py-16 text-center border-b ${headerClass} mb-8 transition-all duration-700`}>
+        <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4 animate-fade-in">
+          {categoryFilter && categoryFilter !== 'All' ? `${categoryFilter}` : 'Marketplace'}
+        </h1>
+        <p className="text-xl font-serif italic text-primary-text/70 max-w-2xl mx-auto animate-fade-in-up">
+          {(!categoryFilter || categoryFilter === 'All') && "Explore what helps you work, live, and learn."}
+          {categoryFilter === 'Tools' && "Clear tools for a brighter workflow."}
+          {categoryFilter === 'Life' && "Explore what helps you learn, grow, and feel inspired."}
+          {categoryFilter === 'Home' && "Warm, simple tools for families and daily comfort."}
+        </p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
+      {/* MAIN CONTENT */}
+      <div className="max-w-7xl mx-auto px-4">
         
-        {/* LEFT: IMAGE */}
-        <div className="bg-white p-2 rounded-card border border-black/5 shadow-sm h-fit">
-          <div className="aspect-video bg-gray-100 rounded-md overflow-hidden relative">
-            {product.image ? (
-              <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gray-50 text-primary-text/20 font-bold text-xl">
-                No Image
-              </div>
-            )}
-            {/* Category Badge */}
-            <span className="absolute top-4 left-4 px-3 py-1 bg-black/80 text-white text-xs font-bold uppercase tracking-wider rounded-sm backdrop-blur-md">
-              {product.category}
-            </span>
-          </div>
-        </div>
+        {/* FILTERS */}
+        <MarketplaceFilters />
 
-        {/* RIGHT: DETAILS */}
-        <div>
-          <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4 leading-tight">
-            {product.title}
-          </h1>
-          
-          <div className="flex items-center gap-4 mb-6 text-sm">
-            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full font-bold flex items-center">
-              <Zap className="w-3 h-3 mr-1" /> Instant Download
-            </span>
-            <span className="text-primary-text/60 font-serif italic">
-              Digital License
-            </span>
+        {/* PRODUCT GRID */}
+        {products && products.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in-up">
+            {products.map((product) => (
+              <ProductCard 
+                key={product.id}
+                title={product.title} 
+                category={product.category} 
+                price={product.price} 
+                summary={product.summary}
+                slug={product.slug}
+                image={product.image}
+              />
+            ))}
           </div>
-
-          <div className="text-3xl font-bold text-primary-text mb-8">
-            £{product.price}
-          </div>
-
-          {/* ACTION BUTTONS */}
-          <div className="flex flex-col gap-4 mb-10">
-            {/* NOTE: We will connect this to the Cart Context in the next step */}
-            <button className="w-full py-4 bg-primary-text text-white font-bold rounded-btn hover:opacity-90 transition-all shadow-md text-lg">
-              Add to Basket
-            </button>
-            <p className="text-center text-xs text-primary-text/40 flex items-center justify-center">
-              <ShieldCheck className="w-3 h-3 mr-1" /> Secure checkout via Kynar Universe
+        ) : (
+          /* Empty State */
+          <div className="text-center py-20 bg-white/60 rounded-card border border-white/20 shadow-sm backdrop-blur-md">
+            <p className="text-2xl font-bold text-primary-text/40 mb-2">No matches found.</p>
+            <p className="text-primary-text/60 font-serif italic">
+              Try adjusting your search or switching categories.
             </p>
+            <a href="/marketplace" className="inline-block mt-4 text-sm font-bold text-primary-text/80 hover:underline">
+              Clear all filters
+            </a>
           </div>
+        )}
 
-          {/* DESCRIPTION */}
-          <div className="prose prose-lg text-primary-text/80 font-serif">
-            <h3 className="font-sans font-bold text-xl mb-4 text-primary-text">Overview</h3>
-            <p className="whitespace-pre-wrap leading-relaxed">
-              {product.description || product.summary}
-            </p>
-            
-            {/* "What's Included" Box */}
-            <div className="mt-8 p-6 bg-white rounded-card border border-black/5 not-prose">
-              <h4 className="font-sans font-bold text-sm uppercase tracking-wider text-primary-text/40 mb-4">Included in download</h4>
-              <ul className="space-y-3">
-                <li className="flex items-center text-primary-text">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="font-medium">Main Product File ({product.format || 'PDF'})</span>
-                </li>
-                <li className="flex items-center text-primary-text">
-                  <Check className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="font-medium">Lifetime Updates</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-        </div>
       </div>
     </main>
   );
