@@ -47,35 +47,36 @@ export async function processCheckout(productSlugs: string[]) {
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   
   if (authError || !user) {
-    return { error: "Authentication required. Please log in to your Kynar account." };
+    return { error: "unauthorized" }; // Handled by UI to redirect to login
   }
 
   if (!productSlugs || productSlugs.length === 0) {
-    return { error: "Your manifest is empty. No items to transmit." };
+    return { error: "Manifest empty. No assets to transmit." };
   }
 
-  // B. DATA PREPARATION (Including Legal Evidence)
+  // B. DATA PREPARATION (Legal Compliance Audit Trail)
+  // Ensures we record the EXACT moment the consumer waived their right to cancel
   const purchaseData = productSlugs.map(slug => ({
     user_id: user.id,
-    product_id: slug, // Matches the 'product_id' column in your SQL
-    purchased_at: new Date().toISOString(),
-    legal_consent_given: true,
-    consent_timestamp: new Date().toISOString()
+    product_id: slug, 
+    legal_consent: true, // Aligned with your SQL column: legal_consent
+    consent_at: new Date().toISOString() // Aligned with your SQL column: consent_at
   }));
 
-  // C. DATABASE INSERTION
+  // C. DATABASE INSERTION (The Acquisition)
   const { error: dbError } = await supabase
     .from('purchases')
     .insert(purchaseData);
 
   if (dbError) {
-    console.error("Transmission Interrupted:", dbError.message);
-    return { error: "The universe is experiencing turbulence. Please try again shortly." };
+    console.error("Transmission Error:", dbError.message);
+    return { error: "The vault could not be opened. Please check your signal." };
   }
 
   // D. CACHE REVALIDATION
-  revalidatePath('/account');
-  revalidatePath('/marketplace');
+  // This ensures the /account page reflects the new items immediately
+  revalidatePath('/account', 'page');
+  revalidatePath('/marketplace', 'page');
 
   return { success: true };
 }

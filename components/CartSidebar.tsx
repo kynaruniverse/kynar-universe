@@ -1,11 +1,11 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Trash2, Plus, Minus } from "lucide-react";
+import { X, ShoppingBag, Trash2, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import Link from "next/link";
 
 export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const { cartItems, removeFromCart, cartTotal } = useCart();
 
   return (
     <AnimatePresence>
@@ -17,7 +17,7 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[90] bg-black/30 backdrop-blur-md"
+            className="fixed inset-0 z-[90] bg-black/40 backdrop-blur-sm"
           />
 
           {/* 2. SLIDING GLASS PANEL */}
@@ -26,83 +26,74 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 z-[100] h-full w-full md:max-w-md bg-white/80 backdrop-blur-3xl border-l border-white/20 shadow-2xl flex flex-col will-change-transform"
+            className="fixed right-0 top-0 z-[100] h-full w-full md:max-w-md bg-white/90 backdrop-blur-3xl border-l border-white/40 shadow-2xl flex flex-col will-change-transform"
           >
             {/* HEADER */}
-            <div className="p-6 md:p-8 border-b border-black/5 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary-text text-white rounded-xl">
-                   <ShoppingBag size={20} />
+            <div className="p-8 border-b border-black/5 flex items-center justify-between bg-white/50">
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl font-black font-sans tracking-tighter text-primary-text uppercase">
+                    Manifest
+                  </h2>
+                  <Sparkles size={16} className="text-home-accent animate-pulse" />
                 </div>
-                <h2 className="text-xl font-bold font-sans tracking-tight text-primary-text">
-                  Your Basket
-                </h2>
+                <p className="text-[10px] font-bold text-primary-text/30 uppercase tracking-[0.2em]">
+                  {cartItems.length} Sector Assets
+                </p>
               </div>
               <button 
                 onClick={onClose} 
                 className="p-3 hover:bg-black/5 active:scale-90 rounded-full transition-all"
               >
-                <X size={24} className="text-primary-text/40" />
+                <X size={20} className="text-primary-text/40" />
               </button>
             </div>
 
             {/* ITEM LIST */}
-            <div className="flex-grow overflow-y-auto px-6 py-4 md:px-8 space-y-6 no-scrollbar">
+            <div className="flex-grow overflow-y-auto px-8 py-6 space-y-8 no-scrollbar">
               {cartItems.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                    <ShoppingBag size={32} className="text-gray-300" />
+                <div className="h-full flex flex-col items-center justify-center text-center px-6">
+                  <div className="w-16 h-16 bg-black/5 rounded-[24px] flex items-center justify-center mb-6">
+                    <ShoppingBag size={24} className="text-primary-text/10" />
                   </div>
-                  <p className="font-serif italic text-primary-text/40">Your universe is currently empty.</p>
-                  <button onClick={onClose} className="mt-4 text-sm font-bold text-home-accent underline decoration-2 underline-offset-4">
-                    Continue Exploring
+                  <p className="font-serif italic text-primary-text/40 text-lg">Your manifest is currently clear.</p>
+                  <button onClick={onClose} className="mt-6 text-[10px] font-black uppercase tracking-widest text-primary-text underline underline-offset-8 decoration-home-accent/30">
+                    Return to Marketplace
                   </button>
                 </div>
               ) : (
                 cartItems.map((item) => (
                   <motion.div 
                     layout
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
                     key={item.id} 
-                    className="flex gap-4 group"
+                    className="flex gap-6 group relative"
                   >
-                    <div className="w-24 h-24 shrink-0 rounded-2xl bg-white border border-black/5 overflow-hidden shadow-sm">
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                    <div className="w-20 h-20 shrink-0 rounded-[20px] bg-white border border-black/5 overflow-hidden shadow-inner">
+                      <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     </div>
                     
                     <div className="flex-grow flex flex-col py-1">
-                      <div className="flex justify-between items-start mb-1">
-                        <h4 className="font-bold text-primary-text text-sm md:text-base leading-tight">
+                      <div className="flex justify-between items-start">
+                        <h4 className="font-black text-primary-text text-sm uppercase tracking-tight leading-tight pr-4">
                           {item.title}
                         </h4>
                         <button 
                           onClick={() => removeFromCart(item.id)} 
-                          className="text-primary-text/20 hover:text-red-500 transition-colors p-1"
+                          className="text-primary-text/10 hover:text-red-500 transition-colors"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 size={14} />
                         </button>
                       </div>
                       
-                      <p className="text-xs font-serif italic text-primary-text/50 mb-auto">
-                        £{item.price}
+                      <p className="text-[10px] font-black uppercase tracking-widest text-primary-text/20 mt-1">
+                        Digital License
                       </p>
                       
-                      <div className="flex items-center gap-4 mt-2 bg-black/5 w-fit px-3 py-1 rounded-full">
-                        <button 
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)} 
-                          className="p-1 hover:text-primary-text text-primary-text/40 transition-colors"
-                        >
-                          <Minus size={14}/>
-                        </button>
-                        <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
-                        <button 
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)} 
-                          className="p-1 hover:text-primary-text text-primary-text/40 transition-colors"
-                        >
-                          <Plus size={14}/>
-                        </button>
-                      </div>
+                      <p className="mt-auto font-black text-primary-text/60">
+                        £{item.price}
+                      </p>
                     </div>
                   </motion.div>
                 ))
@@ -111,29 +102,35 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
 
             {/* FOOTER */}
             {cartItems.length > 0 && (
-              <div className="p-6 md:p-8 bg-white/50 border-t border-white/40 space-y-6">
+              <div className="p-8 bg-white/80 border-t border-white/40 space-y-8 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
                 <div className="flex justify-between items-end">
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase tracking-widest font-black text-primary-text/30 block">
-                      Subtotal
+                    <span className="text-[10px] uppercase tracking-[0.3em] font-black text-primary-text/20 block">
+                      Total Acquisition
                     </span>
-                    <span className="text-3xl font-bold tracking-tighter text-primary-text">
+                    <span className="text-4xl font-black tracking-tighter text-primary-text">
                       £{cartTotal.toFixed(2)}
                     </span>
                   </div>
                 </div>
                 
-                <Link 
-                  href="/checkout" 
-                  onClick={onClose}
-                  className="flex items-center justify-center w-full py-5 bg-primary-text text-white rounded-full font-bold shadow-xl hover:shadow-primary-text/20 active:scale-[0.96] transition-all"
-                >
-                  Checkout Universe
-                </Link>
-                
-                <p className="text-[10px] text-center text-primary-text/30 font-medium">
-                  Shipping & taxes calculated at checkout
-                </p>
+                <div className="space-y-4">
+                  <Link 
+                    href="/cart" 
+                    onClick={onClose}
+                    className="flex items-center justify-center w-full py-6 bg-primary-text text-white rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-xl hover:shadow-primary-text/20 active:scale-[0.98] transition-all group"
+                  >
+                    Proceed to Transmission <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  
+                  <div className="flex items-center justify-center gap-4 text-[9px] font-black uppercase tracking-[0.3em] text-primary-text/20">
+                    <div className="flex items-center gap-1.5">
+                      <ShieldCheck size={12} /> Secure
+                    </div>
+                    <div className="w-1 h-1 rounded-full bg-black/10" />
+                    <span>UK Standard</span>
+                  </div>
+                </div>
               </div>
             )}
           </motion.div>

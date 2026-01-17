@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 1. MOBILE CONVENIENCE: Force pass build checks
+  // 1. MOBILE CONVENIENCE: Useful for rapid deployment
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -8,25 +8,56 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  // 2. KINETIC ASSETS: Required for 3D library stability
+  // 2. KINETIC ASSETS: Essential for 3D library stability on mobile
   transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],
 
-  // 3. IMAGE DELIVERY: Global support with optimization
+  // 3. IMAGE DELIVERY: Optimized for Supabase & Remote Assets
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: '**.supabase.co', // Explicitly trust your Supabase storage
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com', // For your placeholder hero images
+      },
+      {
+        protocol: 'https',
+        hostname: '**', // Keep as fallback for now
       },
     ],
-    deviceSizes: [640, 750, 828, 1080, 1200], // Mobile-optimized sizes
-    formats: ['image/avif', 'image/webp'],   // Data-saving formats
+    deviceSizes: [640, 750, 828, 1080, 1200], 
+    formats: ['image/avif', 'image/webp'],   
   },
 
-  // 4. MOBILE UX: Prevent scroll jumping
+  // 4. SECURITY & UX
   experimental: {
-    scrollRestoration: true,
-  }
+    scrollRestoration: true, // Prevents "jarring" jumps on mobile back-button
+  },
+  
+  // 5. PRODUCTION HEADERS: Prevents "Clickjacking" and improves security
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
+    ]
+  },
 };
 
 module.exports = nextConfig;

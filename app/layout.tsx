@@ -1,39 +1,14 @@
-import type { Metadata, Viewport } from "next";
-import { Outfit, Lora } from "next/font/google";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import LiquidCursor from "../components/LiquidCursor";
-import PageLoader from "../components/PageLoader";
-import SuccessToastWrapper from "../components/SuccessToastWrapper";
-import { CartProvider } from "../context/CartContext";
-import "./globals.css";
+import './globals.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
-const outfit = Outfit({ 
-  subsets: ["latin"],
-  variable: "--font-outfit",
-  display: "swap",
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
 });
 
-const lora = Lora({ 
-  subsets: ["latin"],
-  variable: "--font-lora", 
-  display: "swap",
-});
-
+// MERGED METADATA: Exactly one definition
 export const metadata: Metadata = {
-  title: "Kynar Universe | One Universe. Infinite Solutions.",
-  description: "A calm, modern digital space where everyday tools help you work, live, and learn with ease.",
-};
-
-// PREVENT ZOOMING ON MOBILE INPUTS (Premium UX)
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-};
-
-export const metadata = {
   metadataBase: new URL('https://kynar-universe-v1.netlify.app'),
   title: {
     default: 'Kynar Universe | One Universe. Infinite Solutions.',
@@ -47,7 +22,7 @@ export const metadata = {
     siteName: 'Kynar Universe',
     images: [
       {
-        url: '/opengraph-image.png', // Points to public/opengraph-image.png
+        url: '/opengraph-image.png',
         width: 1200,
         height: 630,
       },
@@ -65,47 +40,21 @@ export const metadata = {
     icon: '/favicon.ico',
     apple: '/apple-icon.png',
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
-
-
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="scroll-smooth selection:bg-home-accent/30">
-      <body className={`
-        ${outfit.variable} ${lora.variable} 
-        antialiased 
-        bg-home-base 
-        text-primary-text 
-        flex flex-col min-h-screen 
-        relative overflow-x-hidden
-        transition-colors duration-1000 ease-in-out
-      `}>
-        <CartProvider>
-          {/* 1. LAYER 1000: PRE-LOADER (Absolute Top) */}
-          <PageLoader />
-          
-          {/* 2. LAYER 100: GLOBAL FEEDBACK */}
-          <SuccessToastWrapper />
-          
-          {/* 3. LAYER 60: NAVIGATION */}
-          <Navbar />
-          
-          {/* 4. LAYER 10: MAIN CONTENT SECTOR */}
-          <main className="flex-grow relative z-10 flex flex-col">
-            {children}
-          </main>
-          
-          {/* 5. LAYER 5: ATMOSPHERIC BACKGROUND */}
-          <LiquidCursor />
-          
-          {/* 6. LAYER 1: FOOTER */}
-          <Footer />
-        </CartProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        {children}
       </body>
     </html>
   );

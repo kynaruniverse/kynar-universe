@@ -6,7 +6,6 @@ import { revalidatePath } from 'next/cache';
 
 /**
  * HELPER: Secure Server-Side Client
- * Handles the cookie exchange between the Kynar Universe and Supabase.
  */
 function createClient() {
   const cookieStore = cookies();
@@ -23,14 +22,14 @@ function createClient() {
           try {
             cookieStore.set({ name, value, ...options });
           } catch (error) {
-            // Handled by middleware in most SSR cases
+            // Managed by middleware
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options });
           } catch (error) {
-            // Handled by middleware
+            // Managed by middleware
           }
         },
       },
@@ -45,11 +44,14 @@ export async function signup(formData: FormData) {
   
   const supabase = createClient();
 
+  // Sanitize the Site URL to prevent double-slashes in the redirect
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
+  
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+      emailRedirectTo: `${siteUrl}/auth/callback`, // Aligned with our callback route
     },
   });
 
@@ -58,7 +60,7 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout');
-  return { success: "Verification signal sent. Please check your origin email." };
+  return { success: "Verification signal sent. Check your origin email to finalize your presence." };
 }
 
 // 2. VERIFY IDENTITY (LOG IN)
@@ -74,10 +76,11 @@ export async function login(formData: FormData) {
   });
 
   if (error) {
-    return { error: "Identity verification failed. Please check your credentials." };
+    // Custom error message for better Kinetic UI feedback
+    return { error: "Identity verification failed. Ensure your credentials are correct." };
   }
   
-  // Clear the cache to show logged-in state across the site
+  // Force a hard refresh of the cache so the Navbar and Library update instantly
   revalidatePath('/', 'layout');
   
   return { success: true };

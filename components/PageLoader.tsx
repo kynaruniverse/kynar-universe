@@ -7,14 +7,16 @@ export default function PageLoader() {
 
   useEffect(() => {
     // Premium Feel: We wait for the window 'load' event, 
-    // but cap it at 2.5s so the user isn't stuck if a 3D asset is slow.
+    // but cap it at 3s to ensure the user isn't stuck.
     const handleLoad = () => setLoading(false);
     
     if (document.readyState === "complete") {
-      setLoading(false);
+      // Small delay even if ready to prevent "flicker"
+      const flickerTimer = setTimeout(() => setLoading(false), 500);
+      return () => clearTimeout(flickerTimer);
     } else {
       window.addEventListener("load", handleLoad);
-      const backupTimer = setTimeout(() => setLoading(false), 2500);
+      const backupTimer = setTimeout(() => setLoading(false), 3000);
       return () => {
         window.removeEventListener("load", handleLoad);
         clearTimeout(backupTimer);
@@ -29,32 +31,35 @@ export default function PageLoader() {
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
-            transition: { duration: 0.8, ease: [0.19, 1, 0.22, 1] } 
+            transition: { duration: 1.2, ease: [0.19, 1, 0.22, 1] } 
           }}
-          style={{ transform: "translateZ(0)" }}
           className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-white"
         >
-          {/* 1. KINETIC MORPHING RING */}
+          {/* 1. KINETIC MORPHING RING (The Core) */}
           <div className="relative flex items-center justify-center">
-            {/* Inner Glow */}
+            {/* Pulsing Aura */}
             <motion.div 
-              animate={{ opacity: [0.2, 0.5, 0.2] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute w-24 h-24 bg-home-accent/20 blur-3xl rounded-full"
+              animate={{ 
+                scale: [1, 1.5, 1],
+                opacity: [0.1, 0.3, 0.1] 
+              }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="absolute w-32 h-32 bg-home-accent/30 blur-[60px] rounded-full"
             />
             
             <motion.div
               animate={{ 
                 rotate: 360,
-                borderRadius: ["30% 70% 70% 30% / 30% 30% 70% 70%", "50%", "30% 70% 70% 30% / 30% 30% 70% 70%"],
-                scale: [1, 1.15, 1]
+                borderRadius: ["40% 60% 60% 40% / 40% 40% 60% 60%", "50%", "40% 60% 60% 40% / 40% 40% 60% 60%"],
+                scale: [1, 1.1, 1],
+                borderWidth: ["2px", "4px", "2px"]
               }}
               transition={{ 
-                duration: 3, 
+                duration: 4, 
                 repeat: Infinity, 
-                ease: "easeInOut" 
+                ease: "linear" 
               }}
-              className="w-16 h-16 border-[3px] border-home-accent border-r-tools-accent border-b-life-accent shadow-2xl"
+              className="w-20 h-20 border-t-tools-accent border-r-life-accent border-b-cat-home-accent border-l-home-accent shadow-premium"
             />
           </div>
           
@@ -62,16 +67,26 @@ export default function PageLoader() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="mt-12 text-center"
+            transition={{ delay: 0.5, duration: 1 }}
+            className="mt-16 text-center space-y-2"
           >
-            <h2 className="text-[10px] font-bold tracking-[0.5em] uppercase text-primary-text/30">
-              Initializing
+            <h2 className="text-[10px] font-black tracking-[0.6em] uppercase text-primary-text/20">
+              Synchronizing
             </h2>
-            <p className="mt-2 text-sm font-serif italic text-primary-text/60">
+            <p className="text-xl font-serif italic text-primary-text/60">
               Kynar Universe
             </p>
           </motion.div>
+
+          {/* 3. SUBTLE PROGRESS LINE */}
+          <div className="absolute bottom-20 w-32 h-[1px] bg-black/5 overflow-hidden">
+            <motion.div 
+              initial={{ x: "-100%" }}
+              animate={{ x: "100%" }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full h-full bg-gradient-to-r from-transparent via-home-accent to-transparent"
+            />
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
