@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -13,7 +15,6 @@ export default function CartPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [hasConsented, setHasConsented] = useState(false); 
   const router = useRouter();
-  const dynamic = "force-dynamic";
 
   async function handleCheckout() {
     if (!hasConsented || isProcessing) return;
