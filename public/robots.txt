@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /marketplace
+Allow: /guides
+Allow: /help
+Allow: /terms
+Allow: /privacy
+
+# Block sensitive areas
+Disallow: /account
+Disallow: /cart
+Disallow: /api/
+Disallow: /maintenance
+
+# Link to your sitemap (Update with your actual URL)
+Sitemap: https://kynar-universe-v1.netlify.app/sitemap.xml

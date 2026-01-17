@@ -1,64 +1,109 @@
+"use client";
+import React from 'react';
 import Link from 'next/link';
-import { Mail, MessageCircle, FileQuestion } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Mail, FileQuestion, ArrowUpRight, MessageCircle } from 'lucide-react';
 
 export default function HelpPage() {
   return (
-    <main className="min-h-screen bg-home-surface pb-24">
+    <main className="min-h-screen bg-home-base pb-32 transition-colors duration-1000">
       
-      {/* HERO */}
-      <section className="px-4 py-20 text-center border-b border-black/5">
-        <h1 className="text-4xl font-bold font-sans text-primary-text mb-4">
-          How can we help?
-        </h1>
-        <p className="text-xl font-serif text-primary-text/70 italic max-w-2xl mx-auto">
-          Support, answers, and contact info. We are here to help you get settled.
-        </p>
+      {/* 1. HERO SECTION */}
+      <section className="px-6 py-24 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-5xl md:text-7xl font-black font-sans text-primary-text mb-6 tracking-tighter uppercase">
+            Get Settled
+          </h1>
+          <p className="text-lg md:text-2xl font-serif text-primary-text/60 italic max-w-2xl mx-auto leading-relaxed px-4">
+            Support, answers, and cosmic guidance. <br className="hidden md:block" /> We are here to help you navigate the universe.
+          </p>
+        </motion.div>
       </section>
 
-      {/* SUPPORT GRID */}
-      <section className="max-w-4xl mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* 2. SUPPORT SECTOR */}
+      <section className="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
         
-        {/* CARD 1: FAQ */}
-        <div className="bg-white p-8 rounded-card border border-gray-100 shadow-sm">
-          <FileQuestion className="w-8 h-8 text-home-accent mb-4" />
-          <h2 className="text-xl font-bold font-sans text-primary-text mb-2">Common Questions</h2>
-          <ul className="space-y-3 text-primary-text/80 mt-4">
-            <li className="flex items-start">
-              <span className="mr-2">•</span>
-              <span><strong>Downloads:</strong> Links are sent immediately via email.</span>
+        {/* CARD 1: KNOWLEDGE BASE */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="bg-white/40 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] border border-white/40 shadow-glass flex flex-col"
+        >
+          <div className="w-12 h-12 bg-home-accent/10 rounded-2xl flex items-center justify-center mb-8 text-home-accent">
+            <FileQuestion size={24} />
+          </div>
+          
+          <h2 className="text-2xl font-bold font-sans text-primary-text mb-6 tracking-tight">Common Questions</h2>
+          
+          <ul className="space-y-6 text-sm md:text-base">
+            <li className="flex gap-4 group">
+              <div className="w-1 h-1 bg-home-accent rounded-full mt-2.5 shrink-0" />
+              <p className="text-primary-text/70 leading-relaxed">
+                <strong className="text-primary-text">Downloads:</strong> Links are transmitted to your signal origin (email) immediately after checkout.
+              </p>
             </li>
-            <li className="flex items-start">
-              <span className="mr-2">•</span>
-              <span><strong>Refunds:</strong> Digital products are non-refundable. [span_4](start_span)[span_5](start_span)Reply to your receipt for help.</span>
-              
-              </li>
-            <li className="flex items-start">
-              <span className="mr-2">•</span>
-              <span><strong>Formats:</strong> We support PDF, Notion, and Excel.</span>
+            <li className="flex gap-4 group">
+              <div className="w-1 h-1 bg-home-accent rounded-full mt-2.5 shrink-0" />
+              <p className="text-primary-text/70 leading-relaxed">
+                <strong className="text-primary-text">Refunds:</strong> As digital matter cannot be returned, all sales are final. We are happy to troubleshoot any issues.
+              </p>
+            </li>
+            <li className="flex gap-4 group">
+              <div className="w-1 h-1 bg-home-accent rounded-full mt-2.5 shrink-0" />
+              <p className="text-primary-text/70 leading-relaxed">
+                <strong className="text-primary-text">Formats:</strong> Native support for PDF, Notion, and Excel spreadsheets.
+              </p>
             </li>
           </ul>
-        </div>
+        </motion.div>
 
-        {/* CARD 2: CONTACT */}
-        <div className="bg-white p-8 rounded-card border border-gray-100 shadow-sm">
-          <Mail className="w-8 h-8 text-home-accent mb-4" />
-          <h2 className="text-xl font-bold font-sans text-primary-text mb-2">Contact Support</h2>
-          <p className="text-primary-text/80 mb-6 leading-relaxed">
-            Need help with an order or have a question before buying? Support responds within 24 hours.
+        {/* CARD 2: SIGNAL ORIGIN (CONTACT) */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="bg-white/40 backdrop-blur-2xl p-8 md:p-10 rounded-[40px] border border-white/40 shadow-glass flex flex-col"
+        >
+          <div className="w-12 h-12 bg-tools-accent/10 rounded-2xl flex items-center justify-center mb-8 text-tools-accent">
+            <Mail size={24} />
+          </div>
+          
+          <h2 className="text-2xl font-bold font-sans text-primary-text mb-6 tracking-tight">Contact Support</h2>
+          <p className="text-primary-text/60 font-serif italic mb-10 leading-relaxed">
+            Need help with an order or have a question before entering the marketplace? Our team responds within 24 hours.
           </p>
-          <a 
-            href="mailto:support@kynaruniverse.co.uk" 
-            className="inline-flex items-center font-bold text-home-accent hover:opacity-80 border-b-2 border-home-accent/20 hover:border-home-accent transition-all"
-          >
-            support@kynaruniverse.co.uk
-          </a>
-        </div>
+          
+          <div className="mt-auto">
+            <a 
+              href="mailto:support@kynaruniverse.co.uk" 
+              className="group flex items-center justify-between w-full p-6 bg-white/60 hover:bg-white rounded-3xl border border-white/40 transition-all active:scale-[0.98] shadow-sm"
+            >
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase tracking-widest font-black text-primary-text/30 mb-1">Email Support</span>
+                <span className="text-sm md:text-base font-bold text-primary-text">support@kynaruniverse.co.uk</span>
+              </div>
+              <ArrowUpRight className="text-primary-text/20 group-hover:text-primary-text group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+            </a>
+          </div>
+        </motion.div>
 
       </section>
 
-      {/* FOOTER NOTE */}
-      <div className="text-center text-primary-text/50 text-sm">
-        <p>Operating Hours: Mon-Fri, 9am - 5pm GMT</p>
+      {/* 3. FOOTER LOGO MARK */}
+      <div className="mt-24 text-center">
+        <div className="flex justify-center gap-2 mb-4">
+           <div className="w-1 h-1 rounded-full bg-home-accent" />
+           <div className="w-1 h-1 rounded-full bg-tools-accent" />
+           <div className="w-1 h-1 rounded-full bg-life-accent" />
+        </div>
+        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary-text/30">
+          Mon - Fri // 09:00 - 17:00 GMT
+        </p>
       </div>
 
     </main>

@@ -2,54 +2,80 @@
 
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
-// 1. HELPER: CONNECT TO DB SECURELY
-function createClient() {
+/**
+ * 1. SECURE SERVER CLIENT
+ */
+async function createClient() {
   const cookieStore = cookies();
+  
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) { return cookieStore.get(name)?.value; },
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
         set(name: string, value: string, options: CookieOptions) {
-          try { cookieStore.set({ name, value, ...options }); } catch (error) {}
+          try {
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            // Handled by middleware
+          }
         },
         remove(name: string, options: CookieOptions) {
-          try { cookieStore.set({ name, value: '', ...options }); } catch (error) {}
+          try {
+            cookieStore.set({ name, value: '', ...options });
+          } catch (error) {
+            // Handled by middleware
+          }
         },
       },
     }
   );
 }
 
-// 2. THE CHECKOUT FUNCTION
+/**
+ * 2. THE CHECKOUT TRANSMISSION
+ */
 export async function processCheckout(productSlugs: string[]) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
-  // A. Check if user is logged in
-  const { data: { user } } = await supabase.auth.getUser();
+  // A. IDENTITY VERIFICATION
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
   
-  if (!user) {
-    return { error: "You must be logged in to checkout." };
+  if (authError || !user) {
+    return { error: "Authentication required. Please log in to your Kynar account." };
   }
 
-  // B. Prepare the "Receipts" (Rows to insert)
-  // We map each product slug to a new row in the database
-  const purchases = productSlugs.map(slug => ({
+  if (!productSlugs || productSlugs.length === 0) {
+    return { error: "Your manifest is empty. No items to transmit." };
+  }
+
+  // B. DATA PREPARATION (Including Legal Evidence)
+  const purchaseData = productSlugs.map(slug => ({
     user_id: user.id,
-    product_id: slug, // Saving the slug (e.g., 'kynar-ultimate-guide')
+    product_id: slug, // Matches the 'product_id' column in your SQL
+    purchased_at: new Date().toISOString(),
+    legal_consent_given: true,
+    consent_timestamp: new Date().toISOString()
   }));
 
-  // C. Insert into Database
-  const { error } = await supabase
+  // C. DATABASE INSERTION
+  const { error: dbError } = await supabase
     .from('purchases')
-    .insert(purchases);
+    .insert(purchaseData);
 
-  if (error) {
-    console.error("Checkout Error:", error);
-    return { error: "Failed to process order. Please try again." };
+  if (dbError) {
+    console.error("Transmission Interrupted:", dbError.message);
+    return { error: "The universe is experiencing turbulence. Please try again shortly." };
   }
+
+  // D. CACHE REVALIDATION
+  revalidatePath('/account');
+  revalidatePath('/marketplace');
 
   return { success: true };
 }

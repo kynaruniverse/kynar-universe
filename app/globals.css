@@ -2,13 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth scrolling for the whole universe */
-html {
-  scroll-behavior: smooth;
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-home-base text-primary-text antialiased selection:bg-home-accent/30;
+    min-height: 100vh;
+    position: relative;
+    /* Optimize for smooth scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
-/* Default Background */
-body {
-  background-color: #CFEAFF;
-  /* Default Home Base */
+/* 1. THE PREMIUM "GRAIN" TEXTURE (Performance Optimized) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.03; /* Lowered for cleaner mobile look */
+  z-index: 50;
+  pointer-events: none;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  /* Static noise is easier on the battery than filtered noise */
+}
+
+/* 2. GLASSMORPHISM UTILITIES */
+@layer components {
+  .glass-card {
+    @apply bg-white/40 backdrop-blur-xl border border-white/20 shadow-glass;
+  }
+  
+  .glass-nav {
+    @apply bg-white/30 backdrop-blur-2xl border border-white/10;
+  }
+
+  /* Utility to hide scrollbars on mobile-first views */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* 3. KINETIC REFINEMENTS */
+canvas {
+  touch-action: none; /* Prevents accidental zooming while playing with the 3D sphere */
+}
+
+/* 4. CUSTOM SCROLLBAR (Desktop Only) */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary-text/10 rounded-full hover:bg-primary-text/30 transition-colors;
+  }
+}
+
+/* 5. SELECTION COLOR */
+::selection {
+  @apply bg-home-accent/30 text-primary-text;
 }

@@ -1,8 +1,8 @@
-import { supabase } from '../../lib/supabase'; // <--- Fixed "Import" to "import"
+import { supabase } from '../../lib/supabase';
 import ProductCard from '../../components/ProductCard';
 import MarketplaceFilters from '../../components/MarketplaceFilters';
 
-// Force dynamic rendering so search works instantly
+// Force dynamic rendering for instant search/filter updates
 export const revalidate = 0;
 
 export default async function Marketplace({ 
@@ -11,74 +11,65 @@ export default async function Marketplace({
   searchParams: { category?: string; search?: string } 
 }) {
   
-  // 1. Get filters from URL
   const categoryFilter = searchParams?.category;
   const searchFilter = searchParams?.search;
 
-  // 2. Build the query
+  // Build the Supabase Query
   let query = supabase.from('products').select('*');
 
-  // 3. Apply Category Filter
   if (categoryFilter && categoryFilter !== 'All') {
     query = query.eq('category', categoryFilter);
   }
 
-  // 4. Apply Search Filter
   if (searchFilter) {
     query = query.ilike('title', `%${searchFilter}%`);
   }
 
-  // 5. Default Sort
   query = query.order('id', { ascending: false });
 
-  // 6. Fetch data
   const { data: products, error } = await query;
 
-  if (error) {
-    console.error('Error fetching products:', error);
-  }
+  if (error) console.error('Supabase Error:', error);
 
-  // --- DYNAMIC THEMING LOGIC ---
-  let themeClass = "bg-home-base"; // Default Blue
-  let headerClass = "border-home-accent/10";
-  
-  if (categoryFilter === 'Tools') {
-    themeClass = "bg-tools-base"; // Violet
-    headerClass = "border-tools-accent/20";
-  } else if (categoryFilter === 'Life') {
-    themeClass = "bg-life-base"; // Green
-    headerClass = "border-life-accent/20";
-  } else if (categoryFilter === 'Home') {
-    themeClass = "bg-cat-home-base"; // Peach
-    headerClass = "border-cat-home-accent/20";
-  }
-  // ------------------------------------------------
+  // --- PREMIUM DYNAMIC THEMING ---
+  const themes = {
+    Tools: { base: "bg-tools-base", header: "border-tools-accent/10", accent: "text-tools-accent" },
+    Life: { base: "bg-life-base", header: "border-life-accent/10", accent: "text-life-accent" },
+    Home: { base: "bg-cat-home-base", header: "border-cat-home-accent/10", accent: "text-cat-home-accent" },
+    All: { base: "bg-home-base", header: "border-home-accent/10", accent: "text-home-accent" }
+  };
+
+  const activeTheme = themes[categoryFilter as keyof typeof themes] || themes.All;
 
   return (
-    <main className={`min-h-screen ${themeClass} pb-24 transition-colors duration-700 ease-in-out`}>
+    <main className={`min-h-screen ${activeTheme.base} pb-32 transition-colors duration-1000 ease-in-out`}>
       
-      {/* HEADER SECTION */}
-      <div className={`bg-white/50 backdrop-blur-sm px-4 py-16 text-center border-b ${headerClass} mb-8 transition-all duration-700`}>
-        <h1 className="text-4xl md:text-5xl font-bold font-sans text-primary-text mb-4 animate-fade-in">
-          {categoryFilter && categoryFilter !== 'All' ? `${categoryFilter}` : 'Marketplace'}
-        </h1>
-        <p className="text-xl font-serif italic text-primary-text/70 max-w-2xl mx-auto animate-fade-in-up">
-          {(!categoryFilter || categoryFilter === 'All') && "Explore calm tools for work, life, and home."}
-          {categoryFilter === 'Tools' && "Everything you need to build, create, and stay organised. Clear tools for a brighter workflow."}
-          {categoryFilter === 'Life' && "Guides, ideas, and resources for everyday life. Explore what helps you learn, grow, and feel inspired."}
-          {categoryFilter === 'Home' && "Warm, simple tools for families, routines, and daily comfort. A space for the people who matter."}
-        </p>
+      {/* 1. DYNAMIC HEADER */}
+      <div className={`bg-white/40 backdrop-blur-md px-6 py-20 text-center border-b ${activeTheme.header} mb-12 transition-all duration-1000`}>
+        <div className="max-w-4xl mx-auto space-y-4">
+           <h1 className="text-5xl md:text-7xl font-black font-sans text-primary-text tracking-tighter animate-fade-in uppercase">
+            {categoryFilter && categoryFilter !== 'All' ? categoryFilter : 'Marketplace'}
+          </h1>
+          <p className="text-lg md:text-2xl font-serif italic text-primary-text/60 leading-relaxed max-w-2xl mx-auto px-4 animate-fade-in-up">
+            {(!categoryFilter || categoryFilter === 'All') && "Explore calm tools for work, life, and home."}
+            {categoryFilter === 'Tools' && "Clear tools for a brighter, more organized workflow."}
+            {categoryFilter === 'Life' && "Resources to help you learn, grow, and feel inspired."}
+            {categoryFilter === 'Home' && "Simple tools for the routines and people who matter."}
+          </p>
+        </div>
       </div>
 
-      {/* MAIN CONTENT */}
-      <div className="max-w-7xl mx-auto px-4">
+      {/* 2. MAIN CONTENT SECTOR */}
+      <div className="max-w-7xl mx-auto px-6">
         
-        {/* FILTERS */}
-        <MarketplaceFilters />
+        {/* FILTERS COMPONENT */}
+        <div className="mb-12">
+          <MarketplaceFilters />
+        </div>
 
-        {/* PRODUCT GRID */}
+        {/* 3. KINETIC PRODUCT GRID */}
         {products && products.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in-up">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-fade-in-up">
             {products.map((product) => (
               <ProductCard 
                 key={product.id}
@@ -92,18 +83,23 @@ export default async function Marketplace({
             ))}
           </div>
         ) : (
-          /* Empty State */
-          <div className="text-center py-20 bg-white/60 rounded-card border border-white/20 shadow-sm backdrop-blur-md">
-            <p className="text-2xl font-bold text-primary-text/40 mb-2">No matches found.</p>
-            <p className="text-primary-text/60 font-serif italic">
-              Try adjusting your search or switching categories.
+          /* Empty State (Premium Glass Design) */
+          <div className="text-center py-32 bg-white/30 rounded-[40px] border border-white/20 shadow-glass backdrop-blur-xl max-w-2xl mx-auto px-8 animate-fade-in">
+            <div className={`w-16 h-16 ${activeTheme.base} rounded-full mx-auto mb-6 flex items-center justify-center border border-black/5`}>
+               <span className="text-2xl">✨</span>
+            </div>
+            <p className="text-2xl font-bold text-primary-text tracking-tight mb-2">The Universe is quiet here.</p>
+            <p className="text-primary-text/50 font-serif italic mb-8">
+              We couldn't find matches for "{searchFilter}" in {categoryFilter || 'all sectors'}.
             </p>
-            <a href="/marketplace" className="inline-block mt-4 text-sm font-bold text-primary-text/80 hover:underline">
-              Clear all filters
+            <a 
+              href="/marketplace" 
+              className="px-8 py-3 bg-primary-text text-white rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all inline-block"
+            >
+              Reset Filters
             </a>
           </div>
         )}
-
       </div>
     </main>
   );
