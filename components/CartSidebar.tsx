@@ -11,7 +11,7 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* 1. DIMMED OVERLAY: Calm by Default */}
+          {/* 1. DIMMED OVERLAY: Darkens background when sidebar is open */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -20,7 +20,7 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
             className="fixed inset-0 z-[150] bg-brand-text/10 backdrop-blur-[2px]"
           />
 
-          {/* 2. MANIFEST PANEL: Physical Depth & Mocha Surfaces */}
+          {/* 2. CART PANEL: Main sidebar container */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -28,14 +28,14 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
             transition={{ type: "spring", damping: 38, stiffness: 280 }}
             className="fixed right-0 top-0 z-[200] h-full w-full md:max-w-md bg-brand-base border-l border-brand-surface/10 shadow-tactile flex flex-col will-change-transform"
           >
-            {/* HEADER: Curated Identity */}
+            {/* HEADER: Cart info and close button */}
             <div className="p-10 border-b border-brand-surface/10 flex items-center justify-between">
               <div className="flex flex-col">
                 <h2 className="font-sans text-2xl font-semibold tracking-tight text-brand-text">
-                  Order Manifest
+                  Your Cart
                 </h2>
                 <p className="font-body text-[10px] font-bold text-brand-text/30 uppercase tracking-[0.3em] mt-1">
-                  {cartItems.length} {cartItems.length === 1 ? 'Selection' : 'Selections'}
+                  {cartItems.length} {cartItems.length === 1 ? 'Item' : 'Items'}
                 </p>
               </div>
               <button 
@@ -46,16 +46,16 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
               </button>
             </div>
 
-            {/* ITEM LIST: Space is a Luxury Signal */}
+            {/* ITEM LIST: List of products in cart */}
             <div className="flex-grow overflow-y-auto px-10 py-10 space-y-12 scrollbar-hide">
               {cartItems.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center">
                   <div className="w-20 h-20 bg-brand-surface/10 rounded-inner flex items-center justify-center mb-8">
                     <ShoppingBag size={24} className="text-brand-text/10" strokeWidth={1.2} />
                   </div>
-                  <p className="font-body text-brand-text/40 font-medium">The manifest is currently empty.</p>
+                  <p className="font-body text-brand-text/40 font-medium">Your cart is currently empty.</p>
                   <button onClick={onClose} className="mt-8 font-body text-[10px] font-bold uppercase tracking-widest text-brand-text/60 underline underline-offset-8 decoration-brand-accent/20 hover:text-brand-text transition-all">
-                    Browse Collection
+                    Start Shopping
                   </button>
                 </div>
               ) : (
@@ -85,7 +85,7 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
                       </div>
                       
                       <p className="font-body text-[9px] font-bold uppercase tracking-[0.25em] text-brand-text/20 mt-3">
-                       Preview Asset
+                       Digital Product
                       </p>
                       
                       <p className="mt-auto font-sans font-semibold text-brand-text/80 text-lg">
@@ -97,13 +97,13 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
               )}
             </div>
 
-            {/* FOOTER: Intelligence on Demand */}
+            {/* FOOTER: Totals and CTA */}
             {cartItems.length > 0 && (
               <div className="p-10 surface-mocha border-t border-brand-surface/10 space-y-10">
                 <div className="flex justify-between items-end">
                   <div className="space-y-2">
                     <span className="font-body text-[10px] uppercase tracking-[0.4em] font-bold text-brand-text/20 block">
-                      Total Value
+                      Subtotal
                     </span>
                     <span className="font-sans text-4xl font-semibold tracking-tight text-brand-text">
                       £{cartTotal.toFixed(2)}
@@ -117,12 +117,12 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
                     onClick={onClose}
                     className="btn-primary w-full py-6 flex items-center justify-center text-[10px] tracking-[0.3em] group"
                   >
-                    REVIEW SELECTIONS <ArrowRight size={14} className="ml-3 group-hover:translate-x-1 transition-transform" />
+                    VIEW CART <ArrowRight size={14} className="ml-3 group-hover:translate-x-1 transition-transform" />
                   </Link>
                   
                   <div className="flex items-center justify-center gap-5 font-body text-[9px] font-bold uppercase tracking-[0.3em] text-brand-text/20">
                     <div className="flex items-center gap-2">
-                      <ShieldCheck size={14} className="text-brand-accent/50" /> Registry Preview
+                      <ShieldCheck size={14} className="text-brand-accent/50" /> Secure Checkout
                     </div>
                     <div className="w-1 h-1 rounded-full bg-brand-text/10" />
                     <span>UK Standards</span>

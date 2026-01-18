@@ -1,16 +1,17 @@
 /**
- * THE MUSE ENGINE STYLE PROCESSOR
- * Foundation for high-fidelity tactile CSS and Humanist typography.
+ * POSTCSS CONFIGURATION
+ * Configures the post-processing pipeline for Tailwind CSS and Autoprefixer.
  */
 
 module.exports = {
   plugins: {
-    // Allows for modular, nested CSS patterns (Essential for Curator components)
+    // Enables support for nested CSS rules within Tailwind
     'tailwindcss/nesting': {}, 
     
+    // Core Tailwind CSS processing
     tailwindcss: {},
     
-    // Automatic browser compatibility for the UK Digital Standard
+    // Automatic browser prefixing for CSS compatibility
     autoprefixer: {},
   },
 }

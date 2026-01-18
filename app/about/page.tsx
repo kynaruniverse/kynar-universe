@@ -8,7 +8,7 @@ import { Sparkles, ArrowRight } from "lucide-react";
 export default function AboutPage() {
   const containerRef = useRef(null);
   
-  // 1. SCROLL TRACKING: Unhurried and smooth
+  // 1. SCROLL PERFORMANCE: Smooth tracking for page progress
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
@@ -19,21 +19,21 @@ export default function AboutPage() {
   return (
     <main ref={containerRef} className="relative bg-brand-base transition-colors duration-1000">
       
-      {/* 1. PERSISTENT MUSE BACKGROUND: Intelligence on Demand */}
+      {/* 1. BACKGROUND: Subtle visual atmosphere */}
       <div className="fixed top-0 h-[100dvh] w-full z-0 overflow-hidden opacity-50 pointer-events-none">
         <UniverseCanvas />
       </div>
 
-      {/* 2. PROGRESS INDICATOR: Subtle Protocol Line */}
+      {/* 2. PROGRESS INDICATOR: Visual scroll depth marker */}
       <motion.div 
         style={{ scaleX: smoothProgress }}
         className="fixed top-0 left-0 right-0 h-[3px] bg-brand-accent z-[100] origin-left opacity-30"
       />
 
-      {/* 3. EDITORIAL CONTENT LAYERS */}
+      {/* 3. PAGE CONTENT */}
       <div className="relative z-10">
         
-        {/* SECTION 1: THE VISION */}
+        {/* SECTION 1: THE MISSION */}
         <section className="min-h-[100dvh] flex flex-col items-center justify-center px-6">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -42,15 +42,15 @@ export default function AboutPage() {
             className="max-w-6xl text-center"
           >
             <h1 className="text-6xl md:text-[120px] font-semibold font-sans tracking-tight mb-12 leading-[0.9] text-brand-text">
-              Curated Logic. <br/> Refined Living.
+              Quality Tools. <br/> Better Work.
             </h1>
             <p className="text-lg md:text-2xl font-medium text-brand-text/50 leading-relaxed max-w-2xl mx-auto px-4">
-              Kynar Muse was established to refine the modern digital journey—replacing noise with intentionality.
+              Kynar was established to refine your digital workflow—replacing complexity with intentionality.
             </p>
           </motion.div>
         </section>
 
-        {/* SECTION 2: THE PHILOSOPHY (Tactile Surface) */}
+        {/* SECTION 2: THE PHILOSOPHY */}
         <section className="min-h-[100dvh] flex items-center justify-center px-6">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
@@ -64,10 +64,10 @@ export default function AboutPage() {
             </div>
 
             <h2 className="text-4xl md:text-6xl font-semibold font-sans mb-10 tracking-tight text-brand-text leading-[1.1]">
-              Quiet Luxury <br/> in Every Interaction.
+              Simplicity <br/> in Every Interaction.
             </h2>
             <p className="text-xl md:text-2xl text-brand-text/60 mb-14 leading-relaxed font-medium">
-              We believe in <span className="text-brand-text font-semibold underline underline-offset-8 decoration-brand-accent/20">software that feels like a physical heirloom</span>—designed to endure, assist, and inspire.
+              We believe in <span className="text-brand-text font-semibold underline underline-offset-8 decoration-brand-accent/20">digital products built to last</span>—designed to endure, assist, and inspire.
             </p>
             
             <div className="flex items-center gap-4">
@@ -78,7 +78,7 @@ export default function AboutPage() {
           </motion.div>
         </section>
 
-        {/* SECTION 3: THE REGISTRY CALL */}
+        {/* SECTION 3: CALL TO ACTION */}
         <section className="min-h-[100dvh] flex items-center justify-center px-6">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -87,17 +87,17 @@ export default function AboutPage() {
             className="max-w-4xl text-center space-y-14"
           >
             <h2 className="text-6xl md:text-[100px] font-semibold font-sans tracking-tighter leading-[0.9] text-brand-text">
-              Establish <br/> Your Presence.
+              Join the <br/> Shop.
             </h2>
             <p className="text-lg font-medium text-brand-text/30 max-w-md mx-auto">
-              Join the private registry and begin curating your premium digital library today.
+              Create an account today to manage your digital products and resources.
             </p>
             <div className="pt-6">
               <Link 
                 href="/account"
                 className="btn-primary group inline-flex items-center gap-4 text-[10px] tracking-[0.3em]"
               >
-                REGISTER IDENTITY <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                CREATE ACCOUNT <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </motion.div>

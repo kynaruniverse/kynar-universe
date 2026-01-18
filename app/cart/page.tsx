@@ -13,30 +13,14 @@ import { processCheckout } from './actions';
 export default function CartPage() {
   const { cartItems, removeFromCart, clearCart, cartTotal } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
-  // PHASE 4: Initialized to false as the checkbox is hidden during preview
+  
+  // Checkout consent hidden until payments are active
   const [hasConsented, setHasConsented] = useState(false); 
   const router = useRouter();
 
   async function handleCheckout() {
-    // PHASE 1: Hard return to disable real checkout actions
+    // Checkout is disabled during the preview period
     return;
-    
-    /* setIsProcessing(true);
-    const productSlugs = cartItems.map(item => item.slug);
-    const result = await processCheckout(productSlugs);
-
-    if (result.error) {
-      setIsProcessing(false);
-      if (result.error === "unauthorized") {
-        router.push('/account?message=please_login');
-      } else {
-        alert(result.error);
-      }
-    } else {
-      clearCart();
-      router.push('/account?verified=true');
-    }
-    */
   }
 
   if (cartItems.length === 0) {
@@ -51,16 +35,16 @@ export default function CartPage() {
             <ShoppingCart size={32} />
           </div>
           <h1 className="text-4xl md:text-5xl font-semibold text-brand-text mb-6 tracking-tight">
-            Your selection is empty
+            Your cart is empty
           </h1>
           <p className="text-brand-text/40 mb-12 leading-relaxed max-w-sm mx-auto">
-            Explore the Muse collection to preview premium digital solutions for your workflow.
+            Explore the products in our collection to preview digital solutions for your workflow.
           </p>
           <Link 
             href="/marketplace" 
             className="btn-primary inline-flex items-center gap-3"
           >
-            Browse Collection <ArrowRight size={16} />
+            Browse Products <ArrowRight size={16} />
           </Link>
         </motion.div>
       </main>
@@ -72,14 +56,14 @@ export default function CartPage() {
       <div className="max-w-7xl mx-auto">
         <header className="mb-20">
           <h1 className="text-5xl md:text-7xl font-semibold text-brand-text tracking-tight mb-4">
-            Order Manifest
+            Checkout
           </h1>
-          <p className="text-brand-text/40 font-medium">Review your selection. Access will unlock shortly.</p>
+          <p className="text-brand-text/40 font-medium">Review your selection. Purchase access will unlock shortly.</p>
         </header>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
           
-          {/* LEFT: SELECTION LIST (Physical Depth) */}
+          {/* LEFT: ITEM LIST */}
           <div className="lg:col-span-2 space-y-6">
             <AnimatePresence mode='popLayout'>
               {cartItems.map((item) => (
@@ -115,14 +99,14 @@ export default function CartPage() {
             </AnimatePresence>
           </div>
 
-          {/* RIGHT: ORDER SUMMARY (Mocha Surface) */}
+          {/* RIGHT: ORDER SUMMARY */}
           <div className="lg:sticky lg:top-32">
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               className="brand-card p-10 surface-mocha shadow-tactile"
             >
-              <h2 className="text-[10px] font-bold text-brand-text/30 mb-10 tracking-[0.3em] uppercase">Selection Summary</h2>
+              <h2 className="text-[10px] font-bold text-brand-text/30 mb-10 tracking-[0.3em] uppercase">Order Summary</h2>
               
               <div className="space-y-6 mb-12">
                 <div className="flex justify-between text-[11px] font-bold text-brand-text/40 uppercase tracking-widest">
@@ -130,7 +114,7 @@ export default function CartPage() {
                   <span>£{cartTotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-brand-accent text-[11px] font-bold uppercase tracking-widest">
-                  <span className="flex items-center gap-2">Registration Status</span>
+                  <span className="flex items-center gap-2">Status</span>
                   <span>Preview</span>
                 </div>
                 <div className="pt-8 border-t border-brand-surface/20 flex justify-between items-end">
@@ -139,13 +123,10 @@ export default function CartPage() {
                 </div>
               </div>
 
-              {/* PHASE 4: Checkout consent hidden until payments exist */}
-              {/* This confuses users during a pre-sale/preview period */}
-              
               {/* ACTION BUTTON */}
               <button 
                 onClick={handleCheckout}
-                disabled={true} // Hard-disabled for Preview Mode
+                disabled={true} 
                 className="btn-primary w-full py-6 flex items-center justify-center opacity-40 cursor-not-allowed group mb-10"
               >
                 <span className="flex items-center gap-2">Unlocking Soon <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" /></span>
@@ -153,7 +134,7 @@ export default function CartPage() {
 
               <div className="flex flex-col gap-5 border-t border-brand-surface/20 pt-8">
                 <div className="flex items-center justify-center gap-3 text-[9px] font-bold uppercase tracking-[0.25em] text-brand-text/20">
-                  <ShieldCheck size={14} /> Registry Preview
+                  <ShieldCheck size={14} /> Shop Preview
                 </div>
                 <div className="flex items-center justify-center gap-3 text-[9px] font-bold uppercase tracking-[0.25em] text-brand-text/20">
                   <Scale size={14} /> UK Digital Standards

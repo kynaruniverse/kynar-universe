@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 1. REGISTRY INTEGRITY
-  // Luxury builds require total structural validity. 
-  // We move away from ignoring errors to ensure engine stability.
+  // 1. BUILD VALIDATION
+  // Ensuring strict type checking and linting to maintain site stability.
   typescript: {
     ignoreBuildErrors: false, 
   },
@@ -10,36 +9,36 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
 
-  // 2. MUSE CORE STABILITY
-  // Essential for the silent, smooth execution of 3D library assets.
+  // 2. DEPENDENCY OPTIMIZATION
+  // Required for the smooth execution of 3D components and libraries.
   transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],
 
-  // 3. ASSET DELIVERY PROTOCOL
-  // High-fidelity image optimization for a refined visual experience.
+  // 3. IMAGE OPTIMIZATION
+  // High-fidelity media settings for an optimized visual experience.
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.supabase.co', // Trusted Registry Storage
+        hostname: '**.supabase.co', // Primary Image Hosting (Supabase)
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // Editorial Content
+        hostname: 'images.unsplash.com', // External Media Assets
       }
     ],
-    // Optimized for the specific breakpoints of the Muse Engine
+    // Standard breakpoints for responsive image delivery
     deviceSizes: [640, 828, 1080, 1200, 1920], 
     formats: ['image/avif', 'image/webp'],   
-    minimumCacheTTL: 3600, // Reduced server load for a "Calm" backend
+    minimumCacheTTL: 3600, // Balanced caching for improved load times
   },
 
-  // 4. UX HARMONY
+  // 4. USER EXPERIENCE
   experimental: {
-    scrollRestoration: true, // Ensures "Quiet" navigation continuity
+    scrollRestoration: true, // Maintains scroll position during navigation
   },
   
-  // 5. THE TRUST PROTOCOL: Security Headers
-  // Hardening the engine against external intrusion.
+  // 5. SECURITY HEADERS
+  // Standard configurations to harden the application against external vulnerabilities.
   async headers() {
     return [
       {
@@ -59,7 +58,7 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()', // Minimalist privacy
+            value: 'camera=(), microphone=(), geolocation=()', // Privacy-first policy
           },
         ],
       },

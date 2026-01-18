@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-// Standardized Product Type for Muse Engine
+// Standard Product Type for the platform
 type Product = {
   id: string; 
   title: string;
@@ -22,11 +22,11 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const handleAdd = () => {
     if (isAdded) return;
     
-    // PHASE 1: Process Selection Intent (Pre-Acquisition)
+    // Add item to global cart state
     addToCart(product);
     setIsAdded(true);
     
-    // Intelligence Reset: allow for multiple selections after feedback pulse
+    // Reset button state after a short delay for UX feedback
     setTimeout(() => setIsAdded(false), 2500);
   };
 
@@ -47,7 +47,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         }
       `}
     >
-      {/* Intelligence Reveal: Subtle internal glow on success */}
+      {/* Visual Feedback: Subtle internal glow on success */}
       <AnimatePresence>
         {isAdded && (
           <motion.div 
@@ -69,7 +69,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
             className="flex items-center gap-3"
           >
             <Check size={14} strokeWidth={3} />
-            <span>Added to Manifest</span>
+            <span>Added to Cart</span>
           </motion.div>
         ) : (
           <motion.div

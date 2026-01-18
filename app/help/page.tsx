@@ -8,7 +8,7 @@ export default function HelpPage() {
   return (
     <main className="min-h-screen bg-brand-base pb-32 transition-colors duration-1000">
       
-      {/* 1. EDITORIAL HERO SECTION */}
+      {/* 1. HERO SECTION */}
       <section className="px-6 py-24 md:py-32 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -17,18 +17,18 @@ export default function HelpPage() {
           className="max-w-4xl mx-auto space-y-8"
         >
           <h1 className="text-6xl md:text-[100px] font-semibold font-sans text-brand-text mb-8 tracking-tight leading-[0.9]">
-            The Trust <br/> Registry
+            Support <br/> Center
           </h1>
           <p className="text-lg md:text-2xl font-medium text-brand-text/50 max-w-2xl mx-auto leading-relaxed px-4">
-            Procedural guidance, asset support, and direct assistance for your journey with the Muse Engine.
+            Practical guidance, product support, and direct assistance for your journey with our platform.
           </p>
         </motion.div>
       </section>
 
-      {/* 2. REGISTRY SUPPORT SECTIONS */}
+      {/* 2. SUPPORT SECTIONS */}
       <section className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
         
-        {/* CARD 1: PROCEDURAL KNOWLEDGE */}
+        {/* CARD 1: FREQUENTLY ASKED */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -44,16 +44,16 @@ export default function HelpPage() {
           </div>
           
           <h2 className="text-3xl md:text-5xl font-semibold font-sans text-brand-text mb-12 tracking-tight leading-[1.1]">
-            Common <br/> Protocols
+            Common <br/> Questions
           </h2>
           
           <ul className="space-y-10 relative z-10">
             <li className="space-y-3">
               <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-text/30 flex items-center gap-3">
-                <Globe size={14} className="text-brand-accent" /> Asset Delivery
+                <Globe size={14} className="text-brand-accent" /> Product Delivery
               </h4>
               <p className="text-base font-medium text-brand-text/60 leading-relaxed pr-8">
-                Purchases are synchronized to your inbox instantly. They are also archived in your private <Link href="/account" className="text-brand-text font-semibold underline underline-offset-4 decoration-brand-accent/30 hover:decoration-brand-accent">Library</Link> for permanent access.
+                Purchases are sent to your inbox instantly. They are also saved in your <Link href="/account" className="text-brand-text font-semibold underline underline-offset-4 decoration-brand-accent/30 hover:decoration-brand-accent">Account Library</Link> for permanent access.
               </p>
             </li>
             <li className="space-y-3">
@@ -61,13 +61,13 @@ export default function HelpPage() {
                 <ShieldCheck size={14} className="text-accent-thermal" /> Legal Standards
               </h4>
               <p className="text-base font-medium text-brand-text/60 leading-relaxed pr-8">
-                In compliance with UK Digital Standards, assets are non-refundable once the retrieval protocol is initiated.
+                In compliance with UK Digital Standards, products are non-refundable once the download process has started.
               </p>
             </li>
           </ul>
         </motion.div>
 
-        {/* CARD 2: DIRECT CONSULTATION */}
+        {/* CARD 2: CONTACT US */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ export default function HelpPage() {
           </div>
           
           <h2 className="text-3xl md:text-5xl font-semibold font-sans text-brand-text mb-8 tracking-tight leading-[1.1]">
-            Curator <br/> Assistance
+            Customer <br/> Support
           </h2>
           <p className="text-lg md:text-xl font-medium text-brand-text/50 mb-14 leading-relaxed max-w-sm">
             Our team provides prioritized responses to all inquiries within 24 hours.
@@ -92,7 +92,7 @@ export default function HelpPage() {
               className="group flex items-center justify-between w-full p-8 bg-brand-base hover:bg-white rounded-inner shadow-sm transition-all duration-700 active:scale-[0.99] border border-brand-surface/5"
             >
               <div className="flex flex-col">
-                <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-brand-text/20 mb-3">Direct Protocol</span>
+                <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-brand-text/20 mb-3">Email Support</span>
                 <span className="text-[15px] font-semibold text-brand-text tracking-tight">kynarmuse@gmail.com</span>
               </div>
               <div className="w-12 h-12 rounded-full bg-brand-text text-white flex items-center justify-center group-hover:bg-brand-accent transition-colors duration-500">
@@ -104,7 +104,7 @@ export default function HelpPage() {
 
       </section>
 
-      {/* 3. UPTIME STATUS: Discreet Intelligence */}
+      {/* 3. SYSTEM STATUS */}
       <div className="mt-32 text-center">
         <div className="flex justify-center items-center gap-4 mb-8">
            <motion.div 
@@ -112,7 +112,7 @@ export default function HelpPage() {
              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} 
              className="w-2.5 h-2.5 rounded-full bg-brand-accent shadow-[0_0_15px_rgba(74,93,78,0.3)]" 
            />
-           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-text/20">Registry Online</span>
+           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-text/20">System Online</span>
         </div>
         <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-text/10">
           Standard GMT Operating Hours

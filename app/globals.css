@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    /* THE MUSE ENGINE PALETTE (60-30-10 Rule) */
-    --brand-base: #F5F2F0;       /* Stone: Visual Foundation */
-    --brand-text: #1C1C1C;       /* Charcoal: Grounded Contrast */
-    --brand-surface: #D7C4B7;    /* Mocha: Physical Depth */
-    --brand-accent: #4A5D4E;     /* Verdant: Intelligence Signal */
-    --accent-thermal: #D97E6E;   /* Thermal: Organic Warmth */
-    --accent-lavender: #9B94B0;  /* Lavender: Soft Refinement */
+    /* SITE COLOR PALETTE (Standard 60-30-10 Rule) */
+    --brand-base: #F5F2F0;       /* Base Background */
+    --brand-text: #1C1C1C;       /* Primary Text */
+    --brand-surface: #D7C4B7;    /* Secondary Surface */
+    --brand-accent: #4A5D4E;     /* Primary Accent */
+    --accent-thermal: #D97E6E;   /* Warm Accent */
+    --accent-lavender: #9B94B0;  /* Soft Accent */
   }
 
   html {
@@ -30,7 +30,7 @@
     font-feature-settings: "ss01", "ss02", "cv01", "cv11";
   }
 
-  /* 1. TYPOGRAPHY: Humanist Medium / Soft Grotesk Styles */
+  /* TYPOGRAPHY: Heading and Body Styles */
   h1, h2, h3, h4 {
     @apply font-semibold tracking-tight;
     color: var(--brand-text);
@@ -48,14 +48,14 @@
 }
 
 @layer components {
-  /* 2. PILLAR 3: PHYSICAL DEPTH (Shadows > Borders) */
+  /* ELEVATION & SHADOWS */
   .shadow-tactile {
     box-shadow: 
       0 4px 30px -4px rgba(0, 0, 0, 0.03), 
       0 2px 12px -2px rgba(0, 0, 0, 0.02);
   }
 
-  /* Intelligence on Demand: Smooth lift on intent */
+  /* Interaction: Smooth hover lift */
   .shadow-tactile-hover {
     @apply transition-all duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)];
   }
@@ -67,7 +67,7 @@
     transform: translateY(-6px);
   }
 
-  /* PILLAR 1: CALM FOUNDATION (Mocha / Terracotta surfaces) */
+  /* SURFACE & CONTAINER STYLES */
   .surface-mocha {
     background-color: rgba(215, 196, 183, 0.12);
     @apply backdrop-blur-2xl;
@@ -81,7 +81,7 @@
     @apply bg-brand-base/70 backdrop-blur-2xl border-none shadow-tactile;
   }
 
-  /* PILLAR 2: INTELLIGENCE REVEAL (Verdant Green) */
+  /* PRIMARY BUTTON STYLES */
   .btn-primary {
     @apply bg-brand-text text-white px-10 py-5 rounded-full font-semibold transition-all duration-700 hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
   }
@@ -91,9 +91,8 @@
   }
 }
 
-/* 3. PERFORMANCE & VISUAL REFINEMENT */
+/* VISUAL REFINEMENTS */
 canvas {
-  /* Monochromatic Intelligence signal */
   touch-action: none;
   image-rendering: -webkit-optimize-contrast;
   opacity: 0.12;
@@ -101,7 +100,7 @@ canvas {
   pointer-events: none;
 }
 
-/* Custom Scrollbar (Quiet luxury style) */
+/* Custom Scrollbar Styles */
 @media (min-width: 768px) {
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }

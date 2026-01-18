@@ -9,44 +9,44 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // PILLAR 1: CALM FOUNDATION (60-30-10 Rule)
-        "brand-base": "#F5F2F0",    // Stone: Visual Foundation
-        "brand-text": "#1C1C1C",    // Charcoal: Grounded Contrast
+        // CORE BRAND PALETTE (60-30-10 Rule)
+        "brand-base": "#F5F2F0",    // Primary Background
+        "brand-text": "#1C1C1C",    // Primary Text
         
-        // PILLAR 3: PHYSICAL DEPTH
-        "brand-surface": "#D7C4B7", // Mocha: Tactile Layering
+        // SURFACE & LAYERING
+        "brand-surface": "#D7C4B7", // Secondary Background / Surfaces
         
-        // PILLAR 2: INTELLIGENCE REVEAL
-        "brand-accent": "#4A5D4E",  // Verdant: Primary Action
+        // ACTION & ACCENTS
+        "brand-accent": "#4A5D4E",  // Primary Action Color
         
-        // Contextual Accents (Restrained & Sophisticated)
-        "accent-thermal": "#D97E6E", // Thermal: Organic Warmth
-        "accent-lavender": "#9B94B0", // Lavender: Soft Refinement
+        // SUPPLEMENTARY ACCENTS
+        "accent-thermal": "#D97E6E", // Warm Accent
+        "accent-lavender": "#9B94B0", // Soft Accent
       },
       fontFamily: {
-        // Muse Engine Typography: Humanist Medium for Headings
+        // Primary Headings
         sans: ['var(--font-outfit)', 'sans-serif'],
-        // High x-height Sans for Body/UI
+        // UI and Body Copy
         body: ['var(--font-inter)', 'sans-serif'],
       },
       borderRadius: {
-        // Space is a luxury signal
+        // Layout and Component Geometry
         'card': '40px',
         'inner': '28px',
         'btn': '100px',
       },
       boxShadow: {
-        // Physical Depth: Subtle occlusion of light
+        // Elevation and Depth Styles
         'tactile': '0 4px 30px -4px rgba(0, 0, 0, 0.03), 0 2px 12px -2px rgba(0, 0, 0, 0.02)',
         'tactile-hover': '0 30px 60px -12px rgba(0, 0, 0, 0.08), 0 12px 24px -4px rgba(0, 0, 0, 0.03)',
       },
       transitionDuration: {
-        // Liquid Motion: Unhurried and confident
+        // Animation Timing Constants
         'slow': '800ms',
         'liquid': '1200ms',
       },
       animation: {
-        // Intelligence on Demand: Reveal signals
+        // Component Transition Signals
         'fade-in': 'fadeIn 1s cubic-bezier(0.19, 1, 0.22, 1) forwards',
         'reveal': 'reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
       },

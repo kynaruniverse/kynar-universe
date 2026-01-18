@@ -23,10 +23,10 @@ export default function SuccessToast({ isVisible, message, onClose }: SuccessToa
           }}
           className="fixed bottom-10 left-1/2 z-[250] w-[94%] max-w-[380px] will-change-transform"
         >
-          {/* 1. TACTILE SURFACE: A solid, grounded object */}
+          {/* 1. NOTIFICATION CONTAINER: Shadow-based depth for visibility */}
           <div className="bg-white p-5 rounded-card shadow-tactile flex items-center gap-6 relative overflow-hidden">
             
-            {/* 2. MUSE ICONOGRAPHY: Refined feedback */}
+            {/* 2. STATUS ICON: Visual confirmation of success */}
             <motion.div 
               initial={{ rotate: -10, scale: 0.9 }}
               animate={{ rotate: 0, scale: 1 }}
@@ -35,11 +35,11 @@ export default function SuccessToast({ isVisible, message, onClose }: SuccessToa
               <Check size={18} strokeWidth={2.5} />
             </motion.div>
 
-            {/* 3. HUMANIST MICRO-COPY */}
+            {/* 3. NOTIFICATION TEXT */}
             <div className="flex-grow min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="text-[9px] font-bold text-brand-text/30 uppercase tracking-[0.3em]">
-                  Registry Update
+                  Confirmed
                 </span>
                 <Sparkles size={10} className="text-accent-thermal opacity-60" />
               </div>
@@ -48,7 +48,7 @@ export default function SuccessToast({ isVisible, message, onClose }: SuccessToa
               </p>
             </div>
 
-            {/* 4. TACTILE DISMISSAL */}
+            {/* 4. DISMISS ACTION */}
             <button 
               onClick={onClose} 
               className="p-2.5 hover:bg-brand-base rounded-full transition-colors duration-500 group"
@@ -57,7 +57,7 @@ export default function SuccessToast({ isVisible, message, onClose }: SuccessToa
               <X size={14} className="text-brand-text/10 group-hover:text-brand-text/30 transition-colors" />
             </button>
 
-            {/* 5. LIQUID CHRONOGRAPH: Unhurried progress */}
+            {/* 5. AUTO-HIDE TIMER: Visual countdown for the toast duration */}
             <motion.div 
               initial={{ scaleX: 1 }}
               animate={{ scaleX: 0 }}

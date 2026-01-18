@@ -3,12 +3,12 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
 import { useRef } from "react";
 
-function MuseSphere() {
+function AmbientElement() {
   const materialRef = useRef<any>(null);
 
   useFrame((state) => {
     if (materialRef.current) {
-      // 1. LIQUID MOTION: Slower, organic breathing cycle
+      // 1. ANIMATION LOOP: Subtle organic breathing cycle
       const time = state.clock.getElapsedTime();
       const pulse = Math.sin(time * 0.2) * 0.01;
       materialRef.current.distort = 0.2 + pulse;
@@ -17,21 +17,21 @@ function MuseSphere() {
 
   return (
     <>
-      {/* 2. SOFT AMBIENT LIGHTING: Removing harsh shadows */}
+      {/* 2. LIGHTING CONFIGURATION: Soft ambient setup to avoid harsh shadows */}
       <pointLight position={[10, 10, 10]} intensity={0.5} color="#ffffff" />
       
       <Float speed={0.4} rotationIntensity={0.1} floatIntensity={0.2}>
         <Sphere args={[1.5, 64, 64]}>
           <MeshDistortMaterial
             ref={materialRef}
-            speed={0.3}          // LUSH SLOWNESS: 0.3 for barely-there motion
-            distort={0.2}       // CALM GEOMETRY: Minimal distortion
+            speed={0.3}          // Motion speed for background subtlety
+            distort={0.2}        // Geometric distortion level
             radius={1}
-            metalness={0.05}     // ORGANIC: Low metalness for a ceramic/soft feel
-            roughness={0.8}      // DIFFUSE: High roughness to catch light softly
+            metalness={0.05}     // Matte texture for a soft, ceramic feel
+            roughness={0.8}      // High roughness for diffuse light catching
             transparent={true}   
-            opacity={0.08}       // SPACE AS LUXURY: Reduced to 8% visibility
-            color="#1C1C1C"      // BRAND COLOR: Matches brand-text
+            opacity={0.08}       // Low opacity for background integration
+            color="#1C1C1C"      // Primary brand color
             depthWrite={false}   
           />
         </Sphere>
@@ -52,7 +52,7 @@ export default function UniverseCanvas() {
         }}
       >
         <ambientLight intensity={0.8} />
-        <MuseSphere />
+        <AmbientElement />
       </Canvas>
     </div>
   );

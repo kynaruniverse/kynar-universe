@@ -1,22 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 
 /**
- * MUSE ENGINE DATA CORE
- * Establishes the secure handshake with the private registry.
+ * SUPABASE CLIENT CONFIGURATION
+ * Initializes the connection to the database and authentication services.
  */
 
-// 1. ENVIRONMENT EXTRACTION
+// 1. ENVIRONMENT VARIABLE EXTRACTION
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-// 2. REGISTRY VALIDATION
+// 2. CONFIGURATION VALIDATION
 if (!supabaseUrl || !supabaseKey) {
   throw new Error(
-    "MUSE ENGINE ERROR: Registry credentials are not established. Verify environment configuration."
+    "DATABASE CONFIG ERROR: Supabase credentials are missing. Verify your environment variables."
   );
 }
 
-// 3. SECURE HANDSHAKE INITIALIZATION
+// 3. CLIENT INITIALIZATION
 export const supabase = createClient(
   supabaseUrl, 
   supabaseKey,
@@ -25,13 +25,13 @@ export const supabase = createClient(
       persistSession: true, 
       autoRefreshToken: true,
       detectSessionInUrl: true,
-      // Muse Engine Storage Key: Aligned with the manifest logic
-      storageKey: 'kynar-muse-registry', 
+      // Authentication Storage Key
+      storageKey: 'kynar-auth-session', 
     },
     global: {
-      headers: { 'x-application-name': 'kynar-muse-engine-v1' },
+      headers: { 'x-application-name': 'kynar-digital-v1' },
     },
-    // Optimized for stable, unhurried data synchronization
+    // Standard database configuration
     db: {
       schema: 'public',
     },
