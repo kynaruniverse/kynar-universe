@@ -77,10 +77,10 @@ export default function NotFound() {
         
         <div className="space-y-6">
           <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none">
-            Lost in <br/> the Void
+            Page <br/> Not Found
           </h2>
           <p className="font-serif text-lg md:text-xl text-white/40 italic leading-relaxed max-w-sm mx-auto">
-            You have drifted beyond the charted sectors of the Kynar Universe. 
+            The page you are looking for does not exist or has been moved. 
           </p>
         </div>
 
@@ -89,7 +89,7 @@ export default function NotFound() {
             href="/"
             className="inline-flex items-center px-16 py-6 bg-white text-black rounded-full text-xs font-black uppercase tracking-[0.3em] shadow-2xl hover:scale-105 active:scale-95 transition-all duration-500"
           >
-            Re-Establish Presence
+            Back to Home
           </Link>
         </div>
 

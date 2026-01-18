@@ -46,7 +46,7 @@ export async function getDownloadLink(productSlug: string) {
     .single();
 
   if (purchaseError || !purchase) {
-    return { error: "Transmission Blocked. This asset is not in your library." };
+    return { error: "Delivery Blocked. This asset is not in your library." };
   }
 
   // C. ASSET LOCATION
@@ -57,7 +57,7 @@ export async function getDownloadLink(productSlug: string) {
     .single();
 
   if (!product || !product.file_path) {
-    return { error: "Asset not found in the vault. Support origin notified." };
+    return { error: "Asset not found in the vault. Support Team notified." };
   }
 
   // D. GENERATE SECURE SIGNATURE
@@ -75,7 +75,7 @@ export async function getDownloadLink(productSlug: string) {
 
   if (error || !data) {
     console.error("Vault Error:", error);
-    return { error: "Could not mint access key. The vault is temporarily locked." };
+    return { error: "Could not secure link. The vault is temporarily locked." };
   }
 
   return { url: data.signedUrl };

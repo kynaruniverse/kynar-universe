@@ -31,7 +31,7 @@ export default function SuccessToastWrapper() {
     <div className="relative z-[100]">
       <SuccessToast 
         isVisible={showSuccess} 
-        message={`${lastAddedItem} integrated into manifest`} 
+        message={`${lastAddedItem} Successfully addedThe page you are looking for does not exist or has been moved.`} 
         onClose={() => setShowSuccess(false)} 
       />
     </div>

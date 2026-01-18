@@ -29,7 +29,7 @@ export default function TermsPage() {
           </div>
 
           <h1 className="text-5xl md:text-8xl font-black font-sans text-primary-text mb-6 tracking-tighter uppercase leading-[0.85]">
-            Service <br/> Protocol
+            Terms of <br/> Service
           </h1>
           
           <div className="flex items-center gap-4 mb-20">
@@ -47,17 +47,17 @@ export default function TermsPage() {
             <section className="space-y-6">
               <h2 className="text-xl font-black font-sans text-primary-text uppercase tracking-[0.2em] not-italic flex items-center gap-4">
                 <span className="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-[10px] text-primary-text/40">01</span> 
-                The Marketplace
+                The Store
               </h2>
               <p>Kynar Universe is an independent digital entity based in the United Kingdom. We provide high-fidelity digital assets designed for professional and creative synchronisation.</p>
             </section>
 
             <section className="space-y-8 p-10 md:p-16 bg-primary-text rounded-[48px] not-prose shadow-2xl">
               <h2 className="text-xl font-black font-sans text-white uppercase tracking-[0.3em] flex items-center gap-4 mb-6">
-                <ShieldCheck className="text-home-accent w-6 h-6" /> 02. Cancellation
+                <ShieldCheck className="text-home-accent w-6 h-6" /> 02. Return Policy
               </h2>
               <p className="text-white/60 font-serif italic text-lg leading-relaxed">
-                Under the <span className="text-white not-italic font-bold">Consumer Contracts Regulations 2013</span>, digital content is exempt from the 14-day cancellation right once the transmission begins. By acquiring an asset, you acknowledge immediate delivery and waive this right.
+                Under the <span className="text-white not-italic font-bold">Consumer Contracts Regulations 2013</span>, digital content is exempt from the 14-day cancellation right once th download ebegins. By acquiring an asset, you acknowledge immediate delivery and waive this right.
               </p>
               <div className="mt-8 flex items-center gap-3 text-[9px] font-black text-home-accent uppercase tracking-widest">
                 <Zap size={14} /> UK Law applies to faulty digital content.
@@ -75,7 +75,7 @@ export default function TermsPage() {
             <section className="space-y-6">
               <h2 className="text-xl font-black font-sans text-primary-text uppercase tracking-[0.2em] not-italic flex items-center gap-4">
                 <span className="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-[10px] text-primary-text/40">04</span> 
-                Liability
+                Responsibility
               </h2>
               <p>Assets are provided &ldquo;as is.&rdquo; To the maximum extent permitted by the laws of England and Wales, Kynar Universe is not liable for incidental data loss or business disruption following asset integration.</p>
             </section>

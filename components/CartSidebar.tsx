@@ -33,12 +33,12 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <h2 className="text-2xl font-black font-sans tracking-tighter text-primary-text uppercase">
-                    Manifest
+                    My Cart
                   </h2>
                   <Sparkles size={16} className="text-home-accent animate-pulse" />
                 </div>
                 <p className="text-[10px] font-bold text-primary-text/30 uppercase tracking-[0.2em]">
-                  {cartItems.length} Sector Assets
+                  {cartItems.length} Items in Cart
                 </p>
               </div>
               <button 
@@ -56,9 +56,9 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
                   <div className="w-16 h-16 bg-black/5 rounded-[24px] flex items-center justify-center mb-6">
                     <ShoppingBag size={24} className="text-primary-text/10" />
                   </div>
-                  <p className="font-serif italic text-primary-text/40 text-lg">Your manifest is currently clear.</p>
+                  <p className="font-serif italic text-primary-text/40 text-lg">Your cart is empty.</p>
                   <button onClick={onClose} className="mt-6 text-[10px] font-black uppercase tracking-widest text-primary-text underline underline-offset-8 decoration-home-accent/30">
-                    Return to Marketplace
+                    Continue Browsing
                   </button>
                 </div>
               ) : (
@@ -88,7 +88,7 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
                       </div>
                       
                       <p className="text-[10px] font-black uppercase tracking-widest text-primary-text/20 mt-1">
-                        Digital License
+                       Full Usage Rights
                       </p>
                       
                       <p className="mt-auto font-black text-primary-text/60">
@@ -120,12 +120,12 @@ export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean; onCl
                     onClick={onClose}
                     className="flex items-center justify-center w-full py-6 bg-primary-text text-white rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-xl hover:shadow-primary-text/20 active:scale-[0.98] transition-all group"
                   >
-                    Proceed to Transmission <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    Go to Checkout <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                   
                   <div className="flex items-center justify-center gap-4 text-[9px] font-black uppercase tracking-[0.3em] text-primary-text/20">
                     <div className="flex items-center gap-1.5">
-                      <ShieldCheck size={12} /> Secure
+                      <ShieldCheck size={12} /> Items in Cart
                     </div>
                     <div className="w-1 h-1 rounded-full bg-black/10" />
                     <span>UK Standard</span>

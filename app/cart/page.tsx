@@ -51,10 +51,10 @@ export default function CartPage() {
             <ShoppingCart className="w-8 h-8 text-primary-text/20" />
           </div>
           <h1 className="text-4xl md:text-5xl font-black font-sans text-primary-text mb-4 tracking-tighter uppercase">
-            Empty Sector
+            Empty Cart
           </h1>
           <p className="font-serif text-lg text-primary-text/40 italic mb-12 leading-relaxed max-w-sm mx-auto">
-            Your manifest is currently clear. Explore the marketplace to acquire new tools.
+            Your cart is empty. Explore the Store to access new tools.
           </p>
           <Link 
             href="/marketplace" 
@@ -72,9 +72,9 @@ export default function CartPage() {
       <div className="max-w-7xl mx-auto">
         <header className="mb-16 space-y-2">
           <h1 className="text-6xl md:text-8xl font-black font-sans text-primary-text tracking-tighter uppercase leading-[0.8]">
-            Manifest
+            My Cart
           </h1>
-          <p className="text-lg font-serif italic text-primary-text/40">Review your acquisition before transmission.</p>
+          <p className="text-lg font-serif italic text-primary-text/40">Please review your items before checking out.</p>
         </header>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
@@ -98,7 +98,7 @@ export default function CartPage() {
                   <div className="flex-grow">
                     <div className="text-[10px] font-black text-home-accent uppercase tracking-widest mb-1">{item.category}</div>
                     <h3 className="font-black font-sans text-xl md:text-3xl text-primary-text tracking-tight uppercase leading-none">{item.title}</h3>
-                    <p className="text-xs font-serif text-primary-text/40 italic mt-2">Digital License — Immediate Access</p>
+                    <p className="text-xs font-serif text-primary-text/40 italic mt-2">Full Usage Rights — Immediate Access</p>
                   </div>
 
                   <div className="flex flex-col items-end gap-4">
@@ -122,15 +122,15 @@ export default function CartPage() {
               animate={{ opacity: 1, x: 0 }}
               className="bg-white/40 backdrop-blur-3xl p-10 rounded-[56px] border border-white/40 shadow-glass"
             >
-              <h2 className="text-[10px] font-black font-sans text-primary-text/30 mb-10 tracking-[0.4em] uppercase">Summary</h2>
+              <h2 className="text-[10px] font-black font-sans text-primary-text/30 mb-10 tracking-[0.4em] uppercase">Total</h2>
               
               <div className="space-y-6 mb-10">
                 <div className="flex justify-between text-[10px] font-black text-primary-text/30 uppercase tracking-widest">
-                  <span>Acquisition Subtotal</span>
+                  <span>Items Total</span>
                   <span>£{cartTotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-home-accent text-[10px] font-black uppercase tracking-[0.2em]">
-                  <span className="flex items-center gap-2"><Sparkles size={12}/> Global Transmission</span>
+                  <span className="flex items-center gap-2"><Sparkles size={12}/> Instant Access</span>
                   <span>Included</span>
                 </div>
                 <div className="pt-8 border-t border-black/5 flex justify-between items-end">
@@ -157,7 +157,7 @@ export default function CartPage() {
                     <Check className="absolute w-4 h-4 left-1 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" strokeWidth={4} />
                   </div>
                   <label htmlFor="legal-consent" className="text-[11px] leading-relaxed text-primary-text/50 font-serif italic cursor-pointer select-none">
-                    I agree to the <Link href="/terms" className="text-primary-text font-bold underline decoration-home-accent/30 underline-offset-4">Terms</Link> and consent to immediate access. I understand I waive my 14-day right to cancel once access begins.
+                    I agree to the <Link href="/terms" className="text-primary-text font-bold underline decoration-home-accent/30 underline-offset-4">Terms</Link> and Conditions and understand that digital orders are final once downloaded.
                   </label>
                 </div>
               </div>
@@ -171,13 +171,13 @@ export default function CartPage() {
                 {isProcessing ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  <>Secure Transmission <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
+                  <>Complete Order <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
                 )}
               </button>
 
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-center gap-3 text-[9px] font-black uppercase tracking-[0.3em] text-primary-text/20">
-                  <Lock size={12} /> Secure Protocol
+                  <Lock size={12} /> Secure Payment
                 </div>
                 <div className="flex items-center justify-center gap-3 text-[9px] font-black uppercase tracking-[0.3em] text-primary-text/20">
                   <Scale size={12} /> UK Regulated

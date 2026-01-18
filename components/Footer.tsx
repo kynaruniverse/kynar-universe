@@ -21,7 +21,7 @@ export default function Footer() {
               KYNAR
             </span>
             <p className="font-serif text-base text-primary-text/40 italic leading-relaxed">
-              Synthesizing clarity across your digital domains. Tools, life, and home in one unified manifest.
+              Simple digital tools designed to help you organize your work, life, and home in one place.
             </p>
           </div>
 
@@ -30,9 +30,9 @@ export default function Footer() {
             
             {/* Sector Navigation */}
             <div className="space-y-6">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary-text/20">Sectors</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary-text/20">Explore</h4>
               <nav className="flex flex-col gap-4 text-[11px] uppercase tracking-widest font-black text-primary-text/60">
-                {['Marketplace', 'Guides', 'Help', 'Account'].map((item) => (
+                {['The Store', 'Guides', 'Help', 'Account'].map((item) => (
                   <Link 
                     key={item}
                     href={`/${item.toLowerCase()}`} 
@@ -46,7 +46,7 @@ export default function Footer() {
 
             {/* Legal Protocol (UK Compliance) */}
             <div className="space-y-6">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary-text/20">Protocol</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-primary-text/20">Information</h4>
               <nav className="flex flex-col gap-4 text-[11px] uppercase tracking-widest font-black text-primary-text/40">
                 <Link href="/terms" className="hover:text-primary-text transition-colors">
                   Terms of Service
@@ -55,7 +55,7 @@ export default function Footer() {
                   Privacy Policy
                 </Link>
                 <Link href="/contact" className="hover:text-primary-text transition-colors">
-                  Contact Support
+                  Get in Touch
                 </Link>
               </nav>
             </div>

@@ -17,10 +17,10 @@ export default function HelpPage() {
           className="max-w-4xl mx-auto space-y-6"
         >
           <h1 className="text-6xl md:text-8xl font-black font-sans text-primary-text mb-8 tracking-tighter uppercase leading-[0.85]">
-            Assistance <br/> Protocol
+            Help & <br/> Support
           </h1>
           <p className="text-xl md:text-2xl font-serif text-primary-text/40 italic max-w-2xl mx-auto leading-relaxed px-4">
-            Answers, support, and cosmic guidance for your <br className="hidden md:block" /> journey through the Kynar Universe.
+            Answers, support, and guidance for your <br className="hidden md:block" /> journey through the Kynar Universe.
           </p>
         </motion.div>
       </section>
@@ -44,16 +44,16 @@ export default function HelpPage() {
           </div>
           
           <h2 className="text-3xl md:text-4xl font-black font-sans text-primary-text mb-10 tracking-tighter uppercase leading-none">
-            Common <br/> Queries
+            Frequently asked <br/> Questions
           </h2>
           
           <ul className="space-y-8">
             <li className="space-y-2">
               <h4 className="text-[10px] font-black uppercase tracking-widest text-primary-text/40 flex items-center gap-2">
-                <Globe size={12} /> Asset Transmission
+                <Globe size={12} /> Product Delivery
               </h4>
               <p className="text-sm font-serif italic text-primary-text/70 leading-relaxed">
-                Links are transmitted to your verified email origin immediately. You can also access them within your <Link href="/account" className="text-primary-text font-bold underline decoration-home-accent/30">Vault</Link>.
+                Your purchase is delivered to your inbox right away. It is also saved in your personal library for future use.  <Link href="/account" className="text-primary-text font-bold underline decoration-home-accent/30">Vault</Link>.
               </p>
             </li>
             <li className="space-y-2">
@@ -80,20 +80,20 @@ export default function HelpPage() {
           </div>
           
           <h2 className="text-3xl md:text-4xl font-black font-sans text-primary-text mb-6 tracking-tighter uppercase leading-none">
-            Establish <br/> Contact
+            Reach <br/> Out
           </h2>
           <p className="text-lg font-serif italic text-primary-text/40 mb-12 leading-relaxed">
-            Need high-priority assistance? Our support origin responds within 24 earth hours.
+            Need help fast? Our team typically responds to all inquiries within 24 hours.
           </p>
           
           <div className="mt-auto">
             <a 
-              href="mailto:support@kynaruniverse.co.uk" 
+              href="mailto:Kynaruniverse@gmail.com" 
               className="group flex items-center justify-between w-full p-8 bg-white/60 hover:bg-white rounded-[32px] border border-white/40 transition-all active:scale-[0.98] shadow-sm"
             >
               <div className="flex flex-col">
-                <span className="text-[9px] uppercase tracking-[0.3em] font-black text-primary-text/20 mb-2">Primary Signal</span>
-                <span className="text-sm md:text-base font-black text-primary-text tracking-tight uppercase">support@kynaruniverse.co.uk</span>
+                <span className="text-[9px] uppercase tracking-[0.3em] font-black text-primary-text/20 mb-2">Email Support</span>
+                <span className="text-sm md:text-base font-black text-primary-text tracking-tight uppercase">Kynaruniverse@gmail.com</span>
               </div>
               <div className="w-10 h-10 rounded-full bg-primary-text text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                 <ArrowUpRight size={18} />
@@ -112,7 +112,7 @@ export default function HelpPage() {
            <div className="w-2 h-2 rounded-full bg-home-accent/20" />
         </div>
         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary-text/20">
-          Support Pulse: ACTIVE // 09:00 - 17:00 GMT
+          Support Hours: Mon-Fri // 9am - 5pm GMT
         </p>
       </div>
 

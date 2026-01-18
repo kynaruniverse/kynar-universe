@@ -37,7 +37,7 @@ function createClient() {
   );
 }
 
-// 1. ESTABLISH PRESENCE (SIGN UP)
+// 1. ESTABLISH ACCOUNT (SIGN UP)
 export async function signup(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -60,7 +60,7 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout');
-  return { success: "Verification signal sent. Check your origin email to finalize your presence." };
+  return { success: "Verification signal sent. Check your origin email to finalize your account." };
 }
 
 // 2. VERIFY IDENTITY (LOG IN)

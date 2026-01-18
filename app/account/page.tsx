@@ -121,10 +121,10 @@ export default function AccountPage() {
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-end gap-8">
             <div className="space-y-2">
               <h1 className="text-6xl md:text-8xl font-black font-sans text-primary-text tracking-tighter uppercase leading-[0.8]">
-                Vault
+                My Library
               </h1>
               <p className="font-serif text-lg text-primary-text/40 italic">
-                {userEmail} — Your assets are synced.
+                {userEmail} — Welcome to your dashboard.
               </p>
             </div>
             <button 
@@ -172,7 +172,7 @@ export default function AccountPage() {
                         {downloadingId === item.slug ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
-                          <>Download <Download className="w-4 h-4 ml-2" /></>
+                          <>Download Now <Download className="w-4 h-4 ml-2" /></>
                         )}
                       </button>
                     </div>
@@ -186,10 +186,10 @@ export default function AccountPage() {
                 className="bg-white/40 backdrop-blur-3xl rounded-[64px] p-20 text-center border border-white/40 shadow-glass max-w-2xl mx-auto"
               >
                 <Sparkles className="w-12 h-12 text-home-accent/40 mx-auto mb-6" />
-                <h2 className="text-4xl font-black font-sans text-primary-text mb-4 tracking-tighter uppercase">Vault Empty</h2>
-                <p className="font-serif text-lg text-primary-text/40 italic mb-10 leading-relaxed">Your digital manifest is currently clear. Visit the marketplace to acquire new tools.</p>
+                <h2 className="text-4xl font-black font-sans text-primary-text mb-4 tracking-tighter uppercase">Your Library is Empty</h2>
+                <p className="font-serif text-lg text-primary-text/40 italic mb-10 leading-relaxed">Your library is looking a bit lonely. Browse our shop to access new tools.</p>
                 <Link href="/marketplace" className="inline-flex items-center px-12 py-5 bg-primary-text text-white rounded-full font-black uppercase tracking-widest text-xs shadow-xl hover:scale-105 active:scale-95 transition-all">
-                  Explore Universe <ArrowRight className="ml-2 w-4 h-4" />
+                  Start Browsing <ArrowRight className="ml-2 w-4 h-4" />
                 </Link>
               </motion.div>
             )}
@@ -211,19 +211,19 @@ export default function AccountPage() {
         className="bg-white/40 backdrop-blur-3xl w-full max-w-md p-10 md:p-14 rounded-[64px] shadow-glass border border-white/40 text-center relative z-10"
       >
         <h1 className="text-5xl font-black font-sans text-primary-text mb-4 tracking-tighter uppercase leading-none">
-          {isLoginMode ? 'Identity' : 'Presence'}
+          {isLoginMode ? 'Sign In' : 'Register'}
         </h1>
         <p className="font-serif text-lg text-primary-text/40 italic mb-12">
-          {isLoginMode ? 'Verify your credentials.' : 'Establish your existence.'}
+          {isLoginMode ? 'Welcome Back! Please enter Your details.' : 'Join our growing community today.'}
         </p>
         
         <form onSubmit={handleSubmit} className="space-y-6 text-left">
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-primary-text/30 uppercase tracking-[0.3em] ml-6 italic">Transmission Email</label>
+            <label className="text-[10px] font-black text-primary-text/30 uppercase tracking-[0.3em] ml-6 italic">Your Email</label>
             <input name="email" type="email" required placeholder="name@domain.com" className="w-full px-8 py-5 rounded-full bg-white/50 border border-white/40 focus:bg-white focus:outline-none focus:ring-4 focus:ring-home-accent/10 transition-all font-medium text-sm" />
           </div>
           <div className="space-y-2 pb-4">
-            <label className="text-[10px] font-black text-primary-text/30 uppercase tracking-[0.3em] ml-6 italic">Secure Passkey</label>
+            <label className="text-[10px] font-black text-primary-text/30 uppercase tracking-[0.3em] ml-6 italic">Password</label>
             <input name="password" type="password" required placeholder="••••••••" className="w-full px-8 py-5 rounded-full bg-white/50 border border-white/40 focus:bg-white focus:outline-none focus:ring-4 focus:ring-home-accent/10 transition-all font-medium text-sm" />
           </div>
 
@@ -236,7 +236,7 @@ export default function AccountPage() {
           </AnimatePresence>
 
           <button type="submit" disabled={loading} className="w-full py-6 bg-primary-text text-white font-black rounded-full hover:shadow-2xl active:scale-[0.98] transition-all flex items-center justify-center uppercase tracking-[0.2em] text-xs">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isLoginMode ? 'Verify Access' : 'Create Manifest')}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isLoginMode ? 'Sign In' : 'Create Account')}
           </button>
         </form>
 
@@ -244,7 +244,7 @@ export default function AccountPage() {
           onClick={() => setIsLoginMode(!isLoginMode)} 
           className="mt-12 text-[10px] font-black uppercase tracking-widest text-primary-text/30 hover:text-primary-text transition-colors"
         >
-          {isLoginMode ? "Need a key? Create one here." : "Existing identity? Sign in."}
+          {isLoginMode ? "Don't have an account? Sign up." : "Member? Sign in here."}
         </button>
         
         <div className="mt-8 flex items-center justify-center gap-4 opacity-20 grayscale">

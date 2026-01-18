@@ -48,7 +48,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         
         <Link href="/marketplace" className="group inline-flex items-center text-[10px] uppercase font-black tracking-widest text-primary-text/40 hover:text-primary-text transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> 
-          Return to Universe
+          Return to Home
         </Link>
       </div>
 
@@ -68,7 +68,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute bottom-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-2xl text-[10px] font-black uppercase tracking-widest text-primary-text shadow-sm">
-                {product.format || 'Digital Asset'}
+                {product.format || 'Immediate Access'}
               </div>
             </div>
           </motion.div>
@@ -110,7 +110,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
                <div className="flex items-center justify-center gap-6 pt-4">
                 <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-primary-text/30">
-                  <ShieldCheck size={14} className={accentText} /> Secure Key
+                  <ShieldCheck size={14} className={accentText} /> Secure Download
                 </div>
                 <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-primary-text/30">
                   <Scale size={14} className={accentText} /> UK Regulated
@@ -121,20 +121,20 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             {/* DESCRIPTION SECTION */}
             <div className="mt-20 space-y-12">
               <div className="space-y-6">
-                <h3 className="font-sans font-black text-[10px] uppercase tracking-[0.4em] text-primary-text/20">Product Manifest</h3>
+                <h3 className="font-sans font-black text-[10px] uppercase tracking-[0.4em] text-primary-text/20">About This Product</h3>
                 <p className="font-serif text-xl md:text-2xl text-primary-text/70 leading-relaxed italic pr-4">
                   {product.description || product.summary}
                 </p>
               </div>
               
               <div className="p-10 bg-white/40 backdrop-blur-3xl rounded-[48px] border border-white/40 shadow-glass">
-                <h4 className="font-sans font-black text-[10px] uppercase tracking-widest text-primary-text/40 mb-8">What is included</h4>
+                <h4 className="font-sans font-black text-[10px] uppercase tracking-widest text-primary-text/40 mb-8">What You Get</h4>
                 <ul className="space-y-5">
                   {[
                     `Full ${product.format || 'Digital Asset'} Source File`,
-                    'Lifetime Universe Updates',
-                    'Mobile & Desktop Compatibility',
-                    'Secure Vault Access'
+                    'Future Version Access',
+                    'Works on all Devices',
+                    'Lifetime Library Access'
                   ].map((feat) => (
                     <li key={feat} className="flex items-center text-sm font-bold text-primary-text">
                       <div className={`w-6 h-6 rounded-full ${accentBg}/10 flex items-center justify-center mr-4`}>

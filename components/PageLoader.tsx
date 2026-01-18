@@ -71,7 +71,7 @@ export default function PageLoader() {
             className="mt-16 text-center space-y-2"
           >
             <h2 className="text-[10px] font-black tracking-[0.6em] uppercase text-primary-text/20">
-              Synchronizing
+              Loading...
             </h2>
             <p className="text-xl font-serif italic text-primary-text/60">
               Kynar Universe

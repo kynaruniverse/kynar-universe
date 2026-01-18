@@ -7,90 +7,84 @@
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
     overflow-x: hidden;
-    /* Prevents the "bounce" scroll on iOS that can break 3D layering */
     overscroll-behavior-y: none;
   }
 
   body {
-    @apply bg-home-base text-primary-text antialiased;
-    min-height: 100dvh; /* Using dynamic viewport height for mobile browsers */
+    /* Softened background and default text */
+    @apply bg-home-base text-primary-text antialiased selection:bg-home-accent/20;
+    min-height: 100dvh;
     position: relative;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Universal Selection Logic */
-  ::selection {
-    @apply bg-home-accent/30 text-primary-text;
+  /* 1. UNIVERSAL TYPOGRAPHY RESET */
+  /* Moving from font-black (900) to font-bold (700) for a cleaner, friendlier look */
+  h1 {
+    @apply font-bold tracking-tight text-primary-text;
+    font-size: clamp(2.25rem, 6vw, 4.5rem); /* Prevents text from going off-screen */
+    line-height: 1.1;
+  }
+
+  h2 {
+    @apply font-bold tracking-tight text-primary-text;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  p {
+    @apply font-medium leading-relaxed;
   }
 }
 
-/* 1. SECTOR-SPECIFIC SELECTIONS */
-/* These ensure that highlighting text feels native to the current world */
-.bg-tools-base ::selection { @apply bg-tools-accent/30; }
-.bg-life-base ::selection { @apply bg-life-accent/30; }
-.bg-cat-home-base ::selection { @apply bg-cat-home-accent/30; }
-
-/* 2. THE PREMIUM "KYNAR GRAIN" */
-/* We use a high-fidelity SVG noise to give the glassmorphism a tactile, paper-like quality */
+/* 2. THE PREMIUM SOFT GRAIN */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
-  opacity: 0.04;
+  opacity: 0.02; /* Reduced opacity for a cleaner look */
   z-index: 9999;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* 3. GLASSMORPHISM CORE */
+/* 3. MODERN GLASSMORPHISM */
 @layer components {
-  .shadow-glass {
-    box-shadow: 
-      0 4px 24px -1px rgba(0, 0, 0, 0.02),
-      0 2px 8px -1px rgba(0, 0, 0, 0.02);
-  }
-
   .glass-card {
-    @apply bg-white/40 backdrop-blur-3xl border border-white/60 shadow-glass transition-all duration-700;
+    @apply bg-white/30 backdrop-blur-2xl border border-white/40 shadow-sm transition-all duration-500 rounded-[32px];
   }
   
   .glass-nav {
-    @apply bg-white/20 backdrop-blur-3xl border-b border-white/20 shadow-sm;
+    @apply bg-white/40 backdrop-blur-xl border-b border-white/20 shadow-sm;
   }
 
-  /* Smooth reveal for page content */
-  .animate-reveal {
-    animation: reveal 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  /* Responsive Marketplace Title Fix */
+  .title-responsive {
+    @apply text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-tight;
+    word-break: keep-all;
   }
 }
 
-@keyframes reveal {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 4. PERFORMANCE REFINEMENTS */
+/* 4. PERFORMANCE & MOBILE FIXES */
 canvas {
-  /* Prevents the browser from trying to "scroll" the canvas on mobile */
   touch-action: none;
-  /* Optimization for Three.js rendering */
   image-rendering: -webkit-optimize-contrast;
+  /* Making the background sphere more subtle */
+  filter: saturate(0.8) opacity(0.5); 
 }
 
-/* 5. CUSTOM SCROLLBAR (Kinetic Style) */
+/* Custom Scrollbar (Subtle) */
 @media (min-width: 768px) {
   ::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary-text/10 rounded-full hover:bg-home-accent/40 transition-all;
+    @apply bg-primary-text/10 rounded-full hover:bg-primary-text/20 transition-all;
   }
 }
 
-/* Utility to hide scrollbars while maintaining functionality */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

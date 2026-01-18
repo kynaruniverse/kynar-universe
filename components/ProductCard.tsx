@@ -102,7 +102,7 @@ export default function ProductCard({ title, category, price, summary, slug, ima
 
           <div className="mt-auto flex items-center justify-between pt-6 border-t border-black/5">
             <div className="flex flex-col">
-              <span className="text-[10px] font-black text-primary-text/20 uppercase tracking-widest">Acquisition</span>
+              <span className="text-[10px] font-black text-primary-text/20 uppercase tracking-widest">Price</span>
               <span className="text-xl font-black font-sans text-primary-text tracking-tighter">£{price}</span>
             </div>
             <div className="w-10 h-10 bg-primary-text text-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">

@@ -57,7 +57,7 @@ export default function MagneticLogo() {
           whileTap={{ scale: 0.92, rotate: -1 }} 
           className="relative z-10 text-2xl md:text-3xl font-black font-sans text-primary-text tracking-tighter cursor-pointer select-none uppercase leading-none"
         >
-          KYNAR
+          Kynar Universe
           
           {/* Subtle underline flare */}
           <motion.div 

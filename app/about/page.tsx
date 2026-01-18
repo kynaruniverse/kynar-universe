@@ -50,10 +50,10 @@ export default function AboutPage() {
             className="max-w-5xl text-center"
           >
             <h1 className="text-6xl md:text-9xl font-black font-sans tracking-tighter mb-10 uppercase leading-[0.8] text-primary-text">
-              One Universe. <br/> Infinite Flow.
+              One Universe. <br/> Infinite Solutions.
             </h1>
             <p className="text-xl md:text-3xl font-serif italic text-primary-text/40 leading-relaxed max-w-2xl mx-auto px-4">
-              Kynar was established to solve a single modern problem: <br className="hidden md:block"/> Digital Noise.
+              We created Kynar to help you clear the clutter and: <br className="hidden md:block"/> Focus on what matters.
             </p>
           </motion.div>
         </section>
@@ -72,11 +72,11 @@ export default function AboutPage() {
             </div>
 
             <h2 className="text-4xl md:text-6xl font-black font-sans mb-10 tracking-tighter uppercase text-primary-text leading-none">
-              Gently Alive <br/> Interaction
+              Gently Alive <br/> Intuitive & Simple
             </h2>
             <p className="text-xl md:text-2xl text-primary-text/50 mb-12 leading-relaxed font-serif italic">
-              We believe in <span className="text-primary-text font-black not-italic uppercase tracking-widest text-sm bg-white/50 px-3 py-1 rounded-lg">Kinetic Premium</span> design. Every movement within the universe is calculated to reduce cortisol and increase clarity.
-            </p>
+              We believe in <span className="text-primary-text font-black not-italic uppercase tracking-widest text-sm bg-white/50 px-3 py-1 rounded-lg">high-quality design that feels natural and makes your day easier.</span>
+              </p>
             
             <div className="flex items-center gap-6">
                <div className="h-1 w-20 bg-tools-accent rounded-full" />
@@ -86,7 +86,7 @@ export default function AboutPage() {
           </motion.div>
         </section>
 
-        {/* SECTION 3: THE CALL TO PRESENCE */}
+        {/* SECTION 3: THE CALL TO ACCOUNT */}
         <section className="min-h-[100dvh] flex items-center justify-center px-6">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -95,17 +95,17 @@ export default function AboutPage() {
             className="max-w-3xl text-center space-y-12"
           >
             <h2 className="text-6xl md:text-8xl font-black font-sans tracking-tighter uppercase leading-[0.85] text-primary-text">
-              Establish <br/> Your Presence.
+              Join <br/> the Community.
             </h2>
             <p className="text-lg font-serif italic text-primary-text/30 max-w-md mx-auto">
-              Join the manifest and begin your synchronization with the Kynar system.
+              Sign up today and become part of the growing community using our premium digital tools.
             </p>
             <div className="pt-6">
               <Link 
                 href="/account"
                 className="inline-flex items-center px-16 py-6 bg-primary-text text-white rounded-full font-black uppercase tracking-[0.3em] shadow-2xl hover:scale-105 active:scale-95 transition-all text-xs"
               >
-                Initiate Account
+                Create Account
               </Link>
             </div>
           </motion.div>
