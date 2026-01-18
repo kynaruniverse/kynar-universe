@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Search, ArrowRight, Sparkles, ShieldCheck, Star, Zap } from 'lucide-react';
+import { Search, ArrowRight, ShieldCheck, Star, Zap } from 'lucide-react';
 import { motion } from "framer-motion";
 import UniverseCanvas from '../components/UniverseCanvas';
 
@@ -10,8 +10,34 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-brand-base flex flex-col selection:bg-brand-accent/20 overflow-x-hidden">
       
-      {/* SECTION 1: HERO */}
-      <section className="relative w-full min-h-[60vh] flex flex-col items-center justify-center px-6">
+      {/* 1. SEARCH BAR - Now immediately under the Navbar */}
+      <div className="w-full bg-brand-base relative z-30 py-4"> 
+        <motion.div 
+          className="relative w-[96%] max-w-6xl mx-auto group"
+        >
+          <div className="relative flex items-center bg-white shadow-sm rounded-xl p-1 pl-6 border border-brand-surface/20 transition-all duration-500">
+            <Search className="text-brand-text/30 mr-3" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search the shop..." 
+              className="flex-grow bg-transparent border-none outline-none text-brand-text placeholder:text-brand-text/20 py-2 text-sm"
+            />
+            <button className="bg-brand-text text-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-brand-accent transition-colors duration-500">
+              Search
+            </button>
+          </div>
+        </motion.div>
+      </div>
+      
+      {/* 2. PREVIEW BANNER - Placed under search, but above hero text */}
+      <div className="w-full py-2 border-y border-brand-surface/10">
+        <p className="text-[8px] font-bold uppercase tracking-[0.3em] text-brand-text/40 text-center">
+          The Kynar Store is currently in preview. Products will be available shortly.
+        </p>
+      </div>
+
+      {/* 3. HERO SECTION - Now under the search and banner */}
+      <section className="relative w-full min-h-[50vh] flex flex-col items-center justify-center px-6 pt-12 pb-20">
         <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none grayscale">
           <UniverseCanvas />
         </div>
@@ -25,39 +51,12 @@ export default function Home() {
             <h1 className="font-semibold tracking-tight text-brand-text mb-6">
               Quality digital products <br/> for professional use.
             </h1>
-            <p className="text-brand-text/60 max-w-2xl mx-auto mb-12">
+            <p className="text-brand-text/60 max-w-2xl mx-auto">
               Premium resources curated and trusted for those who value efficiency and simplicity.
             </p>
           </motion.div>
         </div>
-      </section>          
-
-          {/* SEARCH COMPONENT */}
-      <div className="w-full bg-brand-base relative z-30 py-4">  
-          <motion.div 
-            className="relative w-[96%] max-w-6xl mx-auto mt-4 group"
-          >
-            <div className="relative 
-  flex items-center bg-white shadow-sm rounded-xl p-1 pl-6 border border-brand-surface/20 transition-all duration-500">
-              <Search className="text-brand-text/30 mr-3" size={18} />
-              <input 
-                type="text" 
-                placeholder="Search the shop..." 
-                className="flex-grow bg-transparent border-none outline-none text-brand-text placeholder:text-brand-text/20 py-2 text-sm"
-              />
-              <button className="bg-brand-text text-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-brand-accent transition-colors duration-500">
-                Search
-              </button>
-            </div>
-          </motion.div>
-        </div>
-        
-        {/*PREVIEW BANNER*/}
-        <div className="w-full py-2 border-y border-brand-surface/10">
-          <p className="text-[8px] font-bold uppercase tracking-[0.3em] text-brand-text/40 text-center">
-            The Kynar Store is currently in preview. Products will be available shortly.
-          </p>
-        </div>
+      </section>
 
       {/* SECTION 2: FEATURED PRODUCTS */}
       <section className="max-w-7xl mx-auto px-6 w-full pb-20">
