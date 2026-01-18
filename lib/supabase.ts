@@ -1,17 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 
-// 1. EXTRACTION
+/**
+ * MUSE ENGINE DATA CORE
+ * Establishes the secure handshake with the private registry.
+ */
+
+// 1. ENVIRONMENT EXTRACTION
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-// 2. VALIDATION (Fail fast in development)
+// 2. REGISTRY VALIDATION
 if (!supabaseUrl || !supabaseKey) {
   throw new Error(
-    "KYNAR ERROR: Supabase Environment Variables are missing. Check your Netlify settings."
+    "MUSE ENGINE ERROR: Registry credentials are not established. Verify environment configuration."
   );
 }
 
-// 3. SECURE INITIALIZATION
+// 3. SECURE HANDSHAKE INITIALIZATION
 export const supabase = createClient(
   supabaseUrl, 
   supabaseKey,
@@ -20,12 +25,13 @@ export const supabase = createClient(
       persistSession: true, 
       autoRefreshToken: true,
       detectSessionInUrl: true,
-      storageKey: 'kynar-universe-auth', // Custom key prevents conflicts with other projects
+      // Muse Engine Storage Key: Aligned with the manifest logic
+      storageKey: 'kynar-muse-registry', 
     },
     global: {
-      headers: { 'x-application-name': 'kynar-universe-v1' },
+      headers: { 'x-application-name': 'kynar-muse-engine-v1' },
     },
-    // Optimization for high-speed Kinetic data fetching
+    // Optimized for stable, unhurried data synchronization
     db: {
       schema: 'public',
     },

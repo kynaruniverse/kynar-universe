@@ -1,7 +1,8 @@
 {
-  "name": "kynar-universe",
+  "name": "kynar-muse-engine",
   "version": "1.0.0",
   "private": true,
+  "description": "A high-fidelity digital asset registry and vault protocol.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

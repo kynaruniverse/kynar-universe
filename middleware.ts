@@ -1,6 +1,10 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+/**
+ * THE MUSE CURATOR (Middleware)
+ * Manages the silent authentication flow and registry access.
+ */
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -38,19 +42,19 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // 1. REFRESH SESSION
-  // This is vital for keeping the "Vault" accessible without re-logging
+  // 1. SESSION SYNCHRONIZATION
+  // Ensures uninterrupted access to the private vault.
   const { data: { user } } = await supabase.auth.getUser()
 
-  // 2. PROTECT PRIVATE SECTORS
-  // Redirect unauthenticated users trying to access the Account or Cart
-  const isProtectedRoute = request.nextUrl.pathname.startsWith('/account') || 
-                           request.nextUrl.pathname.startsWith('/cart')
+  // 2. REGISTRY PROTECTION
+  // Redirects unauthenticated guests trying to access curated private spaces.
+  const isProtectedPath = request.nextUrl.pathname.startsWith('/account') || 
+                          request.nextUrl.pathname.startsWith('/cart')
 
-  if (isProtectedRoute && !user) {
+  if (isProtectedPath && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/account' // Redirect to the login/auth gate
-    url.searchParams.set('message', 'auth_required')
+    url.pathname = '/account' 
+    url.searchParams.set('message', 'authentication_required')
     return NextResponse.redirect(url)
   }
 
@@ -60,11 +64,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public assets (svg, png, jpg, etc)
+     * Optimized Matcher: Ensures the Muse Engine is performant 
+     * by ignoring all static and physical media assets.
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],

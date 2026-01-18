@@ -1,46 +1,38 @@
 "use client";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
-import { useRef, useMemo } from "react";
-import * as THREE from "three";
+import { useRef } from "react";
 
-function AnimatedSphere({ activeColor }: { activeColor: any }) {
+function MuseSphere() {
   const materialRef = useRef<any>(null);
-  const targetColor = useMemo(() => new THREE.Color(), []);
 
   useFrame((state) => {
-    // 1. Get the color value safely
-    const colorValue = typeof activeColor === 'string' ? activeColor : activeColor.get();
-    targetColor.set(colorValue);
-
     if (materialRef.current) {
-      // 2. SLOW COLOR LERP: Very gradual transition
-      materialRef.current.color.lerp(targetColor, 0.02);
-      
-      // 3. SUBTLE DISTORTION: Reduced from 0.45 to 0.25 for a calmer vibe
-      // The speed is controlled by the speed prop, but the "pulse" here is now tiny
-      const pulse = Math.sin(state.clock.getElapsedTime() * 0.3) * 0.02;
-      materialRef.current.distort = 0.25 + pulse;
+      // 1. LIQUID MOTION: Slower, organic breathing cycle
+      const time = state.clock.getElapsedTime();
+      const pulse = Math.sin(time * 0.2) * 0.01;
+      materialRef.current.distort = 0.2 + pulse;
     }
   });
 
   return (
     <>
-      {/* Softening the light to avoid harsh dark shadows */}
-      <pointLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
+      {/* 2. SOFT AMBIENT LIGHTING: Removing harsh shadows */}
+      <pointLight position={[10, 10, 10]} intensity={0.5} color="#ffffff" />
       
-      <Float speed={0.8} rotationIntensity={0.2} floatIntensity={0.5}>
-        <Sphere args={[1.2, 64, 64]}>
+      <Float speed={0.4} rotationIntensity={0.1} floatIntensity={0.2}>
+        <Sphere args={[1.5, 64, 64]}>
           <MeshDistortMaterial
             ref={materialRef}
-            speed={0.5}          // DRASTICALLY SLOWED: From 2.5 to 0.5
-            distort={0.25}       // CALMER SHAPE: From 0.45 to 0.25
+            speed={0.3}          // LUSH SLOWNESS: 0.3 for barely-there motion
+            distort={0.2}       // CALM GEOMETRY: Minimal distortion
             radius={1}
-            metalness={0.1}      // REMOVED CHROME: From 0.8 to 0.1 for a soft look
-            roughness={0.4}      // SOFTER SURFACE: From 0.1 to 0.4
-            transparent={true}   // ENABLED TRANSPARENCY
-            opacity={0.35}       // OPAQUE FIX: Set to 35% so text is visible
-            depthWrite={false}   // Helps with transparency layering
+            metalness={0.05}     // ORGANIC: Low metalness for a ceramic/soft feel
+            roughness={0.8}      // DIFFUSE: High roughness to catch light softly
+            transparent={true}   
+            opacity={0.08}       // SPACE AS LUXURY: Reduced to 8% visibility
+            color="#1C1C1C"      // BRAND COLOR: Matches brand-text
+            depthWrite={false}   
           />
         </Sphere>
       </Float>
@@ -48,21 +40,19 @@ function AnimatedSphere({ activeColor }: { activeColor: any }) {
   );
 }
 
-export default function UniverseCanvas({ activeColor = "#ffffff" }: { activeColor?: any }) {
+export default function UniverseCanvas() {
   return (
-    <div className="h-full w-full pointer-events-none">
+    <div className="h-full w-full pointer-events-none transition-opacity duration-[2s]">
       <Canvas 
-        camera={{ position: [0, 0, 5], fov: 45 }}
+        camera={{ position: [0, 0, 5], fov: 40 }}
         dpr={[1, 1.5]} 
         gl={{ 
           antialias: true, 
           alpha: true,
-          powerPreference: "high-performance" 
         }}
       >
-        {/* Brightening the scene globally */}
-        <ambientLight intensity={1.2} />
-        <AnimatedSphere activeColor={activeColor} />
+        <ambientLight intensity={0.8} />
+        <MuseSphere />
       </Canvas>
     </div>
   );

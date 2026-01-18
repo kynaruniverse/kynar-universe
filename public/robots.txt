@@ -1,10 +1,10 @@
 # ==========================================
-# KYNAR UNIVERSE: ROBOTS PROTOCOL
+# KYNAR MUSE ENGINE: INDEXING PROTOCOL
 # ==========================================
 
 User-agent: *
 
-# 1. ALLOWED SECTORS (Public Manifest)
+# 1. CURATED REGISTRIES (Public Access)
 Allow: /
 Allow: /about
 Allow: /marketplace
@@ -15,8 +15,8 @@ Allow: /help
 Allow: /terms
 Allow: /privacy
 
-# 2. RESTRICTED SECTORS (Private & Technical)
-# We block these to protect user privacy and prevent crawling of empty states
+# 2. PRIVATE REGISTRIES (Access Restricted)
+# We shield these paths to preserve identity privacy and engine integrity.
 Disallow: /account
 Disallow: /account/
 Disallow: /cart
@@ -27,10 +27,9 @@ Disallow: /maintenance
 Disallow: /_next/
 Disallow: /static/
 
-# 3. SITEMAP SIGNAL
-# Ensure this matches the domain in your sitemap.ts
+# 3. SITEMAP SIGNATURE
+# Points curators to the primary production registry.
 Sitemap: https://kynaruniverse.co.uk/sitemap.xml
-Sitemap: https://kynar-universe-v1.netlify.app/sitemap.xml
 
 # ==========================================
 # END PROTOCOL

@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
 /**
- * 1. SECURE SERVER CLIENT
+ * 1. SECURE SERVER CONTEXT
  */
 async function createClient() {
   const cookieStore = cookies();
@@ -38,43 +38,44 @@ async function createClient() {
 }
 
 /**
- * 2. THE CHECKOUT TRANSMISSION
+ * 2. ACQUISITION PROTOCOL
+ * Processes the transfer of digital assets to the user's private library.
  */
 export async function processCheckout(productSlugs: string[]) {
   const supabase = await createClient();
 
-  // A. IDENTITY VERIFICATION
+  // A. AUTHENTICATION CHECK
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   
   if (authError || !user) {
-    return { error: "unauthorized" }; // Handled by UI to redirect to login
+    return { error: "unauthorized" }; 
   }
 
   if (!productSlugs || productSlugs.length === 0) {
-    return { error: "Order empty. No assets to Deliver." };
+    return { error: "Your manifest is empty. No assets found for acquisition." };
   }
 
-  // B. DATA PREPARATION (Legal Compliance Audit Trail)
-  // Ensures we record the EXACT moment the consumer waived their right to cancel
+  // B. LEGAL AUDIT TRAIL (UK Compliance)
+  // Records the formal consent and waiver of the cancellation period for digital goods.
   const purchaseData = productSlugs.map(slug => ({
     user_id: user.id,
     product_id: slug, 
-    legal_consent: true, // Aligned with your SQL column: legal_consent
-    consent_at: new Date().toISOString() // Aligned with your SQL column: consent_at
+    legal_consent: true, 
+    consent_at: new Date().toISOString() 
   }));
 
-  // C. DATABASE INSERTION (The Acquisition)
+  // C. ASSET TRANSFER (The Acquisition)
   const { error: dbError } = await supabase
     .from('purchases')
     .insert(purchaseData);
 
   if (dbError) {
-    console.error("Checkout Error:", dbError.message);
-    return { error: "Something went wrong with your purchase. Please try again in a moment." };
+    console.error("Acquisition Error:", dbError.message);
+    return { error: "The acquisition could not be finalized. Please refresh and try again." };
   }
 
-  // D. CACHE REVALIDATION
-  // This ensures the /account page reflects the new items immediately
+  // D. REGISTRY UPDATE
+  // Ensures the Library and Storefront reflect the updated status immediately.
   revalidatePath('/account', 'page');
   revalidatePath('/marketplace', 'page');
 

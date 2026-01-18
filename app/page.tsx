@@ -2,103 +2,139 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Wrench, Heart, Home as HomeIcon } from 'lucide-react';
+import { Search, ArrowRight, Sparkles, ShieldCheck, Star, Zap } from 'lucide-react';
 import { motion } from "framer-motion";
 import UniverseCanvas from '../components/UniverseCanvas';
 
 export default function Home() {
-  const [activeColor, setActiveColor] = useState("#8FB7FF"); // Default Blue
-
-  const colors = {
-    default: "#8FB7FF",
-    tools: "#A88BFF", // Violet
-    life: "#8ED9A1",  // Green
-    home: "#FFCEB8"   // Peach
-  };
-
   return (
-    <main className="min-h-screen bg-home-base flex flex-col selection:bg-home-accent/30 overflow-x-hidden">
+    <main className="min-h-screen bg-brand-base flex flex-col selection:bg-brand-accent/20 overflow-x-hidden">
       
-      {/* 1. HERO SECTION WITH 3D */}
-      <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden px-6">
-        {/* The 3D Universe Background */}
-        <div className="absolute inset-0 z-0 opacity-30">
+      {/* SECTION 1: HERO (ABOVE THE FOLD) */}
+      <section className="relative w-full min-h-[75vh] flex flex-col items-center justify-center px-6 pt-20">
+        {/* Intelligence on Demand: Background Canvas is now extremely subtle */}
+        <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none grayscale">
           <UniverseCanvas />
         </div>
 
-        {/* Content Overlay */}
-        <div className="relative z-10 max-w-4xl text-center px-6">
-          <motion.h1 
+        <div className="relative z-10 max-w-4xl w-full text-center px-6">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="title-responsive"
+            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
           >
-            Digital tools for  <br/> a simpler life.
-          </motion.h1>
-    
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-primary-text/60 mt-6 font-medium"
-          >
-            Premium digital resources for everyone from busy parents <br className="hidden md:block" /> to students and professionals.
-          </motion.p>
+            <h1 className="font-semibold tracking-tight text-brand-text mb-6">
+              Quiet luxury meets <br/> intelligent software.
+            </h1>
+            <p className="text-brand-text/60 max-w-2xl mx-auto mb-12">
+              Premium digital products, curated and trusted for those who value space and simplicity.
+            </p>
+          </motion.div>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link href="/marketplace" className="px-8 py-4 bg-primary-text text-white rounded-full font-bold hover:scale-105 transition-all">
-              
-              Browse the Shop
-            </Link>
-            <Link href="/about" className="px-8 py-4 bg-white/50 background-blur-md rounded-full font-bold border border-white/20 hover:bg-white transition-all">
-              Our Story
-            </Link>
+          {/* THE CENTERED OUTCOME SEARCH BAR */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="relative max-w-2xl mx-auto group"
+          >
+            <div className="absolute inset-0 bg-brand-accent/5 rounded-full blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-700" />
+            <div className="relative flex items-center bg-white shadow-tactile rounded-full p-2 pl-8 border border-transparent focus-within:border-brand-surface/30 transition-all duration-500">
+              <Search className="text-brand-text/30 mr-4" size={20} />
+              <input 
+                type="text" 
+                placeholder="Find your next solution..." 
+                className="flex-grow bg-transparent border-none outline-none text-brand-text placeholder:text-brand-text/20 py-4"
+              />
+              <button className="bg-brand-text text-white px-8 py-4 rounded-full font-semibold hover:bg-brand-accent transition-colors duration-500">
+                Search
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 2: CURATED BENTO GRID */}
+      <section className="max-w-7xl mx-auto px-6 w-full pb-20">
+        <div className="flex justify-between items-end mb-10">
+          <div>
+            <h2 className="text-3xl font-semibold tracking-tight">Curated Selection</h2>
+            <p className="text-brand-text/40 mt-2">Editor's picks for a refined digital life.</p>
+          </div>
+          <Link href="/marketplace" className="hidden md:flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-brand-text/40 hover:text-brand-accent transition-colors">
+            View All <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 h-auto md:h-[700px]">
+          {/* FEATURED LARGE CARD */}
+          <div className="md:col-span-2 md:row-span-2 brand-card shadow-tactile-hover group overflow-hidden relative cursor-pointer">
+            <div className="absolute inset-0 bg-brand-surface/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="p-10 h-full flex flex-col justify-between">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-accent mb-4 block">Trending</span>
+                <h3 className="text-4xl font-semibold max-w-xs mb-4">The Minimalist OS</h3>
+                <p className="text-brand-text/50 max-w-sm">A complete workspace for high-focus professionals.</p>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="text-2xl font-semibold">£49</span>
+                <button className="px-6 py-3 bg-brand-text text-white rounded-full text-xs font-bold uppercase tracking-widest">Preview</button>
+              </div>
+            </div>
+          </div>
+
+          {/* SECONDARY CARD */}
+          <div className="md:col-span-2 brand-card shadow-tactile-hover group cursor-pointer surface-mocha">
+            <div className="p-8 flex justify-between items-center h-full">
+              <div className="max-w-[60%]">
+                <h3 className="text-2xl font-semibold mb-2">Daily Habits Guide</h3>
+                <p className="text-xs text-brand-text/40 uppercase tracking-widest font-bold">New Release</p>
+              </div>
+              <div className="w-24 h-24 bg-white/50 rounded-inner flex items-center justify-center">
+                <Zap className="text-brand-accent" size={32} />
+              </div>
+            </div>
+          </div>
+
+          {/* TERTIARY SMALL CARD */}
+          <div className="brand-card shadow-tactile-hover group cursor-pointer">
+            <div className="p-8 flex flex-col justify-between h-full">
+              <Star className="text-accent-thermal" size={24} />
+              <h3 className="text-xl font-semibold">UI Kits</h3>
+            </div>
+          </div>
+
+          {/* QUATERNARY SMALL CARD */}
+          <div className="brand-card shadow-tactile-hover group cursor-pointer bg-brand-text text-white">
+            <div className="p-8 flex flex-col justify-between h-full">
+              <ShieldCheck className="text-brand-accent" size={24} />
+              <h3 className="text-xl font-semibold">Verified</h3>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 2. CATEGORY GRID */}
-      <section className="max-w-7xl mx-auto px-6 w-full pb-32">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
-          
-          {[
-            { id: 'tools', title: 'Tools', icon: Wrench, color: colors.tools, text: 'Everything you need to build, create, and stay organised.' },
-            { id: 'life', title: 'Life', icon: Heart, color: colors.life, text: 'Guides, tools, and resources for everyday life.' },
-            { id: 'home', title: 'Home', icon: HomeIcon, color: colors.home, text: 'Simple tools and solutions for a more organized and peaceful home life.' }
-          ].map((cat, index) => (
-            <motion.div
-              key={cat.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ 
-                delay: index * 0.15, 
-                duration: 0.8, 
-                ease: [0.22, 1, 0.36, 1] 
-              }}
-            >
-              <Link 
-                href={`/marketplace?category=${cat.title}`}
-                onMouseEnter={() => setActiveColor(cat.color)}
-                onTouchStart={() => setActiveColor(cat.color)}
-                onMouseLeave={() => setActiveColor(colors.default)}
-                className="group relative block h-full"
-              >
-                <div className="bg-white/40 backdrop-blur-3xl p-10 rounded-[48px] h-full border border-white/40 shadow-glass hover:shadow-2xl hover:-translate-y-2 active:scale-[0.97] transition-all duration-500">
-                  <div className="w-14 h-14 bg-white/60 rounded-[20px] flex items-center justify-center mb-8 text-primary-text shadow-sm group-hover:scale-110 transition-transform">
-                    <cat.icon className="w-6 h-6" />
-                  </div>
-                  <h2 className="text-3xl font-black mb-4 text-primary-text tracking-tighter uppercase">
-                    {cat.title}
-                  </h2>
-                  <p className="font-serif text-primary-text/50 italic leading-relaxed text-base">
-                    {cat.text}
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-
+      {/* SECTION 4: TRUST STRIP */}
+      <section className="w-full border-t border-brand-surface/20 py-20 bg-white/30">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-40">
+            <div className="flex flex-col items-center text-center">
+              <span className="text-[10px] font-bold uppercase tracking-widest mb-2">Secure Payments</span>
+              <p className="text-[9px] font-medium">Stripe Verified</p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <span className="text-[10px] font-bold uppercase tracking-widest mb-2">Instant Delivery</span>
+              <p className="text-[9px] font-medium">Global Access</p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <span className="text-[10px] font-bold uppercase tracking-widest mb-2">Customer Rating</span>
+              <p className="text-[9px] font-medium">4.9/5 Average</p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <span className="text-[10px] font-bold uppercase tracking-widest mb-2">Premium Support</span>
+              <p className="text-[9px] font-medium">Human-Led Help</p>
+            </div>
+          </div>
         </div>
       </section>
     </main>

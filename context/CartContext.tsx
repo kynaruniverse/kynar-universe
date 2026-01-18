@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 
-// ALIGNED: id changed to string to match Supabase UUIDs
+// ALIGNED: Muse Engine Standard Item Structure
 type CartItem = {
   id: string; 
   title: string;
@@ -35,23 +35,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [lastAddedItem, setLastAddedItem] = useState("");
 
-  // 1. INITIALIZE FROM LOCAL STORAGE (Mobile Safe)
+  // 1. INITIALIZE FROM PERSISTENT STORAGE
   useEffect(() => {
-    const savedCart = localStorage.getItem('kynar_cart_v1');
+    // Muse Engine Key: Transitioned from kynar_cart to muse_manifest
+    const savedCart = localStorage.getItem('kynar_muse_manifest');
     if (savedCart) {
       try {
         setCartItems(JSON.parse(savedCart));
       } catch (e) {
-        localStorage.removeItem('kynar_cart_v1');
+        localStorage.removeItem('kynar_muse_manifest');
       }
     }
     setIsInitialized(true);
   }, []);
 
-  // 2. PERSIST CHANGES
+  // 2. MANIFEST PERSISTENCE
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem('kynar_cart_v1', JSON.stringify(cartItems));
+      localStorage.setItem('kynar_muse_manifest', JSON.stringify(cartItems));
     }
   }, [cartItems, isInitialized]);
 
@@ -59,18 +60,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCartItems((prev) => {
       const exists = prev.find((item) => item.id === product.id);
       
-      // KINETIC LOGIC: For digital goods, we cap quantity at 1
+      // MUSE LOGIC: Digital assets are unique; quantity is locked to 1
       if (exists) return prev; 
       
       return [...prev, { ...product, quantity: 1 }];
     });
 
     setLastAddedItem(product.title);
+    
+    // Intelligence on Demand: Reset state before triggering the reveal
     setShowSuccess(false); 
-    setTimeout(() => setShowSuccess(true), 10);
+    // Small liquid delay to allow the physical layers to settle
+    setTimeout(() => setShowSuccess(true), 150);
   };
 
   const updateQuantity = (id: string, quantity: number) => {
+    // Enforcing the "Single Asset" rule for the Muse Engine
     setCartItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, quantity: 1 } : item))
     );
@@ -82,7 +87,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => {
     setCartItems([]);
-    localStorage.removeItem('kynar_cart_v1');
+    localStorage.removeItem('kynar_muse_manifest');
   };
 
   const cartTotal = useMemo(() => 
