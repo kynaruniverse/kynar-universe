@@ -22,11 +22,11 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const handleAdd = () => {
     if (isAdded) return;
     
-    [span_6](start_span)// PHASE 1: Process Selection Intent (Pre-Acquisition)[span_6](end_span)
+    // PHASE 1: Process Selection Intent (Pre-Acquisition)
     addToCart(product);
     setIsAdded(true);
     
-    [span_7](start_span)// Intelligence Reset: allow for multiple selections after feedback pulse[span_7](end_span)
+    // Intelligence Reset: allow for multiple selections after feedback pulse
     setTimeout(() => setIsAdded(false), 2500);
   };
 
@@ -47,7 +47,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         }
       `}
     >
-      [span_8](start_span){/* Intelligence Reveal: Subtle internal glow on success[span_8](end_span) */}
+      {/* Intelligence Reveal: Subtle internal glow on success */}
       <AnimatePresence>
         {isAdded && (
           <motion.div 
