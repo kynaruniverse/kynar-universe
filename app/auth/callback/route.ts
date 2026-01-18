@@ -2,10 +2,15 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+/**
+ * AUTHENTICATION HANDSHAKE PROTOCOL
+ * Finalizes the identity verification and establishes the user session.
+ */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  // If 'next' is present, we send them there (e.g., back to Cart), otherwise to Account
+  
+  // Muse Engine: Redirect to 'Library' (Account) by default
   const next = searchParams.get('next') ?? '/account';
 
   if (code) {
@@ -22,14 +27,14 @@ export async function GET(request: Request) {
             try {
               cookieStore.set({ name, value, ...options });
             } catch (error) {
-              // Middleware will handle session refresh if this fails in a GET
+              // Handled by Muse Middleware
             }
           },
           remove(name: string, options: CookieOptions) {
             try {
               cookieStore.set({ name, value: '', ...options });
             } catch (error) {
-              // Handle error
+              // Silently fail
             }
           },
         },
@@ -39,18 +44,19 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     
     if (!error) {
-      // SUCCESS: Session Established
-      // We append a timestamp to the redirect to force a fresh UI load on mobile
+      // SUCCESS: Identity Established
+      // Redirecting with a calm verified signal for the Curator UI
       const successUrl = new URL(next, origin);
-      successUrl.searchParams.set('verified', 'true');
+      successUrl.searchParams.set('identity_verified', 'true');
       
       return NextResponse.redirect(successUrl);
     }
   }
 
-  // ERROR: Redirect to Account with kinetic error signal
+  // ERROR: Handshake Failed
+  // Redirect to Registry with a sophisticated error protocol
   const errorUrl = new URL('/account', origin);
-  errorUrl.searchParams.set('error', 'auth_transmission_failed');
+  errorUrl.searchParams.set('protocol_error', 'identity_handshake_failed');
   
   return NextResponse.redirect(errorUrl);
 }

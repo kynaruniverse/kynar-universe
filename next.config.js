@@ -1,42 +1,45 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 1. MOBILE CONVENIENCE: Useful for rapid deployment
+  // 1. REGISTRY INTEGRITY
+  // Luxury builds require total structural validity. 
+  // We move away from ignoring errors to ensure engine stability.
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false, 
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
 
-  // 2. KINETIC ASSETS: Essential for 3D library stability on mobile
+  // 2. MUSE CORE STABILITY
+  // Essential for the silent, smooth execution of 3D library assets.
   transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],
 
-  // 3. IMAGE DELIVERY: Optimized for Supabase & Remote Assets
+  // 3. ASSET DELIVERY PROTOCOL
+  // High-fidelity image optimization for a refined visual experience.
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.supabase.co', // Explicitly trust your Supabase storage
+        hostname: '**.supabase.co', // Trusted Registry Storage
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // For your placeholder hero images
-      },
-      {
-        protocol: 'https',
-        hostname: '**', // Keep as fallback for now
-      },
+        hostname: 'images.unsplash.com', // Editorial Content
+      }
     ],
-    deviceSizes: [640, 750, 828, 1080, 1200], 
+    // Optimized for the specific breakpoints of the Muse Engine
+    deviceSizes: [640, 828, 1080, 1200, 1920], 
     formats: ['image/avif', 'image/webp'],   
+    minimumCacheTTL: 3600, // Reduced server load for a "Calm" backend
   },
 
-  // 4. SECURITY & UX
+  // 4. UX HARMONY
   experimental: {
-    scrollRestoration: true, // Prevents "jarring" jumps on mobile back-button
+    scrollRestoration: true, // Ensures "Quiet" navigation continuity
   },
   
-  // 5. PRODUCTION HEADERS: Prevents "Clickjacking" and improves security
+  // 5. THE TRUST PROTOCOL: Security Headers
+  // Hardening the engine against external intrusion.
   async headers() {
     return [
       {
@@ -53,6 +56,10 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()', // Minimalist privacy
           },
         ],
       },

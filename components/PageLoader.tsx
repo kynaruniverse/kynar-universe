@@ -6,17 +6,15 @@ export default function PageLoader() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Premium Feel: We wait for the window 'load' event, 
-    // but cap it at 3s to ensure the user isn't stuck.
     const handleLoad = () => setLoading(false);
     
     if (document.readyState === "complete") {
-      // Small delay even if ready to prevent "flicker"
-      const flickerTimer = setTimeout(() => setLoading(false), 500);
+      // Muse Engine Unhurried Entry: Slower than a standard app for a luxury feel
+      const flickerTimer = setTimeout(() => setLoading(false), 1000);
       return () => clearTimeout(flickerTimer);
     } else {
       window.addEventListener("load", handleLoad);
-      const backupTimer = setTimeout(() => setLoading(false), 3000);
+      const backupTimer = setTimeout(() => setLoading(false), 3500);
       return () => {
         window.removeEventListener("load", handleLoad);
         clearTimeout(backupTimer);
@@ -31,60 +29,60 @@ export default function PageLoader() {
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
-            transition: { duration: 1.2, ease: [0.19, 1, 0.22, 1] } 
+            scale: 1.015, // Subtle expansion on exit
+            transition: { duration: 1.6, ease: [0.19, 1, 0.22, 1] } 
           }}
-          className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-white"
+          className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-brand-base"
         >
-          {/* 1. KINETIC MORPHING RING (The Core) */}
+          {/* 1. THE MUSE CORE */}
           <div className="relative flex items-center justify-center">
-            {/* Pulsing Aura */}
+            {/* Soft Intelligence Aura: Mocha-tinted warmth */}
             <motion.div 
               animate={{ 
-                scale: [1, 1.5, 1],
-                opacity: [0.1, 0.3, 0.1] 
+                scale: [0.95, 1.1, 0.95],
+                opacity: [0.08, 0.12, 0.08] 
               }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="absolute w-32 h-32 bg-home-accent/30 blur-[60px] rounded-full"
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute w-64 h-64 bg-brand-surface/40 blur-[120px] rounded-full"
             />
             
+            {/* The Monochromatic Ring: Viscous motion */}
             <motion.div
               animate={{ 
                 rotate: 360,
-                borderRadius: ["40% 60% 60% 40% / 40% 40% 60% 60%", "50%", "40% 60% 60% 40% / 40% 40% 60% 60%"],
-                scale: [1, 1.1, 1],
-                borderWidth: ["2px", "4px", "2px"]
+                borderRadius: ["42% 58% 70% 30% / 45% 45% 55% 55%", "50%", "42% 58% 70% 30% / 45% 45% 55% 55%"],
               }}
               transition={{ 
-                duration: 4, 
+                duration: 8, // Slower rotation for higher perceived value
                 repeat: Infinity, 
                 ease: "linear" 
               }}
-              className="w-20 h-20 border-t-tools-accent border-r-life-accent border-b-cat-home-accent border-l-home-accent shadow-premium"
+              className="w-12 h-12 border-[1.2px] border-brand-text/5 border-t-brand-accent shadow-tactile"
             />
           </div>
           
-          {/* 2. MINIMALIST TYPOGRAPHY */}
+          {/* 2. HUMANIST BRANDING */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="mt-16 text-center space-y-2"
+            transition={{ delay: 0.6, duration: 1.4 }}
+            className="mt-16 text-center space-y-4"
           >
-            <h2 className="text-[10px] font-black tracking-[0.6em] uppercase text-primary-text/20">
-              Loading...
-            </h2>
-            <p className="text-xl font-serif italic text-primary-text/60">
-              Kynar Universe
+            <p className="font-sans text-2xl font-semibold tracking-tight text-brand-text">
+              Kynar Muse
             </p>
+            <h2 className="font-body text-[9px] font-bold uppercase tracking-[0.6em] text-brand-text/20">
+              Establishing Presence
+            </h2>
           </motion.div>
 
-          {/* 3. SUBTLE PROGRESS LINE */}
-          <div className="absolute bottom-20 w-32 h-[1px] bg-black/5 overflow-hidden">
+          {/* 3. LIQUID PROGRESS */}
+          <div className="absolute bottom-24 w-28 h-[1px] bg-brand-text/5 overflow-hidden">
             <motion.div 
               initial={{ x: "-100%" }}
               animate={{ x: "100%" }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="w-full h-full bg-gradient-to-r from-transparent via-home-accent to-transparent"
+              transition={{ duration: 3.5, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
+              className="w-full h-full bg-brand-accent/30"
             />
           </div>
         </motion.div>

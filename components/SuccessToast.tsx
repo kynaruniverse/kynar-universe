@@ -1,6 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, X, Sparkles } from "lucide-react";
+import { Check, X, Sparkles } from "lucide-react";
 
 interface SuccessToastProps {
   isVisible: boolean;
@@ -13,57 +13,58 @@ export default function SuccessToast({ isVisible, message, onClose }: SuccessToa
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.9, x: "-50%" }}
+          initial={{ opacity: 0, y: 24, scale: 0.96, x: "-50%" }}
           animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
-          exit={{ opacity: 0, scale: 0.95, y: 20, transition: { duration: 0.2 } }}
+          exit={{ opacity: 0, scale: 0.98, y: 12, transition: { duration: 0.4, ease: [0.19, 1, 0.22, 1] } }}
           transition={{ 
             type: "spring", 
-            damping: 25, 
-            stiffness: 400 
+            damping: 32, 
+            stiffness: 280 
           }}
-          className="fixed bottom-10 left-1/2 z-[100] w-[90%] max-w-[340px] will-change-transform"
+          className="fixed bottom-10 left-1/2 z-[250] w-[94%] max-w-[380px] will-change-transform"
         >
-          <div className="bg-white/60 backdrop-blur-3xl border border-white/60 p-4 rounded-[28px] shadow-glass flex items-center gap-4 relative overflow-hidden">
+          {/* 1. TACTILE SURFACE: A solid, grounded object */}
+          <div className="bg-white p-5 rounded-card shadow-tactile flex items-center gap-6 relative overflow-hidden">
             
-            {/* Animated Success Icon */}
+            {/* 2. MUSE ICONOGRAPHY: Refined feedback */}
             <motion.div 
-              initial={{ rotate: -20, scale: 0.5 }}
+              initial={{ rotate: -10, scale: 0.9 }}
               animate={{ rotate: 0, scale: 1 }}
-              className="bg-home-accent/20 p-2.5 rounded-2xl text-primary-text shadow-inner"
+              className="bg-brand-accent/5 p-3 rounded-inner text-brand-accent flex-shrink-0"
             >
-              <CheckCircle2 size={20} />
+              <Check size={18} strokeWidth={2.5} />
             </motion.div>
 
-            {/* Text Content */}
+            {/* 3. HUMANIST MICRO-COPY */}
             <div className="flex-grow min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="text-[10px] font-black text-primary-text uppercase tracking-[0.2em]">
-                  Added
-                </p>
-                <Sparkles size={10} className="text-home-accent animate-pulse" />
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="text-[9px] font-bold text-brand-text/30 uppercase tracking-[0.3em]">
+                  Registry Update
+                </span>
+                <Sparkles size={10} className="text-accent-thermal opacity-60" />
               </div>
-              <p className="text-xs text-primary-text/50 font-serif italic truncate pr-2">
+              <p className="font-body text-[13px] text-brand-text/70 font-medium leading-tight truncate">
                 {message}
               </p>
             </div>
 
-            {/* Close Button */}
+            {/* 4. TACTILE DISMISSAL */}
             <button 
               onClick={onClose} 
-              className="p-2 hover:bg-white/40 active:scale-90 rounded-full transition-all"
-              aria-label="Close notification"
+              className="p-2.5 hover:bg-brand-base rounded-full transition-colors duration-500 group"
+              aria-label="Dismiss"
             >
-              <X size={14} className="text-primary-text/20" />
+              <X size={14} className="text-brand-text/10 group-hover:text-brand-text/30 transition-colors" />
             </button>
 
-            {/* Kinetic Progress Bar (Thin & Elegant) */}
+            {/* 5. LIQUID CHRONOGRAPH: Unhurried progress */}
             <motion.div 
               initial={{ scaleX: 1 }}
               animate={{ scaleX: 0 }}
-              transition={{ duration: 4, ease: "linear" }}
+              transition={{ duration: 5, ease: "linear" }}
               onAnimationComplete={onClose}
               style={{ originX: 0 }}
-              className="absolute bottom-0 left-0 right-0 h-[2px] bg-home-accent/30"
+              className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-brand-accent/15"
             />
           </div>
         </motion.div>

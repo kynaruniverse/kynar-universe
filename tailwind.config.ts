@@ -9,77 +9,61 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Softened Onyx for better readability
-        "primary-text": "#1A1C1E", 
-
-        // HOME / DEFAULT
-        "home-base": "#CFEAFF",
-        "home-surface": "#F7FAFF",
-        "home-accent": "#8FB7FF",
-
-        // TOOLS WORLD (Violet)
-        "tools-base": "#F5F7FA",
-        "tools-surface": "#FFFFFF",
-        "tools-accent": "#A88BFF", 
-
-        // LIFE WORLD (Green)
-        "life-base": "#E4FFF5",
-        "life-surface": "#FFFFFF",
-        "life-accent": "#8ED9A1", 
-
-        // HOME WORLD (Category - Peach)
-        "cat-home-base": "#F7FAFF", 
-        "cat-home-surface": "#FFFFFF",
-        "cat-home-accent": "#FFCEB8", 
-
-        "account-base": "#F3E7D6",
-        "account-surface": "#FFFFFF",
+        // PILLAR 1: CALM FOUNDATION (60-30-10 Rule)
+        "brand-base": "#F5F2F0",    // Stone: Visual Foundation
+        "brand-text": "#1C1C1C",    // Charcoal: Grounded Contrast
+        
+        // PILLAR 3: PHYSICAL DEPTH
+        "brand-surface": "#D7C4B7", // Mocha: Tactile Layering
+        
+        // PILLAR 2: INTELLIGENCE REVEAL
+        "brand-accent": "#4A5D4E",  // Verdant: Primary Action
+        
+        // Contextual Accents (Restrained & Sophisticated)
+        "accent-thermal": "#D97E6E", // Thermal: Organic Warmth
+        "accent-lavender": "#9B94B0", // Lavender: Soft Refinement
       },
       fontFamily: {
+        // Muse Engine Typography: Humanist Medium for Headings
         sans: ['var(--font-outfit)', 'sans-serif'],
-        serif: ['var(--font-lora)', 'serif'],
+        // High x-height Sans for Body/UI
+        body: ['var(--font-inter)', 'sans-serif'],
       },
       borderRadius: {
+        // Space is a luxury signal
+        'card': '40px',
+        'inner': '28px',
         'btn': '100px',
-        'card': '48px', // Increased to match the refined Navbar/Cart UI
       },
       boxShadow: {
-        // Enhanced Glassmorphism: Lighter, more diffuse
-        'glass': '0 4px 40px -10px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.3)',
-        'premium': '0 20px 50px rgba(0, 0, 0, 0.05)',
-        'inner-glass': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.06)',
+        // Physical Depth: Subtle occlusion of light
+        'tactile': '0 4px 30px -4px rgba(0, 0, 0, 0.03), 0 2px 12px -2px rgba(0, 0, 0, 0.02)',
+        'tactile-hover': '0 30px 60px -12px rgba(0, 0, 0, 0.08), 0 12px 24px -4px rgba(0, 0, 0, 0.03)',
       },
-      transitionTimingFunction: {
-        'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
-        'out-quint': 'cubic-bezier(0.23, 1, 0.32, 1)',
+      transitionDuration: {
+        // Liquid Motion: Unhurried and confident
+        'slow': '800ms',
+        'liquid': '1200ms',
       },
       animation: {
-        'fade-in': 'fadeIn 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards',
-        'fade-in-up': 'fadeInUp 1s cubic-bezier(0.19, 1, 0.22, 1) forwards',
-        'float': 'float 6s ease-in-out infinite',
+        // Intelligence on Demand: Reveal signals
+        'fade-in': 'fadeIn 1s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'reveal': 'reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        fadeInUp: {
+        reveal: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        }
       },
-      backdropBlur: {
-        xs: '2px',
-      }
     },
   },
   plugins: [
     require('@tailwindcss/typography'),
-    // Adds better custom scrollbar support for mobile
     require('tailwind-scrollbar-hide'),
   ],
 };

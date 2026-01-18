@@ -8,30 +8,30 @@ export default function SuccessToastWrapper() {
   const { showSuccess, setShowSuccess, lastAddedItem } = useCart();
   const pathname = usePathname();
 
-  // 1. CLEANSE ON NAVIGATION
-  // If a user jumps from Marketplace to Cart, we clear the toast 
-  // to avoid overlapping with new page logic.
+  // 1. CONTEXTUAL SYNC: Reset on Navigation
+  // Space is a luxury signal; we clear the UI before new page transitions.
   useEffect(() => {
     setShowSuccess(false);
   }, [pathname, setShowSuccess]);
 
-  // 2. AUTO-DISMISS FAILSAFE
-  // While the component handles its own animation, this ensures 
-  // the CartContext state is reset to "false" after the toast fades.
+  // 2. INTELLIGENCE ON DEMAND: Auto-Dismiss Logic
+  // We use a 5-second window to allow the user to acknowledge the success
+  // without feeling rushed, maintaining the "Quiet Luxury" pace.
   useEffect(() => {
     if (showSuccess) {
       const timer = setTimeout(() => {
         setShowSuccess(false);
-      }, 4500); // Slightly longer than the CSS animation for safety
+      }, 5000); 
       return () => clearTimeout(timer);
     }
   }, [showSuccess, setShowSuccess]);
 
   return (
-    <div className="relative z-[100]">
+    <div className="relative z-[200]">
       <SuccessToast 
         isVisible={showSuccess} 
-        message={`${lastAddedItem} Successfully addedThe page you are looking for does not exist or has been moved.`} 
+        // Muse Engine Correction: Clean, editorial feedback
+        message={`${lastAddedItem} has been added to your library.`} 
         onClose={() => setShowSuccess(false)} 
       />
     </div>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BookOpen, ArrowRight, Lightbulb, Coffee, Sparkles, Terminal } from 'lucide-react';
+import { BookOpen, ArrowRight, Coffee, Sparkles, Terminal } from 'lucide-react';
 
 export default function Guides() {
   const containerVariants = {
@@ -14,38 +14,38 @@ export default function Guides() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0, 
-      transition: { duration: 1, ease: [0.19, 1, 0.22, 1] } 
+      transition: { duration: 1.2, ease: [0.19, 1, 0.22, 1] } 
     }
   };
 
   return (
-    <main className="min-h-screen bg-life-base pb-32 transition-colors duration-1000 ease-in-out">
+    <main className="min-h-screen bg-brand-base pb-32 transition-colors duration-1000">
       
-      {/* 1. HERO SECTION */}
+      {/* 1. EDITORIAL HERO SECTION */}
       <section className="px-6 py-24 md:py-32 text-center">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-          className="max-w-4xl mx-auto space-y-8"
+          transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
+          className="max-w-4xl mx-auto space-y-10"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[24px] bg-white/40 text-life-accent mb-4 shadow-glass border border-white/40">
-            <BookOpen className="w-8 h-8" />
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-inner bg-brand-surface/10 text-brand-accent mb-4 shadow-sm">
+            <BookOpen className="w-6 h-6" strokeWidth={1.5} />
           </div>
-          <h1 className="text-6xl md:text-8xl font-black font-sans text-primary-text tracking-tighter uppercase leading-[0.85]">
-            Guides
+          <h1 className="text-6xl md:text-[100px] font-semibold font-sans text-brand-text tracking-tight leading-[0.9]">
+            Curated <br/> Insights
           </h1>
-          <p className="text-xl md:text-3xl font-serif text-primary-text/40 italic leading-relaxed px-4 max-w-2xl mx-auto">
-            Helpful tips, step-by-step guides, and resources to help you succeed.
+          <p className="text-lg md:text-2xl font-medium text-brand-text/50 leading-relaxed px-4 max-w-2xl mx-auto">
+            Practical knowledge and refined strategies to help you navigate your digital and physical space.
           </p>
         </motion.div>
       </section>
 
-      {/* 2. FEATURED GUIDES GRID */}
+      {/* 2. ARCHIVE GRID: Physical Depth Layers */}
       <motion.section 
         variants={containerVariants}
         initial="hidden"
@@ -53,80 +53,74 @@ export default function Guides() {
         viewport={{ once: true, margin: "-50px" }}
         className="max-w-7xl mx-auto px-6 py-12"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
           
-          {/* ARTICLE CARD 1: TOOLS */}
+          {/* ARTICLE CARD 1: TECHNICAL INSIGHTS */}
           <motion.article 
             variants={itemVariants}
-            className="group relative bg-white/40 backdrop-blur-3xl rounded-[48px] p-10 md:p-16 border border-white/60 shadow-glass hover:bg-white/60 transition-all duration-700 overflow-hidden flex flex-col justify-between"
+            className="brand-card p-10 md:p-16 hover:shadow-tactile-hover transition-all duration-700 flex flex-col justify-between group"
           >
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-life-accent/10 blur-[100px] rounded-full group-hover:bg-life-accent/20 transition-all duration-1000" />
-            
-            <div className="relative z-10">
-              <div className="text-life-accent mb-10 bg-white/80 w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-black/5">
-                <Terminal className="w-7 h-7" />
+            <div className="relative">
+              <div className="text-brand-accent mb-12 bg-brand-base w-14 h-14 rounded-inner flex items-center justify-center shadow-sm">
+                <Terminal className="w-6 h-6" strokeWidth={1.5} />
               </div>
-              <h2 className="text-4xl md:text-5xl font-black font-sans text-primary-text mb-6 tracking-tighter leading-[0.9] uppercase group-hover:text-black">
-                Staying in the<br/> Zone
+              <h2 className="text-4xl md:text-5xl font-semibold font-sans text-brand-text mb-8 tracking-tight leading-[1.1]">
+                Digital <br/> Intentionality
               </h2>
-              <p className="font-serif text-lg md:text-xl text-primary-text/50 mb-12 leading-relaxed italic pr-6">
-                Just starting with digital planning? Here is a simple guide to help you get organized.
+              <p className="font-medium text-[17px] text-brand-text/50 mb-14 leading-relaxed pr-6">
+                A technical guide on configuring your environment to minimize distraction and maximize presence.
               </p>
             </div>
 
-            <Link href="#" className="relative z-10 inline-flex items-center text-[10px] font-black uppercase tracking-[0.3em] text-primary-text group-hover:gap-4 transition-all">
-              Download Now <ArrowRight className="ml-2 w-4 h-4 text-life-accent" />
+            <Link href="#" className="btn-primary self-start group/btn inline-flex items-center text-[10px] tracking-[0.25em]">
+              ACCESS INSIGHT <ArrowRight className="ml-3 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
           </motion.article>
 
-          {/* ARTICLE CARD 2: LIFE */}
+          {/* ARTICLE CARD 2: LIFESTYLE PROTOCOLS */}
           <motion.article 
             variants={itemVariants}
-            className="group relative bg-white/40 backdrop-blur-3xl rounded-[48px] p-10 md:p-16 border border-white/60 shadow-glass hover:bg-white/60 transition-all duration-700 overflow-hidden flex flex-col justify-between"
+            className="brand-card p-10 md:p-16 hover:shadow-tactile-hover transition-all duration-700 flex flex-col justify-between group"
           >
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-home-accent/10 blur-[100px] rounded-full group-hover:bg-home-accent/20 transition-all duration-1000" />
-
-            <div className="relative z-10">
-              <div className="text-home-accent mb-10 bg-white/80 w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-black/5">
-                <Coffee className="w-7 h-7" />
+            <div className="relative">
+              <div className="text-accent-thermal mb-12 bg-brand-base w-14 h-14 rounded-inner flex items-center justify-center shadow-sm">
+                <Coffee className="w-6 h-6" strokeWidth={1.5} />
               </div>
-              <h2 className="text-4xl md:text-5xl font-black font-sans text-primary-text mb-6 tracking-tighter leading-[0.9] uppercase group-hover:text-black">
-                Daily <br/> Rituals
+              <h2 className="text-4xl md:text-5xl font-semibold font-sans text-brand-text mb-8 tracking-tight leading-[1.1]">
+                Ritual <br/> Architecture
               </h2>
-              <p className="font-serif text-lg md:text-xl text-primary-text/50 mb-12 leading-relaxed italic pr-6">
-                Learn how to build healthy daily habits that help you stay calm and focused.
+              <p className="font-medium text-[17px] text-brand-text/50 mb-14 leading-relaxed pr-6">
+                Defining the daily protocols that anchor your productivity and sustain your creative energy.
               </p>
             </div>
 
-            <Link href="#" className="relative z-10 inline-flex items-center text-[10px] font-black uppercase tracking-[0.3em] text-primary-text group-hover:gap-4 transition-all">
-              Initiate Download <ArrowRight className="ml-2 w-4 h-4 text-home-accent" />
+            <Link href="#" className="btn-primary self-start group/btn inline-flex items-center text-[10px] tracking-[0.25em]">
+              ACCESS INSIGHT <ArrowRight className="ml-3 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
           </motion.article>
 
         </div>
       </motion.section>
 
-      {/* 3. Help Center */}
+      {/* 3. TRUST PROTOCOL: Help Center */}
       <motion.section 
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 1.5 }}
         viewport={{ once: true }}
         className="max-w-5xl mx-auto px-6 text-center py-24 mt-12"
       >
-        <div className="p-16 md:p-24 rounded-[64px] bg-white/30 border border-white/20 backdrop-blur-3xl shadow-glass relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-life-accent/20 to-transparent" />
-          
-          <Sparkles className="w-8 h-8 mx-auto mb-8 text-life-accent opacity-40" />
-          <h3 className="text-4xl md:text-6xl font-black font-sans text-primary-text mb-6 tracking-tighter uppercase">Help Center</h3>
-          <p className="font-serif text-xl text-primary-text/40 mb-12 italic max-w-xl mx-auto">
-            We are here to help with installation, compatibility, and any other questions.
+        <div className="p-16 md:p-24 brand-card surface-mocha relative overflow-hidden">
+          <Sparkles className="w-8 h-8 mx-auto mb-10 text-brand-accent opacity-30" />
+          <h3 className="text-4xl md:text-6xl font-semibold font-sans text-brand-text mb-8 tracking-tight">The Trust Registry</h3>
+          <p className="font-medium text-lg md:text-xl text-brand-text/40 mb-14 max-w-xl mx-auto">
+            Technical support and procedural guidance for our collection of digital assets.
           </p>
           <Link 
             href="/help" 
-            className="inline-flex items-center px-12 py-6 bg-primary-text text-white rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-xl hover:scale-105 active:scale-95 transition-all"
+            className="btn-primary py-6 px-14 text-[11px] tracking-[0.3em]"
           >
-            Access Help Center
+            CONSULT THE REGISTRY
           </Link>
         </div>
       </motion.section>

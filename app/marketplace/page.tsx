@@ -2,7 +2,10 @@ import { supabase } from '../../lib/supabase';
 import ProductCard from '../../components/ProductCard';
 import MarketplaceFilters from '../../components/MarketplaceFilters';
 
-// Ensures search and category filtering happen instantly on the server
+/**
+ * THE REGISTRY GALLERY
+ * A real-time synchronized view of curated digital assets.
+ */
 export const revalidate = 0;
 
 export default async function Marketplace({ 
@@ -14,7 +17,7 @@ export default async function Marketplace({
   const categoryFilter = searchParams?.category;
   const searchFilter = searchParams?.search;
 
-  // 1. DYNAMIC QUERY BUILDING
+  // 1. REGISTRY QUERY PROTOCOL
   let query = supabase.from('products').select('*');
 
   if (categoryFilter && categoryFilter !== 'All') {
@@ -25,53 +28,43 @@ export default async function Marketplace({
     query = query.ilike('title', `%${searchFilter}%`);
   }
 
-  // Optimized Sorting: Show newest assets first
+  // PHASE 1 ALIGNMENT: Only showing assets marked as live for preview
+  // In Phase 2, you will set is_live = false for restricted items
   query = query.order('created_at', { ascending: false });
 
   const { data: products, error } = await query;
 
-  if (error) console.error('Supabase Universe Error:', error);
-
-  // 2. PREMIUM DYNAMIC THEMING
-  // These colors match your tailwind.config.ts precisely
-  const themes = {
-    Tools: { base: "bg-tools-base", header: "border-tools-accent/10", accent: "text-tools-accent" },
-    Life: { base: "bg-life-base", header: "border-life-accent/10", accent: "text-life-accent" },
-    Home: { base: "bg-cat-home-base", header: "border-cat-home-accent/10", accent: "text-cat-home-accent" },
-    All: { base: "bg-home-base", header: "border-home-accent/10", accent: "text-home-accent" }
-  };
-
-  const activeTheme = themes[categoryFilter as keyof typeof themes] || themes.All;
+  if (error) console.error('Registry Query Error:', error);
 
   return (
-    <main className={`min-h-screen ${activeTheme.base} pb-32 transition-colors duration-1000 ease-in-out`}>
+    <main className="min-h-screen bg-brand-base pb-32 transition-colors duration-1000">
       
-      {/* 1. DYNAMIC HEADER SECTOR */}
-      <div className={`bg-white/40 backdrop-blur-3xl px-6 py-24 text-center border-b ${activeTheme.header} mb-12 transition-all duration-1000`}>
-        <div className="max-w-4xl mx-auto space-y-6">
-           <h1 className="text-6xl md:text-8xl font-black font-sans text-primary-text tracking-tighter animate-fade-in uppercase leading-none">
-            {categoryFilter && categoryFilter !== 'All' ? categoryFilter : 'Marketplace'}
+      {/* SECTION 1: EDITORIAL ORIENTATION */}
+      <section className="px-6 py-24 md:py-40 text-center">
+        <div className="max-w-4xl mx-auto space-y-8">
+           <h1 className="font-sans text-6xl md:text-[100px] font-semibold tracking-tight text-brand-text leading-[0.9]">
+            {categoryFilter && categoryFilter !== 'All' ? categoryFilter : 'The Collection'}
           </h1>
-          <p className="text-xl md:text-2xl font-serif italic text-primary-text/40 leading-relaxed max-w-2xl mx-auto px-4 animate-fade-in-up">
-            {(!categoryFilter || categoryFilter === 'All') && "Find the perfect digital tool for your needs."}
-            {categoryFilter === 'Tools' && "Professional tools for a better, more organized workflow."}
-            {categoryFilter === 'Life' && "Resources to help you learn, grow, and feel inspired."}
-            {categoryFilter === 'Home' && "Helping you manage the things that matter most."}
+          <p className="font-body text-lg md:text-2xl font-medium text-brand-text/50 max-w-2xl mx-auto leading-relaxed px-4">
+            {(!categoryFilter || categoryFilter === 'All') && "Preview our high-fidelity digital assets, curated for intentional living. Access unlocking soon."}
+            {categoryFilter === 'Tools' && "Refined resources to elevate your professional architecture. Unlocking soon."}
+            {categoryFilter === 'Life' && "Mindful protocols designed for personal synchronization. Unlocking soon."}
+            {categoryFilter === 'Home' && "Grounded solutions for an organized sanctuary. Unlocking soon."}
           </p>
         </div>
-      </div>
+      </section>
 
-      {/* 2. MAIN CONTENT SECTOR */}
-      <div className="max-w-7xl mx-auto px-6">
+      {/* SECTION 2: DISCOVERY INTERFACE */}
+      <section className="max-w-7xl mx-auto px-6">
         
-        {/* FILTERS & SEARCH */}
-        <div className="mb-16">
+        {/* TACTILE FILTERS: Intelligence on Demand */}
+        <div className="mb-20">
           <MarketplaceFilters />
         </div>
 
-        {/* 3. PRODUCT GRID */}
+        {/* SECTION 3: REGISTRY DISCOVERIES */}
         {products && products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14">
             {products.map((product) => (
               <ProductCard 
                 key={product.id}
@@ -81,28 +74,29 @@ export default async function Marketplace({
                 summary={product.summary}
                 slug={product.slug}
                 image={product.image}
+                creator={product.creator} 
               />
             ))}
           </div>
         ) : (
-          /* EMPTY STATE */
-          <div className="text-center py-32 bg-white/40 rounded-[64px] border border-white/40 shadow-glass backdrop-blur-3xl max-w-2xl mx-auto px-12 animate-fade-in">
-            <div className={`w-20 h-20 ${activeTheme.base} rounded-[28px] mx-auto mb-8 flex items-center justify-center border border-black/5 shadow-sm text-3xl`}>
-               ✨
+          /* EMPTY STATE: Curator's Note */
+          <div className="text-center py-32 brand-card surface-mocha max-w-2xl mx-auto px-12 border-none">
+            <div className="w-16 h-16 bg-brand-base rounded-inner mx-auto mb-10 flex items-center justify-center text-brand-text/10 shadow-sm">
+               <span className="text-[10px] font-bold tracking-[0.4em] uppercase">Void</span>
             </div>
-            <h2 className="text-4xl font-black text-primary-text tracking-tighter mb-4 uppercase">Nothing Here Yet</h2>
-            <p className="text-primary-text/40 font-serif text-lg italic mb-10 leading-relaxed">
-              We couldn't find matches for "{searchFilter}" in the {categoryFilter || 'Universe'}.
+            <h2 className="font-sans text-3xl font-semibold text-brand-text mb-6 tracking-tight">Discovery Exhausted</h2>
+            <p className="font-body text-brand-text/50 mb-12 leading-relaxed text-lg">
+              The registry does not currently contain a match for &ldquo;{searchFilter}&rdquo; within our preview selections.
             </p>
             <a 
               href="/marketplace" 
-              className="px-12 py-5 bg-primary-text text-white rounded-full font-black uppercase tracking-widest text-[10px] shadow-xl hover:scale-105 active:scale-95 transition-all inline-block"
+              className="btn-primary px-12 py-5 text-[10px] tracking-[0.3em]"
             >
-              Clear Filters
+              RESET DISCOVERY
             </a>
           </div>
         )}
-      </div>
+      </section>
     </main>
   );
 }

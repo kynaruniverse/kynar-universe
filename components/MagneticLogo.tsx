@@ -10,15 +10,15 @@ export default function MagneticLogo() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // 2. Spring physics: Adjusted for a more "viscous" and high-end feel
-  const springConfig = { damping: 15, stiffness: 200, mass: 0.2 };
+  // 2. Spring physics: Made more "viscous" for a premium, heavy-object feel
+  const springConfig = { damping: 25, stiffness: 150, mass: 0.5 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
     
-    // Safety: Disable magnetic pull on touch devices to prevent jumpy navigation
+    // Safety: Disable magnetic pull on mobile/touch to maintain calm UI
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const { clientX, clientY } = e;
@@ -30,9 +30,9 @@ export default function MagneticLogo() {
     const distanceX = clientX - centerX;
     const distanceY = clientY - centerY;
 
-    // Pull strength set to 0.4 for a more pronounced "catch"
-    x.set(distanceX * 0.4);
-    y.set(distanceY * 0.4);
+    // Intelligence on Demand: Subtle pull (0.25) rather than aggressive catch
+    x.set(distanceX * 0.25);
+    y.set(distanceY * 0.25);
   };
 
   const handleMouseLeave = () => {
@@ -44,7 +44,7 @@ export default function MagneticLogo() {
     <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative flex items-center justify-center p-2 group" 
+      className="relative flex items-center justify-center p-4 group" 
     >
       <Link href="/">
         <motion.div
@@ -53,24 +53,24 @@ export default function MagneticLogo() {
             x: springX,
             y: springY,
           }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.92, rotate: -1 }} 
-          className="relative z-10 text-2xl md:text-3xl font-black font-sans text-primary-text tracking-tighter cursor-pointer select-none uppercase leading-none"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }} 
+          className="relative z-10 text-xl md:text-2xl font-semibold text-brand-text tracking-tight cursor-pointer select-none"
         >
-          Kynar Universe
+          Kynar Muse
           
-          {/* Subtle underline flare */}
+          {/* Subtle Intelligence: The Verdant underline appears on hover */}
           <motion.div 
-            className="absolute -bottom-1 left-0 right-0 h-[2px] bg-home-accent origin-left"
+            className="absolute -bottom-1.5 left-0 right-0 h-[1.5px] bg-brand-accent origin-left"
             initial={{ scaleX: 0 }}
-            whileHover={{ scaleX: 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            whileHover={{ scaleX: 0.4 }} // Restrained reveal
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
           />
         </motion.div>
       </Link>
 
-      {/* Kinetic Ambient Glow behind logo */}
-      <div className="absolute inset-0 bg-home-accent/5 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      {/* Physical Depth: A soft mocha-glow reveals on intent */}
+      <div className="absolute inset-0 bg-brand-surface/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
     </div>
   );
 }

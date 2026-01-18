@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* THE MUSE ENGINE PALETTE (60-30-10 Rule) */
+    --brand-base: #F5F2F0;       /* Stone: Visual Foundation */
+    --brand-text: #1C1C1C;       /* Charcoal: Grounded Contrast */
+    --brand-surface: #D7C4B7;    /* Mocha: Physical Depth */
+    --brand-accent: #4A5D4E;     /* Verdant: Intelligence Signal */
+    --accent-thermal: #D97E6E;   /* Thermal: Organic Warmth */
+    --accent-lavender: #9B94B0;  /* Lavender: Soft Refinement */
+  }
+
   html {
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
@@ -11,77 +21,93 @@
   }
 
   body {
-    /* Softened background and default text */
-    @apply bg-home-base text-primary-text antialiased selection:bg-home-accent/20;
+    background-color: var(--brand-base); 
+    color: var(--brand-text);
+    @apply antialiased selection:bg-[#4A5D4E]/10;
     min-height: 100dvh;
     position: relative;
     -webkit-overflow-scrolling: touch;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv11";
   }
 
-  /* 1. UNIVERSAL TYPOGRAPHY RESET */
-  /* Moving from font-black (900) to font-bold (700) for a cleaner, friendlier look */
-  h1 {
-    @apply font-bold tracking-tight text-primary-text;
-    font-size: clamp(2.25rem, 6vw, 4.5rem); /* Prevents text from going off-screen */
-    line-height: 1.1;
+  /* 1. TYPOGRAPHY: Humanist Medium / Soft Grotesk Styles */
+  h1, h2, h3, h4 {
+    @apply font-semibold tracking-tight;
+    color: var(--brand-text);
+    line-height: 1.15;
   }
 
-  h2 {
-    @apply font-bold tracking-tight text-primary-text;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-  }
+  h1 { font-size: clamp(2.5rem, 8vw, 5rem); }
+  h2 { font-size: clamp(1.75rem, 5vw, 3rem); }
 
   p {
-    @apply font-medium leading-relaxed;
+    @apply font-normal leading-relaxed;
+    color: rgba(28, 28, 28, 0.65);
+    font-size: 1.05rem;
   }
 }
 
-/* 2. THE PREMIUM SOFT GRAIN */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  opacity: 0.02; /* Reduced opacity for a cleaner look */
-  z-index: 9999;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* 3. MODERN GLASSMORPHISM */
 @layer components {
-  .glass-card {
-    @apply bg-white/30 backdrop-blur-2xl border border-white/40 shadow-sm transition-all duration-500 rounded-[32px];
-  }
-  
-  .glass-nav {
-    @apply bg-white/40 backdrop-blur-xl border-b border-white/20 shadow-sm;
+  /* 2. PILLAR 3: PHYSICAL DEPTH (Shadows > Borders) */
+  .shadow-tactile {
+    box-shadow: 
+      0 4px 30px -4px rgba(0, 0, 0, 0.03), 
+      0 2px 12px -2px rgba(0, 0, 0, 0.02);
   }
 
-  /* Responsive Marketplace Title Fix */
-  .title-responsive {
-    @apply text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-tight;
-    word-break: keep-all;
+  /* Intelligence on Demand: Smooth lift on intent */
+  .shadow-tactile-hover {
+    @apply transition-all duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)];
+  }
+
+  .shadow-tactile-hover:hover {
+    box-shadow: 
+      0 30px 60px -12px rgba(0, 0, 0, 0.08), 
+      0 12px 24px -4px rgba(0, 0, 0, 0.03);
+    transform: translateY(-6px);
+  }
+
+  /* PILLAR 1: CALM FOUNDATION (Mocha / Terracotta surfaces) */
+  .surface-mocha {
+    background-color: rgba(215, 196, 183, 0.12);
+    @apply backdrop-blur-2xl;
+  }
+
+  .brand-card {
+    @apply bg-white rounded-[40px] shadow-tactile border-none overflow-hidden;
+  }
+
+  .brand-nav {
+    @apply bg-brand-base/70 backdrop-blur-2xl border-none shadow-tactile;
+  }
+
+  /* PILLAR 2: INTELLIGENCE REVEAL (Verdant Green) */
+  .btn-primary {
+    @apply bg-brand-text text-white px-10 py-5 rounded-full font-semibold transition-all duration-700 hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
+  }
+
+  .rounded-inner {
+    @apply rounded-[28px];
   }
 }
 
-/* 4. PERFORMANCE & MOBILE FIXES */
+/* 3. PERFORMANCE & VISUAL REFINEMENT */
 canvas {
+  /* Monochromatic Intelligence signal */
   touch-action: none;
   image-rendering: -webkit-optimize-contrast;
-  /* Making the background sphere more subtle */
-  filter: saturate(0.8) opacity(0.5); 
+  opacity: 0.12;
+  filter: grayscale(1);
+  pointer-events: none;
 }
 
-/* Custom Scrollbar (Subtle) */
+/* Custom Scrollbar (Quiet luxury style) */
 @media (min-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary-text/10 rounded-full hover:bg-primary-text/20 transition-all;
+    background: rgba(28, 28, 28, 0.08);
+    @apply rounded-full transition-colors hover:bg-[#4A5D4E]/30;
   }
 }
 
@@ -89,6 +115,4 @@ canvas {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
+.scrollbar-hide::-webkit-scrollbar { display: none; }

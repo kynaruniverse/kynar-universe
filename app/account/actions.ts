@@ -4,7 +4,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 /**
- * SECURE STORAGE CLIENT
+ * 1. SECURE VAULT CLIENT
  */
 async function createClient() {
   const cookieStore = cookies();
@@ -26,18 +26,18 @@ async function createClient() {
 }
 
 /**
- * THE KEY MASTER
- * Generates a short-lived, secure signature for digital assets.
+ * 2. ASSET RETRIEVAL PROTOCOL
+ * Generates a short-lived, encrypted access point for verified library assets.
  */
 export async function getDownloadLink(productSlug: string) {
   const supabase = await createClient();
 
-  // A. IDENTITY VERIFICATION
+  // A. IDENTITY AUTHENTICATION
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "Access Denied. Please re-verify your identity." };
+  if (!user) return { error: "Authentication required. Please re-verify your identity." };
 
-  // B. OWNERSHIP VERIFICATION
-  // We check the 'purchases' table to ensure this user owns this slug
+  // B. REGISTRY VERIFICATION
+  // Validates ownership within the private user library.
   const { data: purchase, error: purchaseError } = await supabase
     .from('purchases')
     .select('id')
@@ -46,10 +46,10 @@ export async function getDownloadLink(productSlug: string) {
     .single();
 
   if (purchaseError || !purchase) {
-    return { error: "Delivery Blocked. This asset is not in your library." };
+    return { error: "Access restricted. This asset is not registered to your library." };
   }
 
-  // C. ASSET LOCATION
+  // C. ASSET DISCOVERY
   const { data: product } = await supabase
     .from('products')
     .select('file_path, title, format')
@@ -57,11 +57,11 @@ export async function getDownloadLink(productSlug: string) {
     .single();
 
   if (!product || !product.file_path) {
-    return { error: "Asset not found in the vault. Support Team notified." };
+    return { error: "Asset unavailable. Our curators have been notified." };
   }
 
-  // D. GENERATE SECURE SIGNATURE
-  // We sanitize the filename so it looks professional when saved to a device
+  // D. ENCRYPTED ACCESS GENERATION
+  // Sanitizes metadata to ensure a refined experience upon local storage.
   const safeTitle = product.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
   const extension = (product.format || 'pdf').toLowerCase();
   const downloadName = `${safeTitle}.${extension}`; 
@@ -70,12 +70,12 @@ export async function getDownloadLink(productSlug: string) {
     .storage
     .from('vault')
     .createSignedUrl(product.file_path, 60, {
-      download: downloadName, // Forces the file to download with the correct name
+      download: downloadName, 
     });
 
   if (error || !data) {
-    console.error("Vault Error:", error);
-    return { error: "Could not secure link. The vault is temporarily locked." };
+    console.error("Vault Access Error:", error);
+    return { error: "Internal Registry Error. The vault is currently under maintenance." };
   }
 
   return { url: data.signedUrl };

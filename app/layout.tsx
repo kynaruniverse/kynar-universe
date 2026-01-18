@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Outfit } from 'next/font/google';
 
 // 1. IMPORT PROVIDERS & COMPONENTS
 import { CartProvider } from '../context/CartContext';
@@ -10,32 +10,41 @@ import PageLoader from '../components/PageLoader';
 import SuccessToastWrapper from '../components/SuccessToastWrapper';
 import LiquidCursor from '../components/LiquidCursor';
 
+// Typography: Neutral Sans for Body UI (High x-height)
 const inter = Inter({ 
   subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+// Typography: Humanist Soft Grotesk for Headings
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kynar-universe-v1.netlify.app'),
+  metadataBase: new URL('https://kynaruniverse.co.uk'),
   title: {
-    default: 'Kynar Universe | One Universe. Infinite Solutions.',
-    template: '%s | Kynar Universe',
+    default: 'Kynar Muse | Quiet Luxury meets Intelligent Software',
+    template: '%s | Kynar Muse',
   },
-  description: 'Premium digital tools, guides, and resources for the modern journey.',
+  description: 'Premium digital products, curated and trusted for the modern professional.',
   openGraph: {
-    title: 'Kynar Universe',
-    description: 'Explore the digital tools of the future.',
-    url: 'https://kynar-universe-v1.netlify.app',
-    siteName: 'Kynar Universe',
-    images: [{ url: '/opengraph-image.png', width: 1200, height: 630 }],
+    title: 'Kynar Muse Engine',
+    description: 'Quiet luxury meets intelligent software.',
+    url: 'https://kynaruniverse.co.uk',
+    siteName: 'Kynar Muse',
+    images: [{ url: '/og-premium.png', width: 1200, height: 630 }],
     locale: 'en_GB',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kynar Universe',
-    description: 'Premium digital tools for the modern journey.',
-    images: ['/opengraph-image.png'],
+    title: 'Kynar Muse',
+    description: 'Premium digital tools, curated and trusted.',
+    images: ['/og-premium.png'],
   },
   icons: {
     icon: '/favicon.ico',
@@ -53,23 +62,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {/* 2. WRAP THE UNIVERSE IN THE CART PROVIDER */}
+    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
+      <body className="font-body selection:bg-brand-accent/20">
+        {/* THE MUSE ENGINE ARCHITECTURE */}
         <CartProvider>
-          {/* Atmospheric Elements */}
+          {/* Subtle Intelligence: Only reveals on intent/load */}
           <PageLoader />
+          
+          {/* Physical Depth: Liquid Cursor provides 'Motion > Decoration' */}
           <LiquidCursor />
           
-          {/* Main Interface */}
-          <Navbar />
-          
-          {/* The Page Content */}
-          {children}
+          {/* Calm Foundation Interface */}
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            
+            {/* Main Content Area: Space is a luxury signal */}
+            <main className="flex-grow">
+              {children}
+            </main>
+            
+            <Footer />
+          </div>
           
           {/* Global UI Signals */}
           <SuccessToastWrapper />
-          <Footer />
         </CartProvider>
       </body>
     </html>
