@@ -48,11 +48,11 @@ export default function MaintenancePage() {
         </div>
 
         <h1 className="text-4xl md:text-6xl font-black font-sans text-primary-text mb-6 tracking-tighter uppercase leading-none">
-          Sector <br/> Calibration
+          Maintenance <br/> Mode
         </h1>
         
         <p className="font-serif text-xl text-primary-text/40 italic leading-relaxed mb-12 px-4">
-          The Kynar Universe is undergoing a planned evolution. The gateway will be restored shortly.
+          We are currently performing routine maintenance to improve our store. We will be back soon!
         </p>
 
         <div className="space-y-8 relative z-10">
@@ -60,7 +60,7 @@ export default function MaintenancePage() {
             href="mailto:support@kynaruniverse.co.uk"
             className="inline-flex items-center px-12 py-6 bg-primary-text text-white rounded-full text-xs font-black uppercase tracking-[0.3em] shadow-2xl hover:scale-105 active:scale-95 transition-all"
           >
-            Signal Support
+            Get Help
           </Link>
           
           <div className="flex flex-col items-center gap-4">
@@ -70,7 +70,7 @@ export default function MaintenancePage() {
                <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 2, repeat: Infinity, delay: 0.4 }} className="w-2 h-2 rounded-full bg-life-accent" />
             </div>
             <p className="text-[10px] uppercase tracking-[0.5em] text-primary-text/20 font-black">
-              Status: Optimizing Manifest
+              Status: Updating...
             </p>
           </div>
         </div>

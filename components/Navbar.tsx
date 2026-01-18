@@ -21,7 +21,7 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
-    { name: 'Marketplace', href: '/marketplace' },
+    { name: 'The Store', href: '/marketplace' },
     { name: 'Guides', href: '/guides' },
     { name: 'Help', href: '/help' },
   ];
@@ -125,7 +125,7 @@ export default function Navbar() {
                     href="/account" 
                     className="w-full py-5 bg-primary-text text-white rounded-full font-bold flex items-center justify-center gap-2 active:scale-95 transition-all uppercase tracking-widest text-xs"
                   >
-                    <Sparkles size={14} /> Establish Presence
+                    <Sparkles size={14} /> Sign Up
                   </Link>
                 </div>
               </div>

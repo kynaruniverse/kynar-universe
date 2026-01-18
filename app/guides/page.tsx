@@ -37,10 +37,10 @@ export default function Guides() {
             <BookOpen className="w-8 h-8" />
           </div>
           <h1 className="text-6xl md:text-8xl font-black font-sans text-primary-text tracking-tighter uppercase leading-[0.85]">
-            Journal
+            Guides
           </h1>
           <p className="text-xl md:text-3xl font-serif text-primary-text/40 italic leading-relaxed px-4 max-w-2xl mx-auto">
-            Manifestos, tutorials, and cosmic resources for your digital evolution.
+            Helpful tips, step-by-step guides, and resources to help you succeed.
           </p>
         </motion.div>
       </section>
@@ -67,15 +67,15 @@ export default function Guides() {
                 <Terminal className="w-7 h-7" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black font-sans text-primary-text mb-6 tracking-tighter leading-[0.9] uppercase group-hover:text-black">
-                Systems for <br/> Flow
+                Staying in the<br/> Zone
               </h2>
               <p className="font-serif text-lg md:text-xl text-primary-text/50 mb-12 leading-relaxed italic pr-6">
-                New to digital planning? A gentle introduction to setting up your first workspace without the overwhelm.
+                Just starting with digital planning? Here is a simple guide to help you get organized.
               </p>
             </div>
 
             <Link href="#" className="relative z-10 inline-flex items-center text-[10px] font-black uppercase tracking-[0.3em] text-primary-text group-hover:gap-4 transition-all">
-              Initiate Transmission <ArrowRight className="ml-2 w-4 h-4 text-life-accent" />
+              Download Now <ArrowRight className="ml-2 w-4 h-4 text-life-accent" />
             </Link>
           </motion.article>
 
@@ -91,22 +91,22 @@ export default function Guides() {
                 <Coffee className="w-7 h-7" />
               </div>
               <h2 className="text-4xl md:text-5xl font-black font-sans text-primary-text mb-6 tracking-tighter leading-[0.9] uppercase group-hover:text-black">
-                Quiet <br/> Rituals
+                Daily <br/> Rituals
               </h2>
               <p className="font-serif text-lg md:text-xl text-primary-text/50 mb-12 leading-relaxed italic pr-6">
-                How to use Kynar tools to create moments of pause in a busy day. Less grinding, more living.
+                Learn how to build healthy daily habits that help you stay calm and focused.
               </p>
             </div>
 
             <Link href="#" className="relative z-10 inline-flex items-center text-[10px] font-black uppercase tracking-[0.3em] text-primary-text group-hover:gap-4 transition-all">
-              Initiate Transmission <ArrowRight className="ml-2 w-4 h-4 text-home-accent" />
+              Initiate Download <ArrowRight className="ml-2 w-4 h-4 text-home-accent" />
             </Link>
           </motion.article>
 
         </div>
       </motion.section>
 
-      {/* 3. SUPPORT SECTOR */}
+      {/* 3. Help Center */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -118,9 +118,9 @@ export default function Guides() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-life-accent/20 to-transparent" />
           
           <Sparkles className="w-8 h-8 mx-auto mb-8 text-life-accent opacity-40" />
-          <h3 className="text-4xl md:text-6xl font-black font-sans text-primary-text mb-6 tracking-tighter uppercase">Support Sector</h3>
+          <h3 className="text-4xl md:text-6xl font-black font-sans text-primary-text mb-6 tracking-tighter uppercase">Help Center</h3>
           <p className="font-serif text-xl text-primary-text/40 mb-12 italic max-w-xl mx-auto">
-            Technical setup, file formats, and cosmic integration queries answered.
+            We are here to help with installation, compatibility, and any other questions.
           </p>
           <Link 
             href="/help" 

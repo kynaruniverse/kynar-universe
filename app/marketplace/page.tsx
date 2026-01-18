@@ -53,10 +53,10 @@ export default async function Marketplace({
             {categoryFilter && categoryFilter !== 'All' ? categoryFilter : 'Marketplace'}
           </h1>
           <p className="text-xl md:text-2xl font-serif italic text-primary-text/40 leading-relaxed max-w-2xl mx-auto px-4 animate-fade-in-up">
-            {(!categoryFilter || categoryFilter === 'All') && "Explore calm tools for work, life, and home."}
-            {categoryFilter === 'Tools' && "Clear tools for a brighter, more organized workflow."}
+            {(!categoryFilter || categoryFilter === 'All') && "Find the perfect digital tool for your needs."}
+            {categoryFilter === 'Tools' && "Professional tools for a better, more organized workflow."}
             {categoryFilter === 'Life' && "Resources to help you learn, grow, and feel inspired."}
-            {categoryFilter === 'Home' && "Simple tools for the routines and people who matter."}
+            {categoryFilter === 'Home' && "Helping you manage the things that matter most."}
           </p>
         </div>
       </div>
@@ -90,7 +90,7 @@ export default async function Marketplace({
             <div className={`w-20 h-20 ${activeTheme.base} rounded-[28px] mx-auto mb-8 flex items-center justify-center border border-black/5 shadow-sm text-3xl`}>
                ✨
             </div>
-            <h2 className="text-4xl font-black text-primary-text tracking-tighter mb-4 uppercase">Sector Empty</h2>
+            <h2 className="text-4xl font-black text-primary-text tracking-tighter mb-4 uppercase">Nothing Here Yet</h2>
             <p className="text-primary-text/40 font-serif text-lg italic mb-10 leading-relaxed">
               We couldn't find matches for "{searchFilter}" in the {categoryFilter || 'Universe'}.
             </p>
@@ -98,7 +98,7 @@ export default async function Marketplace({
               href="/marketplace" 
               className="px-12 py-5 bg-primary-text text-white rounded-full font-black uppercase tracking-widest text-[10px] shadow-xl hover:scale-105 active:scale-95 transition-all inline-block"
             >
-              Reset Search
+              Clear Filters
             </a>
           </div>
         )}

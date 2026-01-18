@@ -10,7 +10,7 @@ export default function PrivacyPage() {
         
         {/* Navigation back to origin */}
         <Link href="/" className="group inline-flex items-center text-[10px] font-black text-primary-text/40 hover:text-primary-text transition-all mb-12 uppercase tracking-[0.4em]">
-          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Return to Origin
+          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Return to Home
         </Link>
 
         <motion.div 
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
           </div>
 
           <h1 className="text-5xl md:text-8xl font-black font-sans text-primary-text mb-6 tracking-tighter uppercase leading-[0.85]">
-            Privacy <br/> Protocol
+            Privacy <br/> Policy
           </h1>
           
           <div className="flex items-center gap-4 mb-20">
@@ -38,7 +38,7 @@ export default function PrivacyPage() {
             </p>
             <div className="h-[1px] w-12 bg-black/5" />
             <p className="text-[10px] font-black text-tools-accent uppercase tracking-[0.5em]">
-              V1.0 // 2026
+              // 2026
             </p>
           </div>
 
@@ -47,17 +47,17 @@ export default function PrivacyPage() {
             <section className="space-y-6">
               <h2 className="text-xl font-black font-sans text-primary-text uppercase tracking-[0.2em] not-italic flex items-center gap-4">
                 <span className="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-[10px] text-primary-text/40">01</span> 
-                Identity
+                About Us
               </h2>
-              <p>Kynar Universe is a digital ecosystem based in the United Kingdom. We operate with radical transparency. For all data-related signals, contact <strong className="text-primary-text not-italic">support@kynaruniverse.co.uk</strong>.</p>
+              <p>Kynar Universe is a digital ecosystem based in the United Kingdom. We operate with radical transparency. For all data-related signals, contact <strong className="text-primary-text not-italic">Kynaruniverse@gmail.com</strong>.</p>
             </section>
 
             <section className="space-y-6">
               <h2 className="text-xl font-black font-sans text-primary-text uppercase tracking-[0.2em] not-italic flex items-center gap-4">
                 <span className="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-[10px] text-primary-text/40">02</span> 
-                Collection
+                Information We Gather
               </h2>
-              <p>We only capture data essential for your presence: Email (Identity), Transaction History (Manifest), and Technical Metadata. This ensures secure transmission of your digital assets.</p>
+              <p>We only capture data essential for your Account: Email (Identity), Transaction History (Order), and Technical Metadata. This ensures secure Delivery of your digital assets.</p>
               
               <div className="bg-white/40 p-6 rounded-[32px] border border-white/60 not-prose flex items-center gap-4 text-[10px] font-black text-primary-text/40 uppercase tracking-widest shadow-sm">
                 <Lock size={16} className="text-tools-accent" /> 
@@ -67,17 +67,17 @@ export default function PrivacyPage() {
 
             <section className="space-y-8 p-10 md:p-16 bg-primary-text rounded-[48px] not-prose shadow-2xl">
               <h2 className="text-xl font-black font-sans text-white uppercase tracking-[0.3em] flex items-center gap-4 mb-6">
-                <Database className="text-tools-accent w-6 h-6" /> 03. Encryption
+                <Database className="text-tools-accent w-6 h-6" /> 03. Safety
               </h2>
               <p className="text-white/60 font-serif italic text-lg leading-relaxed">
-                All presence data is encrypted at rest using industry-standard PostgreSQL protocols via Supabase. We treat your digital footprint with the same reverence as our own.
+                All Account data is encrypted at rest using industry-standard PostgreSQL protocols via Supabase. We treat your digital footprint with the same reverence as our own.
               </p>
             </section>
 
             <section className="space-y-6">
               <h2 className="text-xl font-black font-sans text-primary-text uppercase tracking-[0.2em] not-italic flex items-center gap-4">
                 <span className="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-[10px] text-primary-text/40">04</span> 
-                Autonomy
+                User Choice
               </h2>
               <p>Under the Data Protection Act 2018, you maintain full autonomy. You may request access, rectification, or the absolute deletion of your record (&ldquo;Right to be Forgotten&rdquo;) at any time.</p>
             </section>

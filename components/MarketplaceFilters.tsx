@@ -55,7 +55,7 @@ function FilterContent() {
           </div>
           <input 
             type="text"
-            placeholder="Scan Universe..."
+            placeholder="Search Products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-12 pr-12 py-4 bg-white/50 border border-black/5 rounded-full focus:outline-none focus:ring-4 focus:ring-home-accent/10 focus:bg-white transition-all font-sans text-primary-text text-sm font-medium tracking-tight"
@@ -127,7 +127,7 @@ function FilterContent() {
             className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.3em] text-home-accent"
           >
             <Sparkles className="w-3 h-3 animate-pulse" />
-            Refining Signal
+            Searching...
           </motion.div>
         )}
       </div>

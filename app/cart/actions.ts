@@ -51,7 +51,7 @@ export async function processCheckout(productSlugs: string[]) {
   }
 
   if (!productSlugs || productSlugs.length === 0) {
-    return { error: "Manifest empty. No assets to transmit." };
+    return { error: "Order empty. No assets to Deliver." };
   }
 
   // B. DATA PREPARATION (Legal Compliance Audit Trail)
@@ -69,8 +69,8 @@ export async function processCheckout(productSlugs: string[]) {
     .insert(purchaseData);
 
   if (dbError) {
-    console.error("Transmission Error:", dbError.message);
-    return { error: "The vault could not be opened. Please check your signal." };
+    console.error("Checkout Error:", dbError.message);
+    return { error: "Something went wrong with your purchase. Please try again in a moment." };
   }
 
   // D. CACHE REVALIDATION

@@ -22,43 +22,38 @@ export default function Home() {
       {/* 1. HERO SECTION WITH 3D */}
       <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden px-6">
         {/* The 3D Universe Background */}
-        <div className="absolute inset-0 z-0">
-          <UniverseCanvas activeColor={activeColor} />
+        <div className="absolute inset-0 z-0 opacity-30">
+          <UniverseCanvas />
         </div>
 
         {/* Content Overlay */}
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8">
+        <div className="relative z-10 max-w-4xl text-center px-6">
           <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl md:text-8xl font-black font-sans text-primary-text tracking-tighter leading-[0.9] uppercase"
+            className="title-responsive"
           >
-            One Universe. <br className="hidden md:block"/> Infinite Solutions.
+            Digital tools for  <br/> a simpler life.
           </motion.h1>
     
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="text-lg md:text-2xl font-serif text-primary-text/60 italic max-w-2xl mx-auto leading-relaxed px-4"
+            transition={{ delay: 0.2 }}
+            className="text-lg md:text-xl text-primary-text/60 mt-6 font-medium"
           >
-            A calm, modern digital space where everyday tools help people everywhere work, live, and learn with ease.
+            Premium digital resources for everyone from busy parents <br className="hidden md:block" /> to students and professionals.
           </motion.p>
 
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8 }}
-            className="pt-4"
-          >
-            <Link 
-              href="/marketplace" 
-              className="inline-flex items-center px-12 py-5 bg-primary-text text-white rounded-full font-bold shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 uppercase tracking-widest text-xs"
-            >
-              Explore <ArrowRight className="ml-2 w-4 h-4" />
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <Link href="/marketplace" className="px-8 py-4 bg-primary-text text-white rounded-full font-bold hover:scale-105 transition-all">
+              
+              Browse the Shop
             </Link>
-          </motion.div>
+            <Link href="/about" className="px-8 py-4 bg-white/50 background-blur-md rounded-full font-bold border border-white/20 hover:bg-white transition-all">
+              Our Story
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -68,8 +63,8 @@ export default function Home() {
           
           {[
             { id: 'tools', title: 'Tools', icon: Wrench, color: colors.tools, text: 'Everything you need to build, create, and stay organised.' },
-            { id: 'life', title: 'Life', icon: Heart, color: colors.life, text: 'Guides, ideas, and resources for everyday life.' },
-            { id: 'home', title: 'Home', icon: HomeIcon, color: colors.home, text: 'Warm, simple tools for families and daily comfort.' }
+            { id: 'life', title: 'Life', icon: Heart, color: colors.life, text: 'Guides, tools, and resources for everyday life.' },
+            { id: 'home', title: 'Home', icon: HomeIcon, color: colors.home, text: 'Simple tools and solutions for a more organized and peaceful home life.' }
           ].map((cat, index) => (
             <motion.div
               key={cat.id}

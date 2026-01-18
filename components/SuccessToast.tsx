@@ -38,7 +38,7 @@ export default function SuccessToast({ isVisible, message, onClose }: SuccessToa
             <div className="flex-grow min-w-0">
               <div className="flex items-center gap-2">
                 <p className="text-[10px] font-black text-primary-text uppercase tracking-[0.2em]">
-                  Manifested
+                  Added
                 </p>
                 <Sparkles size={10} className="text-home-accent animate-pulse" />
               </div>

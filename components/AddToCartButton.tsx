@@ -76,7 +76,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
             className="flex items-center gap-2"
           >
             <Sparkles size={14} className="animate-pulse" />
-            <span>Added to Manifest</span>
+            <span>Item Added</span>
           </motion.div>
         ) : (
           <motion.div
@@ -87,7 +87,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
             className="flex items-center gap-2"
           >
             <ShoppingBag size={14} />
-            <span>Add to Universe</span>
+            <span>Add to Cart</span>
           </motion.div>
         )}
       </AnimatePresence>
