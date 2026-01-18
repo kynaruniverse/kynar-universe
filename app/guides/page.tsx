@@ -25,7 +25,7 @@ export default function Guides() {
   return (
     <main className="min-h-screen bg-brand-base pb-32 transition-colors duration-1000">
       
-      {/* 1. EDITORIAL HERO SECTION */}
+      {/* 1. HEADER SECTION */}
       <section className="px-6 py-24 md:py-32 text-center">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -37,15 +37,15 @@ export default function Guides() {
             <BookOpen className="w-6 h-6" strokeWidth={1.5} />
           </div>
           <h1 className="text-6xl md:text-[100px] font-semibold font-sans text-brand-text tracking-tight leading-[0.9]">
-            Curated <br/> Insights
+            Guides
           </h1>
           <p className="text-lg md:text-2xl font-medium text-brand-text/50 leading-relaxed px-4 max-w-2xl mx-auto">
-            Practical knowledge and refined strategies to help you navigate your digital and physical space.
+            Practical knowledge and refined strategies to help you manage your digital and physical space.
           </p>
         </motion.div>
       </section>
 
-      {/* 2. ARCHIVE GRID: Physical Depth Layers */}
+      {/* 2. ARTICLE LISTING */}
       <motion.section 
         variants={containerVariants}
         initial="hidden"
@@ -55,7 +55,7 @@ export default function Guides() {
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
           
-          {/* ARTICLE CARD 1: TECHNICAL INSIGHTS */}
+          {/* ARTICLE CARD 1 */}
           <motion.article 
             variants={itemVariants}
             className="brand-card p-10 md:p-16 hover:shadow-tactile-hover transition-all duration-700 flex flex-col justify-between group"
@@ -68,16 +68,16 @@ export default function Guides() {
                 Digital <br/> Intentionality
               </h2>
               <p className="font-medium text-[17px] text-brand-text/50 mb-14 leading-relaxed pr-6">
-                A technical guide on configuring your environment to minimize distraction and maximize presence.
+                A practical guide on configuring your environment to minimize distraction and maximize focus.
               </p>
             </div>
 
             <Link href="#" className="btn-primary self-start group/btn inline-flex items-center text-[10px] tracking-[0.25em]">
-              ACCESS INSIGHT <ArrowRight className="ml-3 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              READ GUIDE <ArrowRight className="ml-3 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
           </motion.article>
 
-          {/* ARTICLE CARD 2: LIFESTYLE PROTOCOLS */}
+          {/* ARTICLE CARD 2 */}
           <motion.article 
             variants={itemVariants}
             className="brand-card p-10 md:p-16 hover:shadow-tactile-hover transition-all duration-700 flex flex-col justify-between group"
@@ -87,22 +87,22 @@ export default function Guides() {
                 <Coffee className="w-6 h-6" strokeWidth={1.5} />
               </div>
               <h2 className="text-4xl md:text-5xl font-semibold font-sans text-brand-text mb-8 tracking-tight leading-[1.1]">
-                Ritual <br/> Architecture
+                Habit <br/> Architecture
               </h2>
               <p className="font-medium text-[17px] text-brand-text/50 mb-14 leading-relaxed pr-6">
-                Defining the daily protocols that anchor your productivity and sustain your creative energy.
+                Defining the daily habits that anchor your productivity and sustain your creative energy.
               </p>
             </div>
 
             <Link href="#" className="btn-primary self-start group/btn inline-flex items-center text-[10px] tracking-[0.25em]">
-              ACCESS INSIGHT <ArrowRight className="ml-3 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              READ GUIDE <ArrowRight className="ml-3 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
           </motion.article>
 
         </div>
       </motion.section>
 
-      {/* 3. TRUST PROTOCOL: Help Center */}
+      {/* 3. SUPPORT FOOTER */}
       <motion.section 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -112,15 +112,15 @@ export default function Guides() {
       >
         <div className="p-16 md:p-24 brand-card surface-mocha relative overflow-hidden">
           <Sparkles className="w-8 h-8 mx-auto mb-10 text-brand-accent opacity-30" />
-          <h3 className="text-4xl md:text-6xl font-semibold font-sans text-brand-text mb-8 tracking-tight">The Trust Registry</h3>
+          <h3 className="text-4xl md:text-6xl font-semibold font-sans text-brand-text mb-8 tracking-tight">Help Center</h3>
           <p className="font-medium text-lg md:text-xl text-brand-text/40 mb-14 max-w-xl mx-auto">
-            Technical support and procedural guidance for our collection of digital assets.
+            Find technical support and practical answers for our collection of digital products.
           </p>
           <Link 
             href="/help" 
             className="btn-primary py-6 px-14 text-[11px] tracking-[0.3em]"
           >
-            CONSULT THE REGISTRY
+            GET SUPPORT
           </Link>
         </div>
       </motion.section>

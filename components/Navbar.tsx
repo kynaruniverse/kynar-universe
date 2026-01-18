@@ -19,24 +19,23 @@ export default function Navbar() {
     setIsOpen(false);
   }, [pathname]);
 
-  // PHASE 1 ALIGNMENT: Changing 'Store' to 'Collection'
+  // Updated navigation labels for universal clarity
   const navLinks = [
-    { name: 'The Collection', href: '/marketplace' },
+    { name: 'The Store', href: '/marketplace' },
     { name: 'Guides', href: '/guides' },
     { name: 'Help', href: '/help' },
   ];
 
   return (
     <>
-      {/* 1. PREVIEW MODE PROTOCOL BANNER */}
-      {/* Positioned at the very top of the viewport to set immediate expectations */}
+      {/* 1. SHOP PREVIEW BANNER */}
       <div className="w-full bg-brand-surface/10 py-2 border-b border-brand-surface/20">
         <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-brand-text/60 text-center px-6">
-          The Kynar Registry is currently in preview. Assets and access will unlock soon.
+          The Kynar Store is currently in preview. Products will be available shortly.
         </p>
       </div>
 
-      {/* 2. QUIET NAVIGATION FOUNDATION */}
+      {/* 2. MAIN NAVIGATION */}
       <nav className="sticky top-6 z-[60] w-[94%] max-w-7xl mx-auto brand-nav rounded-full shadow-tactile transition-all duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)]">
         <div className="px-6">
           <div className="flex justify-between items-center h-16 md:h-22">
@@ -71,7 +70,7 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* RIGHT: TACTILE ACTIONS */}
+            {/* RIGHT: USER ACTIONS */}
             <div className="flex items-center space-x-2 md:space-x-5">
               <Link 
                 href="/account" 
@@ -113,7 +112,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* 3. MOBILE MENU */}
+        {/* 3. MOBILE OVERLAY MENU */}
         <AnimatePresence>
           {isOpen && (
             <motion.div 
@@ -142,7 +141,7 @@ export default function Navbar() {
                     href="/account" 
                     className="btn-primary w-full flex items-center justify-center gap-3 text-[10px] tracking-[0.25em]"
                   >
-                    <Sparkles size={14} /> Register Identity
+                    <Sparkles size={14} /> Create Account
                   </Link>
                 </div>
               </div>

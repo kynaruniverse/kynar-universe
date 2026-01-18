@@ -2,22 +2,22 @@ import { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
 /**
- * THE REGISTRY INDEX (Sitemap)
- * Provides curators with the formal manifest of all public Muse Engine assets.
+ * SITE MAP GENERATOR
+ * Generates dynamic and static routes for search engine indexing.
  */
 
-// Muse Engine Client: Initialized for registry discovery
+// Initialize Database Client
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // ALIGNMENT: Prioritize the primary production origin
+  // Use the production site URL for absolute paths
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://kynaruniverse.co.uk';
 
-  // 1. CURATED PUBLIC ROUTES
-  // These represent the foundational pillars of the experience.
+  // 1. STATIC ROUTES
+  // These are the primary pages of the website.
   const staticRoutes = [
     '',
     '/marketplace',
@@ -33,8 +33,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1.0 : 0.8,
   }));
 
-  // 2. ASSET DISCOVERY (Dynamic Product Routes)
-  // Synchronizes the public registry with the storefront to ensure index integrity.
+  // 2. DYNAMIC PRODUCT ROUTES
+  // Fetches all active products to ensure they are indexed by search engines.
   let productRoutes: MetadataRoute.Sitemap = [];
   
   try {
@@ -51,8 +51,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }));
     }
   } catch (error) {
-    // Silence is luxury: Log the interruption but maintain engine stability
-    console.error('Registry Discovery Interrupted:', error);
+    // Graceful Error Handling: Log the error without breaking the sitemap generation
+    console.error('Sitemap Generation Error:', error);
   }
 
   return [...staticRoutes, ...productRoutes];

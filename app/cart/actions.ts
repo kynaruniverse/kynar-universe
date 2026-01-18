@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
 /**
- * 1. SECURE SERVER CONTEXT
+ * 1. SERVER-SIDE CLIENT INITIALIZATION
  */
 async function createClient() {
   const cookieStore = cookies();
@@ -22,14 +22,14 @@ async function createClient() {
           try {
             cookieStore.set({ name, value, ...options });
           } catch (error) {
-            // Handled by middleware
+            // Managed by middleware
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options });
           } catch (error) {
-            // Handled by middleware
+            // Managed by middleware
           }
         },
       },
@@ -38,8 +38,8 @@ async function createClient() {
 }
 
 /**
- * 2. ACQUISITION PROTOCOL
- * Processes the transfer of digital assets to the user's private library.
+ * 2. CHECKOUT PROCESSING
+ * Processes the purchase and links digital products to the user account.
  */
 export async function processCheckout(productSlugs: string[]) {
   const supabase = await createClient();
@@ -52,11 +52,11 @@ export async function processCheckout(productSlugs: string[]) {
   }
 
   if (!productSlugs || productSlugs.length === 0) {
-    return { error: "Your manifest is empty. No assets found for acquisition." };
+    return { error: "Your cart is empty. No items found for purchase." };
   }
 
   // B. LEGAL AUDIT TRAIL (UK Compliance)
-  // Records the formal consent and waiver of the cancellation period for digital goods.
+  // Records formal consent for digital goods and the waiver of the standard cancellation period.
   const purchaseData = productSlugs.map(slug => ({
     user_id: user.id,
     product_id: slug, 
@@ -64,18 +64,18 @@ export async function processCheckout(productSlugs: string[]) {
     consent_at: new Date().toISOString() 
   }));
 
-  // C. ASSET TRANSFER (The Acquisition)
+  // C. DATA PROCESSING (The Purchase)
   const { error: dbError } = await supabase
     .from('purchases')
     .insert(purchaseData);
 
   if (dbError) {
-    console.error("Acquisition Error:", dbError.message);
-    return { error: "The acquisition could not be finalized. Please refresh and try again." };
+    console.error("Checkout Error:", dbError.message);
+    return { error: "The purchase could not be completed. Please refresh and try again." };
   }
 
-  // D. REGISTRY UPDATE
-  // Ensures the Library and Storefront reflect the updated status immediately.
+  // D. CACHE REFRESH
+  // Ensures the account library and storefront reflect the new purchase status.
   revalidatePath('/account', 'page');
   revalidatePath('/marketplace', 'page');
 

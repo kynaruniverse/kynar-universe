@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
 /**
- * HELPER: Muse Engine Secure Client
+ * Helper: Initializes the server-side auth client
  */
 function createClient() {
   const cookieStore = cookies();
@@ -22,14 +22,14 @@ function createClient() {
           try {
             cookieStore.set({ name, value, ...options });
           } catch (error) {
-            // Managed by middleware
+            // Handled by middleware
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: '', ...options });
           } catch (error) {
-            // Managed by middleware
+            // Handled by middleware
           }
         },
       },
@@ -37,15 +37,15 @@ function createClient() {
   );
 }
 
-// 1. REGISTER IDENTITY (SIGN UP)
+// 1. SIGN UP LOGIC
 export async function signup(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   
   const supabase = createClient();
 
-  // Sanitize the Site URL for premium delivery
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
+  // Redirect users back to the production domain after verification
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://kynaruniverse.co.uk';
   
   const { error } = await supabase.auth.signUp({
     email,
@@ -60,10 +60,10 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout');
-  return { success: "Verification sent. Please check your email to establish your presence." };
+  return { success: "Verification email sent. Please check your inbox to verify your account." };
 }
 
-// 2. AUTHENTICATE PRESENCE (LOG IN)
+// 2. LOG IN LOGIC
 export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -76,11 +76,10 @@ export async function login(formData: FormData) {
   });
 
   if (error) {
-    // Muse Engine: High-end, grounded error feedback
-    return { error: "Authentication failed. Please verify your credentials and try again." };
+    return { error: "Login failed. Please check your credentials and try again." };
   }
   
-  // Refresh the layout to update the Muse Engine Library instantly
+  // Refresh the site layout to update the user navigation
   revalidatePath('/', 'layout');
   
   return { success: true };

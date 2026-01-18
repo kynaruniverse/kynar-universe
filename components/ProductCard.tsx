@@ -11,9 +11,9 @@ interface ProductCardProps {
   summary: string;
   slug: string;
   image?: string;
-  creator?: string; // New for Muse Engine Meta Block
-  rating?: number;  // New for Muse Engine Trust Row
-  sales?: string;   // New for Muse Engine Trust Row
+  creator?: string; // Product Creator/Brand
+  rating?: number;  // User Rating
+  sales?: string;   // Transaction Volume
 }
 
 export default function ProductCard({ 
@@ -23,7 +23,7 @@ export default function ProductCard({
   summary, 
   slug, 
   image,
-  creator = "Kynar Curated",
+  creator = "Kynar",
   rating = 4.9,
   sales = "1.2k+"
 }: ProductCardProps) {
@@ -34,7 +34,7 @@ export default function ProductCard({
         whileHover={{ y: -8 }}
         className="group relative flex flex-col h-full brand-card shadow-tactile-hover overflow-hidden transition-all duration-700"
       >
-        {/* 1. PREVIEW AREA: Locked Static Image with Subtle Hover Motion */}
+        {/* 1. MEDIA PREVIEW: Static Image with smooth hover transition */}
         <div className="relative aspect-[4/5] overflow-hidden bg-brand-base">
           {image ? (
             <motion.img 
@@ -45,16 +45,16 @@ export default function ProductCard({
           ) : (
             <div className="w-full h-full flex items-center justify-center surface-mocha">
                <div className="w-12 h-12 rounded-full border border-brand-text/10 flex items-center justify-center">
-                  <span className="text-brand-text/20 text-[10px] font-bold">MUSE</span>
+                  <span className="text-brand-text/20 text-[10px] font-bold uppercase tracking-widest">Kynar</span>
                </div>
             </div>
           )}
           
-          {/* Intelligence on Demand: Preview overlay appears only on hover */}
+          {/* Subtle hover overlay for visual depth */}
           <div className="absolute inset-0 bg-brand-text/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
         </div>
 
-        {/* 2. META BLOCK: Professional & Curated */}
+        {/* 2. PRODUCT INFO: High-clarity typography */}
         <div className="p-8 flex flex-col flex-grow">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-xl font-semibold tracking-tight text-brand-text leading-tight group-hover:text-brand-accent transition-colors duration-500">
@@ -65,7 +65,7 @@ export default function ProductCard({
             by {creator}
           </p>
 
-          {/* 3. TRUST ROW: Low contrast, minimal signals */}
+          {/* 3. RATINGS & STATS: Minimal social proof signals */}
           <div className="flex items-center gap-4 mb-8">
             <div className="flex items-center gap-1">
               <Star size={10} className="text-accent-thermal fill-accent-thermal" />
@@ -80,7 +80,7 @@ export default function ProductCard({
             </span>
           </div>
 
-          {/* 4. ACTION ROW: Pricing & Micro-CTA */}
+          {/* 4. PURCHASE ROW: Pricing & Navigation */}
           <div className="mt-auto pt-6 border-t border-brand-surface/10 flex items-center justify-between">
             <div className="flex flex-col">
               <span className="text-2xl font-semibold tracking-tight text-brand-text">
@@ -88,9 +88,9 @@ export default function ProductCard({
               </span>
             </div>
             
-            {/* Primary Micro-CTA: Accent color appears only here on focus */}
+            {/* CTA: Focuses interaction on hover */}
             <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-text/40 group-hover:text-brand-text transition-all duration-500">
-              <span>Preview</span>
+              <span>View Product</span>
               <div className="w-8 h-8 rounded-full bg-brand-base flex items-center justify-center group-hover:bg-brand-text group-hover:text-white transition-all duration-700 shadow-tactile">
                 <ArrowRight size={14} />
               </div>

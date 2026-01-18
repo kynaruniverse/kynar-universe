@@ -32,23 +32,23 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   return (
     <main className="min-h-screen bg-brand-base pb-32 selection:bg-brand-accent/20">
       
-      {/* 1. REFINED BREADCRUMBS (Phase 1: Editorial terminology) */}
+      {/* 1. BREADCRUMBS: Functional navigation */}
       <div className="max-w-7xl mx-auto px-6 pt-12 mb-12">
         <nav className="flex items-center space-x-3 text-[10px] uppercase font-semibold tracking-[0.25em] text-brand-text/30 mb-8">
-          <Link href="/marketplace" className="hover:text-brand-text transition-colors">The Collection</Link>
+          <Link href="/marketplace" className="hover:text-brand-text transition-colors">The Store</Link>
           <span className="text-brand-text/10">/</span>
           <span className="text-brand-accent">{product.category}</span>
         </nav>
         
         <Link href="/marketplace" className="group inline-flex items-center text-[10px] uppercase font-bold tracking-widest text-brand-text/40 hover:text-brand-text transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> 
-          Back to Collection
+          Back to Shop
         </Link>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
         
-        {/* 2. IMAGE SECTOR: Physical Depth over Visual Noise */}
+        {/* 2. MEDIA SECTION: Visual product display */}
         <div className="lg:sticky lg:top-32">
           <motion.div 
             layoutId={`card-${product.slug}`}
@@ -69,7 +69,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <div className="absolute -inset-10 z-[-1] opacity-10 blur-[120px] rounded-full bg-brand-surface pointer-events-none" />
         </div>
 
-        {/* 3. DETAILS SECTOR: Premium Meta Block */}
+        {/* 3. PRODUCT DETAILS SECTION */}
         <div className="flex flex-col pt-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -89,7 +89,6 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               {product.title}
             </h1>
             
-            {/* Phase 1: Removing "Instant" terminology for expectations management */}
             <div className="flex flex-wrap items-center gap-4 mb-12">
               <div className="flex items-center px-6 py-3 bg-white shadow-tactile rounded-full text-[10px] font-bold uppercase tracking-widest text-brand-text">
                 <Zap className="w-3.5 h-3.5 mr-2 text-brand-accent" /> Priority Access
@@ -103,26 +102,25 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               £{product.price}
             </div>
 
-            {/* ACTION AREA (Phase 1: Preview focused) */}
+            {/* PURCHASE AREA */}
             <div className="max-w-md space-y-8">
-               {/* Note: AddToCartButton will be refined in Step 6 to show "Preview Access" */}
                <AddToCartButton product={product} />
                
-               {/* TRUST STRIP (Pillar 2: Build Trust) */}
+               {/* TRUST INDICATORS */}
                <div className="grid grid-cols-2 gap-4 py-4 border-y border-brand-surface/20">
                 <div className="flex items-center gap-3 text-[9px] font-bold uppercase tracking-widest text-brand-text/30">
-                  <ShieldCheck size={16} className="text-brand-accent" /> Secure Registry
+                  <ShieldCheck size={16} className="text-brand-accent" /> Secure Checkout
                 </div>
                 <div className="flex items-center gap-3 text-[9px] font-bold uppercase tracking-widest text-brand-text/30">
                   <Scale size={16} className="text-brand-accent" /> UK Digital Rights
                 </div>
                </div>
 
-               {/* Phase 1: Legal Safety Note */}
+               {/* PREVIEW NOTICE */}
                <div className="flex items-start gap-3 bg-brand-surface/5 p-5 rounded-inner border border-brand-surface/10">
                   <Info size={16} className="text-brand-accent shrink-0 mt-0.5" />
                   <p className="text-[10px] leading-relaxed text-brand-text/50 font-medium">
-                    The Kynar Registry is currently in preview. Formal acquisition and asset retrieval protocols will unlock shortly.
+                    The shop is currently in preview mode. Formal purchasing and file downloads will be available shortly.
                   </p>
                </div>
             </div>
@@ -130,7 +128,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             {/* DESCRIPTION SECTION */}
             <div className="mt-24 space-y-16">
               <div className="space-y-8">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-text/20">Product Insights</h3>
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-text/20">Product Details</h3>
                 <p className="text-xl md:text-2xl text-brand-text/70 leading-relaxed max-w-xl">
                   {product.description || product.summary}
                 </p>

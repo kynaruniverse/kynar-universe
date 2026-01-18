@@ -1,10 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-/**
- * THE MUSE CURATOR (Middleware)
- * Manages the silent authentication flow and registry access.
- */
+/** AUTHENTICATION MIDDLEWARE: Manages user sessions and route access **/
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -42,12 +39,11 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // 1. SESSION SYNCHRONIZATION
-  // Ensures uninterrupted access to the private vault.
+  // 1. SESSION VALIDATION: Retrieve current user data safely from Supabase
   const { data: { user } } = await supabase.auth.getUser()
 
-  // 2. REGISTRY PROTECTION
-  // Redirects unauthenticated guests trying to access curated private spaces.
+  // 2. ROUTE PROTECTION
+  // Redirects unauthenticated users attempting to access protected account pages.
   const isProtectedPath = request.nextUrl.pathname.startsWith('/account') || 
                           request.nextUrl.pathname.startsWith('/cart')
 
@@ -64,8 +60,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Optimized Matcher: Ensures the Muse Engine is performant 
-     * by ignoring all static and physical media assets.
+     * MATCH FILTER: Optimizes performance by excluding static files
+     * and image assets from the middleware logic.
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],

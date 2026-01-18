@@ -19,7 +19,7 @@ function FilterContent() {
       if (searchTerm !== currentSearch) {
         updateURL('search', searchTerm);
       }
-    }, 400); // Slightly slower debounce for a "calmer" feel
+    }, 400); // Standard debounce for input efficiency
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, currentSearch]);
@@ -43,17 +43,17 @@ function FilterContent() {
   return (
     <div className="w-full mb-16 space-y-10">
       
-      {/* 1. SEARCH & FILTERS BAR: Physical Depth over Visual Noise */}
+      {/* 1. FILTER BAR: Main container for search and category toggles */}
       <div className="flex flex-col md:flex-row gap-6 items-center justify-between brand-card p-3 shadow-tactile">
         
-        {/* SEARCH INPUT: Intelligence on Demand */}
+        {/* SEARCH INPUT: Text-based filtering */}
         <div className="relative w-full md:w-[450px] group">
           <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-brand-text/20 group-focus-within:text-brand-accent transition-colors duration-500">
             <Search className="w-4 h-4" strokeWidth={1.5} />
           </div>
           <input 
             type="text"
-            placeholder="Search the collection..."
+            placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-14 pr-12 py-5 bg-brand-base/50 border border-transparent rounded-full focus:outline-none focus:ring-1 focus:ring-brand-surface/30 focus:bg-white transition-all duration-700 font-body text-brand-text text-sm"
@@ -68,7 +68,7 @@ function FilterContent() {
           )}
         </div>
 
-        {/* 2. CATEGORY PILLS (Desktop): Space is a luxury signal */}
+        {/* 2. CATEGORY TABS (Desktop): Primary classification */}
         <div className="hidden md:flex items-center gap-2 p-1.5 bg-brand-base rounded-full mr-2">
           {categories.map((cat) => {
             const isActive = currentCategory === cat;
@@ -94,7 +94,7 @@ function FilterContent() {
         </div>
       </div>
 
-      {/* 3. MOBILE CATEGORY SCROLLER: Touch-friendly & Tactile */}
+      {/* 3. MOBILE CATEGORY SCROLLER: Horizontal touch-navigation */}
       <div className="md:hidden -mx-6 px-6 overflow-x-auto scrollbar-hide">
         <div className="flex gap-4 min-w-max pb-4">
           {categories.map((cat) => {
@@ -116,7 +116,7 @@ function FilterContent() {
         </div>
       </div>
       
-      {/* TRANSITION SIGNAL: Contextual Accent (Thermal Glow) */}
+      {/* LOADING SIGNAL: User feedback during transition */}
       <div className="h-4 flex justify-center">
         {isPending && (
           <motion.div 
@@ -125,7 +125,7 @@ function FilterContent() {
             className="flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.3em] text-accent-thermal"
           >
             <Sparkles className="w-3 h-3" />
-            Curating Selection...
+            Updating results...
           </motion.div>
         )}
       </div>

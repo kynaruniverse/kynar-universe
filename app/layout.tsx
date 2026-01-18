@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, Outfit } from 'next/font/google';
 
-// 1. IMPORT PROVIDERS & COMPONENTS
+// 1. PROVIDERS & GLOBAL COMPONENTS
 import { CartProvider } from '../context/CartContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -10,7 +10,7 @@ import PageLoader from '../components/PageLoader';
 import SuccessToastWrapper from '../components/SuccessToastWrapper';
 import LiquidCursor from '../components/LiquidCursor';
 
-// Typography: Neutral Sans for Body UI (High x-height)
+// Typography: Neutral Sans for Body UI
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
@@ -27,22 +27,22 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL('https://kynaruniverse.co.uk'),
   title: {
-    default: 'Kynar Muse | Quiet Luxury meets Intelligent Software',
-    template: '%s | Kynar Muse',
+    default: 'Kynar | Premium Digital Products & Solutions',
+    template: '%s | Kynar',
   },
   description: 'Premium digital products, curated and trusted for the modern professional.',
   openGraph: {
-    title: 'Kynar Muse Engine',
-    description: 'Quiet luxury meets intelligent software.',
+    title: 'Kynar Digital Store',
+    description: 'Premium digital products and solutions.',
     url: 'https://kynaruniverse.co.uk',
-    siteName: 'Kynar Muse',
+    siteName: 'Kynar',
     images: [{ url: '/og-premium.png', width: 1200, height: 630 }],
     locale: 'en_GB',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kynar Muse',
+    title: 'Kynar',
     description: 'Premium digital tools, curated and trusted.',
     images: ['/og-premium.png'],
   },
@@ -64,19 +64,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body className="font-body selection:bg-brand-accent/20">
-        {/* THE MUSE ENGINE ARCHITECTURE */}
+        {/* GLOBAL APPLICATION WRAPPER */}
         <CartProvider>
-          {/* Subtle Intelligence: Only reveals on intent/load */}
+          {/* UI Initialization */}
           <PageLoader />
           
-          {/* Physical Depth: Liquid Cursor provides 'Motion > Decoration' */}
+          {/* Visual Refinement: Interactive Cursor */}
           <LiquidCursor />
           
-          {/* Calm Foundation Interface */}
+          {/* Main Layout Structure */}
           <div className="flex flex-col min-h-screen">
             <Navbar />
             
-            {/* Main Content Area: Space is a luxury signal */}
+            {/* Primary Page Content */}
             <main className="flex-grow">
               {children}
             </main>
@@ -84,7 +84,7 @@ export default function RootLayout({
             <Footer />
           </div>
           
-          {/* Global UI Signals */}
+          {/* Notification System */}
           <SuccessToastWrapper />
         </CartProvider>
       </body>

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 
-// ALIGNED: Muse Engine Standard Item Structure
+// Standardized Product Structure
 type CartItem = {
   id: string; 
   title: string;
@@ -35,24 +35,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [lastAddedItem, setLastAddedItem] = useState("");
 
-  // 1. INITIALIZE FROM PERSISTENT STORAGE
+  // 1. INITIALIZE FROM LOCAL STORAGE
   useEffect(() => {
-    // Muse Engine Key: Transitioned from kynar_cart to muse_manifest
-    const savedCart = localStorage.getItem('kynar_muse_manifest');
+    // Standard storage key for shopping cart data
+    const savedCart = localStorage.getItem('kynar_cart_storage');
     if (savedCart) {
       try {
         setCartItems(JSON.parse(savedCart));
       } catch (e) {
-        localStorage.removeItem('kynar_muse_manifest');
+        localStorage.removeItem('kynar_cart_storage');
       }
     }
     setIsInitialized(true);
   }, []);
 
-  // 2. MANIFEST PERSISTENCE
+  // 2. DATA PERSISTENCE: Synchronize state with local storage
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem('kynar_muse_manifest', JSON.stringify(cartItems));
+      localStorage.setItem('kynar_cart_storage', JSON.stringify(cartItems));
     }
   }, [cartItems, isInitialized]);
 
@@ -60,7 +60,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCartItems((prev) => {
       const exists = prev.find((item) => item.id === product.id);
       
-      // MUSE LOGIC: Digital assets are unique; quantity is locked to 1
+      // LOGIC: Digital products are unique; limit quantity to 1 per item
       if (exists) return prev; 
       
       return [...prev, { ...product, quantity: 1 }];
@@ -68,14 +68,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     setLastAddedItem(product.title);
     
-    // Intelligence on Demand: Reset state before triggering the reveal
+    // UI Logic: Reset toast state before triggering a new success notification
     setShowSuccess(false); 
-    // Small liquid delay to allow the physical layers to settle
+    
+    // Minor delay to ensure smooth UI transition for the notification
     setTimeout(() => setShowSuccess(true), 150);
   };
 
   const updateQuantity = (id: string, quantity: number) => {
-    // Enforcing the "Single Asset" rule for the Muse Engine
+    // Enforcing single-purchase rule for digital assets
     setCartItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, quantity: 1 } : item))
     );
@@ -87,7 +88,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => {
     setCartItems([]);
-    localStorage.removeItem('kynar_muse_manifest');
+    localStorage.removeItem('kynar_cart_storage');
   };
 
   const cartTotal = useMemo(() => 

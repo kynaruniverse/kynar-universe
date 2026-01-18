@@ -63,8 +63,7 @@ export default function AccountPage() {
   }, [supabase]);
 
   async function handleDownload(slug: string) {
-    // PHASE 3: Block downloads at UI level during preview
-    return;
+    return; // Downloads disabled during preview
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -103,22 +102,21 @@ export default function AccountPage() {
   if (viewState === 'authenticated') {
     return (
       <main className="min-h-screen bg-brand-base pb-32 selection:bg-brand-accent/20">
-        {/* DASHBOARD HEADER: Phase 1 Editorial Shift */}
         <div className="bg-white/30 backdrop-blur-3xl border-b border-brand-surface/20 px-6 py-20 md:py-32">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-end gap-8">
             <div className="space-y-4">
               <h1 className="text-5xl md:text-7xl font-semibold text-brand-text tracking-tight">
-                Private Registry
+                My Library
               </h1>
               <p className="text-brand-text/40 font-medium">
-                {userEmail} — Your established presence.
+                {userEmail} — Your personal dashboard.
               </p>
             </div>
             <button 
               onClick={handleLogout} 
               className="px-10 py-4 bg-brand-base text-brand-text/50 hover:text-brand-text rounded-full border border-brand-surface/30 transition-all text-[10px] font-bold uppercase tracking-widest"
             >
-              Terminate Session
+              Sign Out
             </button>
           </div>
         </div>
@@ -162,16 +160,15 @@ export default function AccountPage() {
                 ))}
               </motion.div>
             ) : (
-              /* PHASE 6: Testing Library Empty State - Ensuring it feels intentional */
               <motion.div 
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="brand-card p-12 md:p-24 text-center surface-mocha max-w-2xl mx-auto"
               >
                 <Sparkles className="w-12 h-12 text-brand-accent/20 mx-auto mb-8" />
-                <h2 className="text-3xl font-semibold text-brand-text mb-6 tracking-tight">Registry Initialized</h2>
+                <h2 className="text-3xl font-semibold text-brand-text mb-6 tracking-tight">Account Ready</h2>
                 <p className="text-brand-text/40 mb-10 leading-relaxed max-w-sm mx-auto">
-                  Your identity is verified. Discover premium assets in the collection to begin curating your library.
+                  Your account is verified. Explore the collection to find digital products for your dashboard.
                 </p>
                 
                 <div className="flex flex-col items-center gap-6">
@@ -180,7 +177,7 @@ export default function AccountPage() {
                   </Link>
                   
                   <div className="flex items-center gap-2 text-[10px] font-bold text-brand-text/20 uppercase tracking-widest">
-                    <Info size={14} /> Acquisition protocols currently in preview
+                    <Info size={14} /> Checkout system currently in preview
                   </div>
                 </div>
               </motion.div>
@@ -200,19 +197,19 @@ export default function AccountPage() {
         className="brand-card w-full max-w-md p-10 md:p-16 shadow-tactile text-center relative z-10"
       >
         <h1 className="text-4xl font-semibold text-brand-text mb-6 tracking-tight">
-          {isLoginMode ? 'Establish Presence' : 'Register Identity'}
+          {isLoginMode ? 'Sign In' : 'Create Account'}
         </h1>
         <p className="text-brand-text/40 mb-12">
-          {isLoginMode ? 'Verify your credentials to access the registry.' : 'Join the Kynar Registry to curate your digital assets.'}
+          {isLoginMode ? 'Enter your details to access your account.' : 'Join Kynar to manage your digital products.'}
         </p>
         
         <form onSubmit={handleSubmit} className="space-y-8 text-left">
           <div className="space-y-3">
-            <label className="text-[10px] font-bold text-brand-text/20 uppercase tracking-[0.25em] ml-6">Registry Email</label>
+            <label className="text-[10px] font-bold text-brand-text/20 uppercase tracking-[0.25em] ml-6">Email Address</label>
             <input name="email" type="email" required placeholder="name@domain.com" className="w-full px-8 py-5 rounded-full bg-brand-base/50 border border-transparent focus:bg-white focus:border-brand-surface/30 focus:outline-none transition-all duration-500 font-medium text-sm" />
           </div>
           <div className="space-y-3 pb-4">
-            <label className="text-[10px] font-bold text-brand-text/20 uppercase tracking-[0.25em] ml-6">Secure Key</label>
+            <label className="text-[10px] font-bold text-brand-text/20 uppercase tracking-[0.25em] ml-6">Password</label>
             <input name="password" type="password" required placeholder="••••••••" className="w-full px-8 py-5 rounded-full bg-brand-base/50 border border-transparent focus:bg-white focus:border-brand-surface/30 focus:outline-none transition-all duration-500 font-medium text-sm" />
           </div>
 
@@ -225,7 +222,7 @@ export default function AccountPage() {
           </AnimatePresence>
 
           <button type="submit" disabled={loading} className="btn-primary w-full py-6 flex items-center justify-center text-[10px] uppercase tracking-[0.25em]">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isLoginMode ? 'Verify Presence' : 'Register Identity')}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isLoginMode ? 'Sign In' : 'Create Account')}
           </button>
         </form>
 
@@ -233,7 +230,7 @@ export default function AccountPage() {
           onClick={() => setIsLoginMode(!isLoginMode)} 
           className="mt-12 text-[10px] font-bold uppercase tracking-widest text-brand-text/20 hover:text-brand-text transition-all"
         >
-          {isLoginMode ? "Need to register? Join here" : "Established? Verify here"}
+          {isLoginMode ? "Need an account? Join here" : "Already a member? Sign in"}
         </button>
         
         <div className="mt-10 pt-10 border-t border-brand-surface/20 flex items-center justify-center gap-6 text-brand-text/10">

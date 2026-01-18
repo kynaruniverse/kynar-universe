@@ -1,10 +1,11 @@
 # ==========================================
-# KYNAR MUSE ENGINE: INDEXING PROTOCOL
+# KYNAR: ROBOTS.TXT CONFIGURATION
 # ==========================================
 
 User-agent: *
 
-# 1. CURATED REGISTRIES (Public Access)
+# 1. PUBLIC ROUTES (Allow Indexing)
+# These paths are open for search engine crawling.
 Allow: /
 Allow: /about
 Allow: /marketplace
@@ -15,8 +16,8 @@ Allow: /help
 Allow: /terms
 Allow: /privacy
 
-# 2. PRIVATE REGISTRIES (Access Restricted)
-# We shield these paths to preserve identity privacy and engine integrity.
+# 2. RESTRICTED ROUTES (Disallow Indexing)
+# These paths are blocked to protect user data and site internals.
 Disallow: /account
 Disallow: /account/
 Disallow: /cart
@@ -27,10 +28,10 @@ Disallow: /maintenance
 Disallow: /_next/
 Disallow: /static/
 
-# 3. SITEMAP SIGNATURE
-# Points curators to the primary production registry.
+# 3. SITEMAP LOCATION
+# Points search engines to the dynamic sitemap file.
 Sitemap: https://kynaruniverse.co.uk/sitemap.xml
 
 # ==========================================
-# END PROTOCOL
+# END CONFIGURATION
 # ==========================================

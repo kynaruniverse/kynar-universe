@@ -8,9 +8,9 @@ export default function PrivacyPage() {
     <main className="min-h-screen bg-brand-base pb-32 transition-colors duration-1000">
       <div className="max-w-4xl mx-auto px-6 pt-24">
         
-        {/* Navigation back to origin */}
+        {/* Navigation back to home */}
         <Link href="/" className="group inline-flex items-center text-[10px] font-bold text-brand-text/30 hover:text-brand-text transition-all mb-12 uppercase tracking-[0.4em]">
-          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Return to Gallery
+          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Return to Store
         </Link>
 
         <motion.div 
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
           </div>
 
           <h1 className="text-5xl md:text-[100px] font-semibold font-sans text-brand-text mb-10 tracking-tight leading-[0.9]">
-            Privacy <br/> Protocol
+            Privacy <br/> Policy
           </h1>
           
           <div className="flex items-center gap-6 mb-20">
@@ -50,17 +50,17 @@ export default function PrivacyPage() {
                 Identity & Governance
               </h2>
               <p className="text-lg font-medium text-brand-text/60 leading-relaxed max-w-2xl">
-                Kynar Muse is a digital ecosystem based in the United Kingdom. We operate with a curator&apos;s mindset toward data. For any inquiries regarding your presence in our registry, contact <span className="text-brand-text font-semibold">kynarmuse@gmail.com</span>.
+                Kynar is a digital store based in the United Kingdom. We operate with a professional mindset toward data. For any inquiries regarding your account information, contact <span className="text-brand-text font-semibold">kynarmuse@gmail.com</span>.
               </p>
             </section>
 
             <section className="space-y-6">
               <h2 className="text-[11px] font-bold font-sans text-brand-text/30 uppercase tracking-[0.3em] flex items-center gap-4">
                 <span className="w-8 h-8 rounded-full bg-brand-base flex items-center justify-center text-[10px] text-brand-text/40">02</span> 
-                Registry Integrity
+                Data Usage
               </h2>
               <p className="text-lg font-medium text-brand-text/60 leading-relaxed max-w-2xl">
-                We only synchronize data essential for your Private Library: Email (Identity), Transaction History (Acquisition), and Technical Metadata to ensure secure delivery.
+                We only use data essential for your Account: Email, Transaction History, and Technical Metadata to ensure secure delivery of your products.
               </p>
               
               <div className="surface-mocha p-6 rounded-inner flex items-center gap-4 text-[10px] font-bold text-brand-text/50 uppercase tracking-widest">
@@ -74,17 +74,17 @@ export default function PrivacyPage() {
                 <Database className="text-brand-accent w-5 h-5" strokeWidth={1.5} /> 03. Infrastructure
               </h2>
               <p className="text-white/70 font-medium text-xl leading-relaxed">
-                All Registry data is encrypted at rest using industry-standard PostgreSQL protocols. We treat your digital footprint with the same reverence as our own curated assets.
+                All account data is encrypted at rest using industry-standard PostgreSQL protocols. We treat your personal information with the same care as our own digital products.
               </p>
             </section>
 
             <section className="space-y-6">
               <h2 className="text-[11px] font-bold font-sans text-brand-text/30 uppercase tracking-[0.3em] flex items-center gap-4">
                 <span className="w-8 h-8 rounded-full bg-brand-base flex items-center justify-center text-[10px] text-brand-text/40">04</span> 
-                Autonomy
+                User Sovereignty
               </h2>
               <p className="text-lg font-medium text-brand-text/60 leading-relaxed max-w-2xl">
-                Under the Data Protection Act 2018, you maintain full sovereignty. You may request access, rectification, or the absolute removal of your presence from our registry at any time.
+                Under the Data Protection Act 2018, you maintain full control. You may request access, correction, or the absolute removal of your account at any time.
               </p>
             </section>
 

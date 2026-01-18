@@ -1,8 +1,8 @@
 {
-  "name": "kynar-muse-engine",
+  "name": "kynar-universe",
   "version": "1.0.0",
   "private": true,
-  "description": "A high-fidelity digital asset registry and vault protocol.",
+  "description": "A premium digital marketplace and secure storefront built with Next.js and Supabase.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

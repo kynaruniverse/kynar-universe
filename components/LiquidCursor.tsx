@@ -5,13 +5,12 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 export default function LiquidCursor() {
   const [isDesktop, setIsDesktop] = useState(false);
   
-  // 1. Position motion values
+  // 1. Position tracking values
   const mouseX = useMotionValue(-500);
   const mouseY = useMotionValue(-500);
   const scale = useMotionValue(1);
   
-  // 2. Liquid Physics: Increased mass and damping for a "Premium Viscous" feel
-  // This makes the glow feel like it has actual physical weight.
+  // 2. Motion Physics: Damping and stiffness for a weighted, smooth following effect.
   const springConfig = { damping: 60, stiffness: 80, mass: 1.5 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
@@ -24,7 +23,7 @@ export default function LiquidCursor() {
     if (!mediaQuery.matches) return;
     
     const handleMouseMove = (e: MouseEvent) => {
-      // Centering the 400px glow on the cursor
+      // Offset the 400px element so it centers on the mouse tip
       mouseX.set(e.clientX - 200);
       mouseY.set(e.clientY - 200);
     };
@@ -53,7 +52,7 @@ export default function LiquidCursor() {
         scale: cursorScale,
       }
     }
-    // Muse Engine Style: A faint Mocha/Stone glow that reveals texture
+    // Visual Style: A soft background glow to highlight interface textures
     className = "pointer-events-none fixed top-0 left-0 z-[-1] h-[400px] w-[400px] rounded-full bg-brand-surface/10 blur-[140px] will-change-transform opacity-60 transition-opacity duration-1000" /
     >
   );

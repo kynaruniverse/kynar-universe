@@ -3,14 +3,14 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 /**
- * AUTHENTICATION HANDSHAKE PROTOCOL
- * Finalizes the identity verification and establishes the user session.
+ * AUTHENTICATION CALLBACK
+ * Finalizes the login process and initializes the user session.
  */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   
-  // Muse Engine: Redirect to 'Library' (Account) by default
+  // Default redirect to the account dashboard
   const next = searchParams.get('next') ?? '/account';
 
   if (code) {
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
             try {
               cookieStore.set({ name, value, ...options });
             } catch (error) {
-              // Handled by Muse Middleware
+              // Handled by Middleware
             }
           },
           remove(name: string, options: CookieOptions) {
@@ -44,19 +44,17 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     
     if (!error) {
-      // SUCCESS: Identity Established
-      // Redirecting with a calm verified signal for the Curator UI
+      // SUCCESS: Session Created
       const successUrl = new URL(next, origin);
-      successUrl.searchParams.set('identity_verified', 'true');
+      successUrl.searchParams.set('verified', 'true');
       
       return NextResponse.redirect(successUrl);
     }
   }
 
-  // ERROR: Handshake Failed
-  // Redirect to Registry with a sophisticated error protocol
+  // ERROR: Authentication Failed
   const errorUrl = new URL('/account', origin);
-  errorUrl.searchParams.set('protocol_error', 'identity_handshake_failed');
+  errorUrl.searchParams.set('error', 'auth_callback_failed');
   
   return NextResponse.redirect(errorUrl);
 }

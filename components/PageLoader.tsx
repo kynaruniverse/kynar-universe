@@ -9,9 +9,9 @@ export default function PageLoader() {
     const handleLoad = () => setLoading(false);
     
     if (document.readyState === "complete") {
-      // Muse Engine Unhurried Entry: Slower than a standard app for a luxury feel
-      const flickerTimer = setTimeout(() => setLoading(false), 1000);
-      return () => clearTimeout(flickerTimer);
+      // Deliberate transition timing to maintain brand aesthetic
+      const timer = setTimeout(() => setLoading(false), 1000);
+      return () => clearTimeout(timer);
     } else {
       window.addEventListener("load", handleLoad);
       const backupTimer = setTimeout(() => setLoading(false), 3500);
@@ -34,9 +34,9 @@ export default function PageLoader() {
           }}
           className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-brand-base"
         >
-          {/* 1. THE MUSE CORE */}
+          {/* 1. VISUAL CENTER */}
           <div className="relative flex items-center justify-center">
-            {/* Soft Intelligence Aura: Mocha-tinted warmth */}
+            {/* Background Glow */}
             <motion.div 
               animate={{ 
                 scale: [0.95, 1.1, 0.95],
@@ -46,14 +46,14 @@ export default function PageLoader() {
               className="absolute w-64 h-64 bg-brand-surface/40 blur-[120px] rounded-full"
             />
             
-            {/* The Monochromatic Ring: Viscous motion */}
+            {/* Loading Ring */}
             <motion.div
               animate={{ 
                 rotate: 360,
                 borderRadius: ["42% 58% 70% 30% / 45% 45% 55% 55%", "50%", "42% 58% 70% 30% / 45% 45% 55% 55%"],
               }}
               transition={{ 
-                duration: 8, // Slower rotation for higher perceived value
+                duration: 8, // Smooth rotation speed
                 repeat: Infinity, 
                 ease: "linear" 
               }}
@@ -61,7 +61,7 @@ export default function PageLoader() {
             />
           </div>
           
-          {/* 2. HUMANIST BRANDING */}
+          {/* 2. BRANDING & STATUS */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -69,14 +69,14 @@ export default function PageLoader() {
             className="mt-16 text-center space-y-4"
           >
             <p className="font-sans text-2xl font-semibold tracking-tight text-brand-text">
-              Kynar Muse
+              Kynar
             </p>
             <h2 className="font-body text-[9px] font-bold uppercase tracking-[0.6em] text-brand-text/20">
-              Establishing Presence
+              Initializing
             </h2>
           </motion.div>
 
-          {/* 3. LIQUID PROGRESS */}
+          {/* 3. PROGRESS INDICATOR */}
           <div className="absolute bottom-24 w-28 h-[1px] bg-brand-text/5 overflow-hidden">
             <motion.div 
               initial={{ x: "-100%" }}

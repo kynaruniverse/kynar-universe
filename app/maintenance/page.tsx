@@ -9,19 +9,19 @@ export default function MaintenancePage() {
   return (
     <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-brand-base">
       
-      {/* 1. THE MUSE CORE: Subtle Background Presence */}
+      {/* 1. BACKGROUND ANIMATION: Subtle visual presence */}
       <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
         <UniverseCanvas />
       </div>
 
-      {/* 2. ARCHITECTURAL REFINEMENT: Physical Depth Surface */}
+      {/* 2. MAINTENANCE MODAL: Centered content card */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
         className="relative z-10 max-w-xl w-[92%] p-12 md:p-24 brand-card surface-mocha text-center overflow-hidden"
       >
-        {/* Soft Intelligence Signal: Replacing the Zap with a Muse Sparkle */}
+        {/* Loading Indicator: Rotating status icon */}
         <div className="mb-14 flex justify-center">
           <div className="relative">
             <motion.div 
@@ -35,13 +35,13 @@ export default function MaintenancePage() {
           </div>
         </div>
 
-        {/* HUMANIST TYPOGRAPHY: Editorial Authority */}
+        {/* PAGE CONTENT: Standard maintenance notification */}
         <h1 className="text-4xl md:text-6xl font-semibold font-sans text-brand-text mb-8 tracking-tight leading-none">
-          Refining the <br/> Engine
+          Under <br/> Maintenance
         </h1>
         
         <p className="font-medium text-[17px] text-brand-text/50 leading-relaxed mb-16 px-6">
-          The registry is currently undergoing a scheduled refinement to enhance your experience. We will return shortly.
+          The site is currently undergoing a scheduled update to improve your experience. We will be back online shortly.
         </p>
 
         <div className="space-y-12 relative z-10">
@@ -49,10 +49,10 @@ export default function MaintenancePage() {
             href="mailto:kynarmuse@gmail.com"
             className="btn-primary group inline-flex items-center gap-4 text-[11px] tracking-[0.3em]"
           >
-            DIRECT PROTOCOL <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-500" />
+            CONTACT SUPPORT <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-500" />
           </Link>
           
-          {/* DISCREET STATUS: Intelligence on Demand */}
+          {/* STATUS INDICATOR: Real-time update signal */}
           <div className="flex flex-col items-center gap-6">
             <div className="flex gap-4">
                <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 4, repeat: Infinity }} className="w-2 h-2 rounded-full bg-brand-accent shadow-sm" />
@@ -60,7 +60,7 @@ export default function MaintenancePage() {
                <div className="w-2 h-2 rounded-full bg-brand-text/5" />
             </div>
             <p className="text-[9px] uppercase tracking-[0.5em] text-brand-text/20 font-bold">
-              Registry Sync in Progress
+              System Update in Progress
             </p>
           </div>
         </div>

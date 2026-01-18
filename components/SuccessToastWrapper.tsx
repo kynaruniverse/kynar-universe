@@ -8,15 +8,15 @@ export default function SuccessToastWrapper() {
   const { showSuccess, setShowSuccess, lastAddedItem } = useCart();
   const pathname = usePathname();
 
-  // 1. CONTEXTUAL SYNC: Reset on Navigation
-  // Space is a luxury signal; we clear the UI before new page transitions.
+  // 1. NAVIGATION CLEANUP: Reset notification state on page change
+  // Ensures the UI remains clean during page transitions.
   useEffect(() => {
     setShowSuccess(false);
   }, [pathname, setShowSuccess]);
 
-  // 2. INTELLIGENCE ON DEMAND: Auto-Dismiss Logic
-  // We use a 5-second window to allow the user to acknowledge the success
-  // without feeling rushed, maintaining the "Quiet Luxury" pace.
+  // 2. AUTO-DISMISS LOGIC: Timer for feedback visibility
+  // Uses a 5-second window to provide the user enough time to read the 
+  // confirmation before the toast automatically closes.
   useEffect(() => {
     if (showSuccess) {
       const timer = setTimeout(() => {
@@ -30,8 +30,8 @@ export default function SuccessToastWrapper() {
     <div className="relative z-[200]">
       <SuccessToast 
         isVisible={showSuccess} 
-        // Muse Engine Correction: Clean, editorial feedback
-        message={`${lastAddedItem} has been added to your library.`} 
+        // User Feedback: Standardized cart confirmation
+        message={`${lastAddedItem} has been added to your cart.`} 
         onClose={() => setShowSuccess(false)} 
       />
     </div>
