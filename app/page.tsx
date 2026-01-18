@@ -11,8 +11,7 @@ export default function Home() {
     <main className="min-h-screen bg-brand-base flex flex-col selection:bg-brand-accent/20 overflow-x-hidden">
       
       {/* SECTION 1: HERO */}
-      <section className="relative w-full min-h-[75vh] flex flex-col items-center justify-center px-6 pt-20">
-        {/* Background Visual: Subtle Canvas */}
+      <section className="relative w-full min-h-[60vh] flex flex-col items-center justify-center px-6">
         <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none grayscale">
           <UniverseCanvas />
         </div>
@@ -30,29 +29,35 @@ export default function Home() {
               Premium resources curated and trusted for those who value efficiency and simplicity.
             </p>
           </motion.div>
+        </div>
+      </section>          
 
           {/* SEARCH COMPONENT */}
+      <div className="w-full bg-brand-base relative z-30 py-4">  
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="relative max-w-2xl mx-auto group"
+            className="relative w-[96%] max-w-6xl mx-auto mt-4 group"
           >
-            <div className="absolute inset-0 bg-brand-accent/5 rounded-full blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-700" />
-            <div className="relative flex items-center bg-white shadow-tactile rounded-full p-2 pl-8 border border-transparent focus-within:border-brand-surface/30 transition-all duration-500">
-              <Search className="text-brand-text/30 mr-4" size={20} />
+            <div className="relative 
+  flex items-center bg-white shadow-sm rounded-xl p-1 pl-6 border border-brand-surface/20 transition-all duration-500">
+              <Search className="text-brand-text/30 mr-3" size={18} />
               <input 
                 type="text" 
                 placeholder="Search the shop..." 
-                className="flex-grow bg-transparent border-none outline-none text-brand-text placeholder:text-brand-text/20 py-4"
+                className="flex-grow bg-transparent border-none outline-none text-brand-text placeholder:text-brand-text/20 py-2 text-sm"
               />
-              <button className="bg-brand-text text-white px-8 py-4 rounded-full font-semibold hover:bg-brand-accent transition-colors duration-500">
+              <button className="bg-brand-text text-white px-6 py-2 rounded-lg text-xs font-semibold hover:bg-brand-accent transition-colors duration-500">
                 Search
               </button>
             </div>
           </motion.div>
         </div>
-      </section>
+        
+        {/*PREVIEW BANNER*/}
+        <div className="w-full py-2 border-y border-brand-surface/10">
+          <p className="text-[8px] font-bold uppercase tracking-[0.3em] text-brand-text/40 text-center">
+            The Kynar Store is currently in preview. Products will be available shortly.
+          </p>
+        </div>
 
       {/* SECTION 2: FEATURED PRODUCTS */}
       <section className="max-w-7xl mx-auto px-6 w-full pb-20">

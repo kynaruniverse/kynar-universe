@@ -28,15 +28,10 @@ export default function Navbar() {
 
   return (
     <>
-      {/* 1. SHOP PREVIEW BANNER */}
-      <div className="w-full bg-brand-surface/10 py-2 border-b border-brand-surface/20">
-        <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-brand-text/60 text-center px-6">
-          The Kynar Store is currently in preview. Products will be available shortly.
-        </p>
-      </div>
 
       {/* 2. MAIN NAVIGATION */}
-      <nav className="sticky top-6 z-[60] w-[94%] max-w-7xl mx-auto brand-nav rounded-full shadow-tactile transition-all duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)]">
+      <nav className="relative z-[60] w-full brand-nav border-b border-brand-surface/20 shadow-sm transition-all duration-500">
+        
         <div className="px-6">
           <div className="flex justify-between items-center h-16 md:h-22">
             
