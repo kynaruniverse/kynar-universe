@@ -40,7 +40,7 @@ export default function Guides() {
             Guides
           </h1>
           <p className="text-lg md:text-2xl font-medium text-brand-text/50 leading-relaxed px-4 max-w-2xl mx-auto">
-            Practical knowledge and refined strategies to help you manage your digital and physical space.
+            Useful tips and resources to help you organize your digital and physical spaces.
           </p>
         </motion.div>
       </section>
@@ -65,10 +65,10 @@ export default function Guides() {
                 <Terminal className="w-6 h-6" strokeWidth={1.5} />
               </div>
               <h2 className="text-4xl md:text-5xl font-semibold font-sans text-brand-text mb-8 tracking-tight leading-[1.1]">
-                Digital <br/> Intentionality
+                Organize Your <br/> Digital Life
               </h2>
               <p className="font-medium text-[17px] text-brand-text/50 mb-14 leading-relaxed pr-6">
-                A practical guide on configuring your environment to minimize distraction and maximize focus.
+                How to set up your space and tools for better focus and flow.
               </p>
             </div>
 
@@ -87,10 +87,10 @@ export default function Guides() {
                 <Coffee className="w-6 h-6" strokeWidth={1.5} />
               </div>
               <h2 className="text-4xl md:text-5xl font-semibold font-sans text-brand-text mb-8 tracking-tight leading-[1.1]">
-                Habit <br/> Architecture
+                Build <br/> Productive Habits
               </h2>
               <p className="font-medium text-[17px] text-brand-text/50 mb-14 leading-relaxed pr-6">
-                Defining the daily habits that anchor your productivity and sustain your creative energy.
+                How to structure daily routines that support focus and creativity.
               </p>
             </div>
 
@@ -114,13 +114,13 @@ export default function Guides() {
           <Sparkles className="w-8 h-8 mx-auto mb-10 text-brand-accent opacity-30" />
           <h3 className="text-4xl md:text-6xl font-semibold font-sans text-brand-text mb-8 tracking-tight">Help Center</h3>
           <p className="font-medium text-lg md:text-xl text-brand-text/40 mb-14 max-w-xl mx-auto">
-            Find technical support and practical answers for our collection of digital products.
+            Answers, guidance, and support for all your digital products.
           </p>
           <Link 
             href="/help" 
             className="btn-primary py-6 px-14 text-[11px] tracking-[0.3em]"
           >
-            GET SUPPORT
+            Visit Help Center
           </Link>
         </div>
       </motion.section>

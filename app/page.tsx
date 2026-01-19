@@ -32,7 +32,7 @@ export default function Home() {
       {/* 2. PREVIEW BANNER - Placed under search, but above hero text */}
       <div className="w-full py-2 border-y border-brand-surface/10">
         <p className="text-[8px] font-bold uppercase tracking-[0.3em] text-brand-text/40 text-center">
-          The Kynar Store is currently in preview. Products will be available shortly.
+          The KYNAR Store is in preview. Products will be ready for you soon.
         </p>
       </div>
 
@@ -49,10 +49,10 @@ export default function Home() {
             transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
           >
             <h1 className="font-semibold tracking-tight text-brand-text mb-6">
-              Quality digital products <br/> for professional use.
+              One place to find digital tools and products for work, creativity, learning, and play.
             </h1>
             <p className="text-brand-text/60 max-w-2xl mx-auto">
-              Premium resources curated and trusted for those who value efficiency and simplicity.
+              Carefully curated resources that are easy to use and built to last.
             </p>
           </motion.div>
         </div>

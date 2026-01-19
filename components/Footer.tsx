@@ -21,7 +21,7 @@ export default function Footer() {
               KYNAR
             </span>
             <p className="text-[15px] text-brand-text/50 leading-relaxed font-medium">
-              Premium digital products, curated and trusted. Quality digital solutions designed to refine your modern workflow.
+              Practical digital products to help you do more — for work, learning, creativity, and play.
             </p>
           </div>
 
@@ -75,7 +75,7 @@ export default function Footer() {
             </div>
             <div className="text-center lg:text-right">
               <p className="text-[10px] uppercase tracking-[0.3em] text-brand-text/20 font-bold">
-                © {currentYear} KYNAR DIGITAL
+                © {currentYear} KYNAR Universe
               </p>
               <p className="text-[9px] uppercase tracking-[0.2em] text-brand-text/10 font-semibold mt-2">
                 Quality Digital Goods — UK
