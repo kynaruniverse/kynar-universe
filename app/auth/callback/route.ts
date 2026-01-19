@@ -47,14 +47,23 @@ export async function GET(request: Request) {
       // SUCCESS: Session Created
       const successUrl = new URL(next, origin);
       successUrl.searchParams.set('verified', 'true');
-      
+
+      // If the user was looking at a specific category before auth, 
+      // we keep that theme active upon their return.
+      const category = searchParams.get('category');
+      if (category) successUrl.searchParams.set('category', category);
+
       return NextResponse.redirect(successUrl);
+
     }
   }
 
   // ERROR: Authentication Failed
   const errorUrl = new URL('/account', origin);
-  errorUrl.searchParams.set('error', 'auth_callback_failed');
+  // Trigger a neutral 'Digital' (Default) error state
+  errorUrl.searchParams.set('error', 'Authentication failed. Please try again.');
+  errorUrl.searchParams.set('category', 'Default'); 
+
   
   return NextResponse.redirect(errorUrl);
 }

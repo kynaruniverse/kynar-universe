@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation'; // Added useSearchParams
 import { Menu, X, ShoppingCart, User, Sparkles, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getCategoryTheme } from '../lib/theme'; // 1. Import theme utility
 import CartSidebar from "./CartSidebar";
 import MagneticLogo from "./MagneticLogo";
 
@@ -14,12 +15,17 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { cartCount } = useCart();
   const pathname = usePathname();
+  const searchParams = useSearchParams(); // Added to detect category in URL
+
+  // 2. Dynamic Theme Detection
+  // This looks at the URL to see if we are in a specific category (Tools, Life, Home)
+  const activeCategory = searchParams.get('category') || undefined;
+  const theme = getCategoryTheme(activeCategory);
 
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
-  // Updated navigation labels for universal clarity
   const navLinks = [
     { name: 'The Store', href: '/marketplace' },
     { name: 'Guides', href: '/guides' },
@@ -28,14 +34,10 @@ export default function Navbar() {
 
   return (
     <>
-
-      {/* 2. MAIN NAVIGATION */}
-      <nav className="relative z-[60] w-full brand-nav border-b border-brand-surface/20 shadow-sm transition-all duration-500">
-        
+      <nav className="relative z-[60] w-full brand-nav border-b border-brand-surface/20 shadow-sm transition-all duration-base">
         <div className="px-6">
           <div className="flex justify-between items-center h-16 md:h-22">
             
-            {/* LEFT: BRANDING */}
             <div className="flex-shrink-0 scale-90 md:scale-100">
               <MagneticLogo />
             </div>
@@ -48,7 +50,7 @@ export default function Navbar() {
                   <Link 
                     key={link.name}
                     href={link.href} 
-                    className={`relative font-body text-[11px] font-semibold uppercase tracking-[0.25em] transition-all duration-700 ${
+                    className={`relative font-body text-[11px] font-semibold uppercase tracking-[0.25em] transition-all duration-slow ${
                       isActive ? 'text-brand-text' : 'text-brand-text/30 hover:text-brand-text'
                     }`}
                   >
@@ -56,7 +58,8 @@ export default function Navbar() {
                     {isActive && (
                       <motion.div 
                         layoutId="navUnderline"
-                        className="absolute -bottom-2 left-0 right-0 h-[1.5px] bg-brand-accent rounded-full"
+                        // 3. Underline color now matches the active category theme
+                        className={`absolute -bottom-2 left-0 right-0 h-[1.5px] rounded-full ${theme.bg}`}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                       />
                     )}
@@ -65,12 +68,11 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* RIGHT: USER ACTIONS */}
             <div className="flex items-center space-x-2 md:space-x-5">
-              <Link 
-                href="/account" 
-                className={`p-3 rounded-full transition-all duration-700 ${
-                  pathname === '/account' 
+              <Link href ="/account"
+              aria-label="Account"
+              className={`p-3 rounded-full transition-all duration-slow ${
+                pathname === '/account' 
                     ? 'bg-brand-text text-white shadow-tactile' 
                     : 'text-brand-text/30 hover:text-brand-text hover:bg-brand-surface/20'
                 }`}
@@ -81,24 +83,25 @@ export default function Navbar() {
               {/* CART TOGGLE */}
               <button 
                 onClick={() => setIsCartOpen(true)} 
-                className="relative p-3 text-brand-text/30 hover:text-brand-text hover:bg-brand-surface/20 active:scale-95 rounded-full transition-all duration-700 group"
-                aria-label="Open Cart"
+                className="relative p-3 text-brand-text/30 hover:text-brand-text hover:bg-brand-surface/20 active:scale-95 rounded-full transition-all duration-slow group"
               >
                 <ShoppingCart size={20} strokeWidth={1.5} className="group-hover:rotate-[-6deg] transition-transform" />
                 {cartCount > 0 && (
                   <motion.span 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute top-2 right-2 bg-brand-accent text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center shadow-tactile px-1"
+                    // 4. Cart badge color now matches the active category theme
+                    className={`absolute top-2 right-2 text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center shadow-tactile px-1 transition-colors duration-slow ${theme.bg}`}
                   >
                     {cartCount}
                   </motion.span>
                 )}
               </button>
 
-              {/* MOBILE MENU TOGGLE */}
               <button 
-                onClick={() => setIsOpen(!isOpen)} 
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
                 className="md:hidden p-3 text-brand-text/40 hover:text-brand-text hover:bg-brand-surface/20 active:scale-90 rounded-full transition-all"
               >
                 {isOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
@@ -107,14 +110,13 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* 3. MOBILE OVERLAY MENU */}
+        {/* MOBILE MENU */}
         <AnimatePresence>
           {isOpen && (
             <motion.div 
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
               className="md:hidden absolute top-[115%] left-0 right-0 bg-white shadow-tactile rounded-[40px] overflow-hidden mx-1 p-10"
             >
               <div className="space-y-12">
@@ -126,7 +128,8 @@ export default function Navbar() {
                       className="font-sans text-4xl font-semibold tracking-tight text-brand-text flex justify-between items-center group"
                     >
                       {link.name}
-                      <ArrowRight className="opacity-0 group-hover:opacity-100 transition-all text-brand-accent translate-x-[-10px] group-hover:translate-x-0" />
+                      {/* 5. Mobile arrow icon now matches the theme color */}
+                      <ArrowRight className={`opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0 ${theme.text}`} />
                     </Link>
                   ))}
                 </div>
@@ -134,7 +137,7 @@ export default function Navbar() {
                 <div className="pt-8 border-t border-brand-surface/20 flex flex-col space-y-4">
                   <Link 
                     href="/account" 
-                    className="btn-primary w-full flex items-center justify-center gap-3 text-[10px] tracking-[0.25em]"
+                    className={`btn-primary w-full flex items-center justify-center gap-3 text-[10px] tracking-[0.25em] transition-colors duration-slow ${theme.bg} hover:brightness-110`}
                   >
                     <Sparkles size={14} /> Create Account
                   </Link>

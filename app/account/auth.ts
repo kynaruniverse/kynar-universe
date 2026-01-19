@@ -36,7 +36,9 @@ function createClient() {
     }
   );
 }
-
+if (password.length < 8) {
+  return { error: "Password must be at least 8 characters long." };
+}
 // 1. SIGN UP LOGIC
 export async function signup(formData: FormData) {
   const email = formData.get('email') as string;
@@ -45,7 +47,11 @@ export async function signup(formData: FormData) {
   const supabase = createClient();
 
   // Redirect users back to the production domain after verification
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://kynaruniverse.co.uk';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || (
+    process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3000'
+  );
   
   const { error } = await supabase.auth.signUp({
     email,

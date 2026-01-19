@@ -17,7 +17,7 @@ export default function PrivacyPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-          className="brand-card p-10 md:p-20 relative overflow-hidden"
+          className="card-elevated p-10 md:p-20 relative overflow-hidden"
         >
           {/* Subtle Branding Watermark */}
           <div className="absolute top-0 right-0 p-10 opacity-[0.02] pointer-events-none text-brand-text">
@@ -63,13 +63,13 @@ export default function PrivacyPage() {
                 We only use data essential for your Account: Email, Transaction History, and Technical Metadata to ensure secure delivery of your products.
               </p>
               
-              <div className="surface-mocha p-6 rounded-inner flex items-center gap-4 text-[10px] font-bold text-brand-text/50 uppercase tracking-widest">
+              <div className="surface-frosted p-6 rounded-inner flex items-center gap-4 text-[10px] font-bold text-brand-text/50 uppercase tracking-widest">
                 <Lock size={16} className="text-brand-accent" /> 
                 Financial data is processed via encrypted third-party gateways. We never store card details.
               </div>
             </section>
 
-            <section className="p-10 md:p-16 bg-brand-text rounded-[40px] shadow-tactile">
+            <section className="p-12 md:p-20 bg-brand-text rounded-[40px] shadow-tactile">
               <h2 className="text-[11px] font-bold font-sans text-white/40 uppercase tracking-[0.3em] flex items-center gap-4 mb-8">
                 <Database className="text-brand-accent w-5 h-5" strokeWidth={1.5} /> 03. Infrastructure
               </h2>

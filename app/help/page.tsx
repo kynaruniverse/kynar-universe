@@ -33,7 +33,7 @@ export default function HelpPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="brand-card p-10 md:p-16 flex flex-col relative overflow-hidden"
+          className="card-elevated p-12 md:p-20 flex flex-col relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-12 text-brand-text/5">
             <FileQuestion size={140} strokeWidth={1} />
@@ -73,7 +73,7 @@ export default function HelpPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="brand-card p-10 md:p-16 flex flex-col relative overflow-hidden"
+          className="card-elevated p-12 md:p-20 flex flex-col relative overflow-hidden"
         >
           <div className="w-14 h-14 bg-brand-surface/10 rounded-inner flex items-center justify-center mb-12 text-accent-lavender shadow-sm">
             <Mail size={24} strokeWidth={1.5} />
@@ -89,13 +89,13 @@ export default function HelpPage() {
           <div className="mt-auto">
             <a 
               href="mailto:Kynaruniverse@gmail.com" 
-              className="group flex items-center justify-between w-full p-8 bg-brand-base hover:bg-white rounded-inner shadow-sm transition-all duration-700 active:scale-[0.99] border border-brand-surface/5"
+              className="group flex items-center justify-between w-full p-8 bg-brand-base hover:bg-white rounded-inner shadow-sm transition-all duration-slow active:scale-[0.99] border border-brand-surface/5"
             >
               <div className="flex flex-col">
                 <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-brand-text/20 mb-3">Email Support</span>
                 <span className="text-[15px] font-semibold text-brand-text tracking-tight">kynarmuse@gmail.com</span>
               </div>
-              <div className="w-12 h-12 rounded-full bg-brand-text text-white flex items-center justify-center group-hover:bg-brand-accent transition-colors duration-500">
+              <div className="w-12 h-12 rounded-full bg-brand-text text-white flex items-center justify-center group-hover:bg-brand-accent transition-colors duration-base">
                 <ArrowUpRight size={20} strokeWidth={1.5} />
               </div>
             </a>

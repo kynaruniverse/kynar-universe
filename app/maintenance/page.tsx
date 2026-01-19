@@ -8,8 +8,6 @@ import { Sparkles, ArrowRight } from "lucide-react";
 export default function MaintenancePage() {
   return (
     <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-brand-base">
-      
-      {/* 1. BACKGROUND ANIMATION: Subtle visual presence */}
       <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
         <UniverseCanvas />
       </div>
@@ -19,7 +17,7 @@ export default function MaintenancePage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-        className="relative z-10 max-w-xl w-[92%] p-12 md:p-24 brand-card surface-mocha text-center overflow-hidden"
+        className="relative z-10 max-w-xl w-[92%] p-16 md:p-24 card-elevated surface-frosted text-center overflow-hidden"
       >
         {/* Loading Indicator: Rotating status icon */}
         <div className="mb-14 flex justify-center">
@@ -49,7 +47,7 @@ export default function MaintenancePage() {
             href="mailto:kynarmuse@gmail.com"
             className="btn-primary group inline-flex items-center gap-4 text-[11px] tracking-[0.3em]"
           >
-            CONTACT SUPPORT <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-500" />
+            CONTACT SUPPORT <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-base" />
           </Link>
           
           {/* STATUS INDICATOR: Real-time update signal */}
