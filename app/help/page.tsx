@@ -17,10 +17,10 @@ export default function HelpPage() {
           className="max-w-4xl mx-auto space-y-8"
         >
           <h1 className="text-6xl md:text-[100px] font-semibold font-sans text-brand-text mb-8 tracking-tight leading-[0.9]">
-            Support <br/> Center
+            Help <br/> Center
           </h1>
           <p className="text-lg md:text-2xl font-medium text-brand-text/50 max-w-2xl mx-auto leading-relaxed px-4">
-            Practical guidance, product support, and direct assistance for your journey with our platform.
+            Practical guidance, product support, and answers to your questions.
           </p>
         </motion.div>
       </section>
@@ -83,7 +83,7 @@ export default function HelpPage() {
             Customer <br/> Support
           </h2>
           <p className="text-lg md:text-xl font-medium text-brand-text/50 mb-14 leading-relaxed max-w-sm">
-            Our team provides prioritized responses to all inquiries within 24 hours.
+            Need help? Our team will get back to you as soon as they can.
           </p>
           
           <div className="mt-auto">

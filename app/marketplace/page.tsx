@@ -45,7 +45,7 @@ export default async function Marketplace({
             {categoryFilter && categoryFilter !== 'All' ? categoryFilter : 'The Store'}
           </h1>
           <p className="font-body text-lg md:text-2xl font-medium text-brand-text/50 max-w-2xl mx-auto leading-relaxed px-4">
-            {(!categoryFilter || categoryFilter === 'All') && "High-quality digital assets designed for professional and personal use."}
+            {(!categoryFilter || categoryFilter === 'All') && "Tools and resources for work, play, and everything in between."}
             {categoryFilter === 'Tools' && "Refined resources to improve your professional workflow."}
             {categoryFilter === 'Life' && "Mindful protocols designed for personal organization."}
             {categoryFilter === 'Home' && "Grounded solutions for an organized and peaceful environment."}

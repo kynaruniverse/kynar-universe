@@ -109,7 +109,7 @@ export default function AccountPage() {
                 My Library
               </h1>
               <p className="text-brand-text/40 font-medium">
-                {userEmail} — Your personal dashboard.
+                {userEmail} — Your personal library.
               </p>
             </div>
             <button 
@@ -168,16 +168,16 @@ export default function AccountPage() {
                 <Sparkles className="w-12 h-12 text-brand-accent/20 mx-auto mb-8" />
                 <h2 className="text-3xl font-semibold text-brand-text mb-6 tracking-tight">Account Ready</h2>
                 <p className="text-brand-text/40 mb-10 leading-relaxed max-w-sm mx-auto">
-                  Your account is verified. Explore the collection to find digital products for your dashboard.
+                  Your account is verified! Explore the collection to discover digital products for you.
                 </p>
                 
                 <div className="flex flex-col items-center gap-6">
                   <Link href="/marketplace" className="btn-primary inline-flex items-center gap-3">
-                    Browse Collection <ArrowRight size={16} />
+                    Explore Collection <ArrowRight size={16} />
                   </Link>
                   
                   <div className="flex items-center gap-2 text-[10px] font-bold text-brand-text/20 uppercase tracking-widest">
-                    <Info size={14} /> Checkout system currently in preview
+                    <Info size={14} /> Checkout is currently in preview. Products will be ready for you soon.
                   </div>
                 </div>
               </motion.div>
@@ -197,16 +197,16 @@ export default function AccountPage() {
         className="brand-card w-full max-w-md p-10 md:p-16 shadow-tactile text-center relative z-10"
       >
         <h1 className="text-4xl font-semibold text-brand-text mb-6 tracking-tight">
-          {isLoginMode ? 'Sign In' : 'Create Account'}
+          {isLoginMode ? 'Welcome Back—Sign In' : 'Create Account'}
         </h1>
         <p className="text-brand-text/40 mb-12">
-          {isLoginMode ? 'Enter your details to access your account.' : 'Join Kynar to manage your digital products.'}
+          {isLoginMode ? 'Enter your details to access your library.' : 'Join Kynar to manage your digital products.'}
         </p>
         
         <form onSubmit={handleSubmit} className="space-y-8 text-left">
           <div className="space-y-3">
             <label className="text-[10px] font-bold text-brand-text/20 uppercase tracking-[0.25em] ml-6">Email Address</label>
-            <input name="email" type="email" required placeholder="name@domain.com" className="w-full px-8 py-5 rounded-full bg-brand-base/50 border border-transparent focus:bg-white focus:border-brand-surface/30 focus:outline-none transition-all duration-500 font-medium text-sm" />
+            <input name="email" type="email" required placeholder="yourname@example.com" className="w-full px-8 py-5 rounded-full bg-brand-base/50 border border-transparent focus:bg-white focus:border-brand-surface/30 focus:outline-none transition-all duration-500 font-medium text-sm" />
           </div>
           <div className="space-y-3 pb-4">
             <label className="text-[10px] font-bold text-brand-text/20 uppercase tracking-[0.25em] ml-6">Password</label>
@@ -230,7 +230,7 @@ export default function AccountPage() {
           onClick={() => setIsLoginMode(!isLoginMode)} 
           className="mt-12 text-[10px] font-bold uppercase tracking-widest text-brand-text/20 hover:text-brand-text transition-all"
         >
-          {isLoginMode ? "Need an account? Join here" : "Already a member? Sign in"}
+          {isLoginMode ? "New here? Join KYNAR and start exploring" : "Already a member? Sign in to access your library"}
         </button>
         
         <div className="mt-10 pt-10 border-t border-brand-surface/20 flex items-center justify-center gap-6 text-brand-text/10">
