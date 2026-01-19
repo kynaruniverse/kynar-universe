@@ -57,7 +57,7 @@ export async function getDownloadLink(productSlug: string) {
     .single();
 
   if (!product || !product.file_path) {
-    return { error: "File unavailable. Our support team has been notified." };
+    return { error: "This file is currently unavailable. Contact support if the issue persists." };
   }
 
   // D. SECURE URL GENERATION
@@ -79,4 +79,18 @@ export async function getDownloadLink(productSlug: string) {
   }
 
   return { url: data.signedUrl };
+}
+
+export async function exportUserData(userId: string) {
+  const [profile, purchases, downloads] = await Promise.all([
+    // Fetch all user data
+  ]);
+  return generateJSON(profile, purchases, downloads);
+}
+
+export async function deleteAccount(userId: string) {
+  // Anonymize purchases (keep for accounting)
+  // Delete personal data
+  // Revoke file access
+  // Log deletion for compliance
 }

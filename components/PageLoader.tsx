@@ -1,6 +1,8 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+// 1. Import your theme configuration
+import { CATEGORY_THEMES } from "../lib/theme";
 
 export default function PageLoader() {
   const [loading, setLoading] = useState(true);
@@ -9,7 +11,6 @@ export default function PageLoader() {
     const handleLoad = () => setLoading(false);
     
     if (document.readyState === "complete") {
-      // Deliberate transition timing to maintain brand aesthetic
       const timer = setTimeout(() => setLoading(false), 1000);
       return () => clearTimeout(timer);
     } else {
@@ -22,6 +23,13 @@ export default function PageLoader() {
     }
   }, []);
 
+  // 2. Define the color sequence for the animation
+  const themeColors = [
+    "#4A5D4E", // Tools (Green)
+    "#9B94B0", // Life (Lavender)
+    "#D97E6E", // Home (Thermal)
+  ];
+
   return (
     <AnimatePresence>
       {loading && (
@@ -29,39 +37,39 @@ export default function PageLoader() {
           initial={{ opacity: 1 }}
           exit={{ 
             opacity: 0,
-            scale: 1.015, // Subtle expansion on exit
+            scale: 1.015,
             transition: { duration: 1.6, ease: [0.19, 1, 0.22, 1] } 
           }}
           className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-brand-base"
         >
-          {/* 1. VISUAL CENTER */}
           <div className="relative flex items-center justify-center">
-            {/* Background Glow */}
+            {/* Background Glow - Now cycles through theme colors */}
             <motion.div 
               animate={{ 
                 scale: [0.95, 1.1, 0.95],
-                opacity: [0.08, 0.12, 0.08] 
+                opacity: [0.08, 0.12, 0.08],
+                backgroundColor: themeColors
               }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute w-64 h-64 bg-brand-surface/40 blur-[120px] rounded-full"
+              className="absolute w-64 h-64 blur-[120px] rounded-full"
             />
             
-            {/* Loading Ring */}
+            {/* Loading Ring - Top border cycles through brand colors */}
             <motion.div
               animate={{ 
                 rotate: 360,
                 borderRadius: ["42% 58% 70% 30% / 45% 45% 55% 55%", "50%", "42% 58% 70% 30% / 45% 45% 55% 55%"],
+                borderTopColor: themeColors
               }}
               transition={{ 
-                duration: 8, // Smooth rotation speed
+                duration: 8, 
                 repeat: Infinity, 
                 ease: "linear" 
               }}
-              className="w-12 h-12 border-[1.2px] border-brand-text/5 border-t-brand-accent shadow-tactile"
+              className="w-12 h-12 border-[1.2px] border-brand-text/5 shadow-tactile"
             />
           </div>
           
-          {/* 2. BRANDING & STATUS */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -72,17 +80,23 @@ export default function PageLoader() {
               Kynar
             </p>
             <h2 className="font-body text-[9px] font-bold uppercase tracking-[0.6em] text-brand-text/20">
-              Initializing
+              Initializing Universe
             </h2>
           </motion.div>
 
-          {/* 3. PROGRESS INDICATOR */}
+          {/* 3. PROGRESS INDICATOR - Bar cycles through brand colors */}
           <div className="absolute bottom-24 w-28 h-[1px] bg-brand-text/5 overflow-hidden">
             <motion.div 
               initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
-              className="w-full h-full bg-brand-accent/30"
+              animate={{ 
+                x: "100%",
+                backgroundColor: themeColors 
+              }}
+              transition={{ 
+                x: { duration: 3.5, repeat: Infinity, ease: [0.4, 0, 0.2, 1] },
+                backgroundColor: { duration: 6, repeat: Infinity, ease: "linear" }
+              }}
+              className="w-full h-full opacity-40"
             />
           </div>
         </motion.div>

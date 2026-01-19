@@ -25,7 +25,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kynaruniverse.co.uk'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://kynaruniverse.co.uk'), 
   title: {
     default: 'Kynar | Premium Digital Products & Solutions',
     template: '%s | Kynar',

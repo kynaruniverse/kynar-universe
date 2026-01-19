@@ -58,7 +58,7 @@ export default function Guides() {
           {/* ARTICLE CARD 1 */}
           <motion.article 
             variants={itemVariants}
-            className="brand-card p-10 md:p-16 hover:shadow-tactile-hover transition-all duration-700 flex flex-col justify-between group"
+            className="card-elevated p-12 md:p-20 hover:shadow-tactile-hover transition-all duration-slow flex flex-col justify-between group"
           >
             <div className="relative">
               <div className="text-brand-accent mb-12 bg-brand-base w-14 h-14 rounded-inner flex items-center justify-center shadow-sm">
@@ -80,7 +80,7 @@ export default function Guides() {
           {/* ARTICLE CARD 2 */}
           <motion.article 
             variants={itemVariants}
-            className="brand-card p-10 md:p-16 hover:shadow-tactile-hover transition-all duration-700 flex flex-col justify-between group"
+            className="card-elevated p-12 md:p-20 hover:shadow-tactile-hover transition-all duration-slow flex flex-col justify-between group"
           >
             <div className="relative">
               <div className="text-accent-thermal mb-12 bg-brand-base w-14 h-14 rounded-inner flex items-center justify-center shadow-sm">
@@ -110,7 +110,7 @@ export default function Guides() {
         viewport={{ once: true }}
         className="max-w-5xl mx-auto px-6 text-center py-24 mt-12"
       >
-        <div className="p-16 md:p-24 brand-card surface-mocha relative overflow-hidden">
+        <div className="p-16 md:p-24 card-elevated surface-frosted relative overflow-hidden">
           <Sparkles className="w-8 h-8 mx-auto mb-10 text-brand-accent opacity-30" />
           <h3 className="text-4xl md:text-6xl font-semibold font-sans text-brand-text mb-8 tracking-tight">Help Center</h3>
           <p className="font-medium text-lg md:text-xl text-brand-text/40 mb-14 max-w-xl mx-auto">

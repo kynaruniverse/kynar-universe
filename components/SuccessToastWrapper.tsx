@@ -5,18 +5,14 @@ import { useCart } from "../context/CartContext";
 import SuccessToast from "./SuccessToast";
 
 export default function SuccessToastWrapper() {
-  const { showSuccess, setShowSuccess, lastAddedItem } = useCart();
+  // Added lastAddedCategory from our CartContext
+  const { showSuccess, setShowSuccess, lastAddedItem, lastAddedCategory } = useCart();
   const pathname = usePathname();
 
-  // 1. NAVIGATION CLEANUP: Reset notification state on page change
-  // Ensures the UI remains clean during page transitions.
   useEffect(() => {
     setShowSuccess(false);
   }, [pathname, setShowSuccess]);
 
-  // 2. AUTO-DISMISS LOGIC: Timer for feedback visibility
-  // Uses a 5-second window to provide the user enough time to read the 
-  // confirmation before the toast automatically closes.
   useEffect(() => {
     if (showSuccess) {
       const timer = setTimeout(() => {
@@ -30,8 +26,9 @@ export default function SuccessToastWrapper() {
     <div className="relative z-[200]">
       <SuccessToast 
         isVisible={showSuccess} 
-        // User Feedback: Standardized cart confirmation
         message={`${lastAddedItem} has been added to your cart.`} 
+        // Pass the category to trigger the Green, Lavender, or Thermal branding
+        category={lastAddedCategory} 
         onClose={() => setShowSuccess(false)} 
       />
     </div>

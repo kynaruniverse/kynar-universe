@@ -40,7 +40,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const { data: products } = await supabase
       .from('products')
-      .select('slug, updated_at');
+      .select('slug, updated_at')
+      .eq('status', 'published');
 
     if (products) {
       productRoutes = products.map((product) => ({

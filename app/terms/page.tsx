@@ -17,7 +17,7 @@ export default function TermsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-          className="brand-card p-10 md:p-20 relative overflow-hidden"
+          className="card-elevated p-10 md:p-20 relative overflow-hidden"
         >
           {/* PHASE 4: Temporary Disclosure */}
           <div className="mb-12 flex items-start gap-4 p-6 bg-brand-surface/10 rounded-inner border border-brand-surface/20">
@@ -62,7 +62,7 @@ export default function TermsPage() {
               </p>
             </section>
 
-            <section className="space-y-8 p-10 md:p-16 bg-brand-text rounded-[40px] shadow-tactile text-white/70">
+            <section className="space-y-8 p-12 md:p-20 bg-brand-text rounded-[40px] shadow-tactile text-white/70">
               <h2 className="text-[11px] font-bold font-sans text-brand-accent uppercase tracking-[0.3em] flex items-center gap-4 mb-8">
                 <ShieldCheck className="w-5 h-5" strokeWidth={1.5} /> 02. Purchase Policy
               </h2>

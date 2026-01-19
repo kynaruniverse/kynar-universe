@@ -2,23 +2,27 @@
 import React, { useRef } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 import Link from "next/link";
+import { useSearchParams } from 'next/navigation';
+// 1. Import the unified theme utility
+import { getCategoryTheme } from '../lib/theme';
 
 export default function MagneticLogo() {
   const ref = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
 
-  // 1. Position tracking values
+  // 2. Detect the active theme color from the URL
+  const activeCategory = searchParams.get('category') || undefined;
+  const theme = getCategoryTheme(activeCategory);
+
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // 2. Spring physics: High damping for a smooth, weighted follow effect
   const springConfig = { damping: 25, stiffness: 150, mass: 0.5 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
-    
-    // Accessibility: Disable magnetic pull on touch devices
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const { clientX, clientY } = e;
@@ -30,7 +34,6 @@ export default function MagneticLogo() {
     const distanceX = clientX - centerX;
     const distanceY = clientY - centerY;
 
-    // Movement Logic: Subtle pull multiplier (0.25)
     x.set(distanceX * 0.25);
     y.set(distanceY * 0.25);
   };
@@ -59,9 +62,9 @@ export default function MagneticLogo() {
         >
           Kynar
           
-          {/* Visual Feedback: Brand accent underline on hover */}
+          {/* 3. THEMED UNDERLINE: Matches the active category */}
           <motion.div 
-            className="absolute -bottom-1.5 left-0 right-0 h-[1.5px] bg-brand-accent origin-left"
+            className={`absolute -bottom-1.5 left-0 right-0 h-[1.5px] origin-left transition-colors duration-slow ${theme.bg}`}
             initial={{ scaleX: 0 }}
             whileHover={{ scaleX: 0.4 }} 
             transition={{ type: "spring", stiffness: 200, damping: 25 }}
@@ -69,8 +72,8 @@ export default function MagneticLogo() {
         </motion.div>
       </Link>
 
-      {/* Hover Highlight: Subtle background glow */}
-      <div className="absolute inset-0 bg-brand-surface/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
+      {/* 4. THEMED GLOW: Background glow reacts to the current category */}
+      <div className={`absolute inset-0 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-all duration-1000 pointer-events-none ${theme.lightBg.replace('/5', '/10')}`} />
     </div>
   );
 }

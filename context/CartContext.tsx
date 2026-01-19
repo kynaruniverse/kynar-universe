@@ -24,6 +24,7 @@ type CartContextType = {
   showSuccess: boolean;
   setShowSuccess: (show: boolean) => void;
   lastAddedItem: string;
+  lastAddedCategory: string; // Added to track category branding
   isInitialized: boolean;
 };
 
@@ -34,28 +35,31 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [lastAddedItem, setLastAddedItem] = useState("");
+  const [lastAddedCategory, setLastAddedCategory] = useState(""); // State for category tracking
 
   // 1. INITIALIZE FROM LOCAL STORAGE
   useEffect(() => {
-    // Standard storage key for shopping cart data
+    // Only access localStorage on client-side
+    if (typeof window === 'undefined') return;
+    
     const savedCart = localStorage.getItem('kynar_cart_storage');
     if (savedCart) {
       try {
         setCartItems(JSON.parse(savedCart));
       } catch (e) {
+        console.error('Failed to parse cart data:', e);
         localStorage.removeItem('kynar_cart_storage');
       }
     }
     setIsInitialized(true);
   }, []);
 
-  // 2. DATA PERSISTENCE: Synchronize state with local storage
+  // 2. DATA PERSISTENCE
   useEffect(() => {
-    if (isInitialized) {
+    if (isInitialized && typeof window !== 'undefined') {
       localStorage.setItem('kynar_cart_storage', JSON.stringify(cartItems));
     }
   }, [cartItems, isInitialized]);
-
   const addToCart = (product: Omit<CartItem, 'quantity'>) => {
     setCartItems((prev) => {
       const exists = prev.find((item) => item.id === product.id);
@@ -67,16 +71,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
 
     setLastAddedItem(product.title);
+    setLastAddedCategory(product.category || ""); // Capture category for the toast
     
-    // UI Logic: Reset toast state before triggering a new success notification
+    // UI Logic: Reset toast state
     setShowSuccess(false); 
     
-    // Minor delay to ensure smooth UI transition for the notification
+    // Minor delay to ensure smooth UI transition
     setTimeout(() => setShowSuccess(true), 150);
   };
 
   const updateQuantity = (id: string, quantity: number) => {
-    // Enforcing single-purchase rule for digital assets
     setCartItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, quantity: 1 } : item))
     );
@@ -109,6 +113,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       showSuccess,
       setShowSuccess,
       lastAddedItem,
+      lastAddedCategory, // Shared with the Toast Wrapper
       isInitialized
     }}>
       {children}

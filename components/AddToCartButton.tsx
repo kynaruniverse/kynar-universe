@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+// 1. Import the unified theme utility
+import { getCategoryTheme } from '../lib/theme';
 
-// Standard Product Type for the platform
 type Product = {
   id: string; 
   title: string;
@@ -19,14 +20,15 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const { addToCart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
 
+  // 2. Access the theme directly from the central utility
+  const theme = getCategoryTheme(product.category);
+
   const handleAdd = () => {
     if (isAdded) return;
     
-    // Add item to global cart state
     addToCart(product);
     setIsAdded(true);
     
-    // Reset button state after a short delay for UX feedback
     setTimeout(() => setIsAdded(false), 2500);
   };
 
@@ -40,14 +42,13 @@ export default function AddToCartButton({ product }: { product: Product }) {
         relative w-full py-6 px-10
         flex items-center justify-center gap-4
         rounded-full font-semibold uppercase tracking-[0.25em] text-[10px]
-        transition-all duration-700 shadow-tactile overflow-hidden
+        transition-all duration-slow shadow-tactile overflow-hidden
         ${isAdded 
-          ? 'bg-brand-accent text-white' 
-          : 'bg-brand-text text-white hover:bg-brand-accent shadow-tactile-hover'
+          ? `${theme.bg} text-white` 
+          : `bg-brand-text text-white hover:${theme.bg} shadow-tactile-hover`
         }
       `}
     >
-      {/* Visual Feedback: Subtle internal glow on success */}
       <AnimatePresence>
         {isAdded && (
           <motion.div 
@@ -69,7 +70,8 @@ export default function AddToCartButton({ product }: { product: Product }) {
             className="flex items-center gap-3"
           >
             <Check size={14} strokeWidth={3} />
-            <span>Added to Cart</span>
+            {/* 3. Use the theme label for specific feedback (e.g., Efficiency Added) */}
+            <span>{theme.label} Added</span>
           </motion.div>
         ) : (
           <motion.div
@@ -80,7 +82,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
             className="flex items-center gap-3"
           >
             <ShoppingBag size={14} strokeWidth={2} />
-            <span>Preview Selection</span>
+            <span>Select for {theme.label}</span>
           </motion.div>
         )}
       </AnimatePresence>

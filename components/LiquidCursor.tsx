@@ -44,16 +44,14 @@ export default function LiquidCursor() {
   
   if (!isDesktop) return null;
   
-  return ( <
-    motion.div style = {
-      {
+  return (
+    <motion.div 
+      style={{
         x: cursorX,
         y: cursorY,
         scale: cursorScale,
-      }
-    }
-    // Visual Style: A soft background glow to highlight interface textures
-    className = "pointer-events-none fixed top-0 left-0 z-[-1] h-[400px] w-[400px] rounded-full bg-brand-surface/10 blur-[140px] will-change-transform opacity-60 transition-opacity duration-1000" /
-    >
+      }}
+      className="pointer-events-none fixed top-0 left-0 z-[-1] h-[400px] w-[400px] rounded-full blur-[140px] will-change-transform opacity-40 transition-all duration-glacial bg-brand-accent/30"
+    />
   );
 }

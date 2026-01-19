@@ -44,14 +44,19 @@ export async function middleware(request: NextRequest) {
 
   // 2. ROUTE PROTECTION
   // Redirects unauthenticated users attempting to access protected account pages.
-  const isProtectedPath = request.nextUrl.pathname.startsWith('/account') || 
-                          request.nextUrl.pathname.startsWith('/cart')
+  const isProtectedPath = 
+    (request.nextUrl.pathname.startsWith('/account') &&
+      request.nextUrl.pathname !== '/account') ||
+    request.nextUrl.pathname.startsWith('/cart');
 
   if (isProtectedPath && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/account' 
-    url.searchParams.set('message', 'authentication_required')
-    return NextResponse.redirect(url)
+    // Prevent redirect loop - don't redirect if already on /account
+    if (url.pathname !== '/account') {
+      url.pathname = '/account'
+      url.searchParams.set('message', 'authentication_required')
+      return NextResponse.redirect(url)
+    }
   }
 
   return response

@@ -11,14 +11,24 @@
     --brand-accent: #4A5D4E;     /* Primary Accent */
     --accent-thermal: #D97E6E;   /* Warm Accent */
     --accent-lavender: #9B94B0;  /* Soft Accent */
+    --color-success: var(--brand-accent);
+    --color-warning: var(--accent-thermal);
+    --color-info: var(--accent-lavender);
+    --color-muted: rgba(28, 28, 28, 0.45);
+    --color-disabled: rgba(28, 28, 28, 0.10);
+    --color-border: rgba(215, 196, 183, 0.20);
   }
-
   html {
     -webkit-tap-highlight-color: transparent;
-    scroll-behavior: smooth;
     overflow-x: hidden;
     overscroll-behavior-y: none;
+    color-scheme: light dark;
   }
+  @media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
 
   body {
     background-color: var(--brand-base); 
@@ -39,11 +49,11 @@
 
   h1 { font-size: clamp(2.5rem, 8vw, 5rem); }
   h2 { font-size: clamp(1.75rem, 5vw, 3rem); }
+  h3 { font-size: clamp(1.5rem, 4vw, 2.25rem); }
+  h4 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
 
   p {
-    @apply font-normal leading-relaxed;
-    color: rgba(28, 28, 28, 0.65);
-    font-size: 1.05rem;
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
   }
 }
 
@@ -57,23 +67,24 @@
 
   /* Interaction: Smooth hover lift */
   .shadow-tactile-hover {
-    @apply transition-all duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)];
+    @apply transition-transform transition-shadow duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)];
   }
-
+@media (hover: hover) {
   .shadow-tactile-hover:hover {
     box-shadow: 
       0 30px 60px -12px rgba(0, 0, 0, 0.08), 
       0 12px 24px -4px rgba(0, 0, 0, 0.03);
     transform: translateY(-6px);
   }
+}
 
   /* SURFACE & CONTAINER STYLES */
-  .surface-mocha {
+  .surface-frosted {
     background-color: rgba(215, 196, 183, 0.12);
     @apply backdrop-blur-2xl;
   }
 
-  .brand-card {
+  .card-elevated {
     @apply bg-white rounded-[40px] shadow-tactile border-none overflow-hidden;
   }
 
@@ -83,12 +94,42 @@
 
   /* PRIMARY BUTTON STYLES */
   .btn-primary {
-    @apply bg-brand-text text-white px-10 py-5 rounded-full font-semibold transition-all duration-700 hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
+    @apply bg-brand-text text-white px-10 py-5 rounded-full font-semibold transition-transform transition-shadow duration-slow hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
+  }
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--brand-accent);
+    outline-offset: 4px;
+  }
+  
+  .btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  }
+
+  .btn-primary:disabled:hover {
+    background-color: var(--brand-text);
+    box-shadow: 0 4px 30px -4px rgba(0, 0, 0, 0.03), 0 2px 12px -2px rgba(0, 0, 0, 0.02);
   }
 
   .rounded-inner {
     @apply rounded-[28px];
   }
+}
+
+/* FOCUS STATES */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+  transition: outline-offset 200ms ease;
+}
+
+a:focus-visible {
+  outline-offset: 4px;
 }
 
 /* VISUAL REFINEMENTS */

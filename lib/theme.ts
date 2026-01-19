@@ -1,0 +1,53 @@
+/**
+ * SAFELIST FOR DYNAMIC TAILWIND CLASSES:
+ * hover:bg-brand-accent
+ * hover:bg-accent-lavender
+ * hover:bg-accent-thermal
+ */
+
+ /**
+ * GLOBAL THEME CONFIGURATION
+ * Centralized mapping for Kynar Category Identities
+ */
+
+export const CATEGORY_THEMES = {
+  Tools: {
+    label: "Productivity",
+    sublabel: "Tools & Efficiency",
+    text: "text-brand-accent",
+    bg: "bg-brand-accent",
+    border: "border-brand-accent",
+    lightBg: "bg-brand-accent/5",
+  },
+  Life: {
+    label: "Creative",
+    sublabel: "Design & Creation",
+    text: "text-accent-lavender",
+    bg: "bg-accent-lavender",
+    border: "border-accent-lavender",
+    lightBg: "bg-accent-lavender/5",
+  },
+  Home: {
+    label: "Learning",
+    sublabel: "Growth & Lifestyle",
+    text: "text-accent-thermal",
+    bg: "bg-accent-thermal",
+    border: "border-accent-thermal",
+    lightBg: "bg-accent-thermal/5",
+  },
+  Default: {
+    label: "Digital",
+    sublabel: "All Products",
+    text: "text-brand-text/30",
+    bg: "bg-brand-text/10",
+    border: "border-brand-surface/20",
+    lightBg: "bg-brand-surface/5",
+  },
+};
+
+/**
+ * Helper to get theme by category name
+ */
+export const getCategoryTheme = (category?: string) => {
+  return CATEGORY_THEMES[category as keyof typeof CATEGORY_THEMES] || CATEGORY_THEMES.Default;
+};
