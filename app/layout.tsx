@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, Outfit } from 'next/font/google';
+import { Suspense } from 'react'; // <--- 1. IMPORT SUSPENSE
 
 // 1. PROVIDERS & GLOBAL COMPONENTS
 import { CartProvider } from '../context/CartContext';
@@ -79,10 +80,15 @@ export default function RootLayout({
           
           {/* Main Layout Structure */}
           <div className="flex flex-col min-h-screen">
-            <Navbar />
+            
+            {/* 2. WRAP NAVBAR IN SUSPENSE */}
+            {/* This isolates the useSearchParams hook so the rest of the page can build statically */}
+            <Suspense fallback={<div className="h-24 w-full bg-transparent" />}>
+              <Navbar />
+            </Suspense>
             
             {/* Primary Page Content */}
-            <main className="flex-grow">
+            <main id="main-content" className="flex-grow">
               {children}
             </main>
             
