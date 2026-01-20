@@ -42,3 +42,7 @@ See `.env.example` for the full list.
   - Updated middleware to handle missing Supabase credentials gracefully
   - Removed X-Frame-Options header to allow iframe preview
   - Configured dev server for port 5000
+  - Implemented mobile-first visual polish and accessibility improvements
+  - Centralized Supabase client initialization for server and client side
+  - Fixed 3D rendering memory leaks and added performance optimizations
+  - Added AuthContext for global session management
