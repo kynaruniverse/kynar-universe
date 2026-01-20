@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from '../../components/ProductCard';
 import { getCategoryTheme } from '../../lib/theme';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 const MOCK_PRODUCTS = [
   { id: '1', name: 'Workflow Pro Template', price: 24.99, category: 'Tools', image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=800&auto=format&fit=crop', description: 'Comprehensive Notion workspace.' },
@@ -14,7 +14,8 @@ const MOCK_PRODUCTS = [
   { id: '5', name: 'Creative Palette', price: 19.00, category: 'Life', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop', description: 'Color theory for designers.' },
 ];
 
-export default function MarketplacePage() {
+// 1. INNER COMPONENT: Contains the SearchParams logic and State
+function MarketplaceContent() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
   const theme = getCategoryTheme(category || undefined);
@@ -63,5 +64,15 @@ export default function MarketplacePage() {
         )}
       </div>
     </main>
+  );
+}
+
+// 2. EXPORTED PAGE: Wraps the logic in Suspense to satisfy Next.js Build
+export default function MarketplacePage() {
+  return (
+    // Fallback avoids layout shift while reading URL params
+    <Suspense fallback={<div className="min-h-screen bg-brand-base pt-32 px-6" />}>
+      <MarketplaceContent />
+    </Suspense>
   );
 }
