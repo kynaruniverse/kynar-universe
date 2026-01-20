@@ -9,6 +9,7 @@ import Footer from '../components/Footer';
 import PageLoader from '../components/PageLoader';
 import SuccessToastWrapper from '../components/SuccessToastWrapper';
 import LiquidCursor from '../components/LiquidCursor';
+import { AuthProvider } from '../context/AuthContext';
 
 // Typography: Neutral Sans for Body UI
 const inter = Inter({ 
@@ -63,10 +64,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
-      <body className="font-body selection:bg-brand-accent/20">
+      <body className="font-body selection:bg-brand-accent/20 pt-16 md:pt-22">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-brand-text focus:text-white focus:rounded-full">
+          Skip to content
+        </a>
         {/* GLOBAL APPLICATION WRAPPER */}
         <CartProvider>
-          {/* UI Initialization */}
+          <AuthProvider>
+            {/* UI Initialization */}
           <PageLoader />
           
           {/* Visual Refinement: Interactive Cursor */}
@@ -86,6 +91,7 @@ export default function RootLayout({
           
           {/* Notification System */}
           <SuccessToastWrapper />
+          </AuthProvider>
         </CartProvider>
       </body>
     </html>

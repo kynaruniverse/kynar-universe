@@ -32,9 +32,21 @@ export default function Navbar() {
     { name: 'Help', href: '/help' },
   ];
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <>
-      <nav className="relative z-[60] w-full brand-nav border-b border-brand-surface/20 shadow-sm transition-all duration-base">
+      <nav className={`fixed top-0 left-0 right-0 z-[60] w-full border-b transition-all duration-500 ${
+        isScrolled 
+          ? 'h-16 bg-white/80 backdrop-blur-xl border-brand-surface/20 shadow-sm' 
+          : 'h-22 bg-transparent border-transparent'
+      }`}>
         <div className="px-6">
           <div className="flex justify-between items-center h-16 md:h-22">
             
