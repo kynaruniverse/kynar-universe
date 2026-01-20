@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ShoppingCart, ArrowRight } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 interface Product {
   id: string;
@@ -18,6 +19,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { addToCart } = useCart();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -57,6 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           <div className="flex gap-2">
             <button
+              onClick={() => addToCart(product)}
               className="p-3 bg-brand-surface rounded-xl hover:bg-brand-accent hover:text-white transition-all duration-base border border-color-border"
               aria-label="Add to cart"
             >

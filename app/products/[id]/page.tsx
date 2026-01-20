@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ShoppingCart, ArrowLeft, Star, ShieldCheck, Clock, Zap } from 'lucide-react';
 import UniverseCanvas from '../../../components/UniverseCanvas';
+import { useCart } from '../../../context/CartContext';
 
 const MOCK_PRODUCTS = [
   {
@@ -38,6 +39,7 @@ const MOCK_PRODUCTS = [
 ];
 
 export default function ProductPage({ params }: { params: { id: string } }) {
+  const { addToCart } = useCart();
   const product = MOCK_PRODUCTS.find(p => p.id === params.id) || MOCK_PRODUCTS[0];
 
   return (
@@ -115,7 +117,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <button className="flex-grow py-5 bg-brand-text text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-brand-accent transition-all duration-base shadow-tactile group">
+              <button 
+                onClick={() => addToCart(product)}
+                className="flex-grow py-5 bg-brand-text text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-brand-accent transition-all duration-base shadow-tactile group"
+              >
                 <ShoppingCart size={20} />
                 Add to Cart
               </button>
