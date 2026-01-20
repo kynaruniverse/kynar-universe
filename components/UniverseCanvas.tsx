@@ -26,14 +26,19 @@ function AmbientElement() {
     }
   }, [activeCategory]);
 
+  // 4. MOBILE OPTIMIZATION: Reduce complexity for smaller screens
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const distortionSpeed = isMobile ? 0.1 : 0.3;
+  const distortionAmount = isMobile ? 0.1 : 0.2;
+
   useFrame((state) => {
     if (materialRef.current) {
       const time = state.clock.getElapsedTime();
-      const pulse = Math.sin(time * 0.2) * 0.01;
-      materialRef.current.distort = 0.2 + pulse;
+      const pulse = Math.sin(time * 0.2) * (isMobile ? 0.005 : 0.01);
+      materialRef.current.distort = distortionAmount + pulse;
       
       // 3. SMOOTH COLOR TRANSITION: Lerp the color for a "liquid" feel
-      materialRef.current.color.lerp(targetColor, 0.02);
+      materialRef.current.color.lerp(targetColor, isMobile ? 0.01 : 0.02);
     }
   });
   const meshRef = useRef<any>(null);
