@@ -51,6 +51,8 @@ function AmbientElement() {
       if (meshRef.current?.geometry) {
         meshRef.current.geometry.dispose();
       }
+      // Clear textures if any
+      if (materialRef.current?.map) materialRef.current.map.dispose();
     };
   }, []);
 

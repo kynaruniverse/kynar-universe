@@ -11,7 +11,7 @@ export default function Home() {
   const categories = ['Tools', 'Life', 'Home'];
   
   return (
-    <main className="min-h-screen bg-brand-base flex flex-col selection:bg-brand-accent/20 overflow-x-hidden">
+    <main id="main-content" className="min-h-screen bg-brand-base flex flex-col selection:bg-brand-accent/20 overflow-x-hidden">
       
       {/* 1. SEARCH BAR */}
       <div className="w-full bg-brand-base relative z-30 py-4"> 
