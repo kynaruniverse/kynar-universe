@@ -23,29 +23,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // CORE BRAND PALETTE
-        "brand-base": "#F5F2F0",  
-        "brand-text": "#1C1C1C",  
-        "brand-surface": "#D7C4B7",
-        "brand-accent": "#4A5D4E",
-        "accent-thermal": "#D97E6E", 
-        "accent-lavender": "#9B94B0",
+        // CURATED OPENNESS PALETTE: Soft, welcoming, and high-contrast
+        "brand-base": "#FBFBF9",  // Even softer paper-white
+        "brand-text": "#1A1A1A",  // Deep near-black for readability
+        "brand-surface": "#F2F0ED", // Subtle off-white for sections
+        "brand-accent": "#2D3B2E", // Deep forest for grounding
+        "accent-thermal": "#C46B5B", // Muted terracotta
+        "accent-lavender": "#867E9C", // Dusty lavender
   
         // SEMANTIC TOKENS
-        "color-success": "var(--color-success)",
-        "color-warning": "var(--color-warning)",
-        "color-info": "var(--color-info)",
-        "color-muted": "var(--color-muted)",
-        "color-disabled": "var(--color-disabled)",
-        "color-border": "var(--color-border)",
+        "color-success": "#2D3B2E",
+        "color-warning": "#C46B5B",
+        "color-info": "#867E9C",
+        "color-muted": "#666666",
+        "color-disabled": "#E5E5E5",
+        "color-border": "#EEEEEE",
       },
       fontFamily: {
-        sans: ['var(--font-outfit)', 'sans-serif'],
-        body: ['var(--font-inter)', 'sans-serif'],
+        sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
+        body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
-        'card': '40px',
-        'inner': '28px',
+        'card': '32px',
+        'inner': '20px',
         'btn': '100px',
       },
       spacing: {

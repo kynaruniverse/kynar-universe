@@ -2,9 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Search, ArrowRight, Info } from 'lucide-react';
-import { motion } from "framer-motion";
-import UniverseCanvas from '../components/UniverseCanvas';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 import { getCategoryTheme } from '../lib/theme';
 
 export default function Home() {
@@ -13,150 +12,114 @@ export default function Home() {
   return (
     <main id="main-content" className="min-h-screen bg-brand-base flex flex-col selection:bg-brand-accent/20 overflow-x-hidden">
       
-      {/* 1. SEARCH BAR */}
-      <div className="w-full bg-brand-base relative z-30 py-4"> 
-        <motion.div className="relative w-[96%] max-w-6xl mx-auto group">
-          <div className="relative flex items-center bg-white shadow-sm rounded-xl p-1 pl-6 border border-color-border transition-all duration-base">
-            <Search className="text-brand-text/30 mr-3" size={18} />
-            <input
-              aria-label="Search the shop" 
-              type="text" 
-              placeholder="Search the shop..." 
-              className="flex-grow bg-transparent border-none outline-none text-brand-text placeholder:text-brand-text/20 py-2 text-sm"
-              disabled
-            />
-            <button 
-              disabled 
-              aria-label="Search (Preview mode)" 
-              className="bg-brand-text text-white px-6 py-2 rounded-lg text-xs font-semibold transition-colors duration-base opacity-50 cursor-not-allowed"
-            >
-              Search
-            </button>
-          </div>
-        </motion.div>
-      </div>
-      
-      {/* 2. PREVIEW BANNER */}
-      <div className="w-full py-3 border-y border-color-border bg-brand-surface/5">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-center gap-3">
-          <Info size={14} className="text-brand-accent shrink-0" />
-          <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-brand-text/50 text-center">
-            Preview Mode — Launching Q1 2026
-          </p>
-        </div>
-      </div>
-
-      {/* 3. HERO SECTION */}
-      <section className="relative w-full min-h-[60vh] md:min-h-screen flex flex-col items-center justify-center px-6 pt-16 pb-24">
-        <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none grayscale" aria-hidden="true">
-          <UniverseCanvas />
-        </div>
-
-        <div className="relative z-10 max-w-4xl w-full text-center px-6">
+      {/* 1. THE INVITATION: Minimalist & Welcoming */}
+      <section className="relative w-full min-h-[85vh] flex flex-col items-center justify-center px-6 pt-20">
+        <div className="max-w-3xl w-full text-center space-y-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+            transition={{ duration: 1, ease: [0.19, 1, 0.22, 1] }}
+            className="space-y-6"
           >
-            <h1 className="font-semibold tracking-tight text-brand-text mb-6">
-              Digital tools and resources for work, creativity, learning, and lifestyle.
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-brand-text leading-[1.1]">
+              A space for digital essentials.
             </h1>
-            <p className="text-color-muted max-w-2xl mx-auto leading-relaxed">
-              Carefully curated, easy to use, and built to last.
+            <p className="text-xl md:text-2xl text-color-muted max-w-xl mx-auto font-body font-light leading-relaxed">
+              Carefully curated tools for work, creative living, and continuous growth.
             </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+          >
+            <Link 
+              href="#rooms"
+              className="inline-flex items-center justify-center px-10 py-5 bg-brand-text text-white rounded-btn text-sm font-bold uppercase tracking-[0.2em] hover:bg-brand-accent transition-all duration-base shadow-tactile group"
+            >
+              Explore the Store
+              <ArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" size={18} />
+            </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* 4. SHOP BY CATEGORY */}
-      <section className="max-w-7xl mx-auto px-6 w-full pb-24">
-        <div className="mb-8">
-          <h2 className="text-3xl font-semibold tracking-tight text-brand-text">Browse by Category</h2>
-          <p className="text-color-muted mt-2">Find resources tailored to what you need.</p>
-        </div>
+      {/* 2. CATEGORY ROOMS: Full-width, Immersive Sections */}
+      <section id="rooms" className="w-full">
+        {categories.map((cat, idx) => {
+          const theme = getCategoryTheme(cat);
+          return (
+            <motion.section 
+              key={cat}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2 }}
+              className={`w-full min-h-screen flex flex-col justify-center px-6 py-24 border-t border-color-border ${idx % 2 === 0 ? 'bg-white' : 'bg-brand-surface/30'}`}
+            >
+              <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div className="space-y-8 order-2 lg:order-1">
+                  <div className="space-y-3">
+                    <span className={`text-xs font-bold uppercase tracking-[0.3em] ${theme.text}`}>
+                      {theme.sublabel}
+                    </span>
+                    <h2 className="text-5xl md:text-6xl font-bold text-brand-text tracking-tight">
+                      {cat === 'Tools' && "Productivity & Workflows"}
+                      {cat === 'Life' && "Design & Creative Tools"}
+                      {cat === 'Home' && "Learning & Lifestyle"}
+                    </h2>
+                  </div>
+                  
+                  <p className="text-lg md:text-xl text-color-muted leading-relaxed max-w-lg">
+                    {cat === 'Tools' && "Practical resources built to streamline your daily projects. Simple, effective, and professional."}
+                    {cat === 'Life' && "Assets for the creative mind. Tools that help you design, craft, and build with intention."}
+                    {cat === 'Home' && "Personal systems for continuous learning. Guides and planners for a balanced digital life."}
+                  </p>
 
-        <div className="grid grid-cols-1 gap-6">
-          {categories.map((cat) => {
-            const theme = getCategoryTheme(cat);
-            return (
-              <Link 
-                key={cat}
-                href={`/marketplace?category=${cat}`} 
-                className={`card-elevated p-12 md:p-20 shadow-tactile-hover group border-l-4 ${theme.border} bg-white transition-all duration-slow`}
-              >
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                  <div className="max-w-xl space-y-4">
-                    <div className="space-y-1">
-                      <span className={`text-[10px] font-bold uppercase tracking-[0.2em] block ${theme.text}`}>
-                        {theme.sublabel}
-                      </span>
-                      <h3 className="text-3xl md:text-4xl font-semibold text-brand-text">
-                        {cat === 'Tools' && "Productivity & Workflows"}
-                        {cat === 'Life' && "Design & Creative Tools"}
-                        {cat === 'Home' && "Learning & Lifestyle"}
-                      </h3>
+                  <Link 
+                    href={`/marketplace?category=${cat}`}
+                    className="inline-flex items-center gap-4 text-brand-text font-bold uppercase tracking-widest text-sm group"
+                  >
+                    Enter Room
+                    <div className={`p-4 rounded-full ${theme.bg} text-white group-hover:translate-x-2 transition-transform duration-base`}>
+                      <ArrowRight size={20} />
                     </div>
-                    <p className="text-color-muted leading-relaxed">
-                      {cat === 'Tools' && "Practical resources for projects, tasks, and daily workflows — built for beginners and professionals."}
-                      {cat === 'Life' && "Creative resources for anyone who wants to design, make, or craft something meaningful."}
-                      {cat === 'Home' && "Guides, planners, and tools for learners of all ages and interests."}
-                    </p>
-                  </div>
-                  <div className="shrink-0">
-                    <ArrowRight 
-                      className={`text-brand-text/10 group-hover:translate-x-2 transition-all duration-slow ${theme.text.replace('text-', 'group-hover:text-')}`} 
-                      size={32} 
-                      aria-hidden="true"
-                    />
-                  </div>
+                  </Link>
                 </div>
-              </Link>
-            );
-          })}
-        </div>
+
+                {/* VISUAL REPRESENTATION: Curated Items Preview */}
+                <div className="order-1 lg:order-2 grid grid-cols-2 gap-4">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className={`aspect-[4/5] rounded-card ${theme.lightBg} border border-color-border overflow-hidden opacity-40 hover:opacity-100 transition-opacity duration-slow`} />
+                  ))}
+                </div>
+              </div>
+            </motion.section>
+          );
+        })}
       </section>
 
-      {/* 5. TRUST BAR */}
-      <TrustBar />
-    </main>
-  );
-}
-
-/**
- * SUB-COMPONENT: Trust Bar
- */
-function TrustBar() {
-  const items = [
-    { label: "Secure Payments", detail: "Encrypted Checkout" },
-    { label: "Instant Access", detail: "Digital Delivery" },
-    { label: "Trusted Quality", detail: "4.9/5 Rating" },
-    { label: "Direct Support", detail: "Email Assistance" }
-  ];
-  
-  return (
-    <section className="w-full border-t border-color-border py-16 bg-transparent">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-8 md:gap-12 opacity-60">
-          {items.map((item, idx) => (
-            <React.Fragment key={item.label}>
-              <div className="flex flex-col items-start min-w-max">
-                <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-text/40 mb-1">
-                  {item.label}
-                </span>
-                <p className="text-[11px] font-semibold text-brand-text/60">
-                  {item.detail}
-                </p>
+      {/* 3. DISCOVERY IS VISUAL: Storytelling Section */}
+      <section className="w-full py-32 px-6 bg-brand-text text-white">
+        <div className="max-w-5xl mx-auto text-center space-y-12">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Tools you didn't know you needed.</h2>
+          <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-light leading-relaxed">
+            Our marketplace is not an algorithm. It is a curated collection of digital artifacts, selected for their utility and beauty.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12">
+            {['The Essential Set', 'Hidden Gems', 'Masterclass Series'].map(set => (
+              <div key={set} className="p-8 border border-white/10 rounded-card bg-white/5 hover:bg-white/10 transition-colors text-left space-y-4 group cursor-pointer">
+                <h3 className="text-xl font-bold">{set}</h3>
+                <p className="text-sm text-white/40 leading-relaxed">A curated selection of our most impactful resources, bundled for your journey.</p>
+                <div className="pt-4 inline-flex items-center text-xs font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
+                  View Collection <ArrowRight className="ml-2" size={14} />
+                </div>
               </div>
-              {idx < items.length - 1 && (
-                <div 
-                  className="hidden md:block w-px h-6 bg-color-border" 
-                  aria-hidden="true"
-                />
-              )}
-            </React.Fragment>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 }
