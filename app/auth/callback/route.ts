@@ -1,6 +1,5 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createClient } from '../../../lib/supabase-server';
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
 /**
  * AUTHENTICATION CALLBACK
@@ -14,32 +13,7 @@ export async function GET(request: Request) {
   const next = searchParams.get('next') ?? '/account';
 
   if (code) {
-    const cookieStore = cookies();
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
-          },
-          set(name: string, value: string, options: CookieOptions) {
-            try {
-              cookieStore.set({ name, value, ...options });
-            } catch (error) {
-              // Handled by Middleware
-            }
-          },
-          remove(name: string, options: CookieOptions) {
-            try {
-              cookieStore.set({ name, value: '', ...options });
-            } catch (error) {
-              // Silently fail
-            }
-          },
-        },
-      }
-    );
+    const supabase = createClient();
     
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     
