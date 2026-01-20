@@ -921,6 +921,9 @@ video {
 .mt-2 {
   margin-top: 0.5rem;
 }
+.mt-20 {
+  margin-top: 5rem;
+}
 .mt-24 {
   margin-top: 6rem;
 }
@@ -932,9 +935,6 @@ video {
 }
 .mt-auto {
   margin-top: auto;
-}
-.mt-20 {
-  margin-top: 5rem;
 }
 .block {
   display: block;
@@ -980,9 +980,6 @@ video {
 }
 .h-20 {
   height: 5rem;
-}
-.h-22 {
-  height: 5.5rem;
 }
 .h-24 {
   height: 6rem;
@@ -1547,8 +1544,8 @@ video {
 .bg-white\/5 {
   background-color: rgb(255 255 255 / 0.05);
 }
-.bg-white\/80 {
-  background-color: rgb(255 255 255 / 0.8);
+.bg-white\/70 {
+  background-color: rgb(255 255 255 / 0.7);
 }
 .bg-white\/90 {
   background-color: rgb(255 255 255 / 0.9);
@@ -1686,6 +1683,9 @@ video {
 .pb-20 {
   padding-bottom: 5rem;
 }
+.pb-24 {
+  padding-bottom: 6rem;
+}
 .pb-32 {
   padding-bottom: 8rem;
 }
@@ -1722,6 +1722,9 @@ video {
 .pt-24 {
   padding-top: 6rem;
 }
+.pt-32 {
+  padding-top: 8rem;
+}
 .pt-4 {
   padding-top: 1rem;
 }
@@ -1730,12 +1733,6 @@ video {
 }
 .pt-8 {
   padding-top: 2rem;
-}
-.pb-24 {
-  padding-bottom: 6rem;
-}
-.pt-32 {
-  padding-top: 8rem;
 }
 .text-left {
   text-align: left;
@@ -1954,6 +1951,10 @@ video {
 .underline-offset-8 {
   text-underline-offset: 8px;
 }
+.antialiased {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 .opacity-0 {
   opacity: 0;
 }
@@ -2062,9 +2063,6 @@ video {
 .duration-1000 {
   transition-duration: 1000ms;
 }
-.duration-500 {
-  transition-duration: 500ms;
-}
 .duration-base {
   transition-duration: 500ms;
 }
@@ -2149,11 +2147,23 @@ canvas {
     transform: translateY(-6px);
   }
 }
+.selection\:bg-brand-accent\/10 *::-moz-selection {
+  background-color: rgb(45 59 46 / 0.1);
+}
+.selection\:bg-brand-accent\/10 *::selection {
+  background-color: rgb(45 59 46 / 0.1);
+}
 .selection\:bg-brand-accent\/20 *::-moz-selection {
   background-color: rgb(45 59 46 / 0.2);
 }
 .selection\:bg-brand-accent\/20 *::selection {
   background-color: rgb(45 59 46 / 0.2);
+}
+.selection\:bg-brand-accent\/10::-moz-selection {
+  background-color: rgb(45 59 46 / 0.1);
+}
+.selection\:bg-brand-accent\/10::selection {
+  background-color: rgb(45 59 46 / 0.1);
 }
 .selection\:bg-brand-accent\/20::-moz-selection {
   background-color: rgb(45 59 46 / 0.2);
