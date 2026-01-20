@@ -816,6 +816,12 @@ video {
 .top-\[115\%\] {
   top: 115%;
 }
+.right-4 {
+  right: 1rem;
+}
+.top-4 {
+  top: 1rem;
+}
 .z-0 {
   z-index: 0;
 }
@@ -945,6 +951,12 @@ video {
 .mt-auto {
   margin-top: auto;
 }
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 .block {
   display: block;
 }
@@ -962,6 +974,9 @@ video {
 }
 .aspect-\[4\/5\] {
   aspect-ratio: 4/5;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
 }
 .h-1 {
   height: 0.25rem;
@@ -1383,6 +1398,9 @@ video {
 .rounded-xl {
   border-radius: 0.75rem;
 }
+.rounded-2xl {
+  border-radius: 1rem;
+}
 .border {
   border-width: 1px;
 }
@@ -1540,6 +1558,13 @@ video {
 .bg-white\/90 {
   background-color: rgb(255 255 255 / 0.9);
 }
+.bg-brand-surface {
+  --tw-bg-opacity: 1;
+  background-color: rgb(215 196 183 / var(--tw-bg-opacity, 1));
+}
+.bg-brand-text\/0 {
+  background-color: rgb(28 28 28 / 0);
+}
 .bg-opacity-10 {
   --tw-bg-opacity: 0.1;
 }
@@ -1662,6 +1687,14 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 .pb-1 {
   padding-bottom: 0.25rem;
@@ -1843,6 +1876,9 @@ video {
 }
 .tracking-widest {
   letter-spacing: 0.1em;
+}
+.tracking-wider {
+  letter-spacing: 0.05em;
 }
 .text-accent-lavender {
   --tw-text-opacity: 1;
@@ -2187,6 +2223,10 @@ canvas {
   --tw-text-opacity: 1;
   color: rgb(28 28 28 / var(--tw-text-opacity, 1));
 }
+.hover\:text-white:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
 .hover\:decoration-brand-accent:hover {
   text-decoration-color: #4A5D4E;
 }
@@ -2314,6 +2354,9 @@ canvas {
 .group:hover .group-hover\:bg-brand-text {
   --tw-bg-opacity: 1;
   background-color: rgb(28 28 28 / var(--tw-bg-opacity, 1));
+}
+.group:hover .group-hover\:bg-brand-text\/5 {
+  background-color: rgb(28 28 28 / 0.05);
 }
 .group:hover .group-hover\:text-brand-accent {
   --tw-text-opacity: 1;

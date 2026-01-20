@@ -1,104 +1,79 @@
-"use client";
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
-// 1. Import the unified theme utility
-import { getCategoryTheme } from '../lib/theme';
+import { ShoppingCart, ArrowRight } from 'lucide-react';
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  image: string;
+  description: string;
+}
 
 interface ProductCardProps {
-  title: string;
-  category: string;
-  price: number;
-  summary: string;
-  slug: string;
-  image?: string;
-  creator?: string; 
-  rating?: number;  
-  sales?: string;   
+  product: Product;
 }
 
-export default function ProductCard({ 
-  title, 
-  category, 
-  price, 
-  summary, 
-  slug, 
-  image,
-  creator = "Kynar",
-  rating = 4.9,
-  sales = "1.2k+"
-}: ProductCardProps) {
-
-  // 2. Access the theme directly from the central utility
-  const theme = getCategoryTheme(category);
-
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <Link href={`/marketplace/${slug}`} className="block h-full" aria-label={`View ${title} product details`}>
-      <motion.div
-        whileHover={{ y: -8 }}
-        // 3. Dynamic top border uses the central theme
-        className={`group relative flex flex-col h-full card-elevated shadow-tactile-hover overflow-hidden transition-all duration-slow border-t-4 ${theme.border}`}
-      >
-        <div className="relative aspect-[4/5] overflow-hidden bg-brand-base">
-          {image ? (
-            <motion.img 
-              src={image} 
-              alt={title} 
-              className="w-full h-full object-cover transition-transform duration-liquid ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center surface-frosted">
-               <div className="w-12 h-12 rounded-full border border-brand-text/10 flex items-center justify-center">
-                  <span className="text-brand-text/20 text-[10px] font-bold uppercase tracking-widest">Kynar</span>
-               </div>
-            </div>
-          )}
-          <div className="absolute inset-0 bg-brand-text/5 opacity-0 group-hover:opacity-100 transition-opacity duration-slow pointer-events-none" />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="group relative bg-white rounded-2xl overflow-hidden border border-color-border hover:shadow-tactile-hover transition-all duration-slow"
+    >
+      <div className="aspect-square relative overflow-hidden bg-brand-surface/10">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          className="object-cover transition-transform duration-slow group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-brand-text/0 group-hover:bg-brand-text/5 transition-colors duration-slow" />
+        
+        <div className="absolute top-4 right-4">
+          <span className="px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider text-brand-text shadow-sm border border-color-border">
+            {product.category}
+          </span>
         </div>
+      </div>
 
-        <div className="p-8 flex flex-col flex-grow">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-semibold tracking-tight text-brand-text leading-tight group-hover:text-brand-accent transition-colors duration-base">
-              {title}
-            </h3>
-          </div>
-          
-          {/* 4. Category text now uses the central theme color */}
-          <p className={`text-[11px] font-bold uppercase tracking-widest mb-1 ${theme.text}`}>
-            {category}
-          </p>
-          
-          <p className="text-[10px] font-bold uppercase tracking-widest text-brand-text/20 mb-4">
-            by {creator}
-          </p>
+      <div className="p-6">
+        <h3 className="text-lg font-semibold text-brand-text mb-2 group-hover:text-brand-accent transition-colors">
+          {product.name}
+        </h3>
+        <p className="text-sm text-color-muted line-clamp-2 mb-6">
+          {product.description}
+        </p>
 
-          <div className="flex items-center gap-4 mb-8">
-            <div className="flex items-center gap-1">
-              <Star size={10} className="text-accent-thermal fill-accent-thermal" />
-              <span className="text-[10px] font-bold text-brand-text/50">{rating}</span>
-            </div>
-            <span className="text-[10px] font-medium text-brand-text/20 uppercase tracking-widest">
-              {sales} Sales
-            </span>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="text-xs text-brand-text/40 font-bold uppercase tracking-tighter">Price</span>
+            <span className="text-xl font-bold text-brand-text">£{product.price.toFixed(2)}</span>
           </div>
 
-          <div className="mt-auto pt-6 border-t border-brand-surface/10 flex items-center justify-between">
-            <div className="flex flex-col">
-              <span className="text-2xl font-semibold tracking-tight text-brand-text">
-                £{price}
-              </span>
-            </div>
-            
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-text/40 group-hover:text-brand-text transition-all duration-base">
-              <span>View Product</span>
-              <div className="w-8 h-8 rounded-full bg-brand-base flex items-center justify-center group-hover:bg-brand-text group-hover:text-white transition-all duration-slow shadow-tactile">
-                <ArrowRight size={14} />
-              </div>
-            </div>
+          <div className="flex gap-2">
+            <button
+              className="p-3 bg-brand-surface rounded-xl hover:bg-brand-accent hover:text-white transition-all duration-base border border-color-border"
+              aria-label="Add to cart"
+            >
+              <ShoppingCart size={18} />
+            </button>
+            <Link
+              href={`/products/${product.id}`}
+              className="p-3 bg-brand-text text-white rounded-xl hover:bg-brand-accent transition-all duration-base"
+              aria-label="View Details"
+            >
+              <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
-      </motion.div>
-    </Link>
+      </div>
+    </motion.div>
   );
-}
+};
+
+export default ProductCard;
