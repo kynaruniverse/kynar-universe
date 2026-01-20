@@ -12,7 +12,9 @@ interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
+  cartItems: CartItem[]; // Alias for compatibility
   cartCount: number;
+  cartTotal: number;
   showSuccess: boolean;
   setShowSuccess: (show: boolean) => void;
   lastAddedItem: string;
@@ -53,11 +55,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const clearCart = () => setCart([]);
 
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
     <CartContext.Provider value={{ 
       cart, 
+      cartItems: cart, 
       cartCount, 
+      cartTotal,
       showSuccess, 
       setShowSuccess, 
       lastAddedItem, 
