@@ -11,15 +11,13 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 // 2. CONFIGURATION VALIDATION
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error(
-    "DATABASE CONFIG ERROR: Supabase credentials are missing. Verify your environment variables."
-  );
+  console.warn("DATABASE CONFIG WARNING: Supabase credentials are missing. Some features will be disabled.");
 }
 
 // 3. CLIENT INITIALIZATION
 export const supabase = createClient(
-  supabaseUrl, 
-  supabaseKey,
+  supabaseUrl || 'https://placeholder.supabase.co', 
+  supabaseKey || 'placeholder',
   {
     auth: {
       persistSession: true, 
