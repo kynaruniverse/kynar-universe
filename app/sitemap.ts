@@ -6,12 +6,6 @@ import { createClient } from '@supabase/supabase-js';
  * Generates dynamic and static routes for search engine indexing.
  */
 
-// Initialize Database Client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Use the production site URL for absolute paths
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://kynaruniverse.co.uk';
@@ -33,8 +27,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1.0 : 0.8,
   }));
 
-  // 2. DYNAMIC PRODUCT ROUTES
-  // Fetches all active products to ensure they are indexed by search engines.
+  // 2. CHECK ENVIRONMENT VARIABLES (The Fix)
+  // If keys are missing during build, return static routes only to prevent crash.
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.warn('⚠️ Sitemap Build: Supabase credentials missing. Returning static routes only.');
+    return staticRoutes;
+  }
+
+  // 3. DYNAMIC PRODUCT ROUTES
+  // Initialize client only if keys exist
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  
   let productRoutes: MetadataRoute.Sitemap = [];
   
   try {
@@ -52,7 +58,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }));
     }
   } catch (error) {
-    // Graceful Error Handling: Log the error without breaking the sitemap generation
     console.error('Sitemap Generation Error:', error);
   }
 
