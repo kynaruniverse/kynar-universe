@@ -46,7 +46,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; img-src 'self' https://*.supabase.co https://images.unsplash.com data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co;"
+            value: "default-src 'self'; img-src 'self' https://*.supabase.co https://images.unsplash.com data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co; frame-ancestors 'self' https://replit.com https://*.replit.app;"
           },
           {
             key: 'X-Content-Type-Options',
@@ -58,8 +58,12 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()', // Privacy-first policy
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()', 
           },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload'
+          }
         ],
       },
     ]
