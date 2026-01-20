@@ -18,9 +18,11 @@ export default function LiquidCursor() {
   
   useEffect(() => {
     const mediaQuery = window.matchMedia("(hover: hover)");
-    setIsDesktop(mediaQuery.matches);
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     
-    if (!mediaQuery.matches) return;
+    setIsDesktop(mediaQuery.matches && !motionQuery.matches);
+    
+    if (!mediaQuery.matches || motionQuery.matches) return;
     
     const handleMouseMove = (e: MouseEvent) => {
       // Offset the 400px element so it centers on the mouse tip
@@ -51,7 +53,7 @@ export default function LiquidCursor() {
         y: cursorY,
         scale: cursorScale,
       }}
-      className="pointer-events-none fixed top-0 left-0 z-[-1] h-[400px] w-[400px] rounded-full blur-[140px] will-change-transform opacity-40 transition-all duration-glacial bg-brand-accent/30"
+      className="pointer-events-none fixed top-0 left-0 z-[-1] h-[400px] w-[400px] rounded-full blur-[140px] will-change-transform opacity-30 transition-all duration-glacial bg-brand-accent/20"
     />
   );
 }

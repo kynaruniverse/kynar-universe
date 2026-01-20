@@ -94,13 +94,14 @@
 
   /* PRIMARY BUTTON STYLES */
   .btn-primary {
-    @apply bg-brand-text text-white px-10 py-5 rounded-full font-semibold transition-transform transition-shadow duration-slow hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
-  }
-  .btn-primary:focus-visible {
-    outline: 2px solid var(--brand-accent);
-    outline-offset: 4px;
+    @apply bg-brand-text text-white px-10 py-5 rounded-full font-semibold transition-all duration-slow hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
   }
   
+  /* Accessibility focus styles for all interactive elements */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-accent ring-offset-2 ring-offset-white;
+  }
+
   .btn-primary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
