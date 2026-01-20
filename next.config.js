@@ -9,6 +9,19 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
 
+  // Allow all hosts for Replit proxy
+  allowedDevOrigins: ['*'],
+
+  // 1.5. SERVER CONFIG
+  serverRuntimeConfig: {
+    // Will only be available on the server side
+    port: 5000,
+  },
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    staticFolder: '/public',
+  },
+
   // 2. DEPENDENCY OPTIMIZATION
   // Required for the smooth execution of 3D components and libraries.
   transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],
