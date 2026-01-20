@@ -49,10 +49,6 @@ const nextConfig = {
             value: "default-src 'self'; img-src 'self' https://*.supabase.co https://images.unsplash.com data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co;"
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },
