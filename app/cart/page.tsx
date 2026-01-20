@@ -57,15 +57,15 @@ function CartLineItem({ item, onRemove }: { item: any; onRemove: (id: string) =>
       exit={{ opacity: 0, scale: 0.95 }}
       className={`card-elevated p-6 md:p-8 flex gap-6 md:gap-10 items-center shadow-tactile-hover group border-l-4 ${styles.border}`}
     >
-      <div className="w-24 h-24 md:w-32 md:h-32 bg-brand-base rounded-inner overflow-hidden flex-shrink-0">
-        <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-liquid" />
+      <div className="w-24 h-24 md:w-32 md:h-32 bg-brand-base rounded-inner overflow-hidden flex-shrink-0 relative">
+        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-liquid" />
       </div>
 
       <div className="flex-grow">
         <div className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${styles.text}`}>
           {item.category || "Digital Product"}
         </div>
-        <h3 className="font-semibold text-xl md:text-2xl text-brand-text tracking-tight leading-none">{item.title}</h3>
+        <h3 className="font-semibold text-xl md:text-2xl text-brand-text tracking-tight leading-none">{item.name}</h3>
         <p className="text-[11px] text-brand-text/30 font-medium uppercase tracking-widest mt-3">Preview Mode</p>
       </div>
 
