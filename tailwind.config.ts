@@ -19,6 +19,7 @@ const config: Config = {
     'bg-accent-thermal/30',
     'text-brand-accent',
     'text-accent-lavender',
+    'text-accent-thermal',
   ],
   theme: {
     extend: {
@@ -59,11 +60,11 @@ const config: Config = {
       },
       transitionDuration: {
         'fast': '300ms',
-      'base': '500ms',
-      'slow': '800ms',
-      'liquid': '1200ms',
-      'glacial': '2000ms',
-    },
+        'base': '500ms',
+        'slow': '800ms',
+        'liquid': '1200ms',
+        'glacial': '2000ms',
+      },
       animation: {
         'fade-in': 'fadeIn 1s cubic-bezier(0.19, 1, 0.22, 1) forwards',
         'reveal': 'reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
