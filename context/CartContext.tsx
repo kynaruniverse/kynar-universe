@@ -1,128 +1,59 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Standardized Product Structure
-type CartItem = {
-  id: string; 
-  title: string;
+interface CartItem {
+  id: string;
+  name: string;
   price: number;
-  slug: string;
-  image?: string;
-  category?: string;
   quantity: number;
-};
+  image: string;
+}
 
-type CartContextType = {
-  cartItems: CartItem[];
-  addToCart: (product: Omit<CartItem, 'quantity'>) => void;
-  removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
-  clearCart: () => void;
-  cartTotal: number;
+interface CartContextType {
+  cart: CartItem[];
   cartCount: number;
-  showSuccess: boolean;
-  setShowSuccess: (show: boolean) => void;
-  lastAddedItem: string;
-  lastAddedCategory: string; // Added to track category branding
-  isInitialized: boolean;
-};
+  addToCart: (product: any) => void;
+  removeFromCart: (id: string) => void;
+  clearCart: () => void;
+}
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [lastAddedItem, setLastAddedItem] = useState("");
-  const [lastAddedCategory, setLastAddedCategory] = useState(""); // State for category tracking
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [cart, setCart] = useState<CartItem[]>([]);
 
-  // 1. INITIALIZE FROM LOCAL STORAGE
-  useEffect(() => {
-    // Only access localStorage on client-side
-    if (typeof window === 'undefined') return;
-    
-    const savedCart = localStorage.getItem('kynar_cart_storage');
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (e) {
-        console.error('Failed to parse cart data:', e);
-        localStorage.removeItem('kynar_cart_storage');
+  const addToCart = (product: any) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === product.id);
+      if (existingItem) {
+        return prevCart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
       }
-    }
-    setIsInitialized(true);
-  }, []);
-
-  // 2. DATA PERSISTENCE
-  useEffect(() => {
-    if (isInitialized && typeof window !== 'undefined') {
-      localStorage.setItem('kynar_cart_storage', JSON.stringify(cartItems));
-    }
-  }, [cartItems, isInitialized]);
-  const addToCart = (product: Omit<CartItem, 'quantity'>) => {
-    setCartItems((prev) => {
-      const exists = prev.find((item) => item.id === product.id);
-      
-      // LOGIC: Digital products are unique; limit quantity to 1 per item
-      if (exists) return prev; 
-      
-      return [...prev, { ...product, quantity: 1 }];
+      return [...prevCart, { ...product, quantity: 1 }];
     });
-
-    setLastAddedItem(product.title);
-    setLastAddedCategory(product.category || ""); // Capture category for the toast
-    
-    // UI Logic: Reset toast state
-    setShowSuccess(false); 
-    
-    // Minor delay to ensure smooth UI transition
-    setTimeout(() => setShowSuccess(true), 150);
-  };
-
-  const updateQuantity = (id: string, quantity: number) => {
-    setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity: 1 } : item))
-    );
   };
 
   const removeFromCart = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
-  const clearCart = () => {
-    setCartItems([]);
-    localStorage.removeItem('kynar_cart_storage');
-  };
+  const clearCart = () => setCart([]);
 
-  const cartTotal = useMemo(() => 
-    cartItems.reduce((sum, item) => sum + item.price, 0), 
-  [cartItems]);
-
-  const cartCount = useMemo(() => cartItems.length, [cartItems]);
+  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ 
-      cartItems, 
-      addToCart, 
-      removeFromCart, 
-      updateQuantity,
-      clearCart, 
-      cartTotal, 
-      cartCount,
-      showSuccess,
-      setShowSuccess,
-      lastAddedItem,
-      lastAddedCategory, // Shared with the Toast Wrapper
-      isInitialized
-    }}>
+    <CartContext.Provider value={{ cart, cartCount, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
-}
+};
 
-export function useCart() {
+export const useCart = () => {
   const context = useContext(CartContext);
-  if (context === undefined) throw new Error('useCart must be used within CartProvider');
+  if (context === undefined) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
   return context;
-}
+};

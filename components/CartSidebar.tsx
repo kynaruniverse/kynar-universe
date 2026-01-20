@@ -1,163 +1,111 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Trash, ArrowRight, ShieldCheck } from "lucide-react";
-import { useCart } from "../context/CartContext";
-import Link from "next/link";
-import { useEffect, useRef } from 'react';
-// Import the unified theme utility
-import { getCategoryTheme } from '../lib/theme';
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import Image from 'next/image';
 
-export default function CartSidebar({ isOpen, onClose }: { isOpen: boolean;onClose: () => void }) {
-  const { cartItems, removeFromCart, cartTotal } = useCart();
-  const sidebarRef = useRef < HTMLDivElement > (null);
-  
-  // Focus trap and escape key handler
-  useEffect(() => {
-    if (!isOpen) return;
-    
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    
-    const focusableElements = sidebarRef.current?.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    
-    if (focusableElements && focusableElements.length > 0) {
-      (focusableElements[0] as HTMLElement).focus();
-    }
-    
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
-  
+interface CartSidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
+  const { cart, removeFromCart, cartCount } = useCart();
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* BACKGROUND OVERLAY */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[150] bg-brand-text/10 backdrop-blur-[2px]"
+            className="fixed inset-0 bg-brand-text/20 backdrop-blur-sm z-[100]"
           />
-
-          {/* SIDEBAR PANEL */}
           <motion.div
-            ref={sidebarRef}
-            role="dialog"
-            aria-label="Shopping cart"
-            aria-modal="true"
-            initial={{ x: "100%" }}
+            initial={{ x: '100%' }}
             animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 38, stiffness: 280 }}
-            className="fixed right-0 top-0 z-[200] h-full w-full md:max-w-md bg-brand-base border-l border-brand-surface/10 shadow-tactile flex flex-col will-change-transform"
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-[101] flex flex-col"
           >
-            {/* 1. HEADER */}
-            <header className="p-10 border-b border-brand-surface/10 flex items-center justify-between">
-              <div>
-                <h2 className="font-sans text-2xl font-semibold tracking-tight text-brand-text">Your Cart</h2>
-                <p className="font-body text-[10px] font-bold text-brand-text/30 uppercase tracking-[0.3em] mt-1">
-                  {cartItems.length} {cartItems.length === 1 ? "Item" : "Items"}
-                </p>
+            <div className="p-8 border-b border-color-border flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <ShoppingBag size={24} className="text-brand-text" />
+                <h2 className="text-xl font-bold text-brand-text">Your Cart</h2>
+                <span className="bg-brand-surface px-2 py-0.5 rounded-full text-[10px] font-bold text-brand-text">
+                  {cartCount}
+                </span>
               </div>
-              <button onClick={onClose} aria-label="Close cart" className="p-3 hover:bg-brand-surface/20 rounded-full transition-colors group">
-                <X size={20} className="text-brand-text/20 group-hover:text-brand-text" strokeWidth={1.5} />
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-brand-surface rounded-full transition-colors"
+              >
+                <X size={20} />
               </button>
-            </header>
+            </div>
 
-            {/* 2. CONTENT AREA */}
-            <div className="flex-grow overflow-y-auto px-10 py-10 space-y-12 scrollbar-hide">
-              {cartItems.length === 0 ? (
-                <EmptyState onClose={onClose} />
+            <div className="flex-grow overflow-y-auto p-8">
+              {cart.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-brand-surface flex items-center justify-center text-brand-text/20">
+                    <ShoppingBag size={32} />
+                  </div>
+                  <p className="text-color-muted">Your cart is empty</p>
+                  <button
+                    onClick={onClose}
+                    className="text-brand-accent font-bold text-sm uppercase tracking-widest hover:underline"
+                  >
+                    Start Shopping
+                  </button>
+                </div>
               ) : (
-                cartItems.map((item) => (
-                  <CartItemRow key={item.id} item={item} onRemove={removeFromCart} />
-                ))
+                <div className="space-y-6">
+                  {cart.map((item) => (
+                    <div key={item.id} className="flex gap-4">
+                      <div className="w-20 h-20 relative rounded-xl overflow-hidden border border-color-border shrink-0">
+                        <Image src={item.image} alt={item.name} fill className="object-cover" />
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="text-sm font-bold text-brand-text mb-1">{item.name}</h3>
+                        <p className="text-xs text-color-muted mb-2">Quantity: {item.quantity}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-bold">£{(item.price * item.quantity).toFixed(2)}</span>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="p-1.5 text-brand-text/30 hover:text-red-500 transition-colors"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
 
-            {/* 3. FOOTER */}
-            {cartItems.length > 0 && (
-              <footer className="p-10 surface-frosted border-t border-brand-surface/10 space-y-10">
-                <div className="space-y-2">
-                  <span className="font-body text-[10px] uppercase tracking-[0.4em] font-bold text-brand-text/20 block">Subtotal</span>
-                  <span className="font-sans text-4xl font-semibold tracking-tight text-brand-text">£{cartTotal.toFixed(2)}</span>
+            {cart.length > 0 && (
+              <div className="p-8 border-t border-color-border space-y-6 bg-brand-surface/5">
+                <div className="flex items-center justify-between">
+                  <span className="text-color-muted">Total</span>
+                  <span className="text-2xl font-bold text-brand-text">£{totalPrice.toFixed(2)}</span>
                 </div>
-                
-                <div className="space-y-6">
-                  <Link href="/cart" onClick={onClose} className="btn-primary w-full py-6 flex items-center justify-center text-[10px] tracking-[0.3em] group">
-                    VIEW CART <ArrowRight size={14} className="ml-3 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                  
-                  <div className="flex items-center justify-center gap-5 font-body text-[9px] font-bold uppercase tracking-[0.3em] text-brand-text/20">
-                    <div className="flex items-center gap-2"><ShieldCheck size={14} className="text-brand-accent/50" /> Secure Checkout</div>
-                    <div className="w-1 h-1 rounded-full bg-brand-text/10" />
-                    <span>UK Standards</span>
-                  </div>
-                </div>
-              </footer>
+                <button className="w-full py-5 bg-brand-text text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-brand-accent transition-all duration-base shadow-tactile group">
+                  Checkout Now
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
             )}
           </motion.div>
         </>
       )}
     </AnimatePresence>
   );
-}
+};
 
-/**
- * SUB-COMPONENT: Individual Item Row
- */
-function CartItemRow({ item, onRemove }: { item: any;onRemove: (id: string) => void }) {
-  const theme = getCategoryTheme(item.category);
-  
-  return (
-    <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex gap-8 group relative">
-      {/* Category Accent Bar - Uses theme background */}
-      <div className={`absolute -left-4 top-2 bottom-2 w-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity ${theme.bg}`} />
-
-      {/* Product Image */}
-      <div className="w-24 h-24 shrink-0 rounded-inner bg-white border border-brand-surface/10 overflow-hidden shadow-sm">
-        <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
-      </div>
-      
-      {/* Item Details */}
-      <div className="flex-grow flex flex-col py-2">
-        <div className="flex justify-between items-start">
-          <h4 className="font-sans font-semibold text-brand-text text-[15px] tracking-tight leading-snug pr-4">{item.title}</h4>
-          <button onClick={() => onRemove(item.id)} aria-label={`Remove ${item.title} from cart`} className="text-brand-text/10 hover:text-accent-thermal transition-colors">
-            <Trash size={16} strokeWidth={1.5} />
-          </button>
-        </div>
-        
-        {/* Color-coded Category Label - Uses theme text color */}
-        <p className={`font-body text-[9px] font-bold uppercase tracking-[0.25em] mt-3 ${theme.text}`}>
-          {item.category || "Digital Product"}
-        </p>
-        
-        <p className="mt-auto font-sans font-semibold text-brand-text/80 text-lg">£{item.price}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-/**
- * SUB-COMPONENT: Empty Cart State
- */
-function EmptyState({ onClose }: { onClose: () => void }) {
-  return (
-    <div className="h-full flex flex-col items-center justify-center text-center">
-      <div className="w-20 h-20 bg-brand-surface/10 rounded-inner flex items-center justify-center mb-8">
-        <ShoppingBag size={24} className="text-brand-text/10" strokeWidth={1.2} />
-      </div>
-      <p className="font-body text-brand-text/40 font-medium">Your cart is currently empty.</p>
-      <button onClick={onClose} className="mt-8 font-body text-[10px] font-bold uppercase tracking-widest text-brand-text/60 underline underline-offset-8 decoration-brand-accent/20 hover:text-brand-text transition-all">
-        Start Shopping
-      </button>
-    </div>
-  );
-}
+export default CartSidebar;
