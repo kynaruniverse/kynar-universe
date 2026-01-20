@@ -68,30 +68,31 @@ export default function Navbar() {
               })}
             </div>
 
-            <div className="flex items-center space-x-2 md:space-x-5">
+            <div className="flex items-center space-x-1 md:space-x-5">
               <Link href ="/account"
               aria-label="Account"
-              className={`p-3 rounded-full transition-all duration-slow ${
+              className={`p-4 md:p-3 rounded-full transition-all duration-slow ${
                 pathname === '/account' 
                     ? 'bg-brand-text text-white shadow-tactile' 
                     : 'text-brand-text/30 hover:text-brand-text hover:bg-brand-surface/20'
                 }`}
               >
-                <User size={19} strokeWidth={1.5} />
+                <User size={20} strokeWidth={1.5} />
               </Link>
 
               {/* CART TOGGLE */}
               <button 
                 onClick={() => setIsCartOpen(true)} 
-                className="relative p-3 text-brand-text/30 hover:text-brand-text hover:bg-brand-surface/20 active:scale-95 rounded-full transition-all duration-slow group"
+                aria-label="View Cart"
+                className="relative p-4 md:p-3 text-brand-text/30 hover:text-brand-text hover:bg-brand-surface/20 active:scale-95 rounded-full transition-all duration-slow group"
               >
-                <ShoppingCart size={20} strokeWidth={1.5} className="group-hover:rotate-[-6deg] transition-transform" />
+                <ShoppingCart size={21} strokeWidth={1.5} className="group-hover:rotate-[-6deg] transition-transform" />
                 {cartCount > 0 && (
                   <motion.span 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     // 4. Cart badge color now matches the active category theme
-                    className={`absolute top-2 right-2 text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center shadow-tactile px-1 transition-colors duration-slow ${theme.bg}`}
+                    className={`absolute top-3 right-3 text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center shadow-tactile px-1 transition-colors duration-slow ${theme.bg}`}
                   >
                     {cartCount}
                   </motion.span>
@@ -102,7 +103,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label={isOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isOpen}
-                className="md:hidden p-3 text-brand-text/40 hover:text-brand-text hover:bg-brand-surface/20 active:scale-90 rounded-full transition-all"
+                className="md:hidden p-4 text-brand-text/40 hover:text-brand-text hover:bg-brand-surface/20 active:scale-90 rounded-full transition-all"
               >
                 {isOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
               </button>

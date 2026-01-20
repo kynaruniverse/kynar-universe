@@ -573,7 +573,20 @@ video {
   h4 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
 
   p {
-    font-size: clamp(1rem, 1.5vw, 1.125rem);
+  font-size: 17px;
+  line-height: 1.625;
+}
+
+  @media (min-width: 768px) {
+
+  p {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+  p {
+    font-size: clamp(1.0625rem, 1.5vw, 1.125rem);
   }
 .container {
   width: 100%;
@@ -783,8 +796,8 @@ video {
 .right-0 {
   right: 0px;
 }
-.right-2 {
-  right: 0.5rem;
+.right-3 {
+  right: 0.75rem;
 }
 .top-0 {
   top: 0px;
@@ -794,6 +807,9 @@ video {
 }
 .top-2 {
   top: 0.5rem;
+}
+.top-3 {
+  top: 0.75rem;
 }
 .top-6 {
   top: 1.5rem;
@@ -1023,8 +1039,8 @@ video {
 .min-h-\[100dvh\] {
   min-height: 100dvh;
 }
-.min-h-\[50vh\] {
-  min-height: 50vh;
+.min-h-\[60vh\] {
+  min-height: 60vh;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -1257,15 +1273,15 @@ video {
 .gap-y-6 {
   row-gap: 1.5rem;
 }
+.space-x-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
 .space-x-12 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(3rem * var(--tw-space-x-reverse));
   margin-left: calc(3rem * calc(1 - var(--tw-space-x-reverse)));
-}
-.space-x-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .space-x-3 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
@@ -2266,10 +2282,6 @@ canvas {
 }
 @media (min-width: 640px) {
 
-  .sm\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .sm\:flex-row {
     flex-direction: row;
   }
@@ -2298,6 +2310,10 @@ canvas {
 
   .md\:h-32 {
     height: 8rem;
+  }
+
+  .md\:min-h-screen {
+    min-height: 100vh;
   }
 
   .md\:w-32 {
@@ -2358,6 +2374,10 @@ canvas {
 
   .md\:p-24 {
     padding: 6rem;
+  }
+
+  .md\:p-3 {
+    padding: 0.75rem;
   }
 
   .md\:p-8 {

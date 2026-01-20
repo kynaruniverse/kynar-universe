@@ -47,7 +47,7 @@ export default function Home() {
       </div>
 
       {/* 3. HERO SECTION */}
-      <section className="relative w-full min-h-[50vh] flex flex-col items-center justify-center px-6 pt-16 pb-24">
+      <section className="relative w-full min-h-[60vh] md:min-h-screen flex flex-col items-center justify-center px-6 pt-16 pb-24">
         <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none grayscale" aria-hidden="true">
           <UniverseCanvas />
         </div>
