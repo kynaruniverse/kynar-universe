@@ -3,12 +3,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ShoppingBag } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+// ✅ FIX 1: Import from the unified AppProvider (CartContext is deleted)
+import { useCart } from '../context/AppProvider';
 import { getCategoryTheme } from '../lib/theme';
 
 type Product = {
   id: string; 
-  title: string; // The button receives 'title'
+  // ✅ FIX 2: Support both 'name' and 'title' to prevent crashes
+  title?: string; 
+  name?: string;
   price: number;
   slug: string;
   image?: string;
@@ -23,14 +26,14 @@ export default function AddToCartButton({ product }: { product: Product }) {
   const handleAdd = () => {
     if (isAdded) return;
     
-    // ✅ FIX: Map 'title' to 'name' and ensure 'slug' is passed
     addToCart({
       id: product.id,
-      name: product.title, // Mapping happens here
+      // ✅ FIX 3: Fallback logic handles both data shapes
+      name: product.name || product.title || "Untitled Product", 
       price: product.price,
-      image: product.image || '', // Fallback for optional image
+      image: product.image || '', 
       category: product.category,
-      slug: product.slug, // Critical for Checkout
+      slug: product.slug, 
       quantity: 1,
     });
 
@@ -39,7 +42,6 @@ export default function AddToCartButton({ product }: { product: Product }) {
   };
 
   return (
-    // ... (rest of your JSX is perfect)
     <motion.button 
       layout
       whileHover={{ y: -2 }}
@@ -56,7 +58,6 @@ export default function AddToCartButton({ product }: { product: Product }) {
         }
       `}
     >
-      {/* ... (rest of your AnimatePresence logic is perfect) ... */}
       <AnimatePresence>
         {isAdded && (
           <motion.div 
