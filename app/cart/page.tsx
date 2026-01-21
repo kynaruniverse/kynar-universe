@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image'; // Added Import
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, ArrowRight, Trash2, ShieldCheck, Scale, Sparkles } from 'lucide-react';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../context/AppProvider';
 import { getCategoryTheme } from '../../lib/theme';
 // Import the server action if you want to wire it up later
 import { processCheckout } from './actions'; 
