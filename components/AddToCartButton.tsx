@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ShoppingBag } from 'lucide-react';
-// ✅ FIX 1: Import from the unified AppProvider (CartContext is deleted)
+// ✅ FIX 1: Import from the unified AppProvider
 import { useCart } from '../context/AppProvider';
 import { getCategoryTheme } from '../lib/theme';
 
