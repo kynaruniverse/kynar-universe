@@ -8,7 +8,7 @@ import { getCategoryTheme } from "../lib/theme";
 
 export default function HomePage() {
   const categories = ["Tools", "Life", "Home"];
-  
+
   return (
     <main
       id="main-content"
@@ -27,8 +27,7 @@ export default function HomePage() {
               A space for digital essentials.
             </h1>
             <p className="text-xl md:text-2xl text-color-muted max-w-xl mx-auto font-body font-light leading-relaxed">
-              Carefully curated tools for work, creative living, and continuous
-              growth.
+              Carefully curated tools for work, creative living, and continuous growth.
             </p>
           </motion.div>
 
@@ -83,12 +82,9 @@ export default function HomePage() {
                   </div>
 
                   <p className="text-lg md:text-xl text-color-muted leading-relaxed max-w-lg">
-                    {cat === "Tools" &&
-                      "Practical resources built to streamline your daily projects. Simple, effective, and professional."}
-                    {cat === "Life" &&
-                      "Assets for the creative mind. Tools that help you design, craft, and build with intention."}
-                    {cat === "Home" &&
-                      "Personal systems for continuous learning. Guides and planners for a balanced digital life."}
+                    {cat === "Tools" && "Practical resources built to streamline your daily projects. Simple, effective, and professional."}
+                    {cat === "Life" && "Assets for the creative mind. Tools that help you design, craft, and build with intention."}
+                    {cat === "Home" && "Personal systems for continuous learning. Guides and planners for a balanced digital life."}
                   </p>
 
                   <Link
@@ -126,8 +122,7 @@ export default function HomePage() {
             Tools you didn't know you needed.
           </h2>
           <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-light leading-relaxed">
-            Our marketplace is not an algorithm. It is a curated collection of
-            digital artifacts, selected for their utility and beauty.
+            Our marketplace is not an algorithm. It is a curated collection of digital artifacts, selected for their utility and beauty.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12">
             {[
@@ -141,8 +136,7 @@ export default function HomePage() {
               >
                 <h3 className="text-xl font-bold">{set}</h3>
                 <p className="text-sm text-white/40 leading-relaxed">
-                  A curated selection of our most impactful resources, bundled
-                  for your journey.
+                  A curated selection of our most impactful resources, bundled for your journey.
                 </p>
                 <div className="pt-4 inline-flex items-center text-xs font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
                   View Collection <ArrowRight className="ml-2" size={14} />

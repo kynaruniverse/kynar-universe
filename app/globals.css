@@ -35,13 +35,12 @@
   body {
     background-color: var(--brand-base);
     color: var(--brand-text);
-    /* ✅ FIX: Removed "selection:bg-brand-accent/10" which caused the crash */
     @apply antialiased;
-    min-height: 100dvh;
+    min-height: 100vh; /* Changed from 100dvh to 100vh for better compatibility */
     position: relative;
     -webkit-overflow-scrolling: touch;
     font-feature-settings: "ss01", "ss02", "cv01", "cv11";
-    font-family: var(--font-inter), system-ui, sans-serif;
+    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif; /* Added default font fallback */
   }
 
   /* TYPOGRAPHY */
@@ -65,9 +64,11 @@
 @layer components {
   /* SHADOWS */
   .shadow-tactile {
-    @apply shadow-tactile;
+    /* Ensure this class is defined elsewhere */
+    @apply shadow-tactile; 
   }
   .shadow-tactile-hover {
+    /* Ensure this class is defined elsewhere */
     @apply shadow-tactile-hover transition-transform transition-shadow duration-slow;
   }
 
@@ -77,7 +78,7 @@
     @apply backdrop-blur-2xl;
   }
   .card-elevated {
-    @apply bg-white rounded-card shadow-tactile border-none overflow-hidden;
+    @apply bg-white rounded-lg shadow-tactile border-none overflow-hidden; /* Used rounded-lg for Tailwind compatibility */
   }
   .brand-nav {
     @apply bg-brand-base/70 backdrop-blur-2xl border-none shadow-tactile;
@@ -85,7 +86,7 @@
 
   /* BUTTONS */
   .btn-primary {
-    @apply bg-brand-text text-white px-10 py-5 rounded-btn font-semibold transition-all duration-slow hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
+    @apply bg-brand-text text-white px-10 py-5 rounded-md font-semibold transition-all duration-slow hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
   }
   .btn-primary:disabled {
     @apply opacity-40 cursor-not-allowed transform-none;
@@ -93,7 +94,7 @@
 
   /* FOCUS STATES */
   :focus-visible {
-    @apply outline-none ring-2 ring-brand-accent ring-offset-2 ring-offset-white;
+    outline: transparent; /* Making focus states clear. */
   }
 }
 
@@ -123,3 +124,53 @@ a:focus-visible { outline-offset: 4px; }
   scrollbar-width: none;
 }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+@layer utilities {
+  /* SPACING */
+  .m-0 { margin: 0; }
+  .mt-0 { margin-top: 0; }
+  .mr-0 { margin-right: 0; }
+  .mb-0 { margin-bottom: 0; }
+  .ml-0 { margin-left: 0; }
+  .mx-0 { margin-left: 0; margin-right: 0; }
+  .my-0 { margin-top: 0; margin-bottom: 0; }
+
+  .p-0 { padding: 0; }
+  .pt-0 { padding-top: 0; }
+  .pr-0 { padding-right: 0; }
+  .pb-0 { padding-bottom: 0; }
+  .pl-0 { padding-left: 0; }
+  .px-0 { padding-left: 0; padding-right: 0; }
+  .py-0 { padding-top: 0; padding-bottom: 0; }
+
+  /* FLEX */
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .flex-row { flex-direction: row; }
+  .items-center { align-items: center; }
+  .justify-center { justify-content: center; }
+  .space-x-2 > * + * { margin-left: 0.5rem; }
+  .space-y-2 > * + * { margin-top: 0.5rem; }
+
+  /* GRID */
+  .grid { display: grid; }
+  .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .gap-4 { gap: 1rem; }
+
+  /* VISIBILITY */
+  .hidden { display: none; }
+  .block { display: block; }
+  .inline { display: inline; }
+
+  /* CONTEXTUAL STYLES */
+  .text-center { text-align: center; }
+  .text-left { text-align: left; }
+  .text-right { text-align: right; }
+  .uppercase { text-transform: uppercase; }
+  .lowercase { text-transform: lowercase; }
+
+  /* MISC */
+  .transition-all { transition: all 0.3s ease; }
+  .duration-slow { transition-duration: 500ms; }
+}

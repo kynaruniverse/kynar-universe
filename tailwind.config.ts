@@ -1,17 +1,17 @@
 import type { Config } from "tailwindcss";
+import typography from '@tailwindcss/typography';
+import scrollbar from 'tailwind-scrollbar';
 
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    // ✅ FIX 1: Added context and lib to ensure dynamic classes aren't purged
     "./context/**/*.{js,ts,jsx,tsx,mdx}",
     "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   safelist: [
     {
-      // This ensures your dynamic theme colors (from lib/theme.ts) always work
       pattern: /(hover:)?bg-(brand-accent|accent-thermal|accent-lavender)(\/30)?/,
     },
     {
@@ -21,7 +21,6 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // ✅ MATCH: Correspond strictly to globals.css variables
         "brand-base": "var(--brand-base)",
         "brand-text": "var(--brand-text)",
         "brand-surface": "var(--brand-surface)",
@@ -36,12 +35,10 @@ const config: Config = {
         "color-border": "var(--color-border)",
       },
       fontFamily: {
-        // ✅ MATCH: Corresponds to app/layout.tsx font variables
         sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
         body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
-        // ✅ MATCH: Resolves the @apply rounded-card in globals.css
         card: '32px',
         inner: '20px',
         btn: '100px',
@@ -52,12 +49,10 @@ const config: Config = {
         30: '7.5rem',
       },
       boxShadow: {
-        // ✅ MATCH: Resolves the @apply shadow-tactile in globals.css
         tactile: '0 4px 30px -4px rgba(0, 0, 0, 0.03), 0 2px 12px -2px rgba(0, 0, 0, 0.02)',
         'tactile-hover': '0 30px 60px -12px rgba(0, 0, 0, 0.08), 0 12px 24px -4px rgba(0, 0, 0, 0.03)',
       },
       transitionDuration: {
-        // ✅ MATCH: Resolves the @apply duration-slow in globals.css
         fast: '300ms',
         base: '500ms',
         slow: '800ms',
@@ -81,8 +76,8 @@ const config: Config = {
     },
   },
   plugins: [
-    require('@tailwindcss/typography'),
-    require('tailwind-scrollbar'),
+    typography,
+    scrollbar,
   ],
 };
 

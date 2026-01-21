@@ -40,7 +40,9 @@ export const CATEGORY_THEMES = {
 
 /**
  * Get theme by category
+ * @param {string} category - The category for which to get the theme
+ * @returns {object} The theme object corresponding to the category
  */
-export const getCategoryTheme = (category ? : string) => {
-  return CATEGORY_THEMES[category as keyof typeof CATEGORY_THEMES] || CATEGORY_THEMES.Default;
+export const getCategoryTheme = (category: keyof typeof CATEGORY_THEMES = "Default") => {
+  return CATEGORY_THEMES[category] || CATEGORY_THEMES.Default;
 };
