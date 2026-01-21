@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Menu, X, ShoppingCart, User, Sparkles, ArrowRight } from 'lucide-react';
-// ✅ FIX 1: Updated import to point to the unified AppProvider
 import { useCart } from '../context/AppProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCategoryTheme } from '../lib/theme';
@@ -14,43 +13,40 @@ import MagneticLogo from "./MagneticLogo";
 export default function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  // This hook now comes from AppProvider but works exactly the same
   const { cartCount } = useCart();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  // 2. Dynamic Theme Detection
+  
   const activeCategory = searchParams.get('category') || undefined;
-  const theme = getCategoryTheme(activeCategory);
-
+  const theme = getCategoryTheme(activeCategory) || { bg: 'bg-white', text: 'text-black' }; // Fallback theme
+  
   useEffect(() => {
-    setIsOpen(false);
+    setIsOpen(false); // Close mobile menu when pathname changes
   }, [pathname]);
-
+  
   const navLinks = [
     { name: 'The Store', href: '/marketplace' },
     { name: 'Guides', href: '/guides' },
     { name: 'Help', href: '/help' },
   ];
-
+  
   const [isScrolled, setIsScrolled] = useState(false);
-
+  
+  // Add a debounce effect to handle scroll more efficiently
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const throttled = () => {
+      requestAnimationFrame(handleScroll);
+    };
+    window.addEventListener('scroll', throttled);
+    return () => window.removeEventListener('scroll', throttled);
   }, []);
-
+  
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-[60] w-full transition-all duration-slow ${
-        isScrolled 
-          ? 'h-16 bg-white/70 backdrop-blur-xl border-b border-color-border shadow-sm' 
-          : 'h-24 bg-transparent'
-      }`}>
+      <nav className={`fixed top-0 left-0 right-0 z-[60] w-full transition-all duration-slow ${isScrolled ? 'h-16 bg-white/70 backdrop-blur-xl border-b border-color-border shadow-sm' : 'h-24 bg-transparent'}`}>
         <div className="px-6">
           <div className="flex justify-between items-center h-16 md:h-22">
-            
             <div className="flex-shrink-0 scale-90 md:scale-100">
               <MagneticLogo />
             </div>
@@ -63,9 +59,7 @@ export default function Navbar() {
                   <Link 
                     key={link.name}
                     href={link.href} 
-                    className={`relative font-body text-[11px] font-semibold uppercase tracking-[0.25em] transition-all duration-slow ${
-                      isActive ? 'text-brand-text' : 'text-brand-text/30 hover:text-brand-text'
-                    }`}
+                    className={`relative font-body text-[11px] font-semibold uppercase tracking-[0.25em] transition-all duration-slow ${isActive ? 'text-brand-text' : 'text-brand-text/30 hover:text-brand-text'}`}
                   >
                     {link.name}
                     {isActive && (
@@ -81,18 +75,14 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center space-x-1 md:space-x-5">
-              <Link href ="/account"
-              aria-label="Account"
-              className={`p-4 md:p-3 rounded-full transition-all duration-slow ${
-                pathname === '/account' 
-                    ? 'bg-brand-text text-white shadow-tactile' 
-                    : 'text-brand-text/30 hover:text-brand-text hover:bg-brand-surface/20'
-                }`}
+              <Link 
+                href="/account"
+                aria-label="User Account"
+                className={`p-4 md:p-3 rounded-full transition-all duration-slow ${pathname === '/account' ? 'bg-brand-text text-white shadow-tactile' : 'text-brand-text/30 hover:text-brand-text hover:bg-brand-surface/20'}`}
               >
                 <User size={20} strokeWidth={1.5} />
               </Link>
 
-              {/* CART TOGGLE */}
               <button 
                 onClick={() => setIsCartOpen(true)} 
                 aria-label="View Cart"
@@ -112,7 +102,7 @@ export default function Navbar() {
 
               <button 
                 onClick={() => setIsOpen(!isOpen)}
-                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-label={isOpen ? "Close the mobile menu" : "Open the mobile menu"}
                 aria-expanded={isOpen}
                 className="md:hidden p-4 text-brand-text/40 hover:text-brand-text hover:bg-brand-surface/20 active:scale-90 rounded-full transition-all"
               >
