@@ -5,12 +5,12 @@
 @layer base {
   :root {
     /* CORE COLOR PALETTE */
-    --brand-base: #FBFBF9;          /* Base Background */
-    --brand-text: #1A1A1A;          /* Primary Text */
-    --brand-surface: #F2F0ED;       /* Secondary Surface */
-    --brand-accent: #2D3B2E;        /* Primary Accent */
-    --accent-thermal: #C46B5B;      /* Warm Accent */
-    --accent-lavender: #867E9C;     /* Soft Accent */
+    --brand-base: #FBFBF9;
+    --brand-text: #1A1A1A;
+    --brand-surface: #F2F0ED;
+    --brand-accent: #2D3B2E;
+    --accent-thermal: #C46B5B;
+    --accent-lavender: #867E9C;
 
     /* Semantic tokens */
     --color-success: var(--brand-accent);
@@ -35,7 +35,8 @@
   body {
     background-color: var(--brand-base);
     color: var(--brand-text);
-    @apply antialiased selection:bg-brand-accent/10;
+    /* ✅ FIX: Removed "selection:bg-brand-accent/10" which caused the crash */
+    @apply antialiased;
     min-height: 100dvh;
     position: relative;
     -webkit-overflow-scrolling: touch;
