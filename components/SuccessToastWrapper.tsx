@@ -1,35 +1,28 @@
 "use client";
-import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useCart } from "../context/CartContext";
+import { useEffect } from "react";
+// ✅ Import from unified AppProvider
+import { useCart } from "../context/AppProvider";
 import SuccessToast from "./SuccessToast";
 
 export default function SuccessToastWrapper() {
-  // Added lastAddedCategory from our CartContext
-  const { showSuccess, setShowSuccess, lastAddedItem, lastAddedCategory } = useCart();
+  // ✅ Destructure dismissToast
+  const { showSuccess, lastAddedItem, lastAddedCategory, dismissToast } = useCart();
   const pathname = usePathname();
 
+  // Optional: Dismiss toast on navigation
   useEffect(() => {
-    setShowSuccess(false);
-  }, [pathname, setShowSuccess]);
-
-  useEffect(() => {
-    if (showSuccess) {
-      const timer = setTimeout(() => {
-        setShowSuccess(false);
-      }, 5000); 
-      return () => clearTimeout(timer);
-    }
-  }, [showSuccess, setShowSuccess]);
+    dismissToast();
+  }, [pathname, dismissToast]);
 
   return (
     <div className="relative z-[200]">
       <SuccessToast 
         isVisible={showSuccess} 
         message={`${lastAddedItem} has been added to your cart.`} 
-        // Pass the category to trigger the Green, Lavender, or Thermal branding
-        category={lastAddedCategory} 
-        onClose={() => setShowSuccess(false)} 
+        category={lastAddedCategory}
+        // ✅ Manual close now works
+        onClose={dismissToast} 
       />
     </div>
   );

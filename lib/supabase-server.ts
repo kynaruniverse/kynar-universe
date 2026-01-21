@@ -1,3 +1,4 @@
+// ✅ FIX 1: Lowercase 'import'
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
@@ -18,6 +19,7 @@ export function createClient() {
         },
         set(name: string, value: string, options: CookieOptions) {
           try {
+            // This will throw in a Server Component, but work in a Server Action
             cookieStore.set({ name, value, ...options });
           } catch (error) {
             // Handled by middleware

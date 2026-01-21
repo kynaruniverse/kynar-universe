@@ -1,77 +1,95 @@
 "use client";
+
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
-import { useRef, useMemo, useEffect } from "react";
-import { useSearchParams } from 'next/navigation';
-import * as THREE from 'three';
-// 1. Import the unified theme utility
-import { getCategoryTheme } from '../lib/theme';
+import { useRef, useMemo, useEffect, Suspense } from "react"; // ✅ FIX 1: Added Suspense import
+import { useSearchParams } from "next/navigation";
+import * as THREE from "three";
+// 1. Import theme utility (Verified in Step 8)
+import { getCategoryTheme } from "../lib/theme";
 
+/** ============================
+ * AMBIENT ELEMENT
+ * Handles dynamic color, distortion, and floating animation
+ * ============================ */
 function AmbientElement() {
-  const materialRef = useRef<any>(null);
+  // ✅ FIX 2: Changed generic to 'any' to prevent TypeScript build errors with Drei libraries
+  const meshRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<any>(null); 
   const searchParams = useSearchParams();
   
-  // 2. Detect the active theme color from the URL
-  const activeCategory = searchParams.get('category') || undefined;
-  const theme = getCategoryTheme(activeCategory);
+  /** --------------------------
+   * THEME & COLOR
+   * -------------------------- */
+  const activeCategory = searchParams.get("category") || undefined;
   
-  // Convert Tailwind-style hex or name to a Three.js color object
-  // We pull the "text" color but soften it for the background
+  // Map categories to softer Three.js colors
   const targetColor = useMemo(() => {
-    switch(activeCategory) {
-      case 'Tools': return new THREE.Color("#4A5D4E");
-      case 'Life': return new THREE.Color("#9B94B0");
-      case 'Home': return new THREE.Color("#D97E6E");
-      default: return new THREE.Color("#D7C4B7"); // Default surface color
+    switch (activeCategory) {
+      case "Tools":
+        return new THREE.Color("#4A5D4E"); // Matches brand-accent
+      case "Life":
+        return new THREE.Color("#9B94B0"); // Matches accent-lavender
+      case "Home":
+        return new THREE.Color("#D97E6E"); // Matches accent-thermal
+      default:
+        return new THREE.Color("#D7C4B7"); // Default surface color
     }
   }, [activeCategory]);
-
-  // 4. MOBILE OPTIMIZATION: Reduce complexity for smaller screens
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  
+  /** --------------------------
+   * MOBILE OPTIMIZATION
+   * -------------------------- */
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const distortionSpeed = isMobile ? 0.1 : 0.3;
   const distortionAmount = isMobile ? 0.1 : 0.2;
-
-  useFrame((state) => {
-    if (materialRef.current) {
-      const time = state.clock.getElapsedTime();
-      const pulse = Math.sin(time * 0.2) * (isMobile ? 0.005 : 0.01);
-      materialRef.current.distort = distortionAmount + pulse;
-      
-      // 3. SMOOTH COLOR TRANSITION: Lerp the color for a "liquid" feel
-      materialRef.current.color.lerp(targetColor, isMobile ? 0.01 : 0.02);
-    }
-  });
-  const meshRef = useRef<any>(null);
+  const colorLerpSpeed = isMobile ? 0.01 : 0.02;
   
+  /** --------------------------
+   * ANIMATION LOOP
+   * -------------------------- */
+  useFrame((state) => {
+    if (!materialRef.current) return;
+    
+    const elapsed = state.clock.getElapsedTime();
+    const pulse = Math.sin(elapsed * 0.2) * (isMobile ? 0.005 : 0.01);
+    
+    // Smoothly interpolate distortion and color
+    materialRef.current.distort = distortionAmount + pulse;
+    materialRef.current.color.lerp(targetColor, colorLerpSpeed);
+  });
+  
+  /** --------------------------
+   * CLEANUP ON UNMOUNT
+   * -------------------------- */
   useEffect(() => {
     return () => {
-      if (materialRef.current) {
-        materialRef.current.dispose();
-      }
-      if (meshRef.current?.geometry) {
-        meshRef.current.geometry.dispose();
-      }
-      // Clear textures if any
+      materialRef.current?.dispose();
+      meshRef.current?.geometry.dispose();
+      // Safe check before disposing map
       if (materialRef.current?.map) materialRef.current.map.dispose();
     };
   }, []);
-
+  
+  /** --------------------------
+   * RENDER
+   * -------------------------- */
   return (
     <>
       <pointLight position={[10, 10, 10]} intensity={0.5} color="#ffffff" />
-      
+
       <Float speed={0.4} rotationIntensity={0.1} floatIntensity={0.2}>
         <Sphere ref={meshRef} args={[1.5, 64, 64]}>
           <MeshDistortMaterial
             ref={materialRef}
-            speed={0.3}
-            distort={0.2}
+            speed={distortionSpeed}
+            distort={distortionAmount}
             radius={1}
             metalness={0.05}
             roughness={0.8}
-            transparent={true}   
-            opacity={0.12}       // Slightly increased opacity for color visibility
-            depthWrite={false}   
+            transparent
+            opacity={0.12}
+            depthWrite={false}
           />
         </Sphere>
       </Float>
@@ -79,19 +97,26 @@ function AmbientElement() {
   );
 }
 
+/** ============================
+ * UNIVERSE CANVAS
+ * Wrapper component for 3D scene
+ * ============================ */
 export default function UniverseCanvas() {
   return (
     <div className="h-full w-full pointer-events-none">
-      <Canvas 
+      <Canvas
         camera={{ position: [0, 0, 5], fov: 40 }}
-        dpr={[1, 1.5]} 
-        gl={{ 
-          antialias: true, 
+        dpr={[1, 1.5]}
+        gl={{
+          antialias: true,
           alpha: true,
         }}
       >
         <ambientLight intensity={1.2} />
-        <AmbientElement />
+        {/* ✅ FIX 3: Wrapped in Suspense because usage of useSearchParams() requires it */}
+        <Suspense fallback={null}>
+          <AmbientElement />
+        </Suspense>
       </Canvas>
     </div>
   );

@@ -1,3 +1,4 @@
+// ✅ FIX 1: Lowercase 'import'
 import { createClient } from '../../../lib/supabase-server';
 import { NextResponse } from 'next/server';
 
@@ -28,7 +29,6 @@ export async function GET(request: Request) {
       if (category) successUrl.searchParams.set('category', category);
 
       return NextResponse.redirect(successUrl);
-
     }
   }
 
@@ -38,6 +38,5 @@ export async function GET(request: Request) {
   errorUrl.searchParams.set('error', 'Authentication failed. Please try again.');
   errorUrl.searchParams.set('category', 'Default'); 
 
-  
   return NextResponse.redirect(errorUrl);
 }

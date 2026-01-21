@@ -4,12 +4,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-// 1. Import the unified theme utility
 import { getCategoryTheme } from '../lib/theme';
 
 type Product = {
   id: string; 
-  title: string;
+  title: string; // The button receives 'title'
   price: number;
   slug: string;
   image?: string;
@@ -19,20 +18,28 @@ type Product = {
 export default function AddToCartButton({ product }: { product: Product }) {
   const { addToCart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
-
-  // 2. Access the theme directly from the central utility
   const theme = getCategoryTheme(product.category);
 
   const handleAdd = () => {
     if (isAdded) return;
     
-    addToCart(product);
+    // ✅ FIX: Map 'title' to 'name' and ensure 'slug' is passed
+    addToCart({
+      id: product.id,
+      name: product.title, // Mapping happens here
+      price: product.price,
+      image: product.image || '', // Fallback for optional image
+      category: product.category,
+      slug: product.slug, // Critical for Checkout
+      quantity: 1,
+    });
+
     setIsAdded(true);
-    
     setTimeout(() => setIsAdded(false), 2500);
   };
 
   return (
+    // ... (rest of your JSX is perfect)
     <motion.button 
       layout
       whileHover={{ y: -2 }}
@@ -49,6 +56,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
         }
       `}
     >
+      {/* ... (rest of your AnimatePresence logic is perfect) ... */}
       <AnimatePresence>
         {isAdded && (
           <motion.div 
@@ -70,7 +78,6 @@ export default function AddToCartButton({ product }: { product: Product }) {
             className="flex items-center gap-3"
           >
             <Check size={14} strokeWidth={3} />
-            {/* 3. Use the theme label for specific feedback (e.g., Efficiency Added) */}
             <span>{theme.label} Added</span>
           </motion.div>
         ) : (
