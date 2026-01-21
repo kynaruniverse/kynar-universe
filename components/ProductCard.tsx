@@ -1,9 +1,12 @@
+"use client"; // ✅ FIX 1: Required for hooks and framer-motion
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ShoppingCart, ArrowRight } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+// ✅ FIX 2: Updated to unified AppProvider
+import { useCart } from '../context/AppProvider';
 
 interface Product {
   id: string;
@@ -12,6 +15,7 @@ interface Product {
   category: string;
   image: string;
   description: string;
+  slug: string; // ✅ FIX 3: Added slug to interface (Critical for checkout)
 }
 
 interface ProductCardProps {
@@ -20,6 +24,19 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    // ✅ FIX 4: Explicitly map to CartItem interface
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      category: product.category,
+      slug: product.slug, // Critical: Passed to checkout
+      quantity: 1,
+    });
+  };
 
   return (
     <motion.div
@@ -57,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <div className="mt-auto pt-6 flex gap-3">
           <button
-            onClick={() => addToCart(product)}
+            onClick={handleAddToCart}
             className="flex-grow py-4 bg-brand-surface text-brand-text rounded-btn font-bold text-xs uppercase tracking-widest hover:bg-brand-text hover:text-white transition-all duration-base border border-color-border flex items-center justify-center gap-2"
           >
             <ShoppingCart size={16} />

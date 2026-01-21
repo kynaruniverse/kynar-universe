@@ -4,13 +4,18 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ShoppingCart, ArrowLeft, Star, ShieldCheck, Clock, Zap } from 'lucide-react';
+import { ShoppingCart, ArrowLeft, Star, ShieldCheck, Zap } from 'lucide-react';
 import UniverseCanvas from '../../../components/UniverseCanvas';
-import { useCart } from '../../../context/CartContext';
+// ✅ FIX 1: Import from unified AppProvider
+import { useCart } from '../../../context/AppProvider';
+// ✅ FIX 2: Import theme utility for dynamic colors
+import { getCategoryTheme } from '../../../lib/theme';
 
+// ✅ FIX 3: Added 'slug' to match the database and Marketplace data
 const MOCK_PRODUCTS = [
   {
     id: '1',
+    slug: 'workflow-pro-template',
     name: 'Workflow Pro Template',
     price: 24.99,
     category: 'Tools',
@@ -20,6 +25,7 @@ const MOCK_PRODUCTS = [
   },
   {
     id: '2',
+    slug: 'minimalist-ui-kit',
     name: 'Minimalist UI Kit',
     price: 49.00,
     category: 'Life',
@@ -29,6 +35,7 @@ const MOCK_PRODUCTS = [
   },
   {
     id: '3',
+    slug: 'digital-garden-planner',
     name: 'Digital Garden Planner',
     price: 15.00,
     category: 'Home',
@@ -41,6 +48,22 @@ const MOCK_PRODUCTS = [
 export default function ProductPage({ params }: { params: { id: string } }) {
   const { addToCart } = useCart();
   const product = MOCK_PRODUCTS.find(p => p.id === params.id) || MOCK_PRODUCTS[0];
+  
+  // ✅ FIX 4: Get dynamic theme based on category
+  const theme = getCategoryTheme(product.category);
+
+  const handleAddToCart = () => {
+    // ✅ FIX 5: Explicitly map to CartItem interface (adding quantity & slug)
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      category: product.category,
+      slug: product.slug, 
+      quantity: 1,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-brand-base pt-24 pb-20">
@@ -59,7 +82,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="aspect-square relative rounded-3xl overflow-hidden bg-brand-surface/20 border border-color-border"
+              // ✅ FIX 6: Use theme border color
+              className={`aspect-square relative rounded-3xl overflow-hidden bg-brand-surface/20 border ${theme.border}`}
             >
               <div className="absolute inset-0 z-0 opacity-20">
                 <UniverseCanvas />
@@ -85,10 +109,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           <div className="flex flex-col">
             <header className="mb-8">
               <div className="flex items-center gap-2 mb-4">
-                <span className="px-3 py-1 bg-brand-surface text-brand-text text-[10px] font-bold uppercase tracking-widest rounded-full border border-color-border">
+                {/* ✅ FIX 7: Use theme colors for badges */}
+                <span className={`px-3 py-1 ${theme.lightBg} ${theme.text} text-[10px] font-bold uppercase tracking-widest rounded-full border ${theme.border}`}>
                   {product.category}
                 </span>
-                <div className="flex items-center gap-1 text-brand-accent ml-2">
+                <div className={`flex items-center gap-1 ml-2 ${theme.text}`}>
                   <Star size={14} fill="currentColor" />
                   <span className="text-sm font-bold">4.9</span>
                 </div>
@@ -108,8 +133,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="space-y-4 mb-10">
               {product.features.map((feature) => (
                 <div key={feature} className="flex items-center gap-3 text-brand-text">
-                  <div className="w-5 h-5 rounded-full bg-brand-accent/10 flex items-center justify-center shrink-0">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
+                  {/* ✅ FIX 8: Use theme colors for bullet points */}
+                  <div className={`w-5 h-5 rounded-full ${theme.lightBg} flex items-center justify-center shrink-0`}>
+                    <div className={`w-1.5 h-1.5 rounded-full ${theme.bg}`} />
                   </div>
                   <span className="text-sm font-medium">{feature}</span>
                 </div>
@@ -118,8 +144,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <button 
-                onClick={() => addToCart(product)}
-                className="flex-grow py-5 bg-brand-text text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-brand-accent transition-all duration-base shadow-tactile group"
+                onClick={handleAddToCart}
+                // ✅ FIX 9: Use theme background for button
+                className={`flex-grow py-5 ${theme.bg} text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:brightness-110 transition-all duration-base shadow-tactile group`}
               >
                 <ShoppingCart size={20} />
                 Add to Cart

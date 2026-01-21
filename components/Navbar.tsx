@@ -2,23 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation'; // Added useSearchParams
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Menu, X, ShoppingCart, User, Sparkles, ArrowRight } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+// ✅ FIX 1: Updated import to point to the unified AppProvider
+import { useCart } from '../context/AppProvider';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getCategoryTheme } from '../lib/theme'; // 1. Import theme utility
+import { getCategoryTheme } from '../lib/theme';
 import CartSidebar from "./CartSidebar";
 import MagneticLogo from "./MagneticLogo";
 
 export default function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  // This hook now comes from AppProvider but works exactly the same
   const { cartCount } = useCart();
   const pathname = usePathname();
-  const searchParams = useSearchParams(); // Added to detect category in URL
+  const searchParams = useSearchParams();
 
   // 2. Dynamic Theme Detection
-  // This looks at the URL to see if we are in a specific category (Tools, Life, Home)
   const activeCategory = searchParams.get('category') || undefined;
   const theme = getCategoryTheme(activeCategory);
 
@@ -70,7 +71,6 @@ export default function Navbar() {
                     {isActive && (
                       <motion.div 
                         layoutId="navUnderline"
-                        // 3. Underline color now matches the active category theme
                         className={`absolute -bottom-2 left-0 right-0 h-[1.5px] rounded-full ${theme.bg}`}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                       />
@@ -103,7 +103,6 @@ export default function Navbar() {
                   <motion.span 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    // 4. Cart badge color now matches the active category theme
                     className={`absolute top-3 right-3 text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center shadow-tactile px-1 transition-colors duration-slow ${theme.bg}`}
                   >
                     {cartCount}
@@ -141,7 +140,6 @@ export default function Navbar() {
                       className="font-sans text-4xl font-semibold tracking-tight text-brand-text flex justify-between items-center group"
                     >
                       {link.name}
-                      {/* 5. Mobile arrow icon now matches the theme color */}
                       <ArrowRight className={`opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0 ${theme.text}`} />
                     </Link>
                   ))}

@@ -1,3 +1,4 @@
+// ✅ FIX 1: Lowercase 'import'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -50,7 +51,7 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // 2. ROUTE PROTECTION
-  // Redirects unauthenticated users attempting to access protected account pages.
+  // Logic: Allow access to /account (Login page), but protect /account/* subroutes and /cart
   const isProtectedPath = 
     (request.nextUrl.pathname.startsWith('/account') &&
       request.nextUrl.pathname !== '/account') ||

@@ -5,13 +5,55 @@ import { useSearchParams } from 'next/navigation';
 import ProductCard from '../../components/ProductCard';
 import { getCategoryTheme } from '../../lib/theme';
 import { AnimatePresence } from 'framer-motion';
+import MarketplaceFilters from '../../components/MarketplaceFilters';
 
+// ✅ FIX 1: Added 'slug' to every mock product to match ProductCard interface
 const MOCK_PRODUCTS = [
-  { id: '1', name: 'Workflow Pro Template', price: 24.99, category: 'Tools', image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=800&auto=format&fit=crop', description: 'Comprehensive Notion workspace.' },
-  { id: '2', name: 'Minimalist UI Kit', price: 49.00, category: 'Life', image: 'https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?q=80&w=800&auto=format&fit=crop', description: 'Clean React components.' },
-  { id: '3', name: 'Digital Garden Planner', price: 15.00, category: 'Home', image: 'https://images.unsplash.com/photo-1544411047-c491584222f0?q=80&w=800&auto=format&fit=crop', description: 'Structured learning system.' },
-  { id: '4', name: 'Deep Work Timer', price: 12.00, category: 'Tools', image: 'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800&auto=format&fit=crop', description: 'Focus enhancement tool.' },
-  { id: '5', name: 'Creative Palette', price: 19.00, category: 'Life', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop', description: 'Color theory for designers.' },
+  { 
+    id: '1', 
+    slug: 'workflow-pro-template', 
+    name: 'Workflow Pro Template', 
+    price: 24.99, 
+    category: 'Tools', 
+    image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=800&auto=format&fit=crop', 
+    description: 'Comprehensive Notion workspace.' 
+  },
+  { 
+    id: '2', 
+    slug: 'minimalist-ui-kit', 
+    name: 'Minimalist UI Kit', 
+    price: 49.00, 
+    category: 'Life', 
+    image: 'https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?q=80&w=800&auto=format&fit=crop', 
+    description: 'Clean React components.' 
+  },
+  { 
+    id: '3', 
+    slug: 'digital-garden-planner', 
+    name: 'Digital Garden Planner', 
+    price: 15.00, 
+    category: 'Home', 
+    image: 'https://images.unsplash.com/photo-1544411047-c491584222f0?q=80&w=800&auto=format&fit=crop', 
+    description: 'Structured learning system.' 
+  },
+  { 
+    id: '4', 
+    slug: 'deep-work-timer', 
+    name: 'Deep Work Timer', 
+    price: 12.00, 
+    category: 'Tools', 
+    image: 'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800&auto=format&fit=crop', 
+    description: 'Focus enhancement tool.' 
+  },
+  { 
+    id: '5', 
+    slug: 'creative-palette', 
+    name: 'Creative Palette', 
+    price: 19.00, 
+    category: 'Life', 
+    image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop', 
+    description: 'Color theory for designers.' 
+  },
 ];
 
 // 1. INNER COMPONENT: Contains the SearchParams logic and State
@@ -43,6 +85,11 @@ function MarketplaceContent() {
               : "Every item in our marketplace has been hand-selected. No noise, just essentials."}
           </p>
         </header>
+        
+        <div className="mb-12">
+          {/* We need to verify this component next */}
+          <MarketplaceFilters activeCategory={category} />
+        </div>
 
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           <AnimatePresence mode="popLayout">

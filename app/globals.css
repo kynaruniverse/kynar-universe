@@ -4,43 +4,46 @@
 
 @layer base {
   :root {
-    /* SITE COLOR PALETTE (Standard 60-30-10 Rule) */
-    --brand-base: #F5F2F0;       /* Base Background */
-    --brand-text: #1C1C1C;       /* Primary Text */
-    --brand-surface: #D7C4B7;    /* Secondary Surface */
-    --brand-accent: #4A5D4E;     /* Primary Accent */
-    --accent-thermal: #D97E6E;   /* Warm Accent */
-    --accent-lavender: #9B94B0;  /* Soft Accent */
+    /* CORE COLOR PALETTE */
+    --brand-base: #FBFBF9;          /* Base Background */
+    --brand-text: #1A1A1A;          /* Primary Text */
+    --brand-surface: #F2F0ED;       /* Secondary Surface */
+    --brand-accent: #2D3B2E;        /* Primary Accent */
+    --accent-thermal: #C46B5B;      /* Warm Accent */
+    --accent-lavender: #867E9C;     /* Soft Accent */
+
+    /* Semantic tokens */
     --color-success: var(--brand-accent);
     --color-warning: var(--accent-thermal);
     --color-info: var(--accent-lavender);
     --color-muted: rgba(28, 28, 28, 0.45);
-    --color-disabled: rgba(28, 28, 28, 0.10);
-    --color-border: rgba(215, 196, 183, 0.20);
+    --color-disabled: rgba(28, 28, 28, 0.1);
+    --color-border: rgba(238, 238, 238, 0.2);
   }
+
   html {
     -webkit-tap-highlight-color: transparent;
     overflow-x: hidden;
     overscroll-behavior-y: none;
     color-scheme: light dark;
   }
+
   @media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
+    html { scroll-behavior: smooth; }
   }
-}
 
   body {
-    background-color: var(--brand-base); 
+    background-color: var(--brand-base);
     color: var(--brand-text);
-    @apply antialiased selection:bg-[#4A5D4E]/10;
+    @apply antialiased selection:bg-brand-accent/10;
     min-height: 100dvh;
     position: relative;
     -webkit-overflow-scrolling: touch;
     font-feature-settings: "ss01", "ss02", "cv01", "cv11";
+    font-family: var(--font-inter), system-ui, sans-serif;
   }
 
-  /* TYPOGRAPHY: Heading and Body Styles */
+  /* TYPOGRAPHY */
   h1, h2, h3, h4 {
     @apply font-semibold tracking-tight;
     color: var(--brand-text);
@@ -59,67 +62,41 @@
 }
 
 @layer components {
-  /* ELEVATION & SHADOWS */
+  /* SHADOWS */
   .shadow-tactile {
-    box-shadow: 
-      0 4px 30px -4px rgba(0, 0, 0, 0.03), 
-      0 2px 12px -2px rgba(0, 0, 0, 0.02);
+    @apply shadow-tactile;
   }
-
-  /* Interaction: Smooth hover lift */
   .shadow-tactile-hover {
-    @apply transition-transform transition-shadow duration-[800ms] ease-[cubic-bezier(0.19,1,0.22,1)];
+    @apply shadow-tactile-hover transition-transform transition-shadow duration-slow;
   }
-@media (hover: hover) {
-  .shadow-tactile-hover:hover {
-    box-shadow: 
-      0 30px 60px -12px rgba(0, 0, 0, 0.08), 
-      0 12px 24px -4px rgba(0, 0, 0, 0.03);
-    transform: translateY(-6px);
-  }
-}
 
-  /* SURFACE & CONTAINER STYLES */
+  /* SURFACES */
   .surface-frosted {
     background-color: rgba(215, 196, 183, 0.12);
     @apply backdrop-blur-2xl;
   }
-
   .card-elevated {
-    @apply bg-white rounded-[40px] shadow-tactile border-none overflow-hidden;
+    @apply bg-white rounded-card shadow-tactile border-none overflow-hidden;
   }
-
   .brand-nav {
     @apply bg-brand-base/70 backdrop-blur-2xl border-none shadow-tactile;
   }
 
-  /* PRIMARY BUTTON STYLES */
+  /* BUTTONS */
   .btn-primary {
-    @apply bg-brand-text text-white px-10 py-5 rounded-full font-semibold transition-all duration-slow hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
+    @apply bg-brand-text text-white px-10 py-5 rounded-btn font-semibold transition-all duration-slow hover:bg-brand-accent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98];
   }
-  
-  /* Accessibility focus styles for all interactive elements */
+  .btn-primary:disabled {
+    @apply opacity-40 cursor-not-allowed transform-none;
+  }
+
+  /* FOCUS STATES */
   :focus-visible {
     @apply outline-none ring-2 ring-brand-accent ring-offset-2 ring-offset-white;
   }
-
-  .btn-primary:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  transform: none;
-  }
-
-  .btn-primary:disabled:hover {
-    background-color: var(--brand-text);
-    box-shadow: 0 4px 30px -4px rgba(0, 0, 0, 0.03), 0 2px 12px -2px rgba(0, 0, 0, 0.02);
-  }
-
-  .rounded-inner {
-    @apply rounded-[28px];
-  }
 }
 
-/* FOCUS STATES */
+/* EXTENDED FOCUS STATES */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -129,30 +106,17 @@ select:focus-visible {
   outline-offset: 2px;
   transition: outline-offset 200ms ease;
 }
+a:focus-visible { outline-offset: 4px; }
 
-a:focus-visible {
-  outline-offset: 4px;
-}
-
-/* VISUAL REFINEMENTS */
-canvas {
-  touch-action: none;
-  image-rendering: -webkit-optimize-contrast;
-  opacity: 0.12;
-  filter: grayscale(1);
-  pointer-events: none;
-}
-
-/* Custom Scrollbar Styles */
+/* CUSTOM SCROLLBARS */
 @media (min-width: 768px) {
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(28, 28, 28, 0.08);
-    @apply rounded-full transition-colors hover:bg-[#4A5D4E]/30;
+    background: rgba(28,28,28,0.08);
+    @apply rounded-full transition-colors hover:bg-brand-accent/30;
   }
 }
-
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

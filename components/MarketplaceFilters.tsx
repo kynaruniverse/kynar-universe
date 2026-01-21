@@ -7,11 +7,18 @@ import { motion } from 'framer-motion';
 // 1. Import the unified theme utility
 import { getCategoryTheme } from '../lib/theme';
 
-function FilterContent() {
+// ✅ FIX 1: Defined interface to satisfy the parent component's usage
+interface MarketplaceFiltersProps {
+  activeCategory?: string | null;
+}
+
+function FilterContent({ activeCategory }: MarketplaceFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
+  // We prioritize searchParams as the source of truth, 
+  // but accepting the prop ensures TypeScript doesn't complain.
   const currentCategory = searchParams.get('category') || 'All';
   const currentSearch = searchParams.get('search') || '';
   const [searchTerm, setSearchTerm] = useState(currentSearch);
@@ -101,7 +108,7 @@ function FilterContent() {
         </div>
       </div>
 
-      {/* 3. MOBILE CATEGORY SCROLLER: Updated mobile buttons */}
+      {/* 3. MOBILE CATEGORY SCROLLER */}
       <div className="md:hidden -mx-6 px-6 overflow-x-auto scrollbar-hide">
         <div className="flex gap-4 min-w-max pb-4">
           {categories.map((cat) => {
@@ -142,10 +149,11 @@ function FilterContent() {
   );
 }
 
-export default function MarketplaceFilters() {
+// ✅ FIX 2: Exported component now accepts props to match parent signature
+export default function MarketplaceFilters({ activeCategory }: MarketplaceFiltersProps) {
   return (
     <Suspense fallback={<div className="h-24 w-full animate-pulse bg-brand-surface/10 rounded-card" />}>
-      <FilterContent />
+      <FilterContent activeCategory={activeCategory} />
     </Suspense>
   );
 }

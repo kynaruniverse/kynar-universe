@@ -1,9 +1,11 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link'; // ✅ FIX 1: Added Link for navigation
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+// ✅ FIX 2: Updated import to point to the unified AppProvider
+import { useCart } from '../context/AppProvider';
 import Image from 'next/image';
 
 interface CartSidebarProps {
@@ -95,10 +97,15 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
                   <span className="text-color-muted">Total</span>
                   <span className="text-2xl font-bold text-brand-text">£{totalPrice.toFixed(2)}</span>
                 </div>
-                <button className="w-full py-5 bg-brand-text text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-brand-accent transition-all duration-base shadow-tactile group">
+                {/* ✅ FIX 3: Wrapped button in Link to act as navigation */}
+                <Link 
+                  href="/cart" 
+                  onClick={onClose}
+                  className="w-full py-5 bg-brand-text text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-brand-accent transition-all duration-base shadow-tactile group"
+                >
                   Checkout Now
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </button>
+                </Link>
               </div>
             )}
           </motion.div>

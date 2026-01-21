@@ -4,38 +4,38 @@ export const dynamic = "force-dynamic";
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image'; // Added Import
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, ArrowRight, Trash2, ShieldCheck, Scale, Sparkles } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { getCategoryTheme } from '../../lib/theme';
-
-
+// Import the server action if you want to wire it up later
+import { processCheckout } from './actions'; 
 
 export default function CartPage() {
-  const { cartItems, removeFromCart, cartTotal } = useCart();
+  // FIXED: Changed 'cartItems' to 'cart'
+  const { cart, removeFromCart, cartTotal } = useCart();
 
-  if (cartItems.length === 0) return <EmptyCartState />;
+  if (cart.length === 0) return <EmptyCartState />;
 
   return (
     <main className="min-h-screen bg-brand-base py-24 px-6 selection:bg-brand-accent/20">
       <div className="max-w-7xl mx-auto">
-        
         <header className="mb-20">
           <h1 className="text-5xl md:text-7xl font-semibold text-brand-text tracking-tight mb-4">Checkout</h1>
           <p className="text-brand-text/40 font-medium">Review your selection. Purchase access will unlock shortly.</p>
         </header>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start">
-          {/* LEFT: ITEM LIST */}
           <div className="lg:col-span-2 space-y-6">
             <AnimatePresence mode='popLayout'>
-              {cartItems.map((item) => (
+              {/* FIXED: Iterating over 'cart' */}
+              {cart.map((item) => (
                 <CartLineItem key={item.id} item={item} onRemove={removeFromCart} />
               ))}
             </AnimatePresence>
           </div>
 
-          {/* RIGHT: ORDER SUMMARY */}
           <OrderSummary total={cartTotal} />
         </div>
       </div>
@@ -43,9 +43,6 @@ export default function CartPage() {
   );
 }
 
-/**
- * SUB-COMPONENT: Individual Cart Item
- */
 function CartLineItem({ item, onRemove }: { item: any; onRemove: (id: string) => void }) {
   const styles = getCategoryTheme(item.category);
 
@@ -58,7 +55,13 @@ function CartLineItem({ item, onRemove }: { item: any; onRemove: (id: string) =>
       className={`card-elevated p-6 md:p-8 flex gap-6 md:gap-10 items-center shadow-tactile-hover group border-l-4 ${styles.border}`}
     >
       <div className="w-24 h-24 md:w-32 md:h-32 bg-brand-base rounded-inner overflow-hidden flex-shrink-0 relative">
-        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-liquid" />
+        {/* FIXED: Used Next.js Image component */}
+        <Image 
+          src={item.image} 
+          alt={item.name} 
+          fill 
+          className="object-cover group-hover:scale-105 transition-transform duration-liquid" 
+        />
       </div>
 
       <div className="flex-grow">
@@ -78,6 +81,7 @@ function CartLineItem({ item, onRemove }: { item: any; onRemove: (id: string) =>
     </motion.div>
   );
 }
+
 
 /**
  * SUB-COMPONENT: Summary Sidebar
@@ -134,7 +138,7 @@ function EmptyCartState() {
         <p className="text-brand-text/40 mb-12 leading-relaxed max-w-sm mx-auto">Explore the products in our collection to preview digital solutions.</p>
         <Link href="/marketplace" className="btn-primary inline-flex items-center gap-3">
           Browse Products <ArrowRight size={16} />
-        </Link>
+       = </Link>
       </motion.div>
     </main>
   );

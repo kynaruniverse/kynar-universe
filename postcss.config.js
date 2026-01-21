@@ -1,17 +1,24 @@
 /**
- * POSTCSS CONFIGURATION
- * Configures the post-processing pipeline for Tailwind CSS and Autoprefixer.
+ * PostCSS Configuration
+ *
+ * This file configures the post-processing pipeline for Tailwind CSS
+ * and ensures browser compatibility with Autoprefixer.
+ *
+ * Plugins order is important:
+ *   1. 'tailwindcss/nesting' – enables nested CSS rules
+ *   2. 'tailwindcss'         – core Tailwind processing
+ *   3. 'autoprefixer'        – adds vendor prefixes for cross-browser support
  */
 
 module.exports = {
   plugins: {
-    // Enables support for nested CSS rules within Tailwind
-    'tailwindcss/nesting': {}, 
+    // Enable nested CSS rules similar to SCSS
+    'tailwindcss/nesting': {},
     
     // Core Tailwind CSS processing
     tailwindcss: {},
     
-    // Automatic browser prefixing for CSS compatibility
+    // Add vendor prefixes for better browser compatibility
     autoprefixer: {},
   },
-}
+};

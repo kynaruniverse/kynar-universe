@@ -1,3 +1,4 @@
+// ✅ FIX 1: Lowercase 'import'
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -12,6 +13,7 @@ export const supabase = createClient(urlToUse, keyToUse, {
     persistSession: true, 
     autoRefreshToken: true,
     detectSessionInUrl: true,
+    // Good practice: Unique key to avoid conflicts with other localhost apps
     storageKey: 'kynar-auth-session', 
   },
   global: {

@@ -5,69 +5,68 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    // ✅ FIX 1: Added context and lib to ensure dynamic classes aren't purged
+    "./context/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  // 1. SAFELIST: Ensures dynamic hover and background classes are always generated
   safelist: [
-    'hover:bg-brand-accent',
-    'hover:bg-accent-lavender',
-    'hover:bg-accent-thermal',
-    'bg-brand-accent',
-    'bg-accent-lavender',
-    'bg-accent-thermal',
-    'bg-brand-accent/30',
-    'bg-accent-lavender/30',
-    'bg-accent-thermal/30',
-    'text-brand-accent',
-    'text-accent-lavender',
-    'text-accent-thermal',
+    {
+      // This ensures your dynamic theme colors (from lib/theme.ts) always work
+      pattern: /(hover:)?bg-(brand-accent|accent-thermal|accent-lavender)(\/30)?/,
+    },
+    {
+      pattern: /text-(brand-accent|accent-thermal|accent-lavender)/,
+    },
   ],
   theme: {
     extend: {
       colors: {
-        // CURATED OPENNESS PALETTE: Soft, welcoming, and high-contrast
-        "brand-base": "#FBFBF9",  // Even softer paper-white
-        "brand-text": "#1A1A1A",  // Deep near-black for readability
-        "brand-surface": "#F2F0ED", // Subtle off-white for sections
-        "brand-accent": "#2D3B2E", // Deep forest for grounding
-        "accent-thermal": "#C46B5B", // Muted terracotta
-        "accent-lavender": "#867E9C", // Dusty lavender
-  
-        // SEMANTIC TOKENS
-        "color-success": "#2D3B2E",
-        "color-warning": "#C46B5B",
-        "color-info": "#867E9C",
-        "color-muted": "#666666",
-        "color-disabled": "#E5E5E5",
-        "color-border": "#EEEEEE",
+        // ✅ MATCH: Correspond strictly to globals.css variables
+        "brand-base": "var(--brand-base)",
+        "brand-text": "var(--brand-text)",
+        "brand-surface": "var(--brand-surface)",
+        "brand-accent": "var(--brand-accent)",
+        "accent-thermal": "var(--accent-thermal)",
+        "accent-lavender": "var(--accent-lavender)",
+        "color-success": "var(--color-success)",
+        "color-warning": "var(--color-warning)",
+        "color-info": "var(--color-info)",
+        "color-muted": "var(--color-muted)",
+        "color-disabled": "var(--color-disabled)",
+        "color-border": "var(--color-border)",
       },
       fontFamily: {
+        // ✅ MATCH: Corresponds to app/layout.tsx font variables
         sans: ['var(--font-outfit)', 'system-ui', 'sans-serif'],
         body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
-        'card': '32px',
-        'inner': '20px',
-        'btn': '100px',
+        // ✅ MATCH: Resolves the @apply rounded-card in globals.css
+        card: '32px',
+        inner: '20px',
+        btn: '100px',
       },
       spacing: {
-        '18': '4.5rem',   // 72px
-        '22': '5.5rem',   // 88px
-        '30': '7.5rem',   // 120px
+        18: '4.5rem',
+        22: '5.5rem',
+        30: '7.5rem',
       },
       boxShadow: {
-        'tactile': '0 4px 30px -4px rgba(0, 0, 0, 0.03), 0 2px 12px -2px rgba(0, 0, 0, 0.02)',
+        // ✅ MATCH: Resolves the @apply shadow-tactile in globals.css
+        tactile: '0 4px 30px -4px rgba(0, 0, 0, 0.03), 0 2px 12px -2px rgba(0, 0, 0, 0.02)',
         'tactile-hover': '0 30px 60px -12px rgba(0, 0, 0, 0.08), 0 12px 24px -4px rgba(0, 0, 0, 0.03)',
       },
       transitionDuration: {
-        'fast': '300ms',
-        'base': '500ms',
-        'slow': '800ms',
-        'liquid': '1200ms',
-        'glacial': '2000ms',
+        // ✅ MATCH: Resolves the @apply duration-slow in globals.css
+        fast: '300ms',
+        base: '500ms',
+        slow: '800ms',
+        liquid: '1200ms',
+        glacial: '2000ms',
       },
       animation: {
-        'fade-in': 'fadeIn 1s cubic-bezier(0.19, 1, 0.22, 1) forwards',
-        'reveal': 'reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'anim-fade-in': 'fadeIn 1s cubic-bezier(0.19, 1, 0.22, 1) forwards',
+        'anim-reveal': 'reveal 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards',
       },
       keyframes: {
         fadeIn: {
@@ -83,7 +82,8 @@ const config: Config = {
   },
   plugins: [
     require('@tailwindcss/typography'),
-    require('tailwind-scrollbar-hide'),
+    require('tailwind-scrollbar'),
   ],
 };
+
 export default config;

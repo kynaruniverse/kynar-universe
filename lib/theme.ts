@@ -1,13 +1,6 @@
 /**
- * SAFELIST FOR DYNAMIC TAILWIND CLASSES:
- * hover:bg-brand-accent
- * hover:bg-accent-lavender
- * hover:bg-accent-thermal
- */
-
- /**
- * GLOBAL THEME CONFIGURATION
- * Centralized mapping for Kynar Category Identities
+ * CATEGORY THEMES
+ * Centralized mapping of marketplace categories to Tailwind classes
  */
 
 export const CATEGORY_THEMES = {
@@ -46,8 +39,8 @@ export const CATEGORY_THEMES = {
 };
 
 /**
- * Helper to get theme by category name
+ * Get theme by category
  */
-export const getCategoryTheme = (category?: string) => {
+export const getCategoryTheme = (category ? : string) => {
   return CATEGORY_THEMES[category as keyof typeof CATEGORY_THEMES] || CATEGORY_THEMES.Default;
 };
