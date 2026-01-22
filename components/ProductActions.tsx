@@ -56,15 +56,22 @@ export default function ProductActions({ checkoutUrl, price }: { checkoutUrl: st
   }, [router]);
 
   const handleBuy = () => {
-    if (!targetUrl) return;
+    if (!targetUrl) {
+      console.error('No checkout URL configured for this product');
+      return;
+    }
     
     if (!user) {
+      // Store intended product for post-login redirect
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('kynar_checkout_redirect', targetUrl);
+      }
       router.push('/login');
       return;
     }
 
     const separator = targetUrl.includes('?') ? '&' : '?';
-    const finalUrl = `${targetUrl}${separator}checkout[custom][user_id]=${user.id}`;
+    const finalUrl = `${targetUrl}${separator}checkout[custom][user_id]=${user.id}&checkout[email]=${encodeURIComponent(user.email || '')}`;
     
     // @ts-ignore
     if (window.LemonSqueezy?.Url?.Open) {
@@ -86,7 +93,11 @@ export default function ProductActions({ checkoutUrl, price }: { checkoutUrl: st
       </button>
       
       {/* Visual-only Cart button for V1 */}
-      <button disabled className="px-4 py-3.5 rounded-xl font-semibold text-kyn-slate-400 border border-kyn-slate-200 cursor-not-allowed">
+      <button 
+        disabled 
+        aria-label="Add to cart (coming soon)"
+        className="px-4 py-3.5 rounded-xl font-semibold text-kyn-slate-400 border border-kyn-slate-200 cursor-not-allowed"
+      >
         Add to Cart
       </button>
     </div>

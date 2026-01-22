@@ -1,20 +1,33 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { env } from '@/lib/env';
+import { rateLimit } from '@/lib/rate-limit';
 import crypto from 'crypto';
 
 export async function POST(req: Request) {
+  // Rate limiting
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  const { success: rateLimitOk } = rateLimit(`webhook:${ip}`, 30, 60000);
+  
+  if (!rateLimitOk) {
+    return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+  }
+
   try {
     // -------------------------------------------------------------------------
     // SIGNATURE VERIFICATION
     // -------------------------------------------------------------------------
+    import { env } from '@/lib/env';
+
     const rawBody = await req.text();
     const signature = req.headers.get('x-signature');
-    const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET;
+    const secret = env.lemonSqueezy.webhookSecret;
 
     if (!secret) {
       console.error('LEMONSQUEEZY_WEBHOOK_SECRET is not set.');
       return NextResponse.json({ error: 'Server config error' }, { status: 500 });
     }
+    
     if (!signature) {
       return NextResponse.json({ error: 'Missing signature' }, { status: 401 });
     }
@@ -47,16 +60,28 @@ export async function POST(req: Request) {
 
       // 1. Init Supabase Admin
       const supabaseAdmin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
+        env.supabase.url,
+        env.supabase.serviceRoleKey
       );
 
-      // 2. DYNAMIC LOOKUP: Find product where 'price_id' matches the Variant ID
-      const { data: product, error: productError } = await supabaseAdmin
+      // 2. DYNAMIC LOOKUP: Find product where 'price_id' matches the Variant ID OR full checkout URL
+      // First try exact match on variant ID
+      let { data: product, error: productError } = await supabaseAdmin
         .from('products')
-        .select('id, title')
+        .select('id, title, content_url')
         .eq('price_id', variantId)
         .single();
+
+      // If not found, try matching against URLs that contain the variant ID
+      if (productError || !product) {
+        const { data: products } = await supabaseAdmin
+          .from('products')
+          .select('id, title, content_url, price_id')
+          .like('price_id', `%${variantId}%`);
+        
+        product = products?.[0] || null;
+        productError = product ? null : productError;
+      }
 
       if (productError || !product) {
         console.error(`Product not found for Variant ID: ${variantId}`);
@@ -66,6 +91,20 @@ export async function POST(req: Request) {
 
       console.log(`Processing order for product: ${product.title} (${product.id})`);
 
+      // 3. Check for duplicate purchase record (idempotency)
+      const { data: existingPurchase } = await supabaseAdmin
+        .from('purchases')
+        .select('id')
+        .eq('user_id', userId)
+        .eq('product_id', product.id)
+        .eq('lemon_squeezy_order_id', orderId)
+        .single();
+
+      if (existingPurchase) {
+        console.log('Purchase already recorded, skipping duplicate');
+        return NextResponse.json({ received: true, duplicate: true });
+      }
+
       // 3. Record Purchase
       const { error: insertError } = await supabaseAdmin
         .from('purchases')
@@ -73,7 +112,9 @@ export async function POST(req: Request) {
           user_id: userId,
           product_id: product.id,
           lemon_squeezy_order_id: orderId,
-          status: 'completed'
+          lemon_squeezy_checkout_id: String(data.attributes.identifier),
+          status: 'completed',
+          purchase_date: new Date().toISOString()
         });
           
       if (insertError) {

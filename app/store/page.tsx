@@ -2,16 +2,22 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import ProductCard from '@/components/ProductCard';
 
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Browse Store | Kynar Universe',
+  description: 'Browse curated digital products for home, lifestyle, and projects.',
+};
+
 // 1. Force dynamic rendering for search params
 export const dynamic = 'force-dynamic';
 
-// 2. Define Filter Types
-const WORLDS = ['Home', 'Lifestyle', 'Tools'];
+import { WORLDS } from '@/lib/constants';
 
 async function getProducts(worldFilter?: string) {
   let query = supabase
     .from('products')
-    .select('*')
+    .select('id, title, slug, world, short_description, preview_image, tags, file_types')
     .eq('is_published', true)
     .order('created_at', { ascending: false });
 
@@ -32,13 +38,13 @@ export default async function StorePage({ searchParams }: { searchParams: Promis
   return (
     <div className="px-4 py-6 pb-24 space-y-6">
       
-      {/* Page Header */}
+      {/* Page Header - UX Guide 2.2 */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold text-kyn-slate-900 dark:text-white">
           Browse Store
         </h1>
         <p className="text-kyn-slate-500 text-sm">
-          {products.length} {products.length === 1 ? 'result' : 'results'} found
+          {products.length} product{products.length === 1 ? '' : 's'} found
         </p>
       </div>
 

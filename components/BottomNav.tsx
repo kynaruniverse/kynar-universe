@@ -28,6 +28,8 @@ export default function BottomNav() {
             <Link 
               key={item.label} 
               href={item.href}
+              aria-label={item.label}
+              aria-current={isActive ? 'page' : undefined}
               className={`
                 flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors
                 ${isActive 

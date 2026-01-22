@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { Metadata } from 'next';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { supabase } from '@/lib/supabase';
@@ -10,6 +11,8 @@ import { Skeleton } from '@/components/ui/Skeleton';
 
 
 // Define the Purchase Type (Joined with Product)
+// Note: metadata export doesn't work in 'use client' components
+// Consider moving to a layout or server component wrapper if SEO is needed
 interface Purchase {
   id: string;
   purchase_date: string;
@@ -40,31 +43,34 @@ export default function AccountPage() {
     }
   }, [user, loading, router]);
 
-  async function fetchPurchases(userId: string) {
-    try {
-      const { data, error } = await supabase
-        .from('purchases')
-        .select(`
-          id,
-          purchase_date,
-          product:products (
-            id, title, slug, world, content_url, preview_image
-          )
-        `)
-        .eq('user_id', userId)
-        .eq('status', 'completed')
-        .order('purchase_date', { ascending: false });
+  const [error, setError] = useState<string | null>(null);
 
-      if (error) throw error;
+    async function fetchPurchases(userId: string) {
+      try {
+        setError(null);
+        const { data, error } = await supabase
+          .from('purchases')
+          .select(`
+            id,
+            purchase_date,
+            product:products (
+              id, title, slug, world, content_url, preview_image
+            )
+          `)
+          .eq('user_id', userId)
+          .eq('status', 'completed')
+          .order('purchase_date', { ascending: false });
+
+        if (error) throw error;
       
-      // Need to cast because Supabase types can be tricky with joins
-      setPurchases(data as unknown as Purchase[]);
-    } catch (err) {
-      console.error('Error loading purchases:', err);
-    } finally {
-      setFetching(false);
+        setPurchases(data as unknown as Purchase[]);
+      } catch (err) {
+        console.error('Error loading purchases:', err);
+        setError('Failed to load your library. Please refresh to try again.');
+      } finally {
+        setFetching(false);
+      }
     }
-  }
 
   if (loading || !user) return null; // Or a loading spinner
 
@@ -100,6 +106,12 @@ export default function AccountPage() {
 
       {/* Downloads Library */}
       <section className="space-y-4">
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 rounded-xl text-sm text-red-600 dark:text-red-400">
+            {error}
+          </div>
+        )}
+        
         <h2 className="text-lg font-bold text-kyn-slate-900 dark:text-white flex items-center gap-2">
           Downloads Library
           <span className="bg-kyn-slate-100 dark:bg-kyn-slate-700 text-kyn-slate-600 dark:text-kyn-slate-300 text-xs px-2 py-0.5 rounded-full">
@@ -131,10 +143,10 @@ export default function AccountPage() {
           <div className="text-center py-12 bg-kyn-slate-50 dark:bg-kyn-slate-800/50 rounded-2xl border border-dashed border-kyn-slate-300 dark:border-kyn-slate-700">
             <Package className="w-12 h-12 text-kyn-slate-400 mx-auto mb-3" />
             <h3 className="text-kyn-slate-900 dark:text-white font-medium mb-1">
-              Your library is empty
+              Ready for downloads
             </h3>
             <p className="text-sm text-kyn-slate-500 mb-4 px-8">
-              Start your collection to organise your digital life.
+              Your library's waiting. Start shopping.
             </p>
             <button 
               onClick={() => router.push('/store')}

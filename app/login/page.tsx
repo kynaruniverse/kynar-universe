@@ -23,12 +23,19 @@ export default function LoginPage() {
     });
 
     if (error) {
-      setMessage({ type: 'error', text: error.message });
-      setLoading(false);
-    } else {
-      router.push('/account'); // Redirect to Account on success
-      router.refresh();
-    }
+        setMessage({ type: 'error', text: error.message });
+        setLoading(false);
+      } else {
+        // Check for pending checkout redirect
+        const checkoutRedirect = sessionStorage.getItem('kynar_checkout_redirect');
+        if (checkoutRedirect) {
+          sessionStorage.removeItem('kynar_checkout_redirect');
+          window.location.href = checkoutRedirect;
+        } else {
+          router.push('/account');
+          router.refresh();
+        }
+      }
   };
 
   const handleSignUp = async () => {
@@ -53,10 +60,10 @@ export default function LoginPage() {
     <div className="px-4 py-12 max-w-sm mx-auto space-y-8">
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-kyn-slate-900 dark:text-white">
-          Welcome Back
+          Welcome back
         </h1>
         <p className="text-kyn-slate-500">
-          Log in to access your digital library.
+          Log in to continue shopping.
         </p>
       </div>
 

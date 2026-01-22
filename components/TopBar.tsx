@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingBag, User } from 'lucide-react';
+import { Store, User } from 'lucide-react';
 import { useAuth } from '@/components/AuthProvider';
 
 export default function TopBar() {
@@ -18,19 +18,22 @@ export default function TopBar() {
         {/* Icons (Right Side) */}
         <div className="flex items-center space-x-2">
           {/* Store / Browse Link */}
-          <Link href="/store" className="p-2 text-kyn-slate-600 dark:text-kyn-slate-300 hover:text-kyn-green-600 transition-colors relative">
-            <ShoppingBag size={22} />
-            {/* Optional: You can keep the dot if you want, or remove it until Cart logic is built */}
-            {/* <span className="absolute top-2 right-2 w-2 h-2 bg-kyn-green-500 rounded-full"></span> */}
+          <Link 
+            href="/store" 
+            aria-label="Browse store"
+            className="p-2 text-kyn-slate-600 dark:text-kyn-slate-300 hover:text-kyn-green-600 transition-colors relative"
+          >
+            <Store size={22} />
           </Link>
           
           {/* Smart User Link */}
           <Link 
-            href={user ? "/account" : "/login"} 
+            href={user ? "/account" : "/login"}
+            aria-label={user ? "My account" : "Log in"}
             className={`
               p-2 transition-colors
               ${user 
-                ? 'text-kyn-green-600 dark:text-kyn-green-400' // Green = Logged In
+                ? 'text-kyn-green-600 dark:text-kyn-green-400'
                 : 'text-kyn-slate-600 dark:text-kyn-slate-300 hover:text-kyn-green-600'} 
             `}
           >

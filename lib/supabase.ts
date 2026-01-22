@@ -1,6 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
+import type { Database } from './database.types';
+import { env } from './env';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient < Database > (
+  env.supabase.url,
+  env.supabase.anonKey,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true
+    }
+  }
+);
