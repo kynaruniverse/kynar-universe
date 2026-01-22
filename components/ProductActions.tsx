@@ -4,14 +4,24 @@ import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 
+// Helper to determine if the price is an ID or a full URL
+function getCheckoutUrl(priceId: string | null) {
+  if (!priceId) return '';
+  // If it starts with http, assume it's a full URL (Legacy support)
+  if (priceId.startsWith('http')) return priceId;
+  // Otherwise, assume it's a Variant ID and build the URL
+  return `https://store.lemonsqueezy.com/checkout/buy/${priceId}`;
+}
+
 export default function ProductActions({ checkoutUrl, price }: { checkoutUrl: string | null, price: string }) {
   const { user } = useAuth();
   const router = useRouter();
-  // Use a ref to make sure we don't set up the listener twice
   const setupDone = useRef(false);
 
+  // Determine the actual URL to open
+  const targetUrl = getCheckoutUrl(checkoutUrl);
+
   useEffect(() => {
-    // 1. Define the setup function safely
     const initLemonSqueezy = () => {
       // @ts-ignore
       if (window.LemonSqueezy && !setupDone.current) {
@@ -25,46 +35,42 @@ export default function ProductActions({ checkoutUrl, price }: { checkoutUrl: st
               }
             },
           });
-          setupDone.current = true; // Mark as done so we stop checking
+          setupDone.current = true;
         } catch (error) {
           console.error("Setup failed:", error);
         }
       }
     };
 
-    // 2. Try immediately in case it's already loaded
     initLemonSqueezy();
 
-    // 3. If not loaded, check every 500ms until it is
     const intervalId = setInterval(() => {
       if (setupDone.current) {
-        clearInterval(intervalId); // Stop checking once loaded
+        clearInterval(intervalId);
       } else {
         initLemonSqueezy();
       }
     }, 500);
 
-    // Cleanup: Clear the timer if the user leaves the page
     return () => clearInterval(intervalId);
   }, [router]);
 
   const handleBuy = () => {
-    if (!checkoutUrl) return;
+    if (!targetUrl) return;
     
     if (!user) {
       router.push('/login');
       return;
     }
 
-    const separator = checkoutUrl.includes('?') ? '&' : '?';
-    const finalUrl = `${checkoutUrl}${separator}checkout[custom][user_id]=${user.id}`;
+    const separator = targetUrl.includes('?') ? '&' : '?';
+    const finalUrl = `${targetUrl}${separator}checkout[custom][user_id]=${user.id}`;
     
     // @ts-ignore
     if (window.LemonSqueezy?.Url?.Open) {
       // @ts-ignore
-      window.LemonSqueezy.Url.Open(finalUrl);
+      window.LemonSqueezy.Url.Open(finalUrl); 
     } else {
-      // Fallback if script is still loading
       window.location.href = finalUrl;
     }
   };
@@ -79,7 +85,8 @@ export default function ProductActions({ checkoutUrl, price }: { checkoutUrl: st
         <span className="bg-white/20 px-2 py-0.5 rounded text-sm">{price}</span>
       </button>
       
-      <button className="px-4 py-3.5 rounded-xl font-semibold text-kyn-slate-700 dark:text-kyn-slate-200 border border-kyn-slate-200 dark:border-kyn-slate-700 hover:bg-kyn-slate-50 dark:hover:bg-kyn-slate-800">
+      {/* Visual-only Cart button for V1 */}
+      <button disabled className="px-4 py-3.5 rounded-xl font-semibold text-kyn-slate-400 border border-kyn-slate-200 cursor-not-allowed">
         Add to Cart
       </button>
     </div>
