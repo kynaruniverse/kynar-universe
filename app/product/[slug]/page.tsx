@@ -3,10 +3,9 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import ProductActions from '@/components/ProductActions';
 import type { Product } from '@/lib/types';
+import { WORLD_CONFIG } from '@/lib/constants';
 
 export const dynamic = 'force-dynamic';
-
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> })
 
 async function getProduct(slug: string) {
   const { data } = await supabase
@@ -19,16 +18,36 @@ async function getProduct(slug: string) {
   return data as Product | null;
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = await getProduct(slug);
+  
+  if (!product) {
+    return {
+      title: 'Product Not Found'
+    };
+  }
+  
+  return {
+    title: `${product.title} | Kynar Universe`,
+    description: product.short_description || product.description,
+    openGraph: {
+      title: product.title,
+      description: product.short_description || product.description,
+      images: product.preview_image ? [product.preview_image] : [],
+      type: 'website'
+    }
+  };
+}
+
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = await getProduct(slug);
 
   if (!product) notFound();
 
-  import { WORLD_CONFIG } from '@/lib/constants';
-
-    const worldConfig = WORLD_CONFIG[product.world];
-    const accentColor = `${worldConfig.colorClasses.text} ${worldConfig.colorClasses.bg}`;
+  const worldConfig = WORLD_CONFIG[product.world];
+  const accentColor = `${worldConfig.colorClasses.text} ${worldConfig.colorClasses.bg}`;
 
   return (
     <div className="px-4 py-6 pb-24 space-y-8">

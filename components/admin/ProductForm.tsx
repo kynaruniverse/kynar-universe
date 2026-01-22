@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { validateProductData, sanitizeSlug } from '@/lib/validation';
 import { Loader2, Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { sanitizeSlug } from '@/lib/validation';
+
 interface ProductFormProps {
   initialData?: any; // If present, we are editing
 }
@@ -40,8 +41,6 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   };
 
   const [saveError, setSaveError] = useState<string | null>(null);
-
-  import { validateProductData, sanitizeSlug } from '@/lib/validation';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,8 +97,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 // Auto-generate slug from title if slug is empty
   const handleTitleBlur = () => {
     if (!formData.slug && formData.title) {
-    const slug = sanitizeSlug(formData.title);
-    setFormData(prev => ({ ...prev, slug }));
+      const slug = sanitizeSlug(formData.title);
+      setFormData(prev => ({ ...prev, slug }));
     }
   };
 

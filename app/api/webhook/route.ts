@@ -5,24 +5,22 @@ import { rateLimit } from '@/lib/rate-limit';
 import crypto from 'crypto';
 
 export async function POST(req: Request) {
-  // Rate limiting
-  const ip = req.headers.get('x-forwarded-for') || 'unknown';
-  const { success: rateLimitOk } = rateLimit(`webhook:${ip}`, 30, 60000);
-  
-  if (!rateLimitOk) {
-    return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
-  }
-
-  try {
-    // -------------------------------------------------------------------------
-    // SIGNATURE VERIFICATION
-    // -------------------------------------------------------------------------
-    import { env } from '@/lib/env';
-
-    const rawBody = await req.text();
-    const signature = req.headers.get('x-signature');
-    const secret = env.lemonSqueezy.webhookSecret;
-
+    // Rate limiting
+    const ip = req.headers.get('x-forwarded-for') || 'unknown';
+    const { success: rateLimitOk } = rateLimit(`webhook:${ip}`, 30, 60000);
+    
+    if (!rateLimitOk) {
+      return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+    }
+    
+    try {
+      // -------------------------------------------------------------------------
+      // SIGNATURE VERIFICATION
+      // -------------------------------------------------------------------------
+      const rawBody = await req.text();
+      const signature = req.headers.get('x-signature');
+      const secret = env.lemonSqueezy.webhookSecret;
+      
     if (!secret) {
       console.error('LEMONSQUEEZY_WEBHOOK_SECRET is not set.');
       return NextResponse.json({ error: 'Server config error' }, { status: 500 });

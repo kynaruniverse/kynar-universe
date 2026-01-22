@@ -23,19 +23,19 @@ export default function LoginPage() {
     });
 
     if (error) {
-        setMessage({ type: 'error', text: error.message });
-        setLoading(false);
+      setMessage({ type: 'error', text: error.message });
+      setLoading(false);
+    } else {
+      // Check for pending checkout redirect
+      const checkoutRedirect = sessionStorage.getItem('kynar_checkout_redirect');
+      if (checkoutRedirect) {
+        sessionStorage.removeItem('kynar_checkout_redirect');
+        window.location.href = checkoutRedirect;
       } else {
-        // Check for pending checkout redirect
-        const checkoutRedirect = sessionStorage.getItem('kynar_checkout_redirect');
-        if (checkoutRedirect) {
-          sessionStorage.removeItem('kynar_checkout_redirect');
-          window.location.href = checkoutRedirect;
-        } else {
-          router.push('/account');
-          router.refresh();
-        }
+        router.push('/account');
+        router.refresh();
       }
+    }
   };
 
   const handleSignUp = async () => {
