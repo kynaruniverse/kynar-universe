@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Warm Off-White Canvas */
+  --canvas: 250 4% 97%; 
+  /* Light Surface */
+  --surface: 210 20% 98%; 
+  /* Near-black text */
+  --text-primary: 215 25% 7%; 
+  --foreground-rgb: 0, 0, 0;
+}
+
+.dark {
+  /* Charcoal Grey Canvas */
+  --canvas: 217 32% 17%; 
+  /* Dark Surface */
+  --surface: 217 32% 28%; 
+  /* Off-white text */
+  --text-primary: 210 40% 98%; 
+  --foreground-rgb: 255, 255, 255;
+}
+
+body {
+  color: hsl(var(--text-primary));
+  background: hsl(var(--canvas));
+}
