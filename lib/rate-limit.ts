@@ -1,5 +1,6 @@
 // Simple rate limiting for API routes
 // For production, consider using Redis or a dedicated service
+
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 export function rateLimit(
@@ -9,7 +10,7 @@ export function rateLimit(
 ): { success: boolean; remaining: number } {
   const now = Date.now();
   const record = rateLimitMap.get(identifier);
-  
+
   if (!record || now > record.resetAt) {
     rateLimitMap.set(identifier, {
       count: 1,
@@ -29,7 +30,6 @@ export function rateLimit(
 // Cleanup old entries periodically
 setInterval(() => {
   const now = Date.now();
-  
   for (const [key, value] of rateLimitMap.entries()) {
     if (now > value.resetAt) {
       rateLimitMap.delete(key);

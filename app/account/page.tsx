@@ -45,10 +45,10 @@ export default function AccountPage() {
 
   const [error, setError] = useState<string | null>(null);
 
-    async function fetchPurchases(userId: string) {
-      try {
-        setError(null);
-        const { data, error } = await supabase
+  async function fetchPurchases(userId: string) {
+    try {
+      setError(null);
+      const { data, error } = await supabase
           .from('purchases')
           .select(`
             id,
@@ -119,11 +119,10 @@ export default function AccountPage() {
           </span>
         </h2>
         
-        {
-  fetching ? (
+        {fetching ? (
       /* Skeleton Loading State */
-      <div className="grid gap-4">
-    {[1, 2].map((i) => (
+          <div className="grid gap-4">
+            {[1, 2].map((i) => (
       <div key={i} className="bg-white dark:bg-kyn-slate-800 p-4 rounded-xl border border-kyn-slate-100 dark:border-kyn-slate-800 flex flex-col gap-4">
         <div className="space-y-2">
           <Skeleton className="h-4 w-16 rounded-full" /> {/* World Badge */}
@@ -135,10 +134,9 @@ export default function AccountPage() {
           <Skeleton className="h-10 w-12 rounded-lg" />   {/* Button 2 */}
         </div>
       </div>
-    ))}
-  </div>
-    ) : purchases.length === 0 ? (
-      // ... Keep your existing Empty State code here ...
+            ))}
+          </div>
+        ) : purchases.length === 0 ? (
           /* Empty State */
           <div className="text-center py-12 bg-kyn-slate-50 dark:bg-kyn-slate-800/50 rounded-2xl border border-dashed border-kyn-slate-300 dark:border-kyn-slate-700">
             <Package className="w-12 h-12 text-kyn-slate-400 mx-auto mb-3" />
