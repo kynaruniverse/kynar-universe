@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
+import AuthProvider from '@/components/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,11 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} bg-canvas text-primary antialiased min-h-screen pb-20 pt-16`}>
-        <TopBar />
-        <main className="max-w-md mx-auto min-h-screen relative">
-          {children}
-        </main>
-        <BottomNav />
+        <AuthProvider> {/* <-- Wrap here */}
+          <TopBar />
+          <main className="max-w-md mx-auto min-h-screen relative">
+            {children}
+          </main>
+          <BottomNav />
+        </AuthProvider> {/* <-- End wrap */}
       </body>
     </html>
   );
