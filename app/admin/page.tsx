@@ -1,24 +1,38 @@
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
-import { Plus, Edit2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit2, Eye } from 'lucide-react';
+
+// 1. Define the Interface so TypeScript knows what a Product looks like
+interface Product {
+  id: string;
+  title: string;
+  slug: string;
+  world: string;
+  is_published: boolean;
+  created_at: string;
+}
 
 // Force dynamic so the list is always fresh
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
-  // Fetch ALL products (including drafts) with stats
-  const { data: products } = await supabase
+  // 2. Fetch data (Notice we don't alias to 'products' immediately)
+  const { data } = await supabase
     .from('products')
     .select('id, title, slug, world, is_published, created_at')
     .order('created_at', { ascending: false });
+
+  // 3. Explicitly tell TypeScript: "Trust me, this data is a list of Products"
+  const products = (data as Product[]) || [];
 
   const { count: totalPurchases } = await supabase
     .from('purchases')
     .select('*', { count: 'exact', head: true })
     .eq('status', 'completed');
 
-  const publishedCount = products?.filter(p => p.is_published).length || 0;
-  const draftCount = products?.filter(p => !p.is_published).length || 0;
+  // 4. Now these filters work perfectly because TS knows 'is_published' exists
+  const publishedCount = products.filter(p => p.is_published).length;
+  const draftCount = products.filter(p => !p.is_published).length;
 
   return (
     <div className="space-y-6">
@@ -55,7 +69,7 @@ export default async function AdminDashboard() {
 
       {/* Product List */}
       <div className="bg-white dark:bg-kyn-slate-800 rounded-xl border border-kyn-slate-200 dark:border-kyn-slate-700 overflow-hidden">
-        {products?.map((product) => (
+        {products.map((product) => (
           <div 
             key={product.id}
             className="flex items-center justify-between p-4 border-b border-kyn-slate-100 dark:border-kyn-slate-700 last:border-0"
@@ -82,7 +96,6 @@ export default async function AdminDashboard() {
               >
                 <Eye size={18} />
               </Link>
-              {/* Edit Button (We will build this page next) */}
               <Link 
                 href={`/admin/products/${product.id}`}
                 className="text-kyn-slate-400 hover:text-blue-600"
@@ -93,7 +106,7 @@ export default async function AdminDashboard() {
           </div>
         ))}
 
-        {(!products || products.length === 0) && (
+        {products.length === 0 && (
           <div className="p-8 text-center text-kyn-slate-500">
             No products found. Add your first one!
           </div>
