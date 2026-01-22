@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
@@ -42,7 +43,12 @@ export default function RootLayout({
             {children}
           </main>
           <BottomNav />
-        </AuthProvider> {/* <-- End wrap */}
+        </AuthProvider>
+        
+        <Script 
+          src="https://app.lemonsqueezy.com/js/lemon.js" 
+          strategy="lazyOnload" 
+        />
       </body>
     </html>
   );
