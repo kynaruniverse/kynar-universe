@@ -93,13 +93,13 @@ export default function GuidesPage() {
         ))}
       </div>
 
-      {/* Newsletter Section [UX Guide 2.1] */}
+      {/* Newsletter Section - Language Guide 8.2 */}
       <div className="bg-kyn-green-50 dark:bg-kyn-green-900/10 p-6 rounded-2xl border border-kyn-green-100 dark:border-kyn-green-900 text-center space-y-4">
         <h3 className="font-bold text-kyn-slate-900 dark:text-white">
-          Stay Organised
+          Stay organised
         </h3>
         <p className="text-sm text-kyn-slate-600 dark:text-kyn-slate-300">
-          Get new releases and tips sent to your inbox.
+          New releases in your inbox.
         </p>
         <div className="flex gap-2">
           <input 

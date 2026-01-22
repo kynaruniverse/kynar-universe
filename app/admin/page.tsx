@@ -6,15 +6,39 @@ import { Plus, Edit2, Eye, EyeOff } from 'lucide-react';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
-  // Fetch ALL products (including drafts)
+  // Fetch ALL products (including drafts) with stats
   const { data: products } = await supabase
     .from('products')
-    .select('*')
+    .select('id, title, slug, world, is_published, created_at')
     .order('created_at', { ascending: false });
+
+  const { count: totalPurchases } = await supabase
+    .from('purchases')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'completed');
+
+  const publishedCount = products?.filter(p => p.is_published).length || 0;
+  const draftCount = products?.filter(p => !p.is_published).length || 0;
 
   return (
     <div className="space-y-6">
       
+      {/* Stats Bar */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-white dark:bg-kyn-slate-800 p-4 rounded-xl border border-kyn-slate-200 dark:border-kyn-slate-700">
+          <p className="text-xs text-kyn-slate-500 font-medium">Published</p>
+          <p className="text-2xl font-bold text-kyn-green-600">{publishedCount}</p>
+        </div>
+        <div className="bg-white dark:bg-kyn-slate-800 p-4 rounded-xl border border-kyn-slate-200 dark:border-kyn-slate-700">
+          <p className="text-xs text-kyn-slate-500 font-medium">Drafts</p>
+          <p className="text-2xl font-bold text-kyn-slate-600">{draftCount}</p>
+        </div>
+        <div className="bg-white dark:bg-kyn-slate-800 p-4 rounded-xl border border-kyn-slate-200 dark:border-kyn-slate-700">
+          <p className="text-xs text-kyn-slate-500 font-medium">Sales</p>
+          <p className="text-2xl font-bold text-kyn-slate-900 dark:text-white">{totalPurchases || 0}</p>
+        </div>
+      </div>
+
       {/* Header Actions */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-kyn-slate-900 dark:text-white">

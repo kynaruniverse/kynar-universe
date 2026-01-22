@@ -1,28 +1,21 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Check, FileText, ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import ProductActions from '@/components/ProductActions'; // <-- Import
+import ProductActions from '@/components/ProductActions';
+import type { Product } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  price_id: string; // This now holds the Checkout URL
-  world: 'Home' | 'Lifestyle' | 'Tools';
-  tags: string[];
-  file_types: string[];
-}
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> })
 
 async function getProduct(slug: string) {
   const { data } = await supabase
     .from('products')
-    .select('*')
+    .select('id, title, slug, description, price_id, world, tags, file_types, preview_image, content_url')
     .eq('slug', slug)
+    .eq('is_published', true)
     .single();
-    
+  
   return data as Product | null;
 }
 
@@ -32,11 +25,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   if (!product) notFound();
 
-  // World-specific styling (Simplified for brevity)
-  const accentColor = 
-    product.world === 'Home' ? 'text-kyn-green-600 bg-kyn-green-50 dark:bg-kyn-green-900/20' :
-    product.world === 'Lifestyle' ? 'text-kyn-caramel-600 bg-kyn-caramel-50 dark:bg-kyn-caramel-900/20' :
-    'text-kyn-slate-600 bg-kyn-slate-50 dark:bg-kyn-slate-800/50';
+  import { WORLD_CONFIG } from '@/lib/constants';
+
+    const worldConfig = WORLD_CONFIG[product.world];
+    const accentColor = `${worldConfig.colorClasses.text} ${worldConfig.colorClasses.bg}`;
 
   return (
     <div className="px-4 py-6 pb-24 space-y-8">
@@ -58,9 +50,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           {product.title}
         </h1>
         
-        {/* Placeholder Preview */}
-        <div className="aspect-video bg-kyn-slate-100 dark:bg-kyn-slate-800 rounded-xl flex items-center justify-center text-kyn-slate-400">
-           <span className="text-sm">Product Preview Image</span>
+        {/* Product Preview */}
+        <div className="aspect-video bg-kyn-slate-100 dark:bg-kyn-slate-800 rounded-xl flex items-center justify-center text-kyn-slate-400" role="img" aria-label={`Preview of ${product.title}`}>
+           {product.preview_image ? (
+             <img 
+               src={product.preview_image} 
+               alt={`${product.title} preview`}
+               className="w-full h-full object-cover rounded-xl"
+             />
+           ) : (
+             <span className="text-sm">Product Preview Image</span>
+           )}
         </div>
 
         {/* Dynamic Actions [Updated] */}

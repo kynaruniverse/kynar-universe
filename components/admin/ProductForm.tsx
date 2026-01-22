@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Loader2, Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-
+import { sanitizeSlug } from '@/lib/validation';
 interface ProductFormProps {
   initialData?: any; // If present, we are editing
 }
@@ -39,16 +39,31 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     setFormData(prev => ({ ...prev, is_published: !prev.is_published }));
   };
 
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  import { validateProductData, sanitizeSlug } from '@/lib/validation';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setSaveError(null);
 
     try {
+      // Validation
+      const validation = validateProductData(formData);
+      if (!validation.valid) {
+        throw new Error(validation.errors.join(', '));
+      }
+      if (!formData.slug.trim()) {
+        throw new Error('Slug is required');
+      }
+      
       // Convert comma-separated strings back to arrays
       const payload = {
         ...formData,
         tags: formData.tags.split(',').map((t: string) => t.trim()).filter(Boolean),
         file_types: formData.file_types.split(',').map((t: string) => t.trim()).filter(Boolean),
+        updated_at: new Date().toISOString()
       };
 
       let error;
@@ -61,37 +76,40 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           .eq('id', initialData.id);
         error = updateError;
       } else {
-        // CREATE Mode
+        // CREATE Mode - include created_at
         const { error: insertError } = await supabase
           .from('products')
-          .insert([payload]);
+          .insert([{ ...payload, created_at: new Date().toISOString() }]);
         error = insertError;
       }
 
       if (error) throw error;
 
       router.push('/admin');
-      router.refresh(); // Refresh list to show changes
+      router.refresh();
     } catch (err: any) {
-      alert('Error saving product: ' + err.message);
+      console.error('Save error:', err);
+      setSaveError(err.message || 'Failed to save product');
     } finally {
       setLoading(false);
     }
   };
 
-  // Auto-generate slug from title if slug is empty
+// Auto-generate slug from title if slug is empty
   const handleTitleBlur = () => {
     if (!formData.slug && formData.title) {
-      const slug = formData.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)+/g, '');
-      setFormData(prev => ({ ...prev, slug }));
+    const slug = sanitizeSlug(formData.title);
+    setFormData(prev => ({ ...prev, slug }));
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto">
+      {saveError && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 rounded-xl text-sm text-red-600 dark:text-red-400">
+          {saveError}
+        </div>
+      )}
       
       {/* Basic Info Card */}
       <div className="bg-white dark:bg-kyn-slate-800 p-6 rounded-xl border border-kyn-slate-200 dark:border-kyn-slate-700 space-y-4">
