@@ -37,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} bg-canvas text-primary antialiased min-h-screen pb-20 pt-16`}>
-        <AuthProvider> {/* <-- Wrap here */}
+        <AuthProvider>
           <TopBar />
           <main className="max-w-md mx-auto min-h-screen relative">
             {children}
@@ -45,9 +45,10 @@ export default function RootLayout({
           <BottomNav />
         </AuthProvider>
         
+        {/* CHANGED: strategy="beforeInteractive" forces this to load immediately */}
         <Script 
           src="https://app.lemonsqueezy.com/js/lemon.js" 
-          strategy="lazyOnload" 
+          strategy="beforeInteractive" 
         />
       </body>
     </html>
