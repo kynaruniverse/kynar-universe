@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Your custom brand palette
         kyn: {
           green: {
             50: '#F0FDF4', 100: '#DCFCE7', 200: '#BBF7D0', 300: '#86EFAC',
@@ -25,8 +26,10 @@ module.exports = {
             800: '#0F172A', 900: '#020617', 950: '#020617'
           }
         },
+        // CSS Variable Mappings
         canvas: 'hsl(var(--canvas))',
         surface: 'hsl(var(--surface))',
+        primary: 'hsl(var(--text-primary))', // <--- Added this so text-primary works
       }
     },
   },
