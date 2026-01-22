@@ -8,8 +8,24 @@ import AuthProvider from '@/components/AuthProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Kynar Universe',
-  description: 'One universe, unlimited solutions.',
+  metadataBase: new URL('https://kynar-universev3.netlify.app'),
+  title: {
+    default: 'Kynar Universe | Digital Marketplace',
+    template: '%s | Kynar Universe',
+  },
+  description: 'One universe, unlimited solutions. Organise your home, life, and projects with curated digital tools and planners.',
+  openGraph: {
+    title: 'Kynar Universe',
+    description: 'Organise your home, life, and projects in one place.',
+    url: 'https://kynaruniverse.netlify.app',
+    siteName: 'Kynar Universe',
+    locale: 'en_GB',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
