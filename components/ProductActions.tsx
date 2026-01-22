@@ -1,33 +1,50 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 
-interface ProductActionsProps {
-  checkoutUrl: string | null;
-  price: string; // Display price (e.g. "£5.00")
-}
-
-export default function ProductActions({ checkoutUrl, price }: ProductActionsProps) {
+export default function ProductActions({ checkoutUrl, price }: { checkoutUrl: string | null, price: string }) {
   const { user } = useAuth();
   const router = useRouter();
 
+  // 1. Listen for the "Payment Success" signal
+  useEffect(() => {
+    // @ts-ignore - LemonSqueezy is added by the script in layout.tsx
+    if (typeof window !== 'undefined' && window.createLemonSqueezy) {
+      // @ts-ignore
+      window.LemonSqueezy.Setup({
+        eventHandler: (event: { event: string }) => {
+          // If payment works, instantly go to account page
+          if (event.event === 'Payment.Success') {
+            router.push('/account');
+            router.refresh();
+          }
+        },
+      });
+    }
+  }, [router]);
+
   const handleBuy = () => {
     if (!checkoutUrl) return;
-
     if (!user) {
-      // 1. If not logged in, go to login
       router.push('/login');
       return;
     }
 
-    // 2. If logged in, construct checkout URL with User ID
-    // We append ?checkout[custom][user_id]=... to pass data to the webhook
+    // 2. Add user_id to the URL so we know who bought it
     const separator = checkoutUrl.includes('?') ? '&' : '?';
     const finalUrl = `${checkoutUrl}${separator}checkout[custom][user_id]=${user.id}`;
     
-    // 3. Go to Lemon Squeezy
-    window.location.href = finalUrl;
+    // 3. Open the Overlay Popup
+    // @ts-ignore
+    if (window.LemonSqueezy) {
+      // @ts-ignore
+      window.LemonSqueezy.Url.Open(finalUrl);
+    } else {
+      // Fallback: If script fails, just go to the link like before
+      window.location.href = finalUrl;
+    }
   };
 
   return (
