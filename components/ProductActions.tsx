@@ -1,48 +1,70 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 
 export default function ProductActions({ checkoutUrl, price }: { checkoutUrl: string | null, price: string }) {
   const { user } = useAuth();
   const router = useRouter();
+  // Use a ref to make sure we don't set up the listener twice
+  const setupDone = useRef(false);
 
-  // 1. Listen for the "Payment Success" signal
   useEffect(() => {
-    // @ts-ignore - LemonSqueezy is added by the script in layout.tsx
-    if (typeof window !== 'undefined' && window.createLemonSqueezy) {
+    // 1. Define the setup function safely
+    const initLemonSqueezy = () => {
       // @ts-ignore
-      window.LemonSqueezy.Setup({
-        eventHandler: (event: { event: string }) => {
-          // If payment works, instantly go to account page
-          if (event.event === 'Payment.Success') {
-            router.push('/account');
-            router.refresh();
-          }
-        },
-      });
-    }
+      if (window.LemonSqueezy && !setupDone.current) {
+        try {
+          // @ts-ignore
+          window.LemonSqueezy.Setup({
+            eventHandler: (event: { event: string }) => {
+              if (event.event === 'Payment.Success') {
+                router.push('/account');
+                router.refresh();
+              }
+            },
+          });
+          setupDone.current = true; // Mark as done so we stop checking
+        } catch (error) {
+          console.error("Setup failed:", error);
+        }
+      }
+    };
+
+    // 2. Try immediately in case it's already loaded
+    initLemonSqueezy();
+
+    // 3. If not loaded, check every 500ms until it is
+    const intervalId = setInterval(() => {
+      if (setupDone.current) {
+        clearInterval(intervalId); // Stop checking once loaded
+      } else {
+        initLemonSqueezy();
+      }
+    }, 500);
+
+    // Cleanup: Clear the timer if the user leaves the page
+    return () => clearInterval(intervalId);
   }, [router]);
 
   const handleBuy = () => {
     if (!checkoutUrl) return;
+    
     if (!user) {
       router.push('/login');
       return;
     }
 
-    // 2. Add user_id to the URL so we know who bought it
     const separator = checkoutUrl.includes('?') ? '&' : '?';
     const finalUrl = `${checkoutUrl}${separator}checkout[custom][user_id]=${user.id}`;
     
-    // 3. Open the Overlay Popup
     // @ts-ignore
-    if (window.LemonSqueezy) {
+    if (window.LemonSqueezy?.Url?.Open) {
       // @ts-ignore
       window.LemonSqueezy.Url.Open(finalUrl);
     } else {
-      // Fallback: If script fails, just go to the link like before
+      // Fallback if script is still loading
       window.location.href = finalUrl;
     }
   };
