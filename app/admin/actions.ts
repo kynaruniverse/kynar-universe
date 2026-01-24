@@ -45,13 +45,21 @@ export async function saveProduct(productData: {
       ...dataToSave,
       updated_at: new Date().toISOString(),
     };
-    
+
+    // remove undefined values
+    const cleanPayload = 
+    Object.fromEntries(
+      Object.entries(payload).filter(([, value]) =>
+    value !== undefined)
+    ) as ProductUpdate;
+
     const { error } = await supabase
       .from('products')
-      .update(payload)
+      .update(cleanPayload)
       .eq('id', id);
-    
+
     dbError = error;
+
   } else {
     const payload: ProductInsert = {
       ...dataToSave,
