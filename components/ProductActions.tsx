@@ -1,105 +1,123 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ShoppingCart, Loader2, CreditCard, Sparkles } from 'lucide-react';
 import { useAuth } from '@/components/AuthProvider';
 
-// Helper to determine if the price is an ID or a full URL
+// extend window to include Lemon Squeezy types
+declare global {
+  interface Window {
+    LemonSqueezy?: {
+      Url: {
+        Open: (url: string) => void;
+      };
+      Setup: (options: { eventHandler: (event: unknown) => void }) => void;
+    };
+  }
+}
+
 function getCheckoutUrl(priceId: string | null) {
   if (!priceId) return '';
-  // If it starts with http, assume it's a full URL (Legacy support)
   if (priceId.startsWith('http')) return priceId;
-  // Otherwise, assume it's a Variant ID and build the URL
   return `https://store.lemonsqueezy.com/checkout/buy/${priceId}`;
 }
 
-export default function ProductActions({ checkoutUrl, price }: { checkoutUrl: string | null, price: string }) {
+export default function ProductActions({ 
+  checkoutUrl, 
+  price 
+}: { 
+  checkoutUrl: string | null;
+  price: string;
+}) {
   const { user } = useAuth();
   const router = useRouter();
-  const setupDone = useRef(false);
-
-  // Determine the actual URL to open
-  const targetUrl = getCheckoutUrl(checkoutUrl);
-
-  useEffect(() => {
-    const initLemonSqueezy = () => {
-      // @ts-ignore
-      if (window.LemonSqueezy && !setupDone.current) {
-        try {
-          // @ts-ignore
-          window.LemonSqueezy.Setup({
-            eventHandler: (event: { event: string }) => {
-              if (event.event === 'Payment.Success') {
-                router.push('/account');
-                router.refresh();
-              }
-            },
-          });
-          setupDone.current = true;
-        } catch (error) {
-          console.error("Setup failed:", error);
-        }
-      }
-    };
-
-    initLemonSqueezy();
-
-    const intervalId = setInterval(() => {
-      if (setupDone.current) {
-        clearInterval(intervalId);
-      } else {
-        initLemonSqueezy();
-      }
-    }, 500);
-
-    return () => clearInterval(intervalId);
-  }, [router]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleBuy = () => {
-    if (!targetUrl) {
-      console.error('No checkout URL configured for this product');
+    const targetBaseUrl = getCheckoutUrl(checkoutUrl);
+
+    if (!targetBaseUrl) {
+      console.error('No checkout URL configured');
       return;
     }
     
+    setIsProcessing(true);
+
+    // 1. Handle Unauthenticated User
     if (!user) {
-      // Store intended product for post-login redirect
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('kynar_checkout_redirect', targetUrl);
+        sessionStorage.setItem('kynar_checkout_redirect', targetBaseUrl);
       }
-      router.push('/login');
+      // Use a template literal to pass the current path for a smooth redirect back
+      router.push(`/login?returnTo=${window.location.pathname}`);
       return;
     }
 
-    const separator = targetUrl.includes('?') ? '&' : '?';
-    const finalUrl = `${targetUrl}${separator}checkout[custom][user_id]=${user.id}&checkout[email]=${encodeURIComponent(user.email || '')}`;
-    
-    // @ts-ignore
-    if (window.LemonSqueezy?.Url?.Open) {
-      // @ts-ignore
-      window.LemonSqueezy.Url.Open(finalUrl); 
-    } else {
-      window.location.href = finalUrl;
+    try {
+      // 2. Construct URL with User Data
+      const urlObj = new URL(targetBaseUrl);
+      urlObj.searchParams.set('checkout[custom][user_id]', user.id);
+      urlObj.searchParams.set('checkout[email]', user.email || '');
+      
+      const finalUrl = urlObj.toString();
+
+      // 3. Trigger Checkout (Overlay vs Redirect)
+      if (window.LemonSqueezy?.Url?.Open) {
+        window.LemonSqueezy.Url.Open(finalUrl);
+        // Reset loading state after a delay for the overlay
+        setTimeout(() => setIsProcessing(false), 2000);
+      } else {
+        window.location.href = finalUrl;
+      }
+    } catch (e) {
+      console.error('Invalid Checkout URL:', e);
+      setIsProcessing(false);
     }
   };
 
   return (
-    <div className="flex gap-3 pt-2">
-      <button 
-        onClick={handleBuy}
-        className="flex-1 py-3.5 rounded-xl font-bold text-white bg-kyn-green-600 hover:bg-kyn-green-700 shadow-sm transition-colors flex items-center justify-center gap-2"
-      >
-        <span>Buy Now</span>
-        <span className="bg-white/20 px-2 py-0.5 rounded text-sm">{price}</span>
-      </button>
-      
-      {/* Visual-only Cart button for V1 */}
-      <button 
-        disabled 
-        aria-label="Add to cart (coming soon)"
-        className="px-4 py-3.5 rounded-xl font-semibold text-kyn-slate-400 border border-kyn-slate-200 cursor-not-allowed"
-      >
-        Add to Cart
-      </button>
+    <div className="flex flex-col gap-4 pt-2">
+      <div className="flex gap-3">
+        <button 
+          onClick={handleBuy}
+          disabled={isProcessing || !checkoutUrl}
+          className="
+            flex-1 py-4 rounded-2xl font-bold text-white 
+            bg-kyn-green-600 hover:bg-kyn-green-500 
+            shadow-xl shadow-kyn-green-600/20 
+            transition-all active:scale-[0.96] disabled:opacity-70 
+            flex items-center justify-center gap-3
+          "
+        >
+          {isProcessing ? (
+            <Loader2 className="animate-spin" size={20} />
+          ) : (
+            <CreditCard size={20} />
+          )}
+          <span className="text-lg">Buy Now</span>
+          <span className="bg-black/10 px-3 py-1 rounded-lg text-sm font-black border border-white/10">
+            {price}
+          </span>
+        </button>
+        
+        <button 
+          disabled 
+          className="
+            px-5 rounded-2xl 
+            bg-surface border border-kyn-slate-200 dark:border-kyn-slate-800 
+            text-kyn-slate-300 dark:text-kyn-slate-600 cursor-not-allowed
+            flex items-center justify-center
+          "
+        >
+          <ShoppingCart size={22} />
+        </button>
+      </div>
+
+      <div className="flex items-center justify-center gap-2 text-[10px] font-bold text-kyn-slate-400 uppercase tracking-widest">
+        <Sparkles size={12} className="text-kyn-caramel-500" />
+        Instant Digital Delivery
+      </div>
     </div>
   );
 }

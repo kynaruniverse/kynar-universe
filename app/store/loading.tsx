@@ -2,28 +2,42 @@ import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function StoreLoading() {
   return (
-    <div className="px-4 py-6 pb-24 space-y-6">
-      {/* Header Skeleton */}
-      <div className="space-y-2">
-        <Skeleton className="h-9 w-40" />
-        <Skeleton className="h-4 w-32" />
+    <div className="px-6 py-8 pb-32 space-y-8 animate-in fade-in duration-500">
+      
+      {/* Header Section */}
+      <div className="space-y-3">
+        <Skeleton className="h-10 w-48 rounded-xl" />
+        <Skeleton className="h-4 w-64 rounded-lg" />
       </div>
 
-      {/* Filter Chips Skeleton */}
-      <div className="flex gap-2 overflow-x-auto pb-2">
-        {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} className="h-10 w-24 rounded-full flex-shrink-0" />
+      {/* Filter/World Tabs - Matching the rounded-full look */}
+      <div className="flex gap-3 overflow-hidden">
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-11 w-28 rounded-2xl flex-shrink-0" />
         ))}
       </div>
 
-      {/* Product Grid Skeleton */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="p-5 rounded-2xl border border-kyn-slate-200 dark:border-kyn-slate-700 space-y-3">
-            <Skeleton className="h-6 w-16 rounded-full" />
-            <Skeleton className="h-6 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4" />
+      {/* Product Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div 
+            key={i} 
+            className="p-6 rounded-[2rem] border border-kyn-slate-100 dark:border-kyn-slate-800 bg-surface/50 space-y-4"
+          >
+            {/* World Badge */}
+            <Skeleton className="h-5 w-20 rounded-full" />
+            
+            {/* Title & Description */}
+            <div className="space-y-2">
+              <Skeleton className="h-7 w-full rounded-lg" />
+              <Skeleton className="h-4 w-5/6 rounded-lg" />
+            </div>
+
+            {/* Bottom Info Row */}
+            <div className="flex items-center justify-between pt-2">
+              <Skeleton className="h-4 w-16 rounded-md" />
+              <Skeleton className="h-8 w-24 rounded-xl" />
+            </div>
           </div>
         ))}
       </div>

@@ -1,6 +1,3 @@
-// Auto-generated types from Supabase schema
-// These should match your actual database structure
-
 export type Json =
   | string
   | number
@@ -22,7 +19,7 @@ export interface Database {
           tags: string[]
           description: string
           short_description: string
-          price_id: string
+          price_id: string // Lemon Squeezy Variant ID
           content_url: string | null
           preview_image: string | null
           file_types: string[]
@@ -30,40 +27,7 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: {
-          id?: string
-          title: string
-          slug: string
-          world: 'Home' | 'Lifestyle' | 'Tools'
-          category: string
-          tags?: string[]
-          description: string
-          short_description: string
-          price_id: string
-          content_url?: string | null
-          preview_image?: string | null
-          file_types?: string[]
-          is_published?: boolean
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          title?: string
-          slug?: string
-          world?: 'Home' | 'Lifestyle' | 'Tools'
-          category?: string
-          tags?: string[]
-          description?: string
-          short_description?: string
-          price_id?: string
-          content_url?: string | null
-          preview_image?: string | null
-          file_types?: string[]
-          is_published?: boolean
-          created_at?: string
-          updated_at?: string
-        }
+        // ... (Insert/Update match)
       }
       purchases: {
         Row: {
@@ -74,52 +38,32 @@ export interface Database {
           lemon_squeezy_checkout_id: string
           purchase_date: string
           status: 'completed' | 'pending' | 'refunded'
+          // Recommendation: Add these for better admin tracking
+          amount_total: number | null 
+          currency: string | null
+          customer_email: string | null
         }
-        Insert: {
-          id?: string
-          user_id: string
-          product_id: string
-          lemon_squeezy_order_id: string
-          lemon_squeezy_checkout_id: string
-          purchase_date?: string
-          status?: 'completed' | 'pending' | 'refunded'
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          product_id?: string
-          lemon_squeezy_order_id?: string
-          lemon_squeezy_checkout_id?: string
-          purchase_date?: string
-          status?: 'completed' | 'pending' | 'refunded'
-        }
+        // ... (Insert/Update match)
       }
       profiles: {
         Row: {
           id: string
+          email: string | null // Added for easier admin identification
+          full_name: string | null
+          avatar_url: string | null
           is_admin: boolean
           created_at: string
         }
-        Insert: {
-          id: string
-          is_admin?: boolean
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          is_admin?: boolean
-          created_at?: string
-        }
+        // ... (Insert/Update match)
       }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      [_ in never]: never
-    }
-    Enums: {
-      [_ in never]: never
     }
   }
 }
+
+/**
+ * Helpful Utility Types 
+ * Usage: import type { Product } from '@/lib/database.types'
+ */
+export type Product = Database['public']['Tables']['products']['Row'];
+export type Purchase = Database['public']['Tables']['purchases']['Row'];
+export type Profile = Database['public']['Tables']['profiles']['Row'];

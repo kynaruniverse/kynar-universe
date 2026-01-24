@@ -1,6 +1,7 @@
 'use client';
 
 import { Component, ReactNode } from 'react';
+import { RefreshCcw, AlertTriangle } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -23,26 +24,55 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
-    console.error('ErrorBoundary caught:', error, errorInfo);
+    // Here you could send this to a service like Sentry
+    console.error('Kynar Error Boundary:', error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       return this.props.fallback || (
-        <div className="min-h-screen flex items-center justify-center px-4">
-          <div className="text-center space-y-4">
-            <h2 className="text-2xl font-bold text-kyn-slate-900 dark:text-white">
-              Something went wrong
-            </h2>
-            <p className="text-kyn-slate-500">
-              We're working on it. Please refresh the page.
-            </p>
+        <div className="min-h-[60vh] flex items-center justify-center px-6 animate-in fade-in duration-500">
+          <div className="text-center space-y-8 max-w-sm">
+            
+            {/* Visual Indicator */}
+            <div className="relative mx-auto w-20 h-20">
+              <div className="absolute inset-0 bg-red-500/20 blur-2xl rounded-full animate-pulse" />
+              <div className="relative bg-surface border border-red-100 dark:border-red-900/30 p-5 rounded-[2rem] shadow-xl flex items-center justify-center">
+                <AlertTriangle className="text-red-500" size={32} />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h2 className="text-3xl font-black text-primary tracking-tight">
+                Universe Glitch
+              </h2>
+              <p className="text-sm font-medium text-kyn-slate-500 dark:text-kyn-slate-400 leading-relaxed">
+                Something didn't load quite right. Let's try to resync your connection.
+              </p>
+            </div>
+
             <button
-              onClick={() => window.location.reload()}
-              className="bg-kyn-green-600 text-white px-6 py-3 rounded-lg font-bold"
+              onClick={() => {
+                this.setState({ hasError: false });
+                window.location.reload();
+              }}
+              className="
+                group w-full flex items-center justify-center gap-3 
+                bg-primary text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest
+                shadow-xl shadow-primary/10 hover:shadow-primary/20 transition-all active:scale-95
+              "
             >
-              Refresh Page
+              <RefreshCcw size={18} className="group-hover:rotate-180 transition-transform duration-700" />
+              Resync Connection
             </button>
+
+            {process.env.NODE_ENV === 'development' && (
+              <div className="p-4 bg-kyn-slate-50 dark:bg-kyn-slate-900 rounded-xl border border-kyn-slate-200 dark:border-kyn-slate-800">
+                <p className="text-[10px] font-mono text-red-500 break-words text-left">
+                  {this.state.error?.toString()}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       );

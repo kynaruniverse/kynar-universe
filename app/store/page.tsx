@@ -1,102 +1,68 @@
-import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { Metadata } from 'next';
+import { PackageX, Sparkles } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
-
-import type { Metadata } from 'next';
+import StoreSearch from '@/components/StoreSearch';
+import WorldFilter from '@/components/WorldFilter';
+import { getProducts } from '@/lib/services/products';
 
 export const metadata: Metadata = {
-  title: 'Browse Store | Kynar Universe',
-  description: 'Browse curated digital products for home, lifestyle, and projects.',
+  title: 'Archive | Kynar Universe',
+  description: 'Discover digital artifacts across all dimensions.',
 };
 
-// 1. Force dynamic rendering for search params
 export const dynamic = 'force-dynamic';
 
-import { WORLDS } from '@/lib/constants';
-
-async function getProducts(worldFilter?: string) {
-  let query = supabase
-    .from('products')
-    .select('id, title, slug, world, short_description, preview_image, tags, file_types')
-    .eq('is_published', true)
-    .order('created_at', { ascending: false });
-
-  if (worldFilter) {
-    // Capitalize first letter to match DB (e.g., 'home' -> 'Home')
-    const formattedWorld = worldFilter.charAt(0).toUpperCase() + worldFilter.slice(1);
-    query = query.eq('world', formattedWorld);
-  }
-
-  const { data } = await query;
-  return data || [];
+interface StoreProps {
+  searchParams: Promise<{ world?: string; q?: string }>;
 }
 
-export default async function StorePage({ searchParams }: { searchParams: Promise<{ world?: string }> }) {
-  const { world } = await searchParams;
-  const products = await getProducts(world);
+export default async function StorePage({ searchParams }: StoreProps) {
+  const { world, q } = await searchParams;
+  
+  // Fetch filtered products
+  const products = await getProducts({ 
+    world: world, 
+    search: q 
+  });
 
   return (
-    <div className="px-4 py-6 pb-24 space-y-6">
+    <div className="px-4 py-8 pb-32 space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
       
-      {/* Page Header - UX Guide 2.2 */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-kyn-slate-900 dark:text-white">
-          Browse Store
-        </h1>
-        <p className="text-kyn-slate-500 text-sm">
-          {products.length} product{products.length === 1 ? '' : 's'} found
-        </p>
+      {/* Header & Search */}
+      <div className="space-y-6">
+        <div className="flex justify-between items-end">
+          <div className="space-y-1">
+            <h1 className="text-4xl font-black text-primary italic tracking-tight">THE ARCHIVE</h1>
+            <div className="flex items-center gap-2">
+              <Sparkles size={10} className="text-kyn-green-500" />
+              <p className="text-[10px] font-black text-kyn-slate-400 uppercase tracking-[0.2em]">
+                {products.length} Artifacts Indexed
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <StoreSearch />
       </div>
 
-      {/* Filter Chips [UX Guide 7.2] */}
-      <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-        <Link 
-          href="/store"
-          className={`
-            px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-colors
-            ${!world 
-              ? 'bg-kyn-slate-800 text-white border-kyn-slate-800 dark:bg-white dark:text-kyn-slate-900' 
-              : 'bg-white dark:bg-kyn-slate-800 border-kyn-slate-200 dark:border-kyn-slate-700 text-kyn-slate-600 dark:text-kyn-slate-300'}
-          `}
-        >
-          All
-        </Link>
-        
-        {WORLDS.map((w) => {
-          const isActive = world?.toLowerCase() === w.toLowerCase();
-          return (
-            <Link 
-              key={w} 
-              href={`/store?world=${w.toLowerCase()}`}
-              className={`
-                px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition-colors
-                ${isActive 
-                  ? 'bg-kyn-slate-800 text-white border-kyn-slate-800 dark:bg-white dark:text-kyn-slate-900' 
-                  : 'bg-white dark:bg-kyn-slate-800 border-kyn-slate-200 dark:border-kyn-slate-700 text-kyn-slate-600 dark:text-kyn-slate-300'}
-              `}
-            >
-              {w}
-            </Link>
-          );
-        })}
-      </div>
+      {/* Dimensional Filter */}
+      <WorldFilter />
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
 
-      {/* Empty State [UX Guide 7.3] */}
+      {/* Empty State */}
       {products.length === 0 && (
-        <div className="py-12 text-center space-y-4">
-          <p className="text-kyn-slate-500">
-            No products found for this world yet.
-          </p>
-          <Link href="/store" className="text-kyn-green-600 font-medium hover:underline">
-            Clear filters
-          </Link>
+        <div className="py-24 text-center space-y-4 bg-surface rounded-[2.5rem] border border-kyn-slate-100 dark:border-kyn-slate-800">
+          <PackageX className="w-10 h-10 text-kyn-slate-200 mx-auto stroke-1" />
+          <div className="space-y-1">
+            <p className="text-[11px] font-black text-primary uppercase tracking-widest">No Matches Found</p>
+            <p className="text-[9px] font-bold text-kyn-slate-400 uppercase tracking-widest">In this sector of the universe</p>
+          </div>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
@@ -28,35 +28,66 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const router = useRouter();
 
   useEffect(() => {
-    // 1. Check active session on load
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    let mounted = true;
 
-    // 2. Listen for changes (login, logout, auto-refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-      
-      // Optional: Refresh page data on auth change
-      if (_event === 'SIGNED_IN' || _event === 'SIGNED_OUT') {
-        router.refresh();
+    // 1. Get initial session
+    const initializeAuth = async () => {
+      try {
+        const { data: { session: initialSession } } = await supabase.auth.getSession();
+        
+        if (mounted) {
+          setSession(initialSession);
+          setUser(initialSession?.user ?? null);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        if (mounted) setLoading(false);
+      }
+    };
+
+    initializeAuth();
+
+    // 2. Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
+      if (mounted) {
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+        setLoading(false);
+
+        // Refresh Server Components on login/logout to update UI immediately
+        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+          router.refresh();
+        }
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, [router]);
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
-  };
+  const signOut = useCallback(async () => {
+    try {
+      await supabase.auth.signOut();
+      router.push('/login');
+      router.refresh(); // Ensure server knows we are out
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  }, [router]);
+
+  // Memoize the context value to prevent unnecessary re-renders in consumers
+  const value = useMemo(() => ({
+    user,
+    session,
+    loading,
+    signOut
+  }), [user, session, loading, signOut]);
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

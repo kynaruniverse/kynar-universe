@@ -1,129 +1,94 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { env } from '@/lib/env';
-import { rateLimit } from '@/lib/rate-limit';
 import crypto from 'crypto';
 
 export async function POST(req: Request) {
-    // Rate limiting
-    const ip = req.headers.get('x-forwarded-for') || 'unknown';
-    const { success: rateLimitOk } = rateLimit(`webhook:${ip}`, 30, 60000);
-    
-    if (!rateLimitOk) {
-      return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
-    }
-    
-    try {
-      // -------------------------------------------------------------------------
-      // SIGNATURE VERIFICATION
-      // -------------------------------------------------------------------------
-      const rawBody = await req.text();
-      const signature = req.headers.get('x-signature');
-      const secret = env.lemonSqueezy.webhookSecret;
-      
-    if (!secret) {
-      console.error('LEMONSQUEEZY_WEBHOOK_SECRET is not set.');
-      return NextResponse.json({ error: 'Server config error' }, { status: 500 });
-    }
-    
-    if (!signature) {
-      return NextResponse.json({ error: 'Missing signature' }, { status: 401 });
+  try {
+    const rawBody = await req.text();
+    const signature = req.headers.get('x-signature');
+    const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET;
+
+    if (!signature || !secret) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // 1. Signature Verification
     const hmac = crypto.createHmac('sha256', secret);
-    const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8');
+    const digest = hmac.update(rawBody).digest('hex');
+    const digestBuffer = Buffer.from(digest, 'utf8');
     const signatureBuffer = Buffer.from(signature, 'utf8');
 
-    if (digest.length !== signatureBuffer.length || !crypto.timingSafeEqual(digest, signatureBuffer)) {
-      console.error('Webhook signature verification failed.');
+    if (digestBuffer.length !== signatureBuffer.length || !crypto.timingSafeEqual(digestBuffer, signatureBuffer)) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
-    // -------------------------------------------------------------------------
-    // END VERIFICATION
-    // -------------------------------------------------------------------------
 
     const body = JSON.parse(rawBody);
     const { meta, data } = body;
 
+    // 2. Handle Order Created
     if (meta.event_name === 'order_created') {
       const userId = meta.custom_data?.user_id;
-      // Lemon Squeezy sends the Variant ID as a string or number. We cast to string to be safe.
-      const variantId = String(data.attributes.first_order_item.variant_id);
       const orderId = String(data.id);
+      
+      // LS provides variant_id in the attributes of the first order item
+      const variantId = String(data.attributes.first_order_item?.variant_id);
 
       if (!userId) {
-        console.error('No user_id found in webhook custom_data');
-        return NextResponse.json({ error: 'No user_id' }, { status: 400 });
+        console.error('❌ Webhook Error: No user_id found in custom_data. Check your Checkout link generation.');
+        return NextResponse.json({ error: 'No user_id provided' }, { status: 400 });
       }
 
-      // 1. Init Supabase Admin
       const supabaseAdmin = createClient(
-        env.supabase.url,
-        env.supabase.serviceRoleKey
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
       );
 
-      // 2. DYNAMIC LOOKUP: Find product where 'price_id' matches the Variant ID OR full checkout URL
-      // First try exact match on variant ID
-      let { data: product, error: productError } = await supabaseAdmin
+      // 3. Find the Product based on Price ID
+      const { data: product, error: productError } = await supabaseAdmin
         .from('products')
-        .select('id, title, content_url')
+        .select('id, title')
         .eq('price_id', variantId)
         .single();
 
-      // If not found, try matching against URLs that contain the variant ID
       if (productError || !product) {
-        const { data: products } = await supabaseAdmin
+        // Fallback: If direct match fails, try the ilike search for safety
+        const { data: fallbackProduct } = await supabaseAdmin
           .from('products')
-          .select('id, title, content_url, price_id')
-          .like('price_id', `%${variantId}%`);
-        
-        product = products?.[0] || null;
-        productError = product ? null : productError;
+          .select('id, title')
+          .ilike('price_id', `%${variantId}%`)
+          .single();
+          
+        if (!fallbackProduct) {
+          console.error(`❌ Webhook Match Failed: No product found for LS Variant ID ${variantId}`);
+          return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+        }
       }
 
-      if (productError || !product) {
-        console.error(`Product not found for Variant ID: ${variantId}`);
-        // We don't error 500 here, because it might just be a product we haven't added yet.
-        return NextResponse.json({ error: 'Product not matched' }, { status: 404 });
-      }
-
-      console.log(`Processing order for product: ${product.title} (${product.id})`);
-
-      // 3. Check for duplicate purchase record (idempotency)
-      const { data: existingPurchase } = await supabaseAdmin
-        .from('purchases')
-        .select('id')
-        .eq('user_id', userId)
-        .eq('product_id', product.id)
-        .eq('lemon_squeezy_order_id', orderId)
-        .single();
-
-      if (existingPurchase) {
-        console.log('Purchase already recorded, skipping duplicate');
-        return NextResponse.json({ received: true, duplicate: true });
-      }
-
-      // 3. Record Purchase
+      // 4. Record the Purchase
       const { error: insertError } = await supabaseAdmin
         .from('purchases')
-        .insert({
+        .upsert({
           user_id: userId,
-          product_id: product.id,
+          product_id: product?.id || '',
           lemon_squeezy_order_id: orderId,
-          lemon_squeezy_checkout_id: String(data.attributes.identifier),
+          lemon_squeezy_checkout_id: String(data.attributes.checkout_id || ''),
           status: 'completed',
-          purchase_date: new Date().toISOString()
+          purchase_date: new Date().toISOString(),
+        }, { 
+          onConflict: 'user_id, product_id, lemon_squeezy_order_id' 
         });
-          
+
       if (insertError) {
-        console.error('DB Insert Error:', insertError);
-        return NextResponse.json({ error: 'DB Error' }, { status: 500 });
+        console.error('❌ Database Insert Error:', insertError.message);
+        return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
       }
+
+      console.log(`🚀 Success: User ${userId} unlocked "${product?.title || 'Unknown Product'}"`);
     }
 
     return NextResponse.json({ received: true });
-  } catch (err) {
-    console.error('Webhook Error:', err);
-    return NextResponse.json({ error: 'Webhook failed' }, { status: 500 });
+  } catch (err: any) {
+    console.error('💥 Webhook Crash:', err.message);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
