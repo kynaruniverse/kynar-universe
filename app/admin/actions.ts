@@ -5,58 +5,64 @@ import { requireAdmin } from '@/lib/auth/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { validateProductData } from '@/lib/validation';
+import type { Database } from '@/lib/database.types';
+
+type ProductInsert =
+  Database['public']['Tables']['products']['Insert'];
+
+type ProductUpdate =
+  Database['public']['Tables']['products']['Update'];
 
 export async function saveProduct(productData: {
-  id?: string;
+  id ? : string;
   title: string;
   slug: string;
-  world: string;
+  world: 'Home' | 'Lifestyle' | 'Tools';
   category: string;
   price_id: string;
-  content_url: string;
+  content_url: string | null;
   short_description: string;
   description: string;
-  preview_image: string;
+  preview_image: string | null;
   tags: string[];
   file_types: string[];
   is_published: boolean;
 }) {
-  // 1. Verify admin
   await requireAdmin();
   
-  // 2. Validate
   const validation = validateProductData(productData);
   if (!validation.valid) {
     return { error: validation.errors?.join(', ') || 'Validation failed' };
   }
   
-  // 3. Database operation
   const supabase = await createClient();
-  
-  // Destructure to separate ID from the payload
   const { id, ...dataToSave } = productData;
-  
-  const payload = {
-    ...dataToSave,
-    updated_at: new Date().toISOString(),
-  };
   
   let dbError;
   
   if (id) {
-    // 'as any' is required here to bypass strict TS checks on mobile-pushed builds
+    const payload: ProductUpdate = {
+      ...dataToSave,
+      updated_at: new Date().toISOString(),
+    };
+    
     const { error } = await supabase
       .from('products')
-      .update(payload as any)
+      .update(payload)
       .eq('id', id);
+    
     dbError = error;
   } else {
+    const payload: ProductInsert = {
+      ...dataToSave,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    
     const { error } = await supabase
       .from('products')
-      .insert([{ 
-        ...payload, 
-        created_at: new Date().toISOString() 
-      } as any]);
+      .insert(payload);
+    
     dbError = error;
   }
   
@@ -64,12 +70,9 @@ export async function saveProduct(productData: {
     return { error: dbError.message };
   }
   
-  // 4. Revalidate and Redirect
   revalidatePath('/admin');
   revalidatePath('/store');
   revalidatePath('/');
-  
-  // Redirection in Next.js 15 must be the final call
   redirect('/admin');
 }
 
@@ -89,6 +92,5 @@ export async function deleteProduct(id: string) {
   revalidatePath('/admin');
   revalidatePath('/store');
   revalidatePath('/');
-  
   redirect('/admin');
 }
