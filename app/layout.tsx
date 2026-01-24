@@ -1,12 +1,28 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import AuthProvider from '@/components/AuthProvider';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#F8FAFC' },
+    { media: '(prefers-color-scheme: dark)', color: '#020617' }, // Adjusted to match deep dark mode
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false, // Prevents accidental zoom-in on inputs in mobile
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://kynar-universev3.netlify.app'),
@@ -14,18 +30,12 @@ export const metadata: Metadata = {
     default: 'Kynar Universe | Digital Marketplace',
     template: '%s | Kynar Universe',
   },
-  description: 'One universe, unlimited solutions. Organise your home, life, and projects with curated digital tools and planners.',
-  openGraph: {
-    title: 'Kynar Universe',
-    description: 'Organise your home, life, and projects in one place.',
-    url: 'https://kynaruniverse.netlify.app',
-    siteName: 'Kynar Universe',
-    locale: 'en_GB',
-    type: 'website',
-  },
-  robots: {
-    index: true,
-    follow: true,
+  description: 'One universe, unlimited solutions. Organise your home, life, and projects with curated digital tools.',
+  manifest: '/manifest.json', // Crucial for PWA status
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Kynar',
   },
 };
 
@@ -35,20 +45,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-canvas text-primary antialiased min-h-screen pb-20 pt-16`}>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+      <body
+        className={`
+          ${inter.variable} font-sans
+          min-h-screen flex flex-col
+          bg-canvas dark:bg-slate-950
+          antialiased
+          selection:bg-kyn-green-500 selection:text-white
+        `}
+      >
         <AuthProvider>
           <TopBar />
-          <main className="max-w-md mx-auto min-h-screen relative">
-            {children}
+          
+          <main className="w-full max-w-md mx-auto flex-grow relative pt-16 pb-24">
+            {/* Wrap children in the ErrorBoundary to catch page-level crashes */}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </main>
+
           <BottomNav />
         </AuthProvider>
-        
-        {/* CHANGED: strategy="beforeInteractive" forces this to load immediately */}
-        <Script 
-          src="https://app.lemonsqueezy.com/js/lemon.js" 
-          strategy="beforeInteractive" 
+
+        {/* LemonSqueezy: 'lazyOnload' is safer to prevent blocking the initial paint */}
+        <Script
+          src="https://app.lemonsqueezy.com/js/lemon.js"
+          strategy="lazyOnload"
         />
       </body>
     </html>

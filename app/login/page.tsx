@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -26,7 +26,7 @@ export default function LoginPage() {
       setMessage({ type: 'error', text: error.message });
       setLoading(false);
     } else {
-      // Check for pending checkout redirect
+      // Check for pending checkout redirect (Lemon Squeezy integration)
       const checkoutRedirect = sessionStorage.getItem('kynar_checkout_redirect');
       if (checkoutRedirect) {
         sessionStorage.removeItem('kynar_checkout_redirect');
@@ -45,79 +45,124 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      // Optional: Add metadata like full name here if needed
+      options: {
+        // Redirect back to this page after email confirmation if needed
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
     });
 
     if (error) {
       setMessage({ type: 'error', text: error.message });
     } else {
-      setMessage({ type: 'success', text: 'Check your email for the confirmation link!' });
+      setMessage({ 
+        type: 'success', 
+        text: 'Confirmation email sent! Please check your inbox.' 
+      });
+      // Clear password for security
+      setPassword('');
     }
     setLoading(false);
   };
 
   return (
-    <div className="px-4 py-12 max-w-sm mx-auto space-y-8">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-kyn-slate-900 dark:text-white">
+    <div className="px-4 py-12 max-w-sm mx-auto min-h-[60vh] flex flex-col justify-center">
+      <div className="text-center space-y-3 mb-8">
+        <h1 className="text-3xl font-bold text-primary">
           Welcome back
         </h1>
-        <p className="text-kyn-slate-500">
-          Log in to continue shopping.
+        <p className="text-kyn-slate-500 text-sm leading-relaxed">
+          Log in to access your library or continue shopping.
         </p>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-kyn-slate-700 dark:text-kyn-slate-300 mb-1">
+      <form onSubmit={handleLogin} className="space-y-5">
+        <div className="space-y-1.5">
+          <label 
+            htmlFor="email" 
+            className="block text-xs font-bold uppercase tracking-wider text-kyn-slate-500"
+          >
             Email address
           </label>
           <input
+            id="email"
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-kyn-slate-200 dark:border-kyn-slate-700 bg-white dark:bg-kyn-slate-800 focus:ring-2 focus:ring-kyn-green-500 outline-none transition-all"
+            disabled={loading}
+            className="
+              w-full px-4 py-3 rounded-xl 
+              bg-surface border border-kyn-slate-200 dark:border-kyn-slate-800 
+              text-primary placeholder:text-kyn-slate-400
+              focus:ring-2 focus:ring-kyn-green-500 focus:border-transparent outline-none 
+              transition-all disabled:opacity-50
+            "
             placeholder="you@example.com"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-kyn-slate-700 dark:text-kyn-slate-300 mb-1">
+        <div className="space-y-1.5">
+          <label 
+            htmlFor="password" 
+            className="block text-xs font-bold uppercase tracking-wider text-kyn-slate-500"
+          >
             Password
           </label>
           <input
+            id="password"
             type="password"
             required
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-kyn-slate-200 dark:border-kyn-slate-700 bg-white dark:bg-kyn-slate-800 focus:ring-2 focus:ring-kyn-green-500 outline-none transition-all"
+            disabled={loading}
+            className="
+              w-full px-4 py-3 rounded-xl 
+              bg-surface border border-kyn-slate-200 dark:border-kyn-slate-800 
+              text-primary placeholder:text-kyn-slate-400
+              focus:ring-2 focus:ring-kyn-green-500 focus:border-transparent outline-none 
+              transition-all disabled:opacity-50
+            "
             placeholder="••••••••"
           />
         </div>
 
+        {/* Status Messages */}
         {message && (
-          <div className={`p-3 rounded-lg text-sm ${message.type === 'error' ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
-            {message.text}
+          <div className={`
+            p-3 rounded-xl text-sm flex items-start gap-2
+            ${message.type === 'error' 
+              ? 'bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400' 
+              : 'bg-green-50 dark:bg-green-900/10 text-green-600 dark:text-green-400'}
+          `}>
+            {message.type === 'error' ? <AlertCircle size={18} /> : <CheckCircle size={18} />}
+            <span className="flex-1 font-medium">{message.text}</span>
           </div>
         )}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 rounded-lg font-bold text-white bg-kyn-green-600 hover:bg-kyn-green-700 transition-colors disabled:opacity-50"
+          className="
+            w-full py-3.5 rounded-full font-bold text-white 
+            bg-kyn-green-600 hover:bg-kyn-green-700 
+            transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed
+            shadow-lg shadow-kyn-green-900/10 flex items-center justify-center gap-2
+          "
         >
+          {loading && <Loader2 className="animate-spin" size={18} />}
           {loading ? 'Processing...' : 'Log In'}
         </button>
 
-        <div className="text-center">
+        <div className="text-center pt-2">
           <button
             type="button"
             onClick={handleSignUp}
             disabled={loading}
             className="text-sm text-kyn-slate-500 hover:text-kyn-green-600 transition-colors"
           >
-            Need an account? <span className="underline">Sign up</span>
+            Need an account? <span className="underline font-medium">Sign up</span>
           </button>
         </div>
       </form>

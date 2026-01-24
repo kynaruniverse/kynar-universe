@@ -1,17 +1,24 @@
-// Simple rate limiting for API routes
-// For production, consider using Redis or a dedicated service
+// For Production: This is a "Best Effort" limiter in serverless.
+// If you need 100% accuracy, connect this to your Supabase/Redis.
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 export function rateLimit(
   identifier: string,
   limit: number = 10,
-  windowMs: number = 60000 // 1 minute
+  windowMs: number = 60000 
 ): { success: boolean; remaining: number } {
   const now = Date.now();
   const record = rateLimitMap.get(identifier);
 
-  if (!record || now > record.resetAt) {
+  // Auto-cleanup on access (more reliable than setInterval in serverless)
+  if (record && now > record.resetAt) {
+    rateLimitMap.delete(identifier);
+  }
+
+  const currentRecord = rateLimitMap.get(identifier);
+
+  if (!currentRecord) {
     rateLimitMap.set(identifier, {
       count: 1,
       resetAt: now + windowMs
@@ -19,20 +26,24 @@ export function rateLimit(
     return { success: true, remaining: limit - 1 };
   }
 
-  if (record.count >= limit) {
+  if (currentRecord.count >= limit) {
     return { success: false, remaining: 0 };
   }
 
-  record.count++;
-  return { success: true, remaining: limit - record.count };
+  currentRecord.count++;
+  return { success: true, remaining: limit - currentRecord.count };
 }
 
-// Cleanup old entries periodically
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, value] of rateLimitMap.entries()) {
-    if (now > value.resetAt) {
-      rateLimitMap.delete(key);
-    }
+// Logic: Instead of a standalone setInterval (which dies in serverless),
+// we prune the map every 50 requests to prevent memory bloat.
+let requestCounter = 0;
+function pruneMap() {
+  requestCounter++;
+  if (requestCounter > 50) {
+    const now = Date.now();
+    rateLimitMap.forEach((value, key) => {
+      if (now > value.resetAt) rateLimitMap.delete(key);
+    });
+    requestCounter = 0;
   }
-}, 60000);
+}

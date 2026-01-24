@@ -1,5 +1,7 @@
-// Core Type Definitions for Kynar Universe
-// Aligned with database schema and brand requirements
+/**
+ * Core Type Definitions for Kynar Universe
+ * Aligned with database schema and brand requirements
+ */
 
 export type World = 'Home' | 'Lifestyle' | 'Tools';
 
@@ -12,10 +14,16 @@ export interface Product {
   tags: string[];
   description: string;
   short_description: string;
-  price_id: string; // Lemon Squeezy Variant ID or Checkout URL
+  
+  // Lemon Squeezy Integration
+  price_id: string; // Variant ID or Checkout URL
+  
+  // Assets
   content_url: string | null;
   preview_image: string | null;
   file_types: string[];
+  
+  // Status
   is_published: boolean;
   created_at: string;
   updated_at: string;
@@ -25,26 +33,26 @@ export interface Purchase {
   id: string;
   user_id: string;
   product_id: string;
+  
+  // Lemon Squeezy Data
   lemon_squeezy_order_id: string;
   lemon_squeezy_checkout_id: string;
+  
   purchase_date: string;
   status: 'completed' | 'pending' | 'refunded';
+  
+  // Joined Data (Optional)
   product?: Product;
 }
 
-export interface User {
-  id: string;
+// Renamed from 'User' to avoid conflict with Supabase Auth 'User'
+export interface UserProfile {
+  id: string; // References auth.users.id
   email: string;
-  created_at: string;
-}
-
-export interface Profile {
-  id: string;
   is_admin: boolean;
   created_at: string;
 }
 
-// Filter State
 export interface FilterState {
   world: World | null;
   priceRange: string | null;
@@ -52,13 +60,13 @@ export interface FilterState {
   tags: string[];
 }
 
-// Cart Item (for future cart functionality)
 export interface CartItem {
   product: Product;
   quantity: number;
 }
 
-// API Response Types
+// --- API & Webhook Types ---
+
 export interface ApiError {
   error: string;
   message?: string;
@@ -78,6 +86,7 @@ export interface WebhookPayload {
       first_order_item: {
         variant_id: string | number;
       };
+      status: string;
     };
   };
 }

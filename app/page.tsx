@@ -1,88 +1,116 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
-import type { Product } from '@/lib/types';
+import { getProducts } from '@/lib/services/products';
+import { WORLD_CONFIG } from '@/lib/constants';
 
-// 2. Data Fetching Function (Server Side)
-async function getFeaturedProducts() {
-  const { data } = await supabase
-    .from('products')
-    .select('id, title, slug, world, short_description, preview_image')
-    .eq('is_published', true)
-    .order('created_at', { ascending: false })
-    .limit(4);
-    
-  return data as Product[] || [];
-}
+export const revalidate = 60;
 
 export default async function Home() {
-  // 3. Fetch data dynamically
-  const products = await getFeaturedProducts();
-
+  const products = await getProducts({ limit: 4 });
+  
   return (
-    <div className="px-4 py-6 space-y-12 pb-24">
+    <div className="px-6 py-10 space-y-16 pb-32 animate-in fade-in duration-1000">
       
-      {/* Hero Section - Aligned with Brand Guide 1.1 & Language Guide 8.1 */}
-      <section className="text-center space-y-4 py-8">
-        <h1 className="text-4xl font-bold tracking-tight text-kyn-slate-900 dark:text-white leading-tight">
-          One universe, <br />
-          <span className="text-kyn-green-600 dark:text-kyn-green-400">unlimited solutions</span>
+      {/* --- 1. Hero Section --- */}
+      <section className="text-center space-y-6 pt-10 pb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-kyn-green-50 dark:bg-kyn-green-900/20 border border-kyn-green-100 dark:border-kyn-green-900/30">
+          <Sparkles size={12} className="text-kyn-green-600" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-kyn-green-700 dark:text-kyn-green-400">
+            One Universe
+          </span>
+        </div>
+
+        <h1 className="text-4xl font-black tracking-tighter text-primary leading-[1.1] sm:text-5xl">
+          One universe,<br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-kyn-green-600 to-kyn-green-400">
+            unlimited solutions
+          </span>
         </h1>
-        <p className="text-kyn-slate-600 dark:text-kyn-slate-300 text-base px-4">
-          Organise home, life, and projects in one place.
+
+        <p className="text-kyn-slate-500 dark:text-kyn-slate-400 text-base max-w-[280px] mx-auto font-medium leading-relaxed">
+          Curated digital tools to organise your home, life, and projects.
         </p>
+
         <div className="pt-4">
           <Link 
             href="/store" 
-            className="inline-flex items-center bg-kyn-green-600 hover:bg-kyn-green-700 text-white font-medium px-8 py-3 rounded-full transition-colors"
+            className="
+              inline-flex items-center justify-center 
+              bg-kyn-green-600 hover:bg-kyn-green-500 
+              text-white font-bold 
+              px-10 py-4 rounded-[1.5rem] 
+              shadow-xl shadow-kyn-green-600/20 
+              transition-all active:scale-95
+            "
           >
-            Browse Store
-            <ArrowRight className="ml-2 w-4 h-4" />
+            Start Exploring
+            <ArrowRight className="ml-2 w-5 h-5 opacity-70" />
           </Link>
         </div>
       </section>
 
- {/* Dynamic Products Showcase */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm uppercase tracking-wider font-semibold text-kyn-slate-500">
-            New Arrivals
-          </h2>
-          <Link href="/store" className="text-xs text-kyn-green-600 font-medium hover:underline">
+      {/* --- 2. New Arrivals --- */}
+      <section className="space-y-6">
+        <div className="flex items-end justify-between px-1">
+          <div className="space-y-1">
+            <h2 className="text-[10px] uppercase tracking-[0.2em] font-black text-kyn-slate-400">
+              The Latest
+            </h2>
+            <p className="text-lg font-bold text-primary">New Arrivals</p>
+          </div>
+          <Link 
+            href="/store" 
+            className="text-xs text-kyn-green-600 font-bold hover:opacity-70 transition-opacity pb-1"
+          >
             View All
           </Link>
         </div>
         
-        {/* Uses CSS Grid for 2 columns on mobile */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
 
           {products.length === 0 && (
-            <div className="col-span-full text-center py-8 bg-kyn-slate-50 dark:bg-kyn-slate-800/50 rounded-xl border border-dashed border-kyn-slate-200 dark:border-kyn-slate-700">
-              <p className="text-kyn-slate-500 text-sm">No products found.</p>
+            <div className="col-span-full py-20 text-center rounded-[2.5rem] border-2 border-dashed border-kyn-slate-100 dark:border-kyn-slate-800 bg-surface/30">
+              <p className="text-kyn-slate-400 text-sm font-bold">
+                Scanning the universe for products...
+              </p>
             </div>
           )}
         </div>
       </section>
 
-    {/* Static Worlds Links */}
-      <section className="space-y-4 pt-4 border-t border-kyn-slate-200 dark:border-kyn-slate-800">
-         <h2 className="text-sm uppercase tracking-wider font-semibold text-kyn-slate-500">
+      {/* --- 3. Browse by World --- */}
+      <section className="space-y-6 pt-10 border-t border-kyn-slate-100 dark:border-kyn-slate-800">
+         <h2 className="text-[10px] uppercase tracking-[0.2em] font-black text-kyn-slate-400 px-1">
           Browse by World
         </h2>
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
-          {['Home', 'Lifestyle', 'Tools'].map((w) => (
-            <Link 
-              key={w} 
-              href={`/store?world=${w.toLowerCase()}`} 
-              className="px-6 py-3 bg-white dark:bg-kyn-slate-800 border border-kyn-slate-200 dark:border-kyn-slate-700 rounded-xl text-sm font-bold whitespace-nowrap shadow-sm hover:border-kyn-green-300 transition-colors"
-            >
-              {w}
-            </Link>
-          ))}
+        
+        <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide -mx-6 px-6">
+          {(Object.keys(WORLD_CONFIG) as Array<keyof typeof WORLD_CONFIG>).map((worldKey) => {
+            const config = WORLD_CONFIG[worldKey];
+            return (
+              <Link 
+                key={worldKey} 
+                href={`/store?world=${worldKey.toLowerCase()}`} 
+                className={`
+                  flex-none px-8 py-5 
+                  bg-surface border border-kyn-slate-100 dark:border-kyn-slate-800 
+                  rounded-[2rem] shadow-sm hover:shadow-md
+                  transition-all active:scale-95 group
+                `}
+              >
+                <p className={`text-[10px] font-black uppercase tracking-widest mb-1 ${config.colorClasses.text}`}>
+                  {worldKey}
+                </p>
+                <p className="text-sm font-bold text-primary group-hover:text-kyn-green-600 transition-colors">
+                  {config.label}
+                </p>
+              </Link>
+            );
+          })}
         </div>
       </section>
 

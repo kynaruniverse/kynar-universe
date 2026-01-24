@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -10,9 +11,13 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
       },
+      {
+        // Your Supabase Storage Domain
+        protocol: 'https',
+        hostname: 'xobjlrmvezxsshrcykyj.supabase.co',
+      },
     ],
   },
 };
 
 export default nextConfig;
-
