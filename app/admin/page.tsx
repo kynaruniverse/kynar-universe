@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { requireAdmin } from '@/lib/auth/server';
 import { Plus, Edit2, Eye, TrendingUp, FileText, ShoppingBag, PackageOpen } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import type { Product } from '@/lib/types';
@@ -8,25 +9,9 @@ import type { Product } from '@/lib/types';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
-  // 1. Initialize Server Client (Cookies)
+  await requireAdmin();
+  
   const supabase = await createClient();
-
-  // 2. Security Check: Verify User
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-  if (authError || !user) {
-    redirect('/login');
-  }
-
-  // 3. Check Admin Role (Double security)
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single();
-
-  if (!profile?.is_admin) {
-    redirect('/');
-  }
 
   // 4. Fetch Products
   const { data: productData } = await supabase

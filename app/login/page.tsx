@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
+import { AlertCircle, CheckCircle, Loader2, Sparkles } from 'lucide-react';
+import { rateLimit, cleanupRateLimits } from '@/lib/rate-limit';
+import { getCheckoutIntent } from '@/lib/checkout'; // Use the utility you built!
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -17,6 +19,20 @@ export default function LoginPage() {
     setLoading(true);
     setMessage(null);
 
+    // 1. Rate Limiting
+    cleanupRateLimits();
+    const { success, resetIn } = rateLimit(email, 5, 300000); 
+    
+    if (!success) {
+      setMessage({ 
+        type: 'error', 
+        text: `Security delay: Try again in ${Math.ceil(resetIn / 60)} minutes.`
+      });
+      setLoading(false);
+      return;
+    }
+
+    // 2. Auth Execution
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -26,10 +42,11 @@ export default function LoginPage() {
       setMessage({ type: 'error', text: error.message });
       setLoading(false);
     } else {
-      // Check for pending checkout redirect (Lemon Squeezy integration)
-      const checkoutRedirect = sessionStorage.getItem('kynar_checkout_redirect');
+      // 3. Post-Auth Routing Logic
+      const checkoutRedirect = getCheckoutIntent(); // Consolidated utility
+      
       if (checkoutRedirect) {
-        sessionStorage.removeItem('kynar_checkout_redirect');
+        // Use window.location for external Lemon Squeezy URLs
         window.location.href = checkoutRedirect;
       } else {
         router.push('/account');
@@ -39,6 +56,11 @@ export default function LoginPage() {
   };
 
   const handleSignUp = async () => {
+    if (password.length < 6) {
+      setMessage({ type: 'error', text: 'Password must be at least 6 characters.' });
+      return;
+    }
+
     setLoading(true);
     setMessage(null);
 
@@ -46,7 +68,6 @@ export default function LoginPage() {
       email,
       password,
       options: {
-        // Redirect back to this page after email confirmation if needed
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
@@ -56,113 +77,87 @@ export default function LoginPage() {
     } else {
       setMessage({ 
         type: 'success', 
-        text: 'Confirmation email sent! Please check your inbox.' 
+        text: 'Universe access pending! Check your inbox to confirm.' 
       });
-      // Clear password for security
       setPassword('');
     }
     setLoading(false);
   };
 
   return (
-    <div className="px-4 py-12 max-w-sm mx-auto min-h-[60vh] flex flex-col justify-center">
-      <div className="text-center space-y-3 mb-8">
-        <h1 className="text-3xl font-bold text-primary">
-          Welcome back
+    <div className="px-6 py-12 max-w-md mx-auto min-h-[80vh] flex flex-col justify-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+      
+      <div className="text-center space-y-4 mb-10">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-[2rem] bg-kyn-green-600/10 text-kyn-green-600 mb-2">
+          <Sparkles size={32} />
+        </div>
+        <h1 className="text-4xl font-black text-primary tracking-tight italic">
+          Kynar Portal
         </h1>
-        <p className="text-kyn-slate-500 text-sm leading-relaxed">
-          Log in to access your library or continue shopping.
+        <p className="text-kyn-slate-400 text-sm font-medium max-w-[280px] mx-auto leading-relaxed">
+          Your digital vault for high-performance assets.
         </p>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-5">
-        <div className="space-y-1.5">
-          <label 
-            htmlFor="email" 
-            className="block text-xs font-bold uppercase tracking-wider text-kyn-slate-500"
-          >
-            Email address
+      <form onSubmit={handleLogin} className="space-y-6">
+        <div className="space-y-2">
+          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-kyn-slate-400 ml-1">
+            Identity
           </label>
           <input
-            id="email"
             type="email"
             required
-            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
-            className="
-              w-full px-4 py-3 rounded-xl 
-              bg-surface border border-kyn-slate-200 dark:border-kyn-slate-800 
-              text-primary placeholder:text-kyn-slate-400
-              focus:ring-2 focus:ring-kyn-green-500 focus:border-transparent outline-none 
-              transition-all disabled:opacity-50
-            "
-            placeholder="you@example.com"
+            className="w-full px-5 py-4 rounded-2xl bg-surface border border-kyn-slate-100 dark:border-kyn-slate-800 text-primary font-bold focus:ring-4 focus:ring-kyn-green-500/10 focus:border-kyn-green-500 outline-none transition-all disabled:opacity-50"
+            placeholder="you@domain.com"
           />
         </div>
 
-        <div className="space-y-1.5">
-          <label 
-            htmlFor="password" 
-            className="block text-xs font-bold uppercase tracking-wider text-kyn-slate-500"
-          >
-            Password
+        <div className="space-y-2">
+          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-kyn-slate-400 ml-1">
+            Access Key
           </label>
           <input
-            id="password"
             type="password"
             required
-            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={loading}
-            className="
-              w-full px-4 py-3 rounded-xl 
-              bg-surface border border-kyn-slate-200 dark:border-kyn-slate-800 
-              text-primary placeholder:text-kyn-slate-400
-              focus:ring-2 focus:ring-kyn-green-500 focus:border-transparent outline-none 
-              transition-all disabled:opacity-50
-            "
+            className="w-full px-5 py-4 rounded-2xl bg-surface border border-kyn-slate-100 dark:border-kyn-slate-800 text-primary font-bold focus:ring-4 focus:ring-kyn-green-500/10 focus:border-kyn-green-500 outline-none transition-all disabled:opacity-50"
             placeholder="••••••••"
           />
         </div>
 
-        {/* Status Messages */}
         {message && (
-          <div className={`
-            p-3 rounded-xl text-sm flex items-start gap-2
-            ${message.type === 'error' 
-              ? 'bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400' 
-              : 'bg-green-50 dark:bg-green-900/10 text-green-600 dark:text-green-400'}
-          `}>
-            {message.type === 'error' ? <AlertCircle size={18} /> : <CheckCircle size={18} />}
-            <span className="flex-1 font-medium">{message.text}</span>
+          <div className={`p-4 rounded-2xl text-sm flex items-start gap-3 border animate-in zoom-in-95 ${
+            message.type === 'error' 
+              ? 'bg-red-50/50 border-red-100 text-red-600 dark:bg-red-900/10 dark:border-red-900/20 dark:text-red-400' 
+              : 'bg-kyn-green-50/50 border-kyn-green-100 text-kyn-green-600 dark:bg-kyn-green-900/10 dark:border-kyn-green-900/20 dark:text-kyn-green-400'
+          }`}>
+            {message.type === 'error' ? <AlertCircle size={20} className="shrink-0" /> : <CheckCircle size={20} className="shrink-0" />}
+            <span className="font-bold leading-tight">{message.text}</span>
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="
-            w-full py-3.5 rounded-full font-bold text-white 
-            bg-kyn-green-600 hover:bg-kyn-green-700 
-            transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed
-            shadow-lg shadow-kyn-green-900/10 flex items-center justify-center gap-2
-          "
-        >
-          {loading && <Loader2 className="animate-spin" size={18} />}
-          {loading ? 'Processing...' : 'Log In'}
-        </button>
+        <div className="space-y-4">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-5 rounded-2xl font-black text-white bg-kyn-green-600 hover:bg-kyn-green-500 transition-all active:scale-[0.98] disabled:opacity-70 shadow-xl shadow-kyn-green-600/20 flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
+          >
+            {loading ? <Loader2 className="animate-spin" size={18} /> : null}
+            {loading ? 'Verifying...' : 'Enter Vault'}
+          </button>
 
-        <div className="text-center pt-2">
           <button
             type="button"
             onClick={handleSignUp}
             disabled={loading}
-            className="text-sm text-kyn-slate-500 hover:text-kyn-green-600 transition-colors"
+            className="w-full py-4 rounded-2xl font-black text-kyn-slate-400 hover:text-primary hover:bg-kyn-slate-50 dark:hover:bg-kyn-slate-900 transition-all uppercase tracking-widest text-[10px]"
           >
-            Need an account? <span className="underline font-medium">Sign up</span>
+            Create New Identity
           </button>
         </div>
       </form>

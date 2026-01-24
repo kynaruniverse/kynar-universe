@@ -26,18 +26,3 @@ export const env = {
     environment: process.env.NODE_ENV || 'development',
   }
 } as const;
-
-/**
- * Simple check to ensure critical config is loaded.
- * Call this in your root layout or middleware if you want to fail fast.
- */
-export function validateEnv() {
-  try {
-    // Accessing properties will trigger the requireEnv check
-    const check = env.supabase.url && env.supabase.anonKey;
-    return !!check;
-  } catch (error) {
-    console.error('Environment validation failed:', error);
-    return false;
-  }
-}

@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { getProducts } from '@/lib/services/products';
+import { getProducts } from '@/lib/services/products.server';
 import { SITE_CONFIG } from '@/lib/constants';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

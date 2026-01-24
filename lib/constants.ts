@@ -60,21 +60,6 @@ export const WORLD_CONFIG: Record<World, {
   },
 };
 
-export const PRICE_RANGES = [
-  { label: 'Free', value: 'free', min: 0, max: 0 },
-  { label: '£1-5', value: '1-5', min: 1, max: 5 },
-  { label: '£5-15', value: '5-15', min: 5, max: 15 },
-  { label: '£15+', value: '15+', min: 15, max: 999999 },
-] as const;
-
-export const FILE_TYPES = [
-  'PDF', 'Notion', 'Excel', 'Canva', 'ZIP', 'PNG', 'JPG', 'SVG'
-] as const;
-
-export const COMMON_TAGS = [
-  'Creator', 'Student', 'Teacher', 'Business', 'Home', 'Family'
-] as const;
-
 export const SITE_CONFIG = {
   name: 'Kynar Universe',
   url: 'https://kynar-universev3.netlify.app',
@@ -92,18 +77,3 @@ export const NAV_ITEMS = [
   { label: 'Guides', href: '/guides', icon: 'BookOpen' },
   { label: 'Library', href: '/account', icon: 'User' },
 ] as const;
-
-export const PRODUCT_COPY = {
-  heroLineFormula: (productType: string, outcome: string) => `${productType} that ${outcome}`,
-  emptyLibrary: {
-    title: 'Your library is empty',
-    description: 'Start your collection to organise your digital life.',
-    cta: 'Browse Store',
-  },
-  emptySearch: {
-    title: 'No products found for this world yet.',
-    cta: 'Clear filters',
-  },
-  loading: 'Loading your products...',
-  error: "Oops, something went wrong. Let's fix that.",
-} as const;

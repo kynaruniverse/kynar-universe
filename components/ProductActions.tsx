@@ -1,27 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation'; // Added usePathname
 import { ShoppingCart, Loader2, CreditCard, Sparkles } from 'lucide-react';
 import { useAuth } from '@/components/AuthProvider';
-
-// extend window to include Lemon Squeezy types
-declare global {
-  interface Window {
-    LemonSqueezy?: {
-      Url: {
-        Open: (url: string) => void;
-      };
-      Setup: (options: { eventHandler: (event: unknown) => void }) => void;
-    };
-  }
-}
-
-function getCheckoutUrl(priceId: string | null) {
-  if (!priceId) return '';
-  if (priceId.startsWith('http')) return priceId;
-  return `https://store.lemonsqueezy.com/checkout/buy/${priceId}`;
-}
+import { openCheckout, saveCheckoutIntent } from '@/lib/checkout';
 
 export default function ProductActions({ 
   checkoutUrl, 
@@ -32,91 +15,90 @@ export default function ProductActions({
 }) {
   const { user } = useAuth();
   const router = useRouter();
+  const pathname = usePathname(); // Cleaner than window.location.pathname
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleBuy = () => {
-    const targetBaseUrl = getCheckoutUrl(checkoutUrl);
-
-    if (!targetBaseUrl) {
+  const handleBuy = async () => {
+    if (!checkoutUrl) {
       console.error('No checkout URL configured');
       return;
     }
     
     setIsProcessing(true);
 
-    // 1. Handle Unauthenticated User
-    if (!user) {
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('kynar_checkout_redirect', targetBaseUrl);
-      }
-      // Use a template literal to pass the current path for a smooth redirect back
-      router.push(`/login?returnTo=${window.location.pathname}`);
-      return;
-    }
+    // Ensure we are interacting with Lemon Squeezy or our custom lib correctly
+    await openCheckout({
+      priceId: checkoutUrl,
+      userId: user?.id,
+      userEmail: user?.email,
+      onUnauthenticated: () => {
+        // Save intent for post-login redirection
+        saveCheckoutIntent(checkoutUrl);
+        
+        // Encode the pathname to handle special characters in URLs
+        const returnTo = encodeURIComponent(pathname);
+        router.push(`/login?returnTo=${returnTo}`);
+      },
+    });
 
-    try {
-      // 2. Construct URL with User Data
-      const urlObj = new URL(targetBaseUrl);
-      urlObj.searchParams.set('checkout[custom][user_id]', user.id);
-      urlObj.searchParams.set('checkout[email]', user.email || '');
-      
-      const finalUrl = urlObj.toString();
-
-      // 3. Trigger Checkout (Overlay vs Redirect)
-      if (window.LemonSqueezy?.Url?.Open) {
-        window.LemonSqueezy.Url.Open(finalUrl);
-        // Reset loading state after a delay for the overlay
-        setTimeout(() => setIsProcessing(false), 2000);
-      } else {
-        window.location.href = finalUrl;
-      }
-    } catch (e) {
-      console.error('Invalid Checkout URL:', e);
-      setIsProcessing(false);
-    }
+    // Reset processing state
+    // We use a slightly longer timeout to account for overlay animation
+    const timer = setTimeout(() => setIsProcessing(false), 2500);
+    return () => clearTimeout(timer);
   };
 
   return (
-    <div className="flex flex-col gap-4 pt-2">
+    <div className="flex flex-col gap-5 pt-4">
       <div className="flex gap-3">
         <button 
           onClick={handleBuy}
           disabled={isProcessing || !checkoutUrl}
           className="
-            flex-1 py-4 rounded-2xl font-bold text-white 
+            flex-[4] py-4 rounded-2xl font-black text-white 
             bg-kyn-green-600 hover:bg-kyn-green-500 
             shadow-xl shadow-kyn-green-600/20 
-            transition-all active:scale-[0.96] disabled:opacity-70 
-            flex items-center justify-center gap-3
+            transition-all active:scale-[0.98] disabled:opacity-70 
+            flex items-center justify-center gap-3 group
           "
         >
           {isProcessing ? (
-            <Loader2 className="animate-spin" size={20} />
+            <Loader2 className="animate-spin" size={20} strokeWidth={3} />
           ) : (
-            <CreditCard size={20} />
+            <CreditCard size={20} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" />
           )}
-          <span className="text-lg">Buy Now</span>
-          <span className="bg-black/10 px-3 py-1 rounded-lg text-sm font-black border border-white/10">
-            {price}
+          
+          <span className="text-base uppercase tracking-widest">
+            {isProcessing ? 'Opening...' : 'Unlock Asset'}
           </span>
+
+          <div className="ml-2 bg-black/20 px-3 py-1 rounded-xl text-sm font-black border border-white/10 backdrop-blur-sm">
+            {price}
+          </div>
         </button>
         
         <button 
           disabled 
+          title="Cart coming soon"
           className="
-            px-5 rounded-2xl 
-            bg-surface border border-kyn-slate-200 dark:border-kyn-slate-800 
-            text-kyn-slate-300 dark:text-kyn-slate-600 cursor-not-allowed
-            flex items-center justify-center
+            flex-1 px-5 rounded-2xl 
+            bg-kyn-slate-50 dark:bg-kyn-slate-900/50 
+            border border-kyn-slate-100 dark:border-kyn-slate-800 
+            text-kyn-slate-300 dark:text-kyn-slate-700 cursor-not-allowed
+            flex items-center justify-center transition-colors
           "
         >
-          <ShoppingCart size={22} />
+          <ShoppingCart size={22} strokeWidth={1.5} />
         </button>
       </div>
 
-      <div className="flex items-center justify-center gap-2 text-[10px] font-bold text-kyn-slate-400 uppercase tracking-widest">
-        <Sparkles size={12} className="text-kyn-caramel-500" />
-        Instant Digital Delivery
+      {/* Trust Badge */}
+      <div className="flex items-center justify-center gap-3 py-2 rounded-2xl bg-kyn-slate-50/50 dark:bg-kyn-slate-900/30 border border-transparent hover:border-kyn-slate-100 dark:hover:border-kyn-slate-800 transition-all">
+        <div className="flex -space-x-1">
+          <Sparkles size={14} className="text-kyn-green-500 fill-kyn-green-500/20" />
+        </div>
+        <p className="text-[10px] font-black text-kyn-slate-400 uppercase tracking-[0.15em]">
+          Instant Digital Delivery & Lifetime Access
+        </p>
       </div>
     </div>
   );

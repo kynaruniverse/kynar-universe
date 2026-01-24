@@ -1,4 +1,5 @@
 import { Skeleton } from '@/components/ui/Skeleton';
+import { ProductCardSkeleton } from '@/components/ui/ProductCardSkeleton';
 
 export default function HomeLoading() {
   return (
@@ -29,32 +30,10 @@ export default function HomeLoading() {
           <Skeleton className="h-8 w-20 rounded-xl" />
         </div>
         
-        {/* Mirroring the Store Card Layout */}
+        {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <div 
-              key={i} 
-              className="p-6 rounded-[2rem] border border-kyn-slate-100 dark:border-kyn-slate-800 bg-surface/50 space-y-5"
-            >
-              {/* World Badge Placeholder */}
-              <Skeleton className="h-5 w-20 rounded-full" />
-              
-              <div className="space-y-3">
-                {/* Title */}
-                <Skeleton className="h-7 w-full rounded-lg" />
-                {/* Description */}
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-full rounded-md" />
-                  <Skeleton className="h-4 w-2/3 rounded-md" />
-                </div>
-              </div>
-
-              {/* Price & Action Row */}
-              <div className="flex items-center justify-between pt-4 border-t border-kyn-slate-50 dark:border-kyn-slate-800/50">
-                <Skeleton className="h-5 w-16 rounded-md" />
-                <Skeleton className="h-10 w-28 rounded-xl" />
-              </div>
-            </div>
+            <ProductCardSkeleton key={i} />
           ))}
         </div>
       </section>

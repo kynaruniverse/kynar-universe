@@ -59,11 +59,3 @@ export interface Database {
     }
   }
 }
-
-/**
- * Helpful Utility Types 
- * Usage: import type { Product } from '@/lib/database.types'
- */
-export type Product = Database['public']['Tables']['products']['Row'];
-export type Purchase = Database['public']['Tables']['purchases']['Row'];
-export type Profile = Database['public']['Tables']['profiles']['Row'];

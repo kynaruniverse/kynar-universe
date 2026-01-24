@@ -42,51 +42,5 @@ export interface Purchase {
   status: 'completed' | 'pending' | 'refunded';
   
   // Joined Data (Optional)
-  product?: Product;
-}
-
-// Renamed from 'User' to avoid conflict with Supabase Auth 'User'
-export interface UserProfile {
-  id: string; // References auth.users.id
-  email: string;
-  is_admin: boolean;
-  created_at: string;
-}
-
-export interface FilterState {
-  world: World | null;
-  priceRange: string | null;
-  fileType: string | null;
-  tags: string[];
-}
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
-
-// --- API & Webhook Types ---
-
-export interface ApiError {
-  error: string;
-  message?: string;
-}
-
-export interface WebhookPayload {
-  meta: {
-    event_name: string;
-    custom_data?: {
-      user_id: string;
-    };
-  };
-  data: {
-    id: string;
-    attributes: {
-      identifier: string;
-      first_order_item: {
-        variant_id: string | number;
-      };
-      status: string;
-    };
-  };
+  product ? : Product;
 }
