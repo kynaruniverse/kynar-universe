@@ -1,77 +1,80 @@
 import { WORLDS } from './constants';
 
-// Input validation utilities
-
-export function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
 /**
  * Validates that a string is a valid URL slug (lowercase, numbers, hyphens)
+ * No double hyphens allowed.
  */
-export function validateSlug(slug: string): boolean {
+function validateSlug(slug: string): boolean {
   const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
   return slugRegex.test(slug);
 }
 
 /**
- * Converts a string (like a Title) into a URL-friendly slug
+ * Converts a string into a URL-friendly slug
  */
 export function sanitizeSlug(input: string): string {
   return input
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with hyphens
+    .replace(/-+/g, '-')         // Collapse multiple hyphens into one
     .replace(/^-+|-+$/g, '');    // Remove leading/trailing hyphens
 }
 
-export function validateUrl(url: string): boolean {
+function validateUrl(url: string): boolean {
   if (!url) return false;
   try {
-    new URL(url);
-    return true;
+    const parsed = new URL(url);
+    // Ensure it's actually an HTTP/S link
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
   } catch {
     return false;
   }
 }
 
 /**
- * Main validator for the ProductForm component
+ * Main validator for Product Data
  */
 export function validateProductData(data: any): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
-  // Title Check
+  // 1. Title
   if (!data.title || data.title.trim().length < 3) {
     errors.push('Title must be at least 3 characters');
   }
 
-  // Slug Check
+  // 2. Slug
   if (!data.slug) {
     errors.push('Slug is required');
   } else if (!validateSlug(data.slug)) {
-    errors.push('Slug must be lowercase letters, numbers, and hyphens only');
+    errors.push('Slug must use lowercase letters, numbers, and single hyphens');
   }
 
-  // World Check - Using the centralized constant
-  if (!WORLDS.includes(data.world)) {
-    errors.push(`Invalid world. Must be one of: ${WORLDS.join(', ')}`);
+  // 3. World
+  if (!data.world || !WORLDS.includes(data.world)) {
+    errors.push('Please select a valid World from the list');
   }
 
-  // Category Check
+  // 4. Category
   if (!data.category || data.category.trim().length < 2) {
-    errors.push('Category is required');
+    errors.push('Category is required (e.g., "Notion Template")');
   }
 
-  // Price ID Check (Allows URL or specific IDs)
-  if (data.price_id && data.price_id.length > 0) {
+  // 5. Price ID (Lemon Squeezy Variant ID or Checkout URL)
+  if (!data.price_id) {
+    errors.push('Price ID or Checkout URL is required');
+  } else {
     const isUrl = validateUrl(data.price_id);
-    const isShortCode = data.price_id.length > 3; // Basic length check for IDs
+    const isNumericId = /^\d+$/.test(data.price_id); // LS Variant IDs are often just numbers
     
-    if (!isUrl && !isShortCode) {
-      errors.push('Price ID must be a valid checkout URL or variant code');
+    if (!isUrl && !isNumericId) {
+      errors.push('Price ID must be a numeric Variant ID or a valid URL');
     }
+  }
+
+  // 6. Content URL (The actual digital asset)
+  if (data.is_published && !validateUrl(data.content_url)) {
+    errors.push('A valid Secure URL is required to publish this product');
   }
 
   return {

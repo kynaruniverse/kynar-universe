@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ChevronRight, FileCode, CheckCircle2, Sparkles } from 'lucide-react';
 
 import { WORLD_CONFIG } from '@/lib/constants';
-import { getProductBySlug } from '@/lib/services/products';
+import { getProductBySlug } from '@/lib/services/products.server';
 import { createClient } from '@/utils/supabase/server'; // Updated to your verified path
 import BuyButton from '@/components/BuyButton';
 

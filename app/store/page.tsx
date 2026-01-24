@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import { PackageX, Sparkles } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import ProductCard from '@/components/ProductCard';
 import StoreSearch from '@/components/StoreSearch';
 import WorldFilter from '@/components/WorldFilter';
-import { getProducts } from '@/lib/services/products';
+import { getProducts } from '@/lib/services/products.server';
 
 export const metadata: Metadata = {
   title: 'Archive | Kynar Universe',
@@ -57,13 +58,11 @@ export default async function StorePage({ searchParams }: StoreProps) {
 
       {/* Empty State */}
       {products.length === 0 && (
-        <div className="py-24 text-center space-y-4 bg-surface rounded-[2.5rem] border border-kyn-slate-100 dark:border-kyn-slate-800">
-          <PackageX className="w-10 h-10 text-kyn-slate-200 mx-auto stroke-1" />
-          <div className="space-y-1">
-            <p className="text-[11px] font-black text-primary uppercase tracking-widest">No Matches Found</p>
-            <p className="text-[9px] font-bold text-kyn-slate-400 uppercase tracking-widest">In this sector of the universe</p>
-          </div>
-        </div>
+        <EmptyState
+          icon={PackageX}
+          title="No Matches Found"
+          description="In this sector of the universe"
+        />
       )}
     </div>
   );

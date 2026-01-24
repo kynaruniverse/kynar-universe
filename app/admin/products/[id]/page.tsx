@@ -1,4 +1,5 @@
 import { notFound, redirect } from 'next/navigation';
+import { requireAdmin } from '@/lib/auth/server';
 import { createClient } from '@/utils/supabase/server';
 import ProductForm from '@/components/admin/ProductForm';
 
@@ -8,11 +9,9 @@ export default async function EditProductPage({
   params: Promise<{ id: string }> 
 }) {
   const { id } = await params;
-  const supabase = await createClient();
+    await requireAdmin();
 
-  // 1. Verify Session & Admin Status
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect('/login');
+    const supabase = await createClient();
 
   const { data: profile } = await supabase
     .from('profiles')

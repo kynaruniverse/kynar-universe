@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
-import { getProducts } from '@/lib/services/products';
+import { getProducts } from '@/lib/services/products.server';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { WORLD_CONFIG } from '@/lib/constants';
 
 export const revalidate = 60;
@@ -73,10 +74,11 @@ export default async function Home() {
           ))}
 
           {products.length === 0 && (
-            <div className="col-span-full py-20 text-center rounded-[2.5rem] border-2 border-dashed border-kyn-slate-100 dark:border-kyn-slate-800 bg-surface/30">
-              <p className="text-kyn-slate-400 text-sm font-bold">
-                Scanning the universe for products...
-              </p>
+            <div className="col-span-full">
+              <EmptyState
+                title="Scanning the universe for products..."
+                variant="dashed"
+              />
             </div>
           )}
         </div>

@@ -1,14 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Loader2, Save, X, Globe, DollarSign, FileText, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { Loader2, Save, Globe, DollarSign, FileText, Image as ImageIcon, Sparkles } from 'lucide-react';
 
-import { supabase } from '@/lib/supabase';
-import { validateProductData, sanitizeSlug } from '@/lib/validation';
+import { sanitizeSlug } from '@/lib/validation';
 import { WORLDS } from '@/lib/constants';
-import { clearCache } from '@/lib/cache'; // Import our new cache utility
+import { saveProduct } from '@/app/admin/actions';
 import type { Product } from '@/lib/types';
 
 interface ProductFormProps {
@@ -17,7 +16,7 @@ interface ProductFormProps {
 
 export default function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [saveError, setSaveError] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
@@ -32,7 +31,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     preview_image: initialData?.preview_image || '',
     tags: initialData?.tags?.join(', ') || '',
     file_types: initialData?.file_types?.join(', ') || '',
-    is_published: initialData?.is_published ?? true, // Default to published for convenience
+    is_published: initialData?.is_published ?? true,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -46,50 +45,30 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setSaveError(null);
 
-    try {
-      const validation = validateProductData(formData);
-      if (!validation.valid) throw new Error(validation.errors.join(', '));
-      
-      const cleanSlug = formData.slug.trim().toLowerCase();
+    startTransition(async () => {
+      // Final sanitization of the slug before sending to server
+      const finalSlug = sanitizeSlug(formData.slug || formData.title);
       
       const payload = {
+        id: initialData?.id,
         ...formData,
-        slug: cleanSlug,
-        tags: formData.tags.split(',').map((t) => t.trim()).filter(Boolean),
-        file_types: formData.file_types.split(',').map((t) => t.trim()).filter(Boolean),
-        updated_at: new Date().toISOString()
+        slug: finalSlug,
+        // Improved parsing to handle empty strings correctly
+        tags: formData.tags ? formData.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
+        file_types: formData.file_types ? formData.file_types.split(',').map((t) => t.trim()).filter(Boolean) : [],
       };
 
-      let error;
+      const result = await saveProduct(payload);
       
-      if (initialData?.id) {
-        const { error: updateError } = await supabase
-          .from('products')
-          .update(payload)
-          .eq('id', initialData.id);
-        error = updateError;
-      } else {
-        const { error: insertError } = await supabase
-          .from('products')
-          .insert([{ ...payload, created_at: new Date().toISOString() }]);
-        error = insertError;
+      if (result?.error) {
+        setSaveError(result.error);
+        // Scroll to top to see the error
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-
-      if (error) throw error;
-
-      // CRITICAL: Clear the cache so the store/home reflect the changes immediately
-      clearCache('products');
-      
-      router.push('/admin');
-      router.refresh(); 
-    } catch (err: any) {
-      setSaveError(err.message || 'Failed to save product');
-    } finally {
-      setLoading(false);
-    }
+      // Success is handled by redirect in the Server Action
+    });
   };
 
   const handleTitleBlur = () => {
@@ -101,7 +80,6 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-10 max-w-5xl mx-auto pb-32 animate-in fade-in duration-500">
       
-      {/* 1. Header with Visual Context */}
       <div className="flex flex-col gap-2 border-b border-kyn-slate-100 dark:border-kyn-slate-800 pb-6">
         <h2 className="text-3xl font-black text-primary tracking-tight italic">
           {initialData?.id ? 'Edit Product' : 'Create New Asset'}
@@ -114,19 +92,15 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       {saveError && (
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 rounded-2xl flex items-center gap-3 text-sm text-red-600 dark:text-red-400 shadow-sm">
           <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-          {saveError}
+          <strong>Error:</strong> {saveError}
         </div>
       )}
       
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        
-        {/* LEFT COLUMN: Main Content (8/12) */}
         <div className="lg:col-span-8 space-y-10">
-          
           <section className="bg-surface p-8 rounded-[2rem] border border-kyn-slate-100 dark:border-kyn-slate-800 shadow-sm space-y-6">
             <h3 className="font-black text-xs uppercase tracking-[0.2em] text-kyn-slate-400 flex items-center gap-2">
-              <Globe size={14} />
-              Core Identity
+              <Globe size={14} /> Core Identity
             </h3>
             
             <div className="grid gap-6">
@@ -167,7 +141,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                   onChange={handleChange}
                   rows={2}
                   className="w-full px-5 py-4 rounded-2xl border border-kyn-slate-100 dark:border-kyn-slate-800 bg-white dark:bg-kyn-slate-900 text-sm font-medium focus:ring-4 focus:ring-kyn-green-500/10 focus:border-kyn-green-500 outline-none"
-                  placeholder="One sentence that makes them want to click..."
+                  placeholder="One sentence pitch..."
                 />
               </div>
             </div>
@@ -175,8 +149,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
           <section className="bg-surface p-8 rounded-[2rem] border border-kyn-slate-100 dark:border-kyn-slate-800 shadow-sm space-y-6">
              <h3 className="font-black text-xs uppercase tracking-[0.2em] text-kyn-slate-400 flex items-center gap-2">
-              <ImageIcon size={14} />
-              Visual Assets
+              <ImageIcon size={14} /> Visual Assets
             </h3>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -185,26 +158,28 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                   name="preview_image"
                   value={formData.preview_image}
                   onChange={handleChange}
-                  placeholder="https://supabase-url.com/storage/v1/..."
+                  placeholder="https://..."
                   className="w-full px-5 py-4 rounded-2xl border border-kyn-slate-100 dark:border-kyn-slate-800 bg-white dark:bg-kyn-slate-900 text-sm font-mono"
                 />
               </div>
               {formData.preview_image && (
                 <div className="aspect-video relative rounded-3xl overflow-hidden bg-kyn-slate-50 dark:bg-kyn-slate-950 border border-kyn-slate-100 dark:border-kyn-slate-800">
-                  <img src={formData.preview_image} alt="Preview" className="object-cover w-full h-full" />
+                  <img 
+                    src={formData.preview_image} 
+                    alt="Preview" 
+                    className="object-cover w-full h-full"
+                    onError={(e) => (e.currentTarget.style.display = 'none')} 
+                  />
                 </div>
               )}
             </div>
           </section>
         </div>
 
-        {/* RIGHT COLUMN: Metadata (4/12) */}
         <div className="lg:col-span-4 space-y-10">
-          
           <section className="bg-surface p-8 rounded-[2rem] border border-kyn-slate-100 dark:border-kyn-slate-800 shadow-sm space-y-6">
             <h3 className="font-black text-xs uppercase tracking-[0.2em] text-kyn-slate-400 flex items-center gap-2">
-              <Sparkles size={14} />
-              Organization
+              <Sparkles size={14} /> Organization
             </h3>
             
             <div className="space-y-6">
@@ -234,13 +209,23 @@ export default function ProductForm({ initialData }: ProductFormProps) {
               </div>
 
                <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest text-kyn-slate-500 ml-1">Price ID (Lemon Squeezy)</label>
+                <label className="text-xs font-black uppercase tracking-widest text-kyn-slate-500 ml-1">Price ID</label>
                 <input
                   name="price_id"
                   value={formData.price_id}
                   onChange={handleChange}
-                  placeholder="Variant ID"
                   className="w-full px-5 py-4 rounded-2xl border border-kyn-slate-100 dark:border-kyn-slate-800 bg-white dark:bg-kyn-slate-900 font-mono text-sm"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-kyn-slate-500 ml-1">Tags</label>
+                <input
+                  name="tags"
+                  value={formData.tags}
+                  onChange={handleChange}
+                  placeholder="Creator, Business"
+                  className="w-full px-5 py-4 rounded-2xl border border-kyn-slate-100 dark:border-kyn-slate-800 bg-white dark:bg-kyn-slate-900 text-sm"
                 />
               </div>
             </div>
@@ -248,8 +233,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
           <section className="bg-kyn-green-600 p-8 rounded-[2rem] shadow-xl shadow-kyn-green-600/20 space-y-4">
              <h3 className="font-black text-xs uppercase tracking-[0.2em] text-white/60 flex items-center gap-2">
-              <DollarSign size={14} />
-              Delivery Access
+              <DollarSign size={14} /> Delivery
             </h3>
             <div className="space-y-2">
               <label className="text-xs font-black uppercase tracking-widest text-white/80 ml-1">Secure URL</label>
@@ -257,19 +241,26 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 name="content_url"
                 value={formData.content_url}
                 onChange={handleChange}
-                placeholder="Direct download link"
-                className="w-full px-4 py-3 rounded-xl border-none bg-white text-kyn-green-900 font-bold text-sm focus:ring-0"
+                className="w-full px-4 py-3 rounded-xl border-none bg-white text-kyn-green-900 font-bold text-sm"
               />
             </div>
-            <p className="text-[10px] text-white/60 font-medium leading-relaxed">
-              Users will only see this link in their Library after a successful purchase via the webhook.
-            </p>
+          </section>
+          
+          <section className="bg-surface p-8 rounded-[2rem] border border-kyn-slate-100 dark:border-kyn-slate-800 shadow-sm space-y-4">
+            <h3 className="font-black text-xs uppercase tracking-[0.2em] text-kyn-slate-400 flex items-center gap-2">
+              <FileText size={14} /> Description
+            </h3>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={8}
+              className="w-full px-5 py-4 rounded-2xl border border-kyn-slate-100 dark:border-kyn-slate-800 bg-white dark:bg-kyn-slate-900 text-sm font-medium focus:ring-4 focus:ring-kyn-green-500/10 focus:border-kyn-green-500 outline-none"
+            />
           </section>
         </div>
-
       </div>
 
-      {/* Floating Action Bar */}
       <div className="fixed bottom-8 left-6 right-6 z-20 mx-auto max-w-5xl">
         <div className="bg-kyn-slate-950 text-white p-5 rounded-[2.5rem] shadow-2xl flex items-center justify-between border border-white/5 backdrop-blur-xl bg-opacity-95">
           <button 
@@ -284,21 +275,20 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           </button>
 
           <div className="flex items-center gap-4">
-            <Link href="/admin" className="text-sm font-black uppercase tracking-widest text-kyn-slate-400 hover:text-white transition-colors px-4">
+            <Link href="/admin" className="text-sm font-black uppercase tracking-widest text-kyn-slate-400 hover:text-white px-4">
               Discard
             </Link>
             <button
               type="submit"
-              disabled={loading}
+              disabled={isPending}
               className="bg-white text-kyn-slate-900 px-8 py-4 rounded-2xl text-sm font-black uppercase tracking-widest shadow-lg transition-all active:scale-[0.98] disabled:opacity-50 flex items-center gap-3"
             >
-              {loading ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
+              {isPending ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
               Save Universe
             </button>
           </div>
         </div>
       </div>
-
     </form>
   );
 }

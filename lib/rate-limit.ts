@@ -1,17 +1,17 @@
-// For Production: This is a "Best Effort" limiter in serverless.
-// If you need 100% accuracy, connect this to your Supabase/Redis.
+// Client-side rate limiter for login attempts
+// Note: This is "best effort" - server-side RLS is the real security
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 export function rateLimit(
   identifier: string,
-  limit: number = 10,
-  windowMs: number = 60000 
-): { success: boolean; remaining: number } {
+  limit: number = 5,
+  windowMs: number = 60000
+): { success: boolean; remaining: number; resetIn?: number } {
   const now = Date.now();
   const record = rateLimitMap.get(identifier);
 
-  // Auto-cleanup on access (more reliable than setInterval in serverless)
+  // Auto-cleanup expired entries
   if (record && now > record.resetAt) {
     rateLimitMap.delete(identifier);
   }
@@ -27,23 +27,28 @@ export function rateLimit(
   }
 
   if (currentRecord.count >= limit) {
-    return { success: false, remaining: 0 };
+    return { 
+      success: false, 
+      remaining: 0,
+      resetIn: Math.ceil((currentRecord.resetAt - now) / 1000)
+    };
   }
 
   currentRecord.count++;
   return { success: true, remaining: limit - currentRecord.count };
 }
 
-// Logic: Instead of a standalone setInterval (which dies in serverless),
-// we prune the map every 50 requests to prevent memory bloat.
-let requestCounter = 0;
-function pruneMap() {
-  requestCounter++;
-  if (requestCounter > 50) {
+// Periodic cleanup to prevent memory leaks
+let cleanupCounter = 0;
+export function cleanupRateLimits() {
+  cleanupCounter++;
+  if (cleanupCounter > 50) {
     const now = Date.now();
     rateLimitMap.forEach((value, key) => {
-      if (now > value.resetAt) rateLimitMap.delete(key);
+      if (now > value.resetAt) {
+        rateLimitMap.delete(key);
+      }
     });
-    requestCounter = 0;
+    cleanupCounter = 0;
   }
 }

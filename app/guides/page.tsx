@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { ArrowRight, Lightbulb, Star, Zap, Mail } from 'lucide-react';
 import type { Metadata } from 'next';
 
