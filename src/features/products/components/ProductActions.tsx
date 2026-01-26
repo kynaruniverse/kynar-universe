@@ -1,36 +1,30 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { ShoppingCart, CreditCard, Sparkles } from 'lucide-react';
-// FIX: Ensure this import matches the fixed AuthProvider file
-import { useAuth } from '@/features/auth/components/AuthProvider';
-import { openCheckout, saveCheckoutIntent } from '@/features/products/lib/checkout';
-import { LoadingSpinner } from '@/shared/components/feedback/LoadingSpinner';
+import { useState } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
+import { ShoppingCart, CreditCard, Sparkles } from 'lucide-react'
+import { useAuth } from '@/features/auth/components/AuthProvider'
+import { openCheckout, saveCheckoutIntent } from '@/features/products/lib/checkout'
+import { LoadingSpinner } from '@/shared/components/feedback/LoadingSpinner'
 
-/**
- * ProductActions Component
- * Handles the "Unlock" logic and Feature Flagging for the Product Page.
- */
 export default function ProductActions({ 
   checkoutUrl, 
   price 
 }: { 
-  checkoutUrl: string | null;
-  price: string;
+  checkoutUrl: string | null
+  price: string
 }) {
-  const { user } = useAuth();
-  const router = useRouter();
-  const pathname = usePathname();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { user } = useAuth()
+  const router = useRouter()
+  const pathname = usePathname()
+  const [isProcessing, setIsProcessing] = useState(false)
 
-  // Fallback for Feature Flagging since @/lib/config/features is currently unstable
-  const isCartEnabled = false; 
+  const isCartEnabled = false 
 
   const handleBuy = async () => {
-    if (!checkoutUrl || isProcessing) return;
+    if (!checkoutUrl || isProcessing) return
     
-    setIsProcessing(true);
+    setIsProcessing(true)
 
     try {
       await openCheckout({
@@ -38,41 +32,44 @@ export default function ProductActions({
         userId: user?.id,
         userEmail: user?.email,
         onUnauthenticated: () => {
-          saveCheckoutIntent(checkoutUrl);
-          router.push(`/login?returnTo=${encodeURIComponent(pathname)}`);
+          saveCheckoutIntent(checkoutUrl)
+          // Consistent with our middleware and login redirect logic
+          router.push(`/login?redirectedFrom=${encodeURIComponent(pathname)}`)
         },
-      });
+      })
     } catch (error) {
-      console.error('Action failure:', error);
+      console.error('Vault connection failure:', error)
     } finally {
-      // Keep loading state briefly to handle the redirect or overlay pop-up
-      setTimeout(() => setIsProcessing(false), 2000);
+      setTimeout(() => setIsProcessing(false), 2000)
     }
-  };
+  }
 
   return (
-    <div className="flex flex-col gap-5 pt-4">
-      <div className="flex gap-3">
+    <div className='flex flex-col gap-6 pt-4'>
+      <div className='flex gap-4'>
         <button 
           onClick={handleBuy}
           disabled={isProcessing || !checkoutUrl}
-          className="
-            flex-[4] py-4 rounded-2xl font-black text-white 
-            bg-kyn-green-600 hover:bg-kyn-green-500 
-            shadow-xl shadow-kyn-green-600/20 
-            transition-all active:scale-[0.98] disabled:opacity-70 
-            flex items-center justify-center gap-3 group
-          "
+          className='
+            flex-[4] py-5 rounded-[1.5rem] font-black text-white 
+            bg-primary hover:bg-kyn-green-600 
+            shadow-2xl shadow-primary/20 
+            transition-all active:scale-[0.97] disabled:opacity-50 
+            flex items-center justify-center gap-4 group
+          '
         >
           {isProcessing ? (
-            <LoadingSpinner />
+            <div className='flex items-center gap-2'>
+              <LoadingSpinner size={16} />
+              <span className='text-[10px] uppercase tracking-widest'>Syncing...</span>
+            </div>
           ) : (
             <>
-              <CreditCard size={20} strokeWidth={2.5} className="group-hover:rotate-12 transition-transform" />
-              <span className="text-base uppercase tracking-widest">
-                Unlock Asset
+              <CreditCard size={18} strokeWidth={3} className='group-hover:-rotate-12 transition-transform' />
+              <span className='text-[10px] uppercase tracking-[0.2em] font-black'>
+                Unlock Artifact
               </span>
-              <div className="ml-2 bg-black/20 px-3 py-1 rounded-xl text-sm font-black border border-white/10 backdrop-blur-sm">
+              <div className='ml-2 bg-white/10 px-3 py-1.5 rounded-xl text-[10px] font-black border border-white/10 backdrop-blur-sm'>
                 {price}
               </div>
             </>
@@ -81,24 +78,23 @@ export default function ProductActions({
         
         <button 
           disabled={!isCartEnabled}
-          className="
-            flex-1 px-5 rounded-2xl 
-            bg-kyn-slate-50 dark:bg-kyn-slate-900/50 
-            border border-kyn-slate-100 dark:border-kyn-slate-800 
-            text-kyn-slate-300 dark:text-kyn-slate-700 cursor-not-allowed
-            flex items-center justify-center
-          "
+          className='
+            flex-1 px-6 rounded-[1.5rem] 
+            bg-surface border border-kyn-slate-100 dark:border-kyn-slate-800 
+            text-kyn-slate-200 dark:text-kyn-slate-800 cursor-not-allowed
+            flex items-center justify-center transition-colors
+          '
         >
-          <ShoppingCart size={22} strokeWidth={1.5} />
+          <ShoppingCart size={20} strokeWidth={2} />
         </button>
       </div>
 
-      <div className="flex items-center justify-center gap-3 py-2 rounded-2xl bg-kyn-slate-50/50 dark:bg-kyn-slate-900/30 border border-transparent">
-        <Sparkles size={14} className="text-kyn-green-500 fill-kyn-green-500/20" />
-        <p className="text-[10px] font-black text-kyn-slate-400 uppercase tracking-[0.15em]">
-          Instant Digital Delivery & Lifetime Access
+      <div className='flex items-center justify-center gap-3 py-3 rounded-[1.25rem] bg-kyn-green-500/5 border border-kyn-green-500/10'>
+        <Sparkles size={12} className='text-kyn-green-500 fill-kyn-green-500/20' />
+        <p className='text-[9px] font-black text-kyn-green-600/80 dark:text-kyn-green-400/80 uppercase tracking-[0.2em]'>
+          Instant Uplink & Lifetime Ownership
         </p>
       </div>
     </div>
-  );
+  )
 }

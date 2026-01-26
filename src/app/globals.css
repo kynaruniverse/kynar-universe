@@ -18,9 +18,7 @@
   }
 
   * {
-    /* Default border color using Tailwind's alpha support */
     @apply border-kyn-slate-100 dark:border-kyn-slate-800/50;
-    /* Removes that annoying blue/grey flash when tapping buttons on iPhone */
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -30,12 +28,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior-y: none;
-    /* Ensure the body takes full height for the BottomNav to stay pinned */
     min-height: 100vh;
     min-height: -webkit-fill-available;
   }
 
-  /* Smooth scrollbar for the few places we DON'T hide it */
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -48,7 +44,9 @@
 }
 
 @layer utilities {
-  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -58,15 +56,19 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-kyn-green-600 to-kyn-green-400;
   }
 
-  /* Glassmorphism utility for TopBar or BottomNav */
   .glass {
     @apply backdrop-blur-xl bg-surface/80 border-b border-white/5;
   }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .animate-float {

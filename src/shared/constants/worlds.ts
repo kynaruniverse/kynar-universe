@@ -1,20 +1,21 @@
-// Define the type locally so we don't have circular dependencies
-export const WORLDS = ['Home', 'Lifestyle', 'Tools'] as const;
-export type World = (typeof WORLDS)[number];
+export const WORLDS = ['Home', 'Lifestyle', 'Tools'] as const
+export type World = (typeof WORLDS)[number]
 
-export const WORLD_CONFIG: Record<World, {
-  label: string;
-  tagline: string;
-  description: string;
-  color: string;
+export type WorldConfig = {
+  label: string
+  tagline: string
+  description: string
+  color: string
   colorClasses: {
-    badge: string;
-    bg: string;
-    border: string;
-    hover: string;
-    text: string;
-  };
-}> = {
+    badge: string
+    bg: string
+    border: string
+    hover: string
+    text: string
+  }
+}
+
+export const WORLD_CONFIG: Record<World, WorldConfig> = {
   Home: {
     label: 'Home',
     tagline: 'Make everyday life less chaotic',
@@ -54,7 +55,7 @@ export const WORLD_CONFIG: Record<World, {
       text: 'text-kyn-slate-600 dark:text-kyn-slate-300',
     },
   },
-};
+}
 
 export const SITE_CONFIG = {
   name: 'Kynar Universe',
@@ -64,11 +65,11 @@ export const SITE_CONFIG = {
   location: 'UK',
   currency: 'GBP',
   currencySymbol: '£',
-} as const;
+} as const
 
 export const NAV_ITEMS = [
   { label: 'Home', href: '/', icon: 'Home' },
   { label: 'Browse', href: '/store', icon: 'Grid' },
   { label: 'Guides', href: '/guides', icon: 'BookOpen' },
   { label: 'Library', href: '/account', icon: 'User' },
-] as const;
+] as const

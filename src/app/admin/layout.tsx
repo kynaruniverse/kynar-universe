@@ -1,61 +1,67 @@
-import AdminGuard from '@/features/admin/components/AdminGuard';
-import Link from 'next/link';
-import { ArrowLeft, LayoutDashboard, Store } from 'lucide-react';
+import AdminGuard from '@/features/admin/components/AdminGuard'
+import Link from 'next/link'
+import { ArrowLeft, LayoutDashboard, Store } from 'lucide-react'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <AdminGuard>
-      <div className="min-h-screen bg-canvas pb-24">
+      <div className='min-h-screen bg-canvas pb-24'>
         
-        {/* Admin Header */}
+        {/* Admin Navigation Bar */}
         <header 
-          className="
-            sticky top-0 z-40 h-16 px-4
-            bg-surface/80 backdrop-blur-md
-            border-b border-kyn-slate-200 dark:border-kyn-slate-800
+          className='
+            sticky top-0 z-40 h-16 px-6
+            bg-surface/80 backdrop-blur-xl
+            border-b border-kyn-slate-100 dark:border-kyn-slate-800/50
             flex items-center justify-between
-          "
+          '
         >
-          <div className="flex items-center gap-3">
+          <div className='flex items-center gap-4'>
             <Link 
-              href="/" 
-              className="text-kyn-slate-500 hover:text-primary transition-colors"
-              aria-label="Back to Home"
+              href='/' 
+              className='text-kyn-slate-400 hover:text-primary transition-colors p-1'
+              aria-label='Exit Admin'
             >
               <ArrowLeft size={20} />
             </Link>
-            <span className="font-bold text-lg text-primary tracking-tight">
-              Kynar Admin
-            </span>
+            <div className='flex flex-col'>
+              <span className='font-black text-xs uppercase tracking-[0.2em] text-primary italic'>
+                Kynar OS
+              </span>
+              <span className='text-[10px] font-bold text-kyn-green-600 dark:text-kyn-green-500 uppercase tracking-widest'>
+                Root Access
+              </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className='flex items-center gap-2'>
              {/* Link to view live store */}
              <Link 
-               href="/store" 
-               className="text-kyn-slate-500 hover:text-kyn-green-600 transition-colors"
-               aria-label="View Live Store"
+               href='/store' 
+               className='p-2.5 text-kyn-slate-400 hover:text-kyn-green-500 hover:bg-kyn-green-500/5 rounded-xl transition-all'
+               title='View Live Store'
              >
                 <Store size={20} />
              </Link>
              
              {/* Dashboard Link */}
              <Link 
-               href="/admin" 
-               className="text-primary hover:text-kyn-green-600 transition-colors"
+               href='/admin' 
+               className='p-2.5 text-primary hover:bg-primary/5 rounded-xl transition-all'
+               title='Command Center'
              >
                 <LayoutDashboard size={20} />
              </Link>
           </div>
         </header>
 
-        {/* Page Content */}
-        {/* Admin views often need more width than the mobile app, allowing up to 2xl */}
-        <main className="max-w-2xl mx-auto p-4 animate-in fade-in duration-500">
+        {/* Admin Content Area */}
+        {/* Admin views need slightly more horizontal breathing room than the standard mobile feed */}
+        <main className='max-w-4xl mx-auto p-6 animate-in fade-in slide-in-from-top-2 duration-700'>
           {children}
         </main>
 
       </div>
     </AdminGuard>
-  );
+  )
 }

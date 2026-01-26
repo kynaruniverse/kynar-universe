@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
-export const ProductWorldEnum = z.enum(['Home', 'Lifestyle', 'Tools']);
+export const ProductWorldEnum = z.enum(['home', 'lifestyle', 'tools'])
 
 export const ProductBaseSchema = z.object({
   title: z.string().min(3),
@@ -15,14 +15,15 @@ export const ProductBaseSchema = z.object({
   tags: z.array(z.string()).min(1),
   file_types: z.array(z.string()).min(1),
   is_published: z.boolean(),
-});
+})
 
-export const ProductInsertSchema = ProductBaseSchema;
+export const ProductInsertSchema = ProductBaseSchema
+export const ProductUpdateSchema = ProductBaseSchema.partial()
 
-export const ProductUpdateSchema = ProductBaseSchema.partial();
+export type Product = z.infer<typeof ProductBaseSchema>
+export type ProductInsertInput = z.infer<typeof ProductInsertSchema>
+export type ProductUpdateInput = z.infer<typeof ProductUpdateSchema>
 
-export type ProductInsertInput = z.infer<typeof ProductInsertSchema>;
-export type ProductUpdateInput = z.infer<typeof ProductUpdateSchema>;
 export const ProductFormSchema = ProductBaseSchema.extend({
   id: z.string().optional(),
-});
+})

@@ -1,47 +1,67 @@
-'use server';
+'use server'
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/server'
+import { getAdminClient } from '@/lib/supabase-admin' // Standardized import
+import { revalidatePath } from 'next/cache'
+import type { ActionResult } from '@/lib/types'
 
-/**
- * verifyAdminAccess
- * Server Action to check if the current session belongs to an admin.
- * Used in protected route layouts and admin-only actions.
- */
 export async function verifyAdminAccess(): Promise<{ isAdmin: boolean; userId?: string }> {
   try {
-    const supabase = await createClient();
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
     
-    // .getUser() is the only secure way to verify the user on the server
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
-    if (authError || !user) {
-      return { isAdmin: false };
-    }
+    if (authError || !user) return { isAdmin: false }
   
-    // Check the 'profiles' table for admin status
     const { data: profile, error: dbError } = await supabase
       .from('profiles')
       .select('is_admin')
       .eq('id', user.id)
-      .single();
+      .single()
     
     if (dbError) {
-      console.error('Database error verifying admin:', dbError.message);
-      return { isAdmin: false, userId: user.id };
+      console.error('Database error verifying admin:', dbError.message)
+      return { isAdmin: false, userId: user.id }
     }
   
     return { 
       isAdmin: !!profile?.is_admin,
       userId: user.id 
-    };
+    }
   } catch (error) {
-    console.error('Critical auth action failure:', error);
-    return { isAdmin: false };
+    console.error('Critical auth action failure:', error)
+    return { isAdmin: false }
   }
 }
 
-/**
- * Note: If you need a standard 'requireAuth' helper as mentioned in 
- * the "Orphaned Exports" report, we can add it here later to 
- * simplify your API routes.
- */
+export async function signOut(): Promise<ActionResult> {
+  try {
+    const supabase = await createClient()
+    const { error } = await supabase.auth.signOut()
+
+    if (error) return { success: false, error: error.message }
+
+    revalidatePath('/', 'layout')
+    return { success: true, data: undefined }
+  } catch (err: any) {
+    return { success: false, error: err.message }
+  }
+}
+
+export async function deleteAccount(): Promise<ActionResult> {
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) return { success: false, error: 'Not authenticated' }
+
+    // Using the standardized Admin Client for high-privilege deletion
+    const admin = getAdminClient()
+    const { error } = await admin.auth.admin.deleteUser(user.id)
+
+    if (error) return { success: false, error: error.message }
+
+    return { success: true, data: undefined }
+  } catch (err: any) {
+    return { success: false, error: err.message }
+  }
+}
