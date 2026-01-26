@@ -1,55 +1,52 @@
-import { adminClient } from '@/lib/supabase/admin';
-import { createClient } from '@/lib/supabase/server'; // Using our fixed server client
-import type { Database } from '@/lib/types/database';
-
-type ProductRow = Database['public']['Tables']['products']['Row'];
+import { supabaseAdmin } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
+import type { Product } from '@/lib/types'
 
 /**
  * getProductBySlug
  * Fetches a single product. 
- * Note: We use the standard client so Row Level Security (RLS) is respected.
+ * Note: Uses the server client so Row Level Security (RLS) is respected.
  */
-export async function getProductBySlug(slug: string): Promise<ProductRow | null> {
+export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
-    const supabase = await createClient();
+    const supabase = await createClient()
     
     const { data, error } = await supabase
       .from('products')
       .select('*')
       .eq('slug', slug)
-      .single();
+      .single()
 
     if (error) {
-      // If no rows found, this isn't a crash, just a 404
-      if (error.code === 'PGRST116') return null; 
+      if (error.code === 'PGRST116') return null 
       
-      console.error(`DB Error fetching slug [${slug}]:`, error.message);
-      return null;
+      console.error(`DB Error fetching slug [${slug}]:`, error.message)
+      return null
     }
 
-    return data;
+    return data
   } catch (err) {
-    console.error('Critical failure in getProductBySlug:', err);
-    return null;
+    console.error('Critical failure in getProductBySlug:', err)
+    return null
   }
 }
 
 /**
  * updateProduct
- * Uses adminClient to bypass RLS for administrative updates.
+ * Uses supabaseAdmin to bypass RLS for administrative updates.
  */
-export async function updateProduct(id: string, updates: Partial<ProductRow>) {
+export async function updateProduct(id: string, updates: Partial<Product>) {
   try {
-    const { data, error } = await adminClient
+    const { data, error } = await supabaseAdmin
       .from('products')
       .update(updates)
       .eq('id', id)
       .select()
-      .single();
+      .single()
 
-    return { data, error };
+    return { data, error }
   } catch (err: any) {
-    return { data: null, error: { message: err.message } };
+    return { data: null, error: { message: err.message } }
   }
 }
 
@@ -59,22 +56,22 @@ export async function updateProduct(id: string, updates: Partial<ProductRow>) {
  */
 export async function getAllProducts() {
   try {
-    const supabase = await createClient();
+    const supabase = await createClient()
     
     const { data, error } = await supabase
       .from('products')
       .select('slug, updated_at, world')
       .eq('is_published', true)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Error fetching all products:', error.message);
-      return [];
+      console.error('Error fetching all products:', error.message)
+      return []
     }
 
-    return data || [];
+    return data || []
   } catch (err) {
-    console.error('Critical failure in getAllProducts:', err);
-    return [];
+    console.error('Critical failure in getAllProducts:', err)
+    return []
   }
 }

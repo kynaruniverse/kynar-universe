@@ -1,77 +1,81 @@
-import { createServerClient } from '@supabase/ssr';
-import { NextResponse, type NextRequest } from 'next/server';
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  // 1. Create the initial response
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
-  });
+  })
 
-  // 2. Initialize Supabase Client using process.env directly
-  // This bypasses the broken @/lib/config/env.client import
+  // 1. Initialize Supabase SSR Client
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
-          return request.cookies.getAll();
+          return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          )
           response = NextResponse.next({
             request,
-          });
+          })
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
-          );
+          )
         },
       },
     }
-  );
+  )
 
-  // 3. Refresh the session (Essential for keeping users logged in)
-  const { data: { user } } = await supabase.auth.getUser();
+  // 2. Refresh / Get User (Crucial for session persistence)
+  const { data: { user } } = await supabase.auth.getUser()
 
-  // 4. Protection Logic
-  const path = request.nextUrl.pathname;
+  const path = request.nextUrl.pathname
 
-  // CSRF protection for API actions
+  // 3. Security: Origin Validation for API POSTs
   if (path.startsWith('/api') && request.method === 'POST') {
-    const origin = request.headers.get('origin');
+    const origin = request.headers.get('origin')
     const allowedOrigins = [
       'https://kynar-universev3.netlify.app',
       process.env.NEXT_PUBLIC_APP_URL,
-    ].filter(Boolean);
-  
+    ].filter(Boolean)
+
     if (origin && !allowedOrigins.includes(origin as string)) {
-      return new NextResponse('Forbidden', { status: 403 });
+      return new NextResponse('Access Forbidden', { status: 403 })
     }
   }
 
-  // Protect Account page: Redirect to login if no user
+  // 4. Protection Logic: Account & Library
   if (!user && path.startsWith('/account')) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('redirectedFrom', path);
-    return NextResponse.redirect(url);
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    url.searchParams.set('redirectedFrom', path)
+    return NextResponse.redirect(url)
   }
 
-  // Prevent logged-in users from seeing Auth pages: Redirect to account
+  // 5. Auth Flow Logic: Prevent logged-in users from seeing Auth screens
   if (user && (path.startsWith('/login') || path.startsWith('/signup'))) {
-    return NextResponse.redirect(new URL('/account', request.url));
+    return NextResponse.redirect(new URL('/account', request.url))
   }
 
-  return response;
+  return response
 }
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except static files and webhooks
+     * Match all paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - api/webhook (Lemon Squeezy needs public access)
+     * - Public assets (svg, png, etc)
      */
     '/((?!_next/static|_next/image|favicon.ico|api/webhook|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
-};
+}

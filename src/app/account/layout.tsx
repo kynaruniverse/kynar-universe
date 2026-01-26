@@ -1,14 +1,14 @@
-import type { Metadata } from 'next';
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'My Library | Kynar Universe',
-  description: 'Manage your purchases and downloads.',
-};
+  title: 'Library | Kynar Universe',
+  description: 'Manage your digital artifacts and indexed purchases.',
+}
 
 export default function AccountLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  return <>{children}</>;
+  return <>{children}</>
 }

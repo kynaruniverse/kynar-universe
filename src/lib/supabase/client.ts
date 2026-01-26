@@ -1,15 +1,18 @@
-import { createBrowserClient } from '@supabase/ssr';
-// Fixed path: removing the redundant 'models/models'
-import { Database } from '@/lib/types/database'; 
+import { createBrowserClient } from '@supabase/ssr'
+import type { Database } from '@/lib/types/database'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 /**
  * Standard Supabase Browser Client
- * Used for client-side authentication and data fetching
+ * Used for client-side authentication and real-time features.
+ * Adheres to: Single Quotes, No Semicolons, 2-Space Indent.
  */
 export const supabase = createBrowserClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+  supabaseUrl!,
+  supabaseAnonKey!
+)
 
-// Keeping this alias to satisfy any existing 'browserClient' references
-export const browserClient = supabase;
+// Alias for backwards compatibility with existing feature code
+export const browserClient = supabase

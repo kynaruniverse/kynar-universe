@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 // Specific imports to keep the bundle small and fast on mobile
-import { Home, Store, Compass, Library, User, HelpCircle } from 'lucide-react';
-import { NAV_ITEMS } from '@/shared/constants/worlds';
+import { Home, Store, Compass, Library, User, HelpCircle } from 'lucide-react'
+import { NAV_ITEMS } from '@/shared/constants/worlds'
 
 // Map icon strings to components locally
 const IconMap: Record<string, any> = {
@@ -13,25 +13,25 @@ const IconMap: Record<string, any> = {
   Compass,
   Library,
   User,
-};
+}
 
 export default function BottomNav() {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-50 
-      bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl 
+      className='fixed bottom-0 left-0 right-0 z-50 
+      bg-canvas/80 backdrop-blur-xl 
       border-t border-kyn-slate-100 dark:border-kyn-slate-800 
-      pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)]"
+      pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)]'
     >
-      <div className="flex justify-around items-center h-16 max-w-md mx-auto relative">
+      <div className='flex justify-around items-center h-16 max-w-md mx-auto relative'>
         {NAV_ITEMS.map((item) => {
-          const Icon = IconMap[item.icon] || HelpCircle;
+          const Icon = IconMap[item.icon] || HelpCircle
           
           const isActive = item.href === '/' 
             ? pathname === '/'
-            : pathname.startsWith(item.href);
+            : pathname.startsWith(item.href)
 
           return (
             <Link 
@@ -47,7 +47,7 @@ export default function BottomNav() {
             >
               {/* Active Dot Indicator */}
               {isActive && (
-                <div className="absolute top-1 w-1 h-1 rounded-full bg-kyn-green-500 animate-in zoom-in duration-500" />
+                <div className='absolute top-1 w-1 h-1 rounded-full bg-kyn-green-500 animate-in zoom-in duration-500' />
               )}
 
               <Icon 
@@ -63,9 +63,9 @@ export default function BottomNav() {
                 {item.label}
               </span>
             </Link>
-          );
+          )
         })}
       </div>
     </nav>
-  );
+  )
 }

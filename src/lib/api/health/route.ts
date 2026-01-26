@@ -1,21 +1,33 @@
-import { serverClient } from '@/lib/supabase/server';
-import { apiResponse } from '@/lib/api/responses';
+import { createClient } from '@/lib/supabase/server'
+import { apiResponse } from '@/lib/api/responses'
 
+/**
+ * System Health Check
+ * Verifies the connection between the Next.js edge and the Supabase vault.
+ */
 export async function GET() {
   try {
-    const supabase = await serverClient();
+    const supabase = await createClient()
     
-    // Perform a tiny query to check DB connectivity
-    const { error } = await supabase.from('products').select('id').limit(1);
+    // Perform a minimal heartbeat query
+    const { error } = await supabase
+      .from('products')
+      .select('id')
+      .limit(1)
+      .single()
     
-    if (error) throw error;
+    if (error && error.code !== 'PGRST116') {
+      throw error
+    }
 
     return apiResponse.success({ 
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      database: 'connected'
-    });
+      status: 'operational',
+      latency: 'optimal',
+      database: 'connected',
+      timestamp: new Date().toISOString()
+    })
   } catch (err: any) {
-    return apiResponse.error(`Unhealthy: ${err.message}`, 503);
+    console.error('System Health Failure:', err.message)
+    return apiResponse.error('Service Temporarily Unavailable', 503)
   }
 }

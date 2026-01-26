@@ -1,6 +1,7 @@
-import { WORLD_SETTINGS, FALLBACK_WORLD, WorldType } from '../constants/worlds';
+import { WORLD_SETTINGS, FALLBACK_WORLD, WorldType } from '../constants/worlds'
 
 export function getWorldTheme(worldName: string) {
-  const theme = WORLD_SETTINGS[worldName as WorldType];
-  return theme || FALLBACK_WORLD;
+  const normalizedName = worldName?.charAt(0).toUpperCase() + worldName?.slice(1).toLowerCase()
+  const theme = WORLD_SETTINGS[normalizedName as WorldType]
+  return theme || FALLBACK_WORLD
 }

@@ -1,18 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
+  // Standardizing content paths to include the src directory and feature modules
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/features/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/shared/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       fontFamily: {
-        // Fixed typo: sans-serif
         sans: ['var(--font-inter)', 'sans-serif'],
       },
       colors: {
-        // --- Custom Brand Palette ---
+        // High-end Kynar Brand Palette
         kyn: {
           green: {
             50: '#F0FDF4',
@@ -54,15 +55,12 @@ module.exports = {
             950: '#010413',
           },
         },
-
-        // --- CSS Variable Mappings with Alpha Support ---
-        // Using <alpha-value> allows you to use classes like bg-surface/50
+        // CSS Variable Mappings for Dynamic Themes
         canvas: 'hsl(var(--canvas) / <alpha-value>)',
         surface: 'hsl(var(--surface) / <alpha-value>)',
         primary: 'hsl(var(--text-primary) / <alpha-value>)', 
       },
       borderRadius: {
-        // Adding custom large rounding to match your high-end app feel
         '4xl': '2rem',
         '5xl': '2.5rem',
       },

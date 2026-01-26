@@ -1,19 +1,20 @@
-import Link from 'next/link';
-import type { LucideIcon } from 'lucide-react';
+'use client'
+
+import Link from 'next/link'
+import type { LucideIcon } from 'lucide-react'
 
 interface EmptyStateProps {
-  icon?: LucideIcon;
-  title: string;
-  description?: string;
+  icon?: LucideIcon
+  title: string
+  description?: string
   action?: {
-    label: string;
-    href: string;
-  };
-  variant?: 'default' | 'dashed';
-  className?: string;
+    label: string
+    href: string
+  }
+  variant?: 'default' | 'dashed'
+  className?: string
 }
 
-// FIX: Switched to default export to match your current import style
 export default function EmptyState({
   icon: Icon,
   title,
@@ -24,7 +25,7 @@ export default function EmptyState({
 }: EmptyStateProps) {
   const borderClass = variant === 'dashed' 
     ? 'border-2 border-dashed' 
-    : 'border';
+    : 'border'
 
   return (
     <div className={`
@@ -35,21 +36,21 @@ export default function EmptyState({
       ${className}
     `}>
       {Icon && (
-        <div className="bg-kyn-slate-50 dark:bg-kyn-slate-900 w-20 h-20 rounded-[2rem] flex items-center justify-center mx-auto mb-6">
+        <div className='bg-kyn-slate-50 dark:bg-kyn-slate-900 w-20 h-20 rounded-[2rem] flex items-center justify-center mx-auto mb-6'>
           <Icon 
-            className="w-10 h-10 text-kyn-slate-300 dark:text-kyn-slate-600" 
+            className='w-10 h-10 text-kyn-slate-300 dark:text-kyn-slate-600' 
             strokeWidth={1.5} 
-            aria-hidden="true" 
+            aria-hidden='true' 
           />
         </div>
       )}
       
-      <h3 className="text-xl font-black text-primary tracking-tight mb-2 italic uppercase">
+      <h3 className='text-xl font-black text-primary tracking-tight mb-2 italic uppercase'>
         {title}
       </h3>
       
       {description && (
-        <p className="max-w-xs mx-auto text-sm text-kyn-slate-500 mb-8 leading-relaxed font-medium">
+        <p className='max-w-xs mx-auto text-sm text-kyn-slate-500 mb-8 leading-relaxed font-medium'>
           {description}
         </p>
       )}
@@ -57,18 +58,17 @@ export default function EmptyState({
       {action && (
         <Link 
           href={action.href}
-          className="
+          className='
             inline-flex items-center justify-center
-            bg-kyn-slate-950 dark:bg-white 
-            text-white dark:text-kyn-slate-950 
+            bg-primary text-white 
             px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px]
-            shadow-xl shadow-kyn-slate-900/20 
+            shadow-xl shadow-primary/10 
             hover:scale-[1.02] active:scale-95 transition-all
-          "
+          '
         >
           {action.label}
         </Link>
       )}
     </div>
-  );
+  )
 }

@@ -1,5 +1,6 @@
 /**
- * Cleans a string to be used as a URL-friendly slug
+ * sanitizeSlug
+ * Cleans a string to be used as a URL-friendly slug.
  */
 export function sanitizeSlug(text: string): string {
   return text
@@ -10,17 +11,20 @@ export function sanitizeSlug(text: string): string {
     .replace(/[^\w-]+/g, '')  // Remove all non-word chars
     .replace(/--+/g, '-')     // Replace multiple - with single -
     .replace(/^-+/, '')       // Trim - from start
-    .replace(/-+$/, '');      // Trim - from end
+    .replace(/-+$/, '')       // Trim - from end
 }
 
 /**
- * Converts a comma-separated string into a clean array of unique strings
+ * parseCommaSeparated
+ * Converts a comma-separated string into a clean array of unique strings.
  */
 export function parseCommaSeparated(input: string): string[] {
-  if (!input) return [];
-  return input
+  if (!input) return []
+  
+  const items = input
     .split(',')
     .map((item) => item.trim())
-    .filter((item) => item !== '') // Remove empty strings
-    .filter((value, index, self) => self.indexOf(value) === index); // Remove duplicates
+    .filter((item) => item !== '')
+    
+  return [...new Set(items)] // Efficient way to remove duplicates
 }
