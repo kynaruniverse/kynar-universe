@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
-import { getProducts } from '@/lib/services/products.server';
-import { SITE_CONFIG } from '@/lib/constants';
+import { getProducts } from '@/features/products/schemas/product.schema';
+import { SITE_CONFIG } from '@/shared/constants/worlds';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url;
