@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
-import { env } from '@/lib/config/env.client';
+
 export async function middleware(request: NextRequest) {
   // 1. Create the initial response
   let response = NextResponse.next({
@@ -9,10 +9,11 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  // 2. Initialize Supabase Client with the modern getAll/setAll pattern
+  // 2. Initialize Supabase Client using process.env directly
+  // This bypasses the broken @/lib/config/env.client import
   const supabase = createServerClient(
-      env.supabase.url,
-      env.supabase.anonKey,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
@@ -31,12 +32,13 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // 3. Refresh the session
+  // 3. Refresh the session (Essential for keeping users logged in)
   const { data: { user } } = await supabase.auth.getUser();
 
   // 4. Protection Logic
   const path = request.nextUrl.pathname;
-  // CSRF protection for admin actions
+
+  // CSRF protection for API actions
   if (path.startsWith('/api') && request.method === 'POST') {
     const origin = request.headers.get('origin');
     const allowedOrigins = [
@@ -44,11 +46,12 @@ export async function middleware(request: NextRequest) {
       process.env.NEXT_PUBLIC_APP_URL,
     ].filter(Boolean);
   
-    if (origin && !allowedOrigins.includes(origin)) {
+    if (origin && !allowedOrigins.includes(origin as string)) {
       return new NextResponse('Forbidden', { status: 403 });
     }
   }
-  // Protect Account page
+
+  // Protect Account page: Redirect to login if no user
   if (!user && path.startsWith('/account')) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
@@ -56,7 +59,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Prevent logged-in users from seeing Auth pages
+  // Prevent logged-in users from seeing Auth pages: Redirect to account
   if (user && (path.startsWith('/login') || path.startsWith('/signup'))) {
     return NextResponse.redirect(new URL('/account', request.url));
   }
@@ -67,12 +70,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - api/webhook (IMPORTANT: Exclude Lemon Squeezy webhooks)
-     * - All image extensions
+     * Match all request paths except static files and webhooks
      */
     '/((?!_next/static|_next/image|favicon.ico|api/webhook|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],

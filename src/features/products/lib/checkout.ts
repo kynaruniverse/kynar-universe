@@ -11,12 +11,15 @@ export interface CheckoutOptions {
   embed?: boolean;
 }
 
+/**
+ * Opens the Lemon Squeezy checkout overlay or redirects if overlay is unavailable.
+ */
 export async function openCheckout({
   priceId,
   userId,
   userEmail,
   onUnauthenticated,
-  embed = true, // Defaulting to true for that premium Kynar feel
+  embed = true,
 }: CheckoutOptions): Promise<void> {
   // 1. Check authentication
   if (!userId) {
@@ -25,15 +28,16 @@ export async function openCheckout({
   }
 
   // 2. Construct checkout URL
+  // Ensure we use your specific store domain if priceId is just a variant ID
   const baseUrl = priceId.startsWith('http') 
     ? priceId 
-    : `https://store.lemonsqueezy.com/checkout/buy/${priceId}`;
+    : `https://kynar.lemonsqueezy.com/checkout/buy/${priceId}`;
   
   const checkoutUrl = new URL(baseUrl);
   
   /**
-   * IMPORTANT: Lemon Squeezy uses 'checkout[custom][user_id]' 
-   * to pass data back to your webhooks.
+   * IMPORTANT: 'checkout[custom][user_id]' is the key that allows
+   * your webhook (api/webhook/route.ts) to attribute the sale to the user.
    */
   checkoutUrl.searchParams.set('checkout[custom][user_id]', userId);
   
@@ -41,36 +45,32 @@ export async function openCheckout({
     checkoutUrl.searchParams.set('checkout[email]', userEmail);
   }
   
-  // LS specific: pre-fill to hide the email field if they are logged in
-  // checkoutUrl.searchParams.set('checkout[prefill_email]', '1'); 
-
-  // 3. Open checkout
   const finalUrl = checkoutUrl.toString();
   
-  /**
-   * Check for the global LS object.
-   * If the script is loaded, use the overlay; otherwise, fallback to redirect.
-   */
-  if (typeof window !== 'undefined' && window.LemonSqueezy?.Url?.Open) {
-    window.LemonSqueezy.Url.Open(finalUrl);
-  } else {
-    window.location.href = finalUrl;
+  // 3. Open checkout
+  if (typeof window !== 'undefined') {
+    // If the Lemon Squeezy script is loaded and we want the embed (overlay)
+    if (embed && window.LemonSqueezy?.Url?.Open) {
+      window.LemonSqueezy.Url.Open(finalUrl);
+    } else {
+      // Fallback for mobile if script fails or embed is disabled
+      window.location.href = finalUrl;
+    }
   }
 }
 
 /**
- * Save checkout intent
+ * Save checkout intent in sessionStorage so the user can be 
+ * redirected back to their purchase after logging in.
  */
 export function saveCheckoutIntent(url: string): void {
   if (typeof window !== 'undefined') {
-    // Store the base URL without query params to avoid double-encoding
-    const baseUrl = url.split('?')[0];
-    sessionStorage.setItem('kynar_checkout_intent', baseUrl);
+    sessionStorage.setItem('kynar_checkout_intent', url);
   }
 }
 
 /**
- * Get and Clear intent
+ * Retrieve and clear the pending checkout intent.
  */
 export function getCheckoutIntent(): string | null {
   if (typeof window === 'undefined') return null;

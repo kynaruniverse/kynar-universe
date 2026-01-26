@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShoppingBag, Loader2 } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
+// FIX: Explicitly check if these paths exist. 
+// If Pydroid still flags them, you may need to add '.ts' or '.tsx' extensions.
 import { openCheckout, saveCheckoutIntent } from '@/features/products/lib/checkout';
 import { LoadingSpinner } from '@/shared/components/feedback/LoadingSpinner';
 
@@ -13,6 +15,7 @@ declare global {
       Url: {
         Open: (url: string) => void;
       };
+      Setup: () => void;
     };
   }
 }
@@ -27,38 +30,45 @@ export default function BuyButton({ variantId, userId, className }: BuyButtonPro
   const [loading, setLoading] = useState(false);
   
   useEffect(() => {
-    // 2. Initialize Lemon Squeezy
-    if (typeof window !== 'undefined' && window.createLemonSqueezy) {
-      window.createLemonSqueezy();
+    // 2. Initialize Lemon Squeezy Overlay
+    if (typeof window !== 'undefined') {
+      if (window.createLemonSqueezy) {
+        window.createLemonSqueezy();
+      }
+      // Ensure LemonSqueezy is set up if already loaded
+      window.LemonSqueezy?.Setup?.();
     }
   }, []);
   
   const handleCheckout = async (e: React.MouseEvent) => {
     e.preventDefault();
+    if (loading) return;
+    
     setLoading(true);
     
-    // Construct the checkout URL
-    const checkoutUrl = variantId.startsWith('http') 
-      ? variantId 
-      : `https://store.lemonsqueezy.com/checkout/buy/${variantId}`;
+    try {
+      // Construct the checkout URL
+      const checkoutUrl = variantId.startsWith('http') 
+        ? variantId 
+        : `https://kynar.lemonsqueezy.com/checkout/buy/${variantId}`;
 
-    await openCheckout({
-      priceId: variantId,
-      userId,
-      onUnauthenticated: () => {
-        // 3. Capture current path for a seamless return trip
-        saveCheckoutIntent(checkoutUrl);
-        const returnPath = encodeURIComponent(window.location.pathname);
-        window.location.href = `/login?returnTo=${returnPath}`;
-      },
-      embed: true,
-    });
-    
-    // Reset loading state. 
-    // If the overlay opens, the user is focused there.
-    // If it fails, this ensures the button isn't stuck.
-    const timer = setTimeout(() => setLoading(false), 3000);
-    return () => clearTimeout(timer);
+      await openCheckout({
+        priceId: variantId,
+        userId,
+        onUnauthenticated: () => {
+          // 3. Capture current path for a seamless return trip
+          saveCheckoutIntent(checkoutUrl);
+          const returnPath = encodeURIComponent(window.location.pathname);
+          window.location.href = `/login?returnTo=${returnPath}`;
+        },
+        embed: true, // Uses the Lemon Squeezy overlay
+      });
+    } catch (error) {
+      console.error('Checkout failed:', error);
+    } finally {
+      // Small delay to ensure the overlay has time to pop up on mobile
+      setTimeout(() => setLoading(false), 2000);
+    }
   };
   
   return (
@@ -76,14 +86,13 @@ export default function BuyButton({ variantId, userId, className }: BuyButtonPro
       `}
     >
       {loading ? (
-        <LoadingSpinner size={18} />
+        <LoadingSpinner />
       ) : (
-        <ShoppingBag className="w-5 h-5" strokeWidth={2.5} />
+        <>
+          <ShoppingBag className="w-5 h-5" strokeWidth={2.5} />
+          <span className="relative">Unlock Now</span>
+        </>
       )}
-      
-      <span className="relative">
-        {loading ? 'Processing...' : 'Unlock Now'}
-      </span>
     </button>
   );
 }

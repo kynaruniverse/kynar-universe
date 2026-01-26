@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
+// Explicitly using the supabase client we fixed in Step 3.1
 import { supabase } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
@@ -30,33 +31,32 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     let mounted = true;
 
-    // 1. Get initial session
     const initializeAuth = async () => {
       try {
-        const { data: { session: initialSession } } = await supabase.auth.getSession();
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
         
+        if (error) throw error;
+
         if (mounted) {
           setSession(initialSession);
           setUser(initialSession?.user ?? null);
-          setLoading(false);
         }
       } catch (error) {
         console.error('Auth initialization error:', error);
+      } finally {
         if (mounted) setLoading(false);
       }
     };
 
     initializeAuth();
 
-    // 2. Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
       if (mounted) {
         setSession(newSession);
         setUser(newSession?.user ?? null);
         setLoading(false);
 
-        // Refresh Server Components on login/logout to update UI immediately
-        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') {
           router.refresh();
         }
       }
@@ -72,13 +72,12 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     try {
       await supabase.auth.signOut();
       router.push('/login');
-      router.refresh(); // Ensure server knows we are out
+      router.refresh();
     } catch (error) {
       console.error('Error signing out:', error);
     }
   }, [router]);
 
-  // Memoize the context value to prevent unnecessary re-renders in consumers
   const value = useMemo(() => ({
     user,
     session,

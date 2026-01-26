@@ -2,8 +2,18 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import * as Icons from 'lucide-react'; // Import all icons to map them
+// Specific imports to keep the bundle small and fast on mobile
+import { Home, Store, Compass, Library, User, HelpCircle } from 'lucide-react';
 import { NAV_ITEMS } from '@/shared/constants/worlds';
+
+// Map icon strings to components locally
+const IconMap: Record<string, any> = {
+  Home,
+  Store,
+  Compass,
+  Library,
+  User,
+};
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -11,16 +21,14 @@ export default function BottomNav() {
   return (
     <nav 
       className="fixed bottom-0 left-0 right-0 z-50 
-      bg-surface/80 backdrop-blur-xl 
-      border-t border-kyn-slate-200 dark:border-kyn-slate-800 
-      pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]"
+      bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl 
+      border-t border-kyn-slate-100 dark:border-kyn-slate-800 
+      pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)]"
     >
-      <div className="flex justify-around items-center h-16 max-w-md mx-auto">
+      <div className="flex justify-around items-center h-16 max-w-md mx-auto relative">
         {NAV_ITEMS.map((item) => {
-          // 1. Get the Icon component dynamically
-          const Icon = (Icons as any)[item.icon] || Icons.HelpCircle;
+          const Icon = IconMap[item.icon] || HelpCircle;
           
-          // 2. Logic: Strict match for home, startsWith for others
           const isActive = item.href === '/' 
             ? pathname === '/'
             : pathname.startsWith(item.href);
@@ -30,27 +38,30 @@ export default function BottomNav() {
               key={item.label} 
               href={item.href}
               aria-label={item.label}
-              aria-current={isActive ? 'page' : undefined}
               className={`
-                flex flex-col items-center justify-center w-full h-full space-y-1 transition-all duration-200
+                relative flex flex-col items-center justify-center w-full h-full transition-all duration-300
                 ${isActive 
-                  ? 'text-kyn-green-600 dark:text-kyn-green-400 scale-105' 
-                  : 'text-kyn-slate-400 dark:text-kyn-slate-500 hover:text-kyn-slate-900 dark:hover:text-kyn-slate-200'}
+                  ? 'text-primary' 
+                  : 'text-kyn-slate-400 dark:text-kyn-slate-500'}
               `}
             >
+              {/* Active Dot Indicator */}
+              {isActive && (
+                <div className="absolute top-1 w-1 h-1 rounded-full bg-kyn-green-500 animate-in zoom-in duration-500" />
+              )}
+
               <Icon 
-                size={22} 
+                size={20} 
                 strokeWidth={isActive ? 2.5 : 2} 
-                className={isActive ? 'drop-shadow-[0_0_8px_rgba(22,163,74,0.2)]' : ''} 
+                className={`mb-1 transition-transform ${isActive ? 'scale-110' : ''}`}
               />
-              <span className={`text-[10px] tracking-tight ${isActive ? 'font-bold' : 'font-medium'}`}>
+              
+              <span className={`
+                text-[9px] uppercase tracking-[0.1em] 
+                ${isActive ? 'font-black italic' : 'font-bold opacity-60'}
+              `}>
                 {item.label}
               </span>
-              
-              {/* Little active indicator dot */}
-              {isActive && (
-                <div className="absolute top-1 w-1 h-1 rounded-full bg-kyn-green-500 animate-in zoom-in" />
-              )}
             </Link>
           );
         })}
