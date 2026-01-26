@@ -10,10 +10,11 @@ interface EmptyStateProps {
     href: string;
   };
   variant?: 'default' | 'dashed';
-  className?: string; // Added for layout flexibility
+  className?: string;
 }
 
-export function EmptyState({
+// FIX: Switched to default export to match your current import style
+export default function EmptyState({
   icon: Icon,
   title,
   description,
@@ -43,7 +44,7 @@ export function EmptyState({
         </div>
       )}
       
-      <h3 className="text-xl font-black text-primary tracking-tight mb-2 italic">
+      <h3 className="text-xl font-black text-primary tracking-tight mb-2 italic uppercase">
         {title}
       </h3>
       
@@ -60,7 +61,7 @@ export function EmptyState({
             inline-flex items-center justify-center
             bg-kyn-slate-950 dark:bg-white 
             text-white dark:text-kyn-slate-950 
-            px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs
+            px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px]
             shadow-xl shadow-kyn-slate-900/20 
             hover:scale-[1.02] active:scale-95 transition-all
           "

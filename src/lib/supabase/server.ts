@@ -1,12 +1,13 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import type { Database } from '@/lib/types/database';
-import { env } from '@/lib/config/env.client';
+
 export async function createClient() {
   const cookieStore = await cookies();
   
-  const supabaseUrl = env.supabase.url;
-  const supabaseKey = env.supabase.anonKey;
+  // Use process.env directly to bypass the broken env.client import
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   
   if (!supabaseUrl || !supabaseKey) {
     throw new Error('Missing Supabase environment variables');
@@ -23,7 +24,8 @@ export async function createClient() {
             cookieStore.set(name, value, options)
           );
         } catch {
-          // Safe to ignore in Server Components
+          // The `setAll` method was called from a Server Component.
+          // This can be ignored if you have middleware refreshing user sessions.
         }
       },
     },

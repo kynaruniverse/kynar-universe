@@ -4,19 +4,21 @@ import Image from 'next/image';
 import { ChevronRight, FileCode, CheckCircle2, Sparkles } from 'lucide-react';
 
 import { WORLD_CONFIG } from '@/shared/constants/worlds';
+// FIX: Ensure this matches your actual file name (might be products.ts or products.server.ts)
 import { getProductBySlug } from '@/features/products/services/products.server';
-import { createClient } from '@/lib/supabase/server'; // Updated to your verified path
+import { createClient } from '@/lib/supabase/server';
 import BuyButton from '@/features/products/components/BuyButton';
 
 export const dynamic = 'force-dynamic';
 
+// Next.js 15 requires params to be a Promise
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
-    const { slug } = params;
-    const product = await getProductBySlug(slug);
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
   
   if (!product) return { title: 'Product Not Found' };
   
@@ -30,12 +32,12 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export default async function ProductPage({ params }: PageProps) {
-    const { slug } = params;
+  // FIX: Await the params (Required for Next.js 15)
+  const { slug } = await params;
   
-  // 1. Initialize Supabase
   const supabase = await createClient();
 
-  // 2. Parallel Fetch: Get product and user at the same time
+  // Fetch product and user in parallel for speed
   const [product, { data: authData }] = await Promise.all([
     getProductBySlug(slug),
     supabase.auth.getUser(),
@@ -44,8 +46,9 @@ export default async function ProductPage({ params }: PageProps) {
   if (!product) notFound();
 
   const user = authData?.user;
-  const worldInfo = WORLD_CONFIG[product.world as keyof typeof WORLD_CONFIG];
-  const theme = worldInfo?.colorClasses;
+  const worldKey = product.world as keyof typeof WORLD_CONFIG;
+  const worldInfo = WORLD_CONFIG[worldKey];
+  const theme = worldInfo?.colorClasses || { badge: 'bg-kyn-slate-600' };
 
   return (
     <div className="min-h-screen pb-32 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -77,8 +80,6 @@ export default async function ProductPage({ params }: PageProps) {
               className="object-cover"
               priority
               sizes="(max-width: 768px) 100vw, 800px"
-              placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-kyn-slate-200 bg-kyn-slate-50 dark:bg-kyn-slate-900/50">
@@ -114,6 +115,7 @@ export default async function ProductPage({ params }: PageProps) {
 
         {/* Action Button Area */}
         <div className="flex flex-col gap-4 pt-2">
+          {/* We pass price_id as the variantId for Lemon Squeezy */}
           <BuyButton 
             variantId={product.price_id} 
             userId={user?.id}
@@ -155,7 +157,6 @@ export default async function ProductPage({ params }: PageProps) {
            </div>
          </div>
       </section>
-
     </div>
   );
 }

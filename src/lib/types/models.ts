@@ -44,3 +44,23 @@ export interface Purchase {
   // Joined Data (Optional)
   product ? : Product;
 }
+
+/**
+ * Standard response for Server Actions
+ */
+export interface ActionResult<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+/**
+ * Profile definition (matches your 'profiles' table)
+ */
+export interface Profile {
+  id: string;
+  full_name: string | null;
+  avatar_url: string | null;
+  is_admin: boolean;
+  updated_at: string;
+}

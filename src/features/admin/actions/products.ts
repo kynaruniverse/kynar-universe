@@ -1,23 +1,59 @@
 'use server';
 
-import { ActionResult } from '@/lib/types/models/actions';
-import { updateProduct } from '@/features/products/services/products.server';
 import { revalidatePath } from 'next/cache';
+import { adminClient } from '@/lib/supabase/admin';
+import { updateProduct } from '@/features/products/services/products.server';
 
-export async function saveProduct(formData: any): Promise<ActionResult<string>> {
-  // 1. Logic for updating or creating
-  const { id, ...data } = formData;
-  
-  const { data: result, error } = id 
-    ? await updateProduct(id, data)
-    : { data: null, error: new Error("Create logic not implemented yet") };
+// FIX: Simplified the response type to avoid the broken ActionResult import
+export type ActionResponse<T = any> = {
+  success: boolean;
+  data?: T;
+  error?: string;
+};
 
-  if (error) {
-    return { success: false, error: error.message };
+/**
+ * saveProduct
+ * Handles both creating new assets and updating existing ones.
+ */
+export async function saveProduct(formData: any): Promise<ActionResponse<string>> {
+  try {
+    const { id, ...data } = formData;
+
+    let result;
+    let error;
+
+    if (id) {
+      // UPDATE existing product
+      const updateResult = await updateProduct(id, data);
+      result = updateResult.data;
+      error = updateResult.error;
+    } else {
+      // CREATE new product
+      const createResult = await adminClient
+        .from('products')
+        .insert([data])
+        .select()
+        .single();
+      
+      result = createResult.data;
+      error = createResult.error;
+    }
+
+    if (error) {
+      console.error('Admin Product Save Error:', error.message);
+      return { success: false, error: error.message };
+    }
+
+    // Refresh the cache so changes show up immediately
+    revalidatePath('/admin');
+    revalidatePath('/store');
+    if (result?.slug) {
+      revalidatePath(`/product/${result.slug}`);
+    }
+    
+    return { success: true, data: result?.id };
+  } catch (err: any) {
+    console.error('Action failure:', err);
+    return { success: false, error: 'A critical error occurred while saving.' };
   }
-
-  revalidatePath('/admin');
-  revalidatePath(`/product/${result.slug}`);
-  
-  return { success: true, data: result.id };
 }
