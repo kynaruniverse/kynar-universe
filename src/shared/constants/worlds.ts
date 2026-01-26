@@ -1,0 +1,74 @@
+// Define the type locally so we don't have circular dependencies
+export const WORLDS = ['Home', 'Lifestyle', 'Tools'] as const;
+export type World = (typeof WORLDS)[number];
+
+export const WORLD_CONFIG: Record<World, {
+  label: string;
+  tagline: string;
+  description: string;
+  color: string;
+  colorClasses: {
+    badge: string;
+    bg: string;
+    border: string;
+    hover: string;
+    text: string;
+  };
+}> = {
+  Home: {
+    label: 'Home',
+    tagline: 'Make everyday life less chaotic',
+    description: 'Family-friendly organisation',
+    color: 'kyn-green',
+    colorClasses: {
+      badge: 'bg-kyn-green-500',
+      bg: 'bg-kyn-green-50 dark:bg-kyn-green-900/20',
+      border: 'border-kyn-green-100 dark:border-kyn-green-800',
+      hover: 'hover:border-kyn-green-300 dark:hover:border-kyn-green-600',
+      text: 'text-kyn-green-600 dark:text-kyn-green-400',
+    },
+  },
+  Lifestyle: {
+    label: 'Lifestyle',
+    tagline: 'Build better habits and routines',
+    description: 'Progress without pressure',
+    color: 'kyn-caramel',
+    colorClasses: {
+      badge: 'bg-kyn-caramel-500',
+      bg: 'bg-kyn-caramel-50 dark:bg-kyn-caramel-900/20',
+      border: 'border-kyn-caramel-100 dark:border-kyn-caramel-800',
+      hover: 'hover:border-kyn-caramel-300 dark:hover:border-kyn-caramel-600',
+      text: 'text-kyn-caramel-600 dark:text-kyn-caramel-400',
+    },
+  },
+  Tools: {
+    label: 'Tools',
+    tagline: 'Power up your projects',
+    description: 'Professional assets, instant results',
+    color: 'kyn-slate',
+    colorClasses: {
+      badge: 'bg-kyn-slate-500',
+      bg: 'bg-kyn-slate-50 dark:bg-kyn-slate-800/50',
+      border: 'border-kyn-slate-200 dark:border-kyn-slate-700',
+      hover: 'hover:border-kyn-slate-400 dark:hover:border-kyn-slate-500',
+      text: 'text-kyn-slate-600 dark:text-kyn-slate-300',
+    },
+  },
+};
+
+export const SITE_CONFIG = {
+  name: 'Kynar Universe',
+  url: 'https://kynar-universev3.netlify.app',
+  description: 'One universe, unlimited solutions. Organise your home, life, and projects with curated digital tools and planners.',
+  tagline: 'One universe, unlimited solutions',
+  location: 'UK',
+  currency: 'GBP',
+  currencySymbol: '£',
+} as const;
+
+export const NAV_ITEMS = [
+  { label: 'Home', href: '/', icon: 'Home' },
+  { label: 'Browse', href: '/store', icon: 'Grid' },
+  { label: 'Guides', href: '/guides', icon: 'BookOpen' },
+  { label: 'Library', href: '/account', icon: 'User' },
+] as const;

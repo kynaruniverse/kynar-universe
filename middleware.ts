@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
-
+import { env } from '@/lib/config/env.client';
 export async function middleware(request: NextRequest) {
   // 1. Create the initial response
   let response = NextResponse.next({
@@ -11,8 +11,8 @@ export async function middleware(request: NextRequest) {
 
   // 2. Initialize Supabase Client with the modern getAll/setAll pattern
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      env.supabase.url,
+      env.supabase.anonKey,
     {
       cookies: {
         getAll() {
@@ -36,7 +36,18 @@ export async function middleware(request: NextRequest) {
 
   // 4. Protection Logic
   const path = request.nextUrl.pathname;
-
+  // CSRF protection for admin actions
+  if (path.startsWith('/api') && request.method === 'POST') {
+    const origin = request.headers.get('origin');
+    const allowedOrigins = [
+      'https://kynar-universev3.netlify.app',
+      process.env.NEXT_PUBLIC_APP_URL,
+    ].filter(Boolean);
+  
+    if (origin && !allowedOrigins.includes(origin)) {
+      return new NextResponse('Forbidden', { status: 403 });
+    }
+  }
   // Protect Account page
   if (!user && path.startsWith('/account')) {
     const url = request.nextUrl.clone();

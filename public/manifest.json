@@ -1,0 +1,9 @@
+{
+  "name": "Kynar Universe",
+  "short_name": "Kynar",
+  "description": "Digital marketplace for home, lifestyle, and productivity tools",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#16A34A"
+}
