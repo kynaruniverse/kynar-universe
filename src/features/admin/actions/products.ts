@@ -3,13 +3,13 @@
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { updateProduct } from '@/features/products/services/products.server'
-import { requireAdmin } from '@/features/auth/lib/server'
-import type { ActionResult } from '@/shared/types' // Standardized path
+import { requireAdmin } from '@/features/auth/actions/auth'
+// FIX: In your file tree, the types are in src/lib/types/index.ts
+import type { ActionResult } from '@/lib/types'
 
 /**
  * saveProduct
  * High-privilege action to create or update marketplace assets.
- * Uses the Admin Client to bypass RLS for management tasks.
  */
 export async function saveProduct(formData: any): Promise<ActionResult<string>> {
   try {
@@ -47,14 +47,14 @@ export async function saveProduct(formData: any): Promise<ActionResult<string>> 
     }
 
     // 2. Next.js 15 Cache Invalidation
-    // We target the admin dashboard, the store feed, and the specific artifact page
     revalidatePath('/admin')
     revalidatePath('/store')
     if (result?.slug) {
       revalidatePath(`/product/${result.slug}`)
     }
     
-    return { success: true, data: result?.id }
+    // Using result?.id as the string data returned in ActionResult
+    return { success: true, data: result?.id || '' }
   } catch (err: any) {
     console.error('Critical Admin Action Failure:', err)
     return { success: false, error: 'Authorization or System failure.' }

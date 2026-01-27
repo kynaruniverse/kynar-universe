@@ -1,7 +1,7 @@
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import crypto from 'crypto'
-import { getAdminClient } from '@/lib/supabase-admin'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 
 export async function POST(req: Request) {
   try {
@@ -14,10 +14,11 @@ export async function POST(req: Request) {
     const hmac = crypto.createHmac('sha256', secret)
     const digest = hmac.update(body).digest('hex')
 
-    // Timing-safe comparison to mitigate side-channel risks
+    // Timing-safe comparison to prevent timing attacks
     const digestBuffer = Buffer.from(digest, 'hex')
     const signatureBuffer = Buffer.from(signature, 'hex')
 
+    // Buffers must be of equal length for timingSafeEqual
     if (
       digestBuffer.length !== signatureBuffer.length || 
       !crypto.timingSafeEqual(digestBuffer, signatureBuffer)
@@ -28,33 +29,37 @@ export async function POST(req: Request) {
     const payload = JSON.parse(body)
     const eventName = payload.meta.event_name
     const customData = payload.meta.custom_data
-    const admin = getAdminClient()
 
     // 2. Handle Successful Order
     if (eventName === 'order_created') {
-      const attributes = payload.data.attributes
       const userId = customData?.user_id
+      const productId = customData?.product_id // Assuming you pass this in checkout
       
-      // We upsert to prevent duplicate purchase records from webhook retries
-      const { error } = await admin
+      if (!userId) {
+        console.error('Webhook Error: No user_id in custom_data')
+        return new NextResponse('Missing User Identity', { status: 400 })
+      }
+
+      // We use upsert to ensure idempotency (preventing duplicates on webhook retries)
+      const { error } = await supabaseAdmin
         .from('purchases')
         .upsert({
           user_id: userId,
+          product_id: productId,
           lemon_squeezy_order_id: payload.data.id.toString(),
           status: 'completed',
           purchase_date: new Date().toISOString(),
-          // Metadata is typically mapped in the DB via variant_id or custom_data
         }, { onConflict: 'lemon_squeezy_order_id' })
 
       if (error) {
         console.error('Archive Sync Error:', error.message)
-        throw error
+        return new NextResponse('Database Sync Failed', { status: 500 })
       }
     }
 
     return NextResponse.json({ received: true }, { status: 200 })
   } catch (err: any) {
     console.error('Webhook Runtime Error:', err.message)
-    return NextResponse.json({ error: err.message }, { status: 400 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

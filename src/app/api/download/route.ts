@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { getAdminClient } from '@/lib/supabase-admin'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 
 function isValidUUID(str: string): boolean {
@@ -11,7 +11,9 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const productId = searchParams.get('productId')
   
-  if (!productId) return new NextResponse('Missing Product ID', { status: 400 })
+  if (!productId) {
+    return new NextResponse('Missing Product ID', { status: 400 })
+  }
   
   if (!isValidUUID(productId)) {
     return new NextResponse('Invalid Product ID', { status: 400 })
@@ -20,29 +22,40 @@ export async function GET(request: Request) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) return new NextResponse('Unauthorized', { status: 401 })
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
-  // 1. Verify ownership (Ensures they actually purchased this specific artifact)
-  const { data: purchase } = await supabase
+  // 1. Verify ownership
+  // We cast the select to ensure the compiler knows content_url exists on the joined table
+  const { data: purchase, error } = await supabase
     .from('purchases')
-    .select('id, product:products(content_url)')
+    .select(`
+      id,
+      products!inner (
+        content_url
+      )
+    `)
     .eq('user_id', user.id)
     .eq('product_id', productId)
     .single()
 
-  if (!purchase || !purchase.product?.content_url) {
-    return new NextResponse('Access Denied', { status: 403 })
+  // Safely extract the content URL
+  const productData = purchase?.products as unknown as { content_url: string } | null
+  const contentUrl = productData?.content_url
+
+  if (error || !contentUrl) {
+    return new NextResponse('Access Denied: Artifact ownership not verified.', { status: 403 })
   }
 
-  // 2. Log the access event using the elevated Admin Client
-  const admin = getAdminClient()
-  await admin.from('download_logs').insert({
+  // 2. Log access using the imported Admin Client (No more getAdminClient undefined error)
+  await supabaseAdmin.from('download_logs').insert({
     user_id: user.id,
     product_id: productId,
     ip_address: request.headers.get('x-forwarded-for') || 'unknown',
     user_agent: request.headers.get('user-agent') || 'unknown'
   })
 
-  // 3. Secure Redirect to the delivery endpoint
-  return NextResponse.redirect(purchase.product.content_url)
+  // 3. Secure Redirect
+  return NextResponse.redirect(contentUrl)
 }
