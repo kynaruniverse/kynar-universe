@@ -1,13 +1,16 @@
 import Link from 'next/link'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import ProductCard from '@/features/products/components/ProductCard'
-import { getProducts } from '@/features/products/schemas/product.schema'
+// FIX 1: Point to the actual server-side service instead of the schema file
+import { getProducts } from '@/features/products/services/products.server'
+// FIX 2: Ensure path matches file tree (src/shared/components/feedback/EmptyState.tsx)
 import { EmptyState } from '@/shared/components/feedback/EmptyState'
 import { WORLD_CONFIG } from '@/shared/constants/worlds'
 
 export const revalidate = 60
 
 export default async function Home() {
+  // Fetch products using the server-side service logic
   const products = await getProducts({ limit: 4 })
   
   return (

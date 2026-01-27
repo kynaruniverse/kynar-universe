@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr' // Added CookieOptions type
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
@@ -17,7 +17,8 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-        setAll(cookiesToSet) {
+        // FIX: Added explicit types for cookiesToSet to satisfy Next.js 15 build requirements
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
@@ -38,8 +39,7 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // 3. Security: Origin Validation for API POSTs
-  if (path.startsWith('/api') && 
-  request.method === 'POST') {
+  if (path.startsWith('/api') && request.method === 'POST') {
     // BYPASS origin check for webhooks (Verified by HMAC signature in the route itself)
     if (path === '/api/webhook') return response;
 
@@ -53,7 +53,6 @@ export async function middleware(request: NextRequest) {
       return new NextResponse('Access Forbidden', { status: 403 })
     }
   }
-
 
   // 4. Protection Logic: Account & Library
   if (!user && path.startsWith('/account')) {

@@ -21,11 +21,16 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
+    // Log the error for internal tracking (consider a logging service for production)
     console.error('Kynar Error Boundary:', error, errorInfo)
   }
 
   render() {
     if (this.state.hasError) {
+      // In production, we strictly hide technical details from the user
+      // We only allow the dev block if the node environment is specifically 'development'
+      const isDev = process.env.NODE_ENV === 'development'
+
       return this.props.fallback || (
         <div className='min-h-[60vh] flex items-center justify-center px-6 animate-in fade-in duration-500'>
           <div className='text-center space-y-8 max-w-sm'>
@@ -62,9 +67,13 @@ export class ErrorBoundary extends Component<Props, State> {
               Resync Connection
             </button>
 
-            {process.env.NODE_ENV === 'development' && (
-              <div className='p-4 bg-kyn-slate-50 dark:bg-kyn-slate-900 rounded-xl border border-kyn-slate-200 dark:border-kyn-slate-800'>
-                <p className='text-[10px] font-mono text-red-500 break-words text-left'>
+            {/* Technical logs only show in development mode */}
+            {isDev && (
+              <div className='mt-6 p-4 bg-kyn-slate-50 dark:bg-kyn-slate-900 rounded-xl border border-kyn-slate-200 dark:border-kyn-slate-800 text-left overflow-hidden'>
+                <p className='text-[10px] font-mono text-kyn-slate-400 uppercase tracking-widest mb-2'>
+                  Dev Diagnostic
+                </p>
+                <p className='text-[10px] font-mono text-red-500 break-words'>
                   {this.state.error?.toString()}
                 </p>
               </div>
