@@ -4,7 +4,9 @@ import { getAllProducts } from '@/features/products/services/products.server'
 import ProductCard from '@/features/products/components/ProductCard'
 import StoreSearch from '@/shared/components/ui/StoreSearch'
 import WorldFilter from '@/shared/components/ui/WorldFilter'
-import EmptyState from '@/shared/components/feedback/EmptyState'
+// FIX: Use named import to match our new named export
+import { EmptyState } from '@/shared/components/feedback/EmptyState'
+import type { Product } from '@/lib/types'
 
 export const metadata: Metadata = {
   title: 'Archive | Kynar Universe',
@@ -18,11 +20,13 @@ interface StoreProps {
 }
 
 export default async function StorePage({ searchParams }: StoreProps) {
+  // 1. Await params (Next.js 15 Requirement)
   const { world, q } = await searchParams
   
-  const allProducts = await getAllProducts()
+  // 2. Fetch data using our unified server service
+  const allProducts = (await getAllProducts()) as Product[]
 
-  // Server-side filtering logic
+  // 3. Server-side filtering logic
   const filteredProducts = allProducts.filter((p) => {
     const matchesWorld = !world || p.world.toLowerCase() === world.toLowerCase()
     const matchesSearch = !q || 
@@ -59,7 +63,8 @@ export default async function StorePage({ searchParams }: StoreProps) {
       {filteredProducts.length > 0 ? (
         <div className='grid grid-cols-2 gap-4'>
           {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product as any} />
+            // Pass the typed product safely to the card
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (

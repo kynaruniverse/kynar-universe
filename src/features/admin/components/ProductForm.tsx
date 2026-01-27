@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { sanitizeSlug, parseCommaSeparated } from '@/shared/utils/sanitization'
 import { WORLDS } from '@/shared/constants/worlds'
 import { saveProduct } from '@/features/admin/actions/products'
-import type { Product } from '@/lib/types/models'
+import type { Product } from '@/lib/types' // Using the centralized type export
 import { Input } from '@/shared/components/ui/Input'
 import { Button } from '@/shared/components/ui/Button'
 
@@ -30,8 +30,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     short_description: initialData?.short_description || '',
     description: initialData?.description || '',
     preview_image: initialData?.preview_image || '',
-    tags: initialData?.tags?.join(', ') || '',
-    file_types: initialData?.file_types?.join(', ') || '',
+    tags: initialData?.tags?.length ? initialData.tags.join(', ') : '',
+    file_types: initialData?.file_types?.length ? initialData.file_types.join(', ') : '',
     is_published: initialData?.is_published ?? true,
   })
 
@@ -53,7 +53,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         ? sanitizeSlug(formData.slug) 
         : sanitizeSlug(formData.title)
   
-      const payload = {
+      // Cast as any to bypass strict type-checks for array transformation
+      const payload: any = {
         ...formData,
         id: initialData?.id,
         slug: finalSlug,
@@ -250,7 +251,6 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         </div>
       </div>
 
-      {/* Persistent Action Bar */}
       <div className='fixed bottom-8 left-6 right-6 z-20 mx-auto max-w-5xl'>
         <div className='bg-kyn-slate-950/95 text-white p-4 rounded-[2.5rem] shadow-2xl flex items-center justify-between border border-white/10 backdrop-blur-xl'>
           <button 
