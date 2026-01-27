@@ -1,10 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { SITE_CONFIG } from '@/lib/config'
 
 /**
  * Auth Callback Route
- * Exchanges temporary auth codes for permanent user sessions.
- * Essential for PKCE flow (Magic Links, Social Auth).
  */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -19,13 +18,12 @@ export async function GET(request: Request) {
     
     if (!error) {
       const forwardedHost = request.headers.get('x-forwarded-host')
-      const isLocalEnv = process.env.NODE_ENV === 'development'
       
       /**
        * Redirect Strategy:
-       * Supports local dev, preview branches, and production.
+       * Uses central SITE_CONFIG for environment detection.
        */
-      if (isLocalEnv) {
+      if (SITE_CONFIG.isDev) {
         return NextResponse.redirect(`${origin}${next}`)
       } 
       
@@ -37,7 +35,6 @@ export async function GET(request: Request) {
     }
   }
 
-  // Fallback: Redirect to login on failure
   const errorUrl = new URL('/login', origin)
   errorUrl.searchParams.set('error', 'auth_callback_failed')
   return NextResponse.redirect(errorUrl)
