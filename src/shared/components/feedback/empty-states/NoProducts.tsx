@@ -1,4 +1,4 @@
-import EmptyState from '@/shared/components/feedback/EmptyState'
+import { EmptyState } from '@/shared/components/feedback/EmptyState'
 import { PackageX } from 'lucide-react'
 
 export function NoProducts() {
