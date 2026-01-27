@@ -47,7 +47,7 @@ export async function GET(request: Request) {
     .eq('product_id', productId)
     .single()
 
-  // FIX: Cast 'data' to our interface via 'unknown' to bypass the 'never' error
+  // Cast 'data' to our interface via 'unknown' to bypass the 'never' error
   const purchase = data as unknown as PurchaseWithProduct | null
   const contentUrl = purchase?.products?.content_url
 
@@ -56,14 +56,22 @@ export async function GET(request: Request) {
   }
 
   // 2. Log access using the Admin Client
-  // Using Admin here is correct because we are writing to a system log
-  await supabaseAdmin.from('download_logs').insert({
-    user_id: user.id,
-    product_id: productId,
-    ip_address: request.headers.get('x-forwarded-for') || 'unknown',
-    user_agent: request.headers.get('user-agent') || 'unknown'
-  })
+  // We wrap the whole operation in a try/catch so logging issues don't kill the user's download
+  try {
+    const logData = {
+      user_id: user.id,
+      product_id: productId,
+      ip_address: request.headers.get('x-forwarded-for') || 'unknown',
+      user_agent: request.headers.get('user-agent') || 'unknown'
+    }
+
+    // Explicitly casting the 'from' call to bypass the 'never' table check
+    await (supabaseAdmin.from('download_logs') as any).insert([logData])
+  } catch (logError) {
+    console.error('Logging failed:', logError)
+  }
 
   // 3. Secure Redirect
-  return NextResponse.redirect(contentUrl)
+  // We use a 302 Found redirect to the secure content URL
+  return NextResponse.redirect(new URL(contentUrl))
 }
