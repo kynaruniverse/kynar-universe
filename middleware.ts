@@ -38,7 +38,11 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // 3. Security: Origin Validation for API POSTs
-  if (path.startsWith('/api') && request.method === 'POST') {
+  if (path.startsWith('/api') && 
+  request.method === 'POST') {
+    // BYPASS origin check for webhooks (Verified by HMAC signature in the route itself)
+    if (path === '/api/webhook') return response;
+
     const origin = request.headers.get('origin')
     const allowedOrigins = [
       'https://kynar-universev3.netlify.app',
@@ -49,6 +53,7 @@ export async function middleware(request: NextRequest) {
       return new NextResponse('Access Forbidden', { status: 403 })
     }
   }
+
 
   // 4. Protection Logic: Account & Library
   if (!user && path.startsWith('/account')) {

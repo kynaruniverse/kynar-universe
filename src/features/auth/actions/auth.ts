@@ -1,11 +1,35 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { getAdminClient } from '@/lib/supabase-admin' // Standardized import
+import { supabaseAdmin } from '@/lib/supabase/admin' // Fixed import path
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import type { ActionResult } from '@/lib/types'
 
-export async function verifyAdminAccess(): Promise<{ isAdmin: boolean; userId?: string }> {
+/**
+ * requireAdmin
+ * The "Bouncer" for server-side routes and actions.
+ * Points to the 'profiles' table as per your verifyAdminAccess logic.
+ */
+export async function requireAdmin() {
+  const { isAdmin, user } = await verifyAdminAccess()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  if (!isAdmin) {
+    redirect('/store')
+  }
+
+  return user
+}
+
+/**
+ * verifyAdminAccess
+ * Checks if the current session belongs to an administrator.
+ */
+export async function verifyAdminAccess(): Promise<{ isAdmin: boolean; user?: any }> {
   try {
     const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -20,12 +44,12 @@ export async function verifyAdminAccess(): Promise<{ isAdmin: boolean; userId?: 
     
     if (dbError) {
       console.error('Database error verifying admin:', dbError.message)
-      return { isAdmin: false, userId: user.id }
+      return { isAdmin: false, user }
     }
   
     return { 
       isAdmin: !!profile?.is_admin,
-      userId: user.id 
+      user 
     }
   } catch (error) {
     console.error('Critical auth action failure:', error)
@@ -54,9 +78,8 @@ export async function deleteAccount(): Promise<ActionResult> {
 
     if (!user) return { success: false, error: 'Not authenticated' }
 
-    // Using the standardized Admin Client for high-privilege deletion
-    const admin = getAdminClient()
-    const { error } = await admin.auth.admin.deleteUser(user.id)
+    // Using the correctly imported supabaseAdmin from @/lib/supabase/admin
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(user.id)
 
     if (error) return { success: false, error: error.message }
 
