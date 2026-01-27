@@ -36,13 +36,17 @@ export default function AccountPage() {
     try {
       setFetching(true)
       const data = await getUserPurchases(userId)
-      setPurchases(data as any)
+      // Cast to our local interface to ensure the .map() below knows 
+      // exactly what 'item.product' contains.
+      setPurchases((data || []) as unknown as PurchaseWithProduct[])
     } catch (err) {
       console.error('Error loading library:', err)
+      setPurchases([])
     } finally {
       setFetching(false)
     }
   }, [])
+
 
   useEffect(() => {
     if (!loading && !user) {

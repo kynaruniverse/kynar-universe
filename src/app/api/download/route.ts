@@ -2,6 +2,14 @@ import { createClient } from '@/lib/supabase/server'
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 
+// Helper interface to define exactly what we expect from the join
+interface PurchaseWithProduct {
+  id: string
+  products: {
+    content_url: string
+  }
+}
+
 function isValidUUID(str: string): boolean {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
   return uuidRegex.test(str)
@@ -26,9 +34,8 @@ export async function GET(request: Request) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
-  // 1. Verify ownership
-  // We cast the select to ensure the compiler knows content_url exists on the joined table
-  const { data: purchase, error } = await supabase
+  // 1. Verify ownership with an inner join
+  const { data, error } = await supabase
     .from('purchases')
     .select(`
       id,
@@ -40,15 +47,16 @@ export async function GET(request: Request) {
     .eq('product_id', productId)
     .single()
 
-  // Safely extract the content URL
-  const productData = purchase?.products as unknown as { content_url: string } | null
-  const contentUrl = productData?.content_url
+  // FIX: Cast 'data' to our interface via 'unknown' to bypass the 'never' error
+  const purchase = data as unknown as PurchaseWithProduct | null
+  const contentUrl = purchase?.products?.content_url
 
   if (error || !contentUrl) {
     return new NextResponse('Access Denied: Artifact ownership not verified.', { status: 403 })
   }
 
-  // 2. Log access using the imported Admin Client (No more getAdminClient undefined error)
+  // 2. Log access using the Admin Client
+  // Using Admin here is correct because we are writing to a system log
   await supabaseAdmin.from('download_logs').insert({
     user_id: user.id,
     product_id: productId,
