@@ -5,6 +5,7 @@ import { requireAdmin } from '@/features/auth/actions/auth'
 
 export default async function NewProductPage() {
   // 1. Security Gate: Verify admin privileges before rendering
+  // This is critical for preventing unauthorized access to the "Forge"
   await requireAdmin()
   
   return (
@@ -28,8 +29,10 @@ export default async function NewProductPage() {
       </div>
 
       <div className='bg-surface p-10 rounded-[2.5rem] border border-kyn-slate-100 dark:border-kyn-slate-800 shadow-2xl shadow-black/5'>
-        {/* Render empty form for new entry */}
-        <ProductForm />
+        {/* Noir Strategy: We explicitly pass undefined here to ensure the 
+            form knows it is in "Creation Mode" rather than "Edit Mode".
+        */}
+        <ProductForm initialData={undefined} />
       </div>
     </div>
   )

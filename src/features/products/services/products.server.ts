@@ -2,15 +2,9 @@ import { supabaseAdmin } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import type { Product } from '@/lib/types'
 
-/**
- * getProductBySlug
- * Fetches a single product. 
- * Note: Uses the server client so Row Level Security (RLS) is respected.
- */
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
     const supabase = await createClient()
-    
     const { data, error } = await supabase
       .from('products')
       .select('*')
@@ -19,11 +13,9 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
     if (error) {
       if (error.code === 'PGRST116') return null 
-      
       console.error(`DB Error fetching slug [${slug}]:`, error.message)
       return null
     }
-
     return data
   } catch (err) {
     console.error('Critical failure in getProductBySlug:', err)
@@ -31,10 +23,6 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   }
 }
 
-/**
- * updateProduct
- * Uses supabaseAdmin to bypass RLS for administrative updates.
- */
 export async function updateProduct(id: string, updates: Partial<Product>) {
   try {
     const { data, error } = await supabaseAdmin
@@ -43,7 +31,6 @@ export async function updateProduct(id: string, updates: Partial<Product>) {
       .eq('id', id)
       .select()
       .single()
-
     return { data, error }
   } catch (err: any) {
     return { data: null, error: { message: err.message } }
@@ -51,16 +38,15 @@ export async function updateProduct(id: string, updates: Partial<Product>) {
 }
 
 /**
- * getAllProducts
- * Fetches all published products for the sitemap and store listing.
+ * getAllProducts / getProducts
+ * Unified to support both sitemap and store listing.
  */
 export async function getAllProducts() {
   try {
     const supabase = await createClient()
-    
     const { data, error } = await supabase
       .from('products')
-      .select('slug, updated_at, world')
+      .select('*') // Selection broadened for store usage
       .eq('is_published', true)
       .order('created_at', { ascending: false })
 
@@ -68,10 +54,12 @@ export async function getAllProducts() {
       console.error('Error fetching all products:', error.message)
       return []
     }
-
     return data || []
   } catch (err) {
     console.error('Critical failure in getAllProducts:', err)
     return []
   }
 }
+
+// ALIAS: Resolves the 'getProducts' import error in page.tsx and sitemap.ts
+export const getProducts = getAllProducts
