@@ -8,6 +8,8 @@ export interface Product {
   world: World;
   price_gbp: number;
   ls_variant_id: string; // Lemon Squeezy Variant ID (String or Number)
+  category: 'Templates' | 'Systems' | 'Guides'; // Added for Store filtering
+  slug: string;
   
   // Brand Language Guide 3.1: "Hero line formula"
   hero_benefit: string; 

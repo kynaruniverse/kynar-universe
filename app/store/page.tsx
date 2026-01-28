@@ -5,7 +5,7 @@ import { useCart } from '@/context/CartContext';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { ProductCard } from '@/components/ProductCard';
 import EmptyState from '@/components/marketplace/EmptyState';
-import { Product } from '@/types';
+import { Product } from '@/types/index';
 
 export default function StorePage() {
   const [products, setProducts] = useState<Product[]>([]);

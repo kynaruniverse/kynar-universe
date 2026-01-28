@@ -14,7 +14,7 @@ const config: Config = {
           // The "Warm Canvas" - Earthy and approachable
           canvas: '#FAF9F6',
           
-          // Home World - Signature Forest Greens
+          // Home World - Signature Forest Greens (Primary Brand Action)
           green: {
             50: '#F0FDF4',
             100: '#DCFCE7',
@@ -29,6 +29,7 @@ const config: Config = {
             50: '#FFFBEB',
             100: '#FEF3C7',
             500: '#D4A574', // Lifestyle Primary
+            600: '#B48A5F',
             900: '#78350F',
           },
           
@@ -48,42 +49,51 @@ const config: Config = {
         }
       },
       borderRadius: {
-        'kyn': '2.5rem', // Signature rounded corner across all 26 files
+        'kyn': '2.5rem', // Signature "Universe" curve
       },
       boxShadow: {
-        // High-end lift used in ProductCards and the Vault
-        'kyn-lift': '0 20px 40px -12px rgba(15, 23, 42, 0.08)',
-        'kyn-glow': '0 0 20px -5px rgba(34, 197, 94, 0.2)',
+        // Updated to align with Visual Guide 11.1 (Branded Shadows)
+        'kyn-lift': '0 20px 40px -15px rgba(45, 90, 62, 0.15)', 
+        'kyn-caramel': '0 20px 40px -15px rgba(212, 165, 116, 0.15)',
+        'kyn-glow': '0 0 20px -5px rgba(34, 197, 94, 0.3)',
       },
       animation: {
         'spin-slow': 'spin 8s linear infinite',
-        'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+        'fade-in': 'fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
         'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+        'subtle-lift': 'lift 0.3s ease-out forwards',
       },
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         slideUp: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        lift: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-8px)' },
         }
       },
       typography: {
-        // Customizing File 25's editorial content
+        // Logic for File 25: Editorial prose styling
         DEFAULT: {
           css: {
-            color: '#475569', // kyn-slate-600
-            h1: { fontWeight: '900', letterSpacing: '-0.05em' },
-            h2: { fontWeight: '900', letterSpacing: '-0.025em' },
-            blockquote: { fontStyle: 'italic', color: '#16A34A' }, // kyn-green-600
+            color: '#475569',
+            h1: { fontWeight: '900', letterSpacing: '-0.05em', color: '#0F172A' },
+            h2: { fontWeight: '800', letterSpacing: '-0.025em', color: '#1E293B' },
+            blockquote: { 
+              fontStyle: 'italic', 
+              color: '#16A34A',
+              borderLeftColor: '#22C55E'
+            },
           }
         }
       }
     },
   },
-  // Typography plugin is REQUIRED for your [slug]/page.tsx
   plugins: [require('@tailwindcss/typography')],
 };
 

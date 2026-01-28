@@ -3,6 +3,24 @@ import { notFound } from 'next/navigation';
 import { ShopTheGuide } from '@/components/ShopTheGuide';
 import { Clock, Calendar, ArrowLeft, Share2 } from 'lucide-react';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+/**
+ * SEO Engine for the Universe
+ */
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const { data: guide } = await supabase.from('guides').select('title, excerpt').eq('slug', slug).single();
+  
+  return {
+    title: `${guide?.title || 'Guide'} | Kynar Universe`,
+    description: guide?.excerpt || 'Deep dive into Kynar systems.',
+  };
+}
 
 export default async function GuideDetailPage({ 
   params 
@@ -11,7 +29,7 @@ export default async function GuideDetailPage({
 }) {
   const { slug } = await params;
 
-  // 1. Fetch Data
+  // 1. Fetch Data from the Source of Truth
   const { data: guide } = await supabase
     .from('guides')
     .select('*')
@@ -28,12 +46,12 @@ export default async function GuideDetailPage({
 
   return (
     <article className="min-h-screen bg-kyn-canvas dark:bg-kyn-slate-900 pb-40">
-      {/* Editorial Navigation */}
+      {/* Editorial Navigation - Sticky with Calm Blur */}
       <nav className="sticky top-16 z-30 bg-kyn-canvas/80 dark:bg-kyn-slate-900/80 backdrop-blur-xl border-b border-kyn-slate-100 dark:border-kyn-slate-800 px-6 py-4">
         <div className="max-w-2xl mx-auto flex justify-between items-center">
           <Link href="/guides" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-kyn-slate-400 hover:text-kyn-slate-900 dark:hover:text-white transition-colors">
             <ArrowLeft size={14} />
-            Back to Library
+            The Archive
           </Link>
           <button className="text-kyn-slate-400 hover:text-kyn-slate-900 dark:hover:text-white transition-colors">
             <Share2 size={16} />
@@ -54,7 +72,7 @@ export default async function GuideDetailPage({
             </span>
           </div>
 
-          <h1 className="text-5xl font-black leading-[0.95] mb-8 text-kyn-slate-900 dark:text-white uppercase tracking-tighter">
+          <h1 className="text-5xl md:text-6xl font-black leading-[0.9] mb-8 text-kyn-slate-900 dark:text-white uppercase tracking-tighter">
             {guide.title}
           </h1>
 
@@ -68,29 +86,35 @@ export default async function GuideDetailPage({
           </div>
         </header>
 
-        {/* Hero Visual */}
+        {/* Hero Visual (Visual Guide 11.1) */}
         {guide.cover_image && (
           <div className="mb-16">
             <img 
               src={guide.cover_image} 
-              className="w-full aspect-[16/10] rounded-[2.5rem] object-cover shadow-kyn-lift" 
+              className="w-full aspect-[16/10] rounded-kyn object-cover shadow-kyn-lift" 
               alt={guide.title} 
             />
           </div>
         )}
 
-        {/* Content Area (Editorial Guide 11.2) */}
-        <div className="prose prose-slate dark:prose-invert max-w-none">
-          <div className="whitespace-pre-wrap text-kyn-slate-700 dark:text-kyn-slate-300 leading-[1.8] text-lg font-medium">
-            {guide.content}
-          </div>
+        {/* Content Area (Editorial Guide 11.2) 
+            Uses 'prose' to apply the styles defined in tailwind.config.ts
+        */}
+        <div className="prose prose-lg dark:prose-invert prose-slate max-w-none mb-24">
+          <div 
+            className="text-kyn-slate-700 dark:text-kyn-slate-300 leading-[1.8] font-medium"
+            dangerouslySetInnerHTML={{ __html: guide.content }} 
+          />
         </div>
 
-        {/* Integrated Toolkit (UX Guide 23) */}
-        <ShopTheGuide world={guide.world} />
+        {/* Integrated Toolkit (UX Guide 23: Contextual Commerce) */}
+        <div className="mt-16 pt-16 border-t border-kyn-slate-100 dark:border-kyn-slate-800">
+           <h3 className="text-xs font-black uppercase tracking-[0.3em] text-kyn-slate-400 mb-8 text-center">Equipment for this Study</h3>
+           <ShopTheGuide world={guide.world} />
+        </div>
 
         {/* Brand Sign-off */}
-        <footer className="mt-24 p-12 bg-white dark:bg-kyn-slate-800 rounded-[2.5rem] border border-kyn-slate-100 dark:border-kyn-slate-700 text-center">
+        <footer className="mt-24 p-12 bg-white dark:bg-kyn-slate-900/50 rounded-kyn border border-kyn-slate-100 dark:border-kyn-slate-800 text-center">
           <div className="w-12 h-12 bg-kyn-slate-900 dark:bg-white rounded-2xl flex items-center justify-center mx-auto mb-6">
              <div className="w-2 h-2 rounded-full bg-kyn-green-500 animate-pulse" />
           </div>
