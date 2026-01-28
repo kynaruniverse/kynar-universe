@@ -1,28 +1,31 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase'; 
-// Using relative pathing here is safer for the Netlify build 
-// if tsconfig aliases are still propagating.
-
+import { supabase } from '@/lib/supabase'; 
 import { User } from '@supabase/supabase-js';
 
-export function useAuth() {
+/**
+ * useSupabaseUser Hook:
+ * A direct, lightweight listener for the Supabase Auth session.
+ * Used for simple "is-logged-in" checks without Profile data.
+ */
+export function useSupabaseUser() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check active sessions
+    // 1. Initial Handshake: Check for existing session on mount
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for changes (login/logout)
+    // 2. Real-time Subscription: Update state on login/logout
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
+    // 3. Cleanup: Unsubscribe to prevent memory leaks
     return () => {
       listener.subscription.unsubscribe();
     };

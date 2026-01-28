@@ -7,9 +7,8 @@ export interface Product {
   slug: string; // For SEO-friendly URLs in Guides/Store
   world: World;
   price_gbp: number;
-  ls_variant_id: string; // Lemon Squeezy Variant ID (String or Number)
-  category: 'Templates' | 'Systems' | 'Guides'; // Added for Store filtering
-  slug: string;
+  ls_variant_id: string; // Lemon Squeezy Variant ID
+  category: 'Templates' | 'Systems' | 'Guides'; // For Store filtering
   
   // Brand Language Guide 3.1: "Hero line formula"
   hero_benefit: string; 
@@ -45,7 +44,11 @@ export interface Purchase {
   product?: Product; 
 }
 
-// For the "Calm" Cart UX
+/**
+ * CartItem Interface:
+ * Extends Product to ensure the "Calm" Cart UX (UX Guide 11.2)
+ * has access to all product metadata.
+ */
 export interface CartItem extends Product {
   quantity: number;
 }

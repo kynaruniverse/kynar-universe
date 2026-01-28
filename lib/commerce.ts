@@ -15,28 +15,43 @@ interface CheckoutOptions {
  * link the purchase to the correct Supabase profile.
  */
 export const getCheckoutUrl = ({ variantId, userId, userEmail }: CheckoutOptions) => {
+  // Defensive check: Ensure we have a variant ID
+  if (!variantId) return '#';
+
   const baseUrl = `https://kynar-universe.lemonsqueezy.com/checkout/buy/${variantId}`;
-  
-  // Create URL object to handle params cleanly
   const url = new URL(baseUrl);
   
-  // 1. Force the checkout to be "clean" and branded (Visual Guide 11.1)
+  /**
+   * 1. THEMATIC EMBEDDING (Visual Guide 11.1)
+   * We strip external media to keep the Kynar aesthetic dominant.
+   */
   url.searchParams.set('embed', '1');
-  url.searchParams.set('media', '0'); // Hides LS product images to keep Kynar branding dominant
+  url.searchParams.set('media', '0'); 
+  url.searchParams.set('dark', '1'); // Force dark mode if supported by the LS theme
   
-  // 2. Pre-fill email if user is logged in (Calm UX - Brand Language 3.1)
+  /**
+   * 2. PRE-FILL IDENTITY (Calm UX)
+   * Reduces friction by remembering who the explorer is.
+   */
   if (userEmail) {
     url.searchParams.set('checkout[email]', userEmail);
   }
 
-  // 3. CRITICAL: Pass the Supabase UID to the webhook (Architecture Alignment)
+  /**
+   * 3. WEBHOOK HANDSHAKE (Architecture Alignment)
+   * The 'custom' field is the payload our webhook (app/api/webhook/route.ts) 
+   * will use to grant access.
+   */
   if (userId) {
     url.searchParams.set('checkout[custom][user_id]', userId);
   }
 
-  // 4. Return the user to the Library upon success (Netlify Readiness)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kynar.netlify.app';
-  url.searchParams.set('checkout[return_url]', `${siteUrl}/library`);
+  /**
+   * 4. RETURN VECTOR
+   * Standardizes the success path.
+   */
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  url.searchParams.set('checkout[return_url]', `${siteUrl}/success`);
 
   return url.toString();
 };
@@ -46,16 +61,10 @@ export const getCheckoutUrl = ({ variantId, userId, userEmail }: CheckoutOptions
  * Standardizes how we leave the "Universe" for payment.
  */
 export const redirectToCheckout = (options: CheckoutOptions) => {
-  // Defensive check for variantId
-  if (!options.variantId) {
-    console.error("Kynar Error: No Variant ID provided for checkout.");
-    return;
-  }
-
   const checkoutUrl = getCheckoutUrl(options);
 
-  // Safety check for Client-Side execution (Next.js 15 Compatibility)
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && checkoutUrl !== '#') {
+    // We use window.location.href for a clean hand-off
     window.location.href = checkoutUrl;
   }
 };

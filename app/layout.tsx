@@ -8,7 +8,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-// Initialize Inter font for optimized performance (Next.js 15 Standard)
+// Initialize Inter font (Brand Atmosphere 1.3: Street-modern feel)
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 // Utility for clean class merging
@@ -33,18 +33,15 @@ export default function RootLayout({
         inter.className,
         "min-h-screen bg-kyn-canvas dark:bg-kyn-slate-950 text-kyn-slate-900 dark:text-kyn-canvas antialiased selection:bg-kyn-green-100 selection:text-kyn-green-900"
       )}>
-        {/* 1. AuthProvider: Tracks user sessions & profiles (Gatekeeper) */}
+        {/* 1. AuthProvider: Tracks user sessions & profiles */}
         <AuthProvider>
-          {/* 2. CartProvider: Manages the "Add to Universe" logic (Engine) */}
+          {/* 2. CartProvider: Manages the "Add to Universe" logic */}
           <CartProvider>
             
             {/* Persistent Top Header (Visual Guide 1.1) */}
             <TopBar />
 
-            {/* Main Content Area 
-                pt-16 accounts for TopBar height.
-                pb-24 (mobile) to avoid BottomNav overlap.
-            */}
+            {/* Main Content Area */}
             <main className="flex flex-col min-h-screen pt-16 pb-24 md:pb-0">
               {children}
             </main>
@@ -52,9 +49,7 @@ export default function RootLayout({
             {/* Global UI Overlays */}
             <MiniCart />
 
-            {/* Persistent Mobile-First Navigation (Visual Guide 1.2) 
-                Only visible on Mobile via Tailwind responsive classes in component.
-            */}
+            {/* Persistent Mobile-First Navigation (Visual Guide 1.2) */}
             <BottomNav />
 
           </CartProvider>

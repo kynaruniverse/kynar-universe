@@ -10,10 +10,18 @@ import {
   HelpCircle 
 } from 'lucide-react';
 
+/**
+ * BottomNav Component:
+ * Persistent 5-tab mobile navigation.
+ * Aligned with Visual Guide 1.2: Mobile-first ergonomic discovery.
+ */
 export const BottomNav = () => {
   const pathname = usePathname();
 
-  // Helper to check if the link is active - improved for nested routes
+  /**
+   * Universe State Logic:
+   * Improved path matching to handle nested world or guide routes.
+   */
   const isActive = (path: string) => {
     if (path === '/' && pathname !== '/') return false;
     return pathname.startsWith(path);
@@ -29,7 +37,7 @@ export const BottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 w-full bg-white/80 dark:bg-kyn-slate-900/80 backdrop-blur-xl border-t border-kyn-slate-100 dark:border-kyn-slate-800 z-50 md:hidden">
-      <div className="flex justify-around items-center h-20 px-2 pb-2">
+      <div className="flex justify-around items-center h-20 px-2 pb-safe">
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.path);
@@ -38,11 +46,11 @@ export const BottomNav = () => {
             <Link 
               key={item.name} 
               href={item.path}
-              className="flex flex-col items-center justify-center w-full gap-1 relative pt-2"
+              className="flex flex-col items-center justify-center w-full h-full gap-1 relative"
             >
               <div className={`transition-all duration-300 ${
                 active 
-                  ? 'text-kyn-green-500 scale-110' 
+                  ? 'text-kyn-green-600 scale-110' 
                   : 'text-kyn-slate-400 active:scale-90'
               }`}>
                 <Icon size={22} strokeWidth={active ? 2.5 : 2} />
@@ -56,7 +64,7 @@ export const BottomNav = () => {
               
               {/* Active Indicator: Subtle Forest Green Glow (Visual Guide 11.1) */}
               {active && (
-                <div className="absolute top-0 w-8 h-1 bg-kyn-green-500 rounded-b-full shadow-[0_0_12px_rgba(34,197,94,0.4)] animate-in slide-in-from-top-1" />
+                <div className="absolute top-0 w-8 h-1 bg-kyn-green-600 rounded-b-full shadow-[0_0_12px_rgba(34,197,94,0.4)]" />
               )}
             </Link>
           );

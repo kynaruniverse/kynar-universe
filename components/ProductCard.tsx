@@ -6,22 +6,27 @@ import { ShoppingBag, ArrowUpRight } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
-  onAdd?: (e: React.MouseEvent) => void;
+  onAdd?: (product: Product) => void;
 }
 
+/**
+ * ProductCard Component
+ * Aligned with Visual Guide 11.1: The "Signature Universe" Card.
+ * Implements the Subtle Lift interaction and World-specific color accents.
+ */
 export const ProductCard = ({ product, onAdd }: ProductCardProps) => {
   // World-specific accent colors from Color Guide 2.0
-  const worldAccents = {
-    Home: "text-kyn-green-500 bg-kyn-green-50 border-kyn-green-100",
-    Lifestyle: "text-kyn-caramel-500 bg-kyn-caramel-50 border-kyn-caramel-100",
-    Tools: "text-kyn-slate-500 bg-kyn-slate-50 border-kyn-slate-100"
+  const worldAccents: Record<string, string> = {
+    Home: "text-kyn-green-600 bg-kyn-green-50 border-kyn-green-100 dark:bg-kyn-green-900/10 dark:border-kyn-green-900/20",
+    Lifestyle: "text-kyn-caramel-600 bg-kyn-caramel-50 border-kyn-caramel-100 dark:bg-kyn-caramel-900/10 dark:border-kyn-caramel-900/20",
+    Tools: "text-kyn-slate-500 bg-kyn-slate-50 border-kyn-slate-100 dark:bg-kyn-slate-800 dark:border-kyn-slate-700"
   };
 
   const accent = worldAccents[product.world] || worldAccents.Home;
 
   return (
     <div className="group relative">
-      <Link href={`/product/${product.id}`} className="block">
+      <Link href={`/product/${product.slug || product.id}`} className="block">
         <div className="kyn-card p-5 h-full flex flex-col">
           
           {/* Visual Preview Area */}
@@ -31,15 +36,16 @@ export const ProductCard = ({ product, onAdd }: ProductCardProps) => {
                 src={product.thumbnail_url} 
                 alt={product.name} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                loading="lazy"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-kyn-slate-200 font-black text-4xl italic tracking-tighter uppercase opacity-20 select-none">
+              <div className="w-full h-full flex items-center justify-center text-kyn-slate-200 dark:text-kyn-slate-700 font-black text-4xl italic tracking-tighter uppercase opacity-20 select-none">
                 {product.world}
               </div>
             )}
             
-            {/* Floating Price Tag (Visual Guide 6.3) */}
-            <div className="absolute top-4 right-4 bg-white/90 dark:bg-kyn-slate-900/90 backdrop-blur px-3 py-1.5 rounded-full shadow-sm">
+            {/* Floating Price Tag */}
+            <div className="absolute top-4 right-4 bg-white/90 dark:bg-kyn-slate-900/90 backdrop-blur px-3 py-1.5 rounded-full shadow-sm border border-white/20">
                <span className="text-xs font-black text-kyn-slate-900 dark:text-white">
                  £{product.price_gbp}
                </span>
@@ -59,18 +65,19 @@ export const ProductCard = ({ product, onAdd }: ProductCardProps) => {
               {product.name}
             </h3>
             
-            <p className="text-xs text-kyn-slate-500 dark:text-kyn-slate-400 font-medium italic line-clamp-2">
+            <p className="text-xs text-kyn-slate-500 dark:text-kyn-slate-400 font-medium italic line-clamp-2 leading-relaxed">
               {product.hero_benefit}
             </p>
           </div>
 
-          {/* Instant Action (Mobile-First UX) */}
+          {/* Instant Action (Mobile Optimized) */}
           <button 
             onClick={(e) => {
               e.preventDefault();
-              onAdd?.(e);
+              e.stopPropagation();
+              onAdd?.(product);
             }}
-            className="mt-6 w-full py-4 bg-kyn-slate-900 dark:bg-white text-white dark:text-kyn-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 active:scale-95 transition-all opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
+            className="mt-6 w-full py-4 bg-kyn-slate-900 dark:bg-white text-white dark:text-kyn-slate-900 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 active:scale-95 transition-all lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0"
           >
             <ShoppingBag size={14} />
             Add to Universe

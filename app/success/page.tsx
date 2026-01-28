@@ -4,10 +4,14 @@ import Link from 'next/link';
 import { CheckCircle, Sparkles, Library, ArrowRight, Orbit } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
+/**
+ * SuccessPage: The Post-Purchase Gratification Screen
+ * Aligned with Brand Strategy 1.1: Converting a "Sale" into a "Beginning."
+ */
 export default function SuccessPage() {
   const { clearCart } = useCart();
 
-  // Clear the cart on arrival to reset the state for the "Fresh Start" feeling
+  // Reset the commercial state to maintain a clean UX for the next exploration
   useEffect(() => {
     clearCart();
   }, [clearCart]);
@@ -15,13 +19,13 @@ export default function SuccessPage() {
   return (
     <div className="min-h-screen bg-kyn-canvas dark:bg-kyn-slate-900 flex flex-col items-center justify-center px-6 relative overflow-hidden">
       
-      {/* Background Atmosphere (Visual Guide 6.3) */}
+      {/* Background Atmosphere - Focus on the 'Universe' expansion */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(34,197,94,0.08)_0%,transparent_70%)] pointer-events-none" />
       <Orbit className="absolute top-20 -right-20 w-64 h-64 text-kyn-slate-100 dark:text-kyn-slate-800/50 rotate-45 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-sm text-center">
         {/* Animated Success Seal */}
-        <div className="w-24 h-24 bg-white dark:bg-kyn-slate-800 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-kyn-lift border border-kyn-green-100 dark:border-kyn-green-900/30 animate-in zoom-in duration-700">
+        <div className="w-24 h-24 bg-white dark:bg-kyn-slate-800 rounded-kyn flex items-center justify-center mx-auto mb-10 shadow-kyn-lift border border-kyn-green-100 dark:border-kyn-green-900/30 animate-in zoom-in duration-700">
           <CheckCircle className="text-kyn-green-500" size={48} strokeWidth={1.5} />
         </div>
 
@@ -59,12 +63,17 @@ export default function SuccessPage() {
         </div>
 
         {/* Transactional Footer */}
-        <div className="mt-16 p-6 bg-white/50 dark:bg-kyn-slate-800/50 rounded-3xl border border-kyn-slate-100 dark:border-kyn-slate-800">
+        <div className="mt-16 p-6 bg-white/50 dark:bg-kyn-slate-800/50 rounded-3xl border border-kyn-slate-100 dark:border-kyn-slate-800 backdrop-blur-sm">
           <p className="text-[9px] text-kyn-slate-400 font-bold uppercase tracking-widest leading-loose">
             Confirmation email dispatched <br />
             VAT Receipt attached • Lifetime Access
           </p>
         </div>
+      </div>
+
+      {/* Subtle Bottom Accent */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20">
+        <Orbit size={20} className="animate-spin-slow text-kyn-slate-400" />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 
 /**
- * SEO Engine for the Universe
+ * SEO Engine: Dynamically generates metadata for each guide.
  */
 export async function generateMetadata({ 
   params 
@@ -14,7 +14,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }> 
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { data: guide } = await supabase.from('guides').select('title, excerpt').eq('slug', slug).single();
+  const { data: guide } = await supabase
+    .from('guides')
+    .select('title, excerpt')
+    .eq('slug', slug)
+    .single();
   
   return {
     title: `${guide?.title || 'Guide'} | Kynar Universe`,
@@ -22,6 +26,10 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * GuideDetailPage: The Reading Experience
+ * Aligned with Brand Strategy 3.1: "Deep dives into intentional living."
+ */
 export default async function GuideDetailPage({ 
   params 
 }: { 
@@ -29,7 +37,7 @@ export default async function GuideDetailPage({
 }) {
   const { slug } = await params;
 
-  // 1. Fetch Data from the Source of Truth
+  // Fetch the source of truth
   const { data: guide } = await supabase
     .from('guides')
     .select('*')
@@ -53,14 +61,14 @@ export default async function GuideDetailPage({
             <ArrowLeft size={14} />
             The Archive
           </Link>
-          <button className="text-kyn-slate-400 hover:text-kyn-slate-900 dark:hover:text-white transition-colors">
+          <button className="text-kyn-slate-400 hover:text-kyn-slate-900 dark:hover:text-white transition-colors outline-none">
             <Share2 size={16} />
           </button>
         </div>
       </nav>
 
       <div className="px-6 pt-16 max-w-2xl mx-auto">
-        {/* Header Section (Brand Strategy 3.1) */}
+        {/* Header Section */}
         <header className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <span className="px-3 py-1 rounded-full bg-kyn-green-50 dark:bg-kyn-green-900/20 text-kyn-green-600 text-[9px] font-black uppercase tracking-[0.2em] border border-kyn-green-100 dark:border-kyn-green-800">
@@ -86,7 +94,7 @@ export default async function GuideDetailPage({
           </div>
         </header>
 
-        {/* Hero Visual (Visual Guide 11.1) */}
+        {/* Hero Visual */}
         {guide.cover_image && (
           <div className="mb-16">
             <img 
@@ -97,9 +105,7 @@ export default async function GuideDetailPage({
           </div>
         )}
 
-        {/* Content Area (Editorial Guide 11.2) 
-            Uses 'prose' to apply the styles defined in tailwind.config.ts
-        */}
+        {/* Editorial Content */}
         <div className="prose prose-lg dark:prose-invert prose-slate max-w-none mb-24">
           <div 
             className="text-kyn-slate-700 dark:text-kyn-slate-300 leading-[1.8] font-medium"
@@ -107,7 +113,7 @@ export default async function GuideDetailPage({
           />
         </div>
 
-        {/* Integrated Toolkit (UX Guide 23: Contextual Commerce) */}
+        {/* Contextual Toolkit Integration */}
         <div className="mt-16 pt-16 border-t border-kyn-slate-100 dark:border-kyn-slate-800">
            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-kyn-slate-400 mb-8 text-center">Equipment for this Study</h3>
            <ShopTheGuide world={guide.world} />

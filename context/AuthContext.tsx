@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
-// FIX: Resolved path to match your actual file structure
 import { Profile } from '@/types/index'; 
 
 interface AuthContextType {
@@ -41,7 +40,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (err) {
       // Diagnostic Fix: Graceful error handling for missing profiles
-      console.warn('Profile not found for authenticated user:', userId);
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Profile not found for authenticated user:', userId);
+      }
     }
   };
 
@@ -60,13 +61,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
 
-    // Initial check (handles mount)
+    // Initial check (handles mount and session recovery)
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setUser(session.user);
         fetchProfile(session.user.id);
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -84,9 +86,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, profile, loading, signOut }}>
-      {/* Calm Confidence UX: 
-        Ensures the app doesn't flash empty states during the brief auth check 
-      */}
       {children}
     </AuthContext.Provider>
   );

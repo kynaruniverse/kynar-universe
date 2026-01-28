@@ -11,16 +11,21 @@ const config: Config = {
     extend: {
       colors: {
         kyn: {
-          // The "Warm Canvas" - Earthy and approachable
+          // The "Warm Canvas" - Earthy and approachable background
           canvas: '#FAF9F6',
           
           // Home World - Signature Forest Greens (Primary Brand Action)
+          // Aligned with Colour Guide 2.1
           green: {
             50: '#F0FDF4',
             100: '#DCFCE7',
+            200: '#BBF7D0',
+            300: '#86EFAC',
             400: '#4ADE80',
-            500: '#22C55E', // Main Action
-            600: '#16A34A', // Hover
+            500: '#2D5A3E', // Authoritative Brand Anchor
+            600: '#16A34A', 
+            700: '#15803D', // Hover states
+            800: '#166534',
             900: '#14532D',
           },
           
@@ -49,10 +54,10 @@ const config: Config = {
         }
       },
       borderRadius: {
-        'kyn': '2.5rem', // Signature "Universe" curve
+        'kyn': '2.5rem', // Signature "Universe" organic curve
       },
       boxShadow: {
-        // Updated to align with Visual Guide 11.1 (Branded Shadows)
+        // Visual Guide 11.1: Branded elevation
         'kyn-lift': '0 20px 40px -15px rgba(45, 90, 62, 0.15)', 
         'kyn-caramel': '0 20px 40px -15px rgba(212, 165, 116, 0.15)',
         'kyn-glow': '0 0 20px -5px rgba(34, 197, 94, 0.3)',
@@ -78,16 +83,26 @@ const config: Config = {
         }
       },
       typography: {
-        // Logic for File 25: Editorial prose styling
+        // Alignment with Brand Strategy 3.1: Editorial Content
         DEFAULT: {
           css: {
             color: '#475569',
-            h1: { fontWeight: '900', letterSpacing: '-0.05em', color: '#0F172A' },
-            h2: { fontWeight: '800', letterSpacing: '-0.025em', color: '#1E293B' },
+            h1: { 
+              fontWeight: '900', 
+              letterSpacing: '-0.05em', 
+              color: '#0F172A',
+              textTransform: 'uppercase'
+            },
+            h2: { 
+              fontWeight: '800', 
+              letterSpacing: '-0.025em', 
+              color: '#1E293B' 
+            },
             blockquote: { 
               fontStyle: 'italic', 
               color: '#16A34A',
-              borderLeftColor: '#22C55E'
+              borderLeftColor: '#22C55E',
+              fontWeight: '600'
             },
           }
         }

@@ -4,23 +4,25 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { ArrowRight, Sparkles, Home, Heart, Hammer, Orbit } from 'lucide-react';
 
-// Your Private Access Key (Visual Guide 10.1)
-const PREVIEW_SECRET = 'kynar_reveal_2024';
+/**
+ * PREVIEW_SECRET: Used for stakeholder access during maintenance.
+ */
+const PREVIEW_SECRET = process.env.PREVIEW_SECRET || 'kynar_reveal_2024';
 
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise < {
-    [key: string]: string | string[] | undefined } > ;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
   const cookieStore = await cookies();
   
   const isPreviewAttempt = params.preview === PREVIEW_SECRET;
-  const hasPreviewCookie = (await cookieStore).has('kynar_preview_access');
+  const hasPreviewCookie = cookieStore.has('kynar_preview_access');
   
-  // Set to false when you are ready for the world to see v1
-  const isMaintenanceMode = true;
+  // Maintenance Mode Gate
+  // Flip to 'false' for public launch
+  const isMaintenanceMode = true; 
   
   if (isMaintenanceMode && !isPreviewAttempt && !hasPreviewCookie) {
     redirect('/soon');
@@ -31,7 +33,7 @@ export default async function HomePage({
       
       {/* 1. HERO SECTION: Brand Promise (UX Guide 2.1) */}
       <section className="px-6 py-20 md:py-32 text-center relative overflow-hidden">
-        {/* Subtle Background Glow */}
+        {/* Subtle Background Glow - Cosmic/Earthy aesthetic */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-kyn-green-50/50 via-transparent to-transparent dark:from-kyn-green-900/10 pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl mx-auto">
@@ -64,7 +66,7 @@ export default async function HomePage({
 
       {/* 2. THREE WORLDS SHOWCASE (Brand Guide 9.1) */}
       <section className="px-6 py-12 pb-32">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Home World */}
           <Link href="/world/home" className="group kyn-card p-8 flex flex-col items-center text-center">
@@ -72,7 +74,7 @@ export default async function HomePage({
               <Home size={32} />
             </div>
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-kyn-green-600 mb-2">Home</span>
-            <h3 className="text-xl font-black text-kyn-slate-900 dark:text-white mb-3">Make life less chaotic</h3>
+            <h3 className="text-xl font-black text-kyn-slate-900 dark:text-white mb-3 uppercase tracking-tighter">Make life less chaotic</h3>
             <p className="text-xs text-kyn-slate-500 dark:text-kyn-slate-400 leading-relaxed font-medium">Household planners, cleaning schedules, and family organisers.</p>
           </Link>
 
@@ -82,7 +84,7 @@ export default async function HomePage({
               <Heart size={32} />
             </div>
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-kyn-caramel-500 mb-2">Lifestyle</span>
-            <h3 className="text-xl font-black text-kyn-slate-900 dark:text-white mb-3">Build better habits</h3>
+            <h3 className="text-xl font-black text-kyn-slate-900 dark:text-white mb-3 uppercase tracking-tighter">Build better habits</h3>
             <p className="text-xs text-kyn-slate-500 dark:text-kyn-slate-400 leading-relaxed font-medium">Wellness guides, habit trackers, and personal growth tools.</p>
           </Link>
 
@@ -92,7 +94,7 @@ export default async function HomePage({
               <Hammer size={32} />
             </div>
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-kyn-slate-500 mb-2">Tools</span>
-            <h3 className="text-xl font-black text-kyn-slate-900 dark:text-white mb-3">Accelerate projects</h3>
+            <h3 className="text-xl font-black text-kyn-slate-900 dark:text-white mb-3 uppercase tracking-tighter">Accelerate projects</h3>
             <p className="text-xs text-kyn-slate-500 dark:text-kyn-slate-400 leading-relaxed font-medium">Professional assets, coding templates, and creator kits.</p>
           </Link>
 
