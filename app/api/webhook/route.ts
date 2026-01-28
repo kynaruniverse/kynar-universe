@@ -1,39 +1,40 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabaseAdmin'; // Use service_role for bypass
+import { supabaseAdmin } from '@/lib/supabaseAdmin'; 
 import crypto from 'crypto';
 
 export async function POST(req: Request) {
+  // 1. GET RAW BODY & SIGNATURE
   const rawBody = await req.text();
-  
-  // 1. VERIFY SIGNATURE (Security Guardrail)
+  const signature = req.headers.get('x-signature') || '';
   const secret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET;
+
   if (!secret) {
-    return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 });
+    console.error('❌ LS_WEBHOOK_SECRET is missing');
+    return NextResponse.json({ error: 'Configuration error' }, { status: 500 });
   }
 
+  // 2. VERIFY SIGNATURE (Security Guardrail)
   const hmac = crypto.createHmac('sha256', secret);
   const digest = hmac.update(rawBody).digest('hex');
-  const signature = req.headers.get('x-signature') || '';
 
   if (digest !== signature) {
+    console.warn('⚠️ Invalid Webhook Signature detected');
     return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
   }
 
   const payload = JSON.parse(rawBody);
   const eventName = payload.meta.event_name;
   const attributes = payload.data.attributes;
+  const customData = payload.meta.custom_data;
 
-  // 2. FULFILLMENT LOGIC
+  // 3. FULFILLMENT LOGIC
   if (eventName === 'order_created' || eventName === 'subscription_created') {
     const variantId = attributes.variant_id.toString();
-    
-    // We pass the user_id in the 'custom' field during checkout (lib/commerce.ts)
-    // This is more reliable than email-matching.
-    const userId = payload.meta.custom_data?.user_id;
-    const customerEmail = attributes.customer_email;
+    const customerEmail = attributes.user_email;
+    const userId = customData?.user_id;
 
     try {
-      // Find the internal product ID matched to this Lemon Squeezy variant
+      // Find the Kynar Product associated with this variant
       const { data: product, error: productError } = await supabaseAdmin
         .from('products')
         .select('id')
@@ -42,7 +43,7 @@ export async function POST(req: Request) {
 
       if (productError || !product) throw new Error('Product mapping failed');
 
-      // Resolve User ID if not in custom_data
+      // Resolve User ID: Use custom_data or fallback to email lookup
       let finalUserId = userId;
       if (!finalUserId) {
         const { data: profile } = await supabaseAdmin
@@ -54,27 +55,22 @@ export async function POST(req: Request) {
       }
 
       if (finalUserId) {
-        // Create the Purchase Record (Unlocks the asset in /library)
+        // Unlock the asset by creating the purchase record
         const { error: purchaseError } = await supabaseAdmin
           .from('purchases')
           .insert({
             user_id: finalUserId,
             product_id: product.id,
             ls_order_id: attributes.order_number.toString(),
-            status: 'completed'
           });
 
         if (purchaseError) throw purchaseError;
-
-        console.log(`✅ Asset unlocked for user: ${finalUserId}`);
-      } else {
-        // Fallback: Create a "pending" entry or log for manual intervention
-        console.warn(`⚠️ Purchase recorded for guest email: ${customerEmail}`);
+        console.log(`✅ Kynar Asset Unlocked: ${product.id} for User: ${finalUserId}`);
       }
 
     } catch (err) {
-      console.error('❌ Webhook Processing Error:', err);
-      return NextResponse.json({ error: 'Fulfillment failed' }, { status: 500 });
+      console.error('❌ Fulfillment Error:', err);
+      return NextResponse.json({ error: 'Internal fulfillment failure' }, { status: 500 });
     }
   }
 

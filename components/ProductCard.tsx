@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { Product } from '@/types';
+import { Product } from '@/types/index';
 import { ShoppingBag, ArrowUpRight } from 'lucide-react';
 
 interface ProductCardProps {

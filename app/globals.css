@@ -20,13 +20,13 @@
   }
 
   body {
-    @apply transition-colors duration-500;
+    /* Refined transition to avoid jitter during dark mode toggle */
+    transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     background-color: var(--background);
     color: var(--foreground);
-    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Prevent horizontal scroll on mobile universe */
+    /* Prevent horizontal scroll on mobile universe (UX Guide 11.2) */
     overflow-x: hidden;
   }
 }
@@ -35,8 +35,14 @@
   /* The "Subtle Lift" Interaction (Visual Guide 11.1) */
   .kyn-card {
     @apply bg-white dark:bg-kyn-slate-900 border border-kyn-slate-100 
-           dark:border-kyn-slate-800 rounded-kyn transition-all duration-300
-           hover:scale-[1.02] hover:shadow-kyn-lift dark:hover:shadow-none;
+           dark:border-kyn-slate-800 rounded-kyn transition-all duration-300;
+  }
+
+  /* Only apply lift/scale on devices that support hover (Desktop) to avoid Mobile friction */
+  @media (hover: hover) {
+    .kyn-card:hover {
+      @apply scale-[1.01] shadow-kyn-lift dark:shadow-none;
+    }
   }
 
   /* Shimmer Effect for Loading Skeletons (UX Guide 11.2) */
@@ -45,6 +51,14 @@
            before:-translate-x-full before:animate-[shimmer_2s_infinite] 
            before:bg-gradient-to-r before:from-transparent 
            before:via-white/20 before:to-transparent;
+  }
+
+  /* Editorial Content Styling (Alignment with File 25) */
+  .prose {
+    @apply max-w-none;
+  }
+  .prose p {
+    @apply mb-6 leading-relaxed;
   }
 }
 

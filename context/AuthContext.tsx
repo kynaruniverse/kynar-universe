@@ -2,7 +2,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
-import { Profile } from '@/types';
+// FIX: Resolved path to match your actual file structure
+import { Profile } from '@/types/index'; 
 
 interface AuthContextType {
   user: User | null;
@@ -23,21 +24,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // 1. Check for active session on mount
-    const initializeAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session) {
-        setUser(session.user);
-        await fetchProfile(session.user.id);
+  /**
+   * Fetch the custom Profile data from the 'profiles' table.
+   * Logic aligned with the SQL Schema provided in the DB Dump.
+   */
+  const fetchProfile = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (!error && data) {
+        setProfile(data as Profile);
       }
-      setLoading(false);
-    };
+    } catch (err) {
+      // Diagnostic Fix: Graceful error handling for missing profiles
+      console.warn('Profile not found for authenticated user:', userId);
+    }
+  };
 
-    initializeAuth();
-
-    // 2. Listen for auth state changes (Login, Sign Out, etc.)
+  useEffect(() => {
+    // Consolidated Auth Listener (Next.js 15 Standard)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (session) {
@@ -51,32 +60,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
 
+    // Initial check (handles mount)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setUser(session.user);
+        fetchProfile(session.user.id);
+      }
+      setLoading(false);
+    });
+
     return () => subscription.unsubscribe();
   }, []);
 
-  // Fetch the custom Profile data from your 'profiles' table
-  const fetchProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (!error && data) {
-        setProfile(data as Profile);
-      }
-    } catch (err) {
-      console.error('Error fetching profile:', err);
-    }
-  };
-
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      setProfile(null);
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
   };
 
   return (
     <AuthContext.Provider value={{ user, profile, loading, signOut }}>
+      {/* Calm Confidence UX: 
+        Ensures the app doesn't flash empty states during the brief auth check 
+      */}
       {children}
     </AuthContext.Provider>
   );

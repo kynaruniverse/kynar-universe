@@ -46,11 +46,11 @@ export default function AdminDashboard() {
     e.preventDefault();
     const slug = formData.name.toLowerCase().trim().replace(/\s+/g, '-');
     
-    const { error } = await supabase.from('products').insert([{ 
-      ...formData, 
-      slug,
-      is_active: true 
+    const { error } = await supabase.from('products').insert([{
+      ...formData,
+      price_gbp: parseFloat(formData.price_gbp)
     }]);
+
     
     if (!error) {
       setIsAdding(false);
