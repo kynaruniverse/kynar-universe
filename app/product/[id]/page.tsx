@@ -1,9 +1,14 @@
 import { supabase } from '@/lib/supabase';
 import { getCheckoutUrl } from '@/lib/commerce';
-import { CheckCircle2, ShoppingBag, Download, ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
+import { CheckCircle2, ShoppingBag, ArrowLeft, ShieldCheck, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Product } from '@/types/index';
 
+/**
+ * ProductPage: The Asset Specification & Acquisition View
+ * Aligned with Brand Strategy 5.0: "Empathy-driven conversion."
+ */
 export default async function ProductPage({ 
   params 
 }: { 
@@ -11,7 +16,7 @@ export default async function ProductPage({
 }) {
   const { id } = await params;
 
-  // 1. Fetch Product Data
+  // 1. Fetch Data from Source of Truth
   const { data: product } = await supabase
     .from('products')
     .select('*')
@@ -20,13 +25,10 @@ export default async function ProductPage({
 
   if (!product) notFound();
 
-  // Note: Ownership check (useIsOwned) is handled on the client side 
-  // in a child component or via a Client Action to keep this a Server Component.
-
   return (
-    <div className="min-h-screen bg-kyn-canvas dark:bg-kyn-slate-900 pb-40">
+    <div className="min-h-screen bg-kyn-canvas dark:bg-kyn-slate-900 pb-56 pt-20">
       {/* Header Navigation */}
-      <nav className="p-6">
+      <nav className="p-6 max-w-4xl mx-auto">
         <Link href="/store" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-kyn-slate-400 hover:text-kyn-slate-900 dark:hover:text-white transition-colors">
           <ArrowLeft size={14} />
           Back to Universe
@@ -35,7 +37,7 @@ export default async function ProductPage({
 
       {/* Hero Visual Section */}
       <section className="px-6 mb-12">
-        <div className="max-w-4xl mx-auto rounded-[2.5rem] overflow-hidden bg-white dark:bg-kyn-slate-800 shadow-kyn-lift border border-kyn-slate-100 dark:border-kyn-slate-700">
+        <div className="max-w-4xl mx-auto rounded-kyn overflow-hidden bg-white dark:bg-kyn-slate-800 shadow-kyn-lift border border-kyn-slate-100 dark:border-kyn-slate-700">
           <div className="aspect-video w-full relative">
             <img 
               src={product.preview_url || product.thumbnail_url} 
@@ -63,7 +65,7 @@ export default async function ProductPage({
         {/* Benefit Bullets (Language Guide 3.1) */}
         <section className="grid grid-cols-1 gap-4">
           <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-kyn-slate-400 mb-2">What's Inside</h2>
-          {product.whats_included?.map((item: string, i: number) => (
+          {(product.whats_included as string[] || []).map((item, i) => (
             <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-white dark:bg-kyn-slate-800/50 border border-kyn-slate-50 dark:border-kyn-slate-800">
               <CheckCircle2 size={20} className="text-kyn-green-500 shrink-0 mt-0.5" />
               <span className="text-sm font-medium text-kyn-slate-700 dark:text-kyn-slate-300">{item}</span>
@@ -71,11 +73,11 @@ export default async function ProductPage({
           ))}
         </section>
 
-        {/* "Who this is for" Section (Brand Strategy 5.0) */}
-        <section className="p-8 rounded-[2rem] bg-kyn-slate-900 text-white dark:bg-white dark:text-kyn-slate-900">
+        {/* "Who this is for" Section (Signature Contrast) */}
+        <section className="p-8 rounded-[2rem] bg-kyn-slate-900 text-white dark:bg-white dark:text-kyn-slate-900 shadow-2xl">
           <h2 className="text-[10px] font-black uppercase tracking-[0.3em] mb-6 opacity-60">Ideal for you if...</h2>
           <ul className="space-y-4">
-            {product.who_it_is_for?.map((text: string, i: number) => (
+            {(product.who_it_is_for as string[] || []).map((text, i) => (
               <li key={i} className="flex items-center gap-3 text-sm font-bold italic">
                 <Zap size={16} className="text-kyn-green-400" />
                 {text}
@@ -85,15 +87,15 @@ export default async function ProductPage({
         </section>
 
         {/* Trust Badge */}
-        <div className="flex items-center justify-center gap-2 text-kyn-slate-400">
+        <div className="flex items-center justify-center gap-2 text-kyn-slate-400 pb-10">
           <ShieldCheck size={16} />
           <span className="text-[10px] font-black uppercase tracking-widest">Instant Lifetime Access</span>
         </div>
       </main>
 
       {/* Fixed Action Bar (UX Guide 9.1) */}
-      <div className="fixed bottom-24 inset-x-6 z-40 md:max-w-md md:mx-auto">
-        <div className="bg-white/90 dark:bg-kyn-slate-900/90 backdrop-blur-xl border border-kyn-slate-100 dark:border-kyn-slate-800 p-4 rounded-[2rem] shadow-2xl flex items-center justify-between gap-4">
+      <div className="fixed bottom-28 inset-x-6 z-40 md:max-w-md md:mx-auto">
+        <div className="bg-white/90 dark:bg-kyn-slate-900/90 backdrop-blur-xl border border-kyn-slate-100 dark:border-kyn-slate-800 p-4 rounded-kyn shadow-2xl flex items-center justify-between gap-4">
           <div className="pl-4">
             <span className="text-[8px] font-black uppercase tracking-[0.2em] text-kyn-slate-400 block">Invest</span>
             <span className="text-2xl font-black text-kyn-slate-900 dark:text-white leading-none">£{product.price_gbp}</span>

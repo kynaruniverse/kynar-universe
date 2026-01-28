@@ -1,21 +1,32 @@
 "use client";
-import React from 'react';
-import { X, Search as SearchIcon, SlidersHorizontal } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Search as SearchIcon } from 'lucide-react';
 import { ProductCard } from '../ProductCard';
+import { Product, World } from '@/types/index';
 
-export const SearchOverlay = ({ isOpen, onClose, products }: any) => {
-  const [query, setQuery] = React.useState('');
-  const [filter, setFilter] = React.useState('All');
+interface SearchOverlayProps {
+  isOpen: boolean;
+  onClose: () => void;
+  products: Product[];
+}
+
+/**
+ * SearchOverlay Component
+ * Aligned with UX Guide 2.3: Immersive search with World-specific filtering.
+ */
+export const SearchOverlay = ({ isOpen, onClose, products }: SearchOverlayProps) => {
+  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState<World | 'All'>('All');
 
   if (!isOpen) return null;
 
-  const filtered = products.filter((p: any) => 
+  const filtered = products.filter((p) => 
     (filter === 'All' || p.world === filter) && 
     p.name.toLowerCase().includes(query.toLowerCase())
   );
 
   return (
-    <div className="fixed inset-0 z-[60] bg-white dark:bg-kyn-slate-900 flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed inset-0 z-[60] bg-white dark:bg-kyn-slate-900 flex flex-col transition-all duration-300 ease-out">
       {/* Search Header */}
       <div className="p-6 border-b border-kyn-slate-100 dark:border-kyn-slate-800 flex items-center gap-4">
         <div className="relative flex-grow">
@@ -24,26 +35,29 @@ export const SearchOverlay = ({ isOpen, onClose, products }: any) => {
             autoFocus
             type="text"
             placeholder="Search the Universe..."
-            className="w-full bg-kyn-slate-50 dark:bg-kyn-slate-800 py-3 pl-12 pr-4 rounded-2xl border-none focus:ring-2 focus:ring-kyn-green-500 text-sm"
+            className="w-full bg-kyn-slate-50 dark:bg-kyn-slate-800 py-3 pl-12 pr-4 rounded-2xl border-none focus:ring-2 focus:ring-kyn-green-500 text-sm outline-none transition-all"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
-        <button onClick={onClose} className="p-2 text-kyn-slate-500">
+        <button 
+          onClick={onClose} 
+          className="p-2 text-kyn-slate-500 hover:bg-kyn-slate-50 dark:hover:bg-kyn-slate-800 rounded-full transition-colors"
+        >
           <X size={24} />
         </button>
       </div>
 
-      {/* Filter Chips */}
-      <div className="flex gap-2 p-4 overflow-x-auto no-scrollbar">
+      {/* Filter Chips - UX Guide 7.2: World Selection */}
+      <div className="flex gap-2 p-4 overflow-x-auto no-scrollbar bg-kyn-canvas/50 dark:bg-kyn-slate-900">
         {['All', 'Home', 'Lifestyle', 'Tools'].map((w) => (
           <button
             key={w}
-            onClick={() => setFilter(w)}
-            className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${
+            onClick={() => setFilter(w as World | 'All')}
+            className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
               filter === w 
-              ? 'bg-kyn-slate-900 text-white shadow-lg' 
-              : 'bg-kyn-slate-50 text-kyn-slate-400'
+              ? 'bg-kyn-slate-900 dark:bg-white text-white dark:text-kyn-slate-900 shadow-lg' 
+              : 'bg-white dark:bg-kyn-slate-800 text-kyn-slate-400 border border-kyn-slate-100 dark:border-kyn-slate-700'
             }`}
           >
             {w}
@@ -52,20 +66,27 @@ export const SearchOverlay = ({ isOpen, onClose, products }: any) => {
       </div>
 
       {/* Results Grid */}
-      <div className="flex-grow overflow-y-auto p-6 pb-20">
-        <p className="text-[10px] font-bold text-kyn-slate-400 uppercase tracking-widest mb-4">
-          {filtered.length} Results Found
-        </p>
+      <div className="flex-grow overflow-y-auto p-6 pb-24">
+        <div className="flex justify-between items-center mb-6">
+          <p className="text-[10px] font-black text-kyn-slate-400 uppercase tracking-widest">
+            {filtered.length} Results Found
+          </p>
+        </div>
         
         {filtered.length > 0 ? (
           <div className="grid grid-cols-2 gap-4">
-            {filtered.map((p: any) => (
+            {filtered.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 italic text-kyn-slate-400">
-            No items match your search...
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 bg-kyn-slate-50 dark:bg-kyn-slate-800 rounded-full flex items-center justify-center mb-4 text-kyn-slate-300">
+              <SearchIcon size={32} />
+            </div>
+            <p className="italic text-sm text-kyn-slate-400">
+              The universe is vast, but we couldn't find that...
+            </p>
           </div>
         )}
       </div>

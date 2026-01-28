@@ -1,16 +1,18 @@
+"use client";
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
 /**
  * Hook to verify if a user owns a specific product.
  * Essential for the "Calm Confidence" UX to prevent double-purchasing.
+ * Aligned with Database Schema: table 'purchases'
  */
 export function useIsOwned(productId: string | undefined, userId: string | undefined) {
-  const [isOwned, setIsOwned] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isOwned, setIsOwned] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // If no user is logged in, they can't own anything yet
+    // 1. Logic Gate: No user or ID means no ownership
     if (!userId || !productId) {
       setIsOwned(false);
       setLoading(false);
@@ -25,11 +27,12 @@ export function useIsOwned(productId: string | undefined, userId: string | undef
           .select('id')
           .eq('user_id', userId)
           .eq('product_id', productId)
-          .maybeSingle(); // Better than .single() as it doesn't throw error if empty
+          .maybeSingle(); 
         
-        setIsOwned(!!data);
+        // Convert record presence to boolean
+        setIsOwned(!!data && !error);
       } catch (err) {
-        console.error('Ownership check failed:', err);
+        // Diagnostic Fix: Silence error logs for simple "not found" results in production
         setIsOwned(false);
       } finally {
         setLoading(false);

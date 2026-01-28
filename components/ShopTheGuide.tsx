@@ -2,7 +2,13 @@ import { supabase } from '@/lib/supabase';
 import { ProductCard } from './ProductCard';
 import { ArrowRight, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { Product } from '@/types/index';
 
+/**
+ * ShopTheGuide Component:
+ * A Server Component that contextually links Guides to Products.
+ * Aligned with UX Guide 11.3: "Calm Confidence" via relevant recommendations.
+ */
 export const ShopTheGuide = async ({ world }: { world: string }) => {
   // Fetch the top 2 products from the same world to provide the "Essential Pair"
   const { data: products } = await supabase
@@ -14,7 +20,7 @@ export const ShopTheGuide = async ({ world }: { world: string }) => {
 
   if (!products || products.length === 0) return null;
 
-  // World-specific styling for the container background
+  // World-specific styling for the container background (Color Guide 2.0)
   const themeClasses: Record<string, string> = {
     Home: 'bg-kyn-green-50/30 dark:bg-kyn-green-900/10 border-kyn-green-100 dark:border-kyn-green-900/20',
     Lifestyle: 'bg-kyn-caramel-50/30 dark:bg-kyn-caramel-900/10 border-kyn-caramel-100 dark:border-kyn-caramel-900/20',
@@ -22,7 +28,7 @@ export const ShopTheGuide = async ({ world }: { world: string }) => {
   };
 
   return (
-    <section className={`mt-20 p-8 md:p-12 rounded-[2.5rem] border ${themeClasses[world] || themeClasses.Tools}`}>
+    <section className={`mt-20 p-8 md:p-12 rounded-kyn border ${themeClasses[world] || themeClasses.Tools}`}>
       <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6 mb-10">
         <div className="max-w-xs">
           <div className="flex items-center gap-2 mb-3">
@@ -48,10 +54,10 @@ export const ShopTheGuide = async ({ world }: { world: string }) => {
         </Link>
       </div>
 
-      {/* Grid: 1 Column on Mobile, 2 on Tablet+ to accommodate ProductCard size */}
+      {/* Grid: 1 Column on Mobile, 2 on Large Desktop to maintain card hierarchy */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product as Product} />
         ))}
       </div>
     </section>

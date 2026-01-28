@@ -2,6 +2,15 @@ import { supabase } from '@/lib/supabase';
 import { ProductCard } from '@/components/ProductCard';
 import { notFound } from 'next/navigation';
 import { Orbit, Home, Heart, Hammer } from 'lucide-react';
+import { Product, World } from '@/types/index';
+
+interface WorldConfig {
+  color: string;
+  bg: string;
+  darkBg: string;
+  icon: React.ElementType;
+  tagline: string;
+}
 
 export default async function WorldPage({ 
   params 
@@ -9,10 +18,12 @@ export default async function WorldPage({
   params: Promise<{ slug: string }> 
 }) {
   const { slug } = await params;
-  const worldName = slug.charAt(0).toUpperCase() + slug.slice(1);
   
-  // 1. World-Specific Theme Config (Brand Guide 2.0)
-  const themes: Record<string, any> = {
+  // Normalize slug to match World types (e.g., 'home' -> 'Home')
+  const worldName = (slug.charAt(0).toUpperCase() + slug.slice(1)) as World;
+  
+  // World-Specific Theme Config (Brand Guide 2.0)
+  const themes: Record<World, WorldConfig> = {
     Home: {
       color: 'text-kyn-green-600',
       bg: 'bg-kyn-green-50/50',
@@ -39,7 +50,7 @@ export default async function WorldPage({
   const theme = themes[worldName];
   if (!theme) notFound();
 
-  // 2. Data Fetch
+  // Fetch only products belonging to this specific world
   const { data: products } = await supabase
     .from('products')
     .select('*')
@@ -52,9 +63,9 @@ export default async function WorldPage({
   return (
     <div className="min-h-screen bg-kyn-canvas dark:bg-kyn-slate-900 pb-32">
       {/* Dynamic World Header */}
-      <header className={`relative overflow-hidden px-6 py-16 border-b border-kyn-slate-100 dark:border-kyn-slate-800 ${theme.bg} ${theme.darkBg}`}>
+      <header className={`relative overflow-hidden px-6 pt-32 pb-16 border-b border-kyn-slate-100 dark:border-kyn-slate-800 ${theme.bg} ${theme.darkBg}`}>
         <div className="max-w-2xl mx-auto relative z-10 text-center">
-          <div className={`inline-flex p-4 rounded-3xl bg-white dark:bg-kyn-slate-900 shadow-sm mb-6 ${theme.color}`}>
+          <div className={`inline-flex p-4 rounded-3xl bg-white dark:bg-kyn-slate-900 shadow-kyn-lift mb-6 ${theme.color}`}>
             <Icon size={32} />
           </div>
           
@@ -67,25 +78,25 @@ export default async function WorldPage({
           </p>
         </div>
         
-        {/* Subtle Orbit Decoration */}
-        <Orbit className="absolute -right-8 -bottom-8 w-40 h-40 text-kyn-slate-200/20 dark:text-white/5 rotate-12" />
+        {/* Decorative Orbit - Visual Guide 9.2 */}
+        <Orbit className="absolute -right-8 -bottom-8 w-40 h-40 text-kyn-slate-200/20 dark:text-white/5 rotate-12 pointer-events-none" />
       </header>
 
-      {/* World-Specific Grid */}
+      {/* Product Feed */}
       <main className="p-6 max-w-2xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-8 border-b border-kyn-slate-50 dark:border-kyn-slate-800 pb-4">
           <span className="text-[10px] font-black uppercase tracking-[0.2em] text-kyn-slate-400">
-            Showing {products?.length || 0} Assets
+            Discovery • {products?.length || 0} Assets
           </span>
         </div>
 
         <div className="grid grid-cols-1 gap-10">
           {products && products.length > 0 ? (
             products.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p as Product} />
             ))
           ) : (
-            <div className="py-20 text-center">
+            <div className="py-20 text-center border-2 border-dashed border-kyn-slate-100 dark:border-kyn-slate-800 rounded-kyn">
               <p className="text-xs font-bold uppercase tracking-widest text-kyn-slate-300">
                 New assets arriving soon in the {worldName} World.
               </p>
