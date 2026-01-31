@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 /**
  * KYNAR UNIVERSE: Checkout Gateway (v1.5)
  * Purpose: Secure, grounded bridge to Lemon Squeezy.
- * Fix: Updated for Next.js 15 Async searchParams.
+ * Fix: Next.js 15 Async searchParams & v1.5 Noble UI.
  */
 
 interface CheckoutPageProps {
@@ -22,7 +22,7 @@ export default async function CheckoutPage({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // 2. Identity Guard (UX Canon 7: Ownership requires a home)
+  // 2. Identity Guard
   if (!user) {
     redirect("/auth/login?return_to=/cart");
   }
@@ -36,12 +36,13 @@ export default async function CheckoutPage({
     redirect("/cart");
   }
 
-  // 3. Data Validation & Schema Alignment
+  // 3. Data Validation (Synchronized with v1.5 Schema)
   const { data: products, error } = await supabase
     .from("products")
     .select("id, title, price_id, slug") 
     .in("id", productIds);
 
+  // CRITICAL: Check if the number of products found matches the request
   if (!products || products.length === 0 || error) {
     redirect("/cart?error=selection_not_found");
   }
@@ -70,7 +71,8 @@ export default async function CheckoutPage({
     });
   } catch (err) {
     console.error("Checkout Handoff Error:", err);
-    redirect("/checkout/error");
+    // Safer fallback if error page doesn't exist
+    redirect("/cart?error=checkout_failed");
   }
 
   // 5. The Final Redirect
@@ -78,26 +80,26 @@ export default async function CheckoutPage({
     redirect(checkoutUrl);
   }
 
-  // Fallback UI (Design System v1.5 Refresh)
+  // Fallback UI (Synchronized with v1.5 Noble Typography)
   return (
     <main className="flex min-h-[80vh] w-full flex-col items-center justify-center px-6 text-center bg-canvas">
-      <div className="max-w-xs animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
-        <div className="mx-auto mb-8 h-12 w-12 rounded-full border border-kyn-slate-100 bg-surface flex items-center justify-center">
-          <div className="h-2 w-2 animate-ping rounded-full bg-kyn-green-600" />
+      <div className="max-w-xs animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
+        <div className="mx-auto mb-8 h-12 w-12 rounded-full border border-border bg-surface flex items-center justify-center">
+          <div className="h-2 w-2 animate-ping rounded-full bg-kyn-green-500" />
         </div>
         
-        <h1 className="font-brand text-xl font-medium tracking-tight text-text-primary">
-          Securing your selection
+        <h1 className="font-brand text-xl font-medium tracking-tight text-kyn-slate-900">
+          Securing Selection
         </h1>
         
-        <p className="mt-3 font-ui text-sm leading-relaxed text-text-secondary">
-          We are preparing your permanent access. You are being redirected to Lemon Squeezy.
+        <p className="mt-3 font-ui text-sm leading-relaxed text-kyn-slate-500">
+          Preparing permanent access to your vault. Redirecting to secure gateway.
         </p>
 
-        <div className="mt-10 flex items-center justify-center gap-2 text-[10px] font-medium uppercase tracking-[0.2em] text-kyn-slate-300">
-          <span className="h-px w-6 bg-kyn-slate-100" />
+        <div className="mt-12 flex items-center justify-center gap-3 text-[10px] font-medium uppercase tracking-[0.3em] text-kyn-slate-300">
+          <span className="h-px w-8 bg-border" />
           The Handoff
-          <span className="h-px w-6 bg-kyn-slate-100" />
+          <span className="h-px w-8 bg-border" />
         </div>
       </div>
     </main>

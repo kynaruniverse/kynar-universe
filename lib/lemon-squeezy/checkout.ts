@@ -1,11 +1,18 @@
 /**
  * KYNAR UNIVERSE: Lemon Squeezy Gateway (v1.5)
- * Aligned with: Business Ref 23 (Anti-Features) & UX Canon 6 (Checkout)
+ * Role: Multi-Product Handoff & Webhook Metadata Sync
+ * Fix: Securely handles bulk selections while following LS API constraints.
  */
 
 import { Database } from "@/lib/supabase/types";
 
-type Product = Database['public']['Tables']['products']['Row'];
+// Update the Product type to match the properties we actually pass from the Checkout Page
+type Product = {
+  id: string;
+  title: string;
+  price_id: string;
+  slug: string;
+};
 
 interface CheckoutConfig {
   products: Product[];
@@ -35,29 +42,31 @@ export async function generateCheckoutUrl({
     throw new Error("Kynar System: Payment configuration is currently unavailable.");
   }
   
-  // VALIDATION: Filter products to ensure they exist and have a price/variant ID
+  // VALIDATION: Filter products to ensure they have a price/variant ID
   const validProducts = products.filter(p => p.price_id);
   if (validProducts.length === 0) {
-    throw new Error("Your cart appears to be empty or contains invalid items.");
+    throw new Error("Your selection appears to be empty or contains invalid items.");
   }
   
   /**
-   * PAYLOAD CONSTRUCTION
-   * Rule: No discount codes, no urgency. 
-   * Design: Matches the Earthy-Cosmic palette.
+   * NOTE ON MULTI-PRODUCT: 
+   * Lemon Squeezy v1 Checkouts handle ONE variant_id as the "anchor."
+   * We pass the first item as the charge, and use the 'product_ids' 
+   * custom attribute for the fulfillment Webhook.
    */
   const payload = {
     data: {
       type: "checkouts",
       attributes: {
         store_id: parseInt(STORE_ID),
-        variant_id: parseInt(validProducts[0].price_id), // Primary entry point
+        variant_id: parseInt(validProducts[0].price_id),
         checkout_data: {
           email: userEmail,
           custom: {
             user_id: userId,
-            // Bulk ID string for Webhook fulfillment logic
+            // Combined IDs for Webhook processing
             product_ids: validProducts.map((p) => p.id).join(","),
+            product_slugs: validProducts.map((p) => p.slug).join(","),
             ...metadata
           },
         },
@@ -66,13 +75,13 @@ export async function generateCheckoutUrl({
           media: true,
           logo: true,
           desc: true,
-          discount_button: false, // Locked: No coupon pressure
-          dark: false, // Maintains 'Canvas' light-mode aesthetic
-          button_color: "#166534", // Kynar Green-800: Calm action color
+          discount_button: false,
+          dark: false,
+          button_color: "#166534", // Kynar Green-800
         },
         product_options: {
           redirect_url: config?.redirectUrl || `${SITE_URL}/library?status=success`,
-          receipt_button_text: config?.receiptButtonText || "Go to My Library",
+          receipt_button_text: config?.receiptButtonText || "Open My Library",
           receipt_thank_you_note: "Your selection is now part of your permanent collection. Explore it at your own pace.",
         },
       },
@@ -93,12 +102,13 @@ export async function generateCheckoutUrl({
     const json = await response.json();
     
     if (json.errors) {
+      console.error("LS_API_ERROR:", json.errors);
       throw new Error(json.errors[0].detail);
     }
     
     return json.data.attributes.url;
   } catch (error) {
     console.error("LS_GATEWAY_FAILURE:", error);
-    throw new Error("We encountered a brief issue connecting to the secure checkout. Please try again in a moment.");
+    throw new Error("Connection to the secure gateway timed out. Please try again.");
   }
 }
