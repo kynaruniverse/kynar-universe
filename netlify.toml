@@ -2,22 +2,32 @@
   command = "npm run build"
   publish = ".next"
 
+[build.environment]
+  # Setting Node version here fixes the "Invalid syntax" error
+  NODE_VERSION = "20"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [functions]
-  node_version = "20"
-  external_node_modules = ["@path/to/any/problematic/pkg"] # Placeholder for Supabase/Lemon Squeezy if needed
+  # Removed node_version = "20" from here
+  # Only include external modules if you encounter "Module not found" errors in logs
+  # external_node_modules = ["@supabase/ssr"] 
 
 [[headers]]
   for = "/*"
   [headers.values]
+    # Kynar Security Standard: Deny framing to prevent clickjacking
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    # Content Security Policy: Essential for a secure marketplace
+    Content-Security-Policy = "upgrade-insecure-requests; block-all-mixed-content"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
 
 [[headers]]
   for = "/static/*"
   [headers.values]
+    # Long-term caching for static assets (Design System Section 11)
     Cache-Control = "public, max-age=31536000, immutable"
