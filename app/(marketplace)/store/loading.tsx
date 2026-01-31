@@ -1,52 +1,72 @@
+/**
+ * KYNAR UNIVERSE: Marketplace Skeleton (v1.5)
+ * Role: The "Calm" Transition - Eliminating Layout Shift (CLS).
+ * Sync: Aligned with v1.5 Typography & Spacing.
+ */
+
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 
-/**
- * KYNAR UNIVERSE: Marketplace Skeleton
- * Aligned with UX Canon Section 1 (Reassured State)
- * Prevents Layout Shift and provides a "Calm" transition.
- */
 export default function StoreLoading() {
-  // Matches the 6-item initial load of the Marketplace grid
+  // Matches the optimized grid density
   const skeletons = Array.from({ length: 6 });
 
   return (
-    <div className="pb-32">
-      {/* Handrail preservation during load */}
-      <Breadcrumbs paths={[{ label: 'Universe Hub', href: '/store' }]} />
-      
-      {/* Header Skeleton - Matches /store/page.tsx hierarchy */}
-      <div className="px-gutter py-12 md:py-20 space-y-6">
-        <div className="h-12 w-48 animate-pulse rounded-kynar bg-surface" />
-        <div className="space-y-2">
-          <div className="h-5 w-full max-w-lg animate-pulse rounded-md bg-surface/60" />
-          <div className="h-5 w-3/4 max-w-md animate-pulse rounded-md bg-surface/40" />
-        </div>
-      </div>
-
-      {/* Filter Bar Skeleton Placeholder */}
-      <div className="h-16 w-full border-y border-border bg-canvas/50" />
-
-      {/* Product Grid Skeleton - Design System Section 5.4 */}
-      <div className="grid grid-cols-1 gap-inner px-gutter py-12 sm:grid-cols-2 lg:grid-cols-3">
-        {skeletons.map((_, i) => (
-          <div key={i} className="flex flex-col space-y-5 rounded-kynar border border-border bg-canvas p-4">
-            {/* Aspect Ratio Box */}
-            <div className="aspect-[16/10] w-full animate-pulse rounded-lg bg-surface" />
-            
-            {/* Metadata Skeletons */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-start">
-                <div className="h-6 w-2/3 animate-pulse rounded bg-surface" />
-                <div className="h-6 w-12 animate-pulse rounded bg-surface/80" />
-              </div>
-              <div className="space-y-2">
-                <div className="h-4 w-full animate-pulse rounded bg-surface/60" />
-                <div className="h-4 w-1/2 animate-pulse rounded bg-surface/40" />
-              </div>
+    <main className="min-h-screen bg-canvas pb-32">
+      <div className="max-w-screen-xl mx-auto px-6">
+        {/* Handrail preservation */}
+        <Breadcrumbs paths={[{ label: 'Universe Hub', href: '/store' }]} />
+        
+        {/* Header Skeleton: Matches Page Hierarchy */}
+        <header className="py-16 md:py-24 border-b border-border">
+          <div className="max-w-3xl mx-auto flex flex-col items-center text-center space-y-6">
+            <div className="h-12 w-64 animate-pulse rounded-xl bg-kyn-slate-100" />
+            <div className="space-y-3 w-full flex flex-col items-center">
+              <div className="h-4 w-full max-w-lg animate-pulse rounded-full bg-kyn-slate-100/60" />
+              <div className="h-4 w-3/4 max-w-md animate-pulse rounded-full bg-kyn-slate-100/40" />
             </div>
           </div>
-        ))}
+        </header>
+
+        {/* Filter Bar Skeleton Placeholder */}
+        <div className="sticky top-0 z-10 py-8 bg-canvas/80 backdrop-blur-md border-b border-border mb-12">
+          <div className="flex gap-3 overflow-hidden">
+            <div className="h-9 w-20 animate-pulse rounded-full bg-kyn-slate-100" />
+            <div className="h-9 w-24 animate-pulse rounded-full bg-kyn-slate-100" />
+            <div className="h-9 w-24 animate-pulse rounded-full bg-kyn-slate-100" />
+            <div className="h-9 w-24 animate-pulse rounded-full bg-kyn-slate-100" />
+          </div>
+        </div>
+
+        {/* Product Grid Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {skeletons.map((_, i) => (
+            <div 
+              key={i} 
+              className="flex flex-col space-y-6 rounded-2xl border border-border bg-canvas p-6"
+            >
+              {/* Visual Anchor Box */}
+              <div className="aspect-[16/10] w-full animate-pulse rounded-xl bg-kyn-slate-100" />
+              
+              {/* Content Skeletons */}
+              <div className="space-y-4">
+                <div className="flex justify-between items-start gap-4">
+                  <div className="h-7 w-3/4 animate-pulse rounded-lg bg-kyn-slate-100" />
+                  <div className="h-7 w-12 animate-pulse rounded-lg bg-kyn-slate-100/80" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-full animate-pulse rounded-md bg-kyn-slate-100/60" />
+                  <div className="h-4 w-2/3 animate-pulse rounded-md bg-kyn-slate-100/40" />
+                </div>
+              </div>
+
+              {/* Action Skeleton */}
+              <div className="pt-4 mt-auto">
+                <div className="h-12 w-full animate-pulse rounded-xl bg-kyn-slate-100/50" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

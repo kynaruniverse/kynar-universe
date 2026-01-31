@@ -4,11 +4,9 @@
 # Essential for PKCE authentication and email verification redirects
 /auth/callback  /auth/callback  200
 
-# 2. Next.js App Router Catch-all
-# Directs all traffic to the Next.js index, allowing the App Router to handle 
-# dynamic segments like /products/[slug] and /checkout without 404s
-/* /index.html  200
-
-# 3. Clean Identity Redirects (Optional but Recommended)
+# 2. Clean Identity Redirects
 /login   /auth/login   301
 /signup  /auth/signup  301
+
+# NOTE: Removed the /* catch-all. 
+# The @netlify/plugin-nextjs handles all routing automatically.

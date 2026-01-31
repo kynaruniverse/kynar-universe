@@ -2,6 +2,7 @@
  * KYNAR UNIVERSE: Canonical Type System (v1.5 - Schema Sync)
  * Sync Date: 2026-01-31
  * Verified against Supabase Snippet Schema and Object Inventory-2.csv
+ * Hardened for Next.js 15 & Production Deployment
  */
 
 export const WORLDS = ['Home', 'Lifestyle', 'Tools'] as const;
@@ -20,10 +21,12 @@ export interface Product {
   category: string | null;
   tags: string[] | null;
   description: string | null;
-  short_description: string | null;
-  price_id: string;      // Lemon Squeezy / Stripe Reference
+  short_description: string | null; // Used in your Store/Product pages
+  description_short?: string | null; // Safe-guard alias for v1.4 migration
+  price_id: string;      // Lemon Squeezy Variant Reference
   file_types: FileType[] | null;
-  preview_image: string | null;
+  preview_image: string | null; // Standardized visual field
+  image_url?: string | null;    // Fallback for legacy records
   is_published: boolean;
   metadata: {
     use_case?: string;
@@ -39,7 +42,7 @@ export interface Profile {
   id: string;
   full_name: string | null;
   email: string;
-  is_admin: boolean; // Matches CSV public.profiles.is_admin
+  is_admin: boolean; 
   created_at: string;
   updated_at: string;
 }
@@ -52,7 +55,7 @@ export interface UserLibrary {
   acquired_at: string;
   status: string | null; // Default 'active'
   source: string | null; // Default 'marketplace_v1'
-  product?: Product;
+  product?: Product; // For joined queries in the Library page
 }
 
 export interface Guide {
@@ -72,6 +75,10 @@ export interface Guide {
   updated_at: string;
 }
 
+/**
+ * Database Type Definitions
+ * Used by the Supabase Client for full IntelliSense
+ */
 export type Database = {
   public: {
     Tables: {
