@@ -1,7 +1,7 @@
 /**
  * KYNAR UNIVERSE: Product Deep-Dive (v1.5)
  * Role: The "Conversation" - Turning discovery into ownership.
- * Aligned with: UX Canon Section 5 & Design System Section 4 (Typography)
+ * Fix: Next.js 15 Async Params & Schema Alignment.
  */
 
 import { notFound } from "next/navigation";
@@ -13,21 +13,28 @@ import { AddToCartButton } from "@/components/marketplace/AddToCartButton";
 import { Product } from "@/lib/supabase/types";
 import { ShieldCheck, Download, Users, Landmark } from "lucide-react";
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+interface ProductPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  // 1. Await Params (Next.js 15 Mandatory Fix)
+  const resolvedParams = await params;
   const supabase = await createClient();
   
-  // Canonical fetch using v1.5 schema
+  // 2. Canonical fetch using v1.5 schema
+  // Note: Ensure your DB uses 'description_short' and 'preview_image' per hardening
   const { data: product } = await supabase
     .from("products")
     .select("*")
-    .eq("slug", params.slug)
+    .eq("slug", resolvedParams.slug)
     .single();
 
   if (!product) notFound();
 
   const price = getPriceFromId(product.price_id);
   
-  // Fetch related items from the same World for the Discovery Loop
+  // 3. Discovery Loop: Related items from the same World
   const { data: related } = await supabase
     .from("products")
     .select("*")
@@ -37,7 +44,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
   const breadcrumbPaths = [
     { label: "Hub", href: "/store" },
-    { label: product.world, href: `/${product.world.toLowerCase()}` },
+    { label: product.world, href: `/store?world=${product.world.toLowerCase()}` },
     { label: product.title, href: `/products/${product.slug}` }
   ];
 
@@ -61,7 +68,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
           </h1>
           
           <p className="mt-8 font-ui text-lg text-kyn-slate-500 leading-relaxed md:text-xl max-w-2xl mx-auto">
-            {product.short_description}
+            {product.description_short || product.short_description}
           </p>
           
           <div className="mt-16 flex flex-col items-center gap-10">
@@ -77,7 +84,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             
             <div className="flex items-center gap-6 font-ui text-[11px] font-medium uppercase tracking-widest text-kyn-slate-400">
               <span className="flex items-center gap-2">
-                <ShieldCheck size={14} className="text-kyn-green-600" />
+                <ShieldCheck size={14} className="text-kyn-green-700" />
                 Permanent Ownership
               </span>
               <span className="h-4 w-px bg-border" />
@@ -94,9 +101,9 @@ export default async function ProductPage({ params }: { params: { slug: string }
       <section className="px-6 mb-24 max-w-screen-xl mx-auto">
         <div className="overflow-hidden rounded-2xl border border-border bg-surface aspect-[16/9] shadow-sm relative">
           <img 
-            src={product.image_url || "/placeholder-preview.png"} 
+            src={product.preview_image || product.image_url || "/placeholder-preview.png"} 
             alt={`${product.title} overview`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-opacity duration-700"
           />
         </div>
       </section>
@@ -139,8 +146,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
         {/* Narrative Section: The "Conversation" */}
         <article className="max-w-2xl mx-auto">
           <h2 className="font-brand text-3xl font-medium text-kyn-slate-900 mb-8 tracking-tight text-center">Development Notes</h2>
-          <div className="font-ui text-lg text-kyn-slate-500 leading-relaxed whitespace-pre-wrap prose prose-slate prose-lg max-w-none">
-            {product.description}
+          <div className="prose prose-slate prose-lg max-w-none font-ui text-kyn-slate-600 leading-relaxed prose-headings:font-brand prose-headings:font-medium">
+             <div dangerouslySetInnerHTML={{ __html: product.description }} />
           </div>
         </article>
 
@@ -150,13 +157,13 @@ export default async function ProductPage({ params }: { params: { slug: string }
           <p className="mt-6 font-ui text-base text-kyn-slate-500 max-w-md mx-auto leading-relaxed">
             Every tool you acquire here is yours to keep. No subscriptions. No tracking. Just useful things for an organised life.
           </p>
-          <div className="mt-10 h-1.5 w-12 bg-kyn-green-700 mx-auto rounded-full opacity-30" />
+          <div className="mt-10 h-1 w-12 bg-kyn-green-700 mx-auto rounded-full opacity-20" />
         </div>
       </div>
 
-      {/* Discovery Loop: Section 11 */}
+      {/* Discovery Loop */}
       {related && related.length > 0 && (
-        <section className="mt-32 border-t border-border bg-kyn-slate-50/50 px-6 py-24">
+        <section className="mt-32 border-t border-border bg-kyn-slate-50/30 px-6 py-24">
           <div className="mx-auto max-w-screen-xl">
             <h2 className="font-brand text-2xl font-medium mb-12 text-kyn-slate-900 text-center">Continue your Discovery</h2>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
