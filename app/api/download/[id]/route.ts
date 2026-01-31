@@ -1,25 +1,33 @@
+/**
+ * KYNAR UNIVERSE: Secure Asset Delivery (v1.5)
+ * Role: Verifies ownership and provides a temporary signed URL.
+ * Update: Next.js 15 Async Params & Enhanced Error Handling.
+ */
+
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
-/**
- * KYNAR UNIVERSE: Secure Asset Delivery (v1.1)
- * Purpose: Verifies ownership and provides a temporary signed URL.
- * Rule: Files never touch the public internet without a session signature.
- */
+interface DownloadParams {
+  params: Promise<{ id: string }>;
+}
+
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: DownloadParams
 ) {
+  // 1. Resolve Params & Auth (Next.js 15 Standard)
+  const resolvedParams = await params;
+  const productId = resolvedParams.id;
+  
   const supabase = await createClient();
-  const productId = params.id;
-
-  // 1. Identity Verification
   const { data: { user }, error: authError } = await supabase.auth.getUser();
+
   if (!user || authError) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  // 2. Ownership Verification (Grounded in user_library table)
+  // 2. Ownership Verification
+  // Verifying the link between user and product in the vault.
   const { data: ownership, error: ownershipError } = await supabase
     .from("user_library")
     .select("id")
@@ -32,18 +40,17 @@ export async function GET(
   }
 
   // 3. Asset Retrieval
-  // Assumes a private bucket named 'vault' where filenames match the Product UUID
-  // This maintains 'Transactional Calm' by automating the link generation.
+  // Generate a signed URL for the asset in the 'vault' bucket.
   const { data, error: storageError } = await supabase
     .storage
     .from("vault")
-    .createSignedUrl(`${productId}.zip`, 60); // Link expires in 60 seconds
+    .createSignedUrl(`${productId}.zip`, 60); // 60-second window
 
   if (storageError || !data?.signedUrl) {
-    console.error("Storage Error:", storageError);
-    return new NextResponse("Asset Not Found: Please contact support", { status: 404 });
+    console.error("Vault Storage Error:", storageError);
+    return new NextResponse("Asset Unavailable: Please contact support", { status: 404 });
   }
 
-  // 4. Secure Handoff
+  // 4. Secure Handoff: Redirect to the temporary signed URL
   return NextResponse.redirect(data.signedUrl);
 }
