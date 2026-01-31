@@ -53,7 +53,7 @@ export default async function CheckoutPage({
     checkoutUrl = await generateCheckoutUrl({
       products: products.map(p => ({
         id: p.id,
-        name: p.title, 
+        title: p.title, 
         price_id: p.price_id,
         slug: p.slug
       })),

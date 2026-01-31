@@ -1,6 +1,6 @@
 /**
  * KYNAR UNIVERSE: Guide Vessel (v1.5)
- * Fix: Next.js 15 Async Params & Typography Sync
+ * Final Alignment: Next.js 15 + Supabase Inventory Sync
  */
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
@@ -9,7 +9,6 @@ import { Clock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
-  // 1. Await params (Next.js 15 Mandatory Fix)
   const resolvedParams = await params;
   const supabase = await createClient();
   
@@ -20,6 +19,9 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
     .single();
 
   if (!guide) notFound();
+
+  // Consistent Fallback for the "Noble" Aesthetic
+  const displayAuthor = guide.author || "Kynar Universe";
 
   const breadcrumbPaths = [
     { label: "Hub", href: "/store" },
@@ -49,10 +51,10 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
           <div className="flex items-center gap-4 py-8 border-y border-border">
             <div className="h-12 w-12 rounded-full bg-kyn-slate-100 flex items-center justify-center font-brand text-sm font-medium text-kyn-slate-500 border border-border">
-              {guide.author ? guide.author[0] : 'K'}
+              {displayAuthor[0]}
             </div>
             <div>
-              <p className="font-ui text-sm font-medium text-kyn-slate-900">{guide.author || "Kynar Archive"}</p>
+              <p className="font-ui text-sm font-medium text-kyn-slate-900">{displayAuthor}</p>
               <p className="font-ui text-xs text-kyn-slate-400">Official Intelligence Briefing</p>
             </div>
           </div>
