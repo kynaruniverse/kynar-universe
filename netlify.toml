@@ -3,31 +3,28 @@
   publish = ".next"
 
 [build.environment]
-  # Setting Node version here fixes the "Invalid syntax" error
   NODE_VERSION = "20"
+  # This flag tells Netlify to bypass the peer dependency conflict 
+  # during the 'npm install' stage.
+  NPM_FLAGS = "--legacy-peer-deps"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [functions]
-  # Removed node_version = "20" from here
-  # Only include external modules if you encounter "Module not found" errors in logs
-  # external_node_modules = ["@supabase/ssr"] 
+  # node_version is now handled in build.environment
 
 [[headers]]
   for = "/*"
   [headers.values]
-    # Kynar Security Standard: Deny framing to prevent clickjacking
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    # Content Security Policy: Essential for a secure marketplace
     Content-Security-Policy = "upgrade-insecure-requests; block-all-mixed-content"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
 
 [[headers]]
   for = "/static/*"
   [headers.values]
-    # Long-term caching for static assets (Design System Section 11)
     Cache-Control = "public, max-age=31536000, immutable"
