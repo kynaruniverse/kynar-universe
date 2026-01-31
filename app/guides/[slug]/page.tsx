@@ -1,34 +1,40 @@
+/**
+ * KYNAR UNIVERSE: Guide Vessel (v1.5)
+ * Fix: Next.js 15 Async Params & Typography Sync
+ */
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
-import { Clock, User, ArrowLeft } from "lucide-react";
+import { Clock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default async function GuidePage({ params }: { params: { slug: string } }) {
+export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
+  // 1. Await params (Next.js 15 Mandatory Fix)
+  const resolvedParams = await params;
   const supabase = await createClient();
   
   const { data: guide } = await supabase
     .from("guides")
     .select("*")
-    .eq("slug", params.slug)
+    .eq("slug", resolvedParams.slug)
     .single();
 
   if (!guide) notFound();
 
   const breadcrumbPaths = [
-    { label: "Library", href: "/library" },
-    { label: "Guides", href: "/guides" },
+    { label: "Hub", href: "/store" },
+    { label: "Briefings", href: "/guides" },
     { label: guide.title, href: `/guides/${guide.slug}` }
   ];
 
   return (
-    <article className="min-h-screen bg-canvas pb-32 animate-in fade-in duration-1000">
+    <article className="min-h-screen bg-canvas pb-32 animate-in fade-in duration-700 ease-out">
       <div className="max-w-screen-md mx-auto px-6">
         <Breadcrumbs paths={breadcrumbPaths} />
         
         <header className="py-12 md:py-20">
-          <div className="flex items-center gap-4 mb-6 text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
-            <span className="px-2 py-0.5 rounded border border-kyn-slate-100 bg-surface">
+          <div className="flex items-center gap-4 mb-8 text-[10px] font-medium uppercase tracking-[0.2em] text-kyn-slate-400">
+            <span className="px-3 py-1 rounded-full border border-border bg-surface">
               {guide.category}
             </span>
             <span className="flex items-center gap-1.5">
@@ -37,30 +43,29 @@ export default async function GuidePage({ params }: { params: { slug: string } }
             </span>
           </div>
           
-          <h1 className="font-brand text-4xl font-bold text-text-primary tracking-tight md:text-6xl mb-8">
+          <h1 className="font-brand text-4xl font-medium text-kyn-slate-900 tracking-tight md:text-6xl mb-10 leading-tight">
             {guide.title}
           </h1>
 
-          <div className="flex items-center gap-3 py-6 border-y border-kyn-slate-50">
-            <div className="h-8 w-8 rounded-full bg-kyn-slate-100 flex items-center justify-center font-brand text-xs font-bold text-text-secondary">
-              {guide.author[0]}
+          <div className="flex items-center gap-4 py-8 border-y border-border">
+            <div className="h-12 w-12 rounded-full bg-kyn-slate-100 flex items-center justify-center font-brand text-sm font-medium text-kyn-slate-500 border border-border">
+              {guide.author ? guide.author[0] : 'K'}
             </div>
-            <div className="text-xs">
-              <p className="font-bold text-text-primary">{guide.author}</p>
-              <p className="text-text-secondary">Kynar Curated Guide</p>
+            <div>
+              <p className="font-ui text-sm font-medium text-kyn-slate-900">{guide.author || "Kynar Archive"}</p>
+              <p className="font-ui text-xs text-kyn-slate-400">Official Intelligence Briefing</p>
             </div>
           </div>
         </header>
 
-        {/* Content Layer: Narrative Depth */}
-        <div className="prose prose-slate prose-lg max-w-none prose-headings:font-brand prose-headings:font-bold prose-p:font-ui prose-p:leading-loose text-text-secondary">
+        <div className="prose prose-slate prose-lg max-w-none prose-headings:font-brand prose-headings:font-medium prose-p:font-ui prose-p:leading-loose text-kyn-slate-600">
           <div dangerouslySetInnerHTML={{ __html: guide.content }} />
         </div>
 
-        <footer className="mt-20 pt-12 border-t border-kyn-slate-100">
-          <Link href="/library" className="inline-flex items-center gap-2 text-sm font-bold text-text-primary hover:gap-4 transition-all">
-            <ArrowLeft size={16} />
-            Return to Library
+        <footer className="mt-24 pt-12 border-t border-border">
+          <Link href="/store" className="group inline-flex items-center gap-2 text-sm font-medium text-kyn-slate-500 hover:text-kyn-slate-900 transition-all">
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+            Return to Hub
           </Link>
         </footer>
       </div>
