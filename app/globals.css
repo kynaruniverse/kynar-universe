@@ -1,0 +1,88 @@
+/**
+ * KYNAR UNIVERSE: Global Atmosphere (v1.5)
+ * Role: CSS Variable Foundation & Root Typography.
+ * Aligned with: Design System Section 3 (Color) & Section 4 (Typography).
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base System - Warm & Intentional */
+    --canvas: 40 12% 97%;       /* #FAF9F6 */
+    --surface: 210 20% 98%;     /* #F8FAFC */
+    --border: 214 32% 91%;      /* #E2E8F0 */
+    
+    /* Text Hierarchy */
+    --text-primary: 215 25% 7%;   /* #111827 */
+    --text-secondary: 215 16% 47%; /* #64748B */
+    
+    /* Global Safe Area (for Navigation Dock) */
+    --safe-bottom: env(safe-area-inset-bottom);
+  }
+
+  .dark {
+    /* Dark Mode: "The Night Sky" */
+    --canvas: 222 47% 11%;      /* Deep Charcoal */
+    --surface: 217 32% 17%;     /* Component Surface */
+    --border: 217 32% 23%;
+    
+    --text-primary: 210 40% 98%;
+    --text-secondary: 215 20% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-canvas text-text-primary antialiased;
+    /* Design System Section 4: Functional Foundation */
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+    font-variation-settings: "opsz" 32;
+    line-height: 1.5;
+  }
+
+  /* Editorial Text Overrides (for Products/Guides) */
+  article, .prose {
+    font-size: 1.0625rem; /* 17px equivalent */
+    line-height: 1.75;
+  }
+}
+
+@layer components {
+  /* Kynar Motion: "Grounded & Intentional" (Design System 9.3) */
+  .calm-transition {
+    transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* The Universal Vessel (Design System 6.1) */
+  .kynar-card {
+    @apply calm-transition rounded-kynar border border-border shadow-kynar-soft;
+    background-color: hsl(var(--surface));
+  }
+
+  /* Interaction: Section 7.2 */
+  .button-primary {
+    @apply calm-transition bg-kyn-slate-900 text-white px-8 py-4 rounded-xl font-brand font-medium active:scale-[0.98];
+  }
+}
+
+/* Scrollbar Atmosphere: Subtle & Discreet */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-kyn-slate-200 rounded-full hover:bg-kyn-slate-300 transition-colors;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-kyn-slate-800 hover:bg-kyn-slate-700;
+}
