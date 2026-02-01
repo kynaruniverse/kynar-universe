@@ -3,12 +3,16 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   trailingSlash: false,
+
+  // Redirect rules (existing)
   async redirects() {
     return [
       { source: '/login', destination: '/auth/login', permanent: true },
       { source: '/signup', destination: '/auth/signup', permanent: true },
     ];
   },
+
+  // Image optimization (existing)
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -28,9 +32,13 @@ const nextConfig = {
       },
     ],
   },
+
+  // Experimental features (existing)
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
+
+  // Headers (existing)
   async headers() {
     return [
       {
@@ -44,6 +52,13 @@ const nextConfig = {
       },
     ];
   },
+
+  // --- ADD THIS BLOCK AT THE END ---
+  swcMinify: false,                // disable native SWC minification
+  compiler: {
+    swcLoader: false,              // force JS fallback
+  },
+  outputFileTracingRoot: __dirname, // avoid workspace root warnings
 };
 
 module.exports = nextConfig;
