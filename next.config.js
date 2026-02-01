@@ -3,27 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   trailingSlash: false,
-
-  // Disable SWC for environments like Termux/Android
-  swcMinify: false,
-
-  // 1. Redirects: Consolidating your logic from _redirects
   async redirects() {
     return [
-      {
-        source: '/login',
-        destination: '/auth/login',
-        permanent: true,
-      },
-      {
-        source: '/signup',
-        destination: '/auth/signup',
-        permanent: true,
-      },
-      // Note: /auth/callback is handled automatically by your App Router
+      { source: '/login', destination: '/auth/login', permanent: true },
+      { source: '/signup', destination: '/auth/signup', permanent: true },
     ];
   },
-
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -43,11 +28,9 @@ const nextConfig = {
       },
     ],
   },
-
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
-
   async headers() {
     return [
       {
