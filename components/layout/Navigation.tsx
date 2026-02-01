@@ -12,7 +12,7 @@ import { usePathname } from 'next/navigation';
 import { Home, Compass, Library, User, X } from 'lucide-react';
 import { clsx } from 'clsx';
 // Fixed: Relative pathing for reliable root-level resolution on Netlify
-import { createClient } from '../../lib/supabase/browser'; 
+import { createClient } from '@/lib/supabase/browser'; 
 import { Session } from '@supabase/supabase-js';
 
 export default function Navigation() {

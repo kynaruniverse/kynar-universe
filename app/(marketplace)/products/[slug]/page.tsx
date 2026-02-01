@@ -7,12 +7,12 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 // Fixed: Relative pathing for reliable root-level resolution on Netlify
-import { createClient } from "../../../../lib/supabase/server";
-import { Breadcrumbs } from "../../../../components/layout/Breadcrumbs";
-import { formatGBP, getPriceFromId } from "../../../../lib/marketplace/pricing";
-import { ProductCard } from "../../../../components/marketplace/ProductCard";
-import { AddToCartButton } from "../../../../components/marketplace/AddToCartButton";
-import { Product } from "../../../../lib/supabase/types";
+import { createClient } from "@/lib/supabase/server";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { formatGBP, getPriceFromId } from "@/lib/marketplace/pricing";
+import { ProductCard } from "@/components/marketplace/ProductCard";
+import { AddToCartButton } from "@/components/marketplace/AddToCartButton";
+import { Product } from "@/lib/supabase/types";
 import { ShieldCheck, Download, Users, Landmark } from "lucide-react";
 
 interface ProductPageProps {

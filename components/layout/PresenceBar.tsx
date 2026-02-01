@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { User, Menu } from "lucide-react";
 // Fixed: Relative pathing for reliable root-level resolution on Netlify
-import { Database } from "../../lib/supabase/types"; 
-import { createClient } from "../../lib/supabase/browser";
+import { Database } from "@/lib/supabase/types"; 
+import { createClient } from "@/lib/supabase/browser";
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 

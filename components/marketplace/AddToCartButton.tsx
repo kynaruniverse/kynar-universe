@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 // Fixed: Relative pathing and correct type source
-import { Database } from '../../lib/supabase/types';
-import { useCart } from '../../lib/cart/store';
+import { Database } from '@/lib/supabase/types';
+import { useCart } from '@/lib/cart/store';
 import { Check, ShoppingBag, Sparkles } from 'lucide-react';
 
 // Use the explicit Row type from your Supabase schema

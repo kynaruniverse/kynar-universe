@@ -3,9 +3,9 @@
  * Role: A sanctuary of ownership and permanent access.
  */
 
-import { createClient } from "../../lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { Breadcrumbs } from "../../components/layout/Breadcrumbs";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { Download, BookOpen, ShieldCheck, HelpCircle, Clock } from "lucide-react";
 import Link from 'next/link';
 import Image from 'next/image';

@@ -3,7 +3,7 @@
  * Update: Slug-based retrieval for friendlier Storage filenames.
  */
 
-import { createClient } from "../../../lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 interface DownloadParams {
