@@ -52,13 +52,4 @@ const nextConfig = {
       },
     ];
   },
-
-  // --- ADD THIS BLOCK AT THE END ---
-  swcMinify: false,                // disable native SWC minification
-  compiler: {
-    swcLoader: false,              // force JS fallback
-  },
-  outputFileTracingRoot: __dirname, // avoid workspace root warnings
-};
-
 module.exports = nextConfig;
