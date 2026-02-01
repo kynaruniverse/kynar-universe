@@ -1,18 +1,18 @@
 /**
  * KYNAR UNIVERSE: Product Deep-Dive (v1.5)
  * Role: The "Conversation" - Turning discovery into ownership.
- * Fix: Next.js 15 Async Params & Schema Alignment.
+ * Fix: TypeScript Type Casting & Next.js 15 Async Params
  */
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
-// Fixed: Relative pathing for reliable root-level resolution on Netlify
 import { createClient } from "@/lib/supabase/server";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { formatGBP, getPriceFromId } from "@/lib/marketplace/pricing";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { AddToCartButton } from "@/components/marketplace/AddToCartButton";
-import { Product } from "@/lib/supabase/types";
+// Ensure this import points to your actual Product interface
+import { Product } from "@/lib/supabase/types"; 
 import { ShieldCheck, Download, Users, Landmark } from "lucide-react";
 
 interface ProductPageProps {
@@ -20,28 +20,34 @@ interface ProductPageProps {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  // 1. Await Params (Next.js 15 Mandatory Fix)
+  // 1. Await Params (Next.js 15 Requirement)
   const { slug } = await params;
   const supabase = await createClient();
   
-  // 2. Canonical fetch using v1.5 schema
-  const { data: product } = await supabase
+  // 2. Fetch with Explicit Type Casting
+  const { data } = await supabase
     .from("products")
     .select("*")
     .eq("slug", slug)
     .single();
 
+  // Cast 'data' to 'Product' to satisfy the TypeScript compiler
+  const product = data as Product;
+
   if (!product) notFound();
 
+  // Now TypeScript knows price_id exists
   const price = getPriceFromId(product.price_id);
   
-  // 3. Discovery Loop: Related items from the same World
-  const { data: related } = await supabase
+  // 3. Discovery Loop: Related items (Casting result as Product[])
+  const { data: relatedData } = await supabase
     .from("products")
     .select("*")
     .eq("world", product.world)
     .neq("id", product.id)
     .limit(2);
+
+  const related = (relatedData as Product[]) || [];
 
   const breadcrumbPaths = [
     { label: "Hub", href: "/store" },
@@ -69,7 +75,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </h1>
           
           <p className="mt-8 font-ui text-lg text-text-secondary leading-relaxed md:text-xl max-w-2xl mx-auto">
-            {product.description_short || product.short_description}
+            {/* Fallback for different naming conventions in the DB */}
+            {product.short_description || "A grounded tool for your digital vault."}
           </p>
           
           <div className="mt-16 flex flex-col items-center gap-10">
@@ -81,7 +88,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
             
-            <AddToCartButton product={product as Product} />
+            <AddToCartButton product={product} />
             
             <div className="flex items-center gap-6 font-ui text-[11px] font-medium uppercase tracking-widest text-text-secondary">
               <span className="flex items-center gap-2">
@@ -98,11 +105,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </section>
 
-      {/* Visual Proof: The Product Vessel */}
+      {/* Visual Proof */}
       <section className="px-6 mb-24 max-w-screen-xl mx-auto">
         <div className="overflow-hidden rounded-2xl border border-border bg-surface aspect-[16/9] shadow-sm relative">
           <Image 
-            src={product.preview_image || product.image_url || "/placeholder-preview.png"} 
+            src={product.image_url || "/placeholder-preview.png"} 
             alt={`${product.title} overview`}
             fill
             className="object-cover transition-opacity duration-700"
@@ -113,7 +120,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </section>
 
       <div className="mx-auto max-w-screen-lg px-6">
-        {/* Specification Grid */}
         <div className="grid gap-16 md:grid-cols-2 mb-32 border-b border-border pb-24">
           <div className="space-y-6">
             <div className="flex items-center gap-3 text-text-primary">
@@ -121,7 +127,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <h2 className="font-brand text-2xl font-medium">The Purpose</h2>
             </div>
             <p className="font-ui text-base text-text-secondary leading-loose">
-              Built to bring clarity and permanence to your personal digital ecosystem. This tool is designed for daily return and long-term utility.
+              Built to bring clarity and permanence to your personal digital ecosystem.
             </p>
           </div>
           
@@ -131,7 +137,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <h2 className="font-brand text-2xl font-medium">Inside your Vault</h2>
             </div>
             <ul className="font-ui text-sm space-y-4">
-              {product.file_types?.map((ft: string) => (
+              {/* Handling array types safely */}
+              {(product.file_types as string[])?.map((ft) => (
                 <li key={ft} className="flex items-center gap-3 text-text-secondary">
                   <span className="flex h-7 w-7 items-center justify-center rounded bg-surface border border-border text-[9px] font-medium uppercase">
                     {ft}
@@ -139,41 +146,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <span>Native format for immediate use.</span>
                 </li>
               ))}
-              <li className="flex items-center gap-3 text-kyn-green-700 font-medium pt-2">
-                <ShieldCheck size={16} />
-                Unlimited access via your Library.
-              </li>
             </ul>
           </div>
         </div>
 
-        {/* Narrative Section: The "Conversation" */}
         <article className="max-w-2xl mx-auto">
           <h2 className="font-brand text-3xl font-medium text-text-primary mb-8 tracking-tight text-center">Development Notes</h2>
           <div 
-            className="prose prose-slate prose-lg max-w-none font-ui text-text-secondary leading-relaxed prose-headings:font-brand prose-headings:font-medium"
-            dangerouslySetInnerHTML={{ __html: product.description }} 
+            className="prose prose-slate prose-lg max-w-none font-ui text-text-secondary leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: product.description || "" }} 
           />
         </article>
-
-        {/* Trust Seal: Design System Section 1 */}
-        <div className="mt-32 rounded-3xl bg-surface border border-border p-12 text-center md:p-20">
-          <h3 className="font-brand text-2xl font-medium text-text-primary">The Kynar Promise</h3>
-          <p className="mt-6 font-ui text-base text-text-secondary max-w-md mx-auto leading-relaxed">
-            Every tool you acquire here is yours to keep. No subscriptions. No tracking. Just useful things for an organised life.
-          </p>
-          <div className="mt-10 h-1 w-12 bg-kyn-green-700 mx-auto rounded-full opacity-20" />
-        </div>
       </div>
 
-      {/* Discovery Loop */}
-      {related && related.length > 0 && (
+      {related.length > 0 && (
         <section className="mt-32 border-t border-border bg-surface/30 px-6 py-24">
           <div className="mx-auto max-w-screen-xl">
             <h2 className="font-brand text-2xl font-medium mb-12 text-text-primary text-center">Continue your Discovery</h2>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
               {related.map((r) => (
-                <ProductCard key={r.id} product={r as Product} />
+                <ProductCard key={r.id} product={r} />
               ))}
             </div>
           </div>
