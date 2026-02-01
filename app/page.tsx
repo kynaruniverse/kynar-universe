@@ -12,11 +12,15 @@ export default async function HomePage() {
   const supabase = await createClient();
   
   // Fetch a curated selection for the Discovery Loop
-  const { data: featuredProducts } = await supabase
-    .from("products")
-    .select("*")
-    .limit(3)
-    .order('created_at', { ascending: false });
+  let featuredProducts = null;
+  if (supabase) {
+    const { data } = await supabase
+      .from("products")
+      .select("*")
+      .limit(3)
+      .order('created_at', { ascending: false });
+    featuredProducts = data;
+  }
 
   return (
     <div className="flex flex-col gap-32 pb-32 animate-in fade-in duration-1000">

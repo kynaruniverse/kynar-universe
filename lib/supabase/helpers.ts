@@ -21,6 +21,8 @@ export interface FilterOptions {
  */
 export async function getUserProfile(): Promise<Profile | null> {
   const supabase = await createClient();
+  if (!supabase) return null;
+  
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) return null;
@@ -44,6 +46,7 @@ export async function getUserProfile(): Promise<Profile | null> {
  */
 export async function getFilteredProducts(options: FilterOptions): Promise<Product[]> {
   const supabase = await createClient();
+  if (!supabase) return [];
   
   // Start with a clean query
   let query = supabase
@@ -106,6 +109,8 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
  */
 export async function checkOwnership(productId: string): Promise<boolean> {
   const supabase = await createClient();
+  if (!supabase) return false;
+  
   const { data: { user } } = await supabase.auth.getUser();
   
   if (!user) return false;
