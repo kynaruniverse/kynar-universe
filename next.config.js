@@ -4,9 +4,6 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
 
-  // Disable SWC for environments like Termux/Android
-  swcMinify: false,
-
   // 1. Redirects: Consolidating your logic from _redirects
   async redirects() {
     return [
