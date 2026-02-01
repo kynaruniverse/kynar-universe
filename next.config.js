@@ -52,4 +52,6 @@ const nextConfig = {
       },
     ];
   },
+}; // <--- Added this missing closing brace
+
 module.exports = nextConfig;
