@@ -3,9 +3,13 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Product } from '@/types/supabase';
-import { useCart } from '@/lib/cart/store';
+// Fixed: Relative pathing and correct type source
+import { Database } from '../../lib/supabase/types';
+import { useCart } from '../../lib/cart/store';
 import { Check, ShoppingBag, Sparkles } from 'lucide-react';
+
+// Use the explicit Row type from your Supabase schema
+type Product = Database['public']['Tables']['products']['Row'];
 
 interface AddToCartButtonProps {
   product: Product;
@@ -34,20 +38,22 @@ export const AddToCartButton = ({ product, variant = 'primary' }: AddToCartButto
 
     addItem(product);
     setShowToast(true);
+    // Standard duration for reassurance
     setTimeout(() => setShowToast(false), 5000);
   };
 
-  // Design System Section 6.2 - Button Styling
+  // Design System Section 6.2 - Button Styling mapped to semantic variables
   const baseStyles = "relative flex items-center justify-center gap-2 calm-transition font-brand font-bold active:scale-[0.98]";
   
   const variants = {
-    primary: `${baseStyles} w-full md:w-auto md:px-12 py-4 bg-kyn-slate-900 text-white rounded-kynar shadow-kynar-soft hover:bg-kyn-slate-800`,
-    ghost: `${baseStyles} w-full py-3 border border-border bg-transparent text-kyn-slate-600 rounded-kynar hover:border-kyn-slate-300 hover:text-kyn-slate-900`
+    primary: `${baseStyles} w-full md:w-auto md:px-12 py-4 bg-text-primary text-canvas rounded-kynar shadow-kynar-soft hover:opacity-90`,
+    ghost: `${baseStyles} w-full py-3 border border-border bg-transparent text-text-secondary rounded-kynar hover:border-text-primary hover:text-text-primary`
   };
 
   return (
     <div className="relative w-full">
       <button
+        type="button"
         onClick={handleAction}
         className={variants[variant]}
       >
@@ -64,10 +70,10 @@ export const AddToCartButton = ({ product, variant = 'primary' }: AddToCartButto
         )}
       </button>
 
-      {/* Reassured Toast - Design System Section 11 */}
+      {/* Reassured Toast - Contextual feedback synchronized with Design System */}
       {showToast && (
-        <div className="fixed bottom-6 left-1/2 z-[100] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-500">
-          <div className="flex items-center justify-between gap-4 rounded-2xl bg-kyn-slate-900/95 backdrop-blur-md px-5 py-4 text-white shadow-2xl border border-white/10">
+        <div className="fixed bottom-24 left-1/2 z-[100] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-500">
+          <div className="flex items-center justify-between gap-4 rounded-2xl bg-text-primary/95 backdrop-blur-md px-5 py-4 text-canvas shadow-2xl border border-white/10">
             <div className="flex items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-kyn-green-500/20 text-kyn-green-400">
                 <Sparkles size={16} />

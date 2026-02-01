@@ -1,16 +1,15 @@
 /**
  * KYNAR UNIVERSE: Lemon Squeezy Gateway (v1.5)
  * Role: Multi-Product Handoff & Webhook Metadata Sync
- * Fix: Securely handles bulk selections while following LS API constraints.
  */
 
-import { Database } from "@/lib/supabase/types";
+// Fixed: Relative pathing for Netlify build stability
+import { Database } from "../supabase/types";
 
-// Update the Product type to match the properties we actually pass from the Checkout Page
 type Product = {
   id: string;
   title: string;
-  price_id: string;
+  price_id: string; // This corresponds to the LS Variant ID
   slug: string;
 };
 
@@ -34,6 +33,7 @@ export async function generateCheckoutUrl({
   config,
   metadata
 }: CheckoutConfig) {
+  // Server-side env vars (Ensured private on Netlify)
   const API_KEY = process.env.LEMONSQUEEZY_API_KEY;
   const STORE_ID = process.env.LEMONSQUEEZY_STORE_ID;
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kynaruniverse.com";
@@ -42,29 +42,30 @@ export async function generateCheckoutUrl({
     throw new Error("Kynar System: Payment configuration is currently unavailable.");
   }
   
-  // VALIDATION: Filter products to ensure they have a price/variant ID
   const validProducts = products.filter(p => p.price_id);
   if (validProducts.length === 0) {
     throw new Error("Your selection appears to be empty or contains invalid items.");
   }
   
-  /**
-   * NOTE ON MULTI-PRODUCT: 
-   * Lemon Squeezy v1 Checkouts handle ONE variant_id as the "anchor."
-   * We pass the first item as the charge, and use the 'product_ids' 
-   * custom attribute for the fulfillment Webhook.
-   */
+  // Hardened parsing to prevent NaN errors
+  const storeIdInt = Number(STORE_ID);
+  const variantIdInt = Number(validProducts[0].price_id);
+  
+  if (isNaN(storeIdInt) || isNaN(variantIdInt)) {
+    throw new Error("Gateway Error: Invalid Store or Product configuration.");
+  }
+  
   const payload = {
     data: {
       type: "checkouts",
       attributes: {
-        store_id: parseInt(STORE_ID),
-        variant_id: parseInt(validProducts[0].price_id),
+        store_id: storeIdInt,
+        variant_id: variantIdInt,
         checkout_data: {
           email: userEmail,
           custom: {
             user_id: userId,
-            // Combined IDs for Webhook processing
+            // These strings are vital for your Webhook to fulfill the "Selection"
             product_ids: validProducts.map((p) => p.id).join(","),
             product_slugs: validProducts.map((p) => p.slug).join(","),
             ...metadata
@@ -77,7 +78,7 @@ export async function generateCheckoutUrl({
           desc: true,
           discount_button: false,
           dark: false,
-          button_color: "#166534", // Kynar Green-800
+          button_color: "#166534",
         },
         product_options: {
           redirect_url: config?.redirectUrl || `${SITE_URL}/library?status=success`,
@@ -96,6 +97,8 @@ export async function generateCheckoutUrl({
         "Content-Type": "application/vnd.api+json",
         "Authorization": `Bearer ${API_KEY}`,
       },
+      // Next.js 15: Explicitly disable caching for checkout generation
+      cache: 'no-store',
       body: JSON.stringify(payload),
     });
     

@@ -1,11 +1,10 @@
 /**
  * KYNAR UNIVERSE: Auth & Session Middleware (v1.5)
  * Role: Edge-level session refreshing and protected route enforcement.
- * Aligned with: UX Canon Section 2 (Navigation & Trust)
  */
 
-import { createServerClient, type NextRequest } from '@supabase/ssr'
-import { NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -14,15 +13,21 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) return response
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
+          // Fixed: Syncing cookies to both request and response correctly
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           response = NextResponse.next({
             request,
@@ -35,24 +40,32 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // 1. Refresh the session (Critical for SSR 'Library' access)
+  // 1. Refresh session
   const { data: { user } } = await supabase.auth.getUser()
 
-  // 2. PROTECTED ROUTES: Enforce 'Belonging' (UX Canon Section 7)
-  const isLibraryRoute = request.nextUrl.pathname.startsWith('/library')
-  const isAccountRoute = request.nextUrl.pathname.startsWith('/account')
-  const isAuthRoute = request.nextUrl.pathname.startsWith('/auth')
+  const { pathname } = request.nextUrl
+  
+  // 2. PROTECTED ROUTES
+  const isLibraryRoute = pathname.startsWith('/library')
+  const isAccountRoute = pathname.startsWith('/account')
+  const isAuthRoute = pathname.startsWith('/auth')
+  const isApiRoute = pathname.startsWith('/api')
 
-  // If no user and trying to access private space, redirect to login
+  // Bypass middleware logic for Webhooks to prevent body-parsing interference
+  if (pathname.startsWith('/api/webhooks')) {
+    return response
+  }
+
+  // Auth Guard: Private -> Login
   if (!user && (isLibraryRoute || isAccountRoute)) {
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
-    url.searchParams.set('return_to', request.nextUrl.pathname)
+    url.searchParams.set('return_to', pathname)
     return NextResponse.redirect(url)
   }
 
-  // If user exists and trying to access login/signup, redirect to library
-  if (user && isAuthRoute) {
+  // Auth Guard: Auth -> Library (Prevent double-login)
+  if (user && isAuthRoute && !pathname.includes('logout')) {
     const url = request.nextUrl.clone()
     url.pathname = '/library'
     return NextResponse.redirect(url)
@@ -64,12 +77,9 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public (all files in public/ folder)
+     * Match all paths except static assets and public files.
+     * Hardened to ensure Edge Functions don't over-fire on images.
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|public/|assets/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }

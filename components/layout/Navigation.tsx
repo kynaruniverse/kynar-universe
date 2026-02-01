@@ -11,23 +11,32 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Compass, Library, User, X } from 'lucide-react';
 import { clsx } from 'clsx';
-import { createClient } from '@/lib/supabase/browser'; // Auth Awareness
+// Fixed: Relative pathing for reliable root-level resolution on Netlify
+import { createClient } from '../../lib/supabase/browser'; 
+import { Session } from '@supabase/supabase-js';
 
 export default function Navigation() {
   const pathname = usePathname();
   const [showWorlds, setShowWorlds] = useState(false);
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
   // Auth Hook: Determine if Library/Account should be active
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
     
+    // Initial session check
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+    
+    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const worlds = [
@@ -40,7 +49,7 @@ export default function Navigation() {
     { label: 'Universe', href: '/', icon: Home, show: true },
     { label: 'Worlds', href: '#', icon: Compass, show: true, onClick: () => setShowWorlds(!showWorlds) },
     { label: 'Library', href: '/library', icon: Library, show: !!session },
-    { label: 'Account', href: '/account/settings', icon: User, show: true }, // Kept for Login/Settings access
+    { label: 'Account', href: '/account/settings', icon: User, show: true },
   ];
 
   return (
@@ -56,8 +65,12 @@ export default function Navigation() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-6">
-              <p className="text-[11px] font-medium text-kyn-slate-400 uppercase tracking-widest font-ui">Explore the Worlds</p>
-              <button onClick={() => setShowWorlds(false)} className="text-kyn-slate-300 hover:text-kyn-slate-900 transition-colors">
+              <p className="text-[11px] font-medium text-text-secondary uppercase tracking-widest font-ui">Explore the Worlds</p>
+              <button 
+                type="button"
+                onClick={() => setShowWorlds(false)} 
+                className="text-text-secondary hover:text-text-primary transition-colors"
+              >
                 <X size={18} />
               </button>
             </div>
@@ -67,7 +80,7 @@ export default function Navigation() {
                 <Link
                   key={world.name}
                   href={world.href}
-                  className="p-5 rounded-xl flex items-center justify-between bg-surface border border-transparent hover:border-kyn-slate-200 transition-all duration-300 group"
+                  className="p-5 rounded-xl flex items-center justify-between bg-surface border border-transparent hover:border-border transition-all duration-300 group"
                   onClick={() => setShowWorlds(false)}
                 >
                   <span className={clsx("font-brand font-medium text-lg", world.color)}>
@@ -82,7 +95,7 @@ export default function Navigation() {
       )}
 
       {/* Global Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 h-20 bg-canvas/90 backdrop-blur-xl border-t border-border px-6 pb-safe">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 h-20 bg-canvas/90 backdrop-blur-xl border-t border-border px-6 pb-[var(--safe-bottom)]">
         <div className="flex items-center justify-between h-full max-w-md mx-auto">
           {navItems.filter(i => i.show).map((item) => {
             const isActive = pathname === item.href || (item.label === 'Worlds' && showWorlds);
@@ -97,12 +110,12 @@ export default function Navigation() {
                   <Icon 
                     size={22} 
                     strokeWidth={isActive ? 2 : 1.5} 
-                    className={clsx("transition-colors duration-500", isActive ? 'text-kyn-slate-900' : 'text-kyn-slate-400')} 
+                    className={clsx("transition-colors duration-500", isActive ? 'text-text-primary' : 'text-text-secondary')} 
                   />
                 </div>
                 <span className={clsx(
                   "text-[10px] font-medium font-ui transition-colors duration-500", 
-                  isActive ? 'text-kyn-slate-900' : 'text-kyn-slate-400'
+                  isActive ? 'text-text-primary' : 'text-text-secondary'
                 )}>
                   {item.label}
                 </span>
@@ -116,7 +129,11 @@ export default function Navigation() {
                     {content}
                   </Link>
                 ) : (
-                  <button onClick={item.onClick} className="w-full flex flex-col items-center gap-1 group focus:outline-none">
+                  <button 
+                    type="button"
+                    onClick={item.onClick} 
+                    className="w-full flex flex-col items-center gap-1 group focus:outline-none"
+                  >
                     {content}
                   </button>
                 )}

@@ -7,7 +7,6 @@ import { createClient } from "@/lib/supabase/server";
  * Final Alignment: TypeScript Strict Typing & Next.js 15 Async
  */
 
-// 1. Explicit Type Definition (Aligns with Supabase Inventory CSV)
 interface Product {
   id: string;
   title: string;
@@ -22,7 +21,7 @@ interface CheckoutPageProps {
 export default async function CheckoutPage({
   searchParams,
 }: CheckoutPageProps) {
-  // 2. Await SearchParams (Next.js 15 Requirement)
+  // 1. Await SearchParams (Next.js 15 Requirement)
   const params = await searchParams;
   const rawItems = params.items;
 
@@ -43,8 +42,7 @@ export default async function CheckoutPage({
     redirect("/cart");
   }
 
-  // 3. Data Fetching with Explicit Type Casting
-  // We cast the result of the query to Product[] to satisfy the compiler
+  // 2. Data Fetching
   const { data, error } = await supabase
     .from("products")
     .select("id, title, price_id, slug") 
@@ -55,6 +53,9 @@ export default async function CheckoutPage({
   if (products.length === 0 || error) {
     redirect("/cart?error=selection_not_found");
   }
+
+  // 3. Prepare Metadata for Webhook fulfillment
+  const productIdsString = products.map(p => p.id).join(',');
 
   // 4. Secure Handoff Generation
   let checkoutUrl: string | null = null;
@@ -75,6 +76,7 @@ export default async function CheckoutPage({
       },
       metadata: {
         user_id: user.id,
+        product_ids: productIdsString, // Critical for the Webhook to grant access
         context: "kynar_vault_transaction"
       }
     });
@@ -87,7 +89,7 @@ export default async function CheckoutPage({
     redirect(checkoutUrl);
   }
 
-  // Noble UI Fallback
+  // 5. Noble UI Fallback (The actual visible part)
   return (
     <main className="flex min-h-[80vh] w-full flex-col items-center justify-center px-6 text-center bg-canvas">
       <div className="max-w-xs animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">

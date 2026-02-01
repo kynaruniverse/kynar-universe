@@ -7,10 +7,11 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { PresenceBar } from "@/components/layout/PresenceBar";
-import { Footer } from "@/components/layout/Footer";
-import Navigation from "@/components/layout/Navigation"; // Sync with audited filename
-import { getUserProfile } from "@/lib/supabase/helpers";
+// Absolute pathing safety check for Netlify Linux builds
+import { PresenceBar } from "../components/layout/PresenceBar";
+import { Footer } from "../components/layout/Footer";
+import Navigation from "../components/layout/Navigation";
+import { getUserProfile } from "../lib/supabase/helpers";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ 
@@ -47,12 +48,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   // Server-side fetch for initial atmospheric state
+  // This runs on the server during request time
   const profile = await getUserProfile();
 
   return (
     <html 
       lang="en-GB" 
       className={`${inter.variable} ${jakarta.variable} scroll-smooth`}
+      suppressHydrationWarning // Recommended when using theme-based classes or extensions
     >
       <body className="flex min-h-screen flex-col font-ui bg-canvas text-text-primary antialiased selection:bg-kyn-green-100 selection:text-kyn-green-900">
         
@@ -61,9 +64,14 @@ export default async function RootLayout({
           position="top-center"
           toastOptions={{
             duration: 5000,
-            className: "border border-border rounded-xl font-brand text-sm shadow-sm p-4",
+            style: {
+              background: 'hsl(var(--surface))',
+              color: 'hsl(var(--text-primary))',
+              borderRadius: '1rem',
+              border: '1px solid hsl(var(--border))',
+            },
             success: {
-              iconTheme: { primary: '#16a34a', secondary: '#fff' },
+              iconTheme: { primary: '#4A614D', secondary: '#fff' },
             },
             error: {
               iconTheme: { primary: '#dc2626', secondary: '#fff' },

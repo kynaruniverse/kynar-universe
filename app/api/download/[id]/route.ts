@@ -1,10 +1,9 @@
 /**
  * KYNAR UNIVERSE: Secure Asset Delivery (v1.5)
- * Role: Verifies ownership and provides a temporary signed URL.
- * Update: Next.js 15 Async Params & Enhanced Error Handling.
+ * Update: Slug-based retrieval for friendlier Storage filenames.
  */
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "../../../lib/supabase/server";
 import { NextResponse } from "next/server";
 
 interface DownloadParams {
@@ -15,42 +14,44 @@ export async function GET(
   request: Request,
   { params }: DownloadParams
 ) {
-  // 1. Resolve Params & Auth (Next.js 15 Standard)
-  const resolvedParams = await params;
-  const productId = resolvedParams.id;
-  
+  const { id: productId } = await params;
   const supabase = await createClient();
+  
   const { data: { user }, error: authError } = await supabase.auth.getUser();
-
   if (!user || authError) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  // 2. Ownership Verification
-  // Verifying the link between user and product in the vault.
+  // 1. Ownership Verification + Slug Retrieval
+  // We join the products table to get the slug for the storage path
   const { data: ownership, error: ownershipError } = await supabase
     .from("user_library")
-    .select("id")
+    .select(`
+      id,
+      products ( slug )
+    `)
     .eq("user_id", user.id)
     .eq("product_id", productId)
     .single();
 
-  if (ownershipError || !ownership) {
+  if (ownershipError || !ownership || !ownership.products) {
     return new NextResponse("Forbidden: Ownership not verified", { status: 403 });
   }
 
-  // 3. Asset Retrieval
-  // Generate a signed URL for the asset in the 'vault' bucket.
+  // Extract the slug from the joined query result
+  const productSlug = (ownership.products as any).slug;
+
+  // 2. Asset Retrieval using Slug
+  // Your file in the 'vault' bucket should now be: [slug].zip
   const { data, error: storageError } = await supabase
     .storage
     .from("vault")
-    .createSignedUrl(`${productId}.zip`, 60); // 60-second window
+    .createSignedUrl(`${productSlug}.zip`, 60);
 
   if (storageError || !data?.signedUrl) {
     console.error("Vault Storage Error:", storageError);
-    return new NextResponse("Asset Unavailable: Please contact support", { status: 404 });
+    return new NextResponse("Asset Unavailable: File not found in vault.", { status: 404 });
   }
 
-  // 4. Secure Handoff: Redirect to the temporary signed URL
-  return NextResponse.redirect(data.signedUrl);
+  return NextResponse.redirect(new URL(data.signedUrl), 307);
 }

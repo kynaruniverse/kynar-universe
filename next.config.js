@@ -4,10 +4,22 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
 
-  // Localization - Business Reference Section 13 (UK-First)
-  i18n: {
-    locales: ['en-GB'],
-    defaultLocale: 'en-GB',
+  // 1. Redirects: Consolidating your logic from _redirects
+  async redirects() {
+    return [
+      {
+        source: '/login',
+        destination: '/auth/login',
+        permanent: true,
+      },
+      {
+        source: '/signup',
+        destination: '/auth/signup',
+        permanent: true,
+      },
+      // Note: /auth/callback is handled automatically by your App Router 
+      // Route Handler, so no manual redirect/rewrite is needed here.
+    ];
   },
 
   images: {
@@ -18,12 +30,16 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.supabase.co',
+        // Hardened pattern for Supabase projects
+        hostname: '*.supabase.co',
+        port: '',
         pathname: '/storage/v1/object/public/**',
       },
       {
         protocol: 'https',
         hostname: 'lemonsqueezy.imgix.net',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
@@ -51,6 +67,10 @@ const nextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
           },
         ],
       },

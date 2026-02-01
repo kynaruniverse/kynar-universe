@@ -7,8 +7,11 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Product } from '@/lib/supabase/types';
-import { getPriceFromId } from '@/lib/marketplace/pricing';
+// Fixed: Relative pathing for reliable root-level resolution on Netlify
+import { Database } from '../supabase/types';
+import { getPriceFromId } from '../marketplace/pricing';
+
+type Product = Database['public']['Tables']['products']['Row'];
 
 interface CartState {
   items: Product[];
@@ -51,7 +54,6 @@ export const useCart = create<CartState>()(
 
       getTotalPrice: () => {
         return get().items.reduce((total, item) => {
-          // Safety: Fallback to 0 if getPriceFromId returns null (v1.5 Pricing Logic)
           const price = getPriceFromId(item.price_id);
           return total + (price ?? 0);
         }, 0);
@@ -61,9 +63,9 @@ export const useCart = create<CartState>()(
     }),
     {
       name: 'kynar-vault-session-v1.5',
-      storage: createJSONStorage(() => window.localStorage),
+      // Fixed: Wrapped in a check to prevent "window is not defined" during Netlify build
+      storage: createJSONStorage(() => (typeof window !== 'undefined' ? window.localStorage : ({} as Storage))),
       onRehydrateStorage: () => (state) => {
-        // Signals that the store has successfully synced with LocalStorage
         state?.setHydrated(true);
       },
     }

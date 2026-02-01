@@ -1,23 +1,25 @@
 /**
- * KYNAR UNIVERSE: Server-Side Supabase Client
- * Role: Authentication and Data Fetching (Server Components/Actions)
+ * KYNAR UNIVERSE: Server-Side Supabase Client (v1.5)
+ * Role: Authentication and Data Fetching (Server Components/Actions/Routes)
  * High Criticality: Primary entry point for SSR data.
  */
 
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+// Fixed: Relative path for Netlify resolution
 import { Database } from './types';
 
 export async function createClient() {
   const cookieStore = await cookies();
 
-  // Validate environment variables for deployment stability
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Validate environment variables
+  // On Netlify, ensure both prefixed and non-prefixed versions are in the dashboard
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error(
-      'Missing Supabase environment variables. Ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set.'
+      'Kynar System: Missing Supabase credentials. Check Netlify Environment Variables.'
     );
   }
 
@@ -34,11 +36,11 @@ export async function createClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             );
-          } catch {
+          } catch (error) {
             /**
              * The `setAll` method was called from a Server Component.
-             * This is safely ignored because session refreshing is 
-             * managed by middleware.ts per Technical Canon.
+             * This can be ignored IF middleware.ts is properly configured 
+             * to refresh the session.
              */
           }
         },

@@ -1,18 +1,17 @@
 /**
  * KYNAR UNIVERSE: Fulfillment Engine (v1.5)
  * Role: Securely bridges Lemon Squeezy events to the Supabase Vault.
- * Hardened for: Next.js 15, Multi-product logic, and Idempotency.
  */
 
 import { createClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 import { headers } from "next/headers";
 
-// Disable static rendering for this route
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
-  // 1. Initialize Admin Client (Service Role is required for UPSERT)
+  // 1. Initialize Admin Client
+  // FIX: Using the correct variables we set in Netlify
   const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -20,17 +19,25 @@ export async function POST(req: Request) {
 
   const rawBody = await req.text();
   const headerList = await headers();
-  const signature = headerList.get("x-ls-signature") || "";
+  
+  // FIX: Lemon Squeezy uses 'x-signature'
+  const signature = headerList.get("x-signature") || "";
   const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET || "";
 
   // 2. Cryptographic Verification
-  // Timing-safe comparison prevents side-channel attacks.
+  if (!signature || !secret) {
+    return new Response("Unauthorized: Missing Credentials", { status: 401 });
+  }
+
   try {
     const hmac = crypto.createHmac("sha256", secret);
-    const digest = Buffer.from(hmac.update(rawBody).digest("hex"), "utf8");
+    const digest = hmac.update(rawBody).digest("hex");
+    
+    const digestBuffer = Buffer.from(digest, "utf8");
     const signatureBuffer = Buffer.from(signature, "utf8");
 
-    if (signatureBuffer.length !== digest.length || !crypto.timingSafeEqual(signatureBuffer, digest)) {
+    if (signatureBuffer.length !== digestBuffer.length || !crypto.timingSafeEqual(signatureBuffer, digestBuffer)) {
+      console.error("[Webhook] Signature Mismatch");
       return new Response("Unauthorized: Signature Mismatch", { status: 401 });
     }
   } catch (err) {
@@ -40,20 +47,17 @@ export async function POST(req: Request) {
   // 3. Parse and Route Event
   const payload = JSON.parse(rawBody);
   const eventName = payload.meta.event_name;
-  const customData = payload.meta.custom_data; // Captured from Checkout Gateway
+  const customData = payload.meta.custom_data;
 
-  /**
-   * EVENT: order_created
-   * This is the moment of ownership. We map the Lemon Squeezy order 
-   * back to our internal Product UUIDs.
-   */
+  // 4. Fulfillment: order_created
   if (eventName === "order_created") {
     const userId = customData.user_id;
-    const productIdsString = customData.product_ids; // Expected as comma-separated UUIDs
-    const status = payload.data.attributes.status;
+    const productIdsString = customData.product_ids;
+    // LS Status check: attributes.status
+    const orderStatus = payload.data.attributes.status;
 
-    // Acknowledge the webhook but skip fulfillment if payment is pending
-    if (status !== "paid") {
+    // Acknowledge but wait for payment success
+    if (orderStatus !== "paid") {
       return new Response("Payment Process Pending", { status: 200 });
     }
 
@@ -62,20 +66,19 @@ export async function POST(req: Request) {
       return new Response("Incomplete Metadata", { status: 400 });
     }
 
-    // 4. Fulfillment Implementation
     const productIds = productIdsString.split(",");
     
-    // Prepare library entries for bulk insertion
+    // Prepare entries for bulk insertion
     const libraryEntries = productIds.map((pid: string) => ({
       user_id: userId,
       product_id: pid.trim(),
       order_id: payload.data.id.toString(),
-      acquired_at: new Date().toISOString(),
       status: 'active',
       source: 'lemonsqueezy'
+      // acquired_at is handled by DB default (created_at)
     }));
 
-    // Perform Upsert: If user buys again or refreshes, we don't create duplicates
+    // Perform Upsert to ensure idempotency
     const { error } = await supabaseAdmin
       .from("user_library")
       .upsert(libraryEntries, { 
@@ -83,13 +86,13 @@ export async function POST(req: Request) {
       });
 
     if (error) {
-      console.error("[Webhook Error] Supabase Upsert Failed:", error);
+      console.error("[Webhook Error] Supabase Fulfillment Failed:", error);
       return new Response("Internal Fulfillment Error", { status: 500 });
     }
 
+    console.log(`[Webhook Success] Fulfilled ${productIds.length} items for User ${userId}`);
     return new Response("Fulfillment Complete", { status: 200 });
   }
 
-  // Handle other events (e.g., license_key_created, subscription_updated) as needed
   return new Response("Event Acknowledged", { status: 200 });
 }

@@ -1,5 +1,11 @@
+/**
+ * KYNAR UNIVERSE: Supabase Data Helpers (v1.5)
+ * Role: Abstraction layer for Identity, Discovery, and Ownership.
+ */
+
 import { createClient } from './server';
-import { Product, World, Profile, UserLibrary } from './types';
+import { Product, World, Profile } from './types';
+// Ensure this path is correct for your pricing logic
 import { getPriceFromId } from '../marketplace/pricing';
 
 export interface FilterOptions {
@@ -12,7 +18,6 @@ export interface FilterOptions {
 
 /**
  * IDENTITY HELPER: Fetches the grounded profile for the current user.
- * Aligned with UX Canon Section 5 (Identity).
  */
 export async function getUserProfile(): Promise<Profile | null> {
   const supabase = await createClient();
@@ -26,43 +31,55 @@ export async function getUserProfile(): Promise<Profile | null> {
     .eq('id', user.id)
     .single();
 
-  if (error) return null;
+  if (error) {
+    console.error('Profile fetch error:', error);
+    return null;
+  }
   return data as Profile;
 }
 
 /**
  * PRODUCT DISCOVERY: Fetches products with strict dimension filtering.
+ * Optimized for Postgres JSONB and Array types.
  */
 export async function getFilteredProducts(options: FilterOptions): Promise<Product[]> {
   const supabase = await createClient();
+  
+  // Start with a clean query
   let query = supabase
     .from('products')
     .select('*')
     .eq('is_published', true);
 
+  // 1. Strict Column Filtering
   if (options.world && options.world !== 'All') {
     query = query.eq('world', options.world);
   }
 
-  if (options.useCase) {
-    query = query.contains('metadata', { use_case: options.useCase });
-  }
-
+  // 2. Array Filtering: Postgres text[] syntax
   if (options.fileType) {
     query = query.contains('file_types', [options.fileType]);
   }
 
+  // 3. JSONB Metadata Filtering: use_case lookup
+  if (options.useCase) {
+    // Correct syntax for searching within a JSONB column metadata
+    query = query.contains('metadata', { use_case: options.useCase });
+  }
+
+  // Initial DB-side sort (by date)
   query = query.order('created_at', { ascending: false });
 
   const { data, error } = await query;
 
   if (error) {
-    console.error('Error fetching products:', error);
+    console.error('Discovery Error:', error);
     return [];
   }
 
   let products = (data as Product[]) || [];
 
+  // 4. Memory Filtering for Prices (Since price depends on Lemon Squeezy logic)
   if (options.priceRange) {
     products = products.filter((p) => {
       const price = getPriceFromId(p.price_id);
@@ -74,6 +91,7 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
     });
   }
 
+  // 5. Final Sort Alignment
   if (options.sort === 'price-low') {
     products.sort((a, b) => getPriceFromId(a.price_id) - getPriceFromId(b.price_id));
   } else if (options.sort === 'price-high') {
@@ -84,9 +102,7 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
 }
 
 /**
- * OWNERSHIP VALIDATION: Checks the Library for existence.
- * Aligned with UX Canon Section 7 (The Belonging Link).
- * Replaces old 'purchases' check with the streamlined UUID library check.
+ * OWNERSHIP VALIDATION: The "Belonging Link"
  */
 export async function checkOwnership(productId: string): Promise<boolean> {
   const supabase = await createClient();
@@ -94,13 +110,16 @@ export async function checkOwnership(productId: string): Promise<boolean> {
   
   if (!user) return false;
 
-  // We check user_library directly. If a row exists, they own it.
   const { data, error } = await supabase
     .from('user_library')
     .select('id')
     .eq('user_id', user.id)
     .eq('product_id', productId)
     .maybeSingle();
+
+  if (error && error.code !== 'PGRST116') { // PGRST116 is just 'no rows found'
+    console.error('Ownership check error:', error);
+  }
 
   return !!data;
 }
