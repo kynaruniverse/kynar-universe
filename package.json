@@ -8,9 +8,9 @@
     "node": ">=18.18.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build && next lint",
-    "start": "next start",
+    "dev": "NEXT_DISABLE_SWC=true next dev",
+    "build": "NEXT_DISABLE_SWC=true next build",
+    "start": "NEXT_DISABLE_SWC=true next start",
     "lint": "next lint",
     "types:generate": "supabase gen types typescript --local > lib/supabase/types.ts"
   },

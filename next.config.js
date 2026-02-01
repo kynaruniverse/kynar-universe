@@ -4,6 +4,9 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
 
+  // Disable SWC for environments like Termux/Android
+  swcMinify: false,
+
   // 1. Redirects: Consolidating your logic from _redirects
   async redirects() {
     return [
@@ -17,20 +20,17 @@ const nextConfig = {
         destination: '/auth/signup',
         permanent: true,
       },
-      // Note: /auth/callback is handled automatically by your App Router 
-      // Route Handler, so no manual redirect/rewrite is needed here.
+      // Note: /auth/callback is handled automatically by your App Router
     ];
   },
 
   images: {
-    // Mobile-First Optimization - Design System Section 14
     deviceSizes: [320, 420, 768, 1024, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
-        // Hardened pattern for Supabase projects
         hostname: '*.supabase.co',
         port: '',
         pathname: '/storage/v1/object/public/**',
@@ -44,13 +44,10 @@ const nextConfig = {
     ],
   },
 
-  // Technical Canon Section 8: Performance & Reliability
   experimental: {
-    // Optimizes package imports for faster mobile loads
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
 
-  // Security Headers for Trust and Privacy
   async headers() {
     return [
       {
@@ -64,10 +61,6 @@ const nextConfig = {
       },
     ];
   },
-
-  // **TERMUX / ANDROID PATCH**
-  // Force Next.js to skip SWC (use JS/Babel compilation)
-  swcMinify: false,
 };
 
 module.exports = nextConfig;
