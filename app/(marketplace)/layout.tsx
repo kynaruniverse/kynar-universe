@@ -33,7 +33,7 @@ export default function MarketplaceLayout({ children }: MarketplaceLayoutProps) 
             <Breadcrumbs 
               paths={[
                 { label: "Universe Hub", href: "/" },
-                { label: "Marketplace", href: "/store", colorClass: "text-kyn-slate-900" }
+                { label: "Marketplace", href: "/store" }
               ]} 
             />
           </div>
