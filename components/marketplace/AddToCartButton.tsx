@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { Check, ShoppingBag, Sparkles, Loader2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/lib/marketplace/cart-store';
-import { confetti } from '@/lib/utils/confetti';
+import { triggerCelebration } from '@/lib/utils/confetti'; // Resolved Build Error
 import { Database } from '@/lib/supabase/types';
 
 type Product = Database['public']['Tables']['products']['Row'];
@@ -62,14 +62,12 @@ export const AddToCartButton = ({
     
     addItem(product);
     
-    // 2. Micro-Celebration: High-performance canvas confetti
-    confetti({
-      particleCount: 15,
-      spread: 50,
-      origin: { y: 0.85, x: 0.5 }, // Fires from the bottom-center thumb area
-      colors: ['#166534', '#14532d', '#ffffff'],
-      ticks: 150,
-      gravity: 1.2
+    // 2. Micro-Celebration: High-performance async trigger
+    // Awaiting this is optional, but it ensures the logic sequence is noble.
+    await triggerCelebration({
+      particleCount: 25,
+      spread: 60,
+      origin: { y: 0.85, x: 0.5 }, // Fires from the mobile thumb-zone
     });
 
     setIsAdding(false);
@@ -128,13 +126,13 @@ export const AddToCartButton = ({
           role="status"
         >
           <div className="flex items-center justify-between gap-4 rounded-3xl bg-kyn-slate-900/95 backdrop-blur-xl p-4 text-white shadow-2xl border border-white/10">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 overflow-hidden">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-kyn-green-500/20 text-kyn-green-400">
                 <Sparkles size={20} />
               </div>
               <div className="overflow-hidden">
-                <p className="font-brand text-xs font-bold uppercase tracking-widest text-white">Registry Updated</p>
-                <p className="font-ui text-xs text-kyn-slate-300 mt-1 truncate">
+                <p className="font-brand text-[10px] font-black uppercase tracking-[0.2em] text-white">Registry Updated</p>
+                <p className="font-ui text-xs text-kyn-slate-300 mt-0.5 truncate pr-2">
                   {product.title}
                 </p>
               </div>
@@ -142,7 +140,7 @@ export const AddToCartButton = ({
             
             <Link 
               href="/cart"
-              className="flex items-center gap-1.5 pl-5 py-2 border-l border-white/10 font-brand text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-kyn-green-400 transition-colors"
+              className="flex items-center gap-1.5 pl-5 py-2 border-l border-white/10 font-brand text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-kyn-green-400 transition-colors shrink-0"
             >
               Review
               <ArrowRight size={14} />

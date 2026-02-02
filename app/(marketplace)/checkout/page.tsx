@@ -1,16 +1,20 @@
 /**
- * KYNAR UNIVERSE: Secure Checkout Gateway (v1.5)
+ * KYNAR UNIVERSE: Secure Checkout Gateway (v1.6)
  * Role: Server-side validation and payment handoff.
- * Logic: Validates user session -> Fetches DB-truth for prices -> Generates LS URL.
+ * Logic: Next.js 15 Async Params -> DB Verification -> LS URL Generation.
  */
 
 import { redirect } from "next/navigation";
 import { generateCheckoutUrl } from "@/lib/lemon-squeezy/checkout";
 import { createClient } from "@/lib/supabase/server";
-import { Database } from "@/lib/supabase/types";
 
-// Explicitly use the canonical Product row type
-type Product = Database['public']['Tables']['products']['Row'];
+// 1. Explicitly define what a verified product looks like for the gateway logic
+interface VerifiedProduct {
+  id: string;
+  title: string;
+  price_id: string;
+  slug: string;
+}
 
 interface CheckoutPageProps {
   searchParams: Promise<{ items?: string }>;
@@ -24,8 +28,6 @@ export default async function CheckoutPage({
   const rawItems = params.items;
 
   const supabase = await createClient();
-  if (!supabase) redirect("/cart?error=system_error");
-
   const { data: { user } } = await supabase.auth.getUser();
 
   // 2. Identity Guard: Ensure user is grounded before transaction
@@ -38,19 +40,22 @@ export default async function CheckoutPage({
 
   let productIds: string[] = [];
   try {
-    // Selection is passed as a URI-encoded JSON array of IDs
     productIds = JSON.parse(decodeURIComponent(rawItems));
   } catch (e) {
     console.error("Selection Parse Error:", e);
     redirect("/cart?error=invalid_selection");
   }
 
-  // 4. Verification: Fetch fresh DB state to prevent price/slug manipulation
-  const { data: verifiedProducts, error } = await supabase
+  // 4. Verification: Explicitly type the result to avoid 'never' error
+  // Fresh DB state prevents price/slug manipulation
+  const { data: verifiedData, error } = await supabase
     .from("products")
     .select("id, title, price_id, slug") 
     .in("id", productIds)
     .eq("is_published", true);
+
+  // Cast verifiedData to our interface so .map() has context
+  const verifiedProducts = verifiedData as VerifiedProduct[] | null;
 
   if (error || !verifiedProducts || verifiedProducts.length === 0) {
     redirect("/cart?error=selection_not_found");
@@ -60,7 +65,6 @@ export default async function CheckoutPage({
   let checkoutUrl: string | null = null;
   
   try {
-    // We map the verified DB data, NOT the client-side data
     checkoutUrl = await generateCheckoutUrl({
       products: verifiedProducts.map((p) => ({
         id: p.id,
@@ -73,14 +77,12 @@ export default async function CheckoutPage({
       config: {
         currency: 'GBP',
         receiptButtonText: 'Open My Library',
-        // Next.js 15 Site URL resolution
         redirectUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/checkout/success`,
       },
       metadata: {
         user_id: user.id,
-        // Critical: Comma-separated IDs for the fulfillment webhook logic
         product_ids: verifiedProducts.map(p => p.id).join(','),
-        transaction_context: "kynar_vault_acquisition_v1.5"
+        transaction_context: "kynar_vault_acquisition_v1.6"
       }
     });
   } catch (err) {
@@ -94,32 +96,32 @@ export default async function CheckoutPage({
   }
 
   /**
-   * FALLBACK UI: "The Waiting Room"
-   * Displayed only during the brief redirect latency.
-   * Aligned with Design System: Section 11 (Atmospheric Motion).
+   * FALLBACK UI: "The Vault Gate"
+   * Displayed during the brief redirect latency.
    */
   return (
-    <main className="flex min-h-[85vh] w-full flex-col items-center justify-center px-gutter bg-canvas">
+    <main className="flex min-h-[85vh] w-full flex-col items-center justify-center px-gutter bg-canvas text-center">
       <div className="max-w-xs animate-in fade-in slide-in-from-bottom-8 duration-1000">
-        <div className="mx-auto mb-10 flex h-16 w-16 items-center justify-center rounded-full border border-border bg-surface shadow-kynar-soft">
-          <div className="relative flex h-3 w-3">
+        {/* Pulsing Status Indicator */}
+        <div className="mx-auto mb-10 flex h-20 w-20 items-center justify-center rounded-3xl border border-kyn-slate-50 bg-white shadow-kynar-soft">
+          <div className="relative flex h-4 w-4">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-kyn-green-400 opacity-75"></span>
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-kyn-green-500"></span>
+            <span className="relative inline-flex h-4 w-4 rounded-full bg-kyn-green-500"></span>
           </div>
         </div>
         
-        <h1 className="font-brand text-2xl font-bold tracking-tight text-text-primary">
-          Opening the Vault
+        <h1 className="font-brand text-2xl font-bold tracking-tight text-kyn-slate-900">
+          Preparing Acquisition
         </h1>
         
-        <p className="mt-4 font-ui text-sm leading-relaxed text-text-secondary">
-          Preparing secure permanent access for your digital selection. 
-          Redirecting to the Kynar payment gateway...
+        <p className="mt-4 font-ui text-sm leading-relaxed text-kyn-slate-400">
+          Initializing secure checkout for your vault selection. Please do not refresh.
         </p>
         
+        {/* Custom Progress Bar - Mobile Optimized */}
         <div className="mt-12 flex justify-center">
-          <div className="h-1 w-24 overflow-hidden rounded-full bg-border">
-            <div className="h-full w-full origin-left animate-[loading-bar_2s_infinite_ease-in-out] bg-kyn-green-500" />
+          <div className="h-1 w-32 overflow-hidden rounded-full bg-kyn-slate-100">
+            <div className="h-full w-full origin-left animate-pulse bg-kyn-green-500" />
           </div>
         </div>
       </div>
