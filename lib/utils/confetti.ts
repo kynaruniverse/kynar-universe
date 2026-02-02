@@ -7,7 +7,7 @@
 interface ConfettiOptions {
   particleCount?: number;
   spread?: number;
-  origin?: { x: number; y: number };
+  origin?: { x?: number; y?: number };
   colors?: string[];
   ticks?: number;
 }

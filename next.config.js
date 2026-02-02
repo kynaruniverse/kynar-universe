@@ -3,9 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   trailingSlash: false,
-  
-  // Ensures compatibility with SPCK's limited memory during local previews
-  swcMinify: true, 
 
   async redirects() {
     return [
