@@ -4,18 +4,13 @@
  */
 
 import Link from "next/link";
-import { ShieldCheck, ArrowRight, Library } from "lucide-react";
-import { triggerCelebration } from "@/lib/utils/confetti";
+import { ShieldCheck, Library } from "lucide-react";
+import { CelebrationTrigger } from "@/components/marketplace/CelebrationTrigger";
 
-export default async function CheckoutSuccessPage() {
-  
-  // Logic to trigger on the client side
-  // Note: Since this is a Server Component, we wrap the celebration 
-  // in a client-side wrapper or use a small "CelebrationTrigger" component.
-
+export default function CheckoutSuccessPage() {
   return (
     <main className="min-h-[90vh] flex flex-col items-center justify-center bg-canvas px-gutter">
-      {/* Client-side celebration logic should be called in a 'use client' child */}
+      {/* This runs on the client once the page mounts */}
       <CelebrationTrigger />
 
       <div className="max-w-md w-full text-center space-y-8 animate-in fade-in slide-in-from-bottom-10 duration-1000">
@@ -46,23 +41,4 @@ export default async function CheckoutSuccessPage() {
       </div>
     </main>
   );
-}
-
-/**
- * Tactical Client Component to trigger confetti on mount
- */
-"use client";
-import { useEffect } from "react";
-
-function CelebrationTrigger() {
-  useEffect(() => {
-    // Providing both x and y to be extra safe for the current TS definition
-    triggerCelebration({
-      particleCount: 80,
-      spread: 100,
-      origin: { x: 0.5, y: 0.6 } 
-    });
-  }, []);
-  
-  return null;
 }
