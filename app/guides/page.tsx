@@ -10,7 +10,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { Compass, Clock, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import type { Guide } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
   title: "Briefings | Kynar Universe Intelligence",
@@ -19,22 +19,23 @@ export const metadata: Metadata = {
 
 export default async function GuidesPage() {
   const supabase = await createClient();
-
-  // 1. Data Acquisition: Sorting by newest first for a "Fresh" briefing feel
+  
+  // Typed fetch — prevents `never`
   const { data: guides, error } = await supabase
     .from("guides")
     .select("*")
-    .order("created_at", { ascending: false });
-
+    .order("created_at", { ascending: false })
+    .returns < Guide[] > ();
+  
   const breadcrumbPaths = [
     { label: "Universe", href: "/" },
-    { label: "Briefings", href: "/guides", colorClass: "text-kyn-slate-900" }
+    { label: "Briefings", href: "/guides", colorClass: "text-kyn-slate-900" },
   ];
-
+  
   if (error) {
     console.error("[Briefings] Fetch failure:", error.message);
   }
-
+  
   return (
     <main className="min-h-screen bg-canvas pb-32">
       {/* Handrail: Navigation */}
@@ -59,7 +60,7 @@ export default async function GuidesPage() {
         {guides && guides.length > 0 ? (
           <div className="grid grid-cols-1 gap-y-10 md:grid-cols-2 md:gap-x-12 lg:grid-cols-3">
             {guides.map((guide, index) => (
-              <Link 
+              <Link
                 key={guide.id}
                 href={`/guides/${guide.slug}`}
                 className="group flex flex-col animate-in fade-in slide-in-from-bottom-6 duration-1000 fill-mode-both"
@@ -68,9 +69,13 @@ export default async function GuidesPage() {
                 {/* Visual Anchor */}
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl bg-surface border border-kyn-slate-100 transition-all duration-500 group-hover:shadow-kynar-soft group-hover:border-kyn-slate-200">
                   <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-kyn-slate-50 to-white text-kyn-slate-200">
-                    <Compass size={48} strokeWidth={1} className="transition-transform duration-700 group-hover:rotate-12 group-hover:scale-110" />
+                    <Compass
+                      size={48}
+                      strokeWidth={1}
+                      className="transition-transform duration-700 group-hover:rotate-12 group-hover:scale-110"
+                    />
                   </div>
-                  
+
                   {/* Category Badge */}
                   <div className="absolute left-4 top-4 rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-kyn-slate-900 shadow-sm">
                     {guide.category}
@@ -82,23 +87,32 @@ export default async function GuidesPage() {
                   <div className="flex items-center gap-3 font-ui text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
                     <span className="flex items-center gap-1">
                       <Clock size={12} className="text-kyn-green-600" />
-                      {guide.read_time_minutes || 5} Min Read
+                      {guide.read_time_minutes ?? 5} Min Read
                     </span>
                     <span>•</span>
-                    <span>{new Date(guide.created_at).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</span>
+                    <span>
+                      {new Date(guide.created_at).toLocaleDateString("en-GB", {
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
                   </div>
 
                   <h3 className="mt-3 font-brand text-xl font-bold text-kyn-slate-900 group-hover:text-black transition-colors">
                     {guide.title}
                   </h3>
-                  
+
                   <p className="mt-3 font-ui text-sm leading-relaxed text-text-secondary line-clamp-2">
-                    {guide.excerpt || "Technical briefing and narrative exploration regarding this sector of the Kynar Universe."}
+                    {guide.excerpt ??
+                      "Technical briefing and narrative exploration regarding this sector of the Kynar Universe."}
                   </p>
 
                   <div className="mt-auto pt-6 flex items-center gap-2 font-brand text-xs font-bold uppercase tracking-widest text-kyn-slate-900">
                     Explore Briefing
-                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    <ArrowRight
+                      size={14}
+                      className="transition-transform group-hover:translate-x-1"
+                    />
                   </div>
                 </div>
               </Link>
@@ -110,8 +124,12 @@ export default async function GuidesPage() {
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-kyn-slate-50 text-kyn-slate-300">
               <Compass size={32} />
             </div>
-            <p className="mt-6 font-brand text-sm font-bold text-kyn-slate-900">Archive Currently Indexing</p>
-            <p className="mt-2 font-ui text-xs text-kyn-slate-400">Briefings will appear here as they are cleared for release.</p>
+            <p className="mt-6 font-brand text-sm font-bold text-kyn-slate-900">
+              Archive Currently Indexing
+            </p>
+            <p className="mt-2 font-ui text-xs text-kyn-slate-400">
+              Briefings will appear here as they are cleared for release.
+            </p>
           </div>
         )}
       </section>

@@ -5,7 +5,8 @@
   "description": "Kynar Universe: A calm, mobile-first digital ecosystem.",
   "author": "Kynar Universe (UK)",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.10.0",
+    "npm": ">=10.0.0"
   },
   "scripts": {
     "dev": "next dev",

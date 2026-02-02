@@ -12,9 +12,10 @@ const nextConfig = {
   },
 
   images: {
+    // Optimized for mobile-first/low-bandwidth scenarios
     deviceSizes: [320, 420, 768, 1024, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    formats: ['image/avif', 'image/webp'],
+    formats: ['image/webp', 'image/avif'], 
     remotePatterns: [
       {
         protocol: 'https',
@@ -30,9 +31,13 @@ const nextConfig = {
   },
 
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    // Next 15 specific optimization
+    optimizePackageImports: ['lucide-react', 'framer-motion', 'zustand', 'date-fns'],
   },
 
+  // Headers moved to Netlify.toml for global edge consistency 
+  // or kept here for local dev consistency. 
+  // recommendation: Keep application-specific logic here.
   async headers() {
     return [
       {
@@ -42,6 +47,8 @@ const nextConfig = {
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // Permissions Policy for mobile hardware privacy
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' }
         ],
       },
     ];

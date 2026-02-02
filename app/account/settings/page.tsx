@@ -1,33 +1,42 @@
 /**
- * KYNAR UNIVERSE: Account Workshop (v1.5)
- * Role: A grounded space for identity and security maintenance.
- * Security: Middleware-enforced (Silent Guard).
- * Refactor: Aligned with Canonical Schema & Mobile-First UX.
+ * KYNAR UNIVERSE: Account Workshop (v2.0)
+ * TypeScript fixes applied.
  */
 
 import { createClient } from "@/lib/supabase/server";
 import { SettingsForm } from "@/components/account/SettingsForm";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
-import { ShieldCheck, Mail, Info } from "lucide-react";
+import { ShieldCheck, Info } from "lucide-react";
+import { User, Profile } from "@/lib/supabase/types";
 
 export default async function SettingsPage() {
   const supabase = await createClient();
   
-  // Middleware handles the redirect; we assume session exists here.
-  const { data: { user } } = await supabase.auth.getUser();
-
-  // Profile Retrieval: Aligned with Database['public']['Tables']['profiles']['Row']
-  const { data: profile } = await supabase
-    .from("profiles")
+  // 1. Get the authenticated user
+  const { data: authData } = await supabase.auth.getUser();
+  const user: User | null = authData.user ?? null;
+  
+  if (!user) return null; // no session
+  
+  // 2. Fetch the profile
+  const { data: profileData } = await supabase
+    .from < Profile > ("profiles")
     .select("id, email, full_name, is_admin")
-    .eq("id", user?.id)
+    .eq("id", user.id)
     .single();
-
+  
+  const profile: Profile = profileData ?? {
+    id: user.id,
+    email: user.email ?? "",
+    full_name: "",
+    is_admin: false,
+  };
+  
   const breadcrumbPaths = [
-    { label: 'Library', href: '/library' },
-    { label: 'Settings', href: '/account/settings' }
+    { label: "Library", href: "/library" },
+    { label: "Settings", href: "/account/settings" },
   ];
-
+  
   return (
     <main className="mx-auto max-w-2xl pb-32 animate-in fade-in duration-700 ease-out">
       {/* Handrail Layer: UX Canon 2.2 */}
@@ -35,7 +44,7 @@ export default async function SettingsPage() {
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>
 
-      {/* Header: Design System Section 4 */}
+      {/* Header */}
       <header className="px-gutter py-12 md:py-20">
         <h1 className="font-brand text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
           Account Settings
@@ -45,21 +54,13 @@ export default async function SettingsPage() {
         </p>
       </header>
 
-      {/* Workshop Form: Design System Section 13 */}
+      {/* Settings Form */}
       <section className="px-gutter">
         <div className="rounded-2xl border border-border bg-surface p-6 md:p-8 shadow-kynar-soft">
-          <SettingsForm 
-            user={user!} 
-            profile={profile || { 
-              id: user?.id || '', 
-              email: user?.email || '', 
-              full_name: '', 
-              is_admin: false 
-            }} 
-          />
+          <SettingsForm user={user} profile={profile} />
         </div>
-        
-        {/* Support Reassurance: Business Reference Section 19 */}
+
+        {/* Support Info */}
         <div className="mt-12 border-t border-border pt-8 text-center">
           <div className="flex justify-center mb-4 text-kyn-slate-300">
             <ShieldCheck size={20} strokeWidth={1.5} />
@@ -70,8 +71,8 @@ export default async function SettingsPage() {
           <p className="mt-3 font-ui text-xs text-text-secondary leading-relaxed max-w-xs mx-auto">
             For data migration or permanent account closure, please reach out to our human support team.
           </p>
-          <a 
-            href="mailto:support@kynaruniverse.com" 
+          <a
+            href="mailto:support@kynaruniverse.com"
             className="mt-4 inline-block font-brand text-sm font-bold text-kyn-slate-900 underline underline-offset-4 decoration-border hover:decoration-kyn-caramel-300 transition-colors"
           >
             support@kynaruniverse.com
@@ -79,7 +80,7 @@ export default async function SettingsPage() {
         </div>
       </section>
 
-      {/* Security Context Tip */}
+      {/* Security Context */}
       <section className="mt-12 px-gutter">
         <div className="flex gap-4 p-5 rounded-xl bg-kyn-green-50/50 border border-kyn-green-100">
           <div className="shrink-0 text-kyn-green-600">

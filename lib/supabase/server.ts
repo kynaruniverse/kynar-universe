@@ -1,7 +1,3 @@
-/**
- * KYNAR UNIVERSE: Server-Side Supabase Client (v1.5)
- */
-
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { Database } from './types';
@@ -9,6 +5,7 @@ import { Database } from './types';
 export async function createClient() {
   const cookieStore = await cookies();
 
+  // Unified environment check for Netlify/Local
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
@@ -26,7 +23,7 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             );
           } catch (error) {
-            // This can be ignored if middleware is handling session refresh
+            // Safe to ignore in Server Components where headers are read-only
           }
         },
       },
