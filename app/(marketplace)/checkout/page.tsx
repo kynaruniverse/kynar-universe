@@ -1,18 +1,16 @@
+/**
+ * KYNAR UNIVERSE: Secure Checkout Gateway (v1.5)
+ * Role: Server-side validation and payment handoff.
+ * Logic: Validates user session -> Fetches DB-truth for prices -> Generates LS URL.
+ */
+
 import { redirect } from "next/navigation";
 import { generateCheckoutUrl } from "@/lib/lemon-squeezy/checkout";
 import { createClient } from "@/lib/supabase/server";
+import { Database } from "@/lib/supabase/types";
 
-/**
- * KYNAR UNIVERSE: Checkout Gateway (v1.5)
- * Final Alignment: TypeScript Strict Typing & Next.js 15 Async
- */
-
-interface Product {
-  id: string;
-  title: string;
-  price_id: string;
-  slug: string;
-}
+// Explicitly use the canonical Product row type
+type Product = Database['public']['Tables']['products']['Row'];
 
 interface CheckoutPageProps {
   searchParams: Promise<{ items?: string }>;
@@ -21,47 +19,50 @@ interface CheckoutPageProps {
 export default async function CheckoutPage({
   searchParams,
 }: CheckoutPageProps) {
-  // 1. Await SearchParams (Next.js 15 Requirement)
+  // 1. Resolve Next.js 15 Async SearchParams
   const params = await searchParams;
   const rawItems = params.items;
 
   const supabase = await createClient();
+  if (!supabase) redirect("/cart?error=system_error");
+
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Identity Guard
+  // 2. Identity Guard: Ensure user is grounded before transaction
   if (!user) {
     redirect("/auth/login?return_to=/cart");
   }
 
+  // 3. Validation: Ensure selection exists
   if (!rawItems) redirect("/cart");
 
   let productIds: string[] = [];
   try {
+    // Selection is passed as a URI-encoded JSON array of IDs
     productIds = JSON.parse(decodeURIComponent(rawItems));
-  } catch {
-    redirect("/cart");
+  } catch (e) {
+    console.error("Selection Parse Error:", e);
+    redirect("/cart?error=invalid_selection");
   }
 
-  // 2. Data Fetching
-  const { data, error } = await supabase
+  // 4. Verification: Fetch fresh DB state to prevent price/slug manipulation
+  const { data: verifiedProducts, error } = await supabase
     .from("products")
     .select("id, title, price_id, slug") 
-    .in("id", productIds);
+    .in("id", productIds)
+    .eq("is_published", true);
 
-  const products = (data as Product[]) || [];
-
-  if (products.length === 0 || error) {
+  if (error || !verifiedProducts || verifiedProducts.length === 0) {
     redirect("/cart?error=selection_not_found");
   }
 
-  // 3. Prepare Metadata for Webhook fulfillment
-  const productIdsString = products.map(p => p.id).join(',');
-
-  // 4. Secure Handoff Generation
+  // 5. Secure Handoff Generation
   let checkoutUrl: string | null = null;
+  
   try {
+    // We map the verified DB data, NOT the client-side data
     checkoutUrl = await generateCheckoutUrl({
-      products: products.map((p: Product) => ({
+      products: verifiedProducts.map((p) => ({
         id: p.id,
         title: p.title, 
         price_id: p.price_id,
@@ -72,36 +73,55 @@ export default async function CheckoutPage({
       config: {
         currency: 'GBP',
         receiptButtonText: 'Open My Library',
+        // Next.js 15 Site URL resolution
         redirectUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/checkout/success`,
       },
       metadata: {
         user_id: user.id,
-        product_ids: productIdsString, // Critical for the Webhook to grant access
-        context: "kynar_vault_transaction"
+        // Critical: Comma-separated IDs for the fulfillment webhook logic
+        product_ids: verifiedProducts.map(p => p.id).join(','),
+        transaction_context: "kynar_vault_acquisition_v1.5"
       }
     });
   } catch (err) {
-    console.error("Checkout Handoff Error:", err);
-    redirect("/cart?error=checkout_failed");
+    console.error("Gateway Handoff Failed:", err);
+    redirect("/cart?error=checkout_init_failed");
   }
 
+  // 6. Final Execution
   if (checkoutUrl) {
     redirect(checkoutUrl);
   }
 
-  // 5. Noble UI Fallback (The actual visible part)
+  /**
+   * FALLBACK UI: "The Waiting Room"
+   * Displayed only during the brief redirect latency.
+   * Aligned with Design System: Section 11 (Atmospheric Motion).
+   */
   return (
-    <main className="flex min-h-[80vh] w-full flex-col items-center justify-center px-6 text-center bg-canvas">
-      <div className="max-w-xs animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
-        <div className="mx-auto mb-8 h-12 w-12 rounded-full border border-border bg-surface flex items-center justify-center">
-          <div className="h-2 w-2 animate-ping rounded-full bg-kyn-green-500" />
+    <main className="flex min-h-[85vh] w-full flex-col items-center justify-center px-gutter bg-canvas">
+      <div className="max-w-xs animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <div className="mx-auto mb-10 flex h-16 w-16 items-center justify-center rounded-full border border-border bg-surface shadow-kynar-soft">
+          <div className="relative flex h-3 w-3">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-kyn-green-400 opacity-75"></span>
+            <span className="relative inline-flex h-3 w-3 rounded-full bg-kyn-green-500"></span>
+          </div>
         </div>
-        <h1 className="font-brand text-xl font-medium tracking-tight text-kyn-slate-900">
-          Securing Selection
+        
+        <h1 className="font-brand text-2xl font-bold tracking-tight text-text-primary">
+          Opening the Vault
         </h1>
-        <p className="mt-3 font-ui text-sm leading-relaxed text-kyn-slate-500">
-          Preparing permanent access to your vault. Redirecting to secure gateway.
+        
+        <p className="mt-4 font-ui text-sm leading-relaxed text-text-secondary">
+          Preparing secure permanent access for your digital selection. 
+          Redirecting to the Kynar payment gateway...
         </p>
+        
+        <div className="mt-12 flex justify-center">
+          <div className="h-1 w-24 overflow-hidden rounded-full bg-border">
+            <div className="h-full w-full origin-left animate-[loading-bar_2s_infinite_ease-in-out] bg-kyn-green-500" />
+          </div>
+        </div>
       </div>
     </main>
   );

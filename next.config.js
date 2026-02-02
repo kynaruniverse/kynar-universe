@@ -3,8 +3,10 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   trailingSlash: false,
+  
+  // Ensures compatibility with SPCK's limited memory during local previews
+  swcMinify: true, 
 
-  // Redirect rules (existing)
   async redirects() {
     return [
       { source: '/login', destination: '/auth/login', permanent: true },
@@ -12,7 +14,6 @@ const nextConfig = {
     ];
   },
 
-  // Image optimization (existing)
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -21,24 +22,20 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '*.supabase.co',
-        port: '',
         pathname: '/storage/v1/object/public/**',
       },
       {
         protocol: 'https',
         hostname: 'lemonsqueezy.imgix.net',
-        port: '',
         pathname: '/**',
       },
     ],
   },
 
-  // Experimental features (existing)
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
 
-  // Headers (existing)
   async headers() {
     return [
       {
@@ -52,6 +49,6 @@ const nextConfig = {
       },
     ];
   },
-}; // <--- Added this missing closing brace
+};
 
 module.exports = nextConfig;

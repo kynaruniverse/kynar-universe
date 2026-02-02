@@ -1,6 +1,8 @@
 /**
- * KYNAR UNIVERSE: Secure Asset Delivery (v1.5)
- * Update: Slug-based retrieval for friendlier Storage filenames.
+ * KYNAR UNIVERSE: Secure Asset Delivery (v1.6)
+ * Role: Ownership verification and Vault redirection.
+ * Logic: Product ID -> Ownership Check -> Slug-based Signed URL.
+ * Environment: Next.js 15 Server Route.
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -10,48 +12,64 @@ interface DownloadParams {
   params: Promise<{ id: string }>;
 }
 
+// Interface for the joined query result to ensure build safety
+interface OwnershipResult {
+  products: {
+    slug: string;
+  } | null;
+}
+
 export async function GET(
   request: Request,
   { params }: DownloadParams
 ) {
+  // 1. Next.js 15: Await dynamic route parameters
   const { id: productId } = await params;
   const supabase = await createClient();
   
+  // 2. Identity Verification
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (!user || authError) {
-    return new NextResponse("Unauthorized", { status: 401 });
+    return new NextResponse("Identity not verified. Please sign in.", { status: 401 });
   }
 
-  // 1. Ownership Verification + Slug Retrieval
-  // We join the products table to get the slug for the storage path
-  const { data: ownership, error: ownershipError } = await supabase
+  // 3. Ownership Verification & Path Resolution
+  // We perform a relational check to ensure the user owns the asset and retrieve the slug
+  const { data, error: ownershipError } = await supabase
     .from("user_library")
     .select(`
-      id,
-      products ( slug )
+      products (
+        slug
+      )
     `)
     .eq("user_id", user.id)
     .eq("product_id", productId)
     .single();
 
-  if (ownershipError || !ownership || !ownership.products) {
-    return new NextResponse("Forbidden: Ownership not verified", { status: 403 });
+  const ownership = data as unknown as OwnershipResult;
+
+  if (ownershipError || !ownership?.products?.slug) {
+    console.warn(`[Vault] Unauthorized access attempt: User ${user.id} -> Product ${productId}`);
+    return new NextResponse("Forbidden: This asset is not registered to your vault.", { status: 403 });
   }
 
-  // Extract the slug from the joined query result
-  const productSlug = (ownership.products as any).slug;
+  const productSlug = ownership.products.slug;
 
-  // 2. Asset Retrieval using Slug
-  // Your file in the 'vault' bucket should now be: [slug].zip
-  const { data, error: storageError } = await supabase
+  // 4. Secure Vault Redirection
+  // Assets are stored in the private 'vault' bucket as [slug].zip
+  const { data: storageData, error: storageError } = await supabase
     .storage
     .from("vault")
     .createSignedUrl(`${productSlug}.zip`, 60);
 
-  if (storageError || !data?.signedUrl) {
-    console.error("Vault Storage Error:", storageError);
-    return new NextResponse("Asset Unavailable: File not found in vault.", { status: 404 });
+  if (storageError || !storageData?.signedUrl) {
+    console.error(`[Vault] Storage retrieval failure: ${productSlug}`, storageError);
+    return new NextResponse("Asset Unavailable: The requested technical file could not be located.", { status: 404 });
   }
 
-  return NextResponse.redirect(new URL(data.signedUrl), 307);
+  /**
+   * 303 Redirect: Tells the mobile browser to fetch the signed URL.
+   * This is the cleanest handoff for mobile download managers.
+   */
+  return NextResponse.redirect(new URL(storageData.signedUrl), 303);
 }

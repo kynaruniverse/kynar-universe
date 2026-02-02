@@ -1,6 +1,5 @@
 /**
- * KYNAR UNIVERSE: Canonical Type System (v1.5 - Schema Sync)
- * Sync Date: 2026-01-31
+ * KYNAR UNIVERSE: Canonical Type System (v1.5)
  * Hardened for Next.js 15 & Production Deployment
  */
 
@@ -12,15 +11,8 @@ export type FileType = (typeof FILE_TYPES)[number];
 
 export type GuideCategory = 'usage' | 'spotlight' | 'tips';
 
-/**
- * Helper for JSONB fields
- */
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-/**
- * Base Database Definitions
- * These mirror the exact structure of your Postgres columns.
- */
 export type Database = {
   public: {
     Tables: {
@@ -35,7 +27,7 @@ export type Database = {
           description: string | null;
           short_description: string | null;
           price_id: string;
-          file_types: string[] | null; // DB usually stores as text[]
+          file_types: string[] | null;
           preview_image: string | null;
           image_url: string | null;
           is_published: boolean;
@@ -50,12 +42,11 @@ export type Database = {
         Row: {
           id: string;
           full_name: string | null;
-          email: string;
-          is_admin: boolean;
-          created_at: string;
+          avatar_url: string | null;
+          email: string | null;
           updated_at: string;
         };
-        Insert: Omit<Database['public']['Tables']['profiles']['Row'], 'created_at' | 'updated_at'>;
+        Insert: { id: string; full_name?: string | null; avatar_url?: string | null; email?: string | null; updated_at?: string };
         Update: Partial<Database['public']['Tables']['profiles']['Row']>;
       };
       user_library: {
@@ -63,10 +54,7 @@ export type Database = {
           id: string;
           user_id: string;
           product_id: string;
-          order_id: string | null;
           acquired_at: string;
-          status: string | null;
-          source: string | null;
         };
         Insert: Omit<Database['public']['Tables']['user_library']['Row'], 'id' | 'acquired_at'>;
         Update: Partial<Database['public']['Tables']['user_library']['Row']>;
@@ -95,19 +83,10 @@ export type Database = {
   };
 };
 
-/**
- * Application-Level Types
- * These are the types you use in your React components.
- * They leverage the Database types but include helper properties (like joined data).
- */
-export type Product = Database['public']['Tables']['products']['Row'] & {
-  // Safe-guard aliases for UI transition
-  description_short?: string | null;
-};
-
-export type UserLibrary = Database['public']['Tables']['user_library']['Row'] & {
-  product?: Product; // For 'products (*)' joins
-};
-
+// UI & Component Aliases
+export type Product = Database['public']['Tables']['products']['Row'];
 export type Profile = Database['public']['Tables']['profiles']['Row'];
+export type UserLibrary = Database['public']['Tables']['user_library']['Row'] & {
+  product?: Product;
+};
 export type Guide = Database['public']['Tables']['guides']['Row'];

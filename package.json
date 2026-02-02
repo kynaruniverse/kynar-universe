@@ -5,12 +5,12 @@
   "description": "Kynar Universe: A calm, mobile-first digital ecosystem.",
   "author": "Kynar Universe (UK)",
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
-    "dev": "NEXT_DISABLE_SWC=true next dev",
-    "build": "NEXT_DISABLE_SWC=true next build",
-    "start": "NEXT_DISABLE_SWC=true next start",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint",
     "types:generate": "supabase gen types typescript --local > lib/supabase/types.ts"
   },
@@ -24,7 +24,7 @@
     "date-fns": "^4.1.0",
     "framer-motion": "^11.11.17",
     "lucide-react": "0.454.0",
-    "next": "^15.5.11",
+    "next": "15.1.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hot-toast": "^2.5.1",
@@ -37,11 +37,15 @@
     "@tailwindcss/typography": "^0.5.16",
     "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^22.10.10",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3"
+  },
+  "overrides": {
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3"
   }
 }

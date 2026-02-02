@@ -1,24 +1,16 @@
 /**
  * KYNAR UNIVERSE: Server-Side Supabase Client (v1.5)
- * Role: Authentication and Data Fetching (Server Components/Actions/Routes)
- * High Criticality: Primary entry point for SSR data.
  */
 
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-// Fixed: Relative path for Netlify resolution
 import { Database } from './types';
 
 export async function createClient() {
   const cookieStore = await cookies();
 
-  // Validate environment variables
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return null;
-  }
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
   return createServerClient<Database>(
     supabaseUrl,
@@ -34,11 +26,7 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             );
           } catch (error) {
-            /**
-             * The `setAll` method was called from a Server Component.
-             * This can be ignored IF middleware.ts is properly configured 
-             * to refresh the session.
-             */
+            // This can be ignored if middleware is handling session refresh
           }
         },
       },

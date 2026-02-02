@@ -1,7 +1,7 @@
 /**
- * KYNAR UNIVERSE: Global Navigation (v1.5)
- * Aligned with: UX Canon Section 2 (Navigation) & Design System Section 12 (Worlds)
- * Priority: Mobile-first, Auth-aware, Calm Motion.
+ * KYNAR UNIVERSE: Navigation Dock (v1.6)
+ * Role: Structural orientation and World-hopping.
+ * Identity: Grounded, Glass-morphic, Tactile.
  */
 
 "use client";
@@ -9,139 +9,173 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Compass, Library, User, X } from 'lucide-react';
-import { clsx } from 'clsx';
-// Fixed: Relative pathing for reliable root-level resolution on Netlify
+import { Home, Compass, Library, User, X, Globe, Sparkles, Shield, ChevronRight } from 'lucide-react';
+import { cn, transitions } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/browser'; 
 import { Session } from '@supabase/supabase-js';
 
-export default function Navigation() {
+export const Navigation = () => {
   const pathname = usePathname();
   const [showWorlds, setShowWorlds] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  // Auth Hook: Determine if Library/Account should be active
   useEffect(() => {
+    setMounted(true);
     const supabase = createClient();
     
-    // Initial session check
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
+    // Initial fetch
+    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
     
-    // Listen for auth changes
+    // Auth Listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
-  const worlds = [
-    { name: 'Home', href: '/home', color: 'text-kyn-green-700', dot: 'bg-kyn-green-600' },
-    { name: 'Lifestyle', href: '/lifestyle', color: 'text-kyn-caramel-700', dot: 'bg-kyn-caramel-600' },
-    { name: 'Tools', href: '/tools', color: 'text-kyn-slate-700', dot: 'bg-kyn-slate-500' },
+  const navItems = [
+    { label: 'Home', href: '/', icon: Home },
+    { label: 'Explore', href: '#', icon: Compass, action: () => setShowWorlds(true) },
+    { label: 'Library', href: '/library', icon: Library },
+    { label: 'Account', href: session ? '/account' : '/auth/login', icon: User },
   ];
 
-  const navItems = [
-    { label: 'Universe', href: '/', icon: Home, show: true },
-    { label: 'Worlds', href: '#', icon: Compass, show: true, onClick: () => setShowWorlds(!showWorlds) },
-    { label: 'Library', href: '/library', icon: Library, show: !!session },
-    { label: 'Account', href: '/account/settings', icon: User, show: true },
-  ];
+  // Prevent hydration mismatch: Render a simple skeleton if not mounted
+  if (!mounted) return <div className="fixed bottom-0 h-16 w-full bg-canvas/80 backdrop-blur-lg" />;
 
   return (
     <>
-      {/* Worlds Overlay: Grounded Exploration */}
-      {showWorlds && (
-        <div 
-          className="fixed inset-0 z-[60] bg-kyn-slate-900/20 backdrop-blur-md transition-all duration-500 animate-in fade-in" 
-          onClick={() => setShowWorlds(false)}
-        >
-          <div 
-            className="absolute bottom-24 left-4 right-4 bg-canvas rounded-2xl p-5 shadow-2xl border border-border animate-in slide-in-from-bottom-6 duration-500 ease-out"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-[11px] font-medium text-text-secondary uppercase tracking-widest font-ui">Explore the Worlds</p>
-              <button 
-                type="button"
-                onClick={() => setShowWorlds(false)} 
-                className="text-text-secondary hover:text-text-primary transition-colors"
-              >
-                <X size={18} />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 gap-3">
-              {worlds.map((world) => (
-                <Link
-                  key={world.name}
-                  href={world.href}
-                  className="p-5 rounded-xl flex items-center justify-between bg-surface border border-transparent hover:border-border transition-all duration-300 group"
-                  onClick={() => setShowWorlds(false)}
-                >
-                  <span className={clsx("font-brand font-medium text-lg", world.color)}>
-                    {world.name}
-                  </span>
-                  <div className={clsx("w-1.5 h-1.5 rounded-full", world.dot)} />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Global Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 h-20 bg-canvas/90 backdrop-blur-xl border-t border-border px-6 pb-[var(--safe-bottom)]">
-        <div className="flex items-center justify-between h-full max-w-md mx-auto">
-          {navItems.filter(i => i.show).map((item) => {
-            const isActive = pathname === item.href || (item.label === 'Worlds' && showWorlds);
+      {/* MOBILE BOTTOM NAVIGATION DOCK */}
+      <nav 
+        className="fixed bottom-0 left-0 right-0 z-[100] border-t border-kyn-slate-50 bg-canvas/90 backdrop-blur-xl pb-[env(safe-area-inset-bottom,1.5rem)]"
+        aria-label="Mobile Navigation"
+      >
+        <div className="flex h-16 items-center justify-around px-4">
+          {navItems.map((item) => {
             const Icon = item.icon;
+            const isActive = item.href === '/' 
+              ? pathname === '/' 
+              : pathname.startsWith(item.href) && item.href !== '#';
 
             const content = (
-              <>
-                <div className={clsx(
-                  "p-2 rounded-full transition-all duration-500",
-                  isActive ? "bg-surface" : "group-hover:bg-surface/50"
-                )}>
-                  <Icon 
-                    size={22} 
-                    strokeWidth={isActive ? 2 : 1.5} 
-                    className={clsx("transition-colors duration-500", isActive ? 'text-text-primary' : 'text-text-secondary')} 
-                  />
-                </div>
-                <span className={clsx(
-                  "text-[10px] font-medium font-ui transition-colors duration-500", 
-                  isActive ? 'text-text-primary' : 'text-text-secondary'
+              <div className="flex flex-col items-center gap-1 group">
+                <Icon 
+                  size={20} 
+                  strokeWidth={isActive ? 2.5 : 2}
+                  className={cn(
+                    "transition-all duration-300",
+                    isActive ? "text-kyn-slate-900 translate-y-[-2px]" : "text-kyn-slate-400"
+                  )} 
+                />
+                <span className={cn(
+                  "text-[9px] font-bold uppercase tracking-[0.1em] font-ui transition-colors",
+                  isActive ? "text-kyn-slate-900" : "text-kyn-slate-400"
                 )}>
                   {item.label}
                 </span>
-              </>
-            );
-
-            return (
-              <div key={item.label} className="flex-1">
-                {item.href !== '#' ? (
-                  <Link href={item.href} className="flex flex-col items-center gap-1 group">
-                    {content}
-                  </Link>
-                ) : (
-                  <button 
-                    type="button"
-                    onClick={item.onClick} 
-                    className="w-full flex flex-col items-center gap-1 group focus:outline-none"
-                  >
-                    {content}
-                  </button>
+                {isActive && (
+                  <div className="absolute -bottom-1 h-1 w-1 rounded-full bg-kyn-slate-900 animate-in fade-in zoom-in" />
                 )}
               </div>
+            );
+
+            return item.action ? (
+              <button 
+                key={item.label} 
+                onClick={item.action} 
+                className="relative flex flex-1 flex-col items-center justify-center py-2"
+                aria-haspopup="dialog"
+              >
+                {content}
+              </button>
+            ) : (
+              <Link 
+                key={item.label} 
+                href={item.href} 
+                className="relative flex flex-1 flex-col items-center justify-center py-2"
+              >
+                {content}
+              </Link>
             );
           })}
         </div>
       </nav>
+
+      {/* WORLDS PORTAL (Drawer) */}
+      {showWorlds && (
+        <div className="fixed inset-0 z-[110] flex items-end">
+          <div 
+            className="absolute inset-0 bg-kyn-slate-900/40 backdrop-blur-md animate-in fade-in duration-500" 
+            onClick={() => setShowWorlds(false)} 
+          />
+          <div className="relative w-full rounded-t-[2.5rem] bg-white p-8 pb-12 shadow-2xl animate-in slide-in-from-bottom duration-500 ease-kyn-out">
+            {/* Grab Handle */}
+            <div className="mx-auto mb-6 h-1.5 w-12 rounded-full bg-kyn-slate-100" />
+            
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-brand text-2xl font-bold text-kyn-slate-900">Explore Domains</h2>
+              <button 
+                onClick={() => setShowWorlds(false)} 
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-kyn-slate-50 text-kyn-slate-900 active:scale-90 transition-transform"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="grid gap-4">
+              <WorldLink 
+                href="/home-world" 
+                title="Home" 
+                icon={<Globe size={24} className="text-kyn-green-600" />} 
+                color="bg-kyn-green-50" 
+                description="Spatial organization and living architecture."
+              />
+              <WorldLink 
+                href="/lifestyle-world" 
+                title="Lifestyle" 
+                icon={<Sparkles size={24} className="text-kyn-caramel-600" />} 
+                color="bg-kyn-caramel-50" 
+                description="Habits, rituals, and sensory intelligence."
+              />
+              <WorldLink 
+                href="/tools-world" 
+                title="Tools" 
+                icon={<Shield size={24} className="text-kyn-slate-600" />} 
+                color="bg-kyn-slate-100" 
+                description="Frameworks and technical assets."
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </>
+  );
+};
+
+interface WorldLinkProps {
+  href: string;
+  title: string;
+  icon: React.ReactNode;
+  color: string;
+  description: string;
+}
+
+function WorldLink({ href, title, icon, color, description }: WorldLinkProps) {
+  return (
+    <Link 
+      href={href} 
+      className="flex items-center gap-5 p-4 rounded-3xl border border-kyn-slate-50 bg-white shadow-sm active:scale-[0.97] active:bg-kyn-slate-50 transition-all group"
+    >
+      <div className={cn("flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl shadow-inner", color)}>
+        {icon}
+      </div>
+      <div className="flex-1">
+        <span className="block font-brand font-bold text-kyn-slate-900">{title} World</span>
+        <span className="block font-ui text-[11px] text-kyn-slate-400 leading-tight mt-0.5">{description}</span>
+      </div>
+      <ChevronRight size={18} className="text-kyn-slate-200 group-hover:text-kyn-slate-400 transition-colors" />
+    </Link>
   );
 }

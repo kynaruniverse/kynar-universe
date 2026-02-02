@@ -1,65 +1,107 @@
+/**
+ * KYNAR UNIVERSE: Final Anchor (v1.6)
+ * Role: Closure, structural integrity, and legal clarity.
+ * Optimization: Mobile-safe padding, hardware-accelerated transitions.
+ */
+
 import Link from "next/link";
+import { Compass, ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="mt-20 border-t border-border bg-canvas px-gutter py-16 md:px-inner">
+    <footer className="mt-auto border-t border-kyn-slate-50 bg-white px-gutter pt-20 pb-40 md:pb-20">
       <div className="mx-auto max-w-screen-xl">
-        <div className="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-16 md:grid-cols-4">
           
-          {/* Calm Updates - Business Reference Section 19 */}
-          <div className="space-y-6 lg:col-span-1">
-            <h3 className="font-brand text-lg font-bold text-kyn-slate-900">Calm updates</h3>
-            <p className="max-w-xs text-sm leading-relaxed text-text-secondary font-ui">
-              Occasional releases and guides. No noise, no pressure, just tools for a grounded life.
+          {/* Brand Philosophy Block */}
+          <div className="md:col-span-2 space-y-6">
+            <Link href="/" className="flex items-center gap-3 group w-fit">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-kyn-slate-900 text-white transition-transform group-hover:rotate-12">
+                <Compass size={20} />
+              </div>
+              <span className="font-brand text-xl font-bold tracking-tighter text-kyn-slate-900">
+                KYNAR<span className="text-kyn-slate-400">UNIVERSE</span>
+              </span>
+            </Link>
+            <p className="font-ui text-sm text-text-secondary leading-relaxed max-w-sm">
+              Engineered for digital permanence. We build frameworks and tools 
+              designed to ground your creative and technical life in the UK and beyond.
             </p>
-            <form className="flex max-w-sm flex-col gap-3 sm:flex-row">
-              <input 
-                type="email" 
-                placeholder="Email address"
-                required
-                className="w-full rounded-kynar border border-border bg-surface px-4 py-3 text-sm font-ui focus:border-kyn-green-400 focus:outline-none calm-transition"
-              />
-              <button className="rounded-kynar bg-kyn-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-kyn-slate-800 calm-transition active:scale-[0.98]">
-                Subscribe
-              </button>
-            </form>
+            <div className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-kyn-green-500 animate-pulse" />
+              <span className="font-ui text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
+                System Active • London
+              </span>
+            </div>
           </div>
-          
-          {/* Navigation Links - UX Canon Section 11 (Loop) */}
-          <div className="grid grid-cols-2 gap-8 lg:col-span-2">
-            <div className="flex flex-col gap-4">
-              <span className="font-brand text-xs font-bold uppercase tracking-wider text-kyn-slate-900">Explore</span>
-              <nav className="flex flex-col gap-3 text-sm font-ui">
-                <Link href="/home" className="text-text-secondary hover:text-kyn-green-600 calm-transition">Home World</Link>
-                <Link href="/lifestyle" className="text-text-secondary hover:text-kyn-caramel-600 calm-transition">Lifestyle World</Link>
-                <Link href="/tools" className="text-text-secondary hover:text-kyn-slate-600 calm-transition">Tools World</Link>
-                <Link href="/store" className="text-text-secondary hover:text-kyn-green-600 calm-transition">Marketplace</Link>
-              </nav>
-            </div>
-            
-            <div className="flex flex-col gap-4">
-              <span className="font-brand text-xs font-bold uppercase tracking-wider text-kyn-slate-900">Ownership</span>
-              <nav className="flex flex-col gap-3 text-sm font-ui">
-                <Link href="/library" className="text-text-secondary hover:text-kyn-slate-900 calm-transition">Your Library</Link>
-                <Link href="/about" className="text-text-secondary hover:text-kyn-slate-900 calm-transition">Philosophy</Link>
-                <Link href="/guides" className="text-text-secondary hover:text-kyn-slate-900 calm-transition">Guides</Link>
-                <Link href="/support" className="text-text-secondary hover:text-kyn-slate-900 calm-transition">Support</Link>
-              </nav>
-            </div>
+
+          {/* Navigation Matrix */}
+          <div className="grid grid-cols-2 gap-8 md:col-span-2">
+            <FooterGroup 
+              title="Explore" 
+              links={[
+                { label: 'Marketplace', href: '/store' },
+                { label: 'Library', href: '/library' },
+                { label: 'Briefings', href: '/guides' },
+                { label: 'Changelog', href: '/updates' }
+              ]} 
+            />
+            <FooterGroup 
+              title="Identity" 
+              links={[
+                { label: 'Privacy Protocol', href: '/privacy' },
+                { label: 'Terms of Service', href: '/terms' },
+                { label: 'Support Gate', href: '/support' },
+                { label: 'Account', href: '/account' }
+              ]} 
+            />
           </div>
         </div>
 
-        {/* Footer Base - Business Reference Section 13 */}
-        <div className="mt-20 border-t border-border pt-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
-          <p className="text-[11px] font-medium text-kyn-slate-400 font-ui italic">
-            © 2026 Kynar Universe • Built for Calm • United Kingdom
+        {/* Bottom Bar: Copyright & Location */}
+        <div className="mt-20 pt-8 border-t border-kyn-slate-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <p className="font-ui text-[10px] font-bold uppercase tracking-[0.2em] text-kyn-slate-400">
+            © {currentYear} Kynar Universe • Technical Integrity Reserved
           </p>
-          <div className="flex gap-6 text-[11px] font-medium text-kyn-slate-400 font-ui">
-            <Link href="/privacy" className="hover:text-kyn-slate-900">Privacy</Link>
-            <Link href="/terms" className="hover:text-kyn-slate-900">Terms</Link>
-          </div>
+          
+          <button 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="group flex items-center gap-2 font-brand text-[10px] font-bold uppercase tracking-widest text-kyn-slate-900 hover:text-kyn-green-600 transition-colors"
+          >
+            Ascend to Top
+            <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </button>
         </div>
       </div>
     </footer>
   );
-};
+}
+
+interface FooterGroupProps {
+  title: string;
+  links: { label: string; href: string; }[];
+}
+
+function FooterGroup({ title, links }: FooterGroupProps) {
+  return (
+    <div className="flex flex-col gap-6">
+      <span className="font-brand text-[10px] font-black uppercase tracking-[0.2em] text-kyn-slate-900">
+        {title}
+      </span>
+      <nav className="flex flex-col gap-4">
+        {links.map(link => (
+          <Link 
+            key={link.label} 
+            href={link.href} 
+            className="font-ui text-sm text-text-secondary hover:text-kyn-slate-900 hover:translate-x-1 transition-all duration-300"
+          >
+            {link.label}
+          </Link>
+        ))}
+      </nav>
+    </div>
+  );
+}

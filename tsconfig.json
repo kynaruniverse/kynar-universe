@@ -13,32 +13,19 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["components/*"],
-      "@/lib/*": ["lib/*"],
-      "@/app/*": ["app/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [
     "next-env.d.ts", 
     "**/*.ts", 
     "**/*.tsx", 
-    ".next/types/**/*.ts",
-    "types/**/*.d.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

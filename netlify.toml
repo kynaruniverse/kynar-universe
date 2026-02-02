@@ -1,37 +1,22 @@
 [build]
   command = "npm run build"
-  # Updated for Next.js 15: Netlify identifies the build output automatically.
-  # Using .next is standard, but the plugin handles the internal routing.
   publish = ".next"
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- README.md .gitignore"
 
 [build.environment]
   NODE_VERSION = "20"
-  # Essential for React 19 / Next 15 peer dependency resolution
   NPM_FLAGS = "--legacy-peer-deps"
-
-# Note: [[plugins]] for @netlify/plugin-nextjs removed. 
-# Netlify installs and configures version 5+ automatically for Next.js 13.5+ sites.
+  NEXT_USE_NETLIFY_EDGE = "true"
 
 [[headers]]
   for = "/*"
   [headers.values]
-    # KYNAR SECURITY LAYER (v1.5)
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "same-origin"
     Content-Security-Policy = "upgrade-insecure-requests; block-all-mixed-content"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
 
 [[headers]]
-  # Next.js specific static asset path
   for = "/_next/static/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  # Public folder assets
-  for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"

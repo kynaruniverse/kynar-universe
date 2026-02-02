@@ -1,4 +1,8 @@
-modules = ["web", "nodejs-20"]
+# KYNAR UNIVERSE: Environment Orchestration (v1.6)
+# Role: Development container configuration and workflow automation.
+
+modules = ["web", "nodejs-22"] # Upgraded to Node 22 for Next.js 15 performance
+
 [agent]
 expertMode = true
 
@@ -6,17 +10,25 @@ expertMode = true
 channel = "stable-25_05"
 
 [workflows]
-runButton = "Project"
+runButton = "Initialize Universe"
 
+# PRIMARY WORKFLOW: The master boot sequence
 [[workflows.workflow]]
-name = "Project"
-mode = "parallel"
+name = "Initialize Universe"
+mode = "sequence"
 author = "agent"
 
+# Task 1: Ensure dependencies are synchronized
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install"
+
+# Task 2: Boot the Next.js 15 Dev Server
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Next.js Dev Server"
 
+# DEV SERVER WORKFLOW: Optimized for Mobile HMR
 [[workflows.workflow]]
 name = "Next.js Dev Server"
 author = "agent"
@@ -29,6 +41,11 @@ waitForPort = 5000
 [workflows.workflow.metadata]
 outputType = "webview"
 
+# PORT MAPPING: Exposing the internal logic to the external web
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[deployment]
+run = ["npm", "run", "start"]
+deploymentTarget = "cloudrun"

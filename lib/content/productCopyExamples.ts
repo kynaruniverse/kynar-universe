@@ -1,46 +1,80 @@
 /**
- * KYNAR UNIVERSE: CALM COPY TEMPLATES (v1)
- * Rules: No hype, no "Must-have", no exclamation marks.
- * Use plain UK English. Focus on utility and groundedness.
+ * KYNAR UNIVERSE: Calm Copy Templates (v1.6)
+ * Role: The Narrative Engine for the Marketplace.
+ * Guidelines: Plain UK English, no hype, no exclamation marks.
+ * Identity: Grounded, Utility-focused, Professional.
  */
 
-export const productTemplates = {
-  titles: [
-    "Digital Home Organiser",
-    "Mindful Budget Tracker",
-    "Project Clarity Dashboard",
-    "Personal Archive System",
-    "Lifestyle Planning Suite"
-  ],
+export interface ProductTemplate {
+  title: string;
+  tagline: string;
+  whoItsFor: string;
+  included: string[];
+  philosophy: string;
+  howItHelps: string;
+  usage: string;
+}
+
+export const KYNAR_COPY_LIBRARY: Record<string, ProductTemplate> = {
+  HOME_ORGANISER: {
+    title: "Digital Home Organiser",
+    tagline: "A quiet space to coordinate your daily routines without the noise of typical productivity apps.",
+    whoItsFor: "Designed for those who seek a simpler, more manual way to organise domestic life.",
+    included: [
+      "1 x Comprehensive PDF Guide (Print-ready)",
+      "1 x Interactive Notion Template (Mobile-Optimised)",
+      "Setup instructions for offline use",
+      "Lifetime access to future versions"
+    ],
+    philosophy: "Digital life should support your physical reality, not distract from it. We avoid complex automations in favour of intentional, manual entry.",
+    howItHelps: "By providing a fixed structure for your home data, it removes the 'blank page' anxiety of starting a new system. It focuses on clarity and calm retrieval.",
+    usage: "Designed for a five-minute daily check-in. No notifications, no pressure. It works whenever you are ready."
+  },
   
-  shortDescriptions: [
-    "A quiet space to coordinate your daily routines without the noise of typical productivity apps.",
-    "A grounded approach to managing personal finances with clarity and intentionality.",
-    "A minimal framework for moving projects from initial thought to finished reality.",
-    "An offline-first archive designed to keep your most important records safe and accessible."
-  ],
+  BUDGET_TRACKER: {
+    title: "Mindful Budget Tracker",
+    tagline: "A grounded approach to managing personal finances with clarity and intentionality.",
+    whoItsFor: "Built for creators who need a clear boundary between their spending and their mental rest.",
+    included: [
+      "1 x Financial Architecture Guide",
+      "1 x Clean Ledger System (CSV-Ready)",
+      "Quarterly reflection prompts",
+      "Immutable ownership of the tool"
+    ],
+    philosophy: "Wealth is built through awareness, not algorithms. This tool requires manual entry to ensure you remain connected to your financial decisions.",
+    howItHelps: "It strips away the complexity of modern banking apps to show you the truth of your cash flow without the 'gamified' distractions.",
+    usage: "Update once a week or after major transactions. High-performance utility for long-term stability."
+  },
 
-  whoItsFor: [
-    "Designed for those who feel overwhelmed by complex systems and seek a simpler, more manual way to organise life.",
-    "Built for creators who need a clear boundary between their work and their mental rest.",
-    "Ideal for students who want to track their progress without the pressure of gamified streaks."
-  ],
+  PROJECT_DASHBOARD: {
+    title: "Project Clarity Dashboard",
+    tagline: "A minimal framework for moving projects from initial thought to finished reality.",
+    whoItsFor: "Ideal for independent professionals who want to track progress without the pressure of streaks.",
+    included: [
+      "1 x Project Sequencing Framework",
+      "1 x Visual Progress Board",
+      "Archive protocols for finished work",
+      "Native mobile layout"
+    ],
+    philosophy: "Projects should have a beginning and an end. This dashboard treats your work as a series of intentional sequences rather than a never-ending 'to-do' list.",
+    howItHelps: "It provides a 'Single Source of Truth' for your active work, reducing the mental load of switching between different tasks.",
+    usage: "Check in at the start and end of your work session. Keep your focus narrow and your output high."
+  }
+};
 
-  whatsIncluded: [
-    "1 x Comprehensive PDF Guide (Print-ready)",
-    "1 x Interactive Notion Template (Optimised for Mobile)",
-    "Setup instructions for offline use",
-    "Lifetime access to future versions"
-  ],
-
-  fullDescriptions: `
+/**
+ * Helper to generate full markdown description for Product Pages.
+ * Ensures hydration-safe rendering in prose components.
+ */
+export const generateFullDescription = (template: ProductTemplate): string => {
+  return `
 # Philosophy
-This tool was built on the principle that digital life should support your physical reality, not distract from it. It avoids complex automations in favour of intentional, manual entry.
+${template.philosophy}
 
 # How it helps
-By providing a fixed structure for your data, it removes the "blank page" anxiety of starting a new system. It focuses on core essentials: clarity, retrieval, and calm.
+${template.howItHelps}
 
 # Usage
-Designed to be used once a day for five minutes. No notifications, no pressure to check in. It works whenever you are ready.
-  `
+${template.usage}
+  `.trim();
 };

@@ -1,44 +1,42 @@
+/**
+ * KYNAR UNIVERSE: Account Workshop (v1.5)
+ * Role: A grounded space for identity and security maintenance.
+ * Security: Middleware-enforced (Silent Guard).
+ * Refactor: Aligned with Canonical Schema & Mobile-First UX.
+ */
+
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import { SettingsForm } from "@/components/account/SettingsForm";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { ShieldCheck, Mail, Info } from "lucide-react";
 
-/**
- * KYNAR UNIVERSE: Account Workshop (v1.2)
- * Purpose: A grounded space for identity and security maintenance.
- * Alignment: Verified against profiles table schema (full_name, is_admin).
- */
 export default async function SettingsPage() {
   const supabase = await createClient();
+  
+  // Middleware handles the redirect; we assume session exists here.
   const { data: { user } } = await supabase.auth.getUser();
 
-  // 1. Identity Guard: Business Reference Section 7
-  if (!user) {
-    redirect("/login?next=/account/settings");
-  }
-
-  // 2. Profile Retrieval: CSV Alignment (id, email, full_name, is_admin)
+  // Profile Retrieval: Aligned with Database['public']['Tables']['profiles']['Row']
   const { data: profile } = await supabase
     .from("profiles")
     .select("id, email, full_name, is_admin")
-    .eq("id", user.id)
+    .eq("id", user?.id)
     .single();
 
   const breadcrumbPaths = [
-    { label: 'Universe', href: '/' },
     { label: 'Library', href: '/library' },
     { label: 'Settings', href: '/account/settings' }
   ];
 
   return (
-    <main className="mx-auto max-w-2xl pb-32 animate-in fade-in duration-700">
+    <main className="mx-auto max-w-2xl pb-32 animate-in fade-in duration-700 ease-out">
       {/* Handrail Layer: UX Canon 2.2 */}
-      <div className="px-6 pt-8">
+      <div className="px-gutter pt-8">
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>
 
-      {/* Workshop Header: Design System Section 4 */}
-      <header className="px-6 py-12 md:py-20">
+      {/* Header: Design System Section 4 */}
+      <header className="px-gutter py-12 md:py-20">
         <h1 className="font-brand text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
           Account Settings
         </h1>
@@ -48,13 +46,13 @@ export default async function SettingsPage() {
       </header>
 
       {/* Workshop Form: Design System Section 13 */}
-      <section className="px-6">
-        <div className="rounded-2xl border border-kyn-slate-100 bg-surface p-6 md:p-8 shadow-sm">
+      <section className="px-gutter">
+        <div className="rounded-2xl border border-border bg-surface p-6 md:p-8 shadow-kynar-soft">
           <SettingsForm 
-            user={user} 
+            user={user!} 
             profile={profile || { 
-              id: user.id, 
-              email: user.email, 
+              id: user?.id || '', 
+              email: user?.email || '', 
               full_name: '', 
               is_admin: false 
             }} 
@@ -62,14 +60,33 @@ export default async function SettingsPage() {
         </div>
         
         {/* Support Reassurance: Business Reference Section 19 */}
-        <div className="mt-12 border-t border-kyn-slate-100 pt-8 text-center">
-          <p className="font-ui text-[11px] uppercase tracking-widest text-kyn-slate-400">
+        <div className="mt-12 border-t border-border pt-8 text-center">
+          <div className="flex justify-center mb-4 text-kyn-slate-300">
+            <ShieldCheck size={20} strokeWidth={1.5} />
+          </div>
+          <p className="font-ui text-[10px] font-bold uppercase tracking-[0.2em] text-kyn-slate-400">
             Digital Autonomy Support
           </p>
-          <p className="mt-2 font-ui text-xs text-text-secondary leading-relaxed">
-            For data migration or permanent account closure, please contact 
-            <br />
-            <span className="text-text-primary font-medium">support@kynaruniverse.com</span>
+          <p className="mt-3 font-ui text-xs text-text-secondary leading-relaxed max-w-xs mx-auto">
+            For data migration or permanent account closure, please reach out to our human support team.
+          </p>
+          <a 
+            href="mailto:support@kynaruniverse.com" 
+            className="mt-4 inline-block font-brand text-sm font-bold text-kyn-slate-900 underline underline-offset-4 decoration-border hover:decoration-kyn-caramel-300 transition-colors"
+          >
+            support@kynaruniverse.com
+          </a>
+        </div>
+      </section>
+
+      {/* Security Context Tip */}
+      <section className="mt-12 px-gutter">
+        <div className="flex gap-4 p-5 rounded-xl bg-kyn-green-50/50 border border-kyn-green-100">
+          <div className="shrink-0 text-kyn-green-600">
+            <Info size={18} />
+          </div>
+          <p className="font-ui text-[13px] leading-relaxed text-kyn-green-800/80">
+            Your session is secured via <strong>PKCE encryption</strong>. Any changes to your identity are synchronized across all your devices instantly.
           </p>
         </div>
       </section>

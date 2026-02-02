@@ -1,20 +1,24 @@
 /**
- * KYNAR UNIVERSE: Lemon Squeezy Gateway (v1.5)
- * Role: Multi-Product Handoff & Webhook Metadata Sync
+ * KYNAR UNIVERSE: Lemon Squeezy Gateway (v1.6)
+ * Role: Secure Multi-Product Checkout Orchestration.
+ * Identity: Reliability, Security, Technical Precision.
+ * Environment: Next.js 15 Server-Only.
  */
 
-// Fixed: Relative pathing for Netlify build stability
-import { Database } from "../supabase/types";
+import { Database } from "@/lib/supabase/types";
 
-type Product = {
+type ProductRow = Database['public']['Tables']['products']['Row'];
+
+// Refined type for checkout preparation
+interface CheckoutProduct {
   id: string;
   title: string;
-  price_id: string; // This corresponds to the LS Variant ID
+  price_id: string; // The Lemon Squeezy Variant ID
   slug: string;
-};
+}
 
 interface CheckoutConfig {
-  products: Product[];
+  products: CheckoutProduct[];
   userEmail: string;
   userId: string;
   config ? : {
@@ -26,64 +30,64 @@ interface CheckoutConfig {
   any > ;
 }
 
+/**
+ * Generates a hosted checkout URL via Lemon Squeezy API.
+ * Optimized for high-speed mobile handoff.
+ */
 export async function generateCheckoutUrl({
   products,
   userEmail,
   userId,
   config,
   metadata
-}: CheckoutConfig) {
-  // Server-side env vars (Ensured private on Netlify)
+}: CheckoutConfig): Promise < string > {
+  // 1. Environment Guard
   const API_KEY = process.env.LEMONSQUEEZY_API_KEY;
   const STORE_ID = process.env.LEMONSQUEEZY_STORE_ID;
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kynaruniverse.com";
   
   if (!API_KEY || !STORE_ID) {
-    throw new Error("Kynar System: Payment configuration is currently unavailable.");
+    console.error("[Kynar Checkout] Missing Lemon Squeezy configuration.");
+    throw new Error("Payment gateway is temporarily offline. Please try again shortly.");
   }
   
-  const validProducts = products.filter(p => p.price_id);
+  // 2. Selection Validation
+  const validProducts = products.filter(p => p.price_id && p.price_id !== "0");
   if (validProducts.length === 0) {
-    throw new Error("Your selection appears to be empty or contains invalid items.");
+    throw new Error("Your selection contains no valid technical assets for acquisition.");
   }
   
-  // Hardened parsing to prevent NaN errors
-  const storeIdInt = Number(STORE_ID);
-  const variantIdInt = Number(validProducts[0].price_id);
-  
-  if (isNaN(storeIdInt) || isNaN(variantIdInt)) {
-    throw new Error("Gateway Error: Invalid Store or Product configuration.");
-  }
-  
+  // 3. Payload Construction (Lemon Squeezy API v1)
+  // Note: For multi-product, we typically lead with the first variant 
+  // and pass the full list in metadata for webhook processing.
   const payload = {
     data: {
       type: "checkouts",
       attributes: {
-        store_id: storeIdInt,
-        variant_id: variantIdInt,
+        store_id: parseInt(STORE_ID),
+        variant_id: parseInt(validProducts[0].price_id),
         checkout_data: {
           email: userEmail,
           custom: {
             user_id: userId,
-            // These strings are vital for your Webhook to fulfill the "Selection"
             product_ids: validProducts.map((p) => p.id).join(","),
             product_slugs: validProducts.map((p) => p.slug).join(","),
             ...metadata
           },
         },
         checkout_options: {
-          embed: false,
+          embed: false, // Redirect strategy is safer for mobile/SPCK
           media: true,
           logo: true,
           desc: true,
           discount_button: false,
           dark: false,
-          button_color: "#166534",
+          button_color: "#0f172a", // Kyn-Slate-900
         },
         product_options: {
-          redirect_url: config?.redirectUrl || `${SITE_URL}/library?status=success`,
+          redirect_url: config?.redirectUrl || `${SITE_URL}/checkout/success`,
           receipt_button_text: config?.receiptButtonText || "Open My Library",
-          receipt_thank_you_note: "Your selection is now part of your permanent collection. Explore it at your own pace.",
+          receipt_thank_you_note: "Your selection is now part of your permanent collection.",
         },
       },
     },
@@ -97,21 +101,23 @@ export async function generateCheckoutUrl({
         "Content-Type": "application/vnd.api+json",
         "Authorization": `Bearer ${API_KEY}`,
       },
-      // Next.js 15: Explicitly disable caching for checkout generation
+      // Next.js 15: Bypass cache to ensure unique checkout links
       cache: 'no-store',
       body: JSON.stringify(payload),
     });
     
-    const json = await response.json();
+    const result = await response.json();
     
-    if (json.errors) {
-      console.error("LS_API_ERROR:", json.errors);
-      throw new Error(json.errors[0].detail);
+    if (result.errors) {
+      console.error("[LemonSqueezy Error]:", result.errors);
+      throw new Error(result.errors[0].detail || "Failed to initialize checkout.");
     }
     
-    return json.data.attributes.url;
-  } catch (error) {
-    console.error("LS_GATEWAY_FAILURE:", error);
-    throw new Error("Connection to the secure gateway timed out. Please try again.");
+    // Return the secure URL for client-side redirection
+    return result.data.attributes.url;
+    
+  } catch (err) {
+    console.error("[Checkout Gateway Critical]:", err);
+    throw err;
   }
 }

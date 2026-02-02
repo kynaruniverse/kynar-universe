@@ -1,46 +1,64 @@
-# Dependencies
-/node_modules
-/.pnp
+# KYNAR UNIVERSE: The Security Perimeter (v1.6)
+# Role: Preventing environmental leakage and repository bloat.
+
+# 1. CORE DEPENDENCIES
+node_modules/
+.pnp
 .pnp.js
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
-# Next.js Build Output
-/.next/
-/out/
-/build
+# 2. ARCHITECTURAL BUILDS (Next.js 15)
+.next/
+out/
+build/
+dist/
+.turbo/
+*.tsbuildinfo
 
-# Netlify Build Output
-/.netlify
-
-# Production
-/dist
-
-# Debug Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Environment Variables (Strict Protection)
+# 3. ENVIRONMENT SECRETS (Strict Security)
+# Never commit these. They contain the keys to the Universe.
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
+.env.apple
 *.pem
+*.key
+.vercel
+.netlify
 
-# Supabase
-/supabase/migrations/.empty
-/.temp
-/supabase/.temp
+# 4. SUPABASE & DATABASE GATES
+supabase/.temp/
+supabase/migrations/.*
+!supabase/migrations/.empty
+.temp/
 
-# OS Metadata
+# 5. OS & IDE METADATA
 .DS_Store
+.DS_Store?
+._*
 Thumbs.db
+desktop.ini
 
-# IDE Settings
-.vscode/
+# 6. IDE & TOOLING (VScode, Cursor, SPCK)
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 *.swp
 *.swo
+.history/
+.spck/
 
-# Vercel (Backup)
-.vercel
+# 7. DEBUG & LOGS
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# 8. REPLIT SPECIFIC
+.replit.lock

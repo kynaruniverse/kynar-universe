@@ -1,6 +1,7 @@
 /**
  * KYNAR UNIVERSE: The Marketplace (v1.5)
- * Status: Full Type Sync & Next.js 15 Async Fix
+ * Role: Primary acquisition hub for digital assets.
+ * Optimization: Next.js 15 Async Params & Mobile-First Filter Logic.
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -8,6 +9,7 @@ import { ProductCard } from "@/components/marketplace/ProductCard";
 import { FilterBar } from "@/components/marketplace/FilterBar";
 import { Product, World, WORLDS } from "@/lib/supabase/types";
 import { getPriceFromId } from "@/lib/marketplace/pricing";
+import { Box } from "lucide-react";
 
 interface StorePageProps {
   searchParams: Promise<{
@@ -21,6 +23,8 @@ export default async function StorePage({ searchParams }: StorePageProps) {
   const params = await searchParams;
   const supabase = await createClient();
   
+  if (!supabase) return null;
+
   // 2. Fetch all published products
   const { data: products, error } = await supabase
     .from('products')
@@ -30,55 +34,66 @@ export default async function StorePage({ searchParams }: StorePageProps) {
 
   if (error || !products) {
     console.error("Store Fetch Error:", error);
-    return null;
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center font-ui text-sm text-text-secondary">
+        Connection to the hub interrupted. Please refresh.
+      </div>
+    );
   }
 
-  // 3. Filtering & Sorting Logic
+  // 3. Filtering & Sorting Logic (Server-Side)
   let filteredProducts = [...products];
   
-  // Validate world against your canonical WORLDS array
+  // Validate world against canonical WORLDS constant
   const activeWorld = params.world as World;
   if (activeWorld && WORLDS.includes(activeWorld)) {
     filteredProducts = products.filter(p => p.world === activeWorld);
   }
 
-  // Type-safe sorting
-  if (params.sort === 'price_asc') {
-    filteredProducts.sort((a, b) => (getPriceFromId(a.price_id) || 0) - (getPriceFromId(b.price_id) || 0));
-  } else if (params.sort === 'price_desc') {
-    filteredProducts.sort((a, b) => (getPriceFromId(b.price_id) || 0) - (getPriceFromId(a.price_id) || 0));
+  // Type-safe sorting logic based on price metadata
+  if (params.sort === 'price-low') {
+    filteredProducts.sort((a, b) => getPriceFromId(a.price_id) - getPriceFromId(b.price_id));
+  } else if (params.sort === 'price-high') {
+    filteredProducts.sort((a, b) => getPriceFromId(b.price_id) - getPriceFromId(a.price_id));
   }
 
   return (
     <main className="min-h-screen bg-canvas pb-32 animate-in fade-in duration-700 ease-out">
-      <header className="px-6 py-16 md:py-24 text-center border-b border-border bg-surface/30">
+      {/* 1. Atmospheric Header */}
+      <header className="px-gutter py-16 md:py-24 text-center border-b border-border bg-surface/30">
         <div className="max-w-3xl mx-auto">
-          <h1 className="font-brand text-4xl font-medium text-kyn-slate-900 md:text-6xl tracking-tight">
-            The Marketplace
+          <h1 className="font-brand text-4xl font-bold text-kyn-slate-900 md:text-6xl tracking-tight">
+            The Hub
           </h1>
-          <p className="mt-6 font-ui text-lg text-kyn-slate-500 leading-relaxed">
-            Curated tools for your digital estate. Every acquisition is permanent, 
-            secured by your personal vault.
+          <p className="mt-6 font-ui text-base md:text-lg text-text-secondary leading-relaxed px-4">
+            A curated collection of permanent digital assets. Secured by your vault, 
+            designed for a grounded life.
           </p>
         </div>
       </header>
 
-      <div className="max-w-screen-xl mx-auto px-6">
-        {/* Navigation & Filtering */}
-        <div className="sticky top-0 z-10 py-8 bg-canvas/80 backdrop-blur-md border-b border-border mb-12">
+      <div className="max-w-screen-xl mx-auto px-gutter">
+        {/* 2. Navigation & Filtering (Sticky for Mobile UX) */}
+        <div className="sticky top-0 z-30 py-6 bg-canvas/90 backdrop-blur-md mb-8 border-b border-border/50">
           <FilterBar currentWorld={activeWorld || 'All' as any} />
         </div>
 
-        {/* Product Grid */}
+        {/* 3. Product Grid */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product as Product} />
             ))}
           </div>
         ) : (
-          <div className="py-32 text-center rounded-3xl border border-dashed border-border">
-            <p className="font-ui text-kyn-slate-400">No tools found in this sector of the universe.</p>
+          <div className="flex flex-col items-center justify-center py-32 text-center">
+            <div className="h-12 w-12 rounded-full bg-surface border border-border flex items-center justify-center mb-4">
+              <Box size={20} className="text-kyn-slate-300" />
+            </div>
+            <h2 className="font-brand text-lg font-bold text-kyn-slate-900">Sector Empty</h2>
+            <p className="font-ui text-sm text-text-secondary mt-1">
+              No tools found in the {activeWorld} sector for these parameters.
+            </p>
           </div>
         )}
       </div>

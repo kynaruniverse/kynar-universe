@@ -1,7 +1,7 @@
 /**
- * KYNAR UNIVERSE: Global Atmosphere (v1.5)
+ * KYNAR UNIVERSE: Global Atmosphere (v1.6)
  * Role: CSS Variable Foundation & Root Typography.
- * Aligned with: Design System Section 3 (Color) & Section 4 (Typography).
+ * Optimization: Mobile-First, Hardware-Accelerated, Fluid UI.
  */
 
 @tailwind base;
@@ -15,20 +15,28 @@
     --surface: 210 20% 98%;     /* #F8FAFC */
     --border: 214 32% 91%;      /* #E2E8F0 */
     
+    /* Branding: Kynar Universe Core Palette */
+    --kyn-green: 142 71% 45%;   /* Emerald Intelligence */
+    --kyn-caramel: 28 50% 50%;  /* Earthy Texture */
+    --kyn-slate: 215 25% 15%;   /* Deep Structure */
+    
     /* Text Hierarchy */
     --text-primary: 215 25% 7%;   /* #111827 */
     --text-secondary: 215 16% 47%; /* #64748B */
     
-    /* Global Safe Area (for Navigation Dock) with Fallback */
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    /* Safe Area Variables for Next.js 15 / Mobile App Feel */
+    --safe-bottom: env(safe-area-inset-bottom, 1.5rem);
+    --safe-top: env(safe-area-inset-top, 0px);
+    
+    /* Animation Timing */
+    --ease-kyn-out: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .dark {
     /* Dark Mode: "The Night Sky" */
-    --canvas: 222 47% 11%;      /* Deep Charcoal */
-    --surface: 217 32% 17%;     /* Component Surface */
+    --canvas: 222 47% 11%;
+    --surface: 217 32% 17%;
     --border: 217 32% 23%;
-    
     --text-primary: 210 40% 98%;
     --text-secondary: 215 20% 65%;
   }
@@ -37,52 +45,69 @@
 @layer base {
   * {
     @apply border-border;
+    -webkit-tap-highlight-color: transparent; /* Removes blue box on mobile tap */
   }
   
   body {
     @apply bg-canvas text-text-primary antialiased;
-    /* Design System Section 4: Functional Foundation */
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
     font-variation-settings: "opsz" 32;
-    line-height: 1.5;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100svh; /* Supports dynamic mobile toolbars */
   }
 
-  /* Editorial Text Overrides (for Products/Guides) */
+  /* Editorial Typography Scale */
   article, .prose {
-    font-size: 1.0625rem; /* 17px equivalent */
-    line-height: 1.75;
+    @apply text-[17px] leading-relaxed tracking-normal;
+  }
+  
+  h1, h2, h3, .font-brand {
+    @apply tracking-tight;
   }
 }
 
 @layer components {
-  /* Kynar Motion: "Grounded & Intentional" (Design System 9.3) */
+  /* High-Performance Transitions (GPU Accelerated) */
   .calm-transition {
-    transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 500ms var(--ease-kyn-out);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
 
-  /* The Universal Vessel (Design System 6.1) */
   .kynar-card {
-    @apply calm-transition rounded-kynar border border-border shadow-kynar-soft;
-    background-color: hsl(var(--surface));
+    @apply calm-transition rounded-[2rem] border border-border bg-surface;
+    box-shadow: 0 4px 20px -10px rgba(0,0,0,0.05);
   }
 
-  /* Interaction: Section 7.2 */
   .button-primary {
-    @apply calm-transition bg-kyn-slate-900 text-white px-8 py-4 rounded-xl font-brand font-medium active:scale-[0.98];
+    @apply calm-transition bg-kyn-slate-900 text-white px-8 py-4 rounded-2xl 
+           font-brand font-bold text-sm uppercase tracking-widest
+           active:scale-[0.96] flex items-center justify-center select-none;
+  }
+
+  /* Utility to protect content from the Navigation Dock */
+  .safe-bottom-padding {
+    padding-bottom: calc(var(--safe-bottom) + 4rem);
   }
 }
 
-/* Scrollbar Atmosphere: Subtle & Discreet */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-kyn-slate-200 rounded-full hover:bg-kyn-slate-300 transition-colors;
+/* Custom Scrollbar for Desktop (Hidden on Mobile for App Feel) */
+@media (min-width: 769px) {
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-kyn-slate-200/50 rounded-full hover:bg-kyn-slate-300;
+  }
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  @apply bg-kyn-slate-800 hover:bg-kyn-slate-700;
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }

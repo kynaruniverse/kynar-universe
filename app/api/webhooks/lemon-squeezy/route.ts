@@ -1,6 +1,8 @@
 /**
- * KYNAR UNIVERSE: Fulfillment Engine (v1.5)
+ * KYNAR UNIVERSE: Fulfillment Engine (v1.6)
  * Role: Securely bridges Lemon Squeezy events to the Supabase Vault.
+ * Environment: Next.js 15 Server Route (force-dynamic).
+ * Security: HMAC SHA256 Signature Verification.
  */
 
 import { createClient } from "@supabase/supabase-js";
@@ -10,75 +12,74 @@ import { headers } from "next/headers";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
-  // 1. Initialize Admin Client
-  // FIX: Using the correct variables we set in Netlify
+  // 1. Initialize Administrative Access
+  // We use the Service Role Key here to bypass RLS for fulfillment.
   const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
   const rawBody = await req.text();
-  const headerList = await headers();
+  const headerList = await headers(); // Next.js 15 requirement
   
-  // FIX: Lemon Squeezy uses 'x-signature'
   const signature = headerList.get("x-signature") || "";
   const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET || "";
 
-  // 2. Cryptographic Verification
+  // 2. Cryptographic Guard
   if (!signature || !secret) {
-    return new Response("Unauthorized: Missing Credentials", { status: 401 });
+    console.error("[Vault Webhook] Missing signature or secret.");
+    return new Response("Unauthorized", { status: 401 });
   }
 
   try {
     const hmac = crypto.createHmac("sha256", secret);
-    const digest = hmac.update(rawBody).digest("hex");
-    
-    const digestBuffer = Buffer.from(digest, "utf8");
+    const digest = Buffer.from(hmac.update(rawBody).digest("hex"), "utf8");
     const signatureBuffer = Buffer.from(signature, "utf8");
 
-    if (signatureBuffer.length !== digestBuffer.length || !crypto.timingSafeEqual(signatureBuffer, digestBuffer)) {
-      console.error("[Webhook] Signature Mismatch");
-      return new Response("Unauthorized: Signature Mismatch", { status: 401 });
+    if (signatureBuffer.length !== digest.length || !crypto.timingSafeEqual(digest, signatureBuffer)) {
+      throw new Error("Signature Mismatch");
     }
   } catch (err) {
-    return new Response("Unauthorized: Verification Failed", { status: 401 });
+    console.error("[Vault Webhook] Verification failed.");
+    return new Response("Unauthorized", { status: 401 });
   }
 
-  // 3. Parse and Route Event
+  // 3. Payload Extraction
   const payload = JSON.parse(rawBody);
   const eventName = payload.meta.event_name;
-  const customData = payload.meta.custom_data;
+  const customData = payload.meta.custom_data; // contains user_id and product_ids
 
-  // 4. Fulfillment: order_created
+  /**
+   * EVENT: order_created
+   * Logic: When a purchase is finalised, map products to the User Library.
+   */
   if (eventName === "order_created") {
     const userId = customData.user_id;
     const productIdsString = customData.product_ids;
-    // LS Status check: attributes.status
     const orderStatus = payload.data.attributes.status;
 
-    // Acknowledge but wait for payment success
+    // We only fulfill when payment is fully captured
     if (orderStatus !== "paid") {
-      return new Response("Payment Process Pending", { status: 200 });
+      return new Response("Payment Pending", { status: 200 });
     }
 
     if (!userId || !productIdsString) {
-      console.error("[Webhook Error] Missing Metadata:", { userId, productIdsString });
+      console.error("[Vault Webhook] Missing fulfillment metadata.");
       return new Response("Incomplete Metadata", { status: 400 });
     }
 
-    const productIds = productIdsString.split(",");
+    const productIds = productIdsString.split(",").map((id: string) => id.trim());
     
-    // Prepare entries for bulk insertion
+    // 4. Atomic Fulfillment
+    // Mapping the payment data to the 'user_library' schema
     const libraryEntries = productIds.map((pid: string) => ({
       user_id: userId,
-      product_id: pid.trim(),
+      product_id: pid,
       order_id: payload.data.id.toString(),
       status: 'active',
       source: 'lemonsqueezy'
-      // acquired_at is handled by DB default (created_at)
     }));
 
-    // Perform Upsert to ensure idempotency
     const { error } = await supabaseAdmin
       .from("user_library")
       .upsert(libraryEntries, { 
@@ -86,13 +87,14 @@ export async function POST(req: Request) {
       });
 
     if (error) {
-      console.error("[Webhook Error] Supabase Fulfillment Failed:", error);
-      return new Response("Internal Fulfillment Error", { status: 500 });
+      console.error("[Vault Webhook] Fulfillment failed:", error.message);
+      return new Response("Internal Server Error", { status: 500 });
     }
 
-    console.log(`[Webhook Success] Fulfilled ${productIds.length} items for User ${userId}`);
-    return new Response("Fulfillment Complete", { status: 200 });
+    console.log(`[Vault Success] Fulfilling ${productIds.length} items for User: ${userId}`);
+    return new Response("Vault Synchronized", { status: 200 });
   }
 
-  return new Response("Event Acknowledged", { status: 200 });
+  // Acknowledge other events (e.g., subscription changes) without action
+  return new Response("Event Received", { status: 200 });
 }

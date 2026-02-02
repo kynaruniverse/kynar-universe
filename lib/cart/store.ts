@@ -1,26 +1,32 @@
 /**
- * KYNAR UNIVERSE: Cart Store (v1.5 - Hydration Hardened)
- * - Persists to LocalStorage via Zustand
- * - Logic: Single-unit ownership (No quantities > 1)
- * - Flow: Cart -> Lemon Squeezy Checkout
+ * KYNAR UNIVERSE: The Vault Store (v1.5)
+ * Role: Persistent state management for the digital selection.
+ * Logic: "Single-Unit Ownership" - Digital assets are binary (Owned/Not Owned).
+ * Optimization: Middleware-integrated hydration and SSR-safe persistence.
  */
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-// Fixed: Relative pathing for reliable root-level resolution on Netlify
 import { Database } from '../supabase/types';
 import { getPriceFromId } from '../marketplace/pricing';
 
+// Explicitly pull the Product type from the Canonical schema
 type Product = Database['public']['Tables']['products']['Row'];
 
 interface CartState {
   items: Product[];
-  isHydrated: boolean; // Calm UX: Track hydration to prevent UI flicker
+  isHydrated: boolean;
+  
+  // Actions
   addItem: (product: Product) => void;
   removeItem: (productId: string) => void;
   clearCart: () => void;
+  
+  // Selectors
   isInCart: (productId: string) => boolean;
   getTotalPrice: () => number;
+  
+  // Internals
   setHydrated: (state: boolean) => void;
 }
 
@@ -29,29 +35,49 @@ export const useCart = create<CartState>()(
     (set, get) => ({
       items: [],
       isHydrated: false,
-      
+
+      /**
+       * ADD ITEM
+       * Logic: Only adds if the item doesn't exist. 
+       * In the Kynar Universe, you don't buy two of the same digital tool.
+       */
       addItem: (product: Product) => {
-        const currentItems = get().items;
-        const exists = currentItems.find((item) => item.id === product.id);
-        
-        // UX Canon: Prevent duplicates. Digital products are owned, not accumulated.
+        const { items } = get();
+        const exists = items.some((item) => item.id === product.id);
+
         if (!exists) {
-          set({ items: [...currentItems, product] });
+          set({ items: [...items, product] });
         }
       },
 
+      /**
+       * REMOVE ITEM
+       * Optimized for rapid mobile interaction.
+       */
       removeItem: (productId: string) => {
-        set({ 
-          items: get().items.filter((item) => item.id !== productId) 
-        });
+        set((state) => ({
+          items: state.items.filter((item) => item.id !== productId)
+        }));
       },
 
+      /**
+       * CLEAR VAULT
+       * Used after successful checkout or manual reset.
+       */
       clearCart: () => set({ items: [] }),
 
+      /**
+       * SELECTOR: IS IN CART
+       * Essential for button state toggling.
+       */
       isInCart: (productId: string) => {
         return get().items.some((item) => item.id === productId);
       },
 
+      /**
+       * SELECTOR: TOTAL CALCULATION
+       * Derived from the pricing logic utility.
+       */
       getTotalPrice: () => {
         return get().items.reduce((total, item) => {
           const price = getPriceFromId(item.price_id);
@@ -59,14 +85,29 @@ export const useCart = create<CartState>()(
         }, 0);
       },
 
+      /**
+       * INTERNAL: HYDRATION TOGGLE
+       */
       setHydrated: (state: boolean) => set({ isHydrated: state }),
     }),
     {
       name: 'kynar-vault-session-v1.5',
-      // Fixed: Wrapped in a check to prevent "window is not defined" during Netlify build
-      storage: createJSONStorage(() => (typeof window !== 'undefined' ? window.localStorage : ({} as Storage))),
-      onRehydrateStorage: () => (state) => {
-        state?.setHydrated(true);
+      storage: createJSONStorage(() => 
+        typeof window !== 'undefined' ? window.localStorage : (null as any)
+      ),
+      /**
+       * CRITICAL: Hydration Guard
+       * This flips the bit immediately after the store is rehydrated from localStorage.
+       * Prevents UI components from rendering stale/empty server state.
+       */
+      onRehydrateStorage: (state) => {
+        return (rehydratedState, error) => {
+          if (error) {
+            console.error('Kynar Vault Hydration Error:', error);
+          } else if (rehydratedState) {
+            rehydratedState.setHydrated(true);
+          }
+        };
       },
     }
   )

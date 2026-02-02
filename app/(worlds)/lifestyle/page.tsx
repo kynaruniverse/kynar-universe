@@ -1,113 +1,127 @@
+/**
+ * KYNAR UNIVERSE: World Landing (Lifestyle) v1.5
+ * Role: Sector-specific discovery for personal elegance, wellness, and fluid habits.
+ * Alignment: Design System Section 12 (Worlds) & Section 3 (Caramel Palette).
+ */
+
+import { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
-import { Product } from "@/types/supabase";
-import { Wind, Sun, Coffee, Sparkles } from "lucide-react";
+import { Sparkles, Wind, Sun, Coffee } from "lucide-react";
+import { Database } from "@/lib/supabase/types";
 
-/**
- * KYNAR UNIVERSE: World Landing Page (Lifestyle)
- * Aligned with UX Canon Section 3 & Design System Section 3
- * Identity: Warm, Fluid, Elegant.
- */
+// Explicit type extraction for build safety
+type Product = Database['public']['Tables']['products']['Row'];
+
+export const metadata: Metadata = {
+  title: "Lifestyle World | Kynar Universe",
+  description: "Curated tools for elegant living and personal digital sophistication.",
+};
+
 export default async function LifestyleWorldPage() {
   const supabase = await createClient();
   
-  // Fetch products specific to the Lifestyle world
-  const { data: products } = await supabase
-    .from("products")
+  // 1. Fetching Warm Data (Server-Side)
+  // Filtering strictly for 'Lifestyle' to maintain world-silo integrity
+  const { data: products, error } = await supabase
+    ?.from("products")
     .select("*")
     .eq("world", "Lifestyle")
-    .order("created_at", { ascending: false });
+    .eq("is_published", true)
+    .order("created_at", { ascending: false }) ?? { data: [], error: null };
 
   const breadcrumbPaths = [
-    { label: 'Universe Hub', href: '/' },
-    { label: 'Lifestyle World', href: '/lifestyle' }
+    { label: 'Universe Hub', href: '/store' },
+    { label: 'Lifestyle', href: '/lifestyle', colorClass: 'text-kyn-caramel-600' }
   ];
 
+  if (error) {
+    console.error("[LifestyleWorld] Data synchronization failed:", error);
+  }
+
   return (
-    <div className="pb-32 animate-in fade-in duration-1000">
-      <Breadcrumbs paths={breadcrumbPaths} />
+    <main className="min-h-screen bg-canvas pb-32 animate-in fade-in slide-in-from-bottom-2 duration-1000 ease-kyn-out">
+      {/* Handrail Layer */}
+      <div className="px-gutter pt-6">
+        <Breadcrumbs paths={breadcrumbPaths} />
+      </div>
 
-      {/* Narrative Hero - Editorial Curation */}
+      {/* Narrative Hero: Warm & Fluid */}
       <header className="px-gutter pt-16 pb-24 text-center md:pt-32 md:pb-40">
-        <div className="mx-auto max-w-4xl">
-          <div className="mb-8 flex justify-center">
-            <span className="flex items-center gap-2 rounded-full bg-kyn-caramel-50/50 border border-kyn-caramel-100 px-4 py-1.5 font-ui text-[10px] font-bold uppercase tracking-[0.25em] text-kyn-caramel-700">
-              <Wind size={12} className="animate-pulse duration-[4000ms]" />
-              The Art of Flow
-            </span>
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-10 flex justify-center">
+            <div className="relative">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-kyn-caramel-50 border border-kyn-caramel-100 text-kyn-caramel-600 shadow-kynar-soft">
+                <Wind size={32} strokeWidth={1.2} className="animate-pulse" />
+              </div>
+              <div className="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-white border border-border text-kyn-caramel-500 shadow-sm">
+                <Sun size={14} />
+              </div>
+            </div>
           </div>
-
-          <h1 className="font-brand text-5xl font-bold tracking-tight text-kyn-slate-900 md:text-8xl">
-            Design your <span className="text-kyn-caramel-600">Daily Presence.</span>
+          
+          <h1 className="font-brand text-4xl font-bold tracking-tight text-text-primary md:text-6xl italic">
+            Lifestyle
           </h1>
-
-          <p className="mt-10 font-ui text-lg text-text-secondary leading-relaxed md:text-2xl max-w-2xl mx-auto opacity-90">
-            A sanctuary of digital assets for the modern aesthete. Tools for curation, reflection, and the quiet elevation of your digital lifestyle.
+          <p className="mt-8 font-ui text-lg leading-relaxed text-text-secondary md:text-xl max-w-2xl mx-auto">
+            A space for tools that don't just solve problems, but elevate the 
+            rhythm of your day. Designed for the modern aesthete.
           </p>
         </div>
       </header>
 
-      {/* World Philosophy - Design System Section 3 */}
-      <section className="px-gutter mb-32">
-        <div className="mx-auto max-w-screen-xl grid gap-gutter md:grid-cols-3">
-          <div className="kynar-card bg-kyn-caramel-50/10 border-kyn-caramel-100/50">
-            <Sun className="text-kyn-caramel-600 mb-6" size={24} strokeWidth={1.5} />
-            <h3 className="font-brand text-xl font-bold text-kyn-slate-900">Digital Elegance</h3>
-            <p className="mt-4 font-ui text-sm text-text-secondary leading-relaxed">
-              Assets that prioritize beauty and fluidity. Built for those who view their digital space as an extension of their personal style.
-            </p>
-          </div>
-          <div className="kynar-card bg-kyn-caramel-50/10 border-kyn-caramel-100/50">
-            <Coffee className="text-kyn-caramel-600 mb-6" size={24} strokeWidth={1.5} />
-            <h3 className="font-brand text-xl font-bold text-kyn-slate-900">Slow Tech</h3>
-            <p className="mt-4 font-ui text-sm text-text-secondary leading-relaxed">
-              Resisting the rush. Our lifestyle tools encourage a more deliberate and thoughtful engagement with your digital rituals.
-            </p>
-          </div>
-          <div className="kynar-card bg-kyn-caramel-50/10 border-kyn-caramel-100/50">
-            <Sparkles className="text-kyn-caramel-600 mb-6" size={24} strokeWidth={1.5} />
-            <h3 className="font-brand text-xl font-bold text-kyn-slate-900">Curation First</h3>
-            <p className="mt-4 font-ui text-sm text-text-secondary leading-relaxed">
-              Not more content, but better context. Tools to help you filter the noise and focus on what truly resonates.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Marketplace Anchor */}
+      {/* The Collection Matrix */}
       <section className="px-gutter">
         <div className="mx-auto max-w-screen-xl">
-          <div className="flex items-center justify-between mb-12 border-b border-border pb-8">
-            <h2 className="font-brand text-2xl font-bold text-kyn-slate-900">The Collection</h2>
-            <span className="font-ui text-xs font-bold uppercase tracking-widest text-kyn-slate-400">
-              {products?.length || 0} Curated Assets
+          <div className="mb-12 flex items-center justify-between border-b border-kyn-caramel-100 pb-8">
+            <div className="flex items-center gap-3">
+              <Coffee className="text-kyn-caramel-500" size={18} />
+              <h2 className="font-brand text-sm font-bold uppercase tracking-[0.2em] text-text-primary">
+                The Curation
+              </h2>
+            </div>
+            <span className="font-ui text-[11px] font-bold uppercase tracking-widest text-kyn-caramel-600 bg-kyn-caramel-50 px-3 py-1 rounded-full">
+              {products?.length || 0} Assets
             </span>
           </div>
 
-          <div className="grid grid-cols-1 gap-inner sm:grid-cols-2 lg:grid-cols-3">
-            {products?.map((product) => (
-              <ProductCard key={product.id} product={product as Product} />
-            ))}
-          </div>
-
-          {(!products || products.length === 0) && (
-            <div className="py-24 text-center border-border rounded-kynar bg-surface/50 border-2 border-dashed">
-              <p className="font-ui text-sm text-text-secondary italic">The Lifestyle Collection is currently being assembled.</p>
+          {products && products.length > 0 ? (
+            <div className="grid grid-cols-1 gap-inner sm:grid-cols-2 lg:grid-cols-3">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product as Product} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-32 text-center rounded-kynar border-2 border-dashed border-kyn-caramel-100 bg-kyn-caramel-50/20">
+              <Sparkles className="mb-4 text-kyn-caramel-300" size={32} strokeWidth={1} />
+              <p className="font-ui text-sm text-text-secondary italic">
+                The Lifestyle sector is currently being refined.<br />
+                New arrivals are being harmonized.
+              </p>
             </div>
           )}
         </div>
       </section>
 
-      {/* Lifestyle Reassurance */}
-      <footer className="mt-40 px-gutter py-24 bg-kyn-caramel-50/30 border-t border-kyn-caramel-100 text-center">
-        <div className="max-w-2xl mx-auto">
-          <h3 className="font-brand text-2xl font-bold text-kyn-slate-900 italic">"Simplicity is the ultimate sophistication."</h3>
-          <p className="mt-6 font-ui text-sm text-kyn-caramel-800 tracking-wide uppercase font-bold">
-            Permanent Tools • Zero Noise • One Universe
+      {/* Philosophy Callout: Section 19.2 */}
+      <footer className="mt-40 bg-kyn-caramel-50/30 border-t border-kyn-caramel-100 px-gutter py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <h3 className="font-brand text-2xl font-bold text-text-primary italic">
+            "Sophistication is found in what we choose to remove."
+          </h3>
+          <p className="mt-6 font-ui text-base leading-loose text-text-secondary">
+            In the Lifestyle World, we prioritize digital objects that offer 
+            mental clarity and aesthetic joy. No clutter. No subscriptions. 
+            Just permanent, beautiful utility.
           </p>
+          <div className="mt-10 flex justify-center gap-1.5">
+             {[1, 2, 3].map((i) => (
+               <div key={i} className="h-1.5 w-1.5 rounded-full bg-kyn-caramel-200" />
+             ))}
+          </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }

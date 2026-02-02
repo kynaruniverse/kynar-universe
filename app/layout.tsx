@@ -1,25 +1,27 @@
 /**
- * KYNAR UNIVERSE: Root Layout (v1.5)
- * Role: Global Atmosphere, Font Injection, and State Providers.
- * Aligned with: Design System Section 5 (Layout) & UX Canon Section 8.
+ * KYNAR UNIVERSE: Root Layout (v1.6)
+ * Role: The master architectural frame.
+ * Optimization: Next.js 15, Hardware-accelerated overlays, Mobile Safe-Zones.
  */
 
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-// Absolute pathing safety check for Netlify Linux builds
-import { PresenceBar } from "../components/layout/PresenceBar";
-import { Footer } from "../components/layout/Footer";
-import Navigation from "../components/layout/Navigation";
-import { getUserProfile } from "../lib/supabase/helpers";
+import { PresenceBar } from "@/components/layout/PresenceBar";
+import { Footer } from "@/components/layout/Footer";
+import { Navigation } from "@/components/layout/Navigation"; // Refactored named import
+import { getUserProfile } from "@/lib/supabase/helpers";
 import { Toaster } from "react-hot-toast";
+import { cn } from "@/lib/utils";
 
+// UI Font: For technical data and functional labels
 const inter = Inter({ 
   subsets: ["latin"], 
   variable: "--font-ui",
   display: 'swap',
 });
 
+// Brand Font: For headlines and narrative storytelling
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"], 
   variable: "--font-brand",
@@ -31,14 +33,19 @@ export const metadata: Metadata = {
     template: '%s | Kynar Universe',
     default: 'Kynar Universe | Home • Lifestyle • Tools',
   },
-  description: "A calm, mobile-first digital ecosystem for useful, well-designed tools to organise modern life.",
+  description: "A calm, mobile-first digital ecosystem built for professional architecture.",
   metadataBase: new URL('https://kynaruniverse.com'),
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1, // UX Canon: Prevents disruptive zoom on mobile inputs
+  maximumScale: 1, // Prevents iOS auto-zoom on form inputs
+  viewportFit: 'cover', // Ensures content fills the screen behind notches
   themeColor: "#FAF9F6", 
 };
 
@@ -47,57 +54,68 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Server-side fetch for initial atmospheric state
-  // This runs on the server during request time
-  const profile = await getUserProfile();
+  // 1. Next.js 15 Server-Side Identity Check
+  let profile = null;
+  try {
+    profile = await getUserProfile();
+  } catch (e) {
+    // Graceful degradation for edge cases or build-time rendering
+    console.warn("[Layout] Profile bridge skipped or unavailable.");
+  }
 
   return (
     <html 
       lang="en-GB" 
-      className={`${inter.variable} ${jakarta.variable} scroll-smooth`}
-      suppressHydrationWarning // Recommended when using theme-based classes or extensions
+      className={cn(
+        inter.variable, 
+        jakarta.variable, 
+        "scroll-smooth antialiased"
+      )}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-screen flex-col font-ui bg-canvas text-text-primary antialiased selection:bg-kyn-green-100 selection:text-kyn-green-900">
+      <body className="relative flex min-h-screen flex-col bg-canvas font-ui text-text-primary overflow-x-hidden">
         
-        {/* TOAST SYSTEM: Grounded and Reassured Notifications */}
+        {/* TOAST SYSTEM: Ergonomically centered for mobile alerts */}
         <Toaster 
           position="top-center"
           toastOptions={{
-            duration: 5000,
+            duration: 4000,
+            className: 'font-brand font-bold text-xs uppercase tracking-widest',
             style: {
-              background: 'hsl(var(--surface))',
-              color: 'hsl(var(--text-primary))',
-              borderRadius: '1rem',
-              border: '1px solid hsl(var(--border))',
-            },
-            success: {
-              iconTheme: { primary: '#4A614D', secondary: '#fff' },
-            },
-            error: {
-              iconTheme: { primary: '#dc2626', secondary: '#fff' },
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '1.25rem',
+              border: '1px solid rgba(0,0,0,0.05)',
+              padding: '1rem 1.5rem',
+              boxShadow: '0 10px 30px -10px rgba(0,0,0,0.1)',
             },
           }}
         />
 
-        {/* ATMOSPHERIC TEXTURE: Design System Section 11 */}
+        {/* ATMOSPHERIC GRAIN: Optimized SVG with hardware acceleration */}
         <div 
-          className="pointer-events-none fixed inset-0 z-[1] h-full w-full opacity-[0.02] contrast-150" 
+          className="pointer-events-none fixed inset-0 z-[1] h-full w-full opacity-[0.02] will-change-transform" 
           aria-hidden="true"
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+          style={{ 
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+            backgroundRepeat: 'repeat'
+          }}
         />
 
-        {/* PERSISTENT UI ELEMENTS */}
+        {/* PRIMARY CONTAINER */}
         <div className="relative z-10 flex flex-col min-h-screen">
+          {/* Top Presence Indicator (Contextual Identity) */}
           <PresenceBar initialProfile={profile} />
           
-          <main className="flex-1 w-full pb-24 md:pb-0">
+          {/* Main Narrative Slot: pb-24 protects content from the Navigation Dock */}
+          <main className="flex-1 w-full pb-32 md:pb-0">
             {children}
           </main>
 
           <Footer />
         </div>
 
-        {/* GLOBAL NAVIGATION: Handrail of the Universe */}
+        {/* Navigation Compass: Stays above the main flow */}
         <Navigation />
 
       </body>

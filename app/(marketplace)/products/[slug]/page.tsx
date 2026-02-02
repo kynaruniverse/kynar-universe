@@ -1,177 +1,196 @@
 /**
  * KYNAR UNIVERSE: Product Deep-Dive (v1.5)
  * Role: The "Conversation" - Turning discovery into ownership.
- * Fix: TypeScript Type Casting & Next.js 15 Async Params
+ * Optimization: Metadata Generation, Ownership Awareness, and Next.js 15 Async.
  */
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { formatGBP, getPriceFromId } from "@/lib/marketplace/pricing";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { AddToCartButton } from "@/components/marketplace/AddToCartButton";
-// Ensure this import points to your actual Product interface
-import { Product } from "@/lib/supabase/types"; 
-import { ShieldCheck, Download, Users, Landmark } from "lucide-react";
+import { Product } from "@/lib/supabase/types";
+import { ShieldCheck, Download, Zap, Landmark, BookOpen, ArrowLeft } from "lucide-react";
 
 interface ProductPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise < { slug: string } > ;
+}
+
+/**
+ * SEO & Social Identity
+ */
+export async function generateMetadata({ params }: ProductPageProps): Promise < Metadata > {
+  const { slug } = await params;
+  const supabase = await createClient();
+  const { data: product } = await supabase?.from("products").select("title, short_description").eq("slug", slug).single() || {};
+  
+  return {
+    title: product?.title ? `${product.title} | Hub` : 'Product',
+    description: product?.short_description || 'Explore this digital asset in the Kynar Universe.',
+  };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  // 1. Await Params (Next.js 15 Requirement)
   const { slug } = await params;
   const supabase = await createClient();
   
-  // 2. Fetch with Explicit Type Casting
-  const { data } = await supabase
-    .from("products")
-    .select("*")
-    .eq("slug", slug)
-    .single();
-
-  // Cast 'data' to 'Product' to satisfy the TypeScript compiler
-  const product = data as Product;
-
+  if (!supabase) return null;
+  
+  // 1. Concurrent Data Fetch: Product + User Ownership
+  const [{ data: product }, { data: { user } }] = await Promise.all([
+    supabase.from("products").select("*").eq("slug", slug).single(),
+    supabase.auth.getUser()
+  ]);
+  
   if (!product) notFound();
-
-  // Now TypeScript knows price_id exists
+  
+  // 2. Check if already owned (Permanent Collection Rule)
+  const { data: ownership } = user
+    ?
+    await supabase.from('user_library').select('id').eq('user_id', user.id).eq('product_id', product.id).single() :
+    { data: null };
+  
   const price = getPriceFromId(product.price_id);
   
-  // 3. Discovery Loop: Related items (Casting result as Product[])
-  const { data: relatedData } = await supabase
+  // 3. Related Discovery (Same World, excluding current)
+  const { data: relatedProducts } = await supabase
     .from("products")
     .select("*")
     .eq("world", product.world)
     .neq("id", product.id)
     .limit(2);
-
-  const related = (relatedData as Product[]) || [];
-
+  
   const breadcrumbPaths = [
-    { label: "Hub", href: "/store" },
-    { label: product.world, href: `/store?world=${product.world.toLowerCase()}` },
+    { label: 'The Hub', href: '/store' },
+    { label: product.world, href: `/store?world=${product.world}` },
     { label: product.title, href: `/products/${product.slug}` }
   ];
-
+  
   return (
-    <div className="pb-32 animate-in fade-in duration-700 ease-out">
-      <div className="max-w-screen-xl mx-auto px-6">
+    <main className="min-h-screen bg-canvas pb-32 animate-in fade-in slide-in-from-bottom-2 duration-1000">
+      {/* Handrail */}
+      <div className="max-w-screen-xl mx-auto px-gutter pt-8">
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>
 
-      {/* Hero: Emotional Orientation */}
-      <section className="px-6 pt-16 pb-20 text-center md:pt-24 md:pb-32">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-8 flex justify-center">
-             <span className="rounded-full bg-surface border border-border px-4 py-1.5 font-ui text-[10px] font-medium uppercase tracking-[0.15em] text-text-secondary">
-              Part of {product.world}
-            </span>
+      <section className="max-w-screen-xl mx-auto px-gutter mt-8 lg:mt-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          
+          {/* Visual Wing: 16:10 Cinematic Display */}
+          <div className="lg:col-span-7 space-y-8">
+            <div className="group relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-border bg-surface shadow-kynar-elevated">
+              <Image
+                src={product.preview_image || "/assets/placeholder.jpg"}
+                alt={product.title}
+                fill
+                priority
+                className="object-cover calm-transition group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            </div>
+
+            {/* Content Wing: Editorial Body */}
+            <div className="hidden lg:block">
+               <h2 className="font-brand text-2xl font-bold text-text-primary mb-6">Technical Architecture</h2>
+               <div 
+                  className="prose prose-slate max-w-none font-ui text-text-secondary leading-relaxed space-y-4"
+                  dangerouslySetInnerHTML={{ __html: product.description || "Information being retrieved..." }} 
+               />
+            </div>
           </div>
-          
-          <h1 className="font-brand text-4xl font-medium tracking-tight text-text-primary md:text-7xl leading-[1.1]">
-            {product.title}
-          </h1>
-          
-          <p className="mt-8 font-ui text-lg text-text-secondary leading-relaxed md:text-xl max-w-2xl mx-auto">
-            {/* Fallback for different naming conventions in the DB */}
-            {product.short_description || "A grounded tool for your digital vault."}
-          </p>
-          
-          <div className="mt-16 flex flex-col items-center gap-10">
-            <div className="space-y-2">
-              <span className="font-brand text-5xl font-medium text-text-primary">{formatGBP(price)}</span>
-              <div className="flex items-center justify-center gap-2 font-ui text-[10px] font-medium uppercase tracking-widest text-text-secondary">
-                <Landmark size={12} />
-                <span>One-time purchase • Inclusive of UK VAT</span>
+
+          {/* Action Wing: Acquisition Panel */}
+          <div className="lg:col-span-5">
+            <div className="sticky top-24 space-y-8">
+              <div>
+                <span className="font-ui text-[10px] font-bold uppercase tracking-[0.3em] text-kyn-slate-400">
+                  Sector: {product.world}
+                </span>
+                <h1 className="font-brand mt-4 text-4xl font-bold tracking-tight text-text-primary md:text-5xl">
+                  {product.title}
+                </h1>
+                <p className="font-ui mt-6 text-lg text-text-secondary leading-relaxed">
+                  {product.short_description}
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-border bg-surface p-8 shadow-kynar-soft">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="space-y-1">
+                    <p className="font-ui text-[10px] font-bold uppercase tracking-wider text-kyn-slate-400">Fixed Value</p>
+                    <p className="font-brand text-3xl font-bold text-text-primary">{formatGBP(price)}</p>
+                  </div>
+                  <div className="h-12 w-12 rounded-full bg-canvas border border-border flex items-center justify-center text-kyn-green-600">
+                    <Zap size={20} fill="currentColor" />
+                  </div>
+                </div>
+
+                {ownership ? (
+                  <Link 
+                    href="/library" 
+                    className="flex w-full items-center justify-center gap-3 rounded-xl bg-kyn-green-600 py-4 font-brand text-sm font-bold text-white shadow-lg hover:bg-kyn-green-700 transition-all active:scale-[0.98]"
+                  >
+                    <Landmark size={18} />
+                    Already In Your Vault
+                  </Link>
+                ) : (
+                  <AddToCartButton product={product as Product} />
+                )}
+
+                <div className="mt-6 flex flex-col gap-4">
+                  <div className="flex items-center gap-3 text-[11px] font-ui font-medium text-text-secondary">
+                    <ShieldCheck size={14} className="text-kyn-green-500" />
+                    <span>One-time acquisition. Perpetual ownership.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Technical Metadata List */}
+              <div className="space-y-4 pt-4">
+                <h3 className="font-brand text-xs font-bold uppercase tracking-widest text-kyn-slate-900">Format Integrity</h3>
+                <ul className="grid grid-cols-2 gap-3">
+                  {(product.file_types as string[])?.map((ft) => (
+                    <li key={ft} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border font-ui text-[11px] text-text-primary">
+                      <Download size={12} className="text-kyn-slate-400" />
+                      {ft} Format
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-            
-            <AddToCartButton product={product} />
-            
-            <div className="flex items-center gap-6 font-ui text-[11px] font-medium uppercase tracking-widest text-text-secondary">
-              <span className="flex items-center gap-2">
-                <ShieldCheck size={14} className="text-kyn-green-700" />
-                Permanent Ownership
-              </span>
-              <span className="h-4 w-px bg-border" />
-              <span className="flex items-center gap-2">
-                <Download size={14} />
-                Instant Access
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Visual Proof */}
-      <section className="px-6 mb-24 max-w-screen-xl mx-auto">
-        <div className="overflow-hidden rounded-2xl border border-border bg-surface aspect-[16/9] shadow-sm relative">
-          <Image 
-            src={product.image_url || "/placeholder-preview.png"} 
-            alt={`${product.title} overview`}
-            fill
-            className="object-cover transition-opacity duration-700"
-            sizes="(max-width: 1200px) 100vw, 1200px"
-            priority
-          />
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-screen-lg px-6">
-        <div className="grid gap-16 md:grid-cols-2 mb-32 border-b border-border pb-24">
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 text-text-primary">
-              <Users size={24} strokeWidth={1.5} className="text-kyn-green-700" />
-              <h2 className="font-brand text-2xl font-medium">The Purpose</h2>
-            </div>
-            <p className="font-ui text-base text-text-secondary leading-loose">
-              Built to bring clarity and permanence to your personal digital ecosystem.
-            </p>
-          </div>
-          
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 text-text-primary">
-              <Download size={24} strokeWidth={1.5} className="text-text-secondary" />
-              <h2 className="font-brand text-2xl font-medium">Inside your Vault</h2>
-            </div>
-            <ul className="font-ui text-sm space-y-4">
-              {/* Handling array types safely */}
-              {(product.file_types as string[])?.map((ft) => (
-                <li key={ft} className="flex items-center gap-3 text-text-secondary">
-                  <span className="flex h-7 w-7 items-center justify-center rounded bg-surface border border-border text-[9px] font-medium uppercase">
-                    {ft}
-                  </span>
-                  <span>Native format for immediate use.</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
-        <article className="max-w-2xl mx-auto">
-          <h2 className="font-brand text-3xl font-medium text-text-primary mb-8 tracking-tight text-center">Development Notes</h2>
+        {/* Mobile-only Editorial Section */}
+        <div className="mt-16 lg:hidden">
+          <h2 className="font-brand text-2xl font-bold text-text-primary mb-6">Technical Architecture</h2>
           <div 
-            className="prose prose-slate prose-lg max-w-none font-ui text-text-secondary leading-relaxed"
+            className="prose prose-slate max-w-none font-ui text-text-secondary leading-relaxed"
             dangerouslySetInnerHTML={{ __html: product.description || "" }} 
           />
-        </article>
-      </div>
+        </div>
 
-      {related.length > 0 && (
-        <section className="mt-32 border-t border-border bg-surface/30 px-6 py-24">
-          <div className="mx-auto max-w-screen-xl">
-            <h2 className="font-brand text-2xl font-medium mb-12 text-text-primary text-center">Continue your Discovery</h2>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-              {related.map((r) => (
-                <ProductCard key={r.id} product={r} />
+        {/* Related Discovery Sector */}
+        {relatedProducts && relatedProducts.length > 0 && (
+          <section className="mt-32 pt-24 border-t border-border">
+            <div className="flex items-end justify-between mb-12">
+              <div className="space-y-2">
+                <h2 className="font-brand text-2xl font-bold text-text-primary">Related Acquisitions</h2>
+                <p className="font-ui text-sm text-text-secondary">Explore more tools within the {product.world} sector.</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-12 sm:grid-cols-2">
+              {relatedProducts.map((r) => (
+                <ProductCard key={r.id} product={r as Product} />
               ))}
             </div>
-          </div>
-        </section>
-      )}
-    </div>
+          </section>
+        )}
+      </section>
+    </main>
   );
 }
- 
