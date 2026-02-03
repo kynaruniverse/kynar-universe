@@ -1,6 +1,6 @@
 /**
  * KYNAR UNIVERSE: The Universe Gate (v1.5)
- * Role: The primary entry point and world-selection portal.
+ * Role123: The primary entry point and world-selection portal.
  * Optimization: Mobile-first ergonomic grid & Next.js 15 Server-First architecture.
  */
 
