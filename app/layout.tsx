@@ -1,3 +1,8 @@
+/**
+ * KYNAR UNIVERSE: Root Architecture (v2.1)
+ * Alignment: Fixed component prop mismatch (initialProfile).
+ */
+
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
@@ -15,8 +20,8 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-brand"
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1, // Prevents accidental zoom on mobile inputs
-  viewportFit: 'cover', // Critical for safe-area-insets
+  maximumScale: 1,
+  viewportFit: 'cover',
   themeColor: '#FAF9F6',
 };
 
@@ -48,8 +53,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
 
         <div className="relative z-10 flex min-h-screen flex-col">
-          <PresenceBar user={profile} />
-          <Navigation user={profile} />
+          {/* Aligned initialProfile props to match PresenceBar/Navigation interfaces */}
+          <PresenceBar initialProfile={profile} />
+          <Navigation initialProfile={profile} />
           
           <main className="flex-grow pt-safe-top">
             {children}

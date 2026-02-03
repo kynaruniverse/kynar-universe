@@ -1,7 +1,7 @@
 /**
  * KYNAR UNIVERSE: Presence Bar (v1.6)
  * Role: Intelligence Header & Identity Hub.
- * Philosophy: Biological feedback and status persistence.
+ * Fix: Unused 'event' parameter and hydration logic synchronization.
  */
 
 "use client";
@@ -29,7 +29,8 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
     setMounted(true);
     
     // Establishing the Identity Bridge
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    // Fix: Added underscore to _event to satisfy TS6133
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         const { data } = await supabase
           .from("profiles")
@@ -61,7 +62,7 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
       </Link>
       
       <div className="flex items-center gap-3">
-        {/* Context Label: Hidden on small devices to prioritize utilities */}
+        {/* Context Label */}
         <span className="hidden xs:block text-[10px] font-bold uppercase tracking-[0.2em] text-kyn-slate-400 font-ui">
           {context}
         </span>
@@ -100,7 +101,6 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
             <User size={16} className="text-kyn-slate-400 group-hover:text-kyn-slate-600" />
           )}
           
-          {/* Authenticated Pulse */}
           {profile && (
             <span className="absolute inset-0 rounded-xl ring-2 ring-kyn-green-500/20 animate-pulse" />
           )}

@@ -1,7 +1,7 @@
 /**
- * KYNAR UNIVERSE: Secure Checkout Gateway (v1.6)
+ * KYNAR UNIVERSE: Secure Checkout Gateway (v2.0)
  * Role: Server-side validation and payment handoff.
- * Logic: Next.js 15 Async Params -> DB Verification -> LS URL Generation.
+ * Fix: Argument mismatch for generateCheckoutUrl (TS2554) and strictly typed product mapping.
  */
 
 import { redirect } from "next/navigation";
@@ -23,12 +23,12 @@ export default async function CheckoutPage({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // 2. Identity Guard: Ensure user is grounded before transaction
+  // 2. Identity Guard
   if (!user) {
     redirect("/auth/login?return_to=/cart");
   }
 
-  // 3. Validation: Ensure selection exists
+  // 3. Validation
   if (!rawItems) redirect("/cart");
 
   let productIds: string[] = [];
@@ -39,10 +39,10 @@ export default async function CheckoutPage({
     redirect("/cart?error=invalid_selection");
   }
 
-  // 4. Verification: Cross-reference selection with the source of truth
+  // 4. Verification: Fetch only the necessary fields for the payment gateway
   const { data: products, error } = await supabase
     .from("products")
-    .select("id, title, price_id, slug")
+    .select("id, title, price_id, slug, lemon_squeezy_id")
     .in("id", productIds);
 
   if (error || !products || products.length === 0) {
@@ -50,9 +50,16 @@ export default async function CheckoutPage({
     redirect("/cart?error=verification_failed");
   }
 
-  // 5. Secure Handoff: Generate the external vault entry URL
-  // Typing products as Product[] to ensure alignment with Lemon Squeezy generator expectations
-  const checkoutUrl = await generateCheckoutUrl(products as Product[], user.id, user.email);
+  /**
+   * 5. Secure Handoff
+   * Fix: Bundled arguments into the expected configuration object.
+   * This resolves TS2554 by providing 1 argument (the config object).
+   */
+  const checkoutUrl = await generateCheckoutUrl({
+    products: products as Product[],
+    userId: user.id,
+    userEmail: user.email ?? "",
+  });
 
   if (checkoutUrl) {
     redirect(checkoutUrl);
@@ -60,14 +67,9 @@ export default async function CheckoutPage({
     redirect("/cart?error=gateway_timeout");
   }
 
-  /**
-   * FALLBACK UI: "The Vault Gate"
-   * Displayed during the brief redirect latency.
-   */
   return (
     <main className="flex min-h-[85vh] w-full flex-col items-center justify-center px-gutter bg-canvas text-center">
       <div className="max-w-xs animate-in fade-in slide-in-from-bottom-8 duration-1000">
-        {/* Pulsing Status Indicator */}
         <div className="mx-auto mb-10 flex h-20 w-20 items-center justify-center rounded-3xl border border-kyn-slate-50 bg-white shadow-kynar-soft">
           <div className="relative flex h-4 w-4">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-kyn-green-400 opacity-75"></span>

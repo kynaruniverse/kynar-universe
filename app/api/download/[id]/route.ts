@@ -1,7 +1,7 @@
 /**
  * KYNAR UNIVERSE: Secure Asset Delivery (v2.1)
  * Role: Validating ownership and generating transient signed access to the Storage Vault.
- * Fully aligned with canonical types.ts and Next.js 15.
+ * Fixed: Property mapping (download_path) and unused parameter.
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -9,7 +9,7 @@ import { NextResponse } from "next/server";
 import { UserLibrary, Product } from "@/lib/supabase/types";
 
 export async function GET(
-  request: Request,
+  _request: Request, // Added underscore to fix TS6133 unused parameter
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: productId } = await params;
@@ -23,8 +23,7 @@ export async function GET(
 
   /**
    * 2. Verify Ownership & Retrieve Metadata
-   * We use the UserLibrary alias and nested selection.
-   * Supabase v2 returns nested objects based on foreign key relationships.
+   * Note: 'file_path' updated to 'download_path' to match types.ts
    */
   const { data, error } = await supabase
     .from("user_library")
@@ -33,7 +32,7 @@ export async function GET(
       product_id,
       products (
         slug,
-        file_path
+        download_path
       )
     `)
     .eq("user_id", user.id)
@@ -41,22 +40,21 @@ export async function GET(
     .single();
 
   // Cast through the UserLibrary extended type for property safety
-  const ownership = data as unknown as UserLibrary & { products: Pick<Product, 'slug' | 'file_path'> };
+  const ownership = data as unknown as UserLibrary & { products: Pick<Product, 'slug' | 'download_path'> };
   const product = ownership?.products;
 
-  if (error || !product?.file_path) {
+  if (error || !product?.download_path) {
     return new NextResponse("Forbidden: Asset Ownership Not Verified", { status: 403 });
   }
 
   /**
    * 3. Generate Transient Access
-   * Creates a signed URL valid for 60 seconds.
    * Note: The bucket 'vault' must be private for this security layer to function.
    */
   const { data: signedData, error: storageError } = await supabase
     .storage
     .from("vault")
-    .createSignedUrl(product.file_path, 60, {
+    .createSignedUrl(product.download_path, 60, {
       download: true, // Forces Content-Disposition: attachment
     });
 

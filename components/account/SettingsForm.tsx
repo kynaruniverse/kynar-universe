@@ -12,7 +12,7 @@ interface SettingsFormProps {
 }
 
 export function SettingsForm({ user, profile }: SettingsFormProps) {
-  const supabase = createClient();
+  const supabase = createClient<Database>();
   
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(profile.full_name ?? "");

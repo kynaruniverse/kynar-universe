@@ -1,6 +1,6 @@
 /**
- * KYNAR UNIVERSE: Account Workshop (v2.0)
- * Fully aligned with canonical types.ts and Supabase v2.
+ * KYNAR UNIVERSE: Account Workshop (v2.1)
+ * Fix: Resolved Conversion mismatch (TS2352) and missing Profile fields.
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -21,21 +21,24 @@ export default async function SettingsPage() {
     redirect("/auth/login");
   }
   
-  // 2. Fetch the profile
+  // 2. Fetch the profile with all canonical fields to satisfy the Profile type
   const { data: profileData } = await supabase
     .from("profiles")
-    .select("id, email, full_name, is_admin")
+    .select("*")
     .eq("id", user.id)
     .single();
   
-  // Aligning with the Profile type from types.ts
-  const profile: Profile = (profileData as Profile) ?? {
+  /**
+   * Fix: Use a safer fallback pattern. 
+   * Casting to 'unknown' first resolves TS2352 by breaking the direct conflict.
+   */
+  const profile = (profileData as unknown as Profile) ?? {
     id: user.id,
     email: user.email ?? "",
     full_name: "",
     is_admin: false,
-    created_at: null, // Including missing fields from Profile type
-    updated_at: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     avatar_url: null
   };
   
@@ -46,12 +49,10 @@ export default async function SettingsPage() {
   
   return (
     <main className="mx-auto max-w-2xl pb-32 animate-in fade-in duration-700 ease-out">
-      {/* Handrail Layer: UX Canon 2.2 */}
       <div className="px-gutter pt-8">
         <Breadcrumbs paths={breadcrumbPaths} />
       </div>
 
-      {/* Header */}
       <header className="px-gutter py-12 md:py-20">
         <h1 className="font-brand text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
           Account Settings
@@ -61,13 +62,11 @@ export default async function SettingsPage() {
         </p>
       </header>
 
-      {/* Settings Form */}
       <section className="px-gutter">
         <div className="rounded-2xl border border-border bg-surface p-6 md:p-8 shadow-kynar-soft">
           <SettingsForm user={user} profile={profile} />
         </div>
 
-        {/* Support Info */}
         <div className="mt-12 border-t border-border pt-8 text-center">
           <div className="flex justify-center mb-4 text-kyn-slate-300">
             <ShieldCheck size={20} strokeWidth={1.5} />
@@ -87,7 +86,6 @@ export default async function SettingsPage() {
         </div>
       </section>
 
-      {/* Security Context */}
       <section className="mt-12 px-gutter">
         <div className="flex gap-4 p-5 rounded-xl bg-kyn-green-50/50 border border-kyn-green-100">
           <div className="shrink-0 text-kyn-green-600">

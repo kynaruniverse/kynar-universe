@@ -1,11 +1,15 @@
-import { createServerClient } from '@supabase/ssr';
+/**
+ * KYNAR UNIVERSE: Supabase Server Client (v2.1)
+ * Fix: Explicit typing for cookie resolution to satisfy strict TS rules.
+ */
+
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { Database } from './types';
 
 export async function createClient() {
   const cookieStore = await cookies();
 
-  // Unified environment check for Netlify/Local
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
@@ -17,7 +21,8 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet) {
+        // Fix: Added explicit types for the cookie objects
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)

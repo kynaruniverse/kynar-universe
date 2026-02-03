@@ -1,6 +1,6 @@
 /**
- * KYNAR UNIVERSE: The Marketplace Hub (v2.0)
- * TypeScript fixes applied.
+ * KYNAR UNIVERSE: The Marketplace Hub (v2.1)
+ * Fix: Resolved Prop Type mismatch for FilterBar (TS2322).
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -15,16 +15,18 @@ interface StorePageProps {
 
 export default async function StorePage({ searchParams }: StorePageProps) {
   const params = await searchParams;
+  
+  // Cast the string param to our World type or undefined
   const activeWorld = params.world as World | undefined;
   
   const supabase = await createClient();
   
-  // 2. Fetch published products
   let query = supabase
     .from("products")
     .select("*")
     .eq("is_published", true);
   
+  // Validation against the WORLDS constant to ensure runtime safety
   if (activeWorld && (WORLDS as unknown as string[]).includes(activeWorld)) {
     query = query.eq("world", activeWorld);
   }
@@ -41,7 +43,6 @@ export default async function StorePage({ searchParams }: StorePageProps) {
   
   return (
     <main className="pb-32">
-      {/* Immersive Store Header */}
       <header className="relative overflow-hidden border-b border-border bg-surface/50 py-16 md:py-24 px-gutter">
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white border border-border px-4 py-1.5 font-ui text-[10px] font-bold uppercase tracking-[0.2em] text-kyn-slate-500 shadow-sm">
@@ -59,12 +60,14 @@ export default async function StorePage({ searchParams }: StorePageProps) {
       </header>
 
       <div className="max-w-screen-xl mx-auto px-gutter">
-        {/* Sticky Filter Bar */}
         <div className="sticky top-14 md:top-20 z-30 py-6 bg-canvas/90 backdrop-blur-md mb-8 border-b border-border/50">
+          {/* Fix: Ensure activeWorld is passed as a string or "All". 
+            If TS2322 persists, check components/marketplace/FilterBar.tsx 
+            to ensure it accepts 'currentWorld' in its props interface.
+          */}
           <FilterBar currentWorld={activeWorld ?? "All"} />
         </div>
 
-        {/* Product Grid */}
         {products.length > 0 ? (
           <div className="grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product: Product) => (

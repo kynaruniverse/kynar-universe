@@ -1,6 +1,7 @@
 /**
- * KYNAR UNIVERSE: Product Deep-Dive (v2.2)
- * Fully type-safe for Next.js 15 + Supabase v2
+ * KYNAR UNIVERSE: Product Deep-Dive (v2.3)
+ * Role: Primary acquisition interface.
+ * Fix: Resolved 'never' type inference on property access (TS2339).
  */
 
 import { notFound } from "next/navigation";
@@ -20,6 +21,7 @@ interface ProductPageProps {
 
 /**
  * SEO Metadata
+ * Fix: Explicitly cast the single record to satisfy property access.
  */
 export async function generateMetadata(
   { params }: ProductPageProps
@@ -27,11 +29,13 @@ export async function generateMetadata(
   const { slug } = await params;
   const supabase = await createClient();
 
-  const { data: product } = await supabase
+  const { data } = await supabase
     .from("products")
     .select("title, short_description")
     .eq("slug", slug)
     .maybeSingle();
+
+  const product = data as Pick<Product, 'title' | 'short_description'> | null;
 
   return {
     title: product?.title
@@ -49,10 +53,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   /**
    * Fetch product + user concurrently
+   * Using generic to ensure the 'product' variable isn't inferred as 'never'
    */
   const [
-    { data: product },
-    { data: { user } },
+    { data: productData },
+    { data: authData },
   ] = await Promise.all([
     supabase
       .from("products")
@@ -62,10 +67,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
     supabase.auth.getUser(),
   ]);
 
-  if (!product) notFound();
+  if (!productData) notFound();
 
-  // Cast to Product alias from types.ts
-  const typedProduct = product as Product;
+  const product = productData as Product;
+  const user = authData?.user;
 
   /**
    * Ownership verification
@@ -75,21 +80,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
         .from("user_library")
         .select("id")
         .eq("user_id", user.id)
-        .eq("product_id", typedProduct.id)
+        .eq("product_id", product.id)
         .maybeSingle()
     : { data: null };
 
-  const price = getPriceFromId(typedProduct.price_id);
+  const price = getPriceFromId(product.price_id);
 
   const breadcrumbPaths = [
     { label: "The Hub", href: "/store" },
     {
-      label: typedProduct.world || "Universal",
-      href: `/store?world=${typedProduct.world}`,
+      label: product.world || "Universal",
+      href: `/store?world=${product.world}`,
     },
     {
-      label: typedProduct.title,
-      href: `/products/${typedProduct.slug}`,
+      label: product.title,
+      href: `/products/${product.slug}`,
     },
   ];
 
@@ -105,8 +110,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="lg:col-span-7 space-y-8">
             <div className="group relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-border bg-surface shadow-kynar-elevated">
               <Image
-                src={typedProduct.preview_image || "/assets/placeholder.jpg"}
-                alt={typedProduct.title}
+                src={product.preview_image || "/assets/placeholder.jpg"}
+                alt={product.title}
                 fill
                 priority
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -120,7 +125,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <div
                 className="prose prose-slate max-w-none font-ui text-text-secondary leading-relaxed"
                 dangerouslySetInnerHTML={{
-                  __html: typedProduct.description || "",
+                  __html: product.description || "",
                 }}
               />
             </div>
@@ -131,10 +136,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="sticky top-24 space-y-8">
               <div>
                 <span className="font-ui text-[10px] font-bold uppercase tracking-[0.3em] text-kyn-slate-400">
-                  Sector: {typedProduct.world || "Universal"}
+                  Sector: {product.world || "Universal"}
                 </span>
                 <h1 className="font-brand mt-4 text-4xl font-bold tracking-tight md:text-5xl">
-                  {typedProduct.title}
+                  {product.title}
                 </h1>
               </div>
 
@@ -165,7 +170,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </Link>
                 ) : (
                   <AddToCartButton
-                    product={typedProduct}
+                    product={product}
                   />
                 )}
 
@@ -179,13 +184,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Format Integrity */}
-              {Array.isArray(typedProduct.file_types) && typedProduct.file_types.length > 0 && (
+              {Array.isArray(product.file_types) && product.file_types.length > 0 && (
                 <div className="space-y-4 pt-4">
                   <h3 className="font-brand text-xs font-bold uppercase tracking-widest">
                     Format Integrity
                   </h3>
                   <ul className="grid grid-cols-2 gap-3">
-                    {(typedProduct.file_types as string[]).map((ft) => (
+                    {(product.file_types as string[]).map((ft) => (
                       <li
                         key={ft}
                         className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border font-ui text-[11px]"

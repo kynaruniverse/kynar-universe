@@ -1,6 +1,13 @@
-import { createServerClient } from '@supabase/ssr'
+/**
+ * KYNAR UNIVERSE: Auth Middleware (v2.2)
+ * Role: Session orchestration and route guarding.
+ * Fix: Explicit cookie typing and corrected type imports.
+ */
+
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { Database } from './types'
+// Fix: Updated import path to use project alias
+import { Database } from '@/lib/supabase/types'
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -12,7 +19,6 @@ export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  // fail-safe check to prevent 500 crash on Netlify
   if (!supabaseUrl || !supabaseAnonKey) {
     return response
   }
@@ -25,7 +31,8 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-        setAll(cookiesToSet) {
+        // Fix: Explicitly typed the cookie array to clear TS7006/TS7031
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           // Optimized for Netlify Edge: single response mutation
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           response = NextResponse.next({ request })
@@ -56,7 +63,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // 3. Prevent logged-in users from accessing login/signup
-  if (user && isAuthRoute && !pathname.includes('logout')) {
+  if (user && isAuthRoute && !pathname.includes('logout') && !pathname.includes('callback')) {
     return NextResponse.redirect(new URL('/library', request.url))
   }
 
@@ -64,7 +71,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Optimized matcher to exclude all static assets and metadata
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
