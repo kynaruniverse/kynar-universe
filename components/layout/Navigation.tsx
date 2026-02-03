@@ -1,7 +1,7 @@
 /**
- * KYNAR UNIVERSE: Navigation Dock (v1.6)
+ * KYNAR UNIVERSE: Navigation Dock (v1.7)
  * Role: Structural orientation and World-hopping.
- * Identity: Grounded, Glass-morphic, Tactile.
+ * Fix: Added initialProfile prop to satisfy TS2322 and layout sync.
  */
 
 "use client";
@@ -13,13 +13,19 @@ import { Home, Compass, Library, User, X, Globe, Sparkles, Shield, ChevronRight 
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/browser'; 
 import { Session } from '@supabase/supabase-js';
+import { Profile } from '@/lib/supabase/types';
 
-export const Navigation = () => {
+interface NavigationProps {
+  initialProfile?: Profile | null;
+}
+
+export const Navigation = ({ initialProfile }: NavigationProps) => {
   const pathname = usePathname();
   const [showWorlds, setShowWorlds] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [mounted, setMounted] = useState(false);
-
+  // Optional: You can also use initialProfile here to sync UI state
+  
   useEffect(() => {
     setMounted(true);
     const supabase = createClient();
@@ -39,7 +45,12 @@ export const Navigation = () => {
     { label: 'Home', href: '/', icon: Home },
     { label: 'Explore', href: '#', icon: Compass, action: () => setShowWorlds(true) },
     { label: 'Library', href: '/library', icon: Library },
-    { label: 'Account', href: session ? '/account' : '/auth/login', icon: User },
+    { 
+      label: 'Account', 
+      // Use either the active session or the initialProfile as a fallback for the link destination
+      href: (session || initialProfile) ? '/account' : '/auth/login', 
+      icon: User 
+    },
   ];
 
   // Prevent hydration mismatch: Render a simple skeleton if not mounted
@@ -110,8 +121,7 @@ export const Navigation = () => {
             className="absolute inset-0 bg-kyn-slate-900/40 backdrop-blur-md animate-in fade-in duration-500" 
             onClick={() => setShowWorlds(false)} 
           />
-          <div className="relative w-full rounded-t-[2.5rem] bg-white p-8 pb-12 shadow-2xl animate-in slide-in-from-bottom duration-500 ease-kyn-out">
-            {/* Grab Handle */}
+          <div className="relative w-full rounded-t-[2.5rem] bg-white p-8 pb-12 shadow-2xl animate-in slide-in-from-bottom duration-500 ease-in-out">
             <div className="mx-auto mb-6 h-1.5 w-12 rounded-full bg-kyn-slate-100" />
             
             <div className="flex items-center justify-between mb-8">
@@ -126,21 +136,21 @@ export const Navigation = () => {
 
             <div className="grid gap-4">
               <WorldLink 
-                href="/home-world" 
+                href="/store?world=Home" 
                 title="Home" 
                 icon={<Globe size={24} className="text-kyn-green-600" />} 
                 color="bg-kyn-green-50" 
                 description="Spatial organization and living architecture."
               />
               <WorldLink 
-                href="/lifestyle-world" 
+                href="/store?world=Lifestyle" 
                 title="Lifestyle" 
                 icon={<Sparkles size={24} className="text-kyn-caramel-600" />} 
                 color="bg-kyn-caramel-50" 
                 description="Habits, rituals, and sensory intelligence."
               />
               <WorldLink 
-                href="/tools-world" 
+                href="/store?world=Tools" 
                 title="Tools" 
                 icon={<Shield size={24} className="text-kyn-slate-600" />} 
                 color="bg-kyn-slate-100" 

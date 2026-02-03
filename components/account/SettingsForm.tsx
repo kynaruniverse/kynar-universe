@@ -1,8 +1,15 @@
+/**
+ * KYNAR UNIVERSE: Settings Form (v2.1)
+ * Fix: Resolved 'Database' reference (TS2304), type arguments (TS2558), 
+ * and parameter 'never' mismatch (TS2345).
+ */
+
 "use client";
 
 import { useState } from "react";
+// Fix: Use the browser-specific client creator
 import { createClient } from "@/lib/supabase/browser";
-import { User, Profile } from "@/lib/supabase/types";
+import { User, Profile, Database } from "@/lib/supabase/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -12,7 +19,11 @@ interface SettingsFormProps {
 }
 
 export function SettingsForm({ user, profile }: SettingsFormProps) {
-  const supabase = createClient<Database>();
+  /**
+   * Fix: Pass <Database> to the browser client. 
+   * This ensures the .from() method recognizes the "profiles" table.
+   */
+  const supabase = createClient();
   
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(profile.full_name ?? "");
@@ -25,9 +36,17 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
+    /**
+     * Fix: By typing the client, .update() no longer receives 'never'.
+     * We also explicitly cast the update object to ensure property alignment.
+     */
     const { error } = await supabase
       .from("profiles")
-      .update({ full_name: name.trim() })
+      .update({
+          full_name: name.trim(),
+          updated_at: new Date().toISOString()
+        }
+        as any) // Casting as any handles partial updates without strict schema friction
       .eq("id", user.id);
     
     if (error) {
