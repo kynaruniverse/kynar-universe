@@ -97,7 +97,7 @@ export const useCart = create<CartState>()(
        * This flips the bit immediately after the store is rehydrated from localStorage.
        * Prevents UI components from rendering stale/empty server state.
        */
-      onRehydrateStorage: (state) => {
+      onRehydrateStorage: (_state) => {
         return (rehydratedState, error) => {
           if (error) {
             console.error('Kynar Vault Hydration Error:', error);

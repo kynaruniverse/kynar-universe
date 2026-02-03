@@ -9,7 +9,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X, RotateCcw, Check } from "lucide-react";
-import { WORLDS, World } from "@/lib/supabase/types";
+import { WORLDS } from "@/lib/supabase/types";
 import { cn } from "@/lib/utils";
 
 interface FilterBarProps {

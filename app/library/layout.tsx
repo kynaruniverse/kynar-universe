@@ -29,7 +29,7 @@ export default function LibraryLayout({ children }: LibraryLayoutProps) {
             <Breadcrumbs 
               paths={[
                 { label: "Universe Hub", href: "/" },
-                { label: "The Vault", href: "/library", colorClass: "text-kyn-green-600" }
+                { label: "The Vault", href: "/library" }
               ]} 
             />
             

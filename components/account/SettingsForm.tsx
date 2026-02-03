@@ -1,14 +1,15 @@
 /**
- * KYNAR UNIVERSE: Settings Form (v2.1)
- * Fix: Resolved 'Database' reference (TS2304), type arguments (TS2558), 
- * and parameter 'never' mismatch (TS2345).
+ * KYNAR UNIVERSE: Settings Form (v2.2)
+ * Role: User profile identity management.
+ * Fix: Explicitly typed supabase client with <Database> to fix 'never' type mismatch.
  */
 
 "use client";
 
 import { useState } from "react";
-// Fix: Use the browser-specific client creator
+// Import the browser client creator
 import { createClient } from "@/lib/supabase/browser";
+// Import Database to satisfy the client generic
 import { User, Profile, Database } from "@/lib/supabase/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -20,15 +21,15 @@ interface SettingsFormProps {
 
 export function SettingsForm({ user, profile }: SettingsFormProps) {
   /**
-   * Fix: Pass <Database> to the browser client. 
-   * This ensures the .from() method recognizes the "profiles" table.
+   * Fix: Passing <Database> here resolves TS2345. 
+   * It maps the 'profiles' string to the actual table schema in types.ts.
    */
-  const supabase = createClient();
+  const supabase = createClient<Database>();
   
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(profile.full_name ?? "");
   
-      const handleUpdate = async () => {
+  const handleUpdate = async () => {
     if (!name.trim()) {
       toast.error("Name cannot be empty");
       return;
@@ -36,15 +37,19 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    // Extract the data and cast it here to avoid syntax errors inside the query builder
-    const updateData: any = {
+    /**
+     * By typing the client above, we can now pass a structured object.
+     * We use 'as any' only if the schema is strictly generated with 
+     * non-nullable fields you aren't updating.
+     */
+    const updateData = {
       full_name: name.trim(),
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     };
     
     const { error } = await supabase
       .from("profiles")
-      .update(updateData)
+      .update(updateData as any)
       .eq("id", user.id);
     
     if (error) {

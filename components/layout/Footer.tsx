@@ -6,7 +6,6 @@
 
 import Link from "next/link";
 import { Compass, ArrowUpRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
