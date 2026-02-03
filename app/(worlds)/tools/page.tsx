@@ -106,7 +106,7 @@ export default async function ToolsWorldPage() {
           <ShieldCheck className="mx-auto mb-8 text-kyn-green-400" size={32} strokeWidth={1} />
           <h3 className="font-brand text-2xl font-bold uppercase tracking-widest">Kynar Standards</h3>
           <p className="mt-6 font-ui text-sm text-kyn-slate-400 leading-relaxed max-w-md mx-auto italic">
-            "Performance is the baseline. Autonomy is the goal."
+            &quot;Performance is the baseline. Autonomy is the goal.&quot;
           </p>
         </div>
       </footer>
