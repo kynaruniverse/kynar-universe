@@ -28,7 +28,7 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(profile.full_name ?? "");
   
-  const handleUpdate = async () => {
+    const handleUpdate = async () => {
     if (!name.trim()) {
       toast.error("Name cannot be empty");
       return;
@@ -36,17 +36,14 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    /**
-     * Fix: By typing the client, .update() no longer receives 'never'.
-     * We also explicitly cast the update object to ensure property alignment.
-     */
+    // The cast 'as any' must be inside the parentheses of the .update() call
     const { error } = await supabase
       .from("profiles")
       .update({
           full_name: name.trim(),
           updated_at: new Date().toISOString()
         }
-        as any) // Casting as any handles partial updates without strict schema friction
+        as any)
       .eq("id", user.id);
     
     if (error) {
