@@ -108,7 +108,7 @@ export default async function LifestyleWorldPage() {
       <footer className="mt-40 bg-kyn-caramel-50/30 border-t border-kyn-caramel-100 px-gutter py-24">
         <div className="mx-auto max-w-2xl text-center">
           <h3 className="font-brand text-2xl font-bold text-text-primary italic">
-            "Sophistication is found in what we choose to remove."
+            &quot;Sophistication is found in what we choose to remove.&quot;
           </h3>
           <p className="mt-6 font-ui text-base leading-loose text-text-secondary">
             In the Lifestyle World, we prioritize digital objects that offer 

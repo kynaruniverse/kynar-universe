@@ -121,7 +121,7 @@ export default async function HomePage() {
           <div className="h-px w-8 bg-kyn-green-500" />
           <h2 className="font-brand text-2xl font-bold text-kyn-slate-900">A New Digital Contract</h2>
           <p className="font-ui text-base text-text-secondary leading-relaxed italic px-4">
-            "In an age of ephemeral subscriptions, Kynar stands for the permanent. We believe your digital tools should be as enduring as the physical ones on your desk."
+            &quot;In an age of ephemeral subscriptions, Kynar stands for the permanent. We believe your digital tools should be as enduring as the physical ones on your desk.&quot;
           </p>
           <div className="font-ui text-[9px] font-bold uppercase tracking-[0.3em] text-kyn-slate-400 flex flex-wrap justify-center gap-4">
             <span>No Subscriptions</span>

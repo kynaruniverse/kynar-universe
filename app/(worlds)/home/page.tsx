@@ -112,9 +112,9 @@ export default async function HomeWorldPage() {
           </div>
           <h3 className="font-brand text-2xl font-bold text-text-primary">The Kynar Promise</h3>
           <blockquote className="mt-6 font-ui text-base leading-loose text-text-secondary italic">
-            "We believe the digital foundation of your home should be as stable as 
+            &quot;We believe the digital foundation of your home should be as stable as 
             the physical one. Every tool here is selected for its lack of noise 
-            and its commitment to your long-term autonomy."
+            and its commitment to your long-term autonomy.&quot;
           </blockquote>
         </div>
       </footer>

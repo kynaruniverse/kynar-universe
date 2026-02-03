@@ -57,7 +57,7 @@ export default async function LibraryPage() {
             <ShieldCheck size={40} className="text-kyn-slate-200 mb-8" strokeWidth={1} />
             <h2 className="font-brand text-xl font-bold text-text-primary">The Vault is Quiet</h2>
             <p className="font-ui text-sm text-text-secondary mt-3 mb-10">
-              You haven't added any technical assets to your universe yet.
+              You haven&apos;t added any technical assets to your universe yet.
             </p>
             <Link href="/store" className="button-primary group">
               Explore Hub

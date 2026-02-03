@@ -43,7 +43,7 @@ export default function CheckoutErrorPage() {
             Connection <span className="italic">Interrupted.</span>
           </h1>
           <p className="font-ui text-base leading-relaxed text-text-secondary px-4 md:text-lg">
-            We couldn't establish a secure link to the gateway. Your selection remains safely stored in your vault.
+            We couldn&apos;t establish a secure link to the gateway. Your selection remains safely stored in your vault.
           </p>
         </header>
 

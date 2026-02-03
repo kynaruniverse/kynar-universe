@@ -29,7 +29,7 @@ export async function generateMetadata(
     .eq("slug", slug)
     .single();
 
-  const guide = data as Pick<Guide, 'title' | 'excerpt'> | null;
+  const guide = data as Pick<Guide, "title" | "excerpt"> | null;
 
   if (!guide) {
     return {
@@ -136,7 +136,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
         {/* Exit: Return to Discovery */}
         <footer className="mt-32 rounded-[2.5rem] bg-surface border border-kyn-slate-100 p-10 md:p-16 text-center">
           <blockquote className="font-brand text-xl md:text-2xl font-medium text-kyn-slate-900 mb-12 italic leading-relaxed">
-            "True professional mastery begins with the acquisition of quiet knowledge."
+            &quot;True professional mastery begins with the acquisition of quiet knowledge.&quot;
           </blockquote>
 
           <Link
