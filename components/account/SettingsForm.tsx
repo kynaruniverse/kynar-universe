@@ -8,7 +8,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
-import { User, Profile, Database } from "@/lib/supabase/types";
+import { User, Profile } from "@/lib/supabase/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
