@@ -10,9 +10,7 @@ import { ArrowUpRight, Compass } from "lucide-react";
 import { AddToCartButton } from "./AddToCartButton";
 import { formatGBP } from "@/lib/utils";
 import { getPriceFromId } from "@/lib/marketplace/pricing";
-import { Database } from "@/lib/supabase/types";
-
-type Product = Database['public']['Tables']['products']['Row'];
+import { Product } from "@/lib/supabase/types";
 
 interface ProductCardProps {
   product: Product;
@@ -33,9 +31,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-surface border border-kyn-slate-50 transition-all duration-500 hover:shadow-kynar-soft"
         aria-label={`View details for ${product.title}`}
       >
-        {product.image_url ? (
+        {product.preview_image ? (
           <img 
-            src={product.image_url} 
+            src={product.preview_image} 
             alt={product.title} 
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-1000 ease-kyn-out group-hover:scale-105"

@@ -1,9 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Database } from '@/lib/supabase/types';
+import { Product } from '@/lib/supabase/types';
 import { getPriceFromId } from '@/lib/marketplace/pricing';
-
-type Product = Database['public']['Tables']['products']['Row'];
 
 interface VaultState {
   items: Product[];
@@ -48,8 +46,8 @@ export const useVault = create<VaultState>()(
 /**
  * SELECTORS: Keep these outside the store for better memoization
  */
-export const selectVaultTotal = (state: VaultState) => 
-  state.items.reduce((acc, item) => acc + getPriceFromId(item.price_id), 0);
+export const selectVaultTotal = (state: VaultState) =>
+  state.items.reduce((total, item) => total + getPriceFromId(item.price_id), 0);
 
-export const selectIsInVault = (state: VaultState, id: string) =>
-  state.items.some(item => item.id === id);
+export const selectIsInVault = (state: VaultState, productId: string) =>
+  state.items.some((item) => item.id === productId);

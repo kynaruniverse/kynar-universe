@@ -7,11 +7,8 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Database } from '../supabase/types';
+import { Product } from '@/lib/supabase/types';
 import { getPriceFromId } from '../marketplace/pricing';
-
-// Explicitly pull the Product type from the Canonical schema
-type Product = Database['public']['Tables']['products']['Row'];
 
 interface CartState {
   items: Product[];

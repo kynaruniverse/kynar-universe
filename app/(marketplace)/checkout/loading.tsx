@@ -53,11 +53,6 @@ export default function CheckoutLoading() {
           </span>
         </div>
       </div>
-
-      {/* Footer Navigation Constraint */}
-      <footer className="mt-24 pointer-events-none opacity-20 select-none">
-        <div className="h-px w-8 bg-kyn-slate-300 mx-auto" />
-      </footer>
     </main>
   );
 }

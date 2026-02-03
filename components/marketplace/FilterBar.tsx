@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X, RotateCcw } from "lucide-react";
+import { WORLDS, World } from "@/lib/supabase/types";
 
 export const FilterBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const setFilter = (key: string, value: string) => {
+  const setFilter = (key: string, value: World) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(key, value);
     router.push(`/store?${params.toString()}`);
@@ -39,7 +40,7 @@ export const FilterBar = () => {
             <div>
               <h3 className="text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400 mb-4">Domains</h3>
               <div className="grid grid-cols-2 gap-3">
-                {['Home', 'Lifestyle', 'Tools'].map(w => (
+                {WORLDS.map(w => (
                   <button key={w} onClick={() => setFilter('world', w)} className="p-3 border border-border rounded-xl text-sm font-ui text-left">{w}</button>
                 ))}
               </div>

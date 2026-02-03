@@ -61,11 +61,14 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
         onClick={handleUpdate}
         disabled={loading}
         className="w-full flex items-center justify-center gap-3
-                   bg-kyn-slate-900 text-white py-4 rounded-xl
-                   font-brand font-bold disabled:opacity-50"
+                   bg-kyn-slate-900 text-white py-4 rounded-xl font-brand font-bold
+                   hover:bg-black disabled:opacity-50 transition-all active:scale-[0.98]"
       >
-        {loading && <Loader2 size={18} className="animate-spin" />}
-        Update Profile
+        {loading ? (
+          <Loader2 className="h-5 w-5 animate-spin" />
+        ) : (
+          "Save Changes"
+        )}
       </button>
     </div>
   );

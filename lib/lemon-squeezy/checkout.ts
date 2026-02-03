@@ -1,14 +1,7 @@
-import { Database } from "@/lib/supabase/types";
-
-interface CheckoutProduct {
-  id: string;
-  title: string;
-  price_id: string;
-  slug: string;
-}
+import { Product } from "@/lib/supabase/types";
 
 interface CheckoutConfig {
-  products: CheckoutProduct[];
+  products: Product[];
   userEmail: string;
   userId: string;
   config ? : { redirectUrl ? : string };
@@ -35,12 +28,16 @@ export async function generateCheckoutUrl({
   
   const validProducts = products.filter(p => p.price_id && p.price_id !== "0");
   
+  if (validProducts.length === 0) {
+    throw new Error("No valid products with price IDs found for checkout.");
+  }
+  
   const payload = {
     data: {
       type: "checkouts",
       attributes: {
         store_id: parseInt(STORE_ID),
-        variant_id: parseInt(validProducts[0].price_id),
+        variant_id: parseInt(validProducts[0].price_id as string),
         checkout_data: {
           email: userEmail,
           custom: {
@@ -61,12 +58,17 @@ export async function generateCheckoutUrl({
     headers: {
       "Accept": "application/vnd.api+json",
       "Content-Type": "application/vnd.api+json",
-      "Authorization": `Bearer ${API_KEY}`,
+      "Authorization": `Bearer ${API_KEY}`
     },
-    cache: 'no-store', // Next.js 15: prevent caching unique checkout links
-    body: JSON.stringify(payload),
+    body: JSON.stringify(payload)
   });
   
   const result = await response.json();
+  
+  if (!response.ok) {
+    console.error("Lemon Squeezy Error:", result);
+    throw new Error(result.errors?.[0]?.detail || "Failed to generate checkout URL");
+  }
+  
   return result.data.attributes.url;
 }

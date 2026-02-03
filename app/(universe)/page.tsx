@@ -6,25 +6,35 @@
 
 import Link from "next/link";
 import { Sparkles, ArrowRight, Globe, Compass, Box } from "lucide-react";
+import { WORLDS, World } from "@/lib/supabase/types";
+
+interface WorldMeta {
+  name: World;
+  slug: string;
+  color: string;
+  icon: React.ReactNode;
+  desc: string;
+}
 
 export default function UniverseGate() {
-  const worlds = [
+  // Aligning local world data with the canonical WORLDS enum from types.ts
+  const worlds: WorldMeta[] = [
     { 
-      name: "Home", 
+      name: WORLDS[0], // "Home"
       slug: "home", 
       color: "bg-kyn-green-500", 
       icon: <Box size={20} />,
       desc: "Order in your physical space and domestic architecture." 
     },
     { 
-      name: "Lifestyle", 
+      name: WORLDS[1], // "Lifestyle"
       slug: "lifestyle", 
       color: "bg-kyn-caramel-500", 
       icon: <Sparkles size={20} />,
       desc: "Refined daily routines and personal digital sophistication." 
     },
     { 
-      name: "Tools", 
+      name: WORLDS[2], // "Tools"
       slug: "tools", 
       color: "bg-kyn-slate-500", 
       icon: <Compass size={20} />,

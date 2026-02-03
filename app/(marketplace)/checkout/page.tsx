@@ -7,14 +7,7 @@
 import { redirect } from "next/navigation";
 import { generateCheckoutUrl } from "@/lib/lemon-squeezy/checkout";
 import { createClient } from "@/lib/supabase/server";
-
-// 1. Explicitly define what a verified product looks like for the gateway logic
-interface VerifiedProduct {
-  id: string;
-  title: string;
-  price_id: string;
-  slug: string;
-}
+import { Product } from "@/lib/supabase/types";
 
 interface CheckoutPageProps {
   searchParams: Promise<{ items?: string }>;
@@ -46,53 +39,25 @@ export default async function CheckoutPage({
     redirect("/cart?error=invalid_selection");
   }
 
-  // 4. Verification: Explicitly type the result to avoid 'never' error
-  // Fresh DB state prevents price/slug manipulation
-  const { data: verifiedData, error } = await supabase
+  // 4. Verification: Cross-reference selection with the source of truth
+  const { data: products, error } = await supabase
     .from("products")
-    .select("id, title, price_id, slug") 
-    .in("id", productIds)
-    .eq("is_published", true);
+    .select("id, title, price_id, slug")
+    .in("id", productIds);
 
-  // Cast verifiedData to our interface so .map() has context
-  const verifiedProducts = verifiedData as VerifiedProduct[] | null;
-
-  if (error || !verifiedProducts || verifiedProducts.length === 0) {
-    redirect("/cart?error=selection_not_found");
+  if (error || !products || products.length === 0) {
+    console.error("Verification Error:", error);
+    redirect("/cart?error=verification_failed");
   }
 
-  // 5. Secure Handoff Generation
-  let checkoutUrl: string | null = null;
-  
-  try {
-    checkoutUrl = await generateCheckoutUrl({
-      products: verifiedProducts.map((p) => ({
-        id: p.id,
-        title: p.title, 
-        price_id: p.price_id,
-        slug: p.slug
-      })),
-      userEmail: user.email!,
-      userId: user.id,
-      config: {
-        currency: 'GBP',
-        receiptButtonText: 'Open My Library',
-        redirectUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/checkout/success`,
-      },
-      metadata: {
-        user_id: user.id,
-        product_ids: verifiedProducts.map(p => p.id).join(','),
-        transaction_context: "kynar_vault_acquisition_v1.6"
-      }
-    });
-  } catch (err) {
-    console.error("Gateway Handoff Failed:", err);
-    redirect("/cart?error=checkout_init_failed");
-  }
+  // 5. Secure Handoff: Generate the external vault entry URL
+  // Typing products as Product[] to ensure alignment with Lemon Squeezy generator expectations
+  const checkoutUrl = await generateCheckoutUrl(products as Product[], user.id, user.email);
 
-  // 6. Final Execution
   if (checkoutUrl) {
     redirect(checkoutUrl);
+  } else {
+    redirect("/cart?error=gateway_timeout");
   }
 
   /**
@@ -117,13 +82,6 @@ export default async function CheckoutPage({
         <p className="mt-4 font-ui text-sm leading-relaxed text-kyn-slate-400">
           Initializing secure checkout for your vault selection. Please do not refresh.
         </p>
-        
-        {/* Custom Progress Bar - Mobile Optimized */}
-        <div className="mt-12 flex justify-center">
-          <div className="h-1 w-32 overflow-hidden rounded-full bg-kyn-slate-100">
-            <div className="h-full w-full origin-left animate-pulse bg-kyn-green-500" />
-          </div>
-        </div>
       </div>
     </main>
   );

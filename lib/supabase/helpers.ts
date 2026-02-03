@@ -63,11 +63,22 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
     query = query.eq('world', options.world);
   }
 
-  const { data, error } = await query;
-  if (error) {
-    console.error('Discovery error:', error);
-    return [];
+  if (options.priceRange) {
+    if (options.priceRange === 'free') query = query.eq('price', 0);
+    if (options.priceRange === '1-5') query = query.gte('price', 1).lte('price', 5);
+    if (options.priceRange === '5-15') query = query.gt('price', 5).lte('price', 15);
+    if (options.priceRange === '15+') query = query.gt('price', 15);
   }
 
+  // Sorting Logic
+  if (options.sort === 'price-low') query = query.order('price', { ascending: true });
+  else if (options.sort === 'price-high') query = query.order('price', { ascending: false });
+  else query = query.order('created_at', { ascending: false });
+
+  const { data, error } = await query;
+  if (error) {
+    console.error('Fetch error:', error);
+    return [];
+  }
   return data || [];
 }

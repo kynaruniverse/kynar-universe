@@ -1,8 +1,7 @@
 /**
  * KYNAR UNIVERSE: Briefings Archive (v1.6)
  * Role: Central repository for all world intelligence.
- * Logic: Server-side fetch with Mobile-First responsive grid.
- * Optimization: Next.js 15, Hydration-safe, SEO optimized.
+ * Fully aligned with canonical types.ts and Next.js 15.
  */
 
 import { Metadata } from "next";
@@ -10,7 +9,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { Compass, Clock, ArrowRight } from "lucide-react";
-import type { Guide } from "@/lib/supabase/types";
+import { Guide } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
   title: "Briefings | Kynar Universe Intelligence",
@@ -20,21 +19,26 @@ export const metadata: Metadata = {
 export default async function GuidesPage() {
   const supabase = await createClient();
   
-  // Typed fetch — prevents `never`
-  const { data: guides, error } = await supabase
+  /**
+   * Data Retrieval: Server-Side
+   * Using explicit casting to Guide[] for alignment with types.ts
+   */
+  const { data, error } = await supabase
     .from("guides")
     .select("*")
-    .order("created_at", { ascending: false })
-    .returns < Guide[] > ();
-  
-  const breadcrumbPaths = [
-    { label: "Universe", href: "/" },
-    { label: "Briefings", href: "/guides", colorClass: "text-kyn-slate-900" },
-  ];
+    .eq("is_published", true) // Ensuring only public intelligence is visible
+    .order("created_at", { ascending: false });
   
   if (error) {
     console.error("[Briefings] Fetch failure:", error.message);
   }
+  
+  const guides = (data as Guide[]) ?? [];
+  
+  const breadcrumbPaths = [
+    { label: "Universe", href: "/" },
+    { label: "Briefings", href: "/guides" },
+  ];
   
   return (
     <main className="min-h-screen bg-canvas pb-32">
@@ -57,7 +61,7 @@ export default async function GuidesPage() {
         </header>
 
         {/* The Archive Grid */}
-        {guides && guides.length > 0 ? (
+        {guides.length > 0 ? (
           <div className="grid grid-cols-1 gap-y-10 md:grid-cols-2 md:gap-x-12 lg:grid-cols-3">
             {guides.map((guide, index) => (
               <Link
@@ -91,10 +95,12 @@ export default async function GuidesPage() {
                     </span>
                     <span>•</span>
                     <span>
-                      {new Date(guide.created_at).toLocaleDateString("en-GB", {
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {guide.created_at 
+                        ? new Date(guide.created_at).toLocaleDateString("en-GB", {
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : "Recent"}
                     </span>
                   </div>
 

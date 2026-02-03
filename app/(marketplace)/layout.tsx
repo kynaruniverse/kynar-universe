@@ -38,7 +38,7 @@ export default function MarketplaceLayout({ children }: MarketplaceLayoutProps) 
       </main>
 
       {/* Mobile Fade */}
-      <aside className="pointer-events-none fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-canvas to-transparent md:hidden" />
+      <aside className="pointer-events-none fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-canvas to-transparent md:hidden z-30" />
     </div>
   );
 }

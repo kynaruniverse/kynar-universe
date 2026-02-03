@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart/store"; // Using the consolidated store from previous refactor
 import { formatGBP } from "@/lib/utils";
 import { Trash2, ArrowRight, ShoppingBag, ShieldCheck, ArrowLeft, Plus } from "lucide-react";
+import { Product } from "@/lib/supabase/types";
 
 export default function CartPage() {
   const router = useRouter();
@@ -54,11 +55,11 @@ export default function CartPage() {
         <div className="lg:col-span-8">
           <h1 className="font-brand text-3xl font-bold text-text-primary mb-10">The Selection</h1>
           <div className="space-y-6">
-            {items.map((item) => (
+            {items.map((item: Product) => (
               <div key={item.id} className="group relative flex gap-6 rounded-[2rem] border border-border bg-white p-6 calm-transition hover:shadow-kynar-soft">
                 <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-surface border border-border">
                   <Image
-                    src={item.image_url || "/placeholder.png"}
+                    src={item.preview_image || "/placeholder.png"}
                     alt={item.title}
                     fill
                     sizes="96px"

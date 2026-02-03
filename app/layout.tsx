@@ -7,6 +7,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { getUserProfile } from "@/lib/supabase/helpers";
 import { Toaster } from "react-hot-toast";
 import { cn } from "@/lib/utils";
+import { Profile } from "@/lib/supabase/types";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-ui", display: 'swap' });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-brand", display: 'swap' });
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Server-side identity fetch
-  const profile = await getUserProfile();
+  const profile: Profile | null = await getUserProfile();
 
   return (
     <html lang="en" className={cn(inter.variable, jakarta.variable, "antialiased")}>

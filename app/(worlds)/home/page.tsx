@@ -1,6 +1,6 @@
 /**
  * KYNAR UNIVERSE: World Landing (Home) v2.0
- * TypeScript fixes applied.
+ * Fully aligned with canonical types.ts and Supabase v2.
  */
 
 import { Metadata } from "next";
@@ -19,8 +19,9 @@ export default async function HomeWorldPage() {
   const supabase = await createClient();
   
   // 1. Fetching Grounded Data
+  // Note: .from<Product> is a legacy pattern; we select and cast for modern Supabase-js v2 clarity
   const { data, error } = await supabase
-    .from < Product > ("products")
+    .from("products")
     .select("*")
     .eq("world", "Home")
     .eq("is_published", true)
@@ -30,12 +31,12 @@ export default async function HomeWorldPage() {
     console.error("[HomeWorld] Database Fetch Error:", error.message);
   }
   
-  // Strongly type products
-  const products: Product[] = data ?? [];
+  // Strongly type products using the alias from types.ts
+  const products = (data as Product[]) ?? [];
   
   const breadcrumbPaths = [
     { label: "Universe Hub", href: "/" },
-    { label: "Home World", href: "/home", colorClass: "text-kyn-green-600" },
+    { label: "Home World", href: "/home" },
   ];
   
   return (

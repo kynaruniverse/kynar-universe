@@ -10,7 +10,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Compass, Library, User, X, Globe, Sparkles, Shield, ChevronRight } from 'lucide-react';
-import { cn, transitions } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/browser'; 
 import { Session } from '@supabase/supabase-js';
 

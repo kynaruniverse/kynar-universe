@@ -45,7 +45,7 @@ export default function StoreLoading() {
                     <div className="h-4 w-10 animate-pulse rounded bg-kyn-slate-100" />
                     <div className="h-4 w-10 animate-pulse rounded bg-kyn-slate-100" />
                   </div>
-                  <div className="h-8 w-24 animate-pulse rounded-xl bg-kyn-slate-900/10" />
+                  <div className="h-10 w-24 animate-pulse rounded-xl bg-kyn-slate-900/10" />
                 </div>
               </div>
             </div>

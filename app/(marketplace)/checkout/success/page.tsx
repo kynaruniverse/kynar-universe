@@ -29,12 +29,18 @@ export default function CheckoutSuccessPage() {
         </div>
 
         <div className="flex flex-col gap-4 pt-4">
-          <Link href="/library" className="button-primary w-full py-5 text-sm uppercase tracking-widest font-black flex items-center justify-center gap-3">
+          <Link 
+            href="/library" 
+            className="flex items-center justify-center gap-3 w-full py-5 bg-kyn-slate-900 text-white rounded-2xl font-brand text-sm font-black uppercase tracking-widest hover:bg-black transition-all active:scale-[0.98]"
+          >
             <Library size={18} />
             Enter My Library
           </Link>
           
-          <Link href="/" className="font-brand text-[10px] font-bold uppercase tracking-[0.2em] text-kyn-slate-400 hover:text-kyn-slate-900 transition-colors">
+          <Link 
+            href="/" 
+            className="font-brand text-[10px] font-bold uppercase tracking-[0.2em] text-kyn-slate-400 hover:text-kyn-slate-900 transition-colors"
+          >
             Return to Hub
           </Link>
         </div>

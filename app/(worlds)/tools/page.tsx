@@ -1,13 +1,13 @@
 /**
  * KYNAR UNIVERSE: World Landing (Tools) v2.0
- * TypeScript fixes applied.
+ * Fully aligned with canonical types.ts and Supabase v2.
  */
 
 import { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
-import { Cpu, Box, Zap, Hammer, ShieldCheck } from "lucide-react";
+import { Cpu, Zap, Hammer, ShieldCheck } from "lucide-react";
 import { Product } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 export default async function ToolsWorldPage() {
   const supabase = await createClient();
   
-  // 1. Data Retrieval with explicit typing
+  // 1. Data Retrieval with explicit casting for Supabase v2
   const { data, error } = await supabase
-    .from < Product > ("products")
+    .from("products")
     .select("*")
     .eq("world", "Tools")
     .eq("is_published", true)
@@ -30,11 +30,12 @@ export default async function ToolsWorldPage() {
     console.error("[Tools World] Database Error:", error.message);
   }
   
-  const products: Product[] = data ?? [];
+  // Strongly type products using the alias from types.ts
+  const products = (data as Product[]) ?? [];
   
   const breadcrumbPaths = [
     { label: "Universe Hub", href: "/" },
-    { label: "Tools Sector", href: "/tools", colorClass: "text-kyn-slate-600" },
+    { label: "Tools Sector", href: "/tools" },
   ];
   
   return (
@@ -49,7 +50,7 @@ export default async function ToolsWorldPage() {
         <div className="mx-auto max-w-3xl">
           <div className="mb-10 flex justify-center">
             <div className="relative group">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-kyn-slate-900 text-white shadow-2xl calm-transition group-hover:scale-105">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-kyn-slate-900 text-white shadow-2xl transition-all duration-500 group-hover:scale-105">
                 <Cpu size={32} strokeWidth={1.5} className="animate-pulse" />
               </div>
               <div className="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-kyn-green-500 text-white shadow-sm border-2 border-canvas">

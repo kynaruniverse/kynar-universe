@@ -15,7 +15,7 @@ import { Product } from "@/lib/supabase/types";
 import { ShieldCheck, Download, Zap, Landmark } from "lucide-react";
 
 interface ProductPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 /**
@@ -24,12 +24,13 @@ interface ProductPageProps {
 export async function generateMetadata(
   { params }: ProductPageProps
 ): Promise<Metadata> {
+  const { slug } = await params;
   const supabase = await createClient();
 
   const { data: product } = await supabase
     .from("products")
     .select("title, short_description")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .maybeSingle();
 
   return {
@@ -43,6 +44,7 @@ export async function generateMetadata(
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
   const supabase = await createClient();
 
   /**
@@ -55,13 +57,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
     supabase
       .from("products")
       .select("*")
-      .eq("slug", params.slug)
+      .eq("slug", slug)
       .single(),
     supabase.auth.getUser(),
   ]);
 
   if (!product) notFound();
 
+  // Cast to Product alias from types.ts
   const typedProduct = product as Product;
 
   /**
@@ -81,7 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const breadcrumbPaths = [
     { label: "The Hub", href: "/store" },
     {
-      label: typedProduct.world,
+      label: typedProduct.world || "Universal",
       href: `/store?world=${typedProduct.world}`,
     },
     {
@@ -128,7 +131,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="sticky top-24 space-y-8">
               <div>
                 <span className="font-ui text-[10px] font-bold uppercase tracking-[0.3em] text-kyn-slate-400">
-                  Sector: {typedProduct.world}
+                  Sector: {typedProduct.world || "Universal"}
                 </span>
                 <h1 className="font-brand mt-4 text-4xl font-bold tracking-tight md:text-5xl">
                   {typedProduct.title}
@@ -163,7 +166,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 ) : (
                   <AddToCartButton
                     product={typedProduct}
-                    variantId={typedProduct.price_id}
                   />
                 )}
 
@@ -177,13 +179,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               {/* Format Integrity */}
-              {typedProduct.file_types && typedProduct.file_types.length > 0 && (
+              {Array.isArray(typedProduct.file_types) && typedProduct.file_types.length > 0 && (
                 <div className="space-y-4 pt-4">
                   <h3 className="font-brand text-xs font-bold uppercase tracking-widest">
                     Format Integrity
                   </h3>
                   <ul className="grid grid-cols-2 gap-3">
-                    {typedProduct.file_types.map((ft) => (
+                    {(typedProduct.file_types as string[]).map((ft) => (
                       <li
                         key={ft}
                         className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border font-ui text-[11px]"

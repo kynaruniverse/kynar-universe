@@ -6,10 +6,7 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Database } from '@/lib/supabase/types';
-
-// Extract the Product row type for strict build safety
-type Product = Database['public']['Tables']['products']['Row'];
+import { Product } from '@/lib/supabase/types';
 
 interface CartState {
   items: Product[];

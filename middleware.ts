@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { Database } from './types'
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -16,7 +17,7 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     supabaseUrl,
     supabaseAnonKey,
     {
@@ -65,6 +66,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   // Optimized matcher to exclude all static assets and metadata
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|public/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }

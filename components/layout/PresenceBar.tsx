@@ -12,9 +12,7 @@ import { User, ShoppingBag, Fingerprint, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/browser";
 import { useCart } from "@/lib/marketplace/cart-store";
-import { Database } from "@/lib/supabase/types";
-
-type Profile = Database['public']['Tables']['profiles']['Row'];
+import { Profile } from "@/lib/supabase/types";
 
 interface PresenceBarProps {
   initialProfile?: Profile | null;
@@ -38,7 +36,7 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
           .select("*")
           .eq("id", session.user.id)
           .single();
-        if (data) setProfile(data);
+        if (data) setProfile(data as Profile);
       } else {
         setProfile(null);
       }

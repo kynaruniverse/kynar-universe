@@ -10,19 +10,22 @@ import { Product, World, WORLDS } from "@/lib/supabase/types";
 import { Box, Sparkles } from "lucide-react";
 
 interface StorePageProps {
-  searchParams: { world ? : string;sort ? : string };
+  searchParams: Promise<{ world?: string; sort?: string }>;
 }
 
 export default async function StorePage({ searchParams }: StorePageProps) {
-  const params = searchParams;
+  const params = await searchParams;
   const activeWorld = params.world as World | undefined;
   
   const supabase = await createClient();
   
   // 2. Fetch published products
-  let query = supabase.from < Product > ("products").select("*").eq("is_published", true);
+  let query = supabase
+    .from("products")
+    .select("*")
+    .eq("is_published", true);
   
-  if (activeWorld && WORLDS.includes(activeWorld)) {
+  if (activeWorld && (WORLDS as unknown as string[]).includes(activeWorld)) {
     query = query.eq("world", activeWorld);
   }
   
@@ -36,16 +39,14 @@ export default async function StorePage({ searchParams }: StorePageProps) {
     );
   }
   
-  // Ensure products is strongly typed
-  const typedProducts: Product[] = products;
-  
   return (
     <main className="pb-32">
-      {/* Editorial Header */}
-      <header className="py-16 md:py-24 text-center border-b border-border bg-surface/30 px-gutter">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex justify-center mb-6">
-            <Sparkles size={24} className="text-kyn-green-500 animate-pulse" />
+      {/* Immersive Store Header */}
+      <header className="relative overflow-hidden border-b border-border bg-surface/50 py-16 md:py-24 px-gutter">
+        <div className="relative z-10 mx-auto max-w-3xl text-center">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white border border-border px-4 py-1.5 font-ui text-[10px] font-bold uppercase tracking-[0.2em] text-kyn-slate-500 shadow-sm">
+            <Sparkles size={12} className="text-kyn-green-500" />
+            Permanent Acquisitions
           </div>
           <h1 className="font-brand text-4xl font-bold tracking-tight text-text-primary md:text-6xl">
             The Hub
@@ -64,9 +65,9 @@ export default async function StorePage({ searchParams }: StorePageProps) {
         </div>
 
         {/* Product Grid */}
-        {typedProducts.length > 0 ? (
+        {products.length > 0 ? (
           <div className="grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
-            {typedProducts.map((product) => (
+            {products.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
@@ -74,9 +75,7 @@ export default async function StorePage({ searchParams }: StorePageProps) {
           <div className="flex flex-col items-center justify-center py-32 text-center rounded-[2.5rem] border border-dashed border-border bg-surface/50">
             <Box size={32} className="text-kyn-slate-200 mb-4" />
             <h2 className="font-brand text-lg font-bold text-text-primary">Sector Empty</h2>
-            <p className="font-ui text-sm text-text-secondary mt-2">
-              No assets found in the {activeWorld ?? "All"} sector.
-            </p>
+            <p className="mt-2 font-ui text-sm text-text-secondary">No products found in this world yet.</p>
           </div>
         )}
       </div>

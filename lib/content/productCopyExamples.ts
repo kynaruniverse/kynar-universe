@@ -33,15 +33,15 @@ export const KYNAR_COPY_LIBRARY: Record<string, ProductTemplate> = {
   
   BUDGET_TRACKER: {
     title: "Mindful Budget Tracker",
-    tagline: "A grounded approach to managing personal finances with clarity and intentionality.",
-    whoItsFor: "Built for creators who need a clear boundary between their spending and their mental rest.",
+    tagline: "A stripped-back financial tool focused on awareness and long-term decisions.",
+    whoItsFor: "Ideal for those who find automated banking apps overwhelming or 'gamified'.",
     included: [
-      "1 x Financial Architecture Guide",
-      "1 x Clean Ledger System (CSV-Ready)",
-      "Quarterly reflection prompts",
-      "Immutable ownership of the tool"
+      "1 x Excel/Sheets Budgeting Framework",
+      "1 x Digital Guide on Manual Tracking",
+      "Monthly review protocols",
+      "Multi-currency support"
     ],
-    philosophy: "Wealth is built through awareness, not algorithms. This tool requires manual entry to ensure you remain connected to your financial decisions.",
+    philosophy: "When you track money manually, you feel the weight of your spending. This is a tool for awareness, not just math. It encourages slow, deliberate financial decisions.",
     howItHelps: "It strips away the complexity of modern banking apps to show you the truth of your cash flow without the 'gamified' distractions.",
     usage: "Update once a week or after major transactions. High-performance utility for long-term stability."
   },

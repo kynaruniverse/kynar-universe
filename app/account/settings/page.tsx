@@ -1,6 +1,6 @@
 /**
  * KYNAR UNIVERSE: Account Workshop (v2.0)
- * TypeScript fixes applied.
+ * Fully aligned with canonical types.ts and Supabase v2.
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -8,28 +8,35 @@ import { SettingsForm } from "@/components/account/SettingsForm";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { ShieldCheck, Info } from "lucide-react";
 import { User, Profile } from "@/lib/supabase/types";
+import { redirect } from "next/navigation";
 
 export default async function SettingsPage() {
   const supabase = await createClient();
   
   // 1. Get the authenticated user
   const { data: authData } = await supabase.auth.getUser();
-  const user: User | null = authData.user ?? null;
+  const user = authData.user as User | null;
   
-  if (!user) return null; // no session
+  if (!user) {
+    redirect("/auth/login");
+  }
   
   // 2. Fetch the profile
   const { data: profileData } = await supabase
-    .from < Profile > ("profiles")
+    .from("profiles")
     .select("id, email, full_name, is_admin")
     .eq("id", user.id)
     .single();
   
-  const profile: Profile = profileData ?? {
+  // Aligning with the Profile type from types.ts
+  const profile: Profile = (profileData as Profile) ?? {
     id: user.id,
     email: user.email ?? "",
     full_name: "",
     is_admin: false,
+    created_at: null, // Including missing fields from Profile type
+    updated_at: null,
+    avatar_url: null
   };
   
   const breadcrumbPaths = [

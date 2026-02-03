@@ -5,11 +5,11 @@
  */
 
 interface ConfettiOptions {
-  particleCount ? : number;
-  spread ? : number;
-  origin ? : { x ? : number;y ? : number };
-  colors ? : string[];
-  ticks ? : number;
+  particleCount?: number;
+  spread?: number;
+  origin?: { x?: number; y?: number };
+  colors?: string[];
+  ticks?: number;
 }
 
 /**
@@ -17,8 +17,8 @@ interface ConfettiOptions {
  * Optimized for mobile-first performance via dynamic browser-only imports.
  */
 export const triggerCelebration = async (
-  options ? : ConfettiOptions
-): Promise < void > => {
+  options?: ConfettiOptions
+): Promise<void> => {
   // Guard: Browser-only
   if (typeof window === "undefined") return;
   

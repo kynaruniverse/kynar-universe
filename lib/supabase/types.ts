@@ -1,7 +1,11 @@
 /**
- * KYNAR UNIVERSE: Canonical Type System (v1.6)
- * Fully aligned with Supabase + Next.js 15
+ * KYNAR UNIVERSE: Canonical Type System (v2.3)
+ * Fully aligned with generated Supabase schema + Next.js 15
  */
+
+/* -------------------------------------------------------------------------- */
+/* Custom Enums                                */
+/* -------------------------------------------------------------------------- */
 
 export const WORLDS = ['Home', 'Lifestyle', 'Tools'] as const;
 export type World = (typeof WORLDS)[number];
@@ -11,140 +15,286 @@ export type FileType = (typeof FILE_TYPES)[number];
 
 export type GuideCategory = 'usage' | 'spotlight' | 'tips';
 
-/**
- * Supabase-compatible JSON
- */
+/* -------------------------------------------------------------------------- */
+/* Generated Schema                              */
+/* -------------------------------------------------------------------------- */
+
 export type Json =
   | string
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[];
 
 export type Database = {
   public: {
     Tables: {
-      products: {
-        Row: {
-          id: string;
-          title: string;
-          slug: string;
-          world: World;
-          category: string | null;
-          tags: string[] | null;
-          description: string | null;
-          short_description: string | null;
-          price_id: string;
-          file_types: FileType[] | null;
-          preview_image: string | null;
-          image_url: string | null;
-          is_published: boolean;
-          metadata: Json;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: Omit<
-          Database['public']['Tables']['products']['Row'],
-          'id' | 'created_at' | 'updated_at'
-        >;
-        Update: Partial<Database['public']['Tables']['products']['Row']>;
-      };
-
-      profiles: {
-        Row: {
-          id: string;
-          full_name: string | null;
-          avatar_url: string | null;
-          email: string | null;
-          updated_at: string;
-          /** Optional admin flag — fixes settings page error */
-          is_admin?: boolean;
-        };
-        Insert: {
-          id: string;
-          full_name?: string | null;
-          avatar_url?: string | null;
-          email?: string | null;
-          updated_at?: string;
-          is_admin?: boolean;
-        };
-        Update: Partial<Database['public']['Tables']['profiles']['Row']>;
-      };
-
-      user_library: {
-        Row: {
-          id: string;
-          user_id: string;
-          product_id: string;
-          acquired_at: string;
-        };
-        Insert: Omit<
-          Database['public']['Tables']['user_library']['Row'],
-          'id' | 'acquired_at'
-        >;
-        Update: Partial<Database['public']['Tables']['user_library']['Row']>;
-      };
-
       guides: {
         Row: {
-          id: string;
-          title: string;
-          slug: string;
-          category: GuideCategory;
-          world: World | 'All';
+          author: string | null;
+          category: string;
           content: string | null;
+          created_at: string | null;
           excerpt: string | null;
-          thumbnail_url: string | null;
+          id: string;
+          is_published: boolean | null;
           read_time_minutes: number | null;
           related_product_ids: string[] | null;
-          author: string;
-          is_published: boolean;
-          created_at: string;
-          updated_at: string;
+          slug: string;
+          thumbnail_url: string | null;
+          title: string;
+          updated_at: string | null;
+          world: string;
         };
-        Insert: Omit<
-          Database['public']['Tables']['guides']['Row'],
-          'id' | 'created_at' | 'updated_at'
-        >;
-        Update: Partial<Database['public']['Tables']['guides']['Row']>;
+        Insert: {
+          author?: string | null;
+          category: string;
+          content?: string | null;
+          created_at?: string | null;
+          excerpt?: string | null;
+          id?: string;
+          is_published?: boolean | null;
+          read_time_minutes?: number | null;
+          related_product_ids?: string[] | null;
+          slug: string;
+          thumbnail_url?: string | null;
+          title: string;
+          updated_at?: string | null;
+          world: string;
+        };
+        Update: {
+          author?: string | null;
+          category?: string;
+          content?: string | null;
+          created_at?: string | null;
+          excerpt?: string | null;
+          id?: string;
+          is_published?: boolean | null;
+          read_time_minutes?: number | null;
+          related_product_ids?: string[] | null;
+          slug?: string;
+          thumbnail_url?: string | null;
+          title?: string;
+          updated_at?: string | null;
+          world?: string;
+        };
+        Relationships: [];
       };
+      products: {
+        Row: {
+          category: string | null;
+          created_at: string | null;
+          description: string | null;
+          download_path: string | null;
+          file_types: string[] | null;
+          id: string;
+          is_published: boolean | null;
+          lemon_squeezy_id: string | null;
+          metadata: Json | null;
+          preview_image: string | null;
+          price_id: string;
+          short_description: string | null;
+          slug: string;
+          tags: string[] | null;
+          title: string;
+          updated_at: string | null;
+          variant_id: string | null;
+          world: string;
+        };
+        Insert: {
+          category?: string | null;
+          created_at?: string | null;
+          description?: string | null;
+          download_path?: string | null;
+          file_types?: string[] | null;
+          id?: string;
+          is_published?: boolean | null;
+          lemon_squeezy_id?: string | null;
+          metadata?: Json | null;
+          preview_image?: string | null;
+          price_id: string;
+          short_description?: string | null;
+          slug: string;
+          tags?: string[] | null;
+          title: string;
+          updated_at?: string | null;
+          variant_id?: string | null;
+          world: string;
+        };
+        Update: {
+          category?: string | null;
+          created_at?: string | null;
+          description?: string | null;
+          download_path?: string | null;
+          file_types?: string[] | null;
+          id?: string;
+          is_published?: boolean | null;
+          lemon_squeezy_id?: string | null;
+          metadata?: Json | null;
+          preview_image?: string | null;
+          price_id?: string;
+          short_description?: string | null;
+          slug?: string;
+          tags?: string[] | null;
+          title?: string;
+          updated_at?: string | null;
+          variant_id?: string | null;
+          world?: string;
+        };
+        Relationships: [];
+      };
+      profiles: {
+        Row: {
+          created_at: string | null;
+          email: string;
+          full_name: string | null;
+          id: string;
+          is_admin: boolean | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          email: string;
+          full_name?: string | null;
+          id: string;
+          is_admin?: boolean | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          email?: string;
+          full_name?: string | null;
+          id?: string;
+          is_admin?: boolean | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
+      purchases: {
+        Row: {
+          id: string;
+          lemon_squeezy_checkout_id: string | null;
+          lemon_squeezy_order_id: string | null;
+          product_id: string;
+          purchase_date: string | null;
+          status: string;
+          user_email: string;
+          user_id: string | null;
+        };
+        Insert: {
+          id?: string;
+          lemon_squeezy_checkout_id?: string | null;
+          lemon_squeezy_order_id?: string | null;
+          product_id: string;
+          purchase_date?: string | null;
+          status: string;
+          user_email: string;
+          user_id?: string | null;
+        };
+        Update: {
+          id?: string;
+          lemon_squeezy_checkout_id?: string | null;
+          lemon_squeezy_order_id?: string | null;
+          product_id?: string;
+          purchase_date?: string | null;
+          status?: string;
+          user_email?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "purchases_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      user_library: {
+        Row: {
+          acquired_at: string | null;
+          id: string;
+          order_id: string | null;
+          product_id: string;
+          source: string | null;
+          status: string | null;
+          user_id: string;
+        };
+        Insert: {
+          acquired_at?: string | null;
+          id?: string;
+          order_id?: string | null;
+          product_id: string;
+          source?: string | null;
+          status?: string | null;
+          user_id: string;
+        };
+        Update: {
+          acquired_at?: string | null;
+          id?: string;
+          order_id?: string | null;
+          product_id?: string;
+          source?: string | null;
+          status?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fk_product";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_library_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+    };
+    Enums: {
+      audit_action: "CREATE_PRODUCT" | "UPDATE_PRODUCT" | "DELETE_PRODUCT" | "SAVE_PRODUCT" | "UPDATE_SETTINGS" | "MANUAL_REFUND";
+      world_type: "home" | "lifestyle" | "tools";
     };
   };
 };
 
 /* -------------------------------------------------------------------------- */
-/*                               Helper Aliases                               */
+/* Helper Aliases                               */
 /* -------------------------------------------------------------------------- */
+
+type DefaultSchema = Database['public'];
 
 export type Tables<
-  T extends keyof Database['public']['Tables']
-> = Database['public']['Tables'][T]['Row'];
+  T extends keyof DefaultSchema['Tables']
+> = DefaultSchema['Tables'][T]['Row'];
 
 export type TablesInsert<
-  T extends keyof Database['public']['Tables']
-> = Database['public']['Tables'][T]['Insert'];
+  T extends keyof DefaultSchema['Tables']
+> = DefaultSchema['Tables'][T]['Insert'];
 
 export type TablesUpdate<
-  T extends keyof Database['public']['Tables']
-> = Database['public']['Tables'][T]['Update'];
+  T extends keyof DefaultSchema['Tables']
+> = DefaultSchema['Tables'][T]['Update'];
 
 /* -------------------------------------------------------------------------- */
-/*                              UI / App Aliases                              */
+/* UI / App Aliases                              */
 /* -------------------------------------------------------------------------- */
 
 export type Product = Tables<'products'>;
 export type Profile = Tables<'profiles'>;
 export type Guide = Tables<'guides'>;
-
-export type UserLibrary = Tables<'user_library'> & {
+export type Purchase = Tables<'purchases'>;
+export type UserLibrary = Tables<'user_library'> & { 
   product?: Product;
 };
 
-/**
- * Auth user alias (prevents broken imports)
- * Mirrors Supabase session.user
- */
 export type User = {
   id: string;
   email?: string;

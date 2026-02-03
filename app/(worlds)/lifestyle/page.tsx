@@ -1,6 +1,6 @@
 /**
  * KYNAR UNIVERSE: World Landing (Lifestyle) v2.0
- * TypeScript fixes applied.
+ * Fully aligned with canonical types.ts and Supabase v2.
  */
 
 import { Metadata } from "next";
@@ -19,8 +19,9 @@ export default async function LifestyleWorldPage() {
   const supabase = await createClient();
   
   // 1. Fetching Warm Data (Server-Side)
+  // Aligned with Supabase v2 casting and the canonical 'Lifestyle' enum value
   const { data, error } = await supabase
-    .from < Product > ("products")
+    .from("products")
     .select("*")
     .eq("world", "Lifestyle")
     .eq("is_published", true)
@@ -30,12 +31,12 @@ export default async function LifestyleWorldPage() {
     console.error("[Lifestyle World] Fetch failure:", error.message);
   }
   
-  // Strongly type products
-  const products: Product[] = data ?? [];
+  // Strongly type products using the alias from types.ts
+  const products = (data as Product[]) ?? [];
   
   const breadcrumbPaths = [
     { label: "Universe Hub", href: "/" },
-    { label: "Lifestyle", href: "/lifestyle", colorClass: "text-kyn-caramel-600" },
+    { label: "Lifestyle", href: "/lifestyle" },
   ];
   
   return (
@@ -50,7 +51,7 @@ export default async function LifestyleWorldPage() {
         <div className="mx-auto max-w-3xl">
           <div className="mb-10 flex justify-center">
             <div className="relative group">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-kyn-caramel-50 border border-kyn-caramel-100 text-kyn-caramel-600 shadow-kynar-soft calm-transition group-hover:rotate-12">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-kyn-caramel-50 border border-kyn-caramel-100 text-kyn-caramel-600 shadow-kynar-soft transition-all duration-500 group-hover:rotate-12">
                 <Wind size={32} strokeWidth={1.5} />
               </div>
               <div className="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-white border border-border text-kyn-caramel-500 shadow-sm">

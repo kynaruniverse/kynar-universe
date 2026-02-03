@@ -2,19 +2,20 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { ArrowRight, Globe, Shield, Sparkles } from "lucide-react";
+import { Product } from "@/lib/supabase/types";
 
 export default async function HomePage() {
   const supabase = await createClient();
   
   // Safe-fetch with null fallback to ensure the page renders even without DB connection
-  let featuredProducts = [];
+  let featuredProducts: Product[] = [];
   try {
     const { data } = await supabase
       .from("products")
       .select("*")
       .limit(3)
       .order('created_at', { ascending: false });
-    featuredProducts = data || [];
+    featuredProducts = (data as Product[]) || [];
   } catch (err) {
     console.error("Home fetch error:", err);
   }
@@ -135,8 +136,17 @@ export default async function HomePage() {
   );
 }
 
+interface WorldCardProps {
+  href: string;
+  title: string;
+  desc: string;
+  icon: React.ReactNode;
+  colorClass: string;
+  hoverBorder: string;
+}
+
 // Reusable Sub-component for clarity
-function WorldCard({ href, title, desc, icon, colorClass, hoverBorder }: any) {
+function WorldCard({ href, title, desc, icon, colorClass, hoverBorder }: WorldCardProps) {
   return (
     <Link href={href} className={`group relative overflow-hidden rounded-[1.5rem] border border-border bg-white p-8 calm-transition ${hoverBorder} hover:shadow-kynar-soft`}>
       <div className={`mb-12 flex h-12 w-12 items-center justify-center rounded-xl ${colorClass}`}>

@@ -1,7 +1,7 @@
 /**
- * KYNAR UNIVERSE: Guide Vessel (v1.6)
+ * KYNAR UNIVERSE: Guide Vessel (v2.0)
  * Role: Premium intelligence briefing.
- * Optimization: Next.js 15 Async, Mobile-First Readability, PPR Ready.
+ * Fully aligned with canonical types.ts, Next.js 15 Async Params, and casting protocols.
  */
 
 import { Metadata } from "next";
@@ -11,22 +11,25 @@ import { createClient } from "@/lib/supabase/server";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { ReadingProgressBar } from "@/components/guides/ReadingProgressBar";
 import { Clock, ArrowLeft, ShieldCheck, Share2 } from "lucide-react";
-import type { Guide } from "@/lib/supabase/types";
+import { Guide } from "@/lib/supabase/types";
 
 interface GuidePageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata(
   { params }: GuidePageProps
 ): Promise<Metadata> {
+  const { slug } = await params;
   const supabase = await createClient();
 
-  const { data: guide } = await supabase
+  const { data } = await supabase
     .from("guides")
     .select("title, excerpt")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .single();
+
+  const guide = data as Pick<Guide, 'title' | 'excerpt'> | null;
 
   if (!guide) {
     return {
@@ -43,32 +46,30 @@ export async function generateMetadata(
 }
 
 export default async function GuidePage({ params }: GuidePageProps) {
+  const { slug } = await params;
   const supabase = await createClient();
 
-  const { data: guide } = await supabase
+  const { data, error } = await supabase
     .from("guides")
     .select("*")
-    .eq("slug", params.slug)
-    .single()
-    .returns<Guide>();
+    .eq("slug", slug)
+    .single();
 
-  if (!guide) notFound();
+  if (error || !data) notFound();
 
+  // Explicitly cast to the Guide type from our canonical types.ts
+  const guide = data as Guide;
   const displayAuthor = guide.author || "Kynar Universe";
 
   const breadcrumbPaths = [
     { label: "Universe", href: "/" },
     { label: "Briefings", href: "/guides" },
-    {
-      label: guide.title,
-      href: `/guides/${guide.slug}`,
-      colorClass: "text-kyn-slate-900",
-    },
+    { label: guide.title, href: `/guides/${guide.slug}` },
   ];
 
   return (
     <main className="min-h-screen bg-canvas pb-32 selection:bg-kyn-green-100/50">
-      {/* Handrail */}
+      {/* Handrail: Structural Context */}
       <nav className="sticky top-0 z-40 border-b border-kyn-slate-50 bg-canvas/80 backdrop-blur-xl px-gutter">
         <div className="mx-auto max-w-screen-md flex h-14 items-center justify-between">
           <Breadcrumbs paths={breadcrumbPaths} />
@@ -82,8 +83,8 @@ export default async function GuidePage({ params }: GuidePageProps) {
         </div>
       </nav>
 
-      <article className="mx-auto max-w-screen-md px-gutter animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-kyn-out">
-        {/* Header */}
+      <article className="mx-auto max-w-screen-md px-gutter animate-in fade-in slide-in-from-bottom-4 duration-1000">
+        {/* Header: Narrative Establishment */}
         <header className="py-12 md:py-24">
           <div className="flex items-center gap-4 mb-10 text-[10px] font-bold uppercase tracking-[0.25em] text-kyn-slate-400">
             <span className="rounded-full border border-kyn-slate-100 bg-white px-3.5 py-2 text-kyn-slate-900 shadow-sm">
@@ -116,7 +117,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           </div>
         </header>
 
-        {/* Content */}
+        {/* Content: Markdown Render Layer */}
         <section
           className="prose prose-slate prose-base md:prose-lg max-w-none
             prose-headings:font-brand prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-kyn-slate-900
@@ -132,22 +133,23 @@ export default async function GuidePage({ params }: GuidePageProps) {
           />
         </section>
 
-        {/* Exit */}
+        {/* Exit: Return to Discovery */}
         <footer className="mt-32 rounded-[2.5rem] bg-surface border border-kyn-slate-100 p-10 md:p-16 text-center">
           <blockquote className="font-brand text-xl md:text-2xl font-medium text-kyn-slate-900 mb-12 italic leading-relaxed">
             "True professional mastery begins with the acquisition of quiet knowledge."
           </blockquote>
 
           <Link
-            href="/store"
+            href="/guides"
             className="group inline-flex items-center gap-3 rounded-2xl bg-kyn-slate-900 px-10 py-5 font-brand text-sm font-bold text-white transition-all active:scale-[0.97] shadow-xl hover:bg-black"
           >
             <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-1" />
-            Return to Hub
+            Back to Briefings
           </Link>
         </footer>
       </article>
 
+      {/* Persistence: Visual Progress Feedback */}
       <ReadingProgressBar />
     </main>
   );

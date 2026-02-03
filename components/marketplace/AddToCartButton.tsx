@@ -13,9 +13,7 @@ import { Check, ShoppingBag, Sparkles, Loader2, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils';
 import { useCart } from '@/lib/marketplace/cart-store';
 import { triggerCelebration } from '@/lib/utils/confetti'; // Resolved Build Error
-import { Database } from '@/lib/supabase/types';
-
-type Product = Database['public']['Tables']['products']['Row'];
+import { Product } from '@/lib/supabase/types';
 
 interface AddToCartButtonProps {
   product: Product;
