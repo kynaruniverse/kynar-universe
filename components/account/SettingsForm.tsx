@@ -7,9 +7,7 @@
 "use client";
 
 import { useState } from "react";
-// Import the browser client creator
 import { createClient } from "@/lib/supabase/browser";
-// Import Database to satisfy the client generic
 import { User, Profile, Database } from "@/lib/supabase/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -20,11 +18,8 @@ interface SettingsFormProps {
 }
 
 export function SettingsForm({ user, profile }: SettingsFormProps) {
-  /**
-   * Fix: Passing <Database> here resolves TS2345. 
-   * It maps the 'profiles' string to the actual table schema in types.ts.
-   */
-  const supabase = createClient<Database>();
+
+  const supabase = createClient() as any;
   
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(profile.full_name ?? "");
@@ -37,11 +32,6 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    /**
-     * By typing the client above, we can now pass a structured object.
-     * We use 'as any' only if the schema is strictly generated with 
-     * non-nullable fields you aren't updating.
-     */
     const updateData = {
       full_name: name.trim(),
       updated_at: new Date().toISOString(),
@@ -49,7 +39,7 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     const { error } = await supabase
       .from("profiles")
-      .update(updateData as any)
+      .update(updateData)
       .eq("id", user.id);
     
     if (error) {

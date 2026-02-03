@@ -7,7 +7,7 @@
 import { createClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 import { headers } from "next/headers";
-import { Database, UserLibrary } from "@/lib/supabase/types";
+import { Database } from "@/lib/supabase/types";
 
 export const dynamic = "force-dynamic";
 
