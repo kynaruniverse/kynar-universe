@@ -28,7 +28,7 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(profile.full_name ?? "");
   
-    const handleUpdate = async () => {
+      const handleUpdate = async () => {
     if (!name.trim()) {
       toast.error("Name cannot be empty");
       return;
@@ -36,14 +36,15 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    // The cast 'as any' must be inside the parentheses of the .update() call
+    // Extract the data and cast it here to avoid syntax errors inside the query builder
+    const updateData: any = {
+      full_name: name.trim(),
+      updated_at: new Date().toISOString()
+    };
+    
     const { error } = await supabase
       .from("profiles")
-      .update({
-          full_name: name.trim(),
-          updated_at: new Date().toISOString()
-        }
-        as any)
+      .update(updateData)
       .eq("id", user.id);
     
     if (error) {
