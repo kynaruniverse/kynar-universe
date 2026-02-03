@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
 import { ChevronRight } from "lucide-react";
 import { clsx } from "clsx";
 

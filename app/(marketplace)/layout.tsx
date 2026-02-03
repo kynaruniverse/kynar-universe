@@ -3,7 +3,7 @@
  * Role: Orientation Layer for Store, Product, and Cart flows.
  */
 
-import React from "react";
+
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 
 interface MarketplaceLayoutProps {

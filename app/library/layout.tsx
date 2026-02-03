@@ -3,7 +3,7 @@
  * Role: The Authenticated Frame for The Vault.
  */
 
-import React from "react";
+
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { PresenceBar } from "@/components/layout/PresenceBar";
 import { ShieldCheck } from "lucide-react";
