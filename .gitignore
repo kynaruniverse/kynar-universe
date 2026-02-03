@@ -62,3 +62,8 @@ logs/
 
 # 8. REPLIT SPECIFIC
 .replit.lock
+.next/
+.next/cache/
+gitleaks-report.json
+gitleaks_*.tar.gz
+trivy_*.tar.gz
