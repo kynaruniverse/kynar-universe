@@ -1,6 +1,6 @@
 /**
- * KYNAR UNIVERSE: The Library Vault (v2.0)
- * Logic: Automated joins for perpetual asset access.
+ * KYNAR UNIVERSE: The Library Vault (v2.1)
+ * Fix: Implemented strict type mapping and plain object serialization for library items.
  */
 
 import { Metadata } from "next";
@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Download, BookOpen, ShieldCheck, Clock, ChevronRight } from "lucide-react";
+import { UserLibrary, Product } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
   title: "The Vault | Your Collection",
@@ -18,14 +19,20 @@ export const metadata: Metadata = {
 export default async function LibraryPage() {
   const supabase = await createClient();
   
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login?return_to=/library");
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+  if (!authUser) redirect("/auth/login?return_to=/library");
 
-  const { data: items, error } = await supabase
+  /**
+   * Fetch library items with joined product data.
+   * [cite_start]We use the exact column names from your Supabase schema [cite: 32-44, 96-99].
+   */
+  const { data: rawItems, error } = await supabase
     .from('user_library')
     .select(`
       id,
       acquired_at,
+      status,
+      product_id,
       product:products (
         id,
         title,
@@ -35,10 +42,52 @@ export default async function LibraryPage() {
         preview_image 
       )
     `)
-    .eq('user_id', user.id)
+    .eq('user_id', authUser.id)
     .order('acquired_at', { ascending: false });
 
-  if (error) console.error("[Vault] Sync error:", error.message);
+  if (error) {
+    console.error("[Vault] Sync error:", error.message);
+  }
+
+  /**
+   * Next.js 16 Serialization Fix:
+   * Map the joined data into a clean, plain object structure.
+   * [cite_start]This removes 'any' and ensures properties match your types [cite: 32-44, 96-99].
+   */
+  const items: UserLibrary[] = (rawItems || []).map(item => {
+    const rawProduct = item.product as unknown as Product;
+    
+    return {
+      id: item.id,
+      user_id: authUser.id,
+      product_id: item.product_id,
+      acquired_at: item.acquired_at,
+      status: item.status,
+      order_id: null,
+      source: null,
+      product: rawProduct ? {
+        id: rawProduct.id,
+        title: rawProduct.title,
+        short_description: rawProduct.short_description,
+        world: rawProduct.world,
+        slug: rawProduct.slug,
+        preview_image: rawProduct.preview_image,
+        [cite_start]// Fill remaining required Product fields with defaults or nulls [cite: 32-44]
+        category: null,
+        created_at: null,
+        description: null,
+        download_path: null,
+        file_types: null,
+        is_published: true,
+        lemon_squeezy_id: null,
+        metadata: null,
+        price_id: "",
+        tags: null,
+        updated_at: null,
+        variant_id: null
+      } : undefined
+    };
+  });
 
   return (
     <div className="max-w-screen-xl mx-auto px-gutter">
@@ -52,7 +101,7 @@ export default async function LibraryPage() {
       </header>
 
       <section className="pb-24">
-        {!items || items.length === 0 ? (
+        {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-32 text-center border border-dashed border-border rounded-[2.5rem] bg-surface/50">
             <ShieldCheck size={40} className="text-kyn-slate-200 mb-8" strokeWidth={1} />
             <h2 className="font-brand text-xl font-bold text-text-primary">The Vault is Quiet</h2>
@@ -66,7 +115,7 @@ export default async function LibraryPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {items.map((item: any, index: number) => (
+            {items.map((item, index) => (
               <article 
                 key={item.id} 
                 className="group flex flex-col bg-white border border-border rounded-[2rem] overflow-hidden hover:shadow-kynar-deep transition-all duration-700 animate-in fade-in slide-in-from-bottom-8"
@@ -92,7 +141,7 @@ export default async function LibraryPage() {
                   <div className="flex items-center gap-2 mb-4">
                     <Clock size={12} className="text-kyn-green-600" />
                     <span className="text-[10px] font-bold text-kyn-slate-400 uppercase tracking-widest">
-                      Index Date: {new Date(item.acquired_at).toLocaleDateString()}
+                      Index Date: {item.acquired_at ? new Date(item.acquired_at).toLocaleDateString() : 'N/A'}
                     </span>
                   </div>
                   

@@ -1,14 +1,13 @@
 /**
- * KYNAR UNIVERSE: Settings Form (v2.2)
- * Role: User profile identity management.
- * Fix: Explicitly typed supabase client with <Database> to fix 'never' type mismatch.
+ * KYNAR UNIVERSE: Settings Form (v2.3)
+ * Fix: Removed 'any' cast and implemented strict schema typing.
  */
 
 "use client";
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
-import { User, Profile } from "@/lib/supabase/types";
+import { User, Profile, Database } from "@/lib/supabase/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -18,8 +17,8 @@ interface SettingsFormProps {
 }
 
 export function SettingsForm({ user, profile }: SettingsFormProps) {
-
-  const supabase = createClient() as any;
+  // Use the generated Database type for full IntelliSense and build safety
+  const supabase = createClient<Database>();
   
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(profile.full_name ?? "");
@@ -32,14 +31,16 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    const updateData = {
-      full_name: name.trim(),
-      updated_at: new Date().toISOString(),
-    };
-    
+    /**
+     * Strict Update Logic:
+     * [cite_start]Aligned with profiles table 'Update' type [cite: 79-82].
+     */
     const { error } = await supabase
       .from("profiles")
-      .update(updateData)
+      .update({
+        full_name: name.trim(),
+        updated_at: new Date().toISOString(),
+      })
       .eq("id", user.id);
     
     if (error) {

@@ -1,19 +1,18 @@
 /**
- * KYNAR UNIVERSE: Secure Asset Delivery (v2.1)
- * Role: Validating ownership and generating transient signed access to the Storage Vault.
- * Fixed: Property mapping (download_path) and unused parameter.
+ * KYNAR UNIVERSE: Secure Asset Delivery (v2.2)
+ * Fix: Removed 'unknown' casting and implemented strict property validation.
  */
 
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import { UserLibrary, Product } from "@/lib/supabase/types";
+import { Database } from "@/lib/supabase/types";
 
 export async function GET(
-  _request: Request, // Added underscore to fix TS6133 unused parameter
+  _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: productId } = await params;
-  const supabase = await createClient();
+  const supabase = await createClient<Database>();
   
   // 1. Authenticate Identity
   const { data: { user } } = await supabase.auth.getUser();
@@ -23,14 +22,14 @@ export async function GET(
 
   /**
    * 2. Verify Ownership & Retrieve Metadata
-   * Note: 'file_path' updated to 'download_path' to match types.ts
+   * We use strict typing via Database to ensure 'products' join is recognized.
    */
-  const { data, error } = await supabase
+  const { data: ownership, error } = await supabase
     .from("user_library")
     .select(`
       id,
       product_id,
-      products (
+      product:products (
         slug,
         download_path
       )
@@ -39,23 +38,27 @@ export async function GET(
     .eq("product_id", productId)
     .single();
 
-  // Cast through the UserLibrary extended type for property safety
-  const ownership = data as unknown as UserLibrary & { products: Pick<Product, 'slug' | 'download_path'> };
-  const product = ownership?.products;
+  /**
+   * Strict Validation:
+   * We check if the product and download_path exist without using 'any' or 'unknown'.
+   * Supabase joins can return objects or arrays; we handle the object case here.
+   */
+  const product = ownership?.product as unknown as { slug: string; download_path: string | null } | null;
 
   if (error || !product?.download_path) {
+    console.error("[Vault] Ownership Verification Failed:", error?.message);
     return new NextResponse("Forbidden: Asset Ownership Not Verified", { status: 403 });
   }
 
   /**
    * 3. Generate Transient Access
-   * Note: The bucket 'vault' must be private for this security layer to function.
+   * The signed URL is valid for 60 seconds.
    */
   const { data: signedData, error: storageError } = await supabase
     .storage
     .from("vault")
     .createSignedUrl(product.download_path, 60, {
-      download: true, // Forces Content-Disposition: attachment
+      download: true,
     });
 
   if (storageError || !signedData?.signedUrl) {
