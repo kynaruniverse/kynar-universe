@@ -25,15 +25,13 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    const updateData = {
-      full_name: name.trim(),
-      updated_at: new Date().toISOString(),
-    };
-    
-    const { error } = await supabase
+    const { error } = await (supabase
       .from("profiles")
-      .update(updateData)
-      .eq("id", user.id);
+      .update({
+        full_name: name.trim(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", user.id) as any);
     
     if (error) {
       toast.error("Update failed");
