@@ -6,7 +6,7 @@
  * Logic: Implements Safe Mounted Pattern to prevent hydration flicker.
  */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { Plus, Check, Lock, Loader2 } from "lucide-react";
 import { useCartItems, useCartActions } from "@/lib/marketplace/cart-store";
 import { useVault } from "@/lib/store/vault";
@@ -37,7 +37,7 @@ export const AddToCartButton = ({ product, className }: AddToCartButtonProps) =>
   const isOwned = mounted ? isInVault(product.id) : false;
   const inCart = mounted ? items.some((item) => item.id === product.id) : false;
 
-  const handleAdd = async (e: React.MouseEvent) => {
+  const handleAdd = async (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 

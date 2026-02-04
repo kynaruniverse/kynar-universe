@@ -6,7 +6,7 @@
  * Fix: Implemented Safe Mounted Pattern for Cart Badge hydration.
  */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, User, Compass, LayoutGrid } from "lucide-react";
