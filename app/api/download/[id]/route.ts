@@ -1,12 +1,11 @@
 /**
- * KYNAR UNIVERSE: Secure Asset Delivery (v2.3)
- * Role: Validating ownership and generating transient signed access to the Storage Vault.
- * Fix: Applied 'as any' to complex joins to bypass Netlify/Turbopack 'type never' errors.
+ * KYNAR UNIVERSE: Secure Asset Delivery (v2.4)
+ * Role: Validating ownership and generating transient signed access.
+ * Final Fix: Removed unused type imports to satisfy strict production linting.
  */
 
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import { UserLibrary, Product } from "@/lib/supabase/types";
 
 export async function GET(
   _request: Request,
@@ -24,8 +23,7 @@ export async function GET(
 
   /**
    * 3. Verify Ownership & Retrieve Metadata
-   * JOIN LOGIC: This is high-risk for TypeScript 'never' errors during build.
-   * FIX: Added 'as any' to the query.
+   * FIX: Using 'as any' to bypass complex join type-checking during build.
    */
   const { data, error } = await (supabase
     .from("user_library")
@@ -39,9 +37,8 @@ export async function GET(
     `)
     .eq("user_id", user.id)
     .eq("product_id", productId)
-    .maybeSingle() as any); // Use maybeSingle + as any for build stability
+    .maybeSingle() as any);
 
-  // 4. Manual mapping with safety checks
   const product = data?.products;
 
   if (error || !product?.download_path) {
@@ -50,7 +47,7 @@ export async function GET(
   }
 
   /**
-   * 5. Generate Transient Access (60-second expiry)
+   * 4. Generate Transient Access (60-second expiry)
    */
   const { data: signedData, error: storageError } = await supabase
     .storage
@@ -63,6 +60,6 @@ export async function GET(
     return new NextResponse("Asset Unavailable: Storage Failure", { status: 404 });
   }
 
-  // 6. Redirect to Secure Link
+  // 5. Redirect to Secure Link
   return NextResponse.redirect(signedData.signedUrl, 303);
 }
