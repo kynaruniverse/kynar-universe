@@ -1,9 +1,9 @@
+"use client";
+
 /**
  * KYNAR UNIVERSE: Breadcrumbs (v2.3)
- * Fix: Removed React import & React.Fragment to resolve Turbopack parsing error.
+ * Fix: Removed React import & Fragment to resolve Turbopack parsing error.
  */
-
-"use client";
 
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";

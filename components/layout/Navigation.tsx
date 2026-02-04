@@ -1,9 +1,9 @@
+"use client";
+
 /**
  * KYNAR UNIVERSE: Navigation & Orientation (v2.3)
- * Fix: Completely removed unused React import to satisfy Netlify CI.
+ * Fix: Removed unused React import to satisfy Netlify build.
  */
-
-"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";

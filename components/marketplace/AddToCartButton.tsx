@@ -1,9 +1,9 @@
+"use client";
+
 /**
  * KYNAR UNIVERSE: Add To Cart Button (v2.3)
- * Fix: Import MouseEvent as a type to prevent 'Unused React' build error.
+ * Fix: Use type-only import for MouseEvent to satisfy strict TS rules.
  */
-
-"use client";
 
 import { useState, useEffect, type MouseEvent } from "react";
 import { Plus, Check, Lock, Loader2 } from "lucide-react";
@@ -37,7 +37,6 @@ export const AddToCartButton = ({ product, className }: AddToCartButtonProps) =>
     setIsAdding(true);
     hapticFeedback("light");
     
-    // Artificial delay for tactile feedback
     await new Promise((resolve) => setTimeout(resolve, 400));
     
     addItem({
@@ -51,9 +50,7 @@ export const AddToCartButton = ({ product, className }: AddToCartButtonProps) =>
     hapticFeedback("success");
   };
 
-  if (!mounted) {
-    return <div className={cn("h-12 w-full rounded-xl bg-surface animate-pulse", className)} />;
-  }
+  if (!mounted) return <div className={cn("h-12 w-full rounded-xl bg-surface animate-pulse", className)} />;
 
   if (isOwned) {
     return (
