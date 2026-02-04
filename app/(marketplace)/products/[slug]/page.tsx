@@ -1,9 +1,3 @@
-/**
- * KYNAR UNIVERSE: Product Deep-Dive (v2.3)
- * Role: Primary acquisition interface.
- * Fix: Resolved 'never' type inference on property access (TS2339).
- */
-
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,31 +13,25 @@ interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
-/**
- * SEO Metadata
- * Fix: Explicitly cast the single record to satisfy property access.
- */
 export async function generateMetadata(
   { params }: ProductPageProps
 ): Promise<Metadata> {
   const { slug } = await params;
   const supabase = await createClient();
 
-  const { data } = await supabase
+  const { data } = await (supabase
     .from("products")
     .select("title, short_description")
     .eq("slug", slug)
-    .maybeSingle();
+    .maybeSingle() as any);
 
   const product = data as Pick<Product, 'title' | 'short_description'> | null;
-
   return {
     title: product?.title
       ? `${product.title} | Hub`
       : "Product | Hub",
     description:
-      product?.short_description ??
-      "Explore this digital asset in the Kynar Universe.",
+      product?.short_description ?? "Explore this digital asset in the Kynar Universe.",
   };
 }
 
@@ -51,19 +39,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
   const supabase = await createClient();
 
-  /**
-   * Fetch product + user concurrently
-   * Using generic to ensure the 'product' variable isn't inferred as 'never'
-   */
   const [
     { data: productData },
     { data: authData },
   ] = await Promise.all([
-    supabase
+    (supabase
       .from("products")
       .select("*")
       .eq("slug", slug)
-      .single(),
+      .single() as any),
     supabase.auth.getUser(),
   ]);
 
@@ -72,16 +56,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = productData as Product;
   const user = authData?.user;
 
-  /**
-   * Ownership verification
-   */
   const { data: ownership } = user
-    ? await supabase
+    ? await (supabase
         .from("user_library")
         .select("id")
         .eq("user_id", user.id)
         .eq("product_id", product.id)
-        .maybeSingle()
+        .maybeSingle() as any)
     : { data: null };
 
   const price = getPriceFromId(product.price_id);
@@ -106,7 +87,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       <section className="max-w-screen-xl mx-auto px-gutter mt-8 lg:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          {/* Visual Wing */}
           <div className="lg:col-span-7 space-y-8">
             <div className="group relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-border bg-surface shadow-kynar-elevated">
               <Image
@@ -131,7 +111,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          {/* Action Wing */}
           <div className="lg:col-span-5">
             <div className="sticky top-24 space-y-8">
               <div>
@@ -153,11 +132,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       {formatGBP(price)}
                     </p>
                   </div>
-                  <Zap
-                    size={24}
-                    className="text-kyn-green-600"
-                    fill="currentColor"
-                  />
+                  <Zap size={24} className="text-kyn-green-600" fill="currentColor" />
                 </div>
 
                 {ownership ? (
@@ -169,21 +144,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     In Your Vault
                   </Link>
                 ) : (
-                  <AddToCartButton
-                    product={product}
-                  />
+                  <AddToCartButton product={product} />
                 )}
 
                 <div className="mt-6 flex items-center gap-3 text-[11px] font-ui text-text-secondary">
-                  <ShieldCheck
-                    size={14}
-                    className="text-kyn-green-500"
-                  />
+                  <ShieldCheck size={14} className="text-kyn-green-500" />
                   <span>Verified Asset. One-time acquisition.</span>
                 </div>
               </div>
 
-              {/* Format Integrity */}
               {Array.isArray(product.file_types) && product.file_types.length > 0 && (
                 <div className="space-y-4 pt-4">
                   <h3 className="font-brand text-xs font-bold uppercase tracking-widest">
@@ -191,14 +160,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </h3>
                   <ul className="grid grid-cols-2 gap-3">
                     {(product.file_types as string[]).map((ft) => (
-                      <li
-                        key={ft}
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border font-ui text-[11px]"
-                      >
-                        <Download
-                          size={12}
-                          className="text-kyn-slate-400"
-                        />
+                      <li key={ft} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface border border-border font-ui text-[11px]">
+                        <Download size={12} className="text-kyn-slate-400" />
                         {ft}
                       </li>
                     ))}

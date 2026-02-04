@@ -1,11 +1,11 @@
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = ".next/static"
 
 [build.environment]
   NODE_VERSION = "20"
   NPM_CONFIG_LEGACY_PEER_DEPS = "true"
-  # Next.js 15 on Netlify automatically detects the best runtime. 
+  # Next.js 16 on Netlify automatically detects the best runtime.
   # Manual Edge flags are removed to avoid build-time conflicts.
 
 [[headers]]
@@ -15,7 +15,7 @@
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "same-origin"
-    # Adjusted CSP for Next.js 15 scripts and Supabase connectivity
+    # Adjusted CSP for Next.js 16 scripts and Supabase connectivity
     Content-Security-Policy = "upgrade-insecure-requests; block-all-mixed-content;"
 
 [[headers]]
@@ -23,10 +23,4 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Essential for handling Next.js internal routing and ensuring 
-# the Netlify Next.js Runtime plugin takes control properly.
-[[redirects]]
-  from = "/*"
-  to = "/.next/server/app/index.html"
-  status = 200
-  force = false
+# Netlify Next.js Runtime manages internal routing automatically.

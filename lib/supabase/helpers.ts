@@ -1,36 +1,42 @@
+/**
+ * KYNAR UNIVERSE: Supabase Data Helpers (v2.0)
+ * Logic: Production-ready data orchestration for Next.js 16.
+ * Alignment: Canonical Supabase Type System (types.ts).
+ */
+
 import { createClient } from './server';
 import { Product, World, Profile } from './types';
 
 export interface FilterOptions {
   world?: World | 'All';
-  priceRange?: 'free' | '1-5' | '5-15' | '15+';
-  sort?: 'newest' | 'price-low' | 'price-high';
+  sort?: 'newest' | 'alphabetical';
 }
 
+/**
+ * IDENTITY: Fetches the profile for the current user.
+ */
 export async function getUserProfile(): Promise<Profile | null> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  
+
   if (!user) return null;
-  
+
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single();
-  
-  if (error || !data) return null;
-  
-  return {
-    id: data.id,
-    email: data.email,
-    full_name: data.full_name,
-    is_admin: data.is_admin,
-    created_at: data.created_at,
-    updated_at: data.updated_at
-  };
+
+  if (error) {
+    console.error('Profile fetch error:', error);
+    return null;
+  }
+  return data;
 }
 
+/**
+ * OWNERSHIP: Validates if the current user owns a specific product.
+ */
 export async function checkOwnership(productId: string): Promise<boolean> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -47,35 +53,38 @@ export async function checkOwnership(productId: string): Promise<boolean> {
   return !!data && !error;
 }
 
+/**
+ * DISCOVERY: Optimized product retrieval aligned with Database schema.
+ * Note: Price-based filtering is removed to align with the schema 
+ * where pricing is handled via external Lemon Squeezy IDs.
+ */
 export async function getFilteredProducts(options: FilterOptions): Promise<Product[]> {
   const supabase = await createClient();
-  let query = supabase.from('products').select('*').eq('is_published', true);
+  
+  let query = supabase
+    .from('products')
+    .select('*')
+    .eq('is_published', true);
 
+  // Filter by World (Home, Lifestyle, Tools)
   if (options.world && options.world !== 'All') {
     query = query.eq('world', options.world);
   }
 
-  const { data, error } = await query;
-  if (error || !data) return [];
+  // Sorting Logic: Uses available database columns
+  if (options.sort === 'alphabetical') {
+    query = query.order('title', { ascending: true });
+  } else {
+    // Default to newest items first
+    query = query.order('created_at', { ascending: false });
+  }
 
-  return data.map((p): Product => ({
-    id: p.id,
-    title: p.title,
-    slug: p.slug,
-    description: p.description,
-    short_description: p.short_description,
-    price_id: p.price_id,
-    variant_id: p.variant_id,
-    lemon_squeezy_id: p.lemon_squeezy_id,
-    preview_image: p.preview_image,
-    download_path: p.download_path,
-    file_types: p.file_types,
-    tags: p.tags,
-    category: p.category,
-    world: p.world,
-    is_published: p.is_published,
-    metadata: p.metadata,
-    created_at: p.created_at,
-    updated_at: p.updated_at
-  }));
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Product fetch error:', error);
+    return [];
+  }
+  
+  return data || [];
 }

@@ -1,7 +1,8 @@
 /**
- * KYNAR UNIVERSE: Cart & Selection Store (v1.7)
+ * KYNAR UNIVERSE: Cart & Selection Store (v2.2)
  * Role: Persistent state management for product acquisition.
- * Fix: Removed invalid dynamic import logic; implemented standard mounting check.
+ * Location: lib/marketplace/cart-store.ts
+ * Fix: Implemented Safe Mounted Pattern to prevent Next.js 16 hydration errors.
  */
 
 import { create } from 'zustand';
@@ -11,28 +12,30 @@ import { useState, useEffect } from 'react';
 
 interface CartState {
   items: Product[];
+  _hasHydrated: boolean;
   addItem: (product: Product) => void;
   removeItem: (productId: string) => void;
   clearCart: () => void;
-  // Metadata for Hydration Safety
-  _hasHydrated: boolean;
   setHasHydrated: (state: boolean) => void;
 }
 
-export const useCart = create<CartState>()(
+/**
+ * CORE STORE: Internal Zustand store with persistence.
+ */
+export const useCartStore = create<CartState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       items: [],
       _hasHydrated: false,
 
       setHasHydrated: (state) => set({ _hasHydrated: state }),
 
-      addItem: (product) => 
-        set((state) => {
-          const exists = state.items.some((item) => item.id === product.id);
-          if (exists) return state;
-          return { items: [...state.items, product] };
-        }),
+      addItem: (product) => {
+        const { items } = get();
+        // Canonical ID check to prevent duplicates
+        if (items.some((item) => item.id === product.id)) return;
+        set({ items: [...items, product] });
+      },
 
       removeItem: (productId) => 
         set((state) => ({
@@ -41,10 +44,11 @@ export const useCart = create<CartState>()(
 
       clearCart: () => set({ items: [] }),
     }),
-    { 
-      name: 'kynar-universe-vault-session',
+    {
+      name: 'kynar-cart-storage',
       storage: createJSONStorage(() => localStorage),
       onRehydrateStorage: () => (state) => {
+        // Trigger hydration flag once storage is loaded into memory
         state?.setHasHydrated(true);
       },
     }
@@ -52,20 +56,42 @@ export const useCart = create<CartState>()(
 );
 
 /**
- * HYDRATION HOOK
- * Resolves TS2488 by using standard React hooks.
- * Ensures the UI only renders cart data once the client is mounted.
+ * SAFE HOOK: useCartItems()
+ * Primary hook for UI consumption. Prevents hydration mismatches.
  */
-export function useSafeCart() {
-  const store = useCart();
+export function useCartItems() {
+  const items = useCartStore((state) => state.items);
+  const hasHydrated = useCartStore((state) => state._hasHydrated);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Return null on server, and wait for Zustand hydration on client
-  if (!mounted || !store._hasHydrated) return null;
-  
-  return store;
+  // Return empty state during SSR or until rehydration is complete
+  if (!mounted || !hasHydrated) {
+    return {
+      items: [],
+      count: 0,
+      isEmpty: true,
+    };
+  }
+
+  return {
+    items,
+    count: items.length,
+    isEmpty: items.length === 0,
+  };
+}
+
+/**
+ * ACTIONS HOOK: useCartActions()
+ * Separates logic from state to prevent unnecessary re-renders.
+ */
+export function useCartActions() {
+  return {
+    addItem: useCartStore((state) => state.addItem),
+    removeItem: useCartStore((state) => state.removeItem),
+    clearCart: useCartStore((state) => state.clearCart),
+  };
 }

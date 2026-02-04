@@ -24,6 +24,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+  
         hostname: 'lemonsqueezy.imgix.net',
         pathname: '/**',
       },
@@ -31,20 +32,19 @@ const nextConfig = {
   },
 
   experimental: {
-    // Next 15 specific optimization
+    // Next 16 specific optimization
     optimizePackageImports: ['lucide-react', 'framer-motion', 'zustand', 'date-fns'],
   },
 
   // Headers moved to Netlify.toml for global edge consistency 
-  // or kept here for local dev consistency. 
-  // recommendation: Keep application-specific logic here.
+  // or kept here for local dev consistency.
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
           { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           // Permissions Policy for mobile hardware privacy

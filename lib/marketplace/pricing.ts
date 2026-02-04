@@ -1,82 +1,61 @@
 /**
- * KYNAR UNIVERSE: Pricing Engine (v1.6)
- * Role: Financial logic, currency localization, and variant mapping.
- * Build Safety: Nominal type guarding & Next.js 15 Server Action compatible.
+ * KYNAR UNIVERSE: Pricing Engine (v2.1)
+ * Role: Deterministic mapping of Lemon Squeezy IDs to numeric values.
+ * Logic: Ensures UI components (ProductCard) and formatters (formatGBP) 
+ * receive safe, non-NaN values without requiring a DB 'price' column.
  */
 
 /**
- * Valid Price IDs synchronized with Lemon Squeezy / Database schema.
- * Using a union type ensures build-time safety for marketplace components.
+ * Registry of active Lemon Squeezy Price IDs and their GBP values.
+ * Update this map when adding new products to the store.
  */
-export type PriceId = 
-  | 'price_kyn_10' 
-  | 'price_kyn_25' 
-  | 'price_kyn_50' 
-  | 'price_kyn_75' 
-  | 'price_kyn_100';
-
-/**
- * Internal price registry. 
- * Narrowed to PriceId to prevent accidental property access.
- */
-const PRICE_MAP: Record<PriceId, number> = {
-  'price_kyn_10': 10,
-  'price_kyn_25': 25,
-  'price_kyn_50': 50,
-  'price_kyn_75': 75,
-  'price_kyn_100': 100,
+const PRICE_MAP: Record<string, number> = {
+  // Free / Lead Magnets
+  'free': 0,
+  
+  // Example Tiers (Replace with your actual Lemon Squeezy Price IDs)
+  'pri_01hs5xyz...': 5,   // Entry Tier
+  'pri_01hs6abc...': 12,  // Standard Tier
+  'pri_01hs7def...': 25,  // Premium Tier
+  'pri_01hs8ghi...': 45,  // Professional Tier
 };
 
 /**
- * getPriceFromId: Extracts numerical value from a PriceId string.
- * @param priceId - The ID from Supabase or Lemon Squeezy.
- * @returns number - Defaults to 0 if ID is invalid or missing.
+ * Fallback values for missing or unknown IDs
+ */
+const FALLBACK_PRICE = 0;
+
+/**
+ * IDENTITY: Resolves a Lemon Squeezy Price ID to a numeric value.
+ * Guaranteed to return a number to prevent 'NaN' in UI formatters.
  */
 export function getPriceFromId(priceId: string | null | undefined): number {
-  if (!priceId) return 0;
+  if (!priceId) return FALLBACK_PRICE;
   
-  // Guard clause to ensure the ID exists in our registry
+  // Direct lookup
   if (Object.prototype.hasOwnProperty.call(PRICE_MAP, priceId)) {
-    return PRICE_MAP[priceId as PriceId];
+    return PRICE_MAP[priceId];
   }
-  
-  return 0;
-}
 
-/**
- * formatGBP: Converts number to the Kynar Universe currency format.
- * Pattern: £50 (Integers preferred for mobile clarity).
- */
-export function formatGBP(amount: number): string {
-  try {
-    return new Intl.NumberFormat('en-GB', {
-      style: 'currency',
-      currency: 'GBP',
-      currencyDisplay: 'narrowSymbol', // Ensures clean '£' on all mobile OS
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  } catch (error) {
-    // Fail-safe for legacy mobile browsers or edge-case locales
-    return `£${amount}`;
+  // Log unknown IDs in development to ensure the map stays updated
+  if (process.env.NODE_VERSION !== 'production') {
+    console.warn(`[Pricing Engine] Unknown price_id: ${priceId}. Falling back to 0.`);
   }
+
+  return FALLBACK_PRICE;
 }
 
 /**
- * calculateTotal: Securely sums a collection of product rows.
- * Primarily for use in Server Components and Checkout Actions.
+ * UTILITY: Checks if a product is free based on its ID.
  */
-export function calculateTotal(items: { price_id?: string | null }[]): number {
-  return items.reduce((total, item) => {
-    return total + getPriceFromId(item.price_id);
-  }, 0);
+export function isProductFree(priceId: string | null | undefined): boolean {
+  return getPriceFromId(priceId) === 0;
 }
 
 /**
- * validatePrice: Compares a client-provided price against the source of truth.
- * Usage: Security check within Next.js 15 Server Actions.
+ * SERVER/EDGE: Validation helper for secure checkout sessions.
  */
-export function validatePrice(id: string, providedPrice: number): boolean {
-  const actualPrice = getPriceFromId(id);
-  return actualPrice !== 0 && actualPrice === providedPrice;
+export function validatePriceMatch(priceId: string, claimedPrice: number): boolean {
+  const actualPrice = getPriceFromId(priceId);
+  return actualPrice === claimedPrice;
 }

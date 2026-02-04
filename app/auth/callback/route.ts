@@ -1,7 +1,7 @@
 /**
  * KYNAR UNIVERSE: Identity Resolution (v2.1)
  * Role: Exchanging the temporary PKCE code for a persistent user session.
- * Fully aligned with Next.js 15 and Production URL resolution.
+ * Fully aligned with Next.js 16 and Production URL resolution.
  */
 
 import { NextResponse } from 'next/server';
@@ -11,7 +11,6 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/library';
-
   /**
    * Production URL Resolution
    * Ensuring redirects function across local, preview (Netlify), and production.
@@ -19,13 +18,10 @@ export async function GET(request: Request) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
                   process.env.URL || 
                   origin;
-
   if (code) {
     const supabase = await createClient();
-    
     // Exchange the PKCE code for a session
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    
     if (!error) {
       // Identity confirmed. Constructing absolute path for the Vault.
       const target = new URL(next, siteUrl);

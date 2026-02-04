@@ -1,191 +1,99 @@
-/**
- * KYNAR UNIVERSE: Navigation Dock (v1.7)
- * Role: Structural orientation and World-hopping.
- * Fix: Added initialProfile prop to satisfy TS2322 and layout sync.
- */
-
 "use client";
 
-import { useState, useEffect, type ReactNode } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Home, Compass, Library, User, X, Globe, Sparkles, Shield, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/browser'; 
-import { Session } from '@supabase/supabase-js';
-import { Profile } from '@/lib/supabase/types';
+/**
+ * KYNAR UNIVERSE: Navigation & Orientation (v2.2)
+ * Role: Primary global transit and cart status.
+ * Fix: Implemented Safe Mounted Pattern for Cart Badge hydration.
+ */
 
-interface NavigationProps {
-  initialProfile?: Profile | null;
-}
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ShoppingBag, User, Compass, LayoutGrid } from "lucide-react";
+import { useCartItems } from "@/lib/marketplace/cart-store";
+import { cn } from "@/lib/utils";
 
-export const Navigation = ({ initialProfile }: NavigationProps) => {
+export const Navigation = () => {
   const pathname = usePathname();
-  const [showWorlds, setShowWorlds] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
   const [mounted, setMounted] = useState(false);
-  // Optional: You can also use initialProfile here to sync UI state
   
+  // Safe Hook consumption
+  const { count } = useCartItems();
+
+  // 1. Guard against Hydration Mismatch
   useEffect(() => {
     setMounted(true);
-    const supabase = createClient();
-    
-    // Initial fetch
-    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
-    
-    // Auth Listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
-  const navItems = [
-    { label: 'Home', href: '/', icon: Home },
-    { label: 'Explore', href: '#', icon: Compass, action: () => setShowWorlds(true) },
-    { label: 'Library', href: '/library', icon: Library },
-    { 
-      label: 'Account', 
-      // Use either the active session or the initialProfile as a fallback for the link destination
-      href: (session || initialProfile) ? '/account' : '/auth/login', 
-      icon: User 
-    },
+  const navLinks = [
+    { name: "Store", href: "/store", icon: Compass },
+    { name: "Library", href: "/library", icon: LayoutGrid },
+    { name: "Account", href: "/account", icon: User },
   ];
 
-  // Prevent hydration mismatch: Render a simple skeleton if not mounted
-  if (!mounted) return <div className="fixed bottom-0 h-16 w-full bg-canvas/80 backdrop-blur-lg" />;
-
   return (
-    <>
-      {/* MOBILE BOTTOM NAVIGATION DOCK */}
-      <nav 
-        className="fixed bottom-0 left-0 right-0 z-[100] border-t border-kyn-slate-50 bg-canvas/90 backdrop-blur-xl pb-[env(safe-area-inset-bottom,1.5rem)]"
-        aria-label="Mobile Navigation"
-      >
-        <div className="flex h-16 items-center justify-around px-4">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = item.href === '/' 
-              ? pathname === '/' 
-              : pathname.startsWith(item.href) && item.href !== '#';
+    <nav className="fixed bottom-0 left-0 z-50 w-full border-t border-border bg-canvas/80 pb-safe-bottom backdrop-blur-xl md:top-0 md:bottom-auto md:border-t-0 md:border-b">
+      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-around px-gutter md:h-20 md:justify-between">
+        
+        {/* Brand/Logo - Visible on Desktop */}
+        <Link href="/" className="hidden items-center gap-2 md:flex">
+          <div className="h-8 w-8 rounded-lg bg-kyn-slate-900" />
+          <span className="font-brand text-xl font-bold tracking-tight text-kyn-slate-900">
+            Kynar
+          </span>
+        </Link>
 
-            const content = (
-              <div className="flex flex-col items-center gap-1 group">
-                <Icon 
-                  size={20} 
-                  strokeWidth={isActive ? 2.5 : 2}
-                  className={cn(
-                    "transition-all duration-300",
-                    isActive ? "text-kyn-slate-900 translate-y-[-2px]" : "text-kyn-slate-400"
-                  )} 
-                />
-                <span className={cn(
-                  "text-[9px] font-bold uppercase tracking-[0.1em] font-ui transition-colors",
-                  isActive ? "text-kyn-slate-900" : "text-kyn-slate-400"
-                )}>
-                  {item.label}
+        {/* Primary Links */}
+        <div className="flex items-center gap-8 md:gap-12">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            const isActive = pathname.startsWith(link.href);
+            
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "group relative flex flex-col items-center gap-1 transition-colors md:flex-row md:gap-3",
+                  isActive ? "text-kyn-green-600" : "text-text-secondary hover:text-kyn-slate-900"
+                )}
+              >
+                <Icon size={20} className={cn("transition-transform group-active:scale-90", isActive && "fill-current/10")} />
+                <span className="font-brand text-[10px] font-bold uppercase tracking-widest md:text-xs">
+                  {link.name}
                 </span>
                 {isActive && (
-                  <div className="absolute -bottom-1 h-1 w-1 rounded-full bg-kyn-slate-900 animate-in fade-in zoom-in" />
+                  <span className="absolute -bottom-1 h-0.5 w-4 rounded-full bg-kyn-green-500 md:hidden" />
                 )}
-              </div>
-            );
-
-            return item.action ? (
-              <button 
-                key={item.label} 
-                onClick={item.action} 
-                className="relative flex flex-1 flex-col items-center justify-center py-2"
-                aria-haspopup="dialog"
-              >
-                {content}
-              </button>
-            ) : (
-              <Link 
-                key={item.label} 
-                href={item.href} 
-                className="relative flex flex-1 flex-col items-center justify-center py-2"
-              >
-                {content}
               </Link>
             );
           })}
-        </div>
-      </nav>
 
-      {/* WORLDS PORTAL (Drawer) */}
-      {showWorlds && (
-        <div className="fixed inset-0 z-[110] flex items-end">
-          <div 
-            className="absolute inset-0 bg-kyn-slate-900/40 backdrop-blur-md animate-in fade-in duration-500" 
-            onClick={() => setShowWorlds(false)} 
-          />
-          <div className="relative w-full rounded-t-[2.5rem] bg-white p-8 pb-12 shadow-2xl animate-in slide-in-from-bottom duration-500 ease-in-out">
-            <div className="mx-auto mb-6 h-1.5 w-12 rounded-full bg-kyn-slate-100" />
-            
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="font-brand text-2xl font-bold text-kyn-slate-900">Explore Domains</h2>
-              <button 
-                onClick={() => setShowWorlds(false)} 
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-kyn-slate-50 text-kyn-slate-900 active:scale-90 transition-transform"
-              >
-                <X size={20} />
-              </button>
+          {/* Cart / Selection - Safe Hydration Logic */}
+          <Link
+            href="/cart"
+            className={cn(
+              "group relative flex flex-col items-center gap-1 transition-colors md:flex-row md:gap-3",
+              pathname === "/cart" ? "text-kyn-green-600" : "text-text-secondary hover:text-kyn-slate-900"
+            )}
+          >
+            <div className="relative">
+              <ShoppingBag size={20} className="transition-transform group-active:scale-90" />
+              
+              {/* Only render count if mounted and count > 0 */}
+              {mounted && count > 0 && (
+                <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 animate-in zoom-in items-center justify-center rounded-full bg-kyn-green-500 font-ui text-[9px] font-bold text-white shadow-sm">
+                  {count}
+                </span>
+              )}
             </div>
-
-            <div className="grid gap-4">
-              <WorldLink 
-                href="/store?world=Home" 
-                title="Home" 
-                icon={<Globe size={24} className="text-kyn-green-600" />} 
-                color="bg-kyn-green-50" 
-                description="Spatial organization and living architecture."
-              />
-              <WorldLink 
-                href="/store?world=Lifestyle" 
-                title="Lifestyle" 
-                icon={<Sparkles size={24} className="text-kyn-caramel-600" />} 
-                color="bg-kyn-caramel-50" 
-                description="Habits, rituals, and sensory intelligence."
-              />
-              <WorldLink 
-                href="/store?world=Tools" 
-                title="Tools" 
-                icon={<Shield size={24} className="text-kyn-slate-600" />} 
-                color="bg-kyn-slate-100" 
-                description="Frameworks and technical assets."
-              />
-            </div>
-          </div>
+            <span className="font-brand text-[10px] font-bold uppercase tracking-widest md:text-xs">
+              Cart
+            </span>
+          </Link>
         </div>
-      )}
-    </>
+
+      </div>
+    </nav>
   );
 };
-
-interface WorldLinkProps {
-  href: string;
-  title: string;
-  icon: ReactNode;
-  color: string;
-  description: string;
-}
-
-function WorldLink({ href, title, icon, color, description }: WorldLinkProps) {
-  return (
-    <Link 
-      href={href} 
-      className="flex items-center gap-5 p-4 rounded-3xl border border-kyn-slate-50 bg-white shadow-sm active:scale-[0.97] active:bg-kyn-slate-50 transition-all group"
-    >
-      <div className={cn("flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl shadow-inner", color)}>
-        {icon}
-      </div>
-      <div className="flex-1">
-        <span className="block font-brand font-bold text-kyn-slate-900">{title} World</span>
-        <span className="block font-ui text-[11px] text-kyn-slate-400 leading-tight mt-0.5">{description}</span>
-      </div>
-      <ChevronRight size={18} className="text-kyn-slate-200 group-hover:text-kyn-slate-400 transition-colors" />
-    </Link>
-  );
-}

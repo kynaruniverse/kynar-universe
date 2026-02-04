@@ -1,98 +1,74 @@
+import { NextResponse } from 'next/server';
+import { headers } from 'next/headers';
+import crypto from 'crypto';
+import { createClient } from '@/lib/supabase/server';
+import { validatePriceMatch } from '@/lib/marketplace/pricing';
+
 /**
- * KYNAR UNIVERSE: Transactional Fulfillment (v2.3)
- * Role: Processing Lemon Squeezy signals and synchronizing the User Library.
- * Fully aligned with canonical types.ts and Next.js 15.
+ * KYNAR UNIVERSE: Transaction Webhook (v2.2)
+ * Role: Secure fulfillment and pricing validation.
  */
 
-import { createClient } from "@supabase/supabase-js";
-import crypto from "node:crypto";
-import { headers } from "next/headers";
-import { Database } from "@/lib/supabase/types";
-
-export const dynamic = "force-dynamic";
+const WEBHOOK_SECRET = process.env.LEMONSQUEEZY_WEBHOOK_SECRET || '';
 
 export async function POST(req: Request) {
-  // Use Service Role to bypass RLS for administrative fulfillment
-  const supabaseAdmin = createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-
+  // 1. Signature Verification (Security Perimeter)
   const rawBody = await req.text();
-  const headerList = await headers();
-  const signature = headerList.get("x-signature") || "";
-  const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET || "";
+  const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
+  const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8');
+  const signature = Buffer.from((await headers()).get('x-signature') || '', 'utf8');
 
-  if (!signature || !secret) {
-    return new Response("Unauthorized: Missing Security Credentials", { status: 401 });
-  }
-
-  /**
-   * 1. Cryptographic Handshake
-   * Validating that the payload originated from Lemon Squeezy.
-   */
-  try {
-    const hmac = crypto.createHmac("sha256", secret);
-    const digest = hmac.update(rawBody).digest("hex");
-    
-    // Constant-time comparison to mitigate timing side-channel attacks
-    const digestBuffer = Buffer.from(digest, 'utf8');
-    const signatureBuffer = Buffer.from(signature, 'utf8');
-
-    if (digestBuffer.length !== signatureBuffer.length || !crypto.timingSafeEqual(digestBuffer, signatureBuffer)) {
-      throw new Error("Invalid Handshake");
-    }
-  } catch (err) {
-    return new Response("Unauthorized: Signature Mismatch", { status: 401 });
+  if (signature.length !== digest.length || !crypto.timingSafeEqual(digest, signature)) {
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
   }
 
   const payload = JSON.parse(rawBody);
   const eventName = payload.meta.event_name;
-  const customData = payload.meta.custom_data;
+  const data = payload.data.attributes;
 
-  /**
-   * 2. Vault Provisioning (order_created)
-   * We listen for successful payments and map product IDs to the User Library.
-   */
-  if (eventName === "order_created") {
-    const userId = customData?.user_id;
-    const productIdsString = customData?.product_ids;
-    const orderStatus = payload.data.attributes.status;
-
-    // We only provision on 'paid' status.
-    if (orderStatus !== "paid") {
-      return new Response("Status Acknowledged: Payment Pending", { status: 200 });
-    }
-
-    if (!userId || !productIdsString) {
-      return new Response("Validation Failed: Missing Metadata", { status: 400 });
-    }
-
-    const productIds = productIdsString.split(",").map((id: string) => id.trim());
-    
-    // Align with UserLibraryInsert type
-    const libraryEntries = productIds.map((pid: string) => ({
-      user_id: userId,
-      product_id: pid,
-      order_id: payload.data.id.toString(),
-      // 'status' and 'source' are valid columns in the Kynar User Library schema
-    }));
-
-    // Perform the Upsert: prevents duplicate access if webhooks fire twice
-    const { error } = await supabaseAdmin
-      .from("user_library")
-      .upsert(libraryEntries, { 
-        onConflict: 'user_id,product_id' 
-      });
-
-    if (error) {
-      console.error("[Vault Webhook] Synchronization Error:", error.message);
-      return new Response("Internal Synchronization Error", { status: 500 });
-    }
-
-    return new Response("Vault Synchronized", { status: 200 });
+  // 2. Filter for Successful Orders
+  if (eventName !== 'order_created') {
+    return NextResponse.json({ message: 'Event ignored' });
   }
 
-  // Handle other events gracefully
-  return new Response("Event Processed", { status: 200 });
+  const {
+    variant_id, // This is your price_id
+    total,      // Amount in cents (e.g., 5000 = £50.00)
+    user_email,
+    custom_data, // Should contain product_id and user_id
+  } = data;
+
+  const productId = custom_data?.product_id;
+  const userId = custom_data?.user_id;
+  const priceId = variant_id.toString();
+  const actualPriceInPounds = total / 100;
+
+  // 3. Price Validation: Cross-reference with pricing.ts
+  // This ensures the user paid the amount defined in our local registry.
+  const isPriceValid = validatePriceMatch(priceId, actualPriceInPounds);
+
+  if (!isPriceValid) {
+    console.error(`[Webhook Alert] Price mismatch for Product ${productId}. Paid: ${actualPriceInPounds}, Expected: ID ${priceId}`);
+    return NextResponse.json({ error: 'Price mismatch detected' }, { status: 400 });
+  }
+
+  // 4. Fulfillment: Update Supabase User Library
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from('user_library')
+    .insert({
+      user_id: userId,
+      product_id: productId,
+      purchase_price: actualPriceInPounds,
+      price_id: priceId,
+      purchased_at: new Date().toISOString()
+    });
+
+  if (error) {
+    console.error('[Webhook Error] Library update failed:', error.message);
+    return NextResponse.json({ error: 'Fulfillment failed' }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true });
 }
