@@ -1,9 +1,6 @@
-"use client";
+// Navigation.tsx
 
-/**
- * KYNAR UNIVERSE: Navigation & Orientation (v2.3)
- * Fix: Removed unused React import to satisfy Netlify build.
- */
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -12,21 +9,26 @@ import { ShoppingBag, User, Compass, LayoutGrid } from "lucide-react";
 import { useCartItems } from "@/lib/marketplace/cart-store";
 import { cn } from "@/lib/utils";
 
-export const Navigation = () => {
+// Define the props interface
+interface NavigationProps {
+  initialProfile: any; // replace `any` with the actual type of your profile
+}
+
+export const Navigation = ({ initialProfile }: NavigationProps) => {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const { count } = useCartItems();
-
+  
   useEffect(() => {
     setMounted(true);
   }, []);
-
+  
   const navLinks = [
     { name: "Store", href: "/store", icon: Compass },
     { name: "Library", href: "/library", icon: LayoutGrid },
     { name: "Account", href: "/account", icon: User },
   ];
-
+  
   return (
     <nav className="fixed bottom-0 left-0 z-50 w-full border-t border-border bg-canvas/80 pb-safe-bottom backdrop-blur-xl md:top-0 md:bottom-auto md:border-t-0 md:border-b">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-around px-gutter md:h-20 md:justify-end md:gap-12">
