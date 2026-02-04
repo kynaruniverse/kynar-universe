@@ -1,9 +1,4 @@
-/**
- * KYNAR UNIVERSE: Selection & Acquisition (v2.3)
- * Role: Final review stage before checkout.
- * Fix: Removed unused React import to satisfy strict TS/Netlify build.
- * Fix: Standardized on project 'cn' and haptic utilities.
- */
+/* KYNAR UNIVERSE: Selection & Acquisition (v2.3) */
 
 "use client";
 
@@ -13,7 +8,6 @@ import { Trash2, ArrowRight, ShoppingBag, ChevronLeft } from "lucide-react";
 import { useCartItems, useCartActions } from "@/lib/marketplace/cart-store";
 import { getPriceFromId } from "@/lib/marketplace/pricing";
 import { formatGBP, hapticFeedback } from "@/lib/utils";
-
 export default function CartPage() {
   const [mounted, setMounted] = useState(false);
   

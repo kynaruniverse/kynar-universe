@@ -1,8 +1,4 @@
-/**
- * KYNAR UNIVERSE: Filter Bar (v2.1)
- * Role: Faceted search and domain navigation.
- * Fix: Added currentWorld prop to resolve TS2322.
- */
+/* KYNAR UNIVERSE: Filter Bar (v2.1) */
 
 "use client";
 
