@@ -199,7 +199,7 @@ export type Database = {
           product_id?: string;
           purchase_date?: string | null;
           status?: string;
-          user_email?: string;
+          user_email: string;
           user_id?: string | null;
         };
         Relationships: [
@@ -235,10 +235,10 @@ export type Database = {
           acquired_at?: string | null;
           id?: string;
           order_id?: string | null;
-          product_id?: string;
+          product_id: string;
           source?: string | null;
           status?: string | null;
-          user_id?: string;
+          user_id: string;
         };
         Relationships: [
           {

@@ -22,8 +22,8 @@ export async function generateCheckoutUrl({
   // Use Netlify's URL env var if available, fall back to public site URL
   const SITE_URL = process.env.URL || process.env.NEXT_PUBLIC_SITE_URL;
   
-  if (!API_KEY || !STORE_ID) {
-    throw new Error("Payment gateway configuration missing.");
+  if (!API_KEY || !STORE_ID || !SITE_URL) {
+    throw new Error("Payment gateway or Site URL configuration missing.");
   }
   
   const validProducts = products.filter(p => p.price_id && p.price_id !== "0");

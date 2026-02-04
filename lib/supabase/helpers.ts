@@ -66,9 +66,9 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
     .select('*')
     .eq('is_published', true);
 
-  // Filter by World (Home, Lifestyle, Tools)
+  // Filter by World (maps 'Home' to 'home' to match world_type enum)
   if (options.world && options.world !== 'All') {
-    query = query.eq('world', options.world);
+    query = query.eq('world', options.world.toLowerCase());
   }
 
   // Sorting Logic: Uses available database columns

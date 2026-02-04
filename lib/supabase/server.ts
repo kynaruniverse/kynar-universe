@@ -22,7 +22,8 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             );
           } catch (error) {
-            // Headers are read-only in some Server Component contexts
+            // In Next.js 16, setting cookies is restricted in Server Components.
+            // Ensure this is called within a Server Action or Route Handler.
           }
         },
       },

@@ -12,7 +12,6 @@ const nextConfig = {
   },
 
   images: {
-    // Optimized for mobile-first/low-bandwidth scenarios
     deviceSizes: [320, 420, 768, 1024, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/webp', 'image/avif'], 
@@ -24,20 +23,17 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-  
         hostname: 'lemonsqueezy.imgix.net',
+        port: '',
         pathname: '/**',
       },
     ],
   },
 
   experimental: {
-    // Next 16 specific optimization
     optimizePackageImports: ['lucide-react', 'framer-motion', 'zustand', 'date-fns'],
   },
 
-  // Headers moved to Netlify.toml for global edge consistency 
-  // or kept here for local dev consistency.
   async headers() {
     return [
       {
@@ -46,9 +42,6 @@ const nextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          // Permissions Policy for mobile hardware privacy
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' }
         ],
       },
     ];
