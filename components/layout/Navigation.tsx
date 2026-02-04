@@ -14,7 +14,7 @@ interface NavigationProps {
   initialProfile: any; // replace `any` with the actual type of your profile
 }
 
-export const Navigation = ({ initialProfile }: NavigationProps) => {
+export const Navigation = ({ initialProfile: _initialProfile }: NavigationProps) => {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const { count } = useCartItems();
