@@ -33,7 +33,7 @@ export async function getUserProfile(): Promise<Profile | null> {
   }
   
   // Strip hidden prototypes for serialization
-  return data ? { ...data } : null;
+return data ? { ...(data as object) } : null;
 }
 
 /**
