@@ -55,17 +55,15 @@ export async function POST(req: Request) {
   }
 
   // 4. Fulfillment: Update Supabase User Library
-  // Aligned with Database type: { id, user_id, product_id, order_id, source, status, acquired_at }
   const supabase = await createClient();
 
-  // FIX: Cast query to 'any' to stop the Netlify 'type never' build failure.
-  // This allows the deployment to proceed without strict schema checking.
+
   const { error } = await (supabase
     .from('user_library')
     .insert({
       user_id: userId,
       product_id: productId,
-      order_id: payload.data.id, // Maps Lemon Squeezy internal ID to order_id
+      order_id: payload.data.id,
       source: 'lemon-squeezy',
       status: 'active',
       acquired_at: new Date().toISOString()
