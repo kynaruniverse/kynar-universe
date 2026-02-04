@@ -1,6 +1,7 @@
 /**
- * KYNAR UNIVERSE: Presence Bar (v1.7)
- * Fix: Scope 'supabase' correctly and clean up dependency array.
+ * KYNAR UNIVERSE: Presence Bar (v2.2)
+ * Fix: Migrated to useCartItems() atomic hook.
+ * Alignment: Next.js 16 Safe Mounted Pattern.
  */
 
 "use client";
@@ -10,7 +11,7 @@ import Link from "next/link";
 import { User, ShoppingBag, Fingerprint, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/browser";
-import { useCart } from "@/lib/marketplace/cart-store";
+import { useCartItems } from "@/lib/marketplace/cart-store"; // Fixed: Updated Hook
 import { Profile } from "@/lib/supabase/types";
 
 interface PresenceBarProps {
@@ -21,14 +22,17 @@ interface PresenceBarProps {
 export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBarProps) => {
   const [profile, setProfile] = useState<Profile | null>(initialProfile || null);
   const [mounted, setMounted] = useState(false);
-  const { items, _hasHydrated } = useCart();
   
+  /**
+   * Selection Logic: 
+   * useCartItems() now handles its own hydration guarding internally.
+   */
+  const { count } = useCartItems();
+
   useEffect(() => {
     setMounted(true);
-    // 1. Initialize inside the effect for Next.js 16 compatibility
     const supabase = createClient();
     
-    // 2. Auth Listener setup
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         const { data } = await supabase
@@ -43,15 +47,15 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
     });
 
     return () => subscription.unsubscribe();
-    // 3. Empty dependency array because supabase is internal to this effect
   }, []); 
 
-  const selectionCount = mounted && _hasHydrated ? items.length : 0;
+  // Combined guard: only show numbers once the client is ready
+  const selectionCount = mounted ? count : 0;
 
   return (
-    <header className="sticky top-0 z-[80] flex h-16 items-center justify-between border-b border-kyn-slate-50 bg-canvas/80 px-gutter backdrop-blur-xl transition-all duration-500">
+    <header className="sticky top-0 z-[80] flex h-16 items-center justify-between border-b border-border bg-canvas/80 px-gutter backdrop-blur-xl transition-all duration-500">
       <Link href="/" className="flex items-center gap-3 group">
-        <div className="flex h-7 w-7 items-center justify-center rounded bg-kyn-slate-900 text-white transition-transform group-hover:rotate-6">
+        <div className="flex h-7 w-7 items-center justify-center rounded bg-kyn-slate-900 text-white transition-transform group-hover:rotate-6 shadow-sm">
           <Fingerprint size={14} strokeWidth={2.5} />
         </div>
         <span className="font-brand text-sm font-black uppercase tracking-[0.25em] text-kyn-slate-900">
@@ -64,13 +68,16 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
           {context}
         </span>
         
-        <div className="hidden xs:block h-3 w-[1px] bg-kyn-slate-100 mx-1" />
+        <div className="hidden xs:block h-3 w-[1px] bg-border mx-1" />
 
+        {/* Cart Trigger */}
         <Link 
           href="/cart" 
           className={cn(
             "relative flex h-10 w-10 items-center justify-center rounded-xl transition-all active:scale-90",
-            selectionCount > 0 ? "bg-kyn-green-500 text-white shadow-lg shadow-kyn-green-500/20" : "bg-surface text-kyn-slate-400 border border-kyn-slate-50"
+            selectionCount > 0 
+              ? "bg-kyn-green-500 text-white shadow-lg shadow-kyn-green-500/20" 
+              : "bg-surface text-kyn-slate-400 border border-border"
           )}
         >
           <ShoppingBag size={16} strokeWidth={2.5} />
@@ -81,9 +88,10 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
           )}
         </Link>
 
+        {/* Identity Trigger */}
         <Link 
           href={profile ? "/account" : "/auth/login"} 
-          className="group relative flex h-10 w-10 items-center justify-center rounded-xl border border-kyn-slate-50 bg-surface shadow-sm transition-all active:scale-90"
+          className="group relative flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface shadow-sm transition-all active:scale-90"
         >
           {profile ? (
             <div className="relative">
