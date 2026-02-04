@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
-import { User, Profile } from "@/lib/supabase/types";
+import { User, Profile, TablesUpdate } from "@/lib/supabase/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -12,7 +12,6 @@ interface SettingsFormProps {
 }
 
 export function SettingsForm({ user, profile }: SettingsFormProps) {
-  // Use the pre-typed browser client
   const supabase = createClient();
   
   const [loading, setLoading] = useState(false);
@@ -26,68 +25,15 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    // Bypass the 'never' type error by casting the query to 'any'
-    // This prevents the build-time crash while keeping the runtime logic perfect
-    const { error } = await (supabase
+    const updateData: TablesUpdate < 'profiles' > = {
+      full_name: name.trim(),
+      updated_at: new Date().toISOString(),
+    };
+    
+    const { error } = await supabase
       .from("profiles")
-      .update({
-        full_name: name.trim(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", user.id) user_library: {
-  Row: {
-    acquired_at: string | null;
-    id: string;
-    order_id: string | null;
-    price_id: string | null;
-    product_id: string;
-    purchase_price: number | null;
-    purchased_at: string | null;
-    source: string | null;
-    status: string | null;
-    user_id: string;
-  };
-  Insert: {
-    acquired_at?: string | null;
-    id?: string;
-    order_id?: string | null;
-    price_id?: string | null;
-    product_id: string;
-    purchase_price?: number | null;
-    purchased_at?: string | null;
-    source?: string | null;
-    status?: string | null;
-    user_id: string;
-  };
-  Update: {
-    acquired_at?: string | null;
-    id?: string;
-    order_id?: string | null;
-    price_id?: string | null;
-    product_id?: string;
-    purchase_price?: number | null;
-    purchased_at?: string | null;
-    source?: string | null;
-    status?: string | null;
-    user_id?: string;
-  };
-  Relationships: [
-    {
-      foreignKeyName: "fk_product";
-      columns: ["product_id"];
-      isOneToOne: false;
-      referencedRelation: "products";
-      referencedColumns: ["id"];
-    },
-    {
-      foreignKeyName: "user_library_product_id_fkey";
-      columns: ["product_id"];
-      isOneToOne: false;
-      referencedRelation: "products";
-      referencedColumns: ["id"];
-    }
-  ];
-};);
+      .update(updateData)
+      .eq("id", user.id);
     
     if (error) {
       toast.error("Update failed");
