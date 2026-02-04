@@ -10,6 +10,7 @@ interface CheckoutPageProps {
 export default async function CheckoutPage({
   searchParams,
 }: CheckoutPageProps) {
+  // 1. Resolve searchParams before accessing keys (Next.js 15+ Requirement)
   const params = await searchParams;
   const rawItems = params.items;
 
@@ -30,6 +31,7 @@ export default async function CheckoutPage({
     redirect("/cart?error=invalid_selection");
   }
 
+  // 2. Fetch products - Keep 'as any' specifically for the query chain to pass linting
   const { data: products, error } = await (supabase
     .from("products")
     .select("id, title, price_id, slug, lemon_squeezy_id")
@@ -55,10 +57,10 @@ export default async function CheckoutPage({
   return (
     <main className="flex min-h-[85vh] w-full flex-col items-center justify-center px-gutter bg-canvas text-center">
       <div className="max-w-xs animate-in fade-in slide-in-from-bottom-8 duration-1000">
-        <h1 className="font-brand text-2xl font-bold tracking-tight text-kyn-slate-900">
+        <h1 className="font-brand text-2xl font-bold tracking-tight text-kyn-slate-900 uppercase">
           Preparing Acquisition
         </h1>
-        <p className="mt-4 font-ui text-sm leading-relaxed text-kyn-slate-400">
+        <p className="mt-4 font-ui text-[11px] uppercase tracking-[0.2em] leading-relaxed text-kyn-slate-400">
           Initializing secure checkout for your vault selection.
         </p>
       </div>

@@ -67,7 +67,7 @@ export const Footer = () => {
           </p>
           
           <button 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="group flex items-center gap-2 font-brand text-[10px] font-bold uppercase tracking-widest text-kyn-slate-900 hover:text-kyn-green-600 transition-colors"
           >
             Ascend to Top

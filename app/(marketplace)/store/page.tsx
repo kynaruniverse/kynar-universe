@@ -1,6 +1,6 @@
 /**
- * KYNAR UNIVERSE: The Marketplace Hub (v2.1)
- * Fix: Resolved Prop Type mismatch for FilterBar (TS2322).
+ * KYNAR UNIVERSE: The Marketplace Hub (v2.3)
+ * Fix: Resolved Async searchParams for Next.js 15+ and Netlify build.
  */
 
 import { createClient } from "@/lib/supabase/server";
@@ -14,9 +14,10 @@ interface StorePageProps {
 }
 
 export default async function StorePage({ searchParams }: StorePageProps) {
+  // 1. Properly await searchParams for Next.js 15 production build
   const params = await searchParams;
   
-  // Cast the string param to our World type or undefined
+  // 2. Validate the world against the constant for runtime safety
   const activeWorld = params.world as World | undefined;
   
   const supabase = await createClient();
@@ -26,16 +27,16 @@ export default async function StorePage({ searchParams }: StorePageProps) {
     .select("*")
     .eq("is_published", true);
   
-  // Validation against the WORLDS constant to ensure runtime safety
+  // 3. World validation using type-casting for Postgres Enum compatibility
   if (activeWorld && (WORLDS as unknown as string[]).includes(activeWorld)) {
-    query = query.eq("world", activeWorld);
+    query = query.eq("world", activeWorld as string);
   }
   
   const { data: products, error } = await query.order("created_at", { ascending: false });
   
   if (error || !products) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center font-ui text-sm text-text-secondary">
+      <div className="flex min-h-[50vh] items-center justify-center font-ui text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
         Connection to the hub interrupted. Please refresh.
       </div>
     );
@@ -60,16 +61,14 @@ export default async function StorePage({ searchParams }: StorePageProps) {
       </header>
 
       <div className="max-w-screen-xl mx-auto px-gutter">
+        {/* Filter Bar Zone */}
         <div className="sticky top-14 md:top-20 z-30 py-6 bg-canvas/90 backdrop-blur-md mb-8 border-b border-border/50">
-          {/* Fix: Ensure activeWorld is passed as a string or "All". 
-            If TS2322 persists, check components/marketplace/FilterBar.tsx 
-            to ensure it accepts 'currentWorld' in its props interface.
-          */}
           <FilterBar currentWorld={activeWorld ?? "All"} />
         </div>
 
+        {/* Product Grid */}
         {products.length > 0 ? (
-          <div className="grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3 animate-in fade-in duration-1000">
             {products.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -77,8 +76,8 @@ export default async function StorePage({ searchParams }: StorePageProps) {
         ) : (
           <div className="flex flex-col items-center justify-center py-32 text-center rounded-[2.5rem] border border-dashed border-border bg-surface/50">
             <Box size={32} className="text-kyn-slate-200 mb-4" />
-            <h2 className="font-brand text-lg font-bold text-text-primary">Sector Empty</h2>
-            <p className="mt-2 font-ui text-sm text-text-secondary">No products found in this world yet.</p>
+            <h2 className="font-brand text-lg font-bold text-text-primary uppercase tracking-widest">Sector Empty</h2>
+            <p className="mt-2 font-ui text-[11px] uppercase tracking-[0.2em] text-kyn-slate-400">No products found in this world yet.</p>
           </div>
         )}
       </div>

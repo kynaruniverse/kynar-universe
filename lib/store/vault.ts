@@ -44,7 +44,7 @@ export const useVaultStore = create<VaultState>()(
     }),
     {
       name: 'kynar-vault-storage',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() =>    typeof window !== 'undefined' ? window.localStorage : (null as any) ),,
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },

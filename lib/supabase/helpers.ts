@@ -70,7 +70,7 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
   // Matches Postgres Enum: 'home' | 'lifestyle' | 'tools'
   if (options.world && options.world !== 'All') {
     const dbWorld = options.world.toLowerCase();
-    query = query.eq('world', dbWorld as any); 
+    query = query.eq('world', dbWorld as string); 
   }
 
   // 2. Sorting Logic

@@ -40,7 +40,7 @@ export default async function LibraryPage() {
     console.error("[Vault] Sync error:", error.message);
   }
 
-  const items: UserLibrary[] = (rawItems || []).map((item: any) => ({
+  const items: UserLibrary[] = (rawItems || []).map((item) => ({
     id: item.id,
     user_id: authUser.id,
     product_id: item.product_id,
@@ -49,26 +49,13 @@ export default async function LibraryPage() {
     order_id: null,
     source: null,
     product: item.product ? {
-      id: item.product.id,
-      title: item.product.title,
-      short_description: item.product.short_description,
-      world: item.product.world,
-      slug: item.product.slug,
-      preview_image: item.product.preview_image,
-      category: null,
-      created_at: null,
-      description: null,
-      download_path: null,
-      file_types: null,
-      is_published: true,
-      lemon_squeezy_id: null,
-      metadata: null,
-      price_id: "",
-      tags: null,
-      updated_at: null,
-      variant_id: null
+      ...item.product, // Spreads existing fields automatically
+      is_published: item.product.is_published ?? true,
+      price_id: item.product.price_id ?? "",
+      // Add only strictly necessary overrides below
     } : undefined
-  }));
+  })) as UserLibrary[];
+
 
   return (
     <div className="max-w-screen-xl mx-auto px-gutter">

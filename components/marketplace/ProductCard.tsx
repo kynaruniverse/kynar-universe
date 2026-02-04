@@ -11,6 +11,8 @@ import { AddToCartButton } from "./AddToCartButton";
 import { formatGBP } from "@/lib/utils";
 import { getPriceFromId } from "@/lib/marketplace/pricing";
 import { Product } from "@/lib/supabase/types";
+import Image from "next/image";
+
 
 interface ProductCardProps {
   product: Product;
@@ -32,17 +34,20 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         aria-label={`View details for ${product.title}`}
       >
         {product.preview_image ? (
-          <img 
+          <Image 
             src={product.preview_image} 
             alt={product.title} 
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-1000 ease-kyn-out group-hover:scale-105"
+            className="object-cover transition-transform duration-1000 ease-kyn-out group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-kyn-slate-50 text-kyn-slate-200">
             <Compass size={48} strokeWidth={1} />
           </div>
         )}
+
 
         {/* Discovery Overlay: Subtle atmospheric gradient for readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-kyn-slate-900/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
