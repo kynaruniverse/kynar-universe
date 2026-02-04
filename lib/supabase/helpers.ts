@@ -19,10 +19,7 @@ export async function getUserProfile(): Promise<Profile | null> {
     .eq('id', user.id)
     .single();
   
-  if (error || !data) {
-    if (error) console.error('Profile fetch error:', error);
-    return null;
-  }
+  if (error || !data) return null;
   
   return {
     id: data.id,
@@ -58,22 +55,8 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
     query = query.eq('world', options.world);
   }
 
-  if (options.priceRange) {
-    if (options.priceRange === 'free') query = query.eq('price_id', 'free');
-    if (options.priceRange === '1-5') query = query.gte('metadata->price', 1).lte('metadata->price', 5);
-    if (options.priceRange === '5-15') query = query.gt('metadata->price', 5).lte('metadata->price', 15);
-    if (options.priceRange === '15+') query = query.gt('metadata->price', 15);
-  }
-
-  if (options.sort === 'price-low') query = query.order('price_id', { ascending: true });
-  else if (options.sort === 'price-high') query = query.order('price_id', { ascending: false });
-  else query = query.order('created_at', { ascending: false });
-
   const { data, error } = await query;
-  if (error || !data) {
-    if (error) console.error('Fetch error:', error);
-    return [];
-  }
+  if (error || !data) return [];
 
   return data.map((p): Product => ({
     id: p.id,

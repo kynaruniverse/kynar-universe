@@ -1,8 +1,3 @@
-/**
- * KYNAR UNIVERSE: Supabase Server Client (v2.1)
- * Fix: Explicit typing for cookie resolution to satisfy strict TS rules.
- */
-
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { Database } from './types';
@@ -21,14 +16,13 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        // Fix: Added explicit types for the cookie objects
         setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             );
           } catch (error) {
-            // Safe to ignore in Server Components where headers are read-only
+            // Headers are read-only in some Server Component contexts
           }
         },
       },
