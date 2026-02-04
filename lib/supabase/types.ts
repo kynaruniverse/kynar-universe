@@ -217,7 +217,10 @@ export type Database = {
           acquired_at: string | null;
           id: string;
           order_id: string | null;
+          price_id: string | null;
           product_id: string;
+          purchase_price: number | null;
+          purchased_at: string | null;
           source: string | null;
           status: string | null;
           user_id: string;
@@ -226,7 +229,10 @@ export type Database = {
           acquired_at?: string | null;
           id?: string;
           order_id?: string | null;
+          price_id?: string | null;
           product_id: string;
+          purchase_price?: number | null;
+          purchased_at?: string | null;
           source?: string | null;
           status?: string | null;
           user_id: string;
@@ -235,10 +241,13 @@ export type Database = {
           acquired_at?: string | null;
           id?: string;
           order_id?: string | null;
-          product_id: string;
+          price_id?: string | null;
+          product_id?: string;
+          purchase_price?: number | null;
+          purchased_at?: string | null;
           source?: string | null;
           status?: string | null;
-          user_id: string;
+          user_id?: string;
         };
         Relationships: [
           {

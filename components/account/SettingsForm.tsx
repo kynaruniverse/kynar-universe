@@ -34,7 +34,60 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
         full_name: name.trim(),
         updated_at: new Date().toISOString(),
       })
-      .eq("id", user.id) as any);
+      .eq("id", user.id) user_library: {
+  Row: {
+    acquired_at: string | null;
+    id: string;
+    order_id: string | null;
+    price_id: string | null;
+    product_id: string;
+    purchase_price: number | null;
+    purchased_at: string | null;
+    source: string | null;
+    status: string | null;
+    user_id: string;
+  };
+  Insert: {
+    acquired_at?: string | null;
+    id?: string;
+    order_id?: string | null;
+    price_id?: string | null;
+    product_id: string;
+    purchase_price?: number | null;
+    purchased_at?: string | null;
+    source?: string | null;
+    status?: string | null;
+    user_id: string;
+  };
+  Update: {
+    acquired_at?: string | null;
+    id?: string;
+    order_id?: string | null;
+    price_id?: string | null;
+    product_id?: string;
+    purchase_price?: number | null;
+    purchased_at?: string | null;
+    source?: string | null;
+    status?: string | null;
+    user_id?: string;
+  };
+  Relationships: [
+    {
+      foreignKeyName: "fk_product";
+      columns: ["product_id"];
+      isOneToOne: false;
+      referencedRelation: "products";
+      referencedColumns: ["id"];
+    },
+    {
+      foreignKeyName: "user_library_product_id_fkey";
+      columns: ["product_id"];
+      isOneToOne: false;
+      referencedRelation: "products";
+      referencedColumns: ["id"];
+    }
+  ];
+};);
     
     if (error) {
       toast.error("Update failed");
