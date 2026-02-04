@@ -21,7 +21,7 @@ interface ProductCardProps {
 export const ProductCard = ({ product }: ProductCardProps) => {
   // Determine display price using the hardened Pricing Engine
   const priceValue = getPriceFromId(product.price_id);
-
+  
   return (
     <article className="group relative flex flex-col animate-in fade-in slide-in-from-bottom-3 duration-700 ease-out">
       
@@ -82,7 +82,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <div className="relative">
           <AddToCartButton 
             product={product} 
-            variant="ghost" 
             className="w-full !py-3.5 text-xs tracking-wider" 
           />
         </div>
