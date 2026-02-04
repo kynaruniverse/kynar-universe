@@ -12,7 +12,6 @@ import { Navigation } from "@/components/layout/Navigation";
 import { getUserProfile } from "@/lib/supabase/helpers";
 import { Toaster } from "react-hot-toast";
 import { cn } from "@/lib/utils";
-import { Profile } from "@/lib/supabase/types";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-ui", display: 'swap' });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-brand", display: 'swap' });
