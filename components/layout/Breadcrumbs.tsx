@@ -1,9 +1,13 @@
+/**
+ * KYNAR UNIVERSE: Breadcrumbs (v2.3)
+ * Fix: Removed React import & React.Fragment to resolve Turbopack parsing error.
+ */
+
 "use client";
 
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { clsx } from "clsx";
-import { Fragment } from "react";
+import { cn } from "@/lib/utils";
 
 interface Path {
   label: string;
@@ -13,19 +17,28 @@ interface Path {
 export const Breadcrumbs = ({ paths }: { paths: Path[] }) => {
   return (
     <nav className="flex items-center gap-2 overflow-x-auto no-scrollbar whitespace-nowrap px-gutter py-4 text-[11px] font-bold uppercase tracking-widest">
-      <Link href="/" className="text-kyn-slate-400 hover:text-kyn-slate-900">Universe</Link>
+      <Link 
+        href="/" 
+        className="text-kyn-slate-400 hover:text-kyn-slate-900 transition-colors"
+      >
+        Universe
+      </Link>
+      
       {paths.map((path, index) => (
-        <Fragment key={path.href}>
+        <div key={path.href} className="flex items-center gap-2">
           <ChevronRight size={10} className="text-kyn-slate-300 shrink-0" />
           <Link 
             href={path.href} 
-            className={clsx(
-              index === paths.length - 1 ? "text-kyn-slate-900" : "text-kyn-slate-400 hover:text-kyn-slate-900"
+            className={cn(
+              "transition-colors",
+              index === paths.length - 1 
+                ? "text-kyn-slate-900 cursor-default" 
+                : "text-kyn-slate-400 hover:text-kyn-slate-900"
             )}
           >
             {path.label}
           </Link>
-        </React.Fragment>
+        </div>
       ))}
     </nav>
   );
