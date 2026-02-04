@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
-import { User, Profile, TablesUpdate } from "@/lib/supabase/types";
+import { User, Profile } from "@/lib/supabase/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -25,14 +25,12 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    const updateData: TablesUpdate < 'profiles' > = {
-      full_name: name.trim(),
-      updated_at: new Date().toISOString(),
-    };
-    
     const { error } = await supabase
       .from("profiles")
-      .update(updateData)
+      .update({
+        full_name: name.trim(),
+        updated_at: new Date().toISOString(),
+      } as any)
       .eq("id", user.id);
     
     if (error) {
