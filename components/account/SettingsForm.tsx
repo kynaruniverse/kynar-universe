@@ -25,12 +25,14 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
+    const updateData = {
+      full_name: name.trim(),
+      updated_at: new Date().toISOString(),
+    };
+    
     const { error } = await supabase
       .from("profiles")
-      .update({
-        full_name: name.trim(),
-        updated_at: new Date().toISOString(),
-      })
+      .update(updateData)
       .eq("id", user.id);
     
     if (error) {
