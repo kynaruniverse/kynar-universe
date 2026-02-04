@@ -1,8 +1,3 @@
-/**
- * KYNAR UNIVERSE: Settings Form (v2.3)
- * Fix: Removed 'any' cast and implemented strict schema typing.
- */
-
 "use client";
 
 import { useState } from "react";
@@ -17,7 +12,6 @@ interface SettingsFormProps {
 }
 
 export function SettingsForm({ user, profile }: SettingsFormProps) {
-  // Use the generated Database type for full IntelliSense and build safety
   const supabase = createClient<Database>();
   
   const [loading, setLoading] = useState(false);
@@ -31,10 +25,6 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
-    /**
-     * Strict Update Logic:
-     * [cite_start]Aligned with profiles table 'Update' type [cite: 79-82].
-     */
     const { error } = await supabase
       .from("profiles")
       .update({
@@ -55,7 +45,6 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
   
   return (
     <div className="space-y-8">
-      {/* Name Field */}
       <div className="space-y-4">
         <label className="text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
           Full Identity
@@ -69,7 +58,6 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
         />
       </div>
 
-      {/* Submit */}
       <button
         onClick={handleUpdate}
         disabled={loading}

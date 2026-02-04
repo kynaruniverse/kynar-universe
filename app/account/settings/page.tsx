@@ -1,8 +1,3 @@
-/**
- * KYNAR UNIVERSE: Account Workshop (v2.2)
- * Fix: Migrated to getUserProfile helper for strict serialization and type safety.
- */
-
 import { getUserProfile } from "@/lib/supabase/helpers";
 import { SettingsForm } from "@/components/account/SettingsForm";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -12,7 +7,6 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function SettingsPage() {
-  // 1. Get the authenticated user for the SettingsForm
   const supabase = await createClient();
   const { data: { user: authUser } } = await supabase.auth.getUser();
   
@@ -20,21 +14,13 @@ export default async function SettingsPage() {
     redirect("/auth/login");
   }
 
-  /** * Cast authUser to our App's User type
-   * We wrap in a plain object to ensure serialization.
-   */
   const user: User = {
     id: authUser.id,
     email: authUser.email
   };
   
-  [cite_start]// 2. Use our strict helper to fetch the sanitized profile [cite: 71-74]
   const fetchedProfile = await getUserProfile();
   
-  /**
-   * Fix: Guaranteed Fallback Pattern.
-   * If no profile exists yet, we provide a strictly typed default.
-   */
   const profile: Profile = fetchedProfile ?? {
     id: user.id,
     email: user.email ?? "",

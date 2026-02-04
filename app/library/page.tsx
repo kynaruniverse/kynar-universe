@@ -1,8 +1,3 @@
-/**
- * KYNAR UNIVERSE: The Library Vault (v2.1)
- * Fix: Implemented strict type mapping and plain object serialization for library items.
- */
-
 import { Metadata } from "next";
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,10 +17,6 @@ export default async function LibraryPage() {
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/auth/login?return_to=/library");
 
-  /**
-   * Fetch library items with joined product data.
-   * [cite_start]We use the exact column names from your Supabase schema [cite: 32-44, 96-99].
-   */
   const { data: rawItems, error } = await supabase
     .from('user_library')
     .select(`
@@ -49,11 +40,6 @@ export default async function LibraryPage() {
     console.error("[Vault] Sync error:", error.message);
   }
 
-  /**
-   * Next.js 16 Serialization Fix:
-   * Map the joined data into a clean, plain object structure.
-   * [cite_start]This removes 'any' and ensures properties match your types [cite: 32-44, 96-99].
-   */
   const items: UserLibrary[] = (rawItems || []).map(item => {
     const rawProduct = item.product as unknown as Product;
     
@@ -72,7 +58,6 @@ export default async function LibraryPage() {
         world: rawProduct.world,
         slug: rawProduct.slug,
         preview_image: rawProduct.preview_image,
-        [cite_start]// Fill remaining required Product fields with defaults or nulls [cite: 32-44]
         category: null,
         created_at: null,
         description: null,
