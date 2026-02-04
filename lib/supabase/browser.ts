@@ -1,24 +1,22 @@
 /**
- * KYNAR UNIVERSE: Browser-Side Supabase Client (v1.5)
- * Role: Client-side interaction, Realtime subscriptions, Auth state.
+ * KYNAR UNIVERSE: Browser-Side Supabase Client (v1.6)
+ * Role: Client-side interaction with Next.js 16 SSR compatibility.
  */
 
 import { createBrowserClient } from '@supabase/ssr';
 import { Database } from './types';
 
-let clientInstance: ReturnType<typeof createBrowserClient<Database>> | undefined;
-
 export const createClient = () => {
-  if (clientInstance) return clientInstance;
+  // We fetch these inside the function to ensure they are read at the moment of execution
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
+  // Defensive check: If these are missing, we throw a clear error that shows up in Netlify logs
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('Supabase Browser Client: Environment variables are missing.');
+    throw new Error('Supabase Browser Client: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is undefined.');
   }
 
-  clientInstance = createBrowserClient<Database>(
+  return createBrowserClient<Database>(
     supabaseUrl,
     supabaseAnonKey,
     {
@@ -30,6 +28,4 @@ export const createClient = () => {
       },
     }
   );
-
-  return clientInstance;
 };
