@@ -40,7 +40,7 @@ export default async function LibraryPage() {
     console.error("[Vault] Sync error:", error.message);
   }
 
-  const items: UserLibrary[] = (rawItems || []).map((item) => ({
+  const items: UserLibrary[] = (rawItems || []).map((item: any) => ({
     id: item.id,
     user_id: authUser.id,
     product_id: item.product_id,
