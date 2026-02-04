@@ -17,10 +17,6 @@ export default async function LibraryPage() {
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/auth/login?return_to=/library");
 
-  /**
-   * We force 'any' on the response to stop Turbopack from 
-   * incorrectly inferring 'never' during the join.
-   */
   const { data: rawItems, error } = await (supabase
     .from('user_library')
     .select(`
@@ -44,11 +40,6 @@ export default async function LibraryPage() {
     console.error("[Vault] Sync error:", error.message);
   }
 
-  /**
-   * Defensive Mapping:
-   * We treat the input as 'any' to avoid property access errors,
-   * but we output a strict 'UserLibrary[]' so the UI stays safe.
-   */
   const items: UserLibrary[] = (rawItems || []).map((item: any) => ({
     id: item.id,
     user_id: authUser.id,
@@ -105,7 +96,7 @@ export default async function LibraryPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {items.map((item, index) => (
+            {items.map((item) => (
               <article 
                 key={item.id} 
                 className="group flex flex-col bg-white border border-border rounded-[2rem] overflow-hidden hover:shadow-kynar-deep transition-all duration-700"
