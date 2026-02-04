@@ -6,7 +6,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Compass, Library, User, X, Globe, Sparkles, Shield, ChevronRight } from 'lucide-react';
@@ -167,7 +167,7 @@ export const Navigation = ({ initialProfile }: NavigationProps) => {
 interface WorldLinkProps {
   href: string;
   title: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   color: string;
   description: string;
 }

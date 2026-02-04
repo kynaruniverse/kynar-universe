@@ -6,7 +6,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Check, ShoppingBag, Sparkles, Loader2, ArrowRight } from 'lucide-react';
@@ -43,7 +43,7 @@ export const AddToCartButton = ({
   // Determine if item is already selected, safe for SSR
   const alreadyInCart = _hasHydrated && items.some(i => i.id === product.id);
 
-  const handleAction = async (e: React.MouseEvent) => {
+  const handleAction = async (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation(); // Critical: Prevents parent card Link from firing
     
