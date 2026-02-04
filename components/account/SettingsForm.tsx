@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/browser";
-import { User, Profile, Database } from "@/lib/supabase/types";
+import { createClient } from "@/lib/supabase/browser"; // Using your custom browser client
+import { User, Profile } from "@/lib/supabase/types";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -12,7 +12,9 @@ interface SettingsFormProps {
 }
 
 export function SettingsForm({ user, profile }: SettingsFormProps) {
-  const supabase = createClient<Database>();
+  // FIX: Remove <Database> from here. 
+  // Netlify's "Option A" - just call the function normally.
+  const supabase = createClient(); 
   
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(profile.full_name ?? "");
@@ -45,6 +47,7 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
   
   return (
     <div className="space-y-8">
+      {/* ... rest of your UI code ... */}
       <div className="space-y-4">
         <label className="text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
           Full Identity
@@ -53,23 +56,16 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your full name"
-          className="w-full rounded-xl border border-border bg-white p-4 font-ui
-                     focus:ring-2 focus:ring-kyn-green-500 outline-none transition-all"
+          className="w-full rounded-xl border border-border bg-white p-4 font-ui focus:ring-2 focus:ring-kyn-green-500 outline-none transition-all"
         />
       </div>
 
       <button
         onClick={handleUpdate}
         disabled={loading}
-        className="w-full flex items-center justify-center gap-3
-                   bg-kyn-slate-900 text-white py-4 rounded-xl font-brand font-bold
-                   hover:bg-black disabled:opacity-50 transition-all active:scale-[0.98]"
+        className="w-full flex items-center justify-center gap-3 bg-kyn-slate-900 text-white py-4 rounded-xl font-brand font-bold hover:bg-black disabled:opacity-50 transition-all active:scale-[0.98]"
       >
-        {loading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : (
-          "Save Changes"
-        )}
+        {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Save Changes"}
       </button>
     </div>
   );
