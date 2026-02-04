@@ -1,5 +1,6 @@
 /**
- * KYNAR UNIVERSE: Supabase Data Helpers (v1.5)
+ * KYNAR UNIVERSE: Supabase Data Helpers (v1.6)
+ * Fix: Applied object spreading to all returns to satisfy Next.js 16 RSC serialization.
  */
 
 import { createClient } from './server';
@@ -17,20 +18,22 @@ export interface FilterOptions {
 export async function getUserProfile(): Promise<Profile | null> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-
+  
   if (!user) return null;
-
+  
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single();
-
+  
   if (error) {
     console.error('Profile fetch error:', error);
     return null;
   }
-  return data;
+  
+  // Strip hidden prototypes for serialization
+  return data ? { ...data } : null;
 }
 
 /**
@@ -70,7 +73,6 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
     if (options.priceRange === '15+') query = query.gt('price', 15);
   }
 
-  // Sorting Logic
   if (options.sort === 'price-low') query = query.order('price', { ascending: true });
   else if (options.sort === 'price-high') query = query.order('price', { ascending: false });
   else query = query.order('created_at', { ascending: false });
@@ -80,5 +82,7 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
     console.error('Fetch error:', error);
     return [];
   }
-  return data || [];
+
+  // Next.js 16 FIX: Spread the array of objects to ensure each one is a plain object
+  return (data || []).map(product => ({ ...product }));
 }

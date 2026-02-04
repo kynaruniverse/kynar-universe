@@ -36,7 +36,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Server-side identity fetch
-  const profile: Profile | null = await getUserProfile();
+  const rawProfile = await getUserProfile();
+
+  // Sanitize: Convert to plain JSON to strip any non-serializable properties (like Dates)
+  const profile = rawProfile ? JSON.parse(JSON.stringify(rawProfile)) : null;
 
   return (
     <html lang="en" className={cn(inter.variable, jakarta.variable, "antialiased")}>

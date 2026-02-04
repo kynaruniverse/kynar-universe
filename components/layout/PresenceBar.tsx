@@ -1,7 +1,6 @@
 /**
- * KYNAR UNIVERSE: Presence Bar (v1.6)
- * Role: Intelligence Header & Identity Hub.
- * Fix: Unused 'event' parameter and hydration logic synchronization.
+ * KYNAR UNIVERSE: Presence Bar (v1.7)
+ * Fix: Scope 'supabase' correctly and clean up dependency array.
  */
 
 "use client";
@@ -23,13 +22,13 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
   const [profile, setProfile] = useState<Profile | null>(initialProfile || null);
   const [mounted, setMounted] = useState(false);
   const { items, _hasHydrated } = useCart();
-  const supabase = createClient();
-
+  
   useEffect(() => {
     setMounted(true);
+    // 1. Initialize inside the effect for Next.js 16 compatibility
+    const supabase = createClient();
     
-    // Establishing the Identity Bridge
-    // Fix: Added underscore to _event to satisfy TS6133
+    // 2. Auth Listener setup
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         const { data } = await supabase
@@ -44,14 +43,13 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase]);
+    // 3. Empty dependency array because supabase is internal to this effect
+  }, []); 
 
-  // Selection Count: Only revealed once store is hydrated to prevent "Counter Jumps"
   const selectionCount = mounted && _hasHydrated ? items.length : 0;
 
   return (
     <header className="sticky top-0 z-[80] flex h-16 items-center justify-between border-b border-kyn-slate-50 bg-canvas/80 px-gutter backdrop-blur-xl transition-all duration-500">
-      {/* Brand Handrail */}
       <Link href="/" className="flex items-center gap-3 group">
         <div className="flex h-7 w-7 items-center justify-center rounded bg-kyn-slate-900 text-white transition-transform group-hover:rotate-6">
           <Fingerprint size={14} strokeWidth={2.5} />
@@ -62,14 +60,12 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
       </Link>
       
       <div className="flex items-center gap-3">
-        {/* Context Label */}
         <span className="hidden xs:block text-[10px] font-bold uppercase tracking-[0.2em] text-kyn-slate-400 font-ui">
           {context}
         </span>
         
         <div className="hidden xs:block h-3 w-[1px] bg-kyn-slate-100 mx-1" />
 
-        {/* Global Selection Status */}
         <Link 
           href="/cart" 
           className={cn(
@@ -85,7 +81,6 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
           )}
         </Link>
 
-        {/* Identity Gate */}
         <Link 
           href={profile ? "/account" : "/auth/login"} 
           className="group relative flex h-10 w-10 items-center justify-center rounded-xl border border-kyn-slate-50 bg-surface shadow-sm transition-all active:scale-90"
