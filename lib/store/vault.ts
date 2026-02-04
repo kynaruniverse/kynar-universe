@@ -73,8 +73,8 @@ export function useVault() {
       count: 0,
       totalValue: 0,
       addItem: (_p: Product) => {}, 
-      removeItem: (id: string) => {},
-      isInVault: (id: string) => false,
+      removeItem: (_id: string) => {},
+      isInVault: (_id: string) => false,
     };
   }
 
