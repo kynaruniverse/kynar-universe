@@ -46,7 +46,7 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'kynar-cart-storage',
-      storage: createJSONStorage(() =>    typeof window !== 'undefined' ? window.localStorage : (null as any) ),,
+      storage: createJSONStorage(() =>    typeof window !== 'undefined' ? window.localStorage : (null as any) ),
       onRehydrateStorage: () => (state) => {
         // Trigger hydration flag once storage is loaded into memory
         state?.setHasHydrated(true);
