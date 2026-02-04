@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Download, BookOpen, ShieldCheck, Clock, ChevronRight } from "lucide-react";
-import { UserLibrary, Product } from "@/lib/supabase/types";
+import { UserLibrary } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
   title: "The Vault | Your Collection",
@@ -17,8 +17,11 @@ export default async function LibraryPage() {
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/auth/login?return_to=/library");
 
-  // Fetch as 'any' first to bypass the 'never' type mismatch in Turbopack
-  const { data: rawItems, error } = await supabase
+  /**
+   * We force 'any' on the response to stop Turbopack from 
+   * incorrectly inferring 'never' during the join.
+   */
+  const { data: rawItems, error } = await (supabase
     .from('user_library')
     .select(`
       id,
@@ -35,50 +38,50 @@ export default async function LibraryPage() {
       )
     `)
     .eq('user_id', authUser.id)
-    .order('acquired_at', { ascending: false }) as any;
+    .order('acquired_at', { ascending: false }) as any);
 
   if (error) {
     console.error("[Vault] Sync error:", error.message);
   }
 
-  // Strictly map the raw data into our UserLibrary interface
-  const items: UserLibrary[] = (rawItems || []).map((item: any) => {
-    const p = item.product;
-    
-    return {
-      id: item.id,
-      user_id: authUser.id,
-      product_id: item.product_id,
-      acquired_at: item.acquired_at,
-      status: item.status,
-      order_id: null,
-      source: null,
-      product: p ? {
-        id: p.id,
-        title: p.title,
-        short_description: p.short_description,
-        world: p.world,
-        slug: p.slug,
-        preview_image: p.preview_image,
-        category: null,
-        created_at: null,
-        description: null,
-        download_path: null,
-        file_types: null,
-        is_published: true,
-        lemon_squeezy_id: null,
-        metadata: null,
-        price_id: "",
-        tags: null,
-        updated_at: null,
-        variant_id: null
-      } : undefined
-    };
-  });
+  /**
+   * Defensive Mapping:
+   * We treat the input as 'any' to avoid property access errors,
+   * but we output a strict 'UserLibrary[]' so the UI stays safe.
+   */
+  const items: UserLibrary[] = (rawItems || []).map((item: any) => ({
+    id: item.id,
+    user_id: authUser.id,
+    product_id: item.product_id,
+    acquired_at: item.acquired_at,
+    status: item.status,
+    order_id: null,
+    source: null,
+    product: item.product ? {
+      id: item.product.id,
+      title: item.product.title,
+      short_description: item.product.short_description,
+      world: item.product.world,
+      slug: item.product.slug,
+      preview_image: item.product.preview_image,
+      category: null,
+      created_at: null,
+      description: null,
+      download_path: null,
+      file_types: null,
+      is_published: true,
+      lemon_squeezy_id: null,
+      metadata: null,
+      price_id: "",
+      tags: null,
+      updated_at: null,
+      variant_id: null
+    } : undefined
+  }));
 
   return (
     <div className="max-w-screen-xl mx-auto px-gutter">
-      <header className="py-16 md:py-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <header className="py-16 md:py-24">
         <h1 className="font-brand text-4xl font-bold text-kyn-slate-900 tracking-tight md:text-6xl">
           Your Collection
         </h1>
@@ -105,8 +108,7 @@ export default async function LibraryPage() {
             {items.map((item, index) => (
               <article 
                 key={item.id} 
-                className="group flex flex-col bg-white border border-border rounded-[2rem] overflow-hidden hover:shadow-kynar-deep transition-all duration-700 animate-in fade-in slide-in-from-bottom-8"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className="group flex flex-col bg-white border border-border rounded-[2rem] overflow-hidden hover:shadow-kynar-deep transition-all duration-700"
               >
                 <div className="aspect-[16/10] bg-kyn-slate-50 relative overflow-hidden">
                   {item.product?.preview_image ? (
