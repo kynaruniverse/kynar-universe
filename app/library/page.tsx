@@ -17,6 +17,7 @@ export default async function LibraryPage() {
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/auth/login?return_to=/library");
 
+  // Fetch as 'any' first to bypass the 'never' type mismatch in Turbopack
   const { data: rawItems, error } = await supabase
     .from('user_library')
     .select(`
@@ -34,14 +35,15 @@ export default async function LibraryPage() {
       )
     `)
     .eq('user_id', authUser.id)
-    .order('acquired_at', { ascending: false });
+    .order('acquired_at', { ascending: false }) as any;
 
   if (error) {
     console.error("[Vault] Sync error:", error.message);
   }
 
-  const items: UserLibrary[] = (rawItems || []).map(item => {
-    const rawProduct = item.product as unknown as Product;
+  // Strictly map the raw data into our UserLibrary interface
+  const items: UserLibrary[] = (rawItems || []).map((item: any) => {
+    const p = item.product;
     
     return {
       id: item.id,
@@ -51,13 +53,13 @@ export default async function LibraryPage() {
       status: item.status,
       order_id: null,
       source: null,
-      product: rawProduct ? {
-        id: rawProduct.id,
-        title: rawProduct.title,
-        short_description: rawProduct.short_description,
-        world: rawProduct.world,
-        slug: rawProduct.slug,
-        preview_image: rawProduct.preview_image,
+      product: p ? {
+        id: p.id,
+        title: p.title,
+        short_description: p.short_description,
+        world: p.world,
+        slug: p.slug,
+        preview_image: p.preview_image,
         category: null,
         created_at: null,
         description: null,
