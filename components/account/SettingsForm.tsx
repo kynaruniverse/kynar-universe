@@ -25,6 +25,7 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
     
     setLoading(true);
     
+    // @ts-expect-error - Supabase SSR type inference issue in strict mode
     const { error } = await supabase
       .from("profiles")
       .update({

@@ -1,40 +1,31 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import type { Database } from './types';
+import { Database } from './types';
 
 export async function createClient() {
-    const cookieStore = await cookies();
-    
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    
-    const client = createServerClient < Database > (
-      supabaseUrl,
-      supabaseAnonKey,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet: { name: string;value: string;options: CookieOptions } []) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              );
-            } catch (error) {
-              // In Next.js 16, setting cookies is restricted in Server Components.
-              // Ensure this is called within a Server Action or Route Handler.
-            }
-          },
+  const cookieStore = await cookies();
+  
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  
+  return createServerClient < Database > (
+    supabaseUrl,
+    supabaseAnonKey,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
         },
-      }
-    );
-    
-    // Return a properly typed client
-    return {
-      ...client,
-      from: <T extends keyof Database['public']['Tables']>(table: T) => {
-      return client.from(table);
+        setAll(cookiesToSet: { name: string;value: string;options: CookieOptions } []) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch (error) {
+            // In Next.js 16, setting cookies is restricted in Server Components.
+          }
+        },
+      },
     }
-  } as ReturnType<typeof createServerClient<Database>>;
+  );
 }
