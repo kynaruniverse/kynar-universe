@@ -43,3 +43,9 @@ export async function signup(formData: FormData) {
   // Success: Send them to login with a friendly instruction
   return redirect("/auth/login?message=Identity created. Please check your email to confirm registration.");
 }
+
+  export async function logout() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  return redirect("/auth/login");
+}

@@ -1,4 +1,24 @@
 import Link from "next/link";
+/** * Add this to app/account/page.tsx 
+ */
+import { logout } from "../auth/actions";
+
+export default function AccountPage() {
+  return (
+    <main className="max-w-screen-xl mx-auto px-gutter py-20">
+      <h1 className="font-brand text-4xl font-bold text-kyn-slate-900">Account</h1>
+      
+      <form action={logout} className="mt-12">
+        <button 
+          type="submit" 
+          className="px-6 py-2 border border-red-200 text-red-600 rounded-xl hover:bg-red-50 font-brand font-bold transition-colors"
+        >
+          Terminate Session (Logout)
+        </button>
+      </form>
+    </main>
+  );
+}
 
 export default function AccountPage() {
   return (
