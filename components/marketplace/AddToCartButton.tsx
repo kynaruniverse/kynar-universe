@@ -7,7 +7,7 @@
 
 import { useState, useEffect, type MouseEvent } from "react";
 import { Plus, Check, Lock, Loader2 } from "lucide-react";
-import { useCartItems, useCartActions } from "@/lib/marketplace/cart-store";
+import { useCartItems, useCartActions } from "@/lib/cart/store";
 import { useVault } from "@/lib/store/vault";
 import { Product } from "@/lib/supabase/types";
 import { cn, hapticFeedback } from "@/lib/utils";

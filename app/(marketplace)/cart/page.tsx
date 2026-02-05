@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react"; // Removed React
 import Link from "next/link";
 import { Trash2, ArrowRight, ShoppingBag, ChevronLeft } from "lucide-react";
-import { useCartItems, useCartActions } from "@/lib/marketplace/cart-store";
+import { useCartItems, useCartActions } from "@/lib/cart/store";
 import { getPriceFromId } from "@/lib/marketplace/pricing";
 import { formatGBP, hapticFeedback } from "@/lib/utils";
 export default function CartPage() {
