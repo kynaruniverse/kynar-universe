@@ -63,7 +63,8 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-kyn-slate/10 rounded-full;
+    /* Aligned with tailwind.config.ts: kyn-slate-900 exists, kyn-slate does not */
+    @apply bg-kyn-slate-900/10 rounded-full;
   }
 
   /* Smooth scaling for the 'pop-in' effect */

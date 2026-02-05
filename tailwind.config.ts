@@ -71,7 +71,6 @@ const config: Config = {
         "fade-in": "fade-in 0.6s var(--ease-kyn-out) fill-mode-both",
         "slide-up": "slide-up 0.8s var(--ease-kyn-out) fill-mode-both",
         "breathe": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        // Added for the Overlay "Pop" effect
         "overlay-pop": "overlay-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) fill-mode-both",
       },
       keyframes: {
@@ -96,4 +95,5 @@ const config: Config = {
     require("tailwindcss-animate"),
   ],
 };
+
 export default config;
