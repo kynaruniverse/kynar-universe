@@ -7,7 +7,6 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
