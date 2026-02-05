@@ -1,11 +1,15 @@
 /**
- * KYNAR UNIVERSE: Authentication Gateway (v1.0)
+ * KYNAR UNIVERSE: Authentication Gateway (v1.1)
  * Role: Entry point for protected sectors (Library & Account).
+ * Features: Error/Success messaging & dynamic loading states.
  */
 
 import Link from "next/link";
-import { Compass, ShieldCheck, ArrowRight } from "lucide-react";
+import { Suspense } from "react";
+import { useFormStatus } from "react-dom";
+import { Compass, ShieldCheck, ArrowRight, Loader2 } from "lucide-react";
 import { login } from "../actions";
+import { AuthMessage } from "@/components/auth/AuthMessage";
 
 export default function LoginPage() {
   return (
@@ -29,6 +33,12 @@ export default function LoginPage() {
 
         {/* Login Card */}
         <div className="bg-white border border-border rounded-[2rem] p-8 shadow-kynar-soft">
+          
+          {/* Feedback Messages (Error/Success) */}
+          <Suspense fallback={<div className="h-10 mb-6 bg-surface animate-pulse rounded-xl" />}>
+            <AuthMessage />
+          </Suspense>
+
           <form action={login} className="space-y-6">
             <div>
               <label className="block font-ui text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400 mb-2">
@@ -37,30 +47,28 @@ export default function LoginPage() {
               <input 
                 name="email"
                 type="email"
+                required
                 placeholder="identity@kynar.uk"
                 className="w-full px-4 py-3 rounded-xl border border-border bg-surface font-ui text-sm focus:outline-none focus:ring-2 focus:ring-kyn-green-500/20 focus:border-kyn-green-500 transition-all"
               />
             </div>
 
             <div>
-              <label className="block font-ui text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400 mb-2">
-                Access Key
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block font-ui text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
+                  Access Key
+                </label>
+              </div>
               <input 
                 name="password"
                 type="password"
+                required
                 placeholder="••••••••"
                 className="w-full px-4 py-3 rounded-xl border border-border bg-surface font-ui text-sm focus:outline-none focus:ring-2 focus:ring-kyn-green-500/20 focus:border-kyn-green-500 transition-all"
               />
             </div>
 
-            <button 
-              type="submit"
-              className="group w-full flex items-center justify-center gap-2 py-4 bg-kyn-slate-900 text-white font-brand font-bold rounded-xl hover:bg-kyn-slate-800 transition-all active:scale-[0.98]"
-            >
-              Initialize Session
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </button>
+            <SubmitButton />
           </form>
 
           <div className="mt-8 pt-6 border-t border-border flex flex-col gap-4 text-center">
@@ -82,5 +90,32 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+/**
+ * Sub-component to handle loading state via useFormStatus
+ */
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button 
+      type="submit"
+      disabled={pending}
+      className="group w-full flex items-center justify-center gap-2 py-4 bg-kyn-slate-900 text-white font-brand font-bold rounded-xl hover:bg-kyn-slate-800 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+    >
+      {pending ? (
+        <>
+          <Loader2 size={18} className="animate-spin" />
+          Authenticating...
+        </>
+      ) : (
+        <>
+          Initialize Session
+          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        </>
+      )}
+    </button>
   );
 }
