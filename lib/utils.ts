@@ -9,29 +9,20 @@ export function cn(...inputs: ClassValue[]): string {
 }
 
 /**
- * Canonical animation tokens
- * (Centralized to avoid hydration drift)
- */
-export const transitions = {
-  breathe: "animate-pulse",
-} as const;
-
-/**
  * Centralized GBP Formatter
- * Ensures the Server and Client always produce identical strings.
+ * Adjusted to 2 decimal places to match your store's pricing.
  */
 export const formatGBP = (amount: number): string => {
   return new Intl.NumberFormat("en-GB", {
     style: "currency",
     currency: "GBP",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(amount);
 };
 
 /**
  * iOS-Safe Haptics
- * Always returns void to satisfy TS exhaustiveness
  */
 export const hapticFeedback = (
   intensity: "light" | "medium" | "success" = "light"
@@ -57,6 +48,14 @@ export const hapticFeedback = (
         break;
     }
   } catch {
-    // Silent fail for unsupported platforms (iOS)
+    // Silent fail
   }
+};
+
+/**
+ * Utility to lock scroll when Modals/Overlays are open
+ */
+export const lockScroll = (lock: boolean) => {
+  if (typeof document === 'undefined') return;
+  document.body.style.overflow = lock ? 'hidden' : 'unset';
 };

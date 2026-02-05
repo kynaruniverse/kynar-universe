@@ -1,3 +1,5 @@
+/* app/globals.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -47,5 +49,25 @@
   /* Protects content from overlapping bottom navigation docks */
   .safe-bottom-padding {
     padding-bottom: calc(var(--safe-bottom) + 5rem);
+  }
+
+  /* --- ADDED FOR SELECTION OVERLAY --- */
+  
+  /* Custom thin scrollbar for the modal list */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-kyn-slate/10 rounded-full;
+  }
+
+  /* Smooth scaling for the 'pop-in' effect */
+  .animate-in {
+    animation-timing-function: var(--ease-kyn-out);
   }
 }

@@ -1,6 +1,5 @@
 /**
  * KYNAR UNIVERSE: Root Architecture (v2.1)
- * Alignment: Fixed component prop mismatch (initialProfile).
  */
 
 import type { Metadata, Viewport } from "next";
@@ -12,6 +11,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { getUserProfile } from "@/lib/supabase/helpers";
 import { Toaster } from "react-hot-toast";
 import { cn } from "@/lib/utils";
+import OverlayWrapper from "@/components/marketplace/OverlayWrapper";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-ui", display: 'swap' });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-brand", display: 'swap' });
@@ -34,18 +34,25 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // Server-side identity fetch
   const rawProfile = await getUserProfile();
-
-  // Sanitize: Convert to plain JSON to strip any non-serializable properties (like Dates)
   const profile = rawProfile ? JSON.parse(JSON.stringify(rawProfile)) : null;
 
   return (
     <html lang="en" className={cn(inter.variable, jakarta.variable, "antialiased")}>
       <body className="bg-canvas text-text-primary selection:bg-kyn-green/10">
-        <Toaster position="bottom-center" />
+        <Toaster 
+          position="bottom-center" 
+          toastOptions={{
+            style: {
+              borderRadius: '1rem',
+              background: '#1A241B',
+              color: '#fff',
+              fontFamily: 'var(--font-brand)',
+              fontSize: '14px',
+            },
+          }}
+        />
 
-        {/* ATMOSPHERIC GRAIN - Hardware Optimized */}
         <div 
           className="pointer-events-none fixed inset-0 z-[1] h-full w-full opacity-[0.015] will-change-transform" 
           aria-hidden="true"
@@ -55,15 +62,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
 
         <div className="relative z-10 flex min-h-screen flex-col">
-          {/* Aligned initialProfile props to match PresenceBar/Navigation interfaces */}
           <PresenceBar initialProfile={profile} />
-          <Navigation initialProfile={profile} />
           
-          <main className="flex-grow pt-safe-top">
+          <main className="flex-grow pt-safe-top pb-24 md:pb-0">
             {children}
           </main>
 
           <Footer />
+          <Navigation initialProfile={profile} />
+          
+          <OverlayWrapper />
         </div>
       </body>
     </html>
