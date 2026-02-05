@@ -1,111 +1,102 @@
 /**
- * KYNAR UNIVERSE: The Vault Store (v1.6.1)
- * Role: Persistent state management for the digital selection.
- * Fix: Added missing useCartActions export to satisfy Marketplace components.
+ * KYNAR UNIVERSE: Secure Vault Store (v2.2.3)
+ * Role: Persistent library management for acquired products.
+ * Fix: Resolved "Unexpected token" and StateStorage mismatch by explicitly typing the storage object.
  */
 
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import { Product } from '@/lib/supabase/types';
-import { getPriceFromId } from '../marketplace/pricing';
+import { getPriceFromId } from '@/lib/marketplace/pricing';
 import { useState, useEffect } from 'react';
 
-interface CartState {
+interface VaultState {
   items: Product[];
-  isHydrated: boolean;
+  _hasHydrated: boolean;
   addItem: (product: Product) => void;
   removeItem: (productId: string) => void;
-  clearCart: () => void;
-  isInCart: (productId: string) => boolean;
-  setHydrated: (state: boolean) => void;
+  clearVault: () => void;
+  setHasHydrated: (state: boolean) => void;
 }
 
-export const useCartStore = create<CartState>()(
+export const useVaultStore = create<VaultState>()(
   persist(
     (set, get) => ({
       items: [],
-      isHydrated: false,
-      addItem: (product: Product) => {
+      _hasHydrated: false,
+      setHasHydrated: (state) => set({ _hasHydrated: state }),
+      addItem: (product) => {
         const { items } = get();
-        if (!items.some((item) => item.id === product.id)) {
-          set({ items: [...items, product] });
-        }
+        if (items.some((item) => item.id === product.id)) return;
+        set({ items: [...items, product] });
       },
-      removeItem: (productId: string) => {
+      removeItem: (productId) => 
         set((state) => ({
           items: state.items.filter((item) => item.id !== productId)
-        }));
-      },
-      clearCart: () => set({ items: [] }),
-      isInCart: (productId: string) => get().items.some((item) => item.id === productId),
-      setHydrated: (state: boolean) => set({ isHydrated: state }),
+        })),
+      clearVault: () => set({ items: [] }),
     }),
     {
-      name: 'kynar-vault-session-v1.6',
-      storage: createJSONStorage(() => 
-        typeof window !== 'undefined' ? window.localStorage : undefined
-      ),
-      onRehydrateStorage: () => (state) => state?.setHydrated(true),
+      name: 'kynar-vault-storage',
+      storage: createJSONStorage(() => {
+        // Explicitly check for window and return standard localStorage
+        if (typeof window !== 'undefined' && window.localStorage) {
+          return window.localStorage;
+        }
+
+        // Return a compliant mock object for SSR
+        const mockStorage: StateStorage = {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        };
+        return mockStorage;
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );
 
 /**
- * CUSTOM HOOK: useCartItems
- * Used by SelectionOverlay and PresenceBar.
- * Prevents Hydration Mismatch by delaying return until mounted.
+ * SAFE HOOK: useVault()
+ * High-performance selector-based hook with hydration safety.
  */
-export function useCartItems() {
-  const items = useCartStore((state) => state.items);
-  const isHydrated = useCartStore((state) => state.isHydrated);
-  const removeItem = useCartStore((state) => state.removeItem);
+export function useVault() {
+  const items = useVaultStore((state) => state.items);
+  const hasHydrated = useVaultStore((state) => state._hasHydrated);
+  const addItem = useVaultStore((state) => state.addItem);
+  const removeItem = useVaultStore((state) => state.removeItem);
+  
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const totalPrice = items.reduce((total, item) => {
+  if (!mounted || !hasHydrated) {
+    return {
+      items: [],
+      count: 0,
+      totalValue: 0,
+      addItem: (p: Product) => {}, 
+      removeItem: (id: string) => {},
+      isInVault: (id: string) => false,
+    };
+  }
+
+  const totalValue = items.reduce((total, item) => {
     const price = getPriceFromId(item.price_id);
     return total + (price ?? 0);
   }, 0);
 
-  if (!mounted || !isHydrated) {
-    return { 
-      items: [], 
-      count: 0, 
-      totalPrice: 0, 
-      isEmpty: true, 
-      removeItem, 
-      updateQuantity: () => {} 
-    };
-  }
-
-  return { 
-    items, 
-    count: items.length, 
-    totalPrice, 
-    isEmpty: items.length === 0, 
-    removeItem,
-    updateQuantity: () => {} 
-  };
-}
-
-/**
- * CUSTOM HOOK: useCartActions
- * FIX: Added to resolve Netlify/Turbopack "Module not found" for named export.
- * Provides stable references to mutation methods.
- */
-export function useCartActions() {
-  const addItem = useCartStore((state) => state.addItem);
-  const removeItem = useCartStore((state) => state.removeItem);
-  const clearCart = useCartStore((state) => state.clearCart);
-  const isInCart = useCartStore((state) => state.isInCart);
-
   return {
+    items,
+    count: items.length,
+    totalValue,
     addItem,
     removeItem,
-    clearCart,
-    isInCart
+    isInVault: (id: string) => items.some((item) => item.id === id),
   };
 }
