@@ -10,7 +10,7 @@ import Link from "next/link";
 import { ShoppingBag, Fingerprint } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/browser";
-import { useCartItems } from "@/lib/marketplace/cart-store";
+import { useCartItems } from "@/lib/cart/store";
 import { Profile } from "@/lib/supabase/types";
 import UserMenu from "./UserMenu"; 
 import SelectionOverlay from "../marketplace/SelectionOverlay"; // Ensure this path is correct
