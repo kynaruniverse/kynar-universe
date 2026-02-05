@@ -14,7 +14,8 @@ export async function login(formData: FormData) {
   });
 
   if (error) {
-    return redirect("/auth/login?error=Could not authenticate user");
+    // RECOMMENDATION: Encode the actual error message so the user knows exactly what's wrong
+    return redirect(`/auth/login?error=${encodeURIComponent(error.message)}`);
   }
 
   return redirect("/library");
@@ -29,13 +30,16 @@ export async function signup(formData: FormData) {
     email,
     password,
     options: {
+      // Ensure this env variable is set in your .env or Netlify settings
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
     },
   });
 
   if (error) {
-    return redirect("/auth/signup?error=Could not initialize identity");
+    // RECOMMENDATION: Encode the actual error message (e.g., "Password too short")
+    return redirect(`/auth/signup?error=${encodeURIComponent(error.message)}`);
   }
 
-  return redirect("/auth/login?message=Check your email to confirm registration");
+  // Success: Send them to login with a friendly instruction
+  return redirect("/auth/login?message=Identity created. Please check your email to confirm registration.");
 }
