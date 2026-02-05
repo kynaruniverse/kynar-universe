@@ -1,18 +1,18 @@
 /**
- * KYNAR UNIVERSE: Presence Bar (v2.2)
- * Fix: Migrated to useCartItems() atomic hook.
- * Alignment: Next.js 16 Safe Mounted Pattern.
+ * KYNAR UNIVERSE: Presence Bar (v2.3)
+ * Updated: Integrated UserMenu for dynamic authentication overlay.
  */
 
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { User, ShoppingBag, Fingerprint, ShieldCheck } from "lucide-react";
+import { ShoppingBag, Fingerprint } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/browser";
-import { useCartItems } from "@/lib/marketplace/cart-store"; // Fixed: Updated Hook
+import { useCartItems } from "@/lib/marketplace/cart-store";
 import { Profile } from "@/lib/supabase/types";
+import UserMenu from "./UserMenu"; // Import your new menu
 
 interface PresenceBarProps {
   initialProfile?: Profile | null;
@@ -22,17 +22,13 @@ interface PresenceBarProps {
 export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBarProps) => {
   const [profile, setProfile] = useState<Profile | null>(initialProfile || null);
   const [mounted, setMounted] = useState(false);
-  
-  /**
-   * Selection Logic: 
-   * useCartItems() now handles its own hydration guarding internally.
-   */
   const { count } = useCartItems();
 
   useEffect(() => {
     setMounted(true);
     const supabase = createClient();
     
+    // Listen for auth changes to update the menu in real-time
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         const { data } = await supabase
@@ -49,7 +45,6 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
     return () => subscription.unsubscribe();
   }, []); 
 
-  // Combined guard: only show numbers once the client is ready
   const selectionCount = mounted ? count : 0;
 
   return (
@@ -88,26 +83,9 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
           )}
         </Link>
 
-        {/* Identity Trigger */}
-        <Link 
-          href={profile ? "/account" : "/auth/login"} 
-          className="group relative flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface shadow-sm transition-all active:scale-90"
-        >
-          {profile ? (
-            <div className="relative">
-              <User size={16} className="text-kyn-slate-900" />
-              <div className="absolute -bottom-1.5 -right-1.5 text-kyn-green-500">
-                <ShieldCheck size={10} strokeWidth={3} />
-              </div>
-            </div>
-          ) : (
-            <User size={16} className="text-kyn-slate-400 group-hover:text-kyn-slate-600" />
-          )}
-          
-          {profile && (
-            <span className="absolute inset-0 rounded-xl ring-2 ring-kyn-green-500/20 animate-pulse" />
-          )}
-        </Link>
+        {/* --- DYNAMIC USER MENU REPLACEMENT --- */}
+        <UserMenu user={profile} />
+        {/* -------------------------------------- */}
       </div>
     </header>
   );
