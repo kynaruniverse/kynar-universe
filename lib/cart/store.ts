@@ -1,102 +1,99 @@
-/**
- * KYNAR UNIVERSE: Secure Vault Store (v2.2.3)
- * Role: Persistent library management for acquired products.
- * Fix: Resolved "Unexpected token" and StateStorage mismatch by explicitly typing the storage object.
- */
+/* KYNAR UNIVERSE: lib/cart/store.ts */
 
 import { create } from 'zustand';
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import { Product } from '@/lib/supabase/types';
-import { getPriceFromId } from '@/lib/marketplace/pricing';
+import { getPriceFromId } from '../marketplace/pricing';
 import { useState, useEffect } from 'react';
 
-interface VaultState {
+// Define mock storage outside to avoid parsing errors in Turbopack
+const mockStorage: StateStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+};
+
+interface CartState {
   items: Product[];
-  _hasHydrated: boolean;
+  isHydrated: boolean;
   addItem: (product: Product) => void;
   removeItem: (productId: string) => void;
-  clearVault: () => void;
-  setHasHydrated: (state: boolean) => void;
+  clearCart: () => void;
+  isInCart: (productId: string) => boolean;
+  setHydrated: (state: boolean) => void;
 }
 
-export const useVaultStore = create<VaultState>()(
+export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
-      _hasHydrated: false,
-      setHasHydrated: (state) => set({ _hasHydrated: state }),
-      addItem: (product) => {
+      isHydrated: false,
+      addItem: (product: Product) => {
         const { items } = get();
-        if (items.some((item) => item.id === product.id)) return;
-        set({ items: [...items, product] });
+        if (!items.some((item) => item.id === product.id)) {
+          set({ items: [...items, product] });
+        }
       },
-      removeItem: (productId) => 
+      removeItem: (productId: string) => {
         set((state) => ({
           items: state.items.filter((item) => item.id !== productId)
-        })),
-      clearVault: () => set({ items: [] }),
+        }));
+      },
+      clearCart: () => set({ items: [] }),
+      isInCart: (productId: string) => get().items.some((item) => item.id === productId),
+      setHydrated: (state: boolean) => set({ isHydrated: state }),
     }),
     {
-      name: 'kynar-vault-storage',
-      storage: createJSONStorage(() => {
-        // Explicitly check for window and return standard localStorage
-        if (typeof window !== 'undefined' && window.localStorage) {
-          return window.localStorage;
-        }
-
-        // Return a compliant mock object for SSR
-        const mockStorage: StateStorage = {
-          getItem: () => null,
-          setItem: () => {},
-          removeItem: () => {},
-        };
-        return mockStorage;
-      }),
-      onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true);
-      },
+      name: 'kynar-vault-session-v1.6',
+      storage: createJSONStorage(() => 
+        typeof window !== 'undefined' ? window.localStorage : mockStorage
+      ),
+      onRehydrateStorage: () => (state) => state?.setHydrated(true),
     }
   )
 );
 
-/**
- * SAFE HOOK: useVault()
- * High-performance selector-based hook with hydration safety.
- */
-export function useVault() {
-  const items = useVaultStore((state) => state.items);
-  const hasHydrated = useVaultStore((state) => state._hasHydrated);
-  const addItem = useVaultStore((state) => state.addItem);
-  const removeItem = useVaultStore((state) => state.removeItem);
-  
+export function useCartItems() {
+  const items = useCartStore((state) => state.items);
+  const isHydrated = useCartStore((state) => state.isHydrated);
+  const removeItem = useCartStore((state) => state.removeItem);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted || !hasHydrated) {
-    return {
-      items: [],
-      count: 0,
-      totalValue: 0,
-      addItem: (p: Product) => {}, 
-      removeItem: (id: string) => {},
-      isInVault: (id: string) => false,
-    };
-  }
-
-  const totalValue = items.reduce((total, item) => {
+  const totalPrice = items.reduce((total, item) => {
     const price = getPriceFromId(item.price_id);
     return total + (price ?? 0);
   }, 0);
 
-  return {
-    items,
-    count: items.length,
-    totalValue,
-    addItem,
+  if (!mounted || !isHydrated) {
+    return { 
+      items: [], 
+      count: 0, 
+      totalPrice: 0, 
+      isEmpty: true, 
+      removeItem, 
+      updateQuantity: () => {} 
+    };
+  }
+
+  return { 
+    items, 
+    count: items.length, 
+    totalPrice, 
+    isEmpty: items.length === 0, 
     removeItem,
-    isInVault: (id: string) => items.some((item) => item.id === id),
+    updateQuantity: () => {} 
   };
+}
+
+export function useCartActions() {
+  const addItem = useCartStore((state) => state.addItem);
+  const removeItem = useCartStore((state) => state.removeItem);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const isInCart = useCartStore((state) => state.isInCart);
+
+  return { addItem, removeItem, clearCart, isInCart };
 }

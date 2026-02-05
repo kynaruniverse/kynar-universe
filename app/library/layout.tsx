@@ -1,7 +1,4 @@
-/**
- * KYNAR UNIVERSE: Library Layout (v1.6)
- * Role: The Authenticated Frame for The Vault.
- */
+/* KYNAR UNIVERSE: Library Layout app/library/layout.tsx */
 
 
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";

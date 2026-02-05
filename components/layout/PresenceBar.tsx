@@ -1,7 +1,4 @@
-/**
- * KYNAR UNIVERSE: Presence Bar (v2.4)
- * Updated: Integrated SelectionOverlay & UserMenu with blur-logic.
- */
+/* KYNAR UNIVERSE: components/layout/PresenceBar.tsx */
 
 "use client";
 

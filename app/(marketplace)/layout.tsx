@@ -1,7 +1,4 @@
-/**
- * KYNAR UNIVERSE: Marketplace Layout (v1.6)
- * Role: Orientation Layer for Store, Product, and Cart flows.
- */
+/* KYNAR UNIVERSE: Marketplace Layout (v1.6) app/(marketplace)layout.tsx */
 
 
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";

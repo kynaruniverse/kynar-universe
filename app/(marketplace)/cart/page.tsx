@@ -1,4 +1,4 @@
-/* KYNAR UNIVERSE: Selection & Acquisition (v2.3.1) */
+/* KYNAR UNIVERSE: app/(marketplace)/cart/page.tsx */
 
 "use client";
 
