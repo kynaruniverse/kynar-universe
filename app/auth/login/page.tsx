@@ -1,3 +1,5 @@
+"use client";
+ 
 /**
  * KYNAR UNIVERSE: Authentication Gateway (v1.1)
  * Role: Entry point for protected sectors (Library & Account).

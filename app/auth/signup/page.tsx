@@ -1,4 +1,5 @@
-/**
+"use client";
+ /**
  * KYNAR UNIVERSE: Identity Registration (v1.1)
  * Role: Creating new records in the Universe.
  * Features: Error/Success messaging & dynamic loading states via useFormStatus.
