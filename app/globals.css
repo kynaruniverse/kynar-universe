@@ -27,11 +27,14 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  body {
+  html, body {
     @apply bg-canvas text-text-primary;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     line-height: 1.6;
+    /* Forces the viewport to stay within bounds, killing horizontal scroll */
     overflow-x: hidden;
+    width: 100%;
+    position: relative;
     min-height: 100svh;
   }
 }
@@ -49,26 +52,5 @@
   /* Protects content from overlapping bottom navigation docks */
   .safe-bottom-padding {
     padding-bottom: calc(var(--safe-bottom) + 5rem);
-  }
-
-  /* --- ADDED FOR SELECTION OVERLAY --- */
-  
-  /* Custom thin scrollbar for the modal list */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    /* Aligned with tailwind.config.ts: kyn-slate-900 exists, kyn-slate does not */
-    @apply bg-kyn-slate-900/10 rounded-full;
-  }
-
-  /* Smooth scaling for the 'pop-in' effect */
-  .animate-in {
-    animation-timing-function: var(--ease-kyn-out);
   }
 }

@@ -48,7 +48,7 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
   const selectionCount = mounted ? count : 0;
 
   return (
-    <header className="sticky top-0 z-[80] flex h-16 items-center justify-between border-b border-border bg-canvas/80 px-gutter backdrop-blur-xl transition-all duration-500">
+    <header className="sticky top-0 z-[50] flex h-16 items-center justify-between border-b border-border bg-canvas/80 px-gutter backdrop-blur-xl transition-all duration-500">
       <Link href="/" className="flex items-center gap-3 group">
         <div className="flex h-7 w-7 items-center justify-center rounded bg-kyn-slate-900 text-white transition-transform group-hover:rotate-6 shadow-sm">
           <Fingerprint size={14} strokeWidth={2.5} />
