@@ -2,7 +2,6 @@
 
 import { X, ShoppingBag, Trash2, ArrowRight, Minus, Plus } from "lucide-react";
 import { useCartItems } from "@/lib/marketplace/cart-store";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 interface SelectionOverlayProps {
