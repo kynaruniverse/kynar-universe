@@ -78,7 +78,7 @@ export default function SelectionOverlay({ isOpen, onClose }: SelectionOverlayPr
                   
                   <div className="flex-1">
                     <h4 className="font-brand font-bold text-kyn-slate-900 leading-tight">
-                      {item.name}
+                      {item.title}
                     </h4>
                     <p className="text-kyn-green-600 font-ui font-bold text-sm mt-1">
                       £{itemPrice.toFixed(2)}
