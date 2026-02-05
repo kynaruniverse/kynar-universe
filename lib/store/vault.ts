@@ -1,5 +1,5 @@
 /* KYNAR UNIVERSE: lib/store/vault.ts */
-
+"use client";
 import { create } from 'zustand';
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import { Product } from '@/lib/supabase/types';

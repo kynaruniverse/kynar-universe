@@ -1,5 +1,5 @@
 /* KYNAR UNIVERSE: lib/cart/store.ts */
-
+"use client";
 import { create } from 'zustand';
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import { Product } from '@/lib/supabase/types';
