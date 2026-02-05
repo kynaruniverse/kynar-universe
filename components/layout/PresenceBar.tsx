@@ -21,6 +21,7 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
   const [profile, setProfile] = useState<Profile | null>(initialProfile || null);
   const [mounted, setMounted] = useState(false);
   
+  // Correctly using the global UI store
   const openSelection = useUIStore((state) => state.openSelection);
   const { count } = useCartItems();
 
@@ -73,7 +74,8 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
               : "bg-surface text-kyn-slate-400 border border-border"
           )}
         >
-          <shoppingbag size={16} strokeWidth={2.5} />
+          {/* FIXED: Corrected casing to match the import */}
+          <ShoppingBag size={16} strokeWidth={2.5} />
           {selectionCount > 0 && (
             <span className="absolute -top-1 -right-1 flex h-4 w-4 animate-in zoom-in items-center justify-center rounded-full bg-kyn-slate-900 text-[8px] font-bold text-white border-2 border-canvas">
               {selectionCount}
