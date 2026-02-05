@@ -4,29 +4,28 @@ import { useState } from "react";
 import Link from "next/link";
 import { User, Settings, LogOut, Shield } from "lucide-react";
 import { logout } from "@/app/auth/actions";
+import { cn } from "@/lib/utils"; // Added this back in!
 
 interface UserMenuProps {
-  user: any; // Pass the user object from the parent
+  user: any;
 }
 
 export default function UserMenu({ user }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // If no user, the icon is just a simple link to login
   if (!user) {
     return (
       <Link 
         href="/auth/login"
         className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface border border-border text-kyn-slate-400 hover:text-kyn-slate-900 transition-colors"
       >
-        <User size={20} />
+        <User size={16} strokeWidth={2.5} />
       </Link>
     );
   }
 
   return (
     <div className="relative">
-      {/* Trigger Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
@@ -37,12 +36,9 @@ export default function UserMenu({ user }: UserMenuProps) {
         )}
       >
         <User size={16} strokeWidth={2.5} />
-        {user && (
-          <span className="absolute inset-0 rounded-xl ring-2 ring-kyn-green-500/20 animate-pulse" />
-        )}
+        <span className="absolute inset-0 rounded-xl ring-2 ring-kyn-green-500/20 animate-pulse" />
       </button>
 
-      {/* Dropdown Overlay */}
       {isOpen && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
