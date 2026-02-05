@@ -1,13 +1,14 @@
-/* KYNAR UNIVERSE: Selection & Acquisition (v2.3) */
+/* KYNAR UNIVERSE: Selection & Acquisition (v2.3.1) */
 
 "use client";
 
-import { useState, useEffect } from "react"; // Removed React
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Trash2, ArrowRight, ShoppingBag, ChevronLeft } from "lucide-react";
 import { useCartItems, useCartActions } from "@/lib/cart/store";
 import { getPriceFromId } from "@/lib/marketplace/pricing";
 import { formatGBP, hapticFeedback } from "@/lib/utils";
+
 export default function CartPage() {
   const [mounted, setMounted] = useState(false);
   
@@ -19,9 +20,12 @@ export default function CartPage() {
     setMounted(true);
   }, []);
 
-  // 2. Calculate totals safe from SSR mismatch
+  // 2. Calculate totals safe from SSR mismatch & undefined pricing
   const totalPrice = mounted 
-    ? items.reduce((sum, item) => sum + getPriceFromId(item.price_id), 0)
+    ? items.reduce((sum, item) => {
+        const price = getPriceFromId(item.price_id);
+        return sum + (price ?? 0);
+      }, 0)
     : 0;
 
   // Loading State / SSR Placeholder
@@ -81,7 +85,7 @@ export default function CartPage() {
       {/* Item List */}
       <div className="space-y-3">
         {items.map((product) => {
-          const price = getPriceFromId(product.price_id);
+          const price = getPriceFromId(product.price_id) ?? 0;
           
           return (
             <div 

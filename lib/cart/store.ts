@@ -1,6 +1,7 @@
 /**
- * KYNAR UNIVERSE: The Vault Store (v1.6)
+ * KYNAR UNIVERSE: The Vault Store (v1.6.1)
  * Role: Persistent state management for the digital selection.
+ * Fix: Added missing useCartActions export to satisfy Marketplace components.
  */
 
 import { create } from 'zustand';
@@ -41,7 +42,9 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'kynar-vault-session-v1.6',
-      storage: createJSONStorage(() => typeof window !== 'undefined' ? window.localStorage : (null as any)),
+      storage: createJSONStorage(() => 
+        typeof window !== 'undefined' ? window.localStorage : undefined
+      ),
       onRehydrateStorage: () => (state) => state?.setHydrated(true),
     }
   )
@@ -49,11 +52,13 @@ export const useCartStore = create<CartState>()(
 
 /**
  * CUSTOM HOOK: useCartItems
- * This is what the SelectionOverlay and PresenceBar use.
- * It handles the math and the "mounted" check to prevent Hydration errors.
+ * Used by SelectionOverlay and PresenceBar.
+ * Prevents Hydration Mismatch by delaying return until mounted.
  */
 export function useCartItems() {
-  const { items, isHydrated, removeItem } = useCartStore();
+  const items = useCartStore((state) => state.items);
+  const isHydrated = useCartStore((state) => state.isHydrated);
+  const removeItem = useCartStore((state) => state.removeItem);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -65,9 +70,15 @@ export function useCartItems() {
     return total + (price ?? 0);
   }, 0);
 
-  // While loading or on server, return empty to prevent mismatch
   if (!mounted || !isHydrated) {
-    return { items: [], count: 0, totalPrice: 0, isEmpty: true, removeItem, updateQuantity: () => {} };
+    return { 
+      items: [], 
+      count: 0, 
+      totalPrice: 0, 
+      isEmpty: true, 
+      removeItem, 
+      updateQuantity: () => {} 
+    };
   }
 
   return { 
@@ -76,7 +87,25 @@ export function useCartItems() {
     totalPrice, 
     isEmpty: items.length === 0, 
     removeItem,
-    // Since Kynar is "Single-Unit Ownership", updateQuantity is a dummy function
     updateQuantity: () => {} 
+  };
+}
+
+/**
+ * CUSTOM HOOK: useCartActions
+ * FIX: Added to resolve Netlify/Turbopack "Module not found" for named export.
+ * Provides stable references to mutation methods.
+ */
+export function useCartActions() {
+  const addItem = useCartStore((state) => state.addItem);
+  const removeItem = useCartStore((state) => state.removeItem);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const isInCart = useCartStore((state) => state.isInCart);
+
+  return {
+    addItem,
+    removeItem,
+    clearCart,
+    isInCart
   };
 }

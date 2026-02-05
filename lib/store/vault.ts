@@ -1,8 +1,7 @@
 /**
- * KYNAR UNIVERSE: Secure Vault Store (v2.2)
+ * KYNAR UNIVERSE: Secure Vault Store (v2.2.1)
  * Role: Persistent library management for acquired products.
- * Location: lib/store/vault.ts
- * Fix: Added Safe Hook wrapper to prevent Next.js 16 hydration mismatches.
+ * Fix: Stabilized storage engine and secured numeric reduction for tsc --strict.
  */
 
 import { create } from 'zustand';
@@ -20,7 +19,6 @@ interface VaultState {
   setHasHydrated: (state: boolean) => void;
 }
 
-// Internal store
 export const useVaultStore = create<VaultState>()(
   persist(
     (set, get) => ({
@@ -44,7 +42,10 @@ export const useVaultStore = create<VaultState>()(
     }),
     {
       name: 'kynar-vault-storage',
-      storage: createJSONStorage(() =>    typeof window !== 'undefined' ? window.localStorage : (null as any) ),
+      // Resolved: Removed unsafe (null as any) cast
+      storage: createJSONStorage(() => 
+        typeof window !== 'undefined' ? window.localStorage : undefined
+      ),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
@@ -54,19 +55,21 @@ export const useVaultStore = create<VaultState>()(
 
 /**
  * SAFE HOOK: useVault()
- * Use this in your components to safely access the vault.
- * It ensures data only appears after the client-side mount.
+ * High-performance selector-based hook with hydration safety.
  */
 export function useVault() {
   const items = useVaultStore((state) => state.items);
   const hasHydrated = useVaultStore((state) => state._hasHydrated);
+  const addItem = useVaultStore((state) => state.addItem);
+  const removeItem = useVaultStore((state) => state.removeItem);
+  
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Return empty/initial state during SSR to keep Next.js happy
+  // Return empty/initial state during SSR to prevent Hydration Mismatch
   if (!mounted || !hasHydrated) {
     return {
       items: [],
@@ -78,12 +81,18 @@ export function useVault() {
     };
   }
 
+  // Resolved: Secured getPriceFromId return value with nullish coalescing
+  const totalValue = items.reduce((total, item) => {
+    const price = getPriceFromId(item.price_id);
+    return total + (price ?? 0);
+  }, 0);
+
   return {
     items,
     count: items.length,
-    totalValue: items.reduce((total, item) => total + getPriceFromId(item.price_id), 0),
-    addItem: useVaultStore.getState().addItem,
-    removeItem: useVaultStore.getState().removeItem,
+    totalValue,
+    addItem,
+    removeItem,
     isInVault: (id: string) => items.some((item) => item.id === id),
   };
 }
