@@ -1,5 +1,6 @@
 /**
- * KYNAR UNIVERSE: Unified Auth Actions (v1.2)
+ * KYNAR UNIVERSE: Unified Auth Actions (v1.2.1)
+ * Fix: Removed unused 'origin' variable to satisfy TypeScript build.
  */
 
 "use server";
@@ -12,12 +13,11 @@ export async function login(formData: FormData) {
   const supabase = await createClient();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const origin = (await headers()).get("origin");
 
+  // We don't need 'origin' here unless we are doing complex dynamic callbacks
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    // Redirect back to the page they were on with the error in the URL
     return redirect(`?error=${encodeURIComponent(error.message)}`);
   }
 
