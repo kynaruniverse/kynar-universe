@@ -7,16 +7,13 @@ import { ShoppingBag, User, Compass, LayoutGrid } from "lucide-react";
 import { useCartItems } from "@/lib/cart/store";
 import { useUIStore } from "@/lib/store/ui";
 import { cn } from "@/lib/utils";
+// Import the generated types to ensure the profile row is strictly typed
+import { Database } from "@/lib/supabase/types";
 
-// Define a concrete type to replace 'any'
-interface UserProfile {
-  id: string;
-  email?: string;
-  // add other fields as per your Supabase schema
-}
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 interface NavigationProps {
-  initialProfile?: UserProfile | null; 
+  initialProfile?: Profile | null; 
 }
 
 export const Navigation = ({ initialProfile }: NavigationProps) => {
@@ -32,6 +29,7 @@ export const Navigation = ({ initialProfile }: NavigationProps) => {
   
   const { count } = useCartItems();
   
+  // Prevent hydration mismatch for client-side state (cart count)
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -42,10 +40,10 @@ export const Navigation = ({ initialProfile }: NavigationProps) => {
   ];
   
   return (
-    /* Fixed: Removed bg-canvas/80 which breaks HSL alpha-value config */
     <nav className="fixed bottom-0 left-0 z-[60] w-full border-t border-border bg-canvas/90 pb-safe-bottom backdrop-blur-xl md:hidden">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-around px-gutter">
         
+        {/* DYNAMIC NAV LINKS */}
         {navLinks.map((link) => {
           const isActive = pathname === link.href && !isUserMenuOpen && !isSelectionOpen;
           const Icon = link.icon;
@@ -74,6 +72,7 @@ export const Navigation = ({ initialProfile }: NavigationProps) => {
           );
         })}
 
+        {/* SELECTION / CART TRIGGER */}
         <button
           onClick={openSelection}
           className={cn(
@@ -94,6 +93,7 @@ export const Navigation = ({ initialProfile }: NavigationProps) => {
           </span>
         </button>
 
+        {/* IDENTITY / USER MENU TRIGGER */}
         <button
           onClick={toggleUserMenu}
           className={cn(
@@ -103,7 +103,11 @@ export const Navigation = ({ initialProfile }: NavigationProps) => {
         >
           <div className="relative">
             <User size={20} strokeWidth={isUserMenuOpen ? 2.5 : 2} />
-            {/* Fixed: Use consistent variable name */}
+            
+            {/* IDENTITY INDICATOR:
+                Only shows if user is logged in (initialProfile exists), 
+                component is mounted, and menu is currently closed.
+            */}
             {mounted && initialProfile && !isUserMenuOpen && (
               <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-kyn-green-500 ring-2 ring-canvas" />
             )}

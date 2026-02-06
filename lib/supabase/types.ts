@@ -1,10 +1,10 @@
 /**
  * KYNAR UNIVERSE: Canonical Type System (v2.3)
- * Fully aligned with generated Supabase schema + Next.js 15
+ * Fully aligned with generated Supabase schema + Next.js 15 logic
  */
 
 /* -------------------------------------------------------------------------- */
-/* Custom Enums                                */
+/* 1. Custom App Enums & Consts                                               */
 /* -------------------------------------------------------------------------- */
 
 export const WORLDS = ['Home', 'Lifestyle', 'Tools'] as const;
@@ -16,7 +16,7 @@ export type FileType = (typeof FILE_TYPES)[number];
 export type GuideCategory = 'usage' | 'spotlight' | 'tips';
 
 /* -------------------------------------------------------------------------- */
-/* Generated Schema                              */
+/* 2. Database Schema (Unified with Supabase API Docs)                         */
 /* -------------------------------------------------------------------------- */
 
 export type Json =
@@ -199,7 +199,7 @@ export type Database = {
           product_id?: string;
           purchase_date?: string | null;
           status?: string;
-          user_email: string;
+          user_email?: string;
           user_id?: string | null;
         };
         Relationships: [
@@ -266,6 +266,39 @@ export type Database = {
           }
         ];
       };
+      webhook_events: {
+        Row: {
+          created_at: string | null;
+          error_message: string | null;
+          event_id: string;
+          event_name: string;
+          id: string;
+          payload: Json;
+          status: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          error_message?: string | null;
+          event_id: string;
+          event_name: string;
+          id?: string;
+          payload: Json;
+          status?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          error_message?: string | null;
+          event_id?: string;
+          event_name?: string;
+          id?: string;
+          payload?: Json;
+          status?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
     };
     Enums: {
       audit_action: "CREATE_PRODUCT" | "UPDATE_PRODUCT" | "DELETE_PRODUCT" | "SAVE_PRODUCT" | "UPDATE_SETTINGS" | "MANUAL_REFUND";
@@ -275,7 +308,7 @@ export type Database = {
 };
 
 /* -------------------------------------------------------------------------- */
-/* Helper Aliases                               */
+/* 3. Helper Aliases (Strict Extraction)                                       */
 /* -------------------------------------------------------------------------- */
 
 type DefaultSchema = Database['public'];
@@ -293,17 +326,21 @@ export type TablesUpdate<
 > = DefaultSchema['Tables'][T]['Update'];
 
 /* -------------------------------------------------------------------------- */
-/* UI / App Aliases                              */
+/* 4. Domain-Specific UI Aliases                                              */
 /* -------------------------------------------------------------------------- */
 
 export type Product = Tables<'products'>;
 export type Profile = Tables<'profiles'>;
 export type Guide = Tables<'guides'>;
 export type Purchase = Tables<'purchases'>;
+export type WebhookEvent = Tables<'webhook_events'>;
+
+// Extended type for components that fetch the related product object
 export type UserLibrary = Tables<'user_library'> & { 
   product?: Product;
 };
 
+// Generic User for auth-specific components
 export type User = {
   id: string;
   email?: string;

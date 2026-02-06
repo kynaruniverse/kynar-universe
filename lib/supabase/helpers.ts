@@ -1,7 +1,6 @@
 /**
- * KYNAR UNIVERSE: Supabase Data Helpers (v2.2)
- * Logic: Hardened for RLS and optimized for Phase 03 Realtime.
- * Enhancement: Removed redundant logic now handled by Database Policies.
+ * KYNAR UNIVERSE: Supabase Data Helpers (v2.3)
+ * Optimized for Next.js 15 SSR and strict Database Types.
  */
 
 import { createClient } from './server';
@@ -14,55 +13,50 @@ export interface FilterOptions {
 
 /**
  * IDENTITY: Fetches the profile for the current user.
- * Note: RLS ensures users can only see their own row in the 'profiles' table.
+ * Verified against 'profiles' table in schema.
  */
 export async function getUserProfile(): Promise<Profile | null> {
   const supabase = await createClient();
   
-  // getUser() is still required here to get the specific ID for the query
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) return null;
 
-  const { data, error } = await (supabase
+  const { data, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .maybeSingle() as any); // Cast to any for Turbopack build stability
+    .maybeSingle();
 
   if (error) {
     console.error('[Helpers] Profile fetch error:', error);
     return null;
   }
-  return data as Profile;
+  return data;
 }
 
 /**
  * OWNERSHIP: Validates if the current user owns a specific product.
- * HARDENING: Now relies on RLS. If the user isn't logged in, RLS 
- * returns an empty result automatically.
+ * Checks against 'user_library' table.
  */
 export async function checkOwnership(productId: string): Promise<boolean> {
   const supabase = await createClient();
   
-  // We no longer manually filter by user.id if RLS is strictly set up, 
-  // but keeping .eq('user_id', user.id) is a "belt and braces" approach.
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
 
-  const { data, error } = await (supabase
+  const { data, error } = await supabase
     .from('user_library')
     .select('id')
     .eq('user_id', user.id)
     .eq('product_id', productId)
-    .maybeSingle() as any);
+    .maybeSingle();
 
   return !!data && !error;
 }
 
 /**
  * DISCOVERY: Optimized product retrieval.
- * Note: RLS handles the 'is_published' check if the policy is active,
- * but explicit filtering is kept for application-layer clarity.
+ * Maps application World types to DB world_type enums.
  */
 export async function getFilteredProducts(options: FilterOptions): Promise<Product[]> {
   const supabase = await createClient();
@@ -72,10 +66,10 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
     .select('*')
     .eq('is_published', true);
 
-  // 1. World Filtering
+  // 1. World Filtering - Ensures alignment with DB Enum (home, lifestyle, tools)
   if (options.world && options.world !== 'All') {
-    // Note: Ensure your DB enum matches lowercase strings (home, lifestyle, tools)
     const dbWorld = options.world.toLowerCase();
+    // Use 'as any' here only if the DB enum is strictly enforced as a different type
     query = query.eq('world', dbWorld); 
   }
 
@@ -86,12 +80,12 @@ export async function getFilteredProducts(options: FilterOptions): Promise<Produ
     query = query.order('created_at', { ascending: false });
   }
 
-  const { data, error } = await (query as any);
+  const { data, error } = await query;
 
   if (error) {
     console.error('[Helpers] Product fetch error:', error.message);
     return [];
   }
   
-  return (data as Product[]) || [];
+  return data || [];
 }

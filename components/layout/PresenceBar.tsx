@@ -7,7 +7,10 @@ import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/browser";
 import { useCartItems } from "@/lib/cart/store";
 import { useUIStore } from "@/lib/store/ui";
-import { Profile } from "@/lib/supabase/types";
+// Import Database to extract the strict Profile type
+import { Database } from "@/lib/supabase/types";
+
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 interface PresenceBarProps {
   initialProfile?: Profile | null;
@@ -30,7 +33,7 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
     setMounted(true);
     const supabase = createClient();
     
-    // Listen for Auth changes to update the Presence Indicator
+    // Listen for Auth changes to update the Presence Indicator in real-time
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         const { data } = await supabase
@@ -47,7 +50,7 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
     return () => subscription.unsubscribe();
   }, []); 
 
-  // Prevent hydration mismatch for dynamic counts
+  // Prevent hydration mismatch for dynamic counts and auth states
   const selectionCount = mounted ? count : 0;
   const isUserActive = mounted && profile;
 
@@ -106,7 +109,7 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
         >
           <User size={16} strokeWidth={2.5} />
           
-          {/* Status Indicator Dot */}
+          {/* Status Indicator Dot: Ping animation for "Active Session" feel */}
           {isUserActive && (
             <span className="absolute right-2.5 top-2.5 flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-kyn-green-400 opacity-75"></span>
