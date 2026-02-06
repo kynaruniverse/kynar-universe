@@ -36,13 +36,15 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const Profile = await getUserProfile();
+  // FIX: Rename 'Profile' to 'profile' (lowercase) to satisfy TS2552 and TS6133
+  const profile = await getUserProfile();
 
   return (
     <html lang="en" className={cn(inter.variable, jakarta.variable, "antialiased")}>
       <body className="bg-canvas text-text-primary overflow-x-hidden">
         
         {/* MODAL LAYER */}
+        {/* FIX: Now 'profile' matches the variable above */}
         <UserMenu user={profile} />
         <OverlayWrapper />
 
