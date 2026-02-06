@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Download, BookOpen, ShieldCheck, Clock, ChevronRight } from "lucide-react";
-import { UserLibrary, Tables } from "@/lib/supabase/types";
+import { UserLibrary } from "@/lib/supabase/types";
 import { RealtimeListener } from "@/components/layout/RealtimeListener";
 
 export const metadata: Metadata = {
