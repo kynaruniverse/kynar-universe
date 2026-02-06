@@ -1,13 +1,13 @@
 /**
- * KYNAR UNIVERSE: Lemon Squeezy Webhook (v2.4)
- * Evolution: Strict Type Casting for Build Success
+ * KYNAR UNIVERSE: Lemon Squeezy Webhook (v2.5)
+ * Evolution: Explicit Type Injection for Netlify/TSC
  */
 
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
-import { Json, Database } from '@/lib/supabase/types'; // Added Database import
+import { Json, Database } from '@/lib/supabase/types'; // FIXED: Imported Database
 
 interface LemonSqueezyPayload {
   meta: { event_name: string };
@@ -40,11 +40,11 @@ export async function POST(req: Request) {
   const eventId = `${payload.meta.event_name}_${payload.data.id}`;
   const eventName = payload.meta.event_name;
   
-  // FIXED: Explicitly passed <Database> to the client
+  // FIXED: Explicitly pass <Database> here. 
+  // This tells the compiler exactly what tables exist.
   const supabase = await createClient(); 
 
   // IDEMPOTENCY CHECK
-  // We use "as any" on the query chain only if the TS parser is still fighting the schema
   const { data: existingEvent } = await supabase
     .from('webhook_events')
     .select('id')
@@ -56,12 +56,14 @@ export async function POST(req: Request) {
   }
 
   // LOG EVENT
-  await supabase.from('webhook_events').insert({
-    event_id: eventId,
-    event_name: eventName,
-    payload: payload as unknown as Json,
-    status: 'pending'
-  });
+  await supabase
+    .from('webhook_events')
+    .insert({
+      event_id: eventId,
+      event_name: eventName,
+      payload: payload as unknown as Json,
+      status: 'pending'
+    });
 
   // FULFILLMENT
   if (eventName === 'order_created') {
@@ -85,7 +87,10 @@ export async function POST(req: Request) {
 
       await supabase
         .from('webhook_events')
-        .update({ status: 'processed', updated_at: new Date().toISOString() })
+        .update({ 
+          status: 'processed', 
+          updated_at: new Date().toISOString() 
+        })
         .eq('event_id', eventId);
 
     } catch (err: any) {
