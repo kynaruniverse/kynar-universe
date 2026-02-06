@@ -3,6 +3,20 @@ import { headers } from 'next/headers';
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
 
+// 1. Define strict types for the webhook payload
+interface LemonSqueezyPayload {
+  meta: { event_name: string };
+  data: {
+    id: string;
+    attributes: {
+      custom_data?: {
+        user_id?: string;
+        product_id?: string;
+      };
+    };
+  };
+}
+
 const WEBHOOK_SECRET = process.env.LEMONSQUEEZY_WEBHOOK_SECRET || '';
 
 export async function POST(req: Request) {
@@ -10,7 +24,7 @@ export async function POST(req: Request) {
   const headerList = await headers();
   const signature = headerList.get('x-signature') || '';
 
-  // 1. Signature Verification
+  // 2. Signature Verification
   const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
   const digest = hmac.update(rawBody).digest('hex');
 
@@ -18,40 +32,41 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
   }
 
-  const payload = JSON.parse(rawBody);
-  const eventId = payload.meta.event_name + '_' + payload.data.id; // Unique event key
+  const payload = JSON.parse(rawBody) as LemonSqueezyPayload;
+  const eventId = `${payload.meta.event_name}_${payload.data.id}`;
   const eventName = payload.meta.event_name;
   
   const supabase = await createClient();
 
-  // 2. IDEMPOTENCY CHECK: Have we seen this event?
-  const { data: existingEvent } = await (supabase as any)
+  // 3. IDEMPOTENCY CHECK
+  const { data: existingEvent } = await supabase
     .from('webhook_events')
     .select('status')
     .eq('event_id', eventId)
     .maybeSingle();
 
   if (existingEvent?.status === 'processed') {
-    return NextResponse.json({ message: 'Event already processed' }, { status: 200 });
+    return NextResponse.json({ message: 'Already processed' }, { status: 200 });
   }
 
-  // 3. LOG THE EVENT: Register as pending
+  // 4. REGISTER PENDING
   if (!existingEvent) {
-    await (supabase as any).from('webhook_events').insert({
+    await supabase.from('webhook_events').insert({
       event_id: eventId,
       event_name: eventName,
-      payload: payload,
+      payload: payload as any, // Payload is JSONB
       status: 'pending'
     });
   }
 
-  // 4. PROCESS THE FULFILLMENT (Logic specific to 'order_created')
+  // 5. FULFILLMENT
   if (eventName === 'order_created') {
     try {
-      const attributes = payload.data.attributes;
-      const { user_id: userId, product_id: productId } = attributes.custom_data || {};
+      const { user_id: userId, product_id: productId } = payload.data.attributes.custom_data || {};
 
-      const { error: fulfillmentError } = await (supabase as any)
+      if (!userId || !productId) throw new Error("Missing custom_data");
+
+      const { error: fulfillmentError } = await supabase
         .from('user_library')
         .insert({
           user_id: userId,
@@ -64,17 +79,15 @@ export async function POST(req: Request) {
 
       if (fulfillmentError) throw fulfillmentError;
 
-      // 5. UPDATE STATUS: Mark as complete
-      await (supabase as any)
+      await supabase
         .from('webhook_events')
         .update({ status: 'processed', updated_at: new Date().toISOString() })
         .eq('event_id', eventId);
 
     } catch (err: any) {
-      console.error(`[Webhook Critical] ${eventId} failed:`, err.message);
+      console.error(`[Webhook Critical] ${eventId}:`, err.message);
       
-      // LOG THE FAILURE: Don't let it vanish
-      await (supabase as any)
+      await supabase
         .from('webhook_events')
         .update({ 
           status: 'failed', 
@@ -83,7 +96,7 @@ export async function POST(req: Request) {
         })
         .eq('event_id', eventId);
 
-      return NextResponse.json({ error: 'Fulfillment failed recorded' }, { status: 500 });
+      return NextResponse.json({ error: 'Fulfillment failed' }, { status: 500 });
     }
   }
 

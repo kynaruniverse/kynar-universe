@@ -47,7 +47,8 @@
 @layer components {
   /* High-end blur for portals */
   .portal-backdrop {
-    @apply fixed inset-0 z-[190] bg-kyn-slate-900/40 backdrop-blur-md;
+    @apply fixed inset-0 z-[190] bg-kyn-slate-900 backdrop-blur-md;
+    background-color: hsl(var(--kyn-slate) / 0.4); /* Manual override for safety */
     transition: backdrop-filter 0.5s var(--ease-kyn-out), background-color 0.5s var(--ease-kyn-out);
   }
 
@@ -62,8 +63,7 @@
   }
 
   .kynar-card {
-    /* Fixed: rounded-[kynar-lg] requires the value to be defined in tailwind.config */
-    @apply calm-transition rounded-[2rem] border border-border bg-surface hover:shadow-kynar-soft;
+    @apply calm-transition rounded-kynar-lg border border-border bg-surface hover:shadow-kynar-soft;
   }
 
   /* Padding for bottom-docked nav */

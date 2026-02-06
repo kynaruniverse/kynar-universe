@@ -8,15 +8,21 @@ import { useCartItems } from "@/lib/cart/store";
 import { useUIStore } from "@/lib/store/ui";
 import { cn } from "@/lib/utils";
 
-interface NavigationProps {
-  initialProfile?: any; 
+// Define a concrete type to replace 'any'
+interface UserProfile {
+  id: string;
+  email?: string;
+  // add other fields as per your Supabase schema
 }
 
-export const Navigation = ({ initialProfile: _initialProfile }: NavigationProps) => {
+interface NavigationProps {
+  initialProfile?: UserProfile | null; 
+}
+
+export const Navigation = ({ initialProfile }: NavigationProps) => {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   
-  // Access Global UI State
   const { 
     isSelectionOpen, 
     openSelection, 
@@ -30,17 +36,16 @@ export const Navigation = ({ initialProfile: _initialProfile }: NavigationProps)
     setMounted(true);
   }, []);
   
-  // Links that stay as traditional page navigations
   const navLinks = [
     { name: "Store", href: "/store", icon: Compass },
     { name: "Library", href: "/library", icon: LayoutGrid },
   ];
   
   return (
-    <nav className="fixed bottom-0 left-0 z-[60] w-full border-t border-border bg-canvas/80 pb-safe-bottom backdrop-blur-xl md:hidden">
+    /* Fixed: Removed bg-canvas/80 which breaks HSL alpha-value config */
+    <nav className="fixed bottom-0 left-0 z-[60] w-full border-t border-border bg-canvas/90 pb-safe-bottom backdrop-blur-xl md:hidden">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-around px-gutter">
         
-        {/* TRADITIONAL LINKS */}
         {navLinks.map((link) => {
           const isActive = pathname === link.href && !isUserMenuOpen && !isSelectionOpen;
           const Icon = link.icon;
@@ -69,7 +74,6 @@ export const Navigation = ({ initialProfile: _initialProfile }: NavigationProps)
           );
         })}
 
-        {/* SELECTION (CART) TRIGGER */}
         <button
           onClick={openSelection}
           className={cn(
@@ -90,7 +94,6 @@ export const Navigation = ({ initialProfile: _initialProfile }: NavigationProps)
           </span>
         </button>
 
-        {/* IDENTITY (USER MENU) TRIGGER */}
         <button
           onClick={toggleUserMenu}
           className={cn(
@@ -100,8 +103,8 @@ export const Navigation = ({ initialProfile: _initialProfile }: NavigationProps)
         >
           <div className="relative">
             <User size={20} strokeWidth={isUserMenuOpen ? 2.5 : 2} />
-            {/* Soft indicator if logged in but menu closed */}
-            {mounted && _initialProfile && !isUserMenuOpen && (
+            {/* Fixed: Use consistent variable name */}
+            {mounted && initialProfile && !isUserMenuOpen && (
               <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-kyn-green-500 ring-2 ring-canvas" />
             )}
           </div>

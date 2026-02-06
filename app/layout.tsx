@@ -36,15 +36,13 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // Fetch session server-side to prevent "flicker" on initial load
-  const rawProfile = await getUserProfile();
-  const profile = rawProfile ? JSON.parse(JSON.stringify(rawProfile)) : null;
+  const Profile = await getUserProfile();
 
   return (
     <html lang="en" className={cn(inter.variable, jakarta.variable, "antialiased")}>
-      <body className="bg-canvas text-text-primary selection:bg-kyn-green/10 overflow-x-hidden">
+      <body className="bg-canvas text-text-primary overflow-x-hidden">
         
-        {/* MODAL LAYER: Managed via global useUIStore */}
+        {/* MODAL LAYER */}
         <UserMenu user={profile} />
         <OverlayWrapper />
 
