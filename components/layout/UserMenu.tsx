@@ -7,7 +7,6 @@ import {
   ArrowRight, Loader2, Mail, Lock, ChevronLeft 
 } from "lucide-react";
 import { login, signup, logout } from "@/app/auth/actions";
-import { cn } from "@/lib/utils";
 import { AuthMessage } from "../auth/AuthMessage";
 import { useFormStatus } from "react-dom";
 import { Suspense } from "react";
