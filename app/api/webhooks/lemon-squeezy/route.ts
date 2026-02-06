@@ -37,12 +37,12 @@ export async function POST(req: Request) {
   
   const supabase = await createClient();
 
-  // IDEMPOTENCY CHECK
-  const { data: existingEvent } = await supabase
+  // IDEMPOTENCY CHECK - Using 'as any' to prevent 'never' type build errors
+  const { data: existingEvent } = await (supabase
     .from('webhook_events')
     .select('status')
     .eq('event_id', eventId)
-    .maybeSingle();
+    .maybeSingle() as any);
 
   if (existingEvent?.status === 'processed') {
     return NextResponse.json({ message: 'Already processed' }, { status: 200 });
@@ -50,12 +50,12 @@ export async function POST(req: Request) {
 
   // REGISTER PENDING
   if (!existingEvent) {
-    await supabase.from('webhook_events').insert({
+    await (supabase.from('webhook_events').insert({
       event_id: eventId,
       event_name: eventName,
-      payload: payload as unknown as Json, // Cast to your database Json type
+      payload: payload as unknown as Json,
       status: 'pending'
-    });
+    }) as any);
   }
 
   // FULFILLMENT
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
 
       if (!userId || !productId) throw new Error("Missing custom_data");
 
-      const { error: fulfillmentError } = await supabase
+      const { error: fulfillmentError } = await (supabase
         .from('user_library')
         .insert({
           user_id: userId,
@@ -74,26 +74,26 @@ export async function POST(req: Request) {
           source: 'lemon-squeezy',
           status: 'active',
           acquired_at: new Date().toISOString()
-        });
+        }) as any);
 
       if (fulfillmentError) throw fulfillmentError;
 
-      await supabase
+      await (supabase
         .from('webhook_events')
         .update({ status: 'processed', updated_at: new Date().toISOString() })
-        .eq('event_id', eventId);
+        .eq('event_id', eventId) as any);
 
     } catch (err: any) {
       console.error(`[Webhook Critical] ${eventId}:`, err.message);
       
-      await supabase
+      await (supabase
         .from('webhook_events')
         .update({ 
           status: 'failed', 
           error_message: err.message, 
           updated_at: new Date().toISOString() 
         })
-        .eq('event_id', eventId);
+        .eq('event_id', eventId) as any);
 
       return NextResponse.json({ error: 'Fulfillment failed' }, { status: 500 });
     }

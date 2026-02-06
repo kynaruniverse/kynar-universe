@@ -15,27 +15,23 @@ export function useVaultRealtime(userId: string | undefined) {
   useEffect(() => {
     if (!userId) return;
 
-    // 1. Create a scoped channel for this user's library
     const channel = supabase
       .channel(`vault_sync_${userId}`)
       .on(
         'postgres_changes',
         {
-          event: 'INSERT', // Only listen for new acquisitions
+          event: 'INSERT',
           schema: 'public',
           table: 'user_library',
-          filter: `user_id=eq.${userId}`, // RLS safety + specific filter
+          filter: `user_id=eq.${userId}`,
         },
-        (payload) => {
+        (payload: any) => { // Fixed: Explicitly typed 'payload' to satisfy build
           console.log('[Realtime] New asset acquired:', payload.new.product_id);
-          
-          // 2. Refresh the current route's Server Components
           router.refresh();
         }
       )
       .subscribe();
 
-    // 3. Cleanup on unmount
     return () => {
       supabase.removeChannel(channel);
     };
