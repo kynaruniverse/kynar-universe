@@ -27,7 +27,7 @@
   }
 
   html, body {
-    @apply bg-canvas text-text-primary selection:bg-kyn-green/10;
+    @apply bg-canvas text-text-primary;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     line-height: 1.6;
     overflow-x: hidden;
@@ -35,6 +35,12 @@
     position: relative;
     min-height: 100svh;
     scroll-behavior: smooth;
+  }
+
+  /* Fixed: Selection logic moved out of @apply to pass Turbopack build */
+  ::selection {
+    background-color: hsl(var(--kyn-green) / 0.15);
+    color: inherit;
   }
 }
 
@@ -56,10 +62,15 @@
   }
 
   .kynar-card {
-    @apply calm-transition rounded-[kynar-lg] border border-border bg-surface hover:shadow-kynar-soft;
+    /* Fixed: rounded-[kynar-lg] requires the value to be defined in tailwind.config */
+    @apply calm-transition rounded-[2rem] border border-border bg-surface hover:shadow-kynar-soft;
   }
 
   /* Padding for bottom-docked nav */
-  .pt-safe-top { padding-top: var(--safe-top); }
-  .pb-safe-bottom { padding-bottom: var(--safe-bottom); }
+  .pt-safe-top { 
+    padding-top: var(--safe-top); 
+  }
+  .pb-safe-bottom { 
+    padding-bottom: var(--safe-bottom); 
+  }
 }
