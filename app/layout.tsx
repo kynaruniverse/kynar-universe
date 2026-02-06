@@ -1,5 +1,6 @@
 /**
- * KYNAR UNIVERSE: Root Architecture (v2.1)
+ * KYNAR UNIVERSE: Root Architecture (v2.2)
+ * Evolution: Unified Modal Layering & Deep-Sea Blur Integration
  */
 
 import type { Metadata, Viewport } from "next";
@@ -14,7 +15,6 @@ import { cn } from "@/lib/utils";
 import OverlayWrapper from "@/components/marketplace/OverlayWrapper";
 import UserMenu from "@/components/layout/UserMenu";
 
-
 const inter = Inter({ subsets: ["latin"], variable: "--font-ui", display: 'swap' });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-brand", display: 'swap' });
 
@@ -28,34 +28,44 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Kynar Universe',
-    default: 'Kynar Universe | Home • Lifestyle • Tools',
+    template: '%s | KYNAR',
+    default: 'KYNAR | Home • Lifestyle • Tools',
   },
   description: "A calm, mobile-first digital ecosystem.",
   metadataBase: new URL('https://kynaruniverse.com'),
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Fetch session server-side to prevent "flicker" on initial load
   const rawProfile = await getUserProfile();
   const profile = rawProfile ? JSON.parse(JSON.stringify(rawProfile)) : null;
 
   return (
     <html lang="en" className={cn(inter.variable, jakarta.variable, "antialiased")}>
-      <body className="bg-canvas text-text-primary selection:bg-kyn-green/10">
+      <body className="bg-canvas text-text-primary selection:bg-kyn-green/10 overflow-x-hidden">
+        
+        {/* MODAL LAYER: Managed via global useUIStore */}
         <UserMenu user={profile} />
+        <OverlayWrapper />
+
+        {/* FEEDBACK LAYER */}
         <Toaster 
           position="bottom-center" 
           toastOptions={{
             style: {
-              borderRadius: '1rem',
+              borderRadius: '1.25rem',
               background: '#1A241B',
               color: '#fff',
               fontFamily: 'var(--font-brand)',
-              fontSize: '14px',
+              fontSize: '13px',
+              fontWeight: '600',
+              padding: '12px 20px',
+              border: '1px solid rgba(255,255,255,0.1)'
             },
           }}
         />
 
+        {/* TEXTURE LAYER: Analog Grain Overlay */}
         <div 
           className="pointer-events-none fixed inset-0 z-[1] h-full w-full opacity-[0.015] will-change-transform" 
           aria-hidden="true"
@@ -64,6 +74,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
 
+        {/* CONTENT LAYER */}
         <div className="relative z-10 flex min-h-screen flex-col">
           <PresenceBar initialProfile={profile} />
           
@@ -72,9 +83,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </main>
 
           <Footer />
-          <Navigation initialProfile={profile} />
           
-          <OverlayWrapper />
+          {/* MOBILE NAVIGATION: Anchored to viewport bottom */}
+          <Navigation initialProfile={profile} />
         </div>
       </body>
     </html>

@@ -56,35 +56,37 @@ const config: Config = {
         section: "5rem",
       },
       borderRadius: {
-        kynar: "1.25rem",
+        'kynar-sm': "0.75rem",
+        'kynar': "1.25rem",
         "kynar-lg": "2rem",
         "kynar-xl": "2.5rem",
       },
       boxShadow: {
         "kynar-soft": "0 10px 40px -15px rgba(0, 0, 0, 0.08)",
-        "kynar-deep": "0 20px 60px -12px rgba(0, 0, 0, 0.15)",
+        "kynar-deep": "0 30px 70px -10px rgba(0, 0, 0, 0.2)",
+        "kynar-inner": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)",
       },
       transitionTimingFunction: {
-        "kyn-out": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "kyn-drift": "cubic-bezier(0.16, 1, 0.3, 1)",
       },
       animation: {
-        "fade-in": "fade-in 0.6s var(--ease-kyn-out) fill-mode-both",
-        "slide-up": "slide-up 0.8s var(--ease-kyn-out) fill-mode-both",
-        "breathe": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "overlay-pop": "overlay-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) fill-mode-both",
+        "portal-in": "portal-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "portal-out": "portal-out 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "fade-in": "fade-in 0.6s ease-out forwards",
+        "breathe": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       keyframes: {
+        "portal-in": {
+          "0%": { transform: "scale(0.9) translateY(20px)", opacity: "0", filter: "blur(10px)" },
+          "100%": { transform: "scale(1) translateY(0)", opacity: "1", filter: "blur(0)" },
+        },
+        "portal-out": {
+          "0%": { transform: "scale(1) translateY(0)", opacity: "1" },
+          "100%": { transform: "scale(0.95) translateY(10px)", opacity: "0" },
+        },
         "fade-in": {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
-        },
-        "slide-up": {
-          "0%": { transform: "translateY(1.5rem)", opacity: "0" },
-          "100%": { transform: "translateY(0)", opacity: "1" },
-        },
-        "overlay-pop": {
-          "0%": { transform: "scale(0.95) translateY(10px)", opacity: "0" },
-          "100%": { transform: "scale(1) translateY(0)", opacity: "1" },
         },
       },
     },
