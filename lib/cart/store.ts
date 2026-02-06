@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import { Product } from '@/lib/supabase/types';
 import { getPriceFromId } from '../marketplace/pricing';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 // Define mock storage outside to avoid parsing errors in Turbopack
 const mockStorage: StateStorage = {
