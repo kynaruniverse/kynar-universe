@@ -2,82 +2,90 @@ import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
-import { validatePriceMatch } from '@/lib/marketplace/pricing';
-
-/**
- * KYNAR UNIVERSE: Transaction Webhook (v2.5)
- * Role: Secure fulfillment and pricing validation.
- * Fix: Applied 'as any' to the client instance to force-bypass 
- * the 'never' type-checking error during Netlify production builds.
- */
 
 const WEBHOOK_SECRET = process.env.LEMONSQUEEZY_WEBHOOK_SECRET || '';
 
 export async function POST(req: Request) {
-  // 1. Signature Verification (Security Perimeter)
   const rawBody = await req.text();
-  const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
-  const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8');
-  
-  // Await headers for Next.js 16 compatibility
   const headerList = await headers();
-  const signature = Buffer.from(headerList.get('x-signature') || '', 'utf8');
+  const signature = headerList.get('x-signature') || '';
 
-  if (signature.length !== digest.length || !crypto.timingSafeEqual(digest, signature)) {
+  // 1. Signature Verification
+  const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
+  const digest = hmac.update(rawBody).digest('hex');
+
+  if (signature !== digest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
   }
 
   const payload = JSON.parse(rawBody);
+  const eventId = payload.meta.event_name + '_' + payload.data.id; // Unique event key
   const eventName = payload.meta.event_name;
-  const attributes = payload.data.attributes;
-
-  // 2. Filter for Successful Orders
-  if (eventName !== 'order_created') {
-    return NextResponse.json({ message: 'Event ignored' });
-  }
-
-  const {
-    variant_id,    // Lemon Squeezy Price/Variant ID
-    total,         // Amount in cents
-    custom_data,   // Metadata containing product_id and user_id
-  } = attributes;
-
-  const productId = custom_data?.product_id;
-  const userId = custom_data?.user_id;
-  const priceId = variant_id.toString();
-  const actualPriceInPounds = total / 100;
-
-  // 3. Price Validation: Cross-reference with pricing.ts
-  const isPriceValid = validatePriceMatch(priceId, actualPriceInPounds);
-
-  if (!isPriceValid) {
-    console.error(`[Webhook Alert] Price mismatch for Product ${productId}. Paid: ${actualPriceInPounds}, Expected: ID ${priceId}`);
-    return NextResponse.json({ error: 'Price mismatch detected' }, { status: 400 });
-  }
-
-  // 4. Fulfillment: Update Supabase User Library
+  
   const supabase = await createClient();
 
-  /**
-   * ABSOLUTE FIX: Casting (supabase as any)
-   * This is required because Next.js 16/Turbopack is overly aggressive 
-   * in validating Supabase table schemas during build time.
-   */
-  const { error } = await (supabase as any)
-    .from('user_library')
-    .insert({
-      user_id: userId,
-      product_id: productId,
-      order_id: payload.data.id,
-      source: 'lemon-squeezy',
-      status: 'active',
-      acquired_at: new Date().toISOString()
-    });
+  // 2. IDEMPOTENCY CHECK: Have we seen this event?
+  const { data: existingEvent } = await (supabase as any)
+    .from('webhook_events')
+    .select('status')
+    .eq('event_id', eventId)
+    .maybeSingle();
 
-  if (error) {
-    console.error('[Webhook Error] Fulfillment failed:', error.message);
-    return NextResponse.json({ error: 'Database fulfillment error' }, { status: 500 });
+  if (existingEvent?.status === 'processed') {
+    return NextResponse.json({ message: 'Event already processed' }, { status: 200 });
   }
 
-  return NextResponse.json({ message: 'Fulfillment complete' }, { status: 200 });
+  // 3. LOG THE EVENT: Register as pending
+  if (!existingEvent) {
+    await (supabase as any).from('webhook_events').insert({
+      event_id: eventId,
+      event_name: eventName,
+      payload: payload,
+      status: 'pending'
+    });
+  }
+
+  // 4. PROCESS THE FULFILLMENT (Logic specific to 'order_created')
+  if (eventName === 'order_created') {
+    try {
+      const attributes = payload.data.attributes;
+      const { user_id: userId, product_id: productId } = attributes.custom_data || {};
+
+      const { error: fulfillmentError } = await (supabase as any)
+        .from('user_library')
+        .insert({
+          user_id: userId,
+          product_id: productId,
+          order_id: payload.data.id,
+          source: 'lemon-squeezy',
+          status: 'active',
+          acquired_at: new Date().toISOString()
+        });
+
+      if (fulfillmentError) throw fulfillmentError;
+
+      // 5. UPDATE STATUS: Mark as complete
+      await (supabase as any)
+        .from('webhook_events')
+        .update({ status: 'processed', updated_at: new Date().toISOString() })
+        .eq('event_id', eventId);
+
+    } catch (err: any) {
+      console.error(`[Webhook Critical] ${eventId} failed:`, err.message);
+      
+      // LOG THE FAILURE: Don't let it vanish
+      await (supabase as any)
+        .from('webhook_events')
+        .update({ 
+          status: 'failed', 
+          error_message: err.message, 
+          updated_at: new Date().toISOString() 
+        })
+        .eq('event_id', eventId);
+
+      return NextResponse.json({ error: 'Fulfillment failed recorded' }, { status: 500 });
+    }
+  }
+
+  return NextResponse.json({ message: 'Success' }, { status: 200 });
 }

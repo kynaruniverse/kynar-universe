@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Download, BookOpen, ShieldCheck, Clock, ChevronRight } from "lucide-react";
 import { UserLibrary, Tables } from "@/lib/supabase/types";
+import { RealtimeListener } from "@/components/layout/RealtimeListener";
 
 export const metadata: Metadata = {
   title: "The Vault | Your Collection",
@@ -17,6 +18,7 @@ export default async function LibraryPage() {
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/auth/login?return_to=/library");
   
+  // RLS (Phase 02) now secures this query automatically
   const { data: rawItems, error } = await (supabase
     .from('user_library')
     .select(`
@@ -40,27 +42,16 @@ export default async function LibraryPage() {
     console.error("[Vault] Sync error:", error.message);
   }
   
-  const items: UserLibrary[] = (rawItems || []).map((item: Tables < 'user_library' > & { product ? : any }) => ({
-    id: item.id,
-    user_id: authUser.id,
-    product_id: item.product_id,
-    acquired_at: item.acquired_at,
-    status: item.status,
-    order_id: null,
-    source: null,
-    price_id: null,
-    purchase_price: null,
-    purchased_at: null,
-    product: item.product ? {
-      ...item.product,
-      is_published: item.product.is_published ?? true,
-      price_id: item.product.price_id ?? "",
-    } : undefined
+  const items = (rawItems || []).map((item: any) => ({
+    ...item,
+    product: item.product || {}
   })) as UserLibrary[];
-  
   
   return (
     <div className="max-w-screen-xl mx-auto px-gutter">
+      {/* PHASE 03: The Bridge */}
+      <RealtimeListener userId={authUser.id} />
+
       <header className="py-16 md:py-24">
         <h1 className="font-brand text-4xl font-bold text-kyn-slate-900 tracking-tight md:text-6xl">
           Your Collection
@@ -88,13 +79,13 @@ export default async function LibraryPage() {
             {items.map((item) => (
               <article 
                 key={item.id} 
-                className="group flex flex-col bg-white border border-border rounded-[2rem] overflow-hidden hover:shadow-kynar-deep transition-all duration-700"
+                className="group flex flex-col bg-white border border-border rounded-[2rem] overflow-hidden hover:shadow-kynar-deep transition-all duration-700 animate-in fade-in slide-in-from-bottom-4"
               >
                 <div className="aspect-[16/10] bg-kyn-slate-50 relative overflow-hidden">
                   {item.product?.preview_image ? (
                     <Image 
                       src={item.product.preview_image} 
-                      alt={item.product.title}
+                      alt={item.product.title || "Asset"}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-1000"
@@ -120,7 +111,7 @@ export default async function LibraryPage() {
                   
                   <div className="mt-auto space-y-4">
                     <Link 
-                      href={`/api/download/${item.product?.id}`}
+                      href={`/api/download/${item.product_id}`}
                       className="flex items-center justify-center gap-3 w-full bg-kyn-slate-900 py-4 rounded-2xl text-white font-brand text-xs font-bold uppercase tracking-widest hover:bg-black transition-all"
                     >
                       <Download size={16} />

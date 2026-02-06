@@ -63,10 +63,13 @@ export function useCartItems() {
     setMounted(true);
   }, []);
 
-  const totalPrice = items.reduce((total, item) => {
-    const price = getPriceFromId(item.price_id);
-    return total + (price ?? 0);
-  }, 0);
+  const totalPrice = useMemo(() => { 
+    return items.reduce((total, item) => { 
+      const price = getPriceFromId(item.price_id); 
+      return total + (price ?? 0);
+    }, 0);
+  }, [items]);
+  
 
   if (!mounted || !isHydrated) {
     return { 
