@@ -1,18 +1,22 @@
 "use client";
 
+/**
+ * KYNAR UNIVERSE: Realtime Vault Sync Hook (v1.5)
+ * Path: hooks/use-vault-realtime.ts
+ * Role: Listens for library acquisitions and triggers server-side refreshes.
+ */
+
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/browser';
+import { UserLibrary } from '@/lib/supabase/types';
 
-/**
- * KYNAR UNIVERSE: Realtime Vault Sync
- * Role: Listens for database inserts and refreshes Server Components.
- */
 export function useVaultRealtime(userId: string | undefined) {
   const supabase = createClient();
   const router = useRouter();
 
   useEffect(() => {
+    // Exit if no user is authenticated to prevent channel errors
     if (!userId) return;
 
     const channel = supabase
@@ -25,14 +29,20 @@ export function useVaultRealtime(userId: string | undefined) {
           table: 'user_library',
           filter: `user_id=eq.${userId}`,
         },
-        (payload: any) => { // Fixed: Explicitly typed 'payload' to satisfy build
-          console.log('[Realtime] New asset acquired:', payload.new.product_id);
+        (payload: { new: UserLibrary }) => {
+          console.log('[Realtime] Asset synchronized:', payload.new.product_id);
+          
+          /**
+           * router.refresh() invalidates the Client Component cache 
+           * and re-fetches Server Components (like your Vault grid).
+           */
           router.refresh();
         }
       )
       .subscribe();
 
     return () => {
+      // Clean up the channel on unmount to prevent memory leaks
       supabase.removeChannel(channel);
     };
   }, [userId, supabase, router]);

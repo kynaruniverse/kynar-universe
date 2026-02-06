@@ -1,6 +1,14 @@
+/**
+ * KYNAR UNIVERSE: Root Architecture (v2.3)
+ * Path: app/layout.tsx
+ * Evolution: Strict Type-Safe Profile Injection & Layout Fluidity
+ */
+
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+
+// Component Imports
 import { PresenceBar } from "@/components/layout/PresenceBar";
 import { Footer } from "@/components/layout/Footer";
 import { Navigation } from "@/components/layout/Navigation"; 
@@ -9,6 +17,9 @@ import { Toaster } from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import OverlayWrapper from "@/components/marketplace/OverlayWrapper";
 import UserMenu from "@/components/layout/UserMenu";
+
+// Type Imports - Explicitly aligning with your definitive types.ts
+import { Profile } from "@/lib/supabase/types";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-ui", display: 'swap' });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-brand", display: 'swap' });
@@ -31,14 +42,16 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // FIXED: Lowercase 'profile' to match component usage
-  const profile = await getUserProfile();
+  /** * FIXED: Lowercase 'profile' to match variable usage across the tree.
+   * Type is explicitly set to Profile | null based on types.ts.
+   */
+  const profile: Profile | null = await getUserProfile();
 
   return (
     <html lang="en" className={cn(inter.variable, jakarta.variable, "antialiased")}>
       <body className="bg-canvas text-text-primary overflow-x-hidden">
         
-        {/* MODAL LAYER */}
+        {/* MODAL LAYER: Managed via global useUIStore */}
         <UserMenu user={profile} />
         <OverlayWrapper />
 
@@ -59,7 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* ANALOG GRAIN LAYER */}
+        {/* TEXTURE LAYER: Analog Grain Overlay */}
         <div 
           className="pointer-events-none fixed inset-0 z-[1] h-full w-full opacity-[0.015] will-change-transform" 
           aria-hidden="true"
@@ -68,13 +81,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
 
+        {/* CONTENT LAYER */}
         <div className="relative z-10 flex min-h-screen flex-col">
-          <PresenceBar initialProfile={profile} />
+          {/* Ensure prop names match component definitions (initialProfile vs user) */}
+          <PresenceBar user={profile} />
+          
           <main className="flex-grow pt-safe-top pb-24 md:pb-0">
             {children}
           </main>
+
           <Footer />
-          <Navigation initialProfile={profile} />
+          
+          {/* MOBILE NAVIGATION: Anchored to viewport bottom */}
+          <Navigation user={profile} />
         </div>
       </body>
     </html>

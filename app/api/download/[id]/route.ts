@@ -1,67 +1,31 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import { Product } from "@/lib/supabase/types";
 
-// Define the shape of the joined query to replace 'any'
-interface ProductAccess {
-  id: string;
+interface LibraryJoin {
   product_id: string;
-  products: {
-    slug: string;
-    download_path: string;
-  } | null;
+  products: Product | null;
 }
 
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id: productId } = await params;
   const supabase = await createClient();
-  
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
 
-  /**
-   * Verified Ownership
-   * FIXED: Replaced 'as any' with concrete type casting for strict builds.
-   */
+  if (!user) return new NextResponse("Unauthorized", { status: 401 });
+
   const { data, error } = await supabase
     .from("user_library")
-    .select(`
-      id,
-      product_id,
-      products (
-        slug,
-        download_path
-      )
-    `)
+    .select(`product_id, products (*)`)
     .eq("user_id", user.id)
     .eq("product_id", productId)
-    .maybeSingle() as { data: ProductAccess | null; error: any };
+    .maybeSingle() as unknown as { data: LibraryJoin | null; error: any };
 
-  // Safely access nested join data
-  const product = data?.products;
+  if (error || !data?.products?.download_path) return new NextResponse("Forbidden", { status: 403 });
 
-  if (error || !product?.download_path) {
-    console.error("[Vault] Access Denied:", error?.message);
-    return new NextResponse("Forbidden", { status: 403 });
-  }
-
-  /**
-   * Generate Signed URL
-   */
-  const { data: signedData, error: storageError } = await supabase
-    .storage
+  const { data: signedUrl } = await supabase.storage
     .from("vault")
-    .createSignedUrl(product.download_path, 60, {
-      download: true,
-    });
+    .createSignedUrl(data.products.download_path, 60);
 
-  if (storageError || !signedData?.signedUrl) {
-    return new NextResponse("Asset Unavailable", { status: 404 });
-  }
-
-  return NextResponse.redirect(signedData.signedUrl, 303);
+  return NextResponse.redirect(signedUrl?.signedUrl || '');
 }
