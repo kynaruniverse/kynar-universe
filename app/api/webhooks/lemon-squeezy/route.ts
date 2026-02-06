@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
-// Use 'import type' to prevent the "declared but never read" error
-import type { Database, Json } from '@/lib/supabase/types';
+import type { Json } from '@/lib/supabase/types';
 
 interface LemonSqueezyPayload {
   meta: { event_name: string };
@@ -38,8 +37,8 @@ export async function POST(req: Request) {
   
   const supabase = await createClient();
 
-  // FIX: Cast the table call to 'any' to bypass the missing schema definitions
-  // but keep the logic intact. This allows the build to pass.
+  // BYPASS: Casting the query to 'any' allows the build to pass 
+  // when the local types.ts is missing these new tables.
   const { data: existingEvent } = await (supabase
     .from('webhook_events')
     .select('id')
@@ -83,6 +82,8 @@ export async function POST(req: Request) {
         .eq('event_id', eventId) as any);
 
     } catch (err: any) {
+      console.error(`[Webhook Critical] ${eventId}:`, err.message);
+      
       await (supabase
         .from('webhook_events')
         .update({ 
