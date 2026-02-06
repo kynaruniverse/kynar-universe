@@ -1,18 +1,17 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { Database } from './supabase'; // Your uploaded file name
+// Match your file tree: lib/supabase/types.ts
+import { Database } from './types'; 
 
 export async function createClient() {
-  // In Next.js 16, cookies() is an async function and must be awaited
   const cookieStore = await cookies();
-
+  
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
-          // SSR package recommends using only getAll and setAll for newer versions
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
@@ -20,9 +19,8 @@ export async function createClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
             );
-          } catch {
-            // This is expected when called from Server Components during rendering.
-            // Middleware handles the actual cookie persistence during session refreshes
+          } catch (error) {
+            // Handled by Next.js 16/Middleware during SSR
           }
         },
       },

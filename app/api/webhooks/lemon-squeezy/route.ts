@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
-import { Json } from '@/lib/supabase/supabase'; // Import the Json type from your file
+import { Json } from '@/lib/supabase/types';
 
 interface LemonSqueezyPayload {
   meta: { event_name: string };
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
   
   const supabase = await createClient();
 
-  // 1. Fixed "status does not exist on type never"
+  // IDEMPOTENCY CHECK
   const { data: existingEvent } = await supabase
     .from('webhook_events')
     .select('status')
@@ -48,24 +48,23 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Already processed' }, { status: 200 });
   }
 
-  // 2. Fixed "Argument not assignable" for insert
+  // REGISTER PENDING
   if (!existingEvent) {
     await supabase.from('webhook_events').insert({
       event_id: eventId,
       event_name: eventName,
-      // Use the Json type to satisfy the JSONB column requirement
-      payload: payload as unknown as Json, 
+      payload: payload as unknown as Json, // Cast to your database Json type
       status: 'pending'
     });
   }
 
+  // FULFILLMENT
   if (eventName === 'order_created') {
     try {
       const { user_id: userId, product_id: productId } = payload.data.attributes.custom_data || {};
 
       if (!userId || !productId) throw new Error("Missing custom_data");
 
-      // 3. Fixed fulfillment table types
       const { error: fulfillmentError } = await supabase
         .from('user_library')
         .insert({

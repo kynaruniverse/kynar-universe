@@ -1,8 +1,3 @@
-/**
- * KYNAR UNIVERSE: Root Architecture (v2.2)
- * Evolution: Unified Modal Layering & Deep-Sea Blur Integration
- */
-
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
@@ -36,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // FIX: Rename 'Profile' to 'profile' (lowercase) to satisfy TS2552 and TS6133
+  // FIXED: Lowercase 'profile' to match component usage
   const profile = await getUserProfile();
 
   return (
@@ -44,7 +39,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="bg-canvas text-text-primary overflow-x-hidden">
         
         {/* MODAL LAYER */}
-        {/* FIX: Now 'profile' matches the variable above */}
         <UserMenu user={profile} />
         <OverlayWrapper />
 
@@ -65,7 +59,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* TEXTURE LAYER: Analog Grain Overlay */}
+        {/* ANALOG GRAIN LAYER */}
         <div 
           className="pointer-events-none fixed inset-0 z-[1] h-full w-full opacity-[0.015] will-change-transform" 
           aria-hidden="true"
@@ -74,17 +68,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* CONTENT LAYER */}
         <div className="relative z-10 flex min-h-screen flex-col">
           <PresenceBar initialProfile={profile} />
-          
           <main className="flex-grow pt-safe-top pb-24 md:pb-0">
             {children}
           </main>
-
           <Footer />
-          
-          {/* MOBILE NAVIGATION: Anchored to viewport bottom */}
           <Navigation initialProfile={profile} />
         </div>
       </body>
