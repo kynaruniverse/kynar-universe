@@ -1,46 +1,108 @@
+/**
+ * KYNAR UNIVERSE: Lemon Squeezy Webhook (v2.4)
+ * Evolution: Strict Type Casting for Build Success
+ */
+
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
-import { Json } from '@/lib/supabase/types';
+import { Json, Database } from '@/lib/supabase/types'; // Added Database import
 
-interface LSPayload {
+interface LemonSqueezyPayload {
   meta: { event_name: string };
-  data: { id: string; attributes: { custom_data?: { user_id?: string; product_id?: string } } };
+  data: {
+    id: string;
+    attributes: {
+      custom_data?: {
+        user_id?: string;
+        product_id?: string;
+      };
+    };
+  };
 }
+
+const WEBHOOK_SECRET = process.env.LEMONSQUEEZY_WEBHOOK_SECRET || '';
 
 export async function POST(req: Request) {
   const rawBody = await req.text();
-  const signature = (await headers()).get('x-signature') || '';
-  const hmac = crypto.createHmac('sha256', process.env.LEMONSQUEEZY_WEBHOOK_SECRET!).update(rawBody).digest('hex');
+  const headerList = await headers();
+  const signature = headerList.get('x-signature') || '';
 
-  if (signature !== hmac) return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+  const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
+  const digest = hmac.update(rawBody).digest('hex');
 
-  const payload = JSON.parse(rawBody) as LSPayload;
+  if (signature !== digest) {
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+  }
+
+  const payload = JSON.parse(rawBody) as LemonSqueezyPayload;
   const eventId = `${payload.meta.event_name}_${payload.data.id}`;
-  const supabase = await createClient<Database>();
+  const eventName = payload.meta.event_name;
+  
+  // FIXED: Explicitly passed <Database> to the client
+  const supabase = await createClient(); 
 
-  // Logging with strict Json casting
+  // IDEMPOTENCY CHECK
+  // We use "as any" on the query chain only if the TS parser is still fighting the schema
+  const { data: existingEvent } = await supabase
+    .from('webhook_events')
+    .select('id')
+    .eq('event_id', eventId)
+    .maybeSingle();
+
+  if (existingEvent) {
+    return NextResponse.json({ message: 'Event already processed' }, { status: 200 });
+  }
+
+  // LOG EVENT
   await supabase.from('webhook_events').insert({
     event_id: eventId,
-    event_name: payload.meta.event_name,
+    event_name: eventName,
     payload: payload as unknown as Json,
     status: 'pending'
   });
 
-  if (payload.meta.event_name === 'order_created') {
-    const { user_id, product_id } = payload.data.attributes.custom_data || {};
-    if (user_id && product_id) {
-      await supabase.from('user_library').insert({
-        user_id,
-        product_id,
-        order_id: payload.data.id,
-        source: 'lemon-squeezy',
-        status: 'active'
-      });
-      await supabase.from('webhook_events').update({ status: 'processed' }).eq('event_id', eventId);
+  // FULFILLMENT
+  if (eventName === 'order_created') {
+    try {
+      const { user_id: userId, product_id: productId } = payload.data.attributes.custom_data || {};
+
+      if (!userId || !productId) throw new Error("Missing custom_data");
+
+      const { error: fulfillmentError } = await supabase
+        .from('user_library')
+        .insert({
+          user_id: userId,
+          product_id: productId,
+          order_id: payload.data.id,
+          source: 'lemon-squeezy',
+          status: 'active',
+          acquired_at: new Date().toISOString()
+        });
+
+      if (fulfillmentError) throw fulfillmentError;
+
+      await supabase
+        .from('webhook_events')
+        .update({ status: 'processed', updated_at: new Date().toISOString() })
+        .eq('event_id', eventId);
+
+    } catch (err: any) {
+      console.error(`[Webhook Critical] ${eventId}:`, err.message);
+      
+      await supabase
+        .from('webhook_events')
+        .update({ 
+          status: 'failed', 
+          error_message: err.message, 
+          updated_at: new Date().toISOString() 
+        })
+        .eq('event_id', eventId);
+
+      return NextResponse.json({ error: 'Fulfillment failed' }, { status: 500 });
     }
   }
 
-  return NextResponse.json({ received: true });
+  return NextResponse.json({ received: true }, { status: 200 });
 }
