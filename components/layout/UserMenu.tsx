@@ -29,16 +29,16 @@ export default function UserMenu({ user }: { user: any }) {
       </button>
 
       {view !== 'closed' && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center px-gutter">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
           
-          {/* DARK BACKDROP: Clicking this now explicitly closes the menu */}
+          {/* DARK BACKDROP: Emerges with a soft fade and heavy blur for focus */}
           <div 
-            className="absolute inset-0 bg-kyn-slate-900/60 backdrop-blur-sm animate-in fade-in duration-500" 
+            className="absolute inset-0 bg-kyn-slate-900/40 backdrop-blur-md animate-in fade-in duration-500" 
             onClick={closeAll} 
           />
 
-          {/* CENTERED MODAL BOX */}
-          <div className="relative w-full max-w-sm overflow-hidden rounded-[2.5rem] border border-border bg-white p-8 shadow-2xl animate-in zoom-in-95 duration-300">
+          {/* CENTERED MODAL BOX: Animated inward with zoom-in-90 and slide-up */}
+          <div className="relative w-full max-w-sm overflow-hidden rounded-[2.5rem] border border-border bg-white p-8 shadow-kynar-deep animate-in zoom-in-90 fade-in slide-in-from-bottom-4 duration-500 ease-out">
             
             {/* Close Button */}
             <button 
