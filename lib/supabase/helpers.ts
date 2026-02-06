@@ -1,5 +1,5 @@
 import { createClient } from './server';
-import { Product, World, Profile, Database } from './types';
+import { Product, World, Profile } from './types';
 
 export interface FilterOptions {
   world?: World | 'All';
