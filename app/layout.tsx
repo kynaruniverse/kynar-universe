@@ -12,6 +12,8 @@ import { getUserProfile } from "@/lib/supabase/helpers";
 import { Toaster } from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import OverlayWrapper from "@/components/marketplace/OverlayWrapper";
+import UserMenu from "@/components/layout/UserMenu";
+
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-ui", display: 'swap' });
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-brand", display: 'swap' });
@@ -40,6 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={cn(inter.variable, jakarta.variable, "antialiased")}>
       <body className="bg-canvas text-text-primary selection:bg-kyn-green/10">
+        <UserMenu user={profile} />
         <Toaster 
           position="bottom-center" 
           toastOptions={{

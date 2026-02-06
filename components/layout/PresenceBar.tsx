@@ -4,14 +4,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShoppingBag, Fingerprint } from "lucide-react";
+import { ShoppingBag, Fingerprint, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/browser";
 import { useCartItems } from "@/lib/cart/store";
 import { useUIStore } from "@/lib/store/ui";
 import { Profile } from "@/lib/supabase/types";
-import UserMenu from "./UserMenu"; 
-
 interface PresenceBarProps {
   initialProfile?: Profile | null;
   context?: string; 
@@ -23,6 +21,9 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
   
   // Correctly using the global UI store
   const openSelection = useUIStore((state) => state.openSelection);
+  const toggleUserMenu = useUIStore((state) => state.toggleUserMenu);
+  const isUserMenuOpen = useUIStore((state) => state.isUserMenuOpen);
+
   const { count } = useCartItems();
 
   useEffect(() => {
@@ -82,8 +83,23 @@ export const PresenceBar = ({ initialProfile, context = "Universe" }: PresenceBa
             </span>
           )}
         </button>
+        
+                <button 
+          onClick={toggleUserMenu}
+          className={cn(
+            "group relative flex h-10 w-10 items-center justify-center rounded-xl border transition-all active:scale-90",
+            isUserMenuOpen 
+              ? "bg-kyn-slate-900 text-white border-kyn-slate-900" 
+              : "bg-surface border-border text-kyn-slate-400 hover:border-kyn-slate-900/20"
+          )}
+        >
+          <User size={16} strokeWidth={2.5} />
+          {(mounted && profile) && (
+            <span className="absolute inset-0 rounded-xl ring-2 ring-kyn-green-500/20 animate-pulse" />
+          )}
+        </button>
 
-        <UserMenu user={profile} />
+
       </div>
     </header>
   );
