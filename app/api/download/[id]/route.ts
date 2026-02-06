@@ -7,7 +7,7 @@ interface LibraryJoin {
   products: Product | null;
 }
 
-export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id: productId } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

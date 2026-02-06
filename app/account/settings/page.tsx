@@ -1,13 +1,13 @@
 /**
- * KYNAR UNIVERSE: Settings Page (v2.3)
- * Evolution: Strict Schema Alignment & Default State Fallbacks
+ * KYNAR UNIVERSE: Settings Page (v2.4)
+ * Evolution: Strict Schema Alignment & Build Error Resolution
  */
 
 import { getUserProfile } from "@/lib/supabase/helpers";
 import { SettingsForm } from "@/components/account/SettingsForm";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { ShieldCheck, Info } from "lucide-react";
-import { Profile } from "@/lib/supabase/types"; // Import only Profile
+import { User, Profile } from "@/lib/supabase/types"; 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -17,18 +17,26 @@ export default async function SettingsPage() {
   
   if (!authUser) redirect("/auth/login");
 
+  // Create a clean User object for the form
+  const user: User = {
+    id: authUser.id,
+    email: authUser.email
+  };
+
   // Fetch the real profile from the DB
   const fetchedProfile = await getUserProfile();
   
   /**
-   * EVOLUTION: Default Object Construction
-   * We ensure the object strictly follows the 'Profile' type from types.ts
+   * EVOLUTION: Strict Type Alignment
+   * 1. Removed 'avatar_url' (not in types.ts)
+   * 2. Added 'is_admin' (required by types.ts)
    */
   const profile: Profile = fetchedProfile ?? {
     id: authUser.id,
-    full_name: "",
     email: authUser.email ?? "",
-    avatar_url: null,
+    full_name: "",
+    is_admin: false,
+    created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
   
@@ -54,8 +62,8 @@ export default async function SettingsPage() {
 
       <section className="px-gutter">
         <div className="rounded-[2rem] border border-border bg-white p-6 md:p-10 shadow-kynar-soft">
-          {/* Note: Ensure SettingsForm component accepts 'profile' prop as type Profile */}
-          <SettingsForm profile={profile} />
+          {/* FIXED: Passing both props to resolve TS2741 build error */}
+          <SettingsForm user={user} profile={profile} />
         </div>
 
         <div className="mt-12 border-t border-border pt-8 text-center">

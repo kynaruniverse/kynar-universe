@@ -84,7 +84,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* CONTENT LAYER */}
         <div className="relative z-10 flex min-h-screen flex-col">
           {/* Ensure prop names match component definitions (initialProfile vs user) */}
-          <PresenceBar user={profile} />
+          <PresenceBar initialProfile={profile} />
           
           <main className="flex-grow pt-safe-top pb-24 md:pb-0">
             {children}
@@ -93,7 +93,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Footer />
           
           {/* MOBILE NAVIGATION: Anchored to viewport bottom */}
-          <Navigation user={profile} />
+          <Navigation initialProfile={profile} />
         </div>
       </body>
     </html>

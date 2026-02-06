@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
   const payload = JSON.parse(rawBody) as LSPayload;
   const eventId = `${payload.meta.event_name}_${payload.data.id}`;
-  const supabase = await createClient();
+  const supabase = await createClient<Database>();
 
   // Logging with strict Json casting
   await supabase.from('webhook_events').insert({

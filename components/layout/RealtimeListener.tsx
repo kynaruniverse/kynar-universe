@@ -1,6 +1,6 @@
 "use client";
 
-import { useVaultRealtime } from "@/lib/supabase/realtime";
+import { useVaultRealtime } from "@/hooks/use-vault-realtime";
 
 export function RealtimeListener({ userId }: { userId: string | undefined }) {
   useVaultRealtime(userId);
