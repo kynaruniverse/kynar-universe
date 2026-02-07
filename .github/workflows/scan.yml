@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm ci
+      - run: npm install
 
       - name: TypeScript (entire repo)
         run: npx tsc --noEmit
