@@ -4,8 +4,12 @@ import Link from 'next/link';
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Download, BookOpen, ShieldCheck, Clock, ChevronRight } from "lucide-react";
-import { UserLibrary } from "@/lib/supabase/types";
-import { RealtimeListener } from "@/components/layout/RealtimeListener";
+import { UserLibrary, Product } from "@/lib/supabase/types";
+import { RealtimeListener } from "@/=components/layout/RealtimeListener";
+
+type UserLibraryWithProduct = UserLibrary & {
+  product: Product | null;
+};
 
 export const metadata: Metadata = {
   title: "The Vault | Your Collection",
@@ -45,7 +49,7 @@ export default async function LibraryPage() {
   const items = (rawItems || []).map((item: any) => ({
     ...item,
     product: item.product || {}
-  })) as UserLibrary[];
+  })) as UserLibraryWithProduct[];
   
   return (
     <div className="max-w-screen-xl mx-auto px-gutter">

@@ -16,10 +16,7 @@ export async function GET(
   // Fetch product owned by user with proper validation
   const product = await getUserLibraryProduct(user.id, productId);
 
-  // Generate signed URL (valid 60 seconds)
-  const product = await getUserLibraryProduct(user.id, productId);
-
-  // Add this null check
+  // Add null check for download_path
   if (!product.download_path) {
     return new NextResponse('Download path not found', { status: 404 });
   }

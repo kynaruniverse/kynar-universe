@@ -1,5 +1,5 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import type { Json } from './types';
+import type { Database, TablesInsert } from './types';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
@@ -7,15 +7,21 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   throw new Error('Missing Supabase environment variables SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
 }
-export const createClient = () => {
-  return supabaseServer;
-};
+
 /**
  * Singleton Supabase server client for all server-side routes
  */
 export const supabaseServer = createSupabaseClient < Database > (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
   auth: { persistSession: false },
 });
+
+/**
+ * Creates a Supabase client for server-side usage
+ * Maintains compatibility with components expecting createClient
+ */
+export const createClient = () => {
+  return supabaseServer;
+};
 
 /**
  * Require authentication for a request

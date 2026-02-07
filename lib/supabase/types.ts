@@ -470,28 +470,29 @@ export type Product = Database['public']['Tables']['products']['Row']
 export type Guide = Database['public']['Tables']['guides']['Row']
 export type Profile = Database['public']['Tables']['profiles']['Row']
 export type UserLibrary = Database['public']['Tables']['user_library']['Row']
-export type User = Database['public']['Tables']['profiles']['Row'] // User = Profile
+export type User = Database['public']['Tables']['profiles']['Row']
 
-// Export World type and WORLDS constant
+// Export World type
 export type World = 'home' | 'lifestyle' | 'tools'
 
-export const WORLDS = {
-  home: {
+// Export WORLDS as an array so components can use .map() and indexing
+export const WORLDS = [
+  {
     id: 'home' as const,
     name: 'Home',
     slug: 'home',
     description: 'Home world products and guides'
   },
-  lifestyle: {
+  {
     id: 'lifestyle' as const,
     name: 'Lifestyle',
     slug: 'lifestyle',
     description: 'Lifestyle world products and guides'
   },
-  tools: {
+  {
     id: 'tools' as const,
     name: 'Tools',
     slug: 'tools',
     description: 'Tools world products and guides'
   }
-} as const
+] as const

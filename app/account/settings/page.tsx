@@ -20,7 +20,11 @@ export default async function SettingsPage() {
   // Create a clean User object for the form
   const user: User = {
     id: authUser.id,
-    email: authUser.email
+    email: authUser.email ?? "",
+    full_name: null,
+    is_admin: null,
+    created_at: null,
+    updated_at: null
   };
 
   // Fetch the real profile from the DB
