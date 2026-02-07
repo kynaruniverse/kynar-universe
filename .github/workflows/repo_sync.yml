@@ -11,8 +11,23 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Debug repo structure
+        run: |
+          echo "ROOT FILES:"
+          ls -la
+          echo "SCRIPTS FOLDER:"
+          ls -la scripts
+
       - name: Build JSON snapshot
-        run: python3 scripts/export_repo_to_json.py
+        run: |
+          echo "STARTING EXPORT SCRIPT"
+          python scripts/export_repo_to_json.py
+          echo "EXPORT SCRIPT FINISHED"
 
       - name: Commit snapshot
         uses: EndBug/add-and-commit@v9
