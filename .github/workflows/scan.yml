@@ -1,0 +1,27 @@
+name: Full Repo Scan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - run: npm ci
+
+      - name: TypeScript (entire repo)
+        run: npx tsc --noEmit
+
+      - name: ESLint
+        run: npx next lint
+
+      - name: Next.js build
+        run: npm run build
