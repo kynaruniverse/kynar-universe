@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -14,20 +15,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-
-      - name: Debug repo structure
-        run: |
-          echo "ROOT FILES:"
-          ls -la
-          echo "SCRIPTS FOLDER:"
-          ls -la scripts
+          python-version: "3.11"
 
       - name: Build JSON snapshot
         run: |
-          echo "STARTING EXPORT SCRIPT"
+          python --version
           python scripts/export_repo_to_json.py
-          echo "EXPORT SCRIPT FINISHED"
 
       - name: Commit snapshot
         uses: EndBug/add-and-commit@v9
@@ -36,4 +29,3 @@ jobs:
           author_email: actions@github.com
           message: "Update repo_data.json"
           add: "repo_data.json"
-          
