@@ -1,26 +1,16 @@
-import os
-import json
+import os, json
 
-OUTPUT_FILE = "repo_data.json"
-INCLUDE_EXT = (".ts", ".tsx", ".js", ".json", ".html", ".css")
+root_dir = "."  # repo root
+allowed_ext = [".ts", ".tsx", ".js", ".json", ".html", ".md"]
 
 repo_data = {}
 
-for root, dirs, files in os.walk("."):
-    # Skip hidden folders like .git
-    if ".git" in root:
-        continue
-    for f in files:
-        if f.endswith(INCLUDE_EXT):
-            path = os.path.join(root, f)
-            try:
-                with open(path, "r", encoding="utf-8") as file:
-                    repo_data[path] = {"text": file.read(), "embedding": None}
-            except:
-                pass
+for subdir, dirs, files in os.walk(root_dir):
+    for file in files:
+        if any(file.endswith(ext) for ext in allowed_ext):
+            path = os.path.join(subdir, file)
+            with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                repo_data[path] = f.read()
 
-# Save JSON
-with open(OUTPUT_FILE, "w", encoding="utf-8") as out:
-    json.dump(repo_data, out, ensure_ascii=False, indent=2)
-
-print(f"{len(repo_data)} files exported to {OUTPUT_FILE}")
+with open("repo_data.json", "w", encoding="utf-8") as f:
+    json.dump(repo_data, f)
