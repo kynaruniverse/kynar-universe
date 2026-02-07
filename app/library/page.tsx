@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Download, BookOpen, ShieldCheck, Clock, ChevronRight } from "lucide-react";
 import { UserLibrary, Product } from "@/lib/supabase/types";
-import { RealtimeListener } from "@/=components/layout/RealtimeListener";
+import { RealtimeListener } from "@/components/layout/RealtimeListener";
 
 type UserLibraryWithProduct = UserLibrary & {
   product: Product | null;

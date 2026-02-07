@@ -9,7 +9,8 @@ import { Sparkles, ArrowRight, Globe, Compass, Box } from "lucide-react";
 import { WORLDS, World } from "@/lib/supabase/types";
 
 interface WorldMeta {
-  name: World;
+  id: World;
+  name: string;
   slug: string;
   color: string;
   icon: React.ReactNode;
@@ -20,21 +21,24 @@ export default function UniverseGate() {
   // Mapping the canonical WORLDS enum to visual metadata
   const worlds: WorldMeta[] = [
     { 
-      name: WORLDS[0], // "Home"
+      id: WORLDS[0].id,
+      name: WORLDS[0].name, // "Home"
       slug: "home", 
       color: "bg-kyn-green-500", 
       icon: <Box size={20} />,
       desc: "Order in your physical space and domestic architecture." 
     },
     { 
-      name: WORLDS[1], // "Lifestyle"
+      id: WORLDS[1].id,
+      name: WORLDS[1].name, // "Lifestyle"
       slug: "lifestyle", 
       color: "bg-kyn-caramel-500", 
       icon: <Sparkles size={20} />,
       desc: "Refined daily routines and personal digital sophistication." 
     },
     { 
-      name: WORLDS[2], // "Tools"
+      id: WORLDS[2].id,
+      name: WORLDS[2].name, // "Tools"
       slug: "tools", 
       color: "bg-kyn-slate-500", 
       icon: <Compass size={20} />,

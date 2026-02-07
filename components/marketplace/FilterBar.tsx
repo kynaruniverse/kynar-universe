@@ -83,19 +83,19 @@ export const FilterBar = ({ currentWorld = "All" }: FilterBarProps) => {
                 </button>
 
                 {/* World Options */}
-                {WORLDS.map((w: string) => (
+                {WORLDS.map((w) => (
                   <button 
-                    key={w} 
-                    onClick={() => setFilter('world', w)}
+                    key={w.id} 
+                    onClick={() => setFilter('world', w.id)}
                     className={cn(
                       "flex items-center justify-between p-4 border rounded-2xl text-sm font-ui transition-all",
-                      currentWorld === w 
+                      currentWorld === w.id 
                         ? "border-kyn-slate-900 bg-kyn-slate-900 text-white" 
                         : "border-border bg-white text-kyn-slate-600 hover:border-kyn-slate-200"
                     )}
                   >
-                    {w}
-                    {currentWorld === w && <Check size={14} />}
+                    {w.name}
+                    {currentWorld === w.id && <Check size={14} />}
                   </button>
                 ))}
               </div>
