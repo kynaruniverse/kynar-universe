@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, Fingerprint, User } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/browser";
+import { createClient } from "@/lib/supabase/client";
 import { useCartItems } from "@/lib/cart/store";
 import { useUIStore } from "@/lib/store/ui";
 import { Database } from "@/lib/supabase/types";

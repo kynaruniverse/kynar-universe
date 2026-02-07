@@ -8,7 +8,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/browser';
+import { createClient } from '@/lib/supabase/client';
 import { UserLibrary } from '@/lib/supabase/types';
 
 export function useVaultRealtime(userId: string | undefined) {

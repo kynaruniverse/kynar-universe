@@ -1,31 +1,29 @@
-import { createClient } from "@/lib/supabase/server";
-import { NextResponse } from "next/server";
-import { Product } from "@/lib/supabase/types";
+import { NextResponse } from 'next/server';
+import { supabaseServer } from '@/lib/supabase/server';
+import { requireAuth, getUserLibraryProduct } from '@/lib/supabase/serverHelper';
 
-interface LibraryJoin {
-  product_id: string;
-  products: Product | null;
-}
+export const runtime = 'nodejs';
 
-export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const { id: productId } = await params;
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return new NextResponse("Unauthorized", { status: 401 });
+  // Require authentication
+  const user = await requireAuth();
 
-  const { data, error } = await supabase
-    .from("user_library")
-    .select(`product_id, products (*)`)
-    .eq("user_id", user.id)
-    .eq("product_id", productId)
-    .maybeSingle() as unknown as { data: LibraryJoin | null; error: any };
+  // Fetch product owned by user with proper validation
+  const product = await getUserLibraryProduct(user.id, productId);
 
-  if (error || !data?.products?.download_path) return new NextResponse("Forbidden", { status: 403 });
+  // Generate signed URL (valid 60 seconds)
+  const { data: signedUrlData, error: urlError } = await supabaseServer.storage
+    .from('vault')
+    .createSignedUrl(product.download_path, 60);
 
-  const { data: signedUrl } = await supabase.storage
-    .from("vault")
-    .createSignedUrl(data.products.download_path, 60);
+  if (urlError || !signedUrlData?.signedUrl) {
+    return new NextResponse('Download error', { status: 500 });
+  }
 
-  return NextResponse.redirect(signedUrl?.signedUrl || '');
+  return NextResponse.redirect(signedUrlData.signedUrl);
 }
