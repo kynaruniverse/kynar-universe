@@ -9,19 +9,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      # 1. Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
+      # 2. Setup Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # 3. Build JSON snapshot
       - name: Build JSON snapshot
         run: |
+          echo "Python version:"
           python --version
+          
+          echo "Generating repo_data.json..."
           python scripts/export_repo_to_json.py
 
+          # Ensure the file exists
+          if [ ! -f repo_data.json ]; then
+            echo "Error: repo_data.json was not created!"
+            exit 1
+          fi
+
+          echo "Snapshot generated successfully. File size:"
+          ls -lh repo_data.json
+          echo "Preview:"
+          head -n 20 repo_data.json
+
+      # 4. Commit snapshot if changed
       - name: Commit snapshot
         uses: EndBug/add-and-commit@v9
         with:
@@ -29,3 +49,8 @@ jobs:
           author_email: actions@github.com
           message: "Update repo_data.json"
           add: "repo_data.json"
+          allow_empty_commit: false  # Avoid committing if no changes
+
+      # 5. Optional: Confirm commit
+      - name: Show last commit
+        run: git log -1 --stat
