@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   trailingSlash: false,
@@ -8,7 +9,7 @@ const nextConfig = {
     return [
       { source: '/login', destination: '/auth/login', permanent: true },
       { source: '/signup', destination: '/auth/signup', permanent: true },
-    ];
+    ]
   },
 
   images: {
@@ -44,8 +45,8 @@ const nextConfig = {
           { key: 'X-XSS-Protection', value: '1; mode=block' },
         ],
       },
-    ];
+    ]
   },
-};
+}
 
-module.exports = nextConfig;
+export default nextConfig
