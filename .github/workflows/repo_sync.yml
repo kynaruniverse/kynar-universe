@@ -1,0 +1,23 @@
+name: Repo Snapshot
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build JSON snapshot
+        run: python3 scripts/export_repo_to_json.py
+
+      - name: Commit snapshot
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-actions
+          author_email: actions@github.com
+          message: "Update repo_data.json"
+          add: "repo_data.json"
