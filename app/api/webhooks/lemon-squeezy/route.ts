@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     const insertEvent: TablesInsert < 'webhook_events' > = {
       event_id: eventId,
       event_name: eventName,
-      payload: payload as Json,
+      payload: payload as unknown as Json,
       status: 'pending',
     };
     await logWebhookEvent(insertEvent);

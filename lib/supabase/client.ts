@@ -1,6 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "./types";
-
+export const createClient = () => {
+  return supabaseBrowser;
+};
 /**
  * Browser Supabase client for client components
  * Use anon key only

@@ -35,12 +35,11 @@ export async function logWebhookEvent(event: TablesInsert < 'webhook_events' > )
  * Helper to fetch a single row from a table with optional relations.
  * Returns typed data or null, and throws if an error occurs.
  */
-export async function fetchSingleRow <
-  T extends keyof Tables < any > = any >
-  (table: T, query: Record < string, any > , relations ? : string[]) {
+export async function fetchSingleRow<T extends string = string>
+  (table: T, query: Record<string, any>, relations?: string[]) {
     const select = relations?.length ? relations.map(r => `${r} (*)`).join(', ') : '*';
     const { data, error } = await supabaseServer
-      .from(table as string)
+      .from(table as any)
       .select(select)
       .match(query)
       .maybeSingle() as unknown as { data: any;error: any };

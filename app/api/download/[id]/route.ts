@@ -17,6 +17,14 @@ export async function GET(
   const product = await getUserLibraryProduct(user.id, productId);
 
   // Generate signed URL (valid 60 seconds)
+  const product = await getUserLibraryProduct(user.id, productId);
+
+  // Add this null check
+  if (!product.download_path) {
+    return new NextResponse('Download path not found', { status: 404 });
+  }
+
+  // Generate signed URL (valid 60 seconds)
   const { data: signedUrlData, error: urlError } = await supabaseServer.storage
     .from('vault')
     .createSignedUrl(product.download_path, 60);

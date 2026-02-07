@@ -464,3 +464,34 @@ export const Constants = {
     },
   },
 } as const
+
+// Export specific table row types that components need
+export type Product = Database['public']['Tables']['products']['Row']
+export type Guide = Database['public']['Tables']['guides']['Row']
+export type Profile = Database['public']['Tables']['profiles']['Row']
+export type UserLibrary = Database['public']['Tables']['user_library']['Row']
+export type User = Database['public']['Tables']['profiles']['Row'] // User = Profile
+
+// Export World type and WORLDS constant
+export type World = 'home' | 'lifestyle' | 'tools'
+
+export const WORLDS = {
+  home: {
+    id: 'home' as const,
+    name: 'Home',
+    slug: 'home',
+    description: 'Home world products and guides'
+  },
+  lifestyle: {
+    id: 'lifestyle' as const,
+    name: 'Lifestyle',
+    slug: 'lifestyle',
+    description: 'Lifestyle world products and guides'
+  },
+  tools: {
+    id: 'tools' as const,
+    name: 'Tools',
+    slug: 'tools',
+    description: 'Tools world products and guides'
+  }
+} as const
