@@ -13,9 +13,7 @@ interface LemonSqueezyPayload {
   meta: { event_name: string };
   data: {
     id: string;
-    attributes: {
-      custom_data ? : LemonSqueezyCustomData[];
-    };
+    attributes: { custom_data ? : LemonSqueezyCustomData[] };
   };
 }
 
@@ -26,7 +24,6 @@ export async function POST(req: Request) {
   const rawBody = await req.text();
   const signature = req.headers.get('x-signature') || '';
   
-  // Verify webhook signature
   const digest = crypto.createHmac('sha256', WEBHOOK_SECRET).update(rawBody).digest('hex');
   if (signature !== digest) return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
   
@@ -35,7 +32,6 @@ export async function POST(req: Request) {
   const eventName = payload.meta.event_name;
   
   try {
-    // Check if event already processed
     const { data: existingEvent } = await supabaseServer
       .from('webhook_events')
       .select('id')
@@ -44,7 +40,6 @@ export async function POST(req: Request) {
     
     if (existingEvent) return NextResponse.json({ message: 'Event already processed' }, { status: 200 });
     
-    // Log event as pending
     const insertEvent: TablesInsert < 'webhook_events' > = {
       event_id: eventId,
       event_name: eventName,
@@ -53,7 +48,6 @@ export async function POST(req: Request) {
     };
     await logWebhookEvent(insertEvent);
     
-    // Handle order_created with multiple products
     if (eventName === 'order_created') {
       const items = payload.data.attributes.custom_data;
       if (!items || items.length === 0) throw new Error('Missing custom_data');
@@ -67,13 +61,9 @@ export async function POST(req: Request) {
         acquired_at: new Date().toISOString(),
       }));
       
-      const { error: insertError } = await supabaseServer
-        .from('user_library')
-        .insert(batchInserts);
-      
+      const { error: insertError } = await supabaseServer.from('user_library').insert(batchInserts);
       if (insertError) throw insertError;
       
-      // Mark webhook event as processed
       await supabaseServer
         .from('webhook_events')
         .update({ status: 'processed', updated_at: new Date().toISOString() })
@@ -81,7 +71,6 @@ export async function POST(req: Request) {
     }
     
     return NextResponse.json({ received: true }, { status: 200 });
-    
   } catch (err: any) {
     console.error(`[Webhook Critical] ${eventId}:`, err.message);
     
