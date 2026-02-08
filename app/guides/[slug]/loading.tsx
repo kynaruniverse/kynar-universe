@@ -1,16 +1,12 @@
 /**
- * KYNAR UNIVERSE: Guide Briefing Skeleton (v2.0)
- * Role: Editorial Reassured State.
- * Alignment: Next.js 15 Partial Prerendering (PPR) & Canonical Design System.
+ * KYNAR UNIVERSE: Guide Briefing Skeleton (v3.0)
+ * Refactored to use skeleton primitives
  */
 
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
-import { cn } from "@/lib/utils";
+import { Skeleton, SkeletonText, SkeletonHeading } from "@/components/ui/skeletons";
 
 export default function GuideLoading() {
-  // Staggered animation utility to prevent a "flashing" wall of content
-  const pulseClass = "animate-pulse bg-kyn-slate-100/80";
-
   return (
     <article className="min-h-screen bg-canvas pb-32 animate-in fade-in duration-500 ease-out">
       <div className="max-w-screen-md mx-auto px-gutter">
@@ -26,49 +22,44 @@ export default function GuideLoading() {
         </div>
 
         <header className="py-12 md:py-24">
-          {/* Metadata Chips: Category & Time */}
+          {/* Metadata Chips */}
           <div className="flex items-center gap-4 mb-10">
-            <div className={cn("h-8 w-24 rounded-full", pulseClass)} />
-            <div className={cn("h-4 w-16 rounded-full", pulseClass)} />
+            <Skeleton className="h-8 w-24 rounded-full" />
+            <Skeleton className="h-4 w-16 rounded-full" />
           </div>
 
-          {/* Headline Skeleton: Narrative Establishment */}
+          {/* Headline Skeleton */}
           <div className="space-y-4 mb-12">
-            <div className={cn("h-12 w-full rounded-xl", pulseClass)} />
-            <div className={cn("h-12 w-3/4 rounded-xl", pulseClass)} />
+            <SkeletonHeading className="h-12 w-full" />
+            <SkeletonHeading className="h-12 w-3/4" />
           </div>
 
-          {/* Authority Bar: Verified Source Placeholder */}
+          {/* Authority Bar */}
           <div className="flex items-center gap-5 py-10 border-y border-kyn-slate-50">
-            <div className={cn("h-14 w-14 rounded-2xl", pulseClass)} />
+            <Skeleton className="h-14 w-14 rounded-2xl" />
             <div className="flex-1 space-y-3">
-              <div className={cn("h-4 w-40 rounded", pulseClass)} />
-              <div className={cn("h-3 w-28 rounded opacity-50", pulseClass)} />
+              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-3 w-28 opacity-50" />
             </div>
           </div>
         </header>
 
-        {/* Narrative Core Skeleton: Content Blocks */}
+        {/* Content Blocks */}
         <div className="space-y-12 pt-6">
           <div className="space-y-4">
-            <div className={cn("h-4 w-full rounded", pulseClass)} />
-            <div className={cn("h-4 w-full rounded", pulseClass)} />
-            <div className={cn("h-4 w-11/12 rounded", pulseClass)} />
-            <div className={cn("h-4 w-4/5 rounded", pulseClass)} />
+            <SkeletonText />
+            <SkeletonText />
+            <SkeletonText className="w-11/12" />
+            <SkeletonText className="w-4/5" />
           </div>
 
-          {/* Media Placeholder: Hero Asset simulation */}
-          <div
-            className={cn(
-              "aspect-video w-full rounded-[2.5rem] bg-kyn-slate-50 border border-kyn-slate-100/50",
-              pulseClass
-            )}
-          />
+          {/* Media Placeholder */}
+          <Skeleton className="aspect-video w-full rounded-[2.5rem]" />
 
           <div className="space-y-4">
-            <div className={cn("h-4 w-full rounded", pulseClass)} />
-            <div className={cn("h-4 w-full rounded", pulseClass)} />
-            <div className={cn("h-4 w-2/3 rounded", pulseClass)} />
+            <SkeletonText />
+            <SkeletonText />
+            <SkeletonText className="w-2/3" />
           </div>
         </div>
       </div>

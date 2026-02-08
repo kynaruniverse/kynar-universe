@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { triggerCelebration } from "@/lib/utils/confetti";
+import { triggerCelebration } from "@/lib/utils/celebration";
 
 export function CelebrationTrigger() {
   useEffect(() => {

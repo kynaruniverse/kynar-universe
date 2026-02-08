@@ -1,26 +1,3 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-/**
- * Tailwind-safe class merger
- */
-export function cn(...inputs: ClassValue[]): string {
-  return twMerge(clsx(inputs));
-}
-
-/**
- * Centralized GBP Formatter
- * Adjusted to 2 decimal places to match your store's pricing.
- */
-export const formatGBP = (amount: number): string => {
-  return new Intl.NumberFormat("en-GB", {
-    style: "currency",
-    currency: "GBP",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
-};
-
 /**
  * iOS-Safe Haptics
  */
