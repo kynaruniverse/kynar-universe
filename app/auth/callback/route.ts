@@ -42,8 +42,8 @@ export async function GET(request: Request) {
       return NextResponse.redirect(target.toString(), 303);
     }
 
+    // eslint-disable-next-line no-console
     console.error('[Auth Callback] Exchange Error:', error.message);
-  }
 
   // Fallback: If code is missing or exchange fails, return to logic with context
   const fallback = new URL('/auth/login?error=link-invalid', siteUrl);
