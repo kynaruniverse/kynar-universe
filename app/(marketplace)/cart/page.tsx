@@ -28,7 +28,7 @@ export default function CartPage() {
       }, 0)
     : 0;
 
-  // Loading State / SSR Placeholder
+  // The Loading State / SSR Placeholder
   if (!mounted) {
     return (
       <div className="mx-auto max-w-2xl px-gutter py-24">
