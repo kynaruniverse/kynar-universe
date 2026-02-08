@@ -11,41 +11,39 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/library';
-  /**
-   * Production URL Resolution
-   * Ensuring redirects function across local, preview (Netlify), and production.
-   */
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                  process.env.URL || 
-                  origin;
-  if (code) {
-  // Guard: prevent build-time Supabase initialization
-    if (
-      !process.env.SUPABASE_URL ||
-      !process.env.SUPABASE_SERVICE_ROLE_KEY
-    ) {
-      // Build / preview environments without secrets
-      const fallback = new URL('/auth/login?error=env-missing', siteUrl);
-      return NextResponse.redirect(fallback.toString(), 303);
-    }
-
-    const supabase = await createClient();
-
-    // Exchange the PKCE code for a session
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-
-    if (!error) {
-      // Identity confirmed. Constructing absolute path for the Vault.
-      const target = new URL(next, siteUrl);
   
-      // Use 303 to force GET on redirect
-      return NextResponse.redirect(target.toString(), 303);
+  // Resolve the base site URL for redirects
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.URL ||
+    origin;
+  
+  // Guard: ensure Supabase server secrets are available
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    const fallback = new URL('/auth/login?error=env-missing', siteUrl);
+    return NextResponse.redirect(fallback.toString(), 303);
+  }
+  
+  if (code) {
+    try {
+      const supabase = await createClient();
+      
+      // Exchange PKCE code for a persistent session
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      
+      if (!error) {
+        // Redirect to the target page in the user’s session
+        const target = new URL(next, siteUrl);
+        return NextResponse.redirect(target.toString(), 303);
+      }
+      
+      console.error('[Auth Callback] Exchange Error:', error.message);
+    } catch (err: any) {
+      console.error('[Auth Callback] Unexpected Error:', err?.message || err);
     }
-
-    // eslint-disable-next-line no-console
-    console.error('[Auth Callback] Exchange Error:', error.message);
-
-  // Fallback: If code is missing or exchange fails, return to logic with context
+  }
+  
+  // Fallback if no code or exchange failed
   const fallback = new URL('/auth/login?error=link-invalid', siteUrl);
   return NextResponse.redirect(fallback.toString(), 303);
 }
