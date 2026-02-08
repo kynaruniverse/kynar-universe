@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import { type LucideIcon } from "lucide-react";
 import { ProductCard } from "@/components/marketplace/ProductCard";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
