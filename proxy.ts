@@ -2,10 +2,11 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { Database } from '@/lib/supabase/types'
 
-export async function middleware(request: NextRequest) {
+// FIXED: Export named 'proxy' function (Next.js 16 requirement)
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request })
-
-  const supabase = createServerClient<Database>(
+  
+  const supabase = createServerClient < Database > (
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -19,12 +20,12 @@ export async function middleware(request: NextRequest) {
       },
     }
   )
-
+  
   const { data: { user } } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
   
   if (pathname.startsWith('/api/webhooks')) return response
-
+  
   const isProtectedRoute = pathname.startsWith('/library') || pathname.startsWith('/account')
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone()
@@ -32,10 +33,6 @@ export async function middleware(request: NextRequest) {
     url.searchParams.set('return_to', pathname)
     return NextResponse.redirect(url)
   }
-
+  
   return response
-}
-
-export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 }
