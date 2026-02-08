@@ -9,18 +9,18 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "types": "tsc --noEmit",
-    "types:soft": "tsc --noEmit || true",
-    "lint": "next lint",
-    "lint:soft": "next lint || true",
-    "types:full": "tsc --noEmit -p tsconfig.json --pretty",
-    "lint:full": "next lint --debug",
-    "build": "next build",
-    "start": "next start",
-    "types:generate": "supabase gen types typescript --local > lib/supabase/types.ts",
-    "lighthouse": "lhci autorun"
-  },
+  "dev": "next dev",
+  "types": "tsc --noEmit",
+  "types:soft": "tsc --noEmit || true",
+  "types:full": "tsc --noEmit --pretty",
+  "lint": "next lint",
+  "lint:soft": "next lint || true",
+  "lint:full": "next lint --dir .",
+  "build": "next build",
+  "start": "next start",
+  "types:generate": "supabase gen types typescript --local > lib/supabase/types.ts",
+  "lighthouse": "lhci autorun"
+},
   "dependencies": {
     "@lemonsqueezy/lemonsqueezy.js": "^4.0.0",
     "@supabase/ssr": "^0.8.0",
