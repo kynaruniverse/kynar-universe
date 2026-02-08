@@ -19,18 +19,30 @@ export async function GET(request: Request) {
                   process.env.URL || 
                   origin;
   if (code) {
+  // Guard: prevent build-time Supabase initialization
+    if (
+      !process.env.SUPABASE_URL ||
+      !process.env.SUPABASE_SERVICE_ROLE_KEY
+    ) {
+      // Build / preview environments without secrets
+      const fallback = new URL('/auth/login?error=env-missing', siteUrl);
+      return NextResponse.redirect(fallback.toString(), 303);
+    }
+
     const supabase = await createClient();
+
     // Exchange the PKCE code for a session
     const { error } = await supabase.auth.exchangeCodeForSession(code);
+
     if (!error) {
       // Identity confirmed. Constructing absolute path for the Vault.
       const target = new URL(next, siteUrl);
-      
-      // We use a 303 See Other redirect to ensure a GET request is used on the next hop
+  
+      // Use 303 to force GET on redirect
       return NextResponse.redirect(target.toString(), 303);
     }
-    
-    console.error("[Auth Callback] Exchange Error:", error.message);
+
+    console.error('[Auth Callback] Exchange Error:', error.message);
   }
 
   // Fallback: If code is missing or exchange fails, return to logic with context
