@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabaseServer } from '@/lib/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 import { requireAuth, getUserLibraryProduct } from '@/lib/supabase/serverHelper';
 
 export const runtime = 'nodejs';
@@ -9,6 +9,18 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: productId } = await params;
+
+  if (
+    !process.env.SUPABASE_URL ||
+    !process.env.SUPABASE_SERVICE_ROLE_KEY
+  ) {
+    return new NextResponse('Server misconfigured', { status: 500 });
+  }
+
+  const supabaseServer = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
 
   // Require authentication
   const user = await requireAuth();
@@ -22,13 +34,13 @@ export async function GET(
   }
 
   // Generate signed URL (valid 60 seconds)
-  const { data: signedUrlData, error: urlError } = await supabaseServer.storage
+  const { data, error } = await supabaseServer.storage
     .from('vault')
     .createSignedUrl(product.download_path, 60);
 
-  if (urlError || !signedUrlData?.signedUrl) {
+  if (error || !data?.signedUrl) {
     return new NextResponse('Download error', { status: 500 });
   }
 
-  return NextResponse.redirect(signedUrlData.signedUrl);
+  return NextResponse.redirect(data.signedUrl);
 }
