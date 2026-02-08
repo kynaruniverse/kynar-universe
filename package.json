@@ -13,7 +13,7 @@
     "types": "tsc --noEmit",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint .",
+    "lint": "next lint",
     "types:generate": "supabase gen types typescript --local > lib/supabase/types.ts",
     "lighthouse": "lhci autorun"
   },
