@@ -1,29 +1,19 @@
-name: Full Repo Scan
-
-on:
-  push:
-  pull_request:
+name: CI
+on: [push, pull_request]
 
 jobs:
   scan:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Use Node.js 22.22.0
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '22.22.0'
-          
+          node-version: 22.22.0
       - name: Install dependencies
         run: npm install
-
-      - name: Type-check
+      - name: TypeScript check
         run: npx tsc --noEmit
-
-      - name: ESLint
-        run: npx next lint
-
-      - name: Next.js build
+      - name: Lint
+        run: npx eslint . --ext .ts,.tsx  # ← FIXED
+      - name: Build
         run: npm run build
