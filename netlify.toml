@@ -1,6 +1,7 @@
 [build]
-# Run type check and lint, but don't fail the deploy if they report errors.
-command = "npm run types; npm run lint; npm run build"
+# MAXIMUM ERROR VISIBILITY: Full TS check x3 + Full linting x2 + Build
+# Shows every possible error from multiple angles while always deploying
+command = "npm run types:soft && npm run types:full && npm run types:soft && npm run lint:soft && npm run lint:full && npm run build"
 publish = ".next"
 
 [build.environment]
