@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
 
+  // ADD THIS - Tells ESLint where to look
+  eslint: {
+    dirs: ['app', 'components', 'lib', 'hooks'],
+  },
+
   async redirects() {
     return [
       { source: '/login', destination: '/auth/login', permanent: true },
