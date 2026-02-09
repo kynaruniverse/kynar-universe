@@ -8,22 +8,26 @@ let supabaseServer: SupabaseClient < Database > | null = null;
  * Singleton factory for a server-side Supabase client.
  * Uses SERVICE_ROLE_KEY only at runtime to avoid exposing secrets in build-time environments.
  */
-export function getSupabaseServer(): SupabaseClient < Database > {
+export function getSupabaseServer(): SupabaseClient<Database> {
   if (!supabaseServer) {
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    
+
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
       throw new Error(
-        'Missing Supabase environment variables: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY'
+        `[Supabase Server] Missing environment variables. Ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.`
       );
     }
-    
-    supabaseServer = createSupabaseClient < Database > (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-      auth: { persistSession: false }, // server-only, no session persistence
-    });
+
+    supabaseServer = createSupabaseClient<Database>(
+      SUPABASE_URL,
+      SUPABASE_SERVICE_ROLE_KEY,
+      {
+        auth: { persistSession: false, autoRefreshToken: false },
+      }
+    );
   }
-  
+
   return supabaseServer;
 }
 

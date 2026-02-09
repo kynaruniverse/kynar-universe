@@ -1,9 +1,17 @@
 /* KYNAR UNIVERSE: Server Helpers (v1.5) */
-import { getSupabaseServer } from './server';
+import { getSupabaseServer as _getSupabaseServer } from './server';
 import type { TablesInsert, Tables } from './types';
 import { NextResponse } from 'next/server';
 
-const supabaseServer = getSupabaseServer();
+/**
+ * Exports the Supabase server instance singleton
+ */
+export const supabaseServer = _getSupabaseServer();
+
+/**
+ * Re-export the factory in case you need a fresh instance
+ */
+export { _getSupabaseServer as getSupabaseServer };
 
 /**
  * Ensure an authenticated user exists.
@@ -23,7 +31,9 @@ export async function requireAuth() {
  * Log a webhook event into the database.
  * Throws an error if insertion fails.
  */
-export async function logWebhookEvent(event: TablesInsert < 'webhook_events' > ) {
+export async function logWebhookEvent(
+  event: TablesInsert < 'webhook_events' >
+) {
   const { error } = await supabaseServer.from('webhook_events').insert(event);
   
   if (error) {
@@ -39,19 +49,19 @@ export async function logWebhookEvent(event: TablesInsert < 'webhook_events' > )
  * Returns null if no row matches.
  */
 export async function fetchSingleRow <
-  T extends keyof Tables = string >
+  T extends keyof Tables >
   (
     table: T,
-    query: Record < string, any > ,
+    query: Partial < Tables[T] > ,
     relations ? : string[]
-  ) {
+  ): Promise < Tables[T] | null > {
     const select = relations?.length ? relations.map(r => `${r} (*)`).join(', ') : '*';
     
     const { data, error } = await supabaseServer
-      .from(table as string)
-      .select(select)
-      .match(query)
-      .maybeSingle() as { data: any;error: any };
+    .from(table)
+    .select(select)
+    .match(query)
+    .maybeSingle() as { data: Tables[T] | null;error: any };
     
     if (error) throw new Error(error.message || 'Supabase fetch error');
     return data;
@@ -61,7 +71,10 @@ export async function fetchSingleRow <
  * Retrieve a user's library product with related product data.
  * Throws 403 if the user does not own the product or it has no download_path.
  */
-export async function getUserLibraryProduct(userId: string, productId: string) {
+export async function getUserLibraryProduct(
+  userId: string,
+  productId: string
+) {
   const { data, error } = await supabaseServer
     .from('user_library')
     .select('product_id, products (*)')
