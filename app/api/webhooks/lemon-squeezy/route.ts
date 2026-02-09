@@ -6,7 +6,10 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import type { TablesInsert, Json } from "@/lib/supabase/types";
-import { supabaseServer } from "@/lib/supabase/server";
+import { getSupabaseServer } from "@/lib/supabase/server";
+
+const supabaseServer = getSupabaseServer(); // Use this in your code
+
 import { logWebhookEvent } from "@/lib/supabase/serverHelper";
 
 // --- Types ---
