@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 
 import { useState } from "react";
@@ -15,42 +14,51 @@ interface SettingsFormProps {
 export function SettingsForm({ user, profile }: SettingsFormProps) {
   const supabase = createClient();
   
-  const [loading, setLoading] = useState(false);
-  const [name, setName] = useState(profile.full_name ?? "");
+  const [loading, setLoading] = useState < boolean > (false);
+  const [name, setName] = useState < string > (profile.full_name ?? "");
   
   const handleUpdate = async () => {
-    if (!name.trim()) {
+    const trimmedName = name.trim();
+    
+    if (!trimmedName) {
       toast.error("Name cannot be empty");
       return;
     }
     
     setLoading(true);
     
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        full_name: name.trim(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", user.id);
-    
-    if (error) {
-      toast.error("Update failed");
-      console.error("[SettingsForm] Update error:", error.message);
-    } else {
-      toast.success("Profile synchronized");
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          full_name: trimmedName,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", user.id);
+      
+      if (error) {
+        console.error("[SettingsForm] Update error:", error.message);
+        toast.error("Profile update failed");
+      } else {
+        toast.success("Profile synchronized");
+      }
+    } catch (err: any) {
+      console.error("[SettingsForm] Unexpected error:", err?.message || err);
+      toast.error("An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
   
   return (
     <div className="space-y-8">
+      {/* Full Name Input */}
       <div className="space-y-4">
         <label className="text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
           Full Identity
         </label>
         <input
+          type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your full name"
@@ -59,18 +67,16 @@ export function SettingsForm({ user, profile }: SettingsFormProps) {
         />
       </div>
 
+      {/* Submit Button */}
       <button
+        type="button"
         onClick={handleUpdate}
         disabled={loading}
         className="w-full flex items-center justify-center gap-3
                    bg-kyn-slate-900 text-white py-4 rounded-xl font-brand font-bold
                    hover:bg-black disabled:opacity-50 transition-all active:scale-[0.98]"
       >
-        {loading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : (
-          "Save Changes"
-        )}
+        {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Save Changes"}
       </button>
     </div>
   );

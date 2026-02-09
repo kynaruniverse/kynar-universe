@@ -1,40 +1,44 @@
 "use client";
 
+/**
+ * KYNAR UNIVERSE: Overlay Wrapper
+ * Role: Global overlay orchestration + escape handling.
+ */
+
 import { useEffect } from "react";
 import { useUIStore } from "@/lib/store/ui";
 import SelectionOverlay from "./SelectionOverlay";
 
 export default function OverlayWrapper() {
-  const isSelectionOpen = useUIStore((state) => state.isSelectionOpen);
-  const isUserMenuOpen = useUIStore((state) => state.isUserMenuOpen);
-  const closeSelection = useUIStore((state) => state.closeSelection);
-  const closeAll = useUIStore((state) => state.closeAll);
-
+  const {
+    isSelectionOpen,
+    isUserMenuOpen,
+    closeSelection,
+    closeAll,
+  } = useUIStore();
+  
+  const isAnyOverlayOpen = isSelectionOpen || isUserMenuOpen;
+  
   useEffect(() => {
+    if (!isAnyOverlayOpen) return;
+    
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        closeAll();
-      }
+      if (e.key === "Escape") closeAll();
     };
-
-    if (isSelectionOpen || isUserMenuOpen) {
-      window.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
-    }
-
+    
+    window.addEventListener("keydown", handleEscape);
+    document.body.style.overflow = "hidden";
+    
     return () => {
       window.removeEventListener("keydown", handleEscape);
-      // Fixed: Setting to empty string is safer for CSS inheritance
       document.body.style.overflow = "";
     };
-  }, [isSelectionOpen, isUserMenuOpen, closeAll]);
-
+  }, [isAnyOverlayOpen, closeAll]);
+  
   return (
-    <>
-      <SelectionOverlay 
-        isOpen={isSelectionOpen} 
-        onClose={closeSelection} 
-      />
-    </>
+    <SelectionOverlay
+      isOpen={isSelectionOpen}
+      onClose={closeSelection}
+    />
   );
 }

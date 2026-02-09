@@ -1,124 +1,149 @@
-/* KYNAR UNIVERSE: Filter Bar (v2.1) */
-
 "use client";
 
-import { useState } from "react";
+/**
+ * KYNAR UNIVERSE: Filter Bar
+ * Role: Client-side world filtering with mobile drawer.
+ */
+
+import { useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X, RotateCcw, Check } from "lucide-react";
 import { WORLDS } from "@/lib/supabase/types";
 import { cn } from "@/lib/utils";
 
 interface FilterBarProps {
-  currentWorld?: string;
+  currentWorld ? : string;
 }
 
-export const FilterBar = ({ currentWorld = "All" }: FilterBarProps) => {
+const ALL = "All";
+
+export const FilterBar = ({ currentWorld = ALL }: FilterBarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const setFilter = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value === "All") {
-      params.delete(key);
-    } else {
-      params.set(key, value);
-    }
-    router.push(`/store?${params.toString()}`);
+  
+  const applyFilter = useCallback(
+    (key: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      
+      value === ALL ? params.delete(key) : params.set(key, value);
+      
+      router.push(`/store?${params.toString()}`);
+      setIsOpen(false);
+    },
+    [router, searchParams]
+  );
+  
+  const resetFilters = useCallback(() => {
+    router.push("/store");
     setIsOpen(false);
-  };
-
-  const resetFilters = () => {
-    router.push('/store');
-    setIsOpen(false);
-  };
-
+  }, [router]);
+  
   return (
     <div className="flex items-center justify-between">
-      <button 
+      {/* Trigger */}
+      <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-kyn-slate-900 transition-opacity hover:opacity-70"
+        className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-kyn-slate-900 hover:opacity-70 transition-opacity"
       >
-        <SlidersHorizontal size={14} /> Filters
+        <SlidersHorizontal size={14} />
+        Filters
       </button>
-      
+
+      {/* Active State */}
       <div className="flex items-center gap-2">
-        {currentWorld !== "All" && (
-          <div className="h-1.5 w-1.5 rounded-full bg-kyn-green-500 animate-pulse" />
+        {currentWorld !== ALL && (
+          <span className="h-1.5 w-1.5 rounded-full bg-kyn-green-500 animate-pulse" />
         )}
-        <span className="text-[10px] font-bold text-kyn-slate-400 uppercase tracking-widest">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
           {currentWorld}
         </span>
       </div>
 
-      {/* MOBILE DRAWER OVERLAY */}
+      {/* Mobile Drawer */}
       {isOpen && (
-        <div className="fixed inset-0 z-[120] flex flex-col bg-canvas animate-in slide-in-from-right duration-500">
-          <div className="flex h-16 items-center justify-between px-gutter border-b border-border">
-            <h2 className="font-brand font-bold text-lg">Refine Results</h2>
-            <button 
+        <aside className="fixed inset-0 z-[120] flex flex-col bg-canvas animate-in slide-in-from-right duration-500">
+          {/* Header */}
+          <header className="flex h-16 items-center justify-between px-gutter border-b border-border">
+            <h2 className="font-brand text-lg font-bold">Refine Results</h2>
+            <button
               onClick={() => setIsOpen(false)}
               className="p-2 text-kyn-slate-400 hover:text-kyn-slate-900 transition-colors"
             >
               <X size={20} />
             </button>
-          </div>
+          </header>
 
-          <div className="flex-1 overflow-y-auto p-8 space-y-8">
+          {/* Content */}
+          <section className="flex-1 overflow-y-auto p-8 space-y-8">
             <div>
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400 mb-6">Domains</h3>
-              <div className="grid grid-cols-1 gap-3">
-                {/* "All" Option */}
-                <button 
-                  onClick={() => setFilter('world', 'All')}
-                  className={cn(
-                    "flex items-center justify-between p-4 border rounded-2xl text-sm font-ui transition-all",
-                    currentWorld === "All" 
-                      ? "border-kyn-slate-900 bg-kyn-slate-900 text-white" 
-                      : "border-border bg-white text-kyn-slate-600 hover:border-kyn-slate-200"
-                  )}
-                >
-                  All Domains
-                  {currentWorld === "All" && <Check size={14} />}
-                </button>
+              <h3 className="mb-6 text-[10px] font-bold uppercase tracking-widest text-kyn-slate-400">
+                Domains
+              </h3>
 
-                {/* World Options */}
-                {WORLDS.map((w) => (
-                  <button 
-                    key={w.id} 
-                    onClick={() => setFilter('world', w.id)}
-                    className={cn(
-                      "flex items-center justify-between p-4 border rounded-2xl text-sm font-ui transition-all",
-                      currentWorld === w.id 
-                        ? "border-kyn-slate-900 bg-kyn-slate-900 text-white" 
-                        : "border-border bg-white text-kyn-slate-600 hover:border-kyn-slate-200"
-                    )}
-                  >
-                    {w.name}
-                    {currentWorld === w.id && <Check size={14} />}
-                  </button>
+              <div className="grid gap-3">
+                <FilterOption
+                  label="All Domains"
+                  active={currentWorld === ALL}
+                  onClick={() => applyFilter("world", ALL)}
+                />
+
+                {WORLDS.map((world) => (
+                  <FilterOption
+                    key={world.id}
+                    label={world.name}
+                    active={currentWorld === world.id}
+                    onClick={() => applyFilter("world", world.id)}
+                  />
                 ))}
               </div>
             </div>
-          </div>
+          </section>
 
-          <div className="p-8 border-t border-border bg-surface/50 flex gap-4">
-            <button 
-              onClick={resetFilters} 
-              className="flex-1 py-4 border border-border bg-white rounded-2xl transition-all active:scale-95 flex items-center justify-center"
+          {/* Footer */}
+          <footer className="flex gap-4 p-8 border-t border-border bg-surface/50">
+            <button
+              onClick={resetFilters}
               title="Reset Filters"
+              className="flex-1 flex items-center justify-center rounded-2xl border border-border bg-white py-4 active:scale-95 transition-all"
             >
               <RotateCcw size={18} className="text-kyn-slate-400" />
             </button>
-            <button 
-              onClick={() => setIsOpen(false)} 
-              className="flex-[3] py-4 bg-kyn-slate-900 text-white rounded-2xl font-brand text-sm font-bold shadow-lg shadow-kyn-slate-900/10 active:scale-95 transition-all"
+
+            <button
+              onClick={() => setIsOpen(false)}
+              className="flex-[3] rounded-2xl bg-kyn-slate-900 py-4 font-brand text-sm font-bold text-white shadow-lg shadow-kyn-slate-900/10 active:scale-95 transition-all"
             >
               Close
             </button>
-          </div>
-        </div>
+          </footer>
+        </aside>
       )}
     </div>
   );
 };
+
+/* ---------- Subcomponents ---------- */
+
+interface FilterOptionProps {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}
+
+function FilterOption({ label, active, onClick }: FilterOptionProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex items-center justify-between rounded-2xl border p-4 text-sm font-ui transition-all",
+        active
+          ? "border-kyn-slate-900 bg-kyn-slate-900 text-white"
+          : "border-border bg-white text-kyn-slate-600 hover:border-kyn-slate-200"
+      )}
+    >
+      {label}
+      {active && <Check size={14} />}
+    </button>
+  );
+}

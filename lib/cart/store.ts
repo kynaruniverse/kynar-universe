@@ -1,102 +1,115 @@
-/* KYNAR UNIVERSE: lib/cart/store.ts */
+/* KYNAR UNIVERSE: lib/cart/store.ts (v1.7) */
 "use client";
-import { create } from 'zustand';
-import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
-import { Product } from '@/lib/supabase/types';
-import { getPriceFromId } from '../marketplace/pricing';
-import { useState, useEffect, useMemo } from 'react';
 
-// Define mock storage outside to avoid parsing errors in Turbopack
-const mockStorage: StateStorage = {
+import { create } from "zustand";
+import { persist, createJSONStorage, type StateStorage } from "zustand/middleware";
+import { useEffect, useMemo, useState } from "react";
+import { Product } from "@/lib/supabase/types";
+import { getPriceFromId } from "@/lib/marketplace/pricing";
+
+/* -------------------------------------------------------------------------- */
+/* Storage Guard (Turbopack / SSR safe)                                        */
+/* -------------------------------------------------------------------------- */
+
+const noopStorage: StateStorage = {
   getItem: () => null,
   setItem: () => {},
   removeItem: () => {},
 };
 
+/* -------------------------------------------------------------------------- */
+/* Store Types                                                                 */
+/* -------------------------------------------------------------------------- */
+
 interface CartState {
   items: Product[];
-  isHydrated: boolean;
+  hydrated: boolean;
+  
   addItem: (product: Product) => void;
   removeItem: (productId: string) => void;
   clearCart: () => void;
+  
   isInCart: (productId: string) => boolean;
-  setHydrated: (state: boolean) => void;
+  markHydrated: () => void;
 }
 
-export const useCartStore = create<CartState>()(
+/* -------------------------------------------------------------------------- */
+/* Store                                                                       */
+/* -------------------------------------------------------------------------- */
+
+export const useCartStore = create < CartState > ()(
   persist(
     (set, get) => ({
       items: [],
-      isHydrated: false,
-      addItem: (product: Product) => {
-        const { items } = get();
-        if (!items.some((item) => item.id === product.id)) {
-          set({ items: [...items, product] });
-        }
+      hydrated: false,
+      
+      addItem: (product) => {
+        if (get().items.some((i) => i.id === product.id)) return;
+        set((state) => ({ items: [...state.items, product] }));
       },
-      removeItem: (productId: string) => {
+      
+      removeItem: (productId) =>
         set((state) => ({
-          items: state.items.filter((item) => item.id !== productId)
-        }));
-      },
+          items: state.items.filter((item) => item.id !== productId),
+        })),
+      
       clearCart: () => set({ items: [] }),
-      isInCart: (productId: string) => get().items.some((item) => item.id === productId),
-      setHydrated: (state: boolean) => set({ isHydrated: state }),
+      
+      isInCart: (productId) =>
+        get().items.some((item) => item.id === productId),
+      
+      markHydrated: () => set({ hydrated: true }),
     }),
     {
-      name: 'kynar-vault-session-v1.6',
-      storage: createJSONStorage(() => 
-        typeof window !== 'undefined' ? window.localStorage : mockStorage
+      name: "kynar-vault-session-v1.7",
+      storage: createJSONStorage(() =>
+        typeof window !== "undefined" ? window.localStorage : noopStorage
       ),
-      onRehydrateStorage: () => (state) => state?.setHydrated(true),
+      onRehydrateStorage: () => (state) => state?.markHydrated(),
     }
   )
 );
 
-export function useCartItems() {
-  const items = useCartStore((state) => state.items);
-  const isHydrated = useCartStore((state) => state.isHydrated);
-  const removeItem = useCartStore((state) => state.removeItem);
-  const [mounted, setMounted] = useState(false);
+/* -------------------------------------------------------------------------- */
+/* Selectors / Hooks                                                           */
+/* -------------------------------------------------------------------------- */
 
+export function useCartItems() {
+  const items = useCartStore((s) => s.items);
+  const hydrated = useCartStore((s) => s.hydrated);
+  const removeItem = useCartStore((s) => s.removeItem);
+  
+  const [mounted, setMounted] = useState(false);
+  
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const totalPrice = useMemo(() => { 
-    return items.reduce((total, item) => { 
-      const price = getPriceFromId(item.price_id); 
-      return total + (price ?? 0);
-    }, 0);
-  }, [items]);
   
-
-  if (!mounted || !isHydrated) {
-    return { 
-      items: [], 
-      count: 0, 
-      totalPrice: 0, 
-      isEmpty: true, 
-      removeItem, 
-      updateQuantity: () => {} 
-    };
-  }
-
-  return { 
-    items, 
-    count: items.length, 
-    totalPrice, 
-    isEmpty: items.length === 0, 
+  const totalPrice = useMemo(
+    () =>
+    items.reduce((sum, item) => {
+      const price = getPriceFromId(item.price_id);
+      return sum + (price ?? 0);
+    }, 0),
+    [items]
+  );
+  
+  const ready = mounted && hydrated;
+  
+  return {
+    items: ready ? items : [],
+    count: ready ? items.length : 0,
+    totalPrice: ready ? totalPrice : 0,
+    isEmpty: !ready || items.length === 0,
     removeItem,
-    updateQuantity: () => {} 
   };
 }
 
 export function useCartActions() {
-  const addItem = useCartStore((state) => state.addItem);
-  const removeItem = useCartStore((state) => state.removeItem);
-  const clearCart = useCartStore((state) => state.clearCart);
-  const isInCart = useCartStore((state) => state.isInCart);
-
-  return { addItem, removeItem, clearCart, isInCart };
+  return useCartStore((state) => ({
+    addItem: state.addItem,
+    removeItem: state.removeItem,
+    clearCart: state.clearCart,
+    isInCart: state.isInCart,
+  }));
 }

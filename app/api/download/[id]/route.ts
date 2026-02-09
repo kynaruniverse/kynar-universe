@@ -1,30 +1,50 @@
-import { NextResponse } from 'next/server';
-import { getUserLibraryProduct, requireAuth } from '@/lib/supabase/serverHelper';
-import { getSupabaseServer } from '@/lib/supabase/server';
+/**
+ * KYNAR UNIVERSE: User Library Download Endpoint
+ * Refactor: Type-safe, clear async flow, structured error responses
+ */
 
-export const runtime = 'nodejs';
+import { NextResponse } from "next/server";
+import {
+  requireAuth,
+  getUserLibraryProduct,
+  getSupabaseServer,
+} from "@/lib/supabase/serverHelper";
 
-export async function GET(
-  _req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const { id: productId } = await params;
+export const runtime = "nodejs";
 
-  const user = await requireAuth();
-  const product = await getUserLibraryProduct(user.id, productId);
+interface Params {
+  params: Promise < { id: string } > ;
+}
 
-  if (!product.download_path) {
-    return new NextResponse('Download path not found', { status: 404 });
+export async function GET(_req: Request, { params }: Params) {
+  try {
+    // --- Resolve product ID ---
+    const { id: productId } = await params;
+    
+    // --- Auth check ---
+    const user = await requireAuth();
+    
+    // --- Fetch product from user library ---
+    const product = await getUserLibraryProduct(user.id, productId);
+    if (!product?.download_path) {
+      return new NextResponse("Download path not found", { status: 404 });
+    }
+    
+    // --- Generate signed URL from Supabase storage ---
+    const supabase = getSupabaseServer();
+    const { data: signedUrlData, error } = await supabase.storage
+      .from("vault")
+      .createSignedUrl(product.download_path, 60);
+    
+    if (error || !signedUrlData?.signedUrl) {
+      console.error("Signed URL generation error:", error);
+      return new NextResponse("Download error", { status: 500 });
+    }
+    
+    // --- Redirect to signed download URL ---
+    return NextResponse.redirect(signedUrlData.signedUrl);
+  } catch (err) {
+    console.error("Library download error:", err);
+    return new NextResponse("Internal server error", { status: 500 });
   }
-
-  const supabase = getSupabaseServer();
-  const { data: signedUrlData, error } = await supabase.storage
-    .from('vault')
-    .createSignedUrl(product.download_path, 60);
-
-  if (error || !signedUrlData?.signedUrl) {
-    return new NextResponse('Download error', { status: 500 });
-  }
-
-  return NextResponse.redirect(signedUrlData.signedUrl);
 }

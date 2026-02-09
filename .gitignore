@@ -1,17 +1,17 @@
-# KYNAR UNIVERSE: The Security Perimeter (v1.6)
-# Role: Preventing environmental leakage and repository bloat.
+# =========================
+# KYNAR UNIVERSE: Security Perimeter (v1.6)
+# Purpose: Prevent environmental leakage and repository bloat
+# =========================
 
 # 1. CORE DEPENDENCIES
 node_modules/
-.pnp
-.pnp.js
+.pnp*
 .yarn/cache/
 .yarn/unplugged/
 .yarn/build-state.yml
 .yarn/install-state.gz
-.pnp.*
 
-# 2. ARCHITECTURAL BUILDS (Next.js 15)
+# 2. BUILD ARTIFACTS (Next.js 15 + other builds)
 .next/
 out/
 build/
@@ -20,7 +20,6 @@ dist/
 *.tsbuildinfo
 
 # 3. ENVIRONMENT SECRETS (Strict Security)
-# Never commit these. They contain the keys to the Universe.
 .env
 .env*.local
 .env.apple
@@ -37,12 +36,11 @@ supabase/migrations/.*
 
 # 5. OS & IDE METADATA
 .DS_Store
-.DS_Store?
 ._*
 Thumbs.db
 desktop.ini
 
-# 6. IDE & TOOLING (VScode, Cursor, SPCK)
+# 6. IDE & TOOLING
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
@@ -62,7 +60,6 @@ logs/
 
 # 8. REPLIT SPECIFIC
 .replit.lock
-.next/
 .next/cache/
 gitleaks-report.json
 gitleaks_*.tar.gz

@@ -1,10 +1,13 @@
-import { supabaseServer } from './server';
-import type { TablesInsert, Tables, Json } from './types';
+/* KYNAR UNIVERSE: Server Helpers (v1.5) */
+import { getSupabaseServer } from './server';
+import type { TablesInsert, Tables } from './types';
 import { NextResponse } from 'next/server';
 
+const supabaseServer = getSupabaseServer();
+
 /**
- * Require an authenticated user.
- * Throws a 401 if not authenticated.
+ * Ensure an authenticated user exists.
+ * Throws 401 Unauthorized if missing.
  */
 export async function requireAuth() {
   const { data, error } = await supabaseServer.auth.getUser();
@@ -17,39 +20,46 @@ export async function requireAuth() {
 }
 
 /**
- * Log a webhook event to the database
+ * Log a webhook event into the database.
+ * Throws an error if insertion fails.
  */
 export async function logWebhookEvent(event: TablesInsert < 'webhook_events' > ) {
   const { error } = await supabaseServer.from('webhook_events').insert(event);
+  
   if (error) {
     console.error('[Webhook Log Error]', error);
     throw new Error('Failed to log webhook event');
   }
+  
   return true;
 }
 
 /**
- * Fetch a single row from a table with optional relations
+ * Fetch a single row from any table, optionally including relations.
+ * Returns null if no row matches.
  */
-export async function fetchSingleRow < T extends string = string > (
-  table: T,
-  query: Record < string, any > ,
-  relations ? : string[]
-) {
-  const select = relations?.length ? relations.map(r => `${r} (*)`).join(', ') : '*';
-  const { data, error } = await supabaseServer
-    .from(table as any)
-    .select(select)
-    .match(query)
-    .maybeSingle() as unknown as { data: any;error: any };
-  
-  if (error) throw new Error(error.message || 'Supabase fetch error');
-  return data;
-}
+export async function fetchSingleRow <
+  T extends keyof Tables = string >
+  (
+    table: T,
+    query: Record < string, any > ,
+    relations ? : string[]
+  ) {
+    const select = relations?.length ? relations.map(r => `${r} (*)`).join(', ') : '*';
+    
+    const { data, error } = await supabaseServer
+      .from(table as string)
+      .select(select)
+      .match(query)
+      .maybeSingle() as { data: any;error: any };
+    
+    if (error) throw new Error(error.message || 'Supabase fetch error');
+    return data;
+  }
 
 /**
- * Fetch a user's library entry with the related product.
- * Throws 403 if the user doesn't own the product or it has no download_path
+ * Retrieve a user's library product with related product data.
+ * Throws 403 if the user does not own the product or it has no download_path.
  */
 export async function getUserLibraryProduct(userId: string, productId: string) {
   const { data, error } = await supabaseServer

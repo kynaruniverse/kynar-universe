@@ -1,49 +1,47 @@
 "use client";
 
 /**
- * KYNAR UNIVERSE: Realtime Vault Sync Hook (v1.5)
- * Path: hooks/use-vault-realtime.ts
- * Role: Listens for library acquisitions and triggers server-side refreshes.
+ * KYNAR UNIVERSE: Realtime Vault Sync Hook (v1.6)
+ * Role: Reactively syncs Vault state on library acquisition events.
  */
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-import { UserLibrary } from '@/lib/supabase/types';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import type { UserLibrary } from "@/lib/supabase/types";
 
-export function useVaultRealtime(userId: string | undefined) {
-  const supabase = createClient();
+export function useVaultRealtime(userId ? : string) {
   const router = useRouter();
-
+  
   useEffect(() => {
-    // Exit if no user is authenticated to prevent channel errors
     if (!userId) return;
-
+    
+    const supabase = createClient();
+    
     const channel = supabase
-      .channel(`vault_sync_${userId}`)
+      .channel(`vault_sync:${userId}`)
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'user_library',
+          event: "INSERT",
+          schema: "public",
+          table: "user_library",
           filter: `user_id=eq.${userId}`,
         },
-        (payload: { new: UserLibrary }) => {
-          console.log('[Realtime] Asset synchronized:', payload.new.product_id);
+        ({ new: record }: { new: UserLibrary }) => {
+          console.debug(
+            "[Vault Realtime] Product acquired:",
+            record.product_id
+          );
           
-          /**
-           * router.refresh() invalidates the Client Component cache 
-           * and re-fetches Server Components (like your Vault grid).
-           */
+          // Invalidate RSC + client cache (Vault, Library, etc.)
           router.refresh();
         }
       )
       .subscribe();
-
+    
     return () => {
-      // Clean up the channel on unmount to prevent memory leaks
       supabase.removeChannel(channel);
     };
-  }, [userId, supabase, router]);
+  }, [userId, router]);
 }

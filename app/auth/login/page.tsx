@@ -2,7 +2,7 @@
 
 /**
  * KYNAR UNIVERSE: Authentication Gateway (v2.0)
- * Refactored to use shared AuthPageLayout
+ * Refactor: Streamlined usage of shared AuthPageLayout
  */
 
 import { login } from "../actions";
@@ -25,7 +25,7 @@ export default function LoginPage() {
         linkText: "Register here",
         href: "/auth/signup",
       }}
-      showSecurityFootnote={true}
+      showSecurityFootnote
     />
   );
 }

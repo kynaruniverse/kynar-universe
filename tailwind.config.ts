@@ -5,13 +5,19 @@ import animate from "tailwindcss-animate";
 
 const config: Config = {
   darkMode: ["class"],
+  
+  // Directories to scan for Tailwind classes
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  
   theme: {
     extend: {
+      /** -----------------------------
+       * Colors
+       * --------------------------- */
       colors: {
         canvas: "hsl(var(--canvas) / <alpha-value>)",
         surface: "hsl(var(--surface) / <alpha-value>)",
@@ -49,26 +55,46 @@ const config: Config = {
           },
         },
       },
+      
+      /** -----------------------------
+       * Fonts
+       * --------------------------- */
       fontFamily: {
         brand: ["var(--font-brand)", "Plus Jakarta Sans", "sans-serif"],
         ui: ["var(--font-ui)", "Inter", "sans-serif"],
       },
+      
+      /** -----------------------------
+       * Spacing
+       * --------------------------- */
       spacing: {
         gutter: "1.5rem",
         inner: "1.25rem",
         section: "5rem",
       },
+      
+      /** -----------------------------
+       * Border radius
+       * --------------------------- */
       borderRadius: {
-        'kynar-sm': "0.75rem",
-        'kynar': "1.25rem",
+        "kynar-sm": "0.75rem",
+        kynar: "1.25rem",
         "kynar-lg": "2rem",
         "kynar-xl": "2.5rem",
       },
+      
+      /** -----------------------------
+       * Shadows
+       * --------------------------- */
       boxShadow: {
         "kynar-soft": "0 10px 40px -15px rgba(0, 0, 0, 0.08)",
         "kynar-deep": "0 30px 70px -10px rgba(0, 0, 0, 0.2)",
         "kynar-inner": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)",
       },
+      
+      /** -----------------------------
+       * Transitions & Animations
+       * --------------------------- */
       transitionTimingFunction: {
         "kyn-drift": "cubic-bezier(0.16, 1, 0.3, 1)",
       },
@@ -76,7 +102,7 @@ const config: Config = {
         "portal-in": "portal-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "portal-out": "portal-out 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "fade-in": "fade-in 0.6s ease-out forwards",
-        "breathe": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        breathe: "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       keyframes: {
         "portal-in": {
@@ -94,11 +120,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [
-    typography,
-    forms,
-    animate,
-  ],
+  
+  /** -----------------------------
+   * Plugins
+   * --------------------------- */
+  plugins: [typography, forms, animate],
 };
 
 export default config;

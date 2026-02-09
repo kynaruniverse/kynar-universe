@@ -1,6 +1,7 @@
 /**
- * KYNAR UNIVERSE: Guide Briefing Skeleton (v3.0)
- * Refactored to use skeleton primitives
+ * KYNAR UNIVERSE: Guide Briefing Skeleton (v3.1)
+ * Role: Skeleton placeholder for guide pages
+ * Refactor: Unified skeleton primitives, semantic layout
  */
 
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -10,7 +11,7 @@ export default function GuideLoading() {
   return (
     <article className="min-h-screen bg-canvas pb-32 animate-in fade-in duration-500 ease-out">
       <div className="max-w-screen-md mx-auto px-gutter">
-        
+
         {/* Navigation Handrail */}
         <div className="py-6">
           <Breadcrumbs
@@ -21,6 +22,7 @@ export default function GuideLoading() {
           />
         </div>
 
+        {/* Header / Hero Skeleton */}
         <header className="py-12 md:py-24">
           {/* Metadata Chips */}
           <div className="flex items-center gap-4 mb-10">
@@ -34,7 +36,7 @@ export default function GuideLoading() {
             <SkeletonHeading className="h-12 w-3/4" />
           </div>
 
-          {/* Authority Bar */}
+          {/* Authority / Author Bar */}
           <div className="flex items-center gap-5 py-10 border-y border-kyn-slate-50">
             <Skeleton className="h-14 w-14 rounded-2xl" />
             <div className="flex-1 space-y-3">
@@ -44,8 +46,9 @@ export default function GuideLoading() {
           </div>
         </header>
 
-        {/* Content Blocks */}
-        <div className="space-y-12 pt-6">
+        {/* Content Skeleton */}
+        <section className="space-y-12 pt-6">
+          {/* Text Blocks */}
           <div className="space-y-4">
             <SkeletonText />
             <SkeletonText />
@@ -53,15 +56,16 @@ export default function GuideLoading() {
             <SkeletonText className="w-4/5" />
           </div>
 
-          {/* Media Placeholder */}
+          {/* Media / Video Placeholder */}
           <Skeleton className="aspect-video w-full rounded-[2.5rem]" />
 
+          {/* Additional Text */}
           <div className="space-y-4">
             <SkeletonText />
             <SkeletonText />
             <SkeletonText className="w-2/3" />
           </div>
-        </div>
+        </section>
       </div>
     </article>
   );

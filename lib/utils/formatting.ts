@@ -1,12 +1,14 @@
 /**
- * Centralized GBP Formatter
- * Adjusted to 2 decimal places to match your store's pricing.
+ * Optimized GBP formatter
+ * Pre-creates the formatter to avoid repeated instantiation.
+ * Defaults invalid numbers to £0.00
  */
-export const formatGBP = (amount: number): string => {
-  return new Intl.NumberFormat("en-GB", {
-    style: "currency",
-    currency: "GBP",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
-};
+const GBP_FORMATTER = new Intl.NumberFormat("en-GB", {
+  style: "currency",
+  currency: "GBP",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+export const formatGBP = (amount ? : number | null): string =>
+  GBP_FORMATTER.format(typeof amount === "number" && !isNaN(amount) ? amount : 0);

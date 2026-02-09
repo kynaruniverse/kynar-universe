@@ -1,80 +1,105 @@
 /**
- * KYNAR UNIVERSE: Calm Copy Templates (v1.6)
- * Role: The Narrative Engine for the Marketplace.
- * Guidelines: Plain UK English, no hype, no exclamation marks.
- * Identity: Grounded, Utility-focused, Professional.
+ * KYNAR UNIVERSE: Calm Copy Templates (v1.7)
+ * Role: Narrative Engine for the Marketplace
+ * Language: Plain UK English
+ * Constraints: No hype, no exclamation marks
  */
 
 export interface ProductTemplate {
   title: string;
   tagline: string;
   whoItsFor: string;
-  included: string[];
+  included: readonly string[];
   philosophy: string;
   howItHelps: string;
   usage: string;
 }
 
-export const KYNAR_COPY_LIBRARY: Record<string, ProductTemplate> = {
-  HOME_ORGANISER: {
+/* -------------------------------------------------------------------------- */
+/* Internal helper to enforce template shape                                   */
+/* -------------------------------------------------------------------------- */
+
+const defineTemplate = <T extends ProductTemplate>(template: T) => template;
+
+/* -------------------------------------------------------------------------- */
+/* Copy Library                                                                */
+/* -------------------------------------------------------------------------- */
+
+export const KYNAR_COPY_LIBRARY = {
+  HOME_ORGANISER: defineTemplate({
     title: "Digital Home Organiser",
-    tagline: "A quiet space to coordinate your daily routines without the noise of typical productivity apps.",
-    whoItsFor: "Designed for those who seek a simpler, more manual way to organise domestic life.",
+    tagline:
+      "A quiet space to coordinate your daily routines without the noise of typical productivity apps.",
+    whoItsFor:
+      "Designed for those who seek a simpler, more manual way to organise domestic life.",
     included: [
       "1 x Comprehensive PDF Guide (Print-ready)",
       "1 x Interactive Notion Template (Mobile-Optimised)",
       "Setup instructions for offline use",
-      "Lifetime access to future versions"
+      "Lifetime access to future versions",
     ],
-    philosophy: "Digital life should support your physical reality, not distract from it. We avoid complex automations in favour of intentional, manual entry.",
-    howItHelps: "By providing a fixed structure for your home data, it removes the 'blank page' anxiety of starting a new system. It focuses on clarity and calm retrieval.",
-    usage: "Designed for a five-minute daily check-in. No notifications, no pressure. It works whenever you are ready."
-  },
-  
-  BUDGET_TRACKER: {
+    philosophy:
+      "Digital life should support your physical reality, not distract from it. We avoid complex automations in favour of intentional, manual entry.",
+    howItHelps:
+      "By providing a fixed structure for your home data, it removes the 'blank page' anxiety of starting a new system. It focuses on clarity and calm retrieval.",
+    usage:
+      "Designed for a five-minute daily check-in. No notifications, no pressure. It works whenever you are ready.",
+  }),
+
+  BUDGET_TRACKER: defineTemplate({
     title: "Mindful Budget Tracker",
-    tagline: "A stripped-back financial tool focused on awareness and long-term decisions.",
-    whoItsFor: "Ideal for those who find automated banking apps overwhelming or 'gamified'.",
+    tagline:
+      "A stripped-back financial tool focused on awareness and long-term decisions.",
+    whoItsFor:
+      "Ideal for those who find automated banking apps overwhelming or 'gamified'.",
     included: [
       "1 x Excel/Sheets Budgeting Framework",
       "1 x Digital Guide on Manual Tracking",
       "Monthly review protocols",
-      "Multi-currency support"
+      "Multi-currency support",
     ],
-    philosophy: "When you track money manually, you feel the weight of your spending. This is a tool for awareness, not just math. It encourages slow, deliberate financial decisions.",
-    howItHelps: "It strips away the complexity of modern banking apps to show you the truth of your cash flow without the 'gamified' distractions.",
-    usage: "Update once a week or after major transactions. High-performance utility for long-term stability."
-  },
+    philosophy:
+      "When you track money manually, you feel the weight of your spending. This is a tool for awareness, not just math. It encourages slow, deliberate financial decisions.",
+    howItHelps:
+      "It strips away the complexity of modern banking apps to show you the truth of your cash flow without the 'gamified' distractions.",
+    usage:
+      "Update once a week or after major transactions. High-performance utility for long-term stability.",
+  }),
 
-  PROJECT_DASHBOARD: {
+  PROJECT_DASHBOARD: defineTemplate({
     title: "Project Clarity Dashboard",
-    tagline: "A minimal framework for moving projects from initial thought to finished reality.",
-    whoItsFor: "Ideal for independent professionals who want to track progress without the pressure of streaks.",
+    tagline:
+      "A minimal framework for moving projects from initial thought to finished reality.",
+    whoItsFor:
+      "Ideal for independent professionals who want to track progress without the pressure of streaks.",
     included: [
       "1 x Project Sequencing Framework",
       "1 x Visual Progress Board",
       "Archive protocols for finished work",
-      "Native mobile layout"
+      "Native mobile layout",
     ],
-    philosophy: "Projects should have a beginning and an end. This dashboard treats your work as a series of intentional sequences rather than a never-ending 'to-do' list.",
-    howItHelps: "It provides a 'Single Source of Truth' for your active work, reducing the mental load of switching between different tasks.",
-    usage: "Check in at the start and end of your work session. Keep your focus narrow and your output high."
-  }
-};
+    philosophy:
+      "Projects should have a beginning and an end. This dashboard treats your work as a series of intentional sequences rather than a never-ending 'to-do' list.",
+    howItHelps:
+      "It provides a single source of truth for your active work, reducing the mental load of switching between different tasks.",
+    usage:
+      "Check in at the start and end of your work session. Keep your focus narrow and your output high.",
+  }),
+} satisfies Record<string, ProductTemplate>;
 
-/**
- * Helper to generate full markdown description for Product Pages.
- * Ensures hydration-safe rendering in prose components.
- */
-export const generateFullDescription = (template: ProductTemplate): string => {
-  return `
-# Philosophy
-${template.philosophy}
+/* -------------------------------------------------------------------------- */
+/* Markdown Generation                                                         */
+/* -------------------------------------------------------------------------- */
 
-# How it helps
-${template.howItHelps}
-
-# Usage
-${template.usage}
-  `.trim();
-};
+export function generateFullDescription(template: ProductTemplate): string {
+  return [
+    "# Philosophy",
+    template.philosophy,
+    "",
+    "# How it helps",
+    template.howItHelps,
+    "",
+    "# Usage",
+    template.usage,
+  ].join("\n");
+}

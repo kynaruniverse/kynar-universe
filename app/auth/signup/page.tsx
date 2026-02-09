@@ -2,7 +2,7 @@
 
 /**
  * KYNAR UNIVERSE: Identity Registration (v2.0)
- * Refactored to use shared AuthPageLayout
+ * Refactor: Streamlined usage of shared AuthPageLayout
  */
 
 import { signup } from "../actions";

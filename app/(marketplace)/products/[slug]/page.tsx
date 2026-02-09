@@ -1,7 +1,7 @@
 /**
- * KYNAR UNIVERSE: Product Page (v2.2)
- * Final Build Fix: Applied type-casting to Supabase queries to bypass 
- * the 'never' type error in Next.js 16/Turbopack production builds.
+ * KYNAR UNIVERSE: Product Page (v2.3)
+ * Refactor: Modularized layout, subcomponents for clarity and maintainability.
+ * Maintains: Supabase type-casting fixes, SEO metadata generation, and transactional logic.
  */
 
 import { notFound } from "next/navigation";
@@ -20,18 +20,11 @@ interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
-/**
- * SEO: Dynamic Metadata Generation
- * Using 'as any' on the query to prevent the 'Property title does not exist on type never' 
- * error during the Netlify build process.
- */
-export async function generateMetadata(
-  { params }: ProductPageProps
-): Promise<Metadata> {
+// --- SEO Metadata ---
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const supabase = await createClient();
 
-  // FIX: Force type to avoid 'never' inference during build
   const { data: product } = await (supabase
     .from("products")
     .select("title, short_description")
@@ -39,29 +32,120 @@ export async function generateMetadata(
     .maybeSingle() as any);
 
   return {
-    title: product?.title
-      ? `${product.title} | Kynar Universe`
-      : "Product | Hub",
-    description:
-      product?.short_description ?? "Explore this digital asset in the Kynar Universe.",
+    title: product?.title ? `${product.title} | Kynar Universe` : "Product | Hub",
+    description: product?.short_description ?? "Explore this digital asset in the Kynar Universe.",
   };
 }
+
+// --- Subcomponents ---
+
+const ProductHero = ({ product }: { product: Product }) => (
+  <div className="group relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-border bg-surface shadow-kynar-soft">
+    <Image
+      src={product.preview_image || "/assets/placeholder.jpg"}
+      alt={product.title}
+      fill
+      priority
+      className="object-cover transition-transform duration-700 group-hover:scale-105"
+    />
+  </div>
+);
+
+const TechnicalDescription = ({ product }: { product: Product }) => (
+  <div className="hidden lg:block">
+    <h2 className="font-brand text-2xl font-bold text-kyn-slate-900 mb-6">
+      Technical Architecture
+    </h2>
+    <div
+      className="prose prose-slate max-w-none font-ui text-text-secondary leading-relaxed"
+      dangerouslySetInnerHTML={{ __html: product.description || "" }}
+    />
+  </div>
+);
+
+const TransactionSidebar = ({
+  product,
+  ownership,
+  price,
+}: {
+  product: Product;
+  ownership: any;
+  price: number | null;
+}) => (
+  <div className="sticky top-24 space-y-8">
+    <div>
+      <span className="font-ui text-[10px] font-bold uppercase tracking-[0.3em] text-kyn-slate-400">
+        Sector: {product.world || "Universal"}
+      </span>
+      <h1 className="font-brand mt-4 text-4xl font-bold tracking-tight text-kyn-slate-900 md:text-5xl">
+        {product.title}
+      </h1>
+    </div>
+
+    <div className="rounded-2xl border border-border bg-surface p-8 shadow-kynar-soft transition-all hover:shadow-kynar-deep">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <p className="font-ui text-[10px] font-bold uppercase tracking-wider text-kyn-slate-400">
+            Fixed Value
+          </p>
+          <p className="font-brand text-3xl font-bold text-kyn-slate-900">
+            {price === 0 ? "Complimentary" : formatGBP(price)}
+          </p>
+        </div>
+        <Zap size={24} className="text-kyn-green-600" fill="currentColor" />
+      </div>
+
+      {ownership ? (
+        <Link
+          href="/library"
+          className="flex w-full items-center justify-center gap-3 rounded-xl bg-kyn-green-600 py-4 font-brand text-sm font-bold text-white hover:bg-kyn-green-700 transition-all active:scale-[0.98]"
+        >
+          <Landmark size={18} />
+          In Your Vault
+        </Link>
+      ) : (
+        <AddToCartButton product={product} />
+      )}
+
+      <div className="mt-6 flex items-center gap-3 text-[11px] font-ui text-text-secondary">
+        <ShieldCheck size={14} className="text-kyn-green-500" />
+        <span>Verified Asset. One-time acquisition.</span>
+      </div>
+    </div>
+
+    {Array.isArray(product.file_types) && product.file_types.length > 0 && (
+      <div className="space-y-4 pt-4">
+        <h3 className="font-brand text-xs font-bold uppercase tracking-widest text-kyn-slate-900">
+          Format Integrity
+        </h3>
+        <ul className="grid grid-cols-2 gap-3">
+          {(product.file_types as string[]).map((ft) => (
+            <li
+              key={ft}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-border font-ui text-[11px] text-kyn-slate-600"
+            >
+              <Download size={12} className="text-kyn-slate-400" />
+              {ft}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+);
+
+// --- Main Page ---
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
   const supabase = await createClient();
 
-  // Parallel fetch for Product and Auth state
-  // FIX: Applied 'as any' to ensure the build doesn't crash on type-checking
+  // Fetch product + auth in parallel
   const [
     { data: productData },
     { data: authData },
   ] = await Promise.all([
-    (supabase
-      .from("products")
-      .select("*")
-      .eq("slug", slug)
-      .single() as any),
+    (supabase.from("products").select("*").eq("slug", slug).single() as any),
     supabase.auth.getUser(),
   ]);
 
@@ -70,7 +154,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = productData as Product;
   const user = authData?.user;
 
-  // Ownership Check for the Vault
+  // Ownership check
   const { data: ownership } = user
     ? await (supabase
         .from("user_library")
@@ -84,14 +168,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const breadcrumbPaths = [
     { label: "The Hub", href: "/store" },
-    {
-      label: product.world || "Universal",
-      href: `/store?world=${product.world}`,
-    },
-    {
-      label: product.title,
-      href: `/products/${product.slug}`,
-    },
+    { label: product.world || "Universal", href: `/store?world=${product.world}` },
+    { label: product.title, href: `/products/${product.slug}` },
   ];
 
   return (
@@ -102,92 +180,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       <section className="max-w-screen-xl mx-auto px-gutter mt-8 lg:mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          
-          {/* Left Column: Visuals and Technical Content */}
+          {/* Left Column */}
           <div className="lg:col-span-7 space-y-8">
-            <div className="group relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-border bg-surface shadow-kynar-soft">
-              <Image
-                src={product.preview_image || "/assets/placeholder.jpg"}
-                alt={product.title}
-                fill
-                priority
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            </div>
-
-            <div className="hidden lg:block">
-              <h2 className="font-brand text-2xl font-bold text-kyn-slate-900 mb-6">
-                Technical Architecture
-              </h2>
-              <div
-                className="prose prose-slate max-w-none font-ui text-text-secondary leading-relaxed"
-                dangerouslySetInnerHTML={{
-                  __html: product.description || "",
-                }}
-              />
-            </div>
+            <ProductHero product={product} />
+            <TechnicalDescription product={product} />
           </div>
 
-          {/* Right Column: Transactional Sticky Sidebar */}
+          {/* Right Column */}
           <div className="lg:col-span-5">
-            <div className="sticky top-24 space-y-8">
-              <div>
-                <span className="font-ui text-[10px] font-bold uppercase tracking-[0.3em] text-kyn-slate-400">
-                  Sector: {product.world || "Universal"}
-                </span>
-                <h1 className="font-brand mt-4 text-4xl font-bold tracking-tight text-kyn-slate-900 md:text-5xl">
-                  {product.title}
-                </h1>
-              </div>
-
-              <div className="rounded-2xl border border-border bg-surface p-8 shadow-kynar-soft transition-all hover:shadow-kynar-deep">
-                <div className="flex items-center justify-between mb-8">
-                  <div>
-                    <p className="font-ui text-[10px] font-bold uppercase tracking-wider text-kyn-slate-400">
-                      Fixed Value
-                    </p>
-                    <p className="font-brand text-3xl font-bold text-kyn-slate-900">
-                      {price === 0 ? "Complimentary" : formatGBP(price)}
-                    </p>
-                  </div>
-                  <Zap size={24} className="text-kyn-green-600" fill="currentColor" />
-                </div>
-
-                {ownership ? (
-                  <Link
-                    href="/library"
-                    className="flex w-full items-center justify-center gap-3 rounded-xl bg-kyn-green-600 py-4 font-brand text-sm font-bold text-white hover:bg-kyn-green-700 transition-all active:scale-[0.98]"
-                  >
-                    <Landmark size={18} />
-                    In Your Vault
-                  </Link>
-                ) : (
-                  <AddToCartButton product={product} />
-                )}
-
-                <div className="mt-6 flex items-center gap-3 text-[11px] font-ui text-text-secondary">
-                  <ShieldCheck size={14} className="text-kyn-green-500" />
-                  <span>Verified Asset. One-time acquisition.</span>
-                </div>
-              </div>
-
-              {/* Format Tags (Notion, PDF, etc) */}
-              {Array.isArray(product.file_types) && product.file_types.length > 0 && (
-                <div className="space-y-4 pt-4">
-                  <h3 className="font-brand text-xs font-bold uppercase tracking-widest text-kyn-slate-900">
-                    Format Integrity
-                  </h3>
-                  <ul className="grid grid-cols-2 gap-3">
-                    {(product.file_types as string[]).map((ft) => (
-                      <li key={ft} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-border font-ui text-[11px] text-kyn-slate-600">
-                        <Download size={12} className="text-kyn-slate-400" />
-                        {ft}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+            <TransactionSidebar product={product} ownership={ownership} price={price} />
           </div>
         </div>
       </section>

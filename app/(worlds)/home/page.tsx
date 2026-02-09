@@ -1,6 +1,6 @@
 /**
- * KYNAR UNIVERSE: World Landing (Home) v3.0
- * Refactored to use shared WorldPage component
+ * KYNAR UNIVERSE: World Landing (Home) v3.1
+ * Refactor: Cleaned async fetch, typed products, and error handling.
  */
 
 import { Metadata } from "next";
@@ -14,6 +14,7 @@ export const metadata: Metadata = homeWorldConfig.metadata;
 export default async function HomeWorldPage() {
   const supabase = await createClient();
   
+  // --- Fetch published products for the "home" world ---
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -23,5 +24,12 @@ export default async function HomeWorldPage() {
   
   const products = (data as Product[]) ?? [];
   
-  return <WorldPage config={homeWorldConfig} products={products} error={error?.message} />;
+  // --- Render WorldPage with fetched products ---
+  return (
+    <WorldPage
+      config={homeWorldConfig}
+      products={products}
+      error={error?.message}
+    />
+  );
 }

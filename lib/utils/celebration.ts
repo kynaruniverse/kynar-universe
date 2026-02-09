@@ -5,22 +5,24 @@
  */
 
 interface ConfettiOptions {
-  particleCount?: number;
-  spread?: number;
-  origin?: { x?: number; y?: number };
-  colors?: string[];
-  ticks?: number;
+  particleCount ? : number;
+  spread ? : number;
+  origin ? : { x ? : number;y ? : number };
+  colors ? : string[];
+  ticks ? : number;
+  gravity ? : number;
+  scalar ? : number;
+  zIndex ? : number;
 }
 
 /**
- * Triggers a calibrated celebration.
- * Optimized for mobile-first performance via dynamic browser-only imports.
+ * Triggers a calibrated celebration with Kynar-branded colors.
+ * Browser-only; dynamically imports `canvas-confetti` for performance.
  */
 export const triggerCelebration = async (
-  options?: ConfettiOptions
-): Promise<void> => {
-  // Guard: Browser-only
-  if (typeof window === "undefined") return;
+  options: ConfettiOptions = {}
+): Promise < void > => {
+  if (typeof window === "undefined") return; // Guard for server
   
   const { default: confetti } = await import("canvas-confetti");
   
@@ -32,14 +34,14 @@ export const triggerCelebration = async (
   ];
   
   confetti({
-    particleCount: options?.particleCount ?? 40,
-    spread: options?.spread ?? 70,
-    origin: options?.origin ?? { y: 0.7 },
-    colors: options?.colors ?? KYNAR_PALETTE,
-    ticks: options?.ticks ?? 200,
-    zIndex: 100,
+    particleCount: options.particleCount ?? 40,
+    spread: options.spread ?? 70,
+    origin: options.origin ?? { y: 0.7 },
+    colors: options.colors ?? KYNAR_PALETTE,
+    ticks: options.ticks ?? 200,
+    gravity: options.gravity ?? 1.2,
+    scalar: options.scalar ?? 0.8,
+    zIndex: options.zIndex ?? 100,
     disableForReducedMotion: true,
-    gravity: 1.2,
-    scalar: 0.8,
   });
 };

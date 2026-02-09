@@ -2,19 +2,19 @@
 
 /**
  * KYNAR UNIVERSE: Add To Cart Button (v2.3.2)
- * Fix: Explicitly mapped to lib/supabase/types.ts per user file structure.
+ * Role: Handles adding products to the cart, vault detection, and UI states.
  */
 
 import { useState, useEffect, type MouseEvent } from "react";
 import { Plus, Check, Lock, Loader2 } from "lucide-react";
 import { useCartItems, useCartActions } from "@/lib/cart/store";
 import { useVault } from "@/lib/store/vault";
-import { Product } from "@/lib/supabase/types"; // Path verified
+import { Product } from "@/lib/supabase/types";
 import { cn, hapticFeedback } from "@/lib/utils";
 
 interface AddToCartButtonProps {
   product: Product;
-  className?: string;
+  className ? : string;
 }
 
 export const AddToCartButton = ({ product, className }: AddToCartButtonProps) => {
@@ -25,52 +25,70 @@ export const AddToCartButton = ({ product, className }: AddToCartButtonProps) =>
   const { addItem } = useCartActions();
   const { isInVault } = useVault();
   
+  // Ensure client-side logic only
   useEffect(() => {
     setMounted(true);
   }, []);
   
-  const isOwned = mounted ? isInVault(product.id) : false;
-  const inCart = mounted ? items.some((item) => item.id === product.id) : false;
+  // Derived states
+  const isOwned = mounted && isInVault(product.id);
+  const inCart = mounted && items.some((item) => item.id === product.id);
   
-  const handleAdd = async (e: MouseEvent<HTMLButtonElement>) => {
+  // Handle Add to Cart
+  const handleAdd = async (e: MouseEvent < HTMLButtonElement > ) => {
     e.preventDefault();
-    e.stopPropagation(); 
+    e.stopPropagation();
     
     setIsAdding(true);
     hapticFeedback("light");
     
+    // Simulate small delay for UX
     await new Promise((resolve) => setTimeout(resolve, 400));
     
     addItem(product);
-    
     setIsAdding(false);
     hapticFeedback("success");
   };
   
-  if (!mounted) return <div className={cn("h-12 w-full rounded-xl bg-surface animate-pulse", className)} />;
+  // Placeholder skeleton for SSR / hydration
+  if (!mounted) {
+    return (
+      <div
+        className={cn(
+          "h-12 w-full rounded-xl bg-surface animate-pulse",
+          className
+        )}
+      />
+    );
+  }
   
+  // Owned product
   if (isOwned) {
     return (
-      <button 
-        disabled 
-        className={cn("flex w-full items-center justify-center gap-2 rounded-xl bg-kyn-green-50/50 py-3 font-brand text-sm font-bold text-kyn-green-600 cursor-not-allowed", className)}
-      >
-        <Lock size={16} /> In Vault
-      </button>
+      <DisabledButton
+        icon={Lock}
+        label="In Vault"
+        bg="bg-kyn-green-50/50"
+        text="text-kyn-green-600"
+        className={className}
+      />
     );
   }
   
+  // Already in cart
   if (inCart) {
     return (
-      <button 
-        disabled 
-        className={cn("flex w-full items-center justify-center gap-2 rounded-xl bg-kyn-slate-100 py-3 font-brand text-sm font-bold text-kyn-slate-900 cursor-not-allowed", className)}
-      >
-        <Check size={16} /> Selected
-      </button>
+      <DisabledButton
+        icon={Check}
+        label="Selected"
+        bg="bg-kyn-slate-100"
+        text="text-kyn-slate-900"
+        className={className}
+      />
     );
   }
   
+  // Default: addable
   return (
     <button
       onClick={handleAdd}
@@ -85,3 +103,30 @@ export const AddToCartButton = ({ product, className }: AddToCartButtonProps) =>
     </button>
   );
 };
+
+/* ---------- Disabled Button Subcomponent ---------- */
+
+interface DisabledButtonProps {
+  icon: typeof Plus;
+  label: string;
+  bg: string;
+  text: string;
+  className ? : string;
+}
+
+function DisabledButton({ icon: Icon, label, bg, text, className }: DisabledButtonProps) {
+  return (
+    <button
+      disabled
+      className={cn(
+        "flex w-full items-center justify-center gap-2 rounded-xl py-3 font-brand text-sm font-bold cursor-not-allowed",
+        bg,
+        text,
+        className
+      )}
+    >
+      <Icon size={16} />
+      {label}
+    </button>
+  );
+}

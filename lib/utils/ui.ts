@@ -1,38 +1,35 @@
 /**
- * iOS-Safe Haptics
+ * KYNAR UNIVERSE: Haptics & Scroll Utilities (v1.1)
+ * Role: Lightweight, iOS-safe feedback and overlay helpers.
+ */
+
+/**
+ * Trigger iOS-safe haptic feedback using the Vibration API.
+ * Falls back silently if unsupported.
  */
 export const hapticFeedback = (
   intensity: "light" | "medium" | "success" = "light"
 ): void => {
-  if (
-    typeof window === "undefined" ||
-    typeof navigator === "undefined" ||
-    !navigator.vibrate
-  ) {
-    return;
-  }
-
+  if (typeof navigator?.vibrate !== "function") return;
+  
+  const patterns: Record < typeof intensity, number | number[] > = {
+    light: 10,
+    medium: 20,
+    success: [10, 30, 10],
+  };
+  
   try {
-    switch (intensity) {
-      case "light":
-        navigator.vibrate(10);
-        break;
-      case "medium":
-        navigator.vibrate(20);
-        break;
-      case "success":
-        navigator.vibrate([10, 30, 10]);
-        break;
-    }
+    navigator.vibrate(patterns[intensity]);
   } catch {
-    // Silent fail
+    // Fail silently on unexpected errors
   }
 };
 
 /**
- * Utility to lock scroll when Modals/Overlays are open
+ * Locks or unlocks page scroll, safe for SSR.
+ * Useful for modals, overlays, or drawer components.
  */
-export const lockScroll = (lock: boolean) => {
-  if (typeof document === 'undefined') return;
-  document.body.style.overflow = lock ? 'hidden' : 'unset';
+export const lockScroll = (lock: boolean): void => {
+  if (typeof document === "undefined") return;
+  document.body.style.overflow = lock ? "hidden" : "";
 };

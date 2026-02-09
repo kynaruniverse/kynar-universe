@@ -1,3 +1,4 @@
+/* KYNAR UNIVERSE: Server-Side Supabase Client (v1.4) */
 import { createClient as createSupabaseClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
@@ -5,7 +6,7 @@ let supabaseServer: SupabaseClient < Database > | null = null;
 
 /**
  * Singleton factory for a server-side Supabase client.
- * Reads SERVICE_ROLE_KEY only at runtime to prevent leaks in build-time environments.
+ * Uses SERVICE_ROLE_KEY only at runtime to avoid exposing secrets in build-time environments.
  */
 export function getSupabaseServer(): SupabaseClient < Database > {
   if (!supabaseServer) {
@@ -14,12 +15,12 @@ export function getSupabaseServer(): SupabaseClient < Database > {
     
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
       throw new Error(
-        'Missing Supabase environment variables SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY'
+        'Missing Supabase environment variables: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY'
       );
     }
     
     supabaseServer = createSupabaseClient < Database > (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-      auth: { persistSession: false },
+      auth: { persistSession: false }, // server-only, no session persistence
     });
   }
   
@@ -27,6 +28,6 @@ export function getSupabaseServer(): SupabaseClient < Database > {
 }
 
 /**
- * Optional: factory for server-side routes expecting a createClient API
+ * Optional alias for compatibility with components expecting createClient()
  */
 export const createClient = (): SupabaseClient < Database > => getSupabaseServer();

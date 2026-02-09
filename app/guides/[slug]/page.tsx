@@ -1,7 +1,7 @@
 /**
- * KYNAR UNIVERSE: Guide Vessel (v2.0)
+ * KYNAR UNIVERSE: Guide Vessel (v2.1)
  * Role: Premium intelligence briefing.
- * Fully aligned with canonical types.ts, Next.js 15 Async Params, and casting protocols.
+ * Refactor: Canonical types, Next.js 15 Async Params, and clean casting protocols
  */
 
 import { Metadata } from "next";
@@ -17,9 +17,10 @@ interface GuidePageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata(
-  { params }: GuidePageProps
-): Promise<Metadata> {
+/**
+ * Dynamic Metadata for SEO
+ */
+export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
   const { slug } = await params;
   const supabase = await createClient();
 
@@ -39,9 +40,7 @@ export async function generateMetadata(
 
   return {
     title: `${guide.title} | Kynar Intelligence`,
-    description:
-      guide.excerpt ??
-      "Official intelligence briefing from the Kynar Universe archive.",
+    description: guide.excerpt ?? "Official intelligence briefing from the Kynar Universe archive.",
   };
 }
 
@@ -57,7 +56,6 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   if (error || !data) notFound();
 
-  // Explicitly cast to the Guide type from our canonical types.ts
   const guide = data as Guide;
   const displayAuthor = guide.author || "Kynar Universe";
 
@@ -69,22 +67,23 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   return (
     <main className="min-h-screen bg-canvas pb-32 selection:bg-kyn-green-100/50">
-      {/* Handrail: Structural Context */}
+      {/* Navigation Handrail */}
       <nav className="sticky top-0 z-40 border-b border-kyn-slate-50 bg-canvas/80 backdrop-blur-xl px-gutter">
         <div className="mx-auto max-w-screen-md flex h-14 items-center justify-between">
           <Breadcrumbs paths={breadcrumbPaths} />
           <button
             type="button"
-            className="text-kyn-slate-400 hover:text-kyn-slate-900 transition-colors p-2 -mr-2"
             aria-label="Share briefing"
+            className="text-kyn-slate-400 hover:text-kyn-slate-900 transition-colors p-2 -mr-2"
           >
             <Share2 size={18} />
           </button>
         </div>
       </nav>
 
+      {/* Guide Article */}
       <article className="mx-auto max-w-screen-md px-gutter animate-in fade-in slide-in-from-bottom-4 duration-1000">
-        {/* Header: Narrative Establishment */}
+        {/* Header */}
         <header className="py-12 md:py-24">
           <div className="flex items-center gap-4 mb-10 text-[10px] font-bold uppercase tracking-[0.25em] text-kyn-slate-400">
             <span className="rounded-full border border-kyn-slate-100 bg-white px-3.5 py-2 text-kyn-slate-900 shadow-sm">
@@ -100,7 +99,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
             {guide.title}
           </h1>
 
-          {/* Authority Anchor */}
+          {/* Author / Authority */}
           <div className="mt-12 flex items-center gap-5 border-y border-kyn-slate-50 py-10">
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-kyn-slate-900 font-brand text-lg font-bold text-white shadow-xl">
               {displayAuthor[0]}
@@ -117,7 +116,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           </div>
         </header>
 
-        {/* Content: Markdown Render Layer */}
+        {/* Content */}
         <section
           className="prose prose-slate prose-base md:prose-lg max-w-none
             prose-headings:font-brand prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-kyn-slate-900
@@ -126,14 +125,10 @@ export default async function GuidePage({ params }: GuidePageProps) {
             prose-img:rounded-3xl prose-img:shadow-2xl prose-img:border prose-img:border-kyn-slate-100
             prose-blockquote:border-l-kyn-green-500 prose-blockquote:bg-kyn-slate-50/50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl"
         >
-          <div
-            dangerouslySetInnerHTML={{
-              __html: guide.content ?? "",
-            }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: guide.content ?? "" }} />
         </section>
 
-        {/* Exit: Return to Discovery */}
+        {/* Footer / Exit */}
         <footer className="mt-32 rounded-[2.5rem] bg-surface border border-kyn-slate-100 p-10 md:p-16 text-center">
           <blockquote className="font-brand text-xl md:text-2xl font-medium text-kyn-slate-900 mb-12 italic leading-relaxed">
             &quot;True professional mastery begins with the acquisition of quiet knowledge.&quot;
@@ -149,7 +144,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
         </footer>
       </article>
 
-      {/* Persistence: Visual Progress Feedback */}
+      {/* Reading Progress */}
       <ReadingProgressBar />
     </main>
   );

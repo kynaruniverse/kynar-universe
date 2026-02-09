@@ -1,6 +1,6 @@
 /**
- * KYNAR UNIVERSE: World Landing (Tools) v3.0
- * Refactored to use shared WorldPage component
+ * KYNAR UNIVERSE: World Landing (Tools) v3.1
+ * Refactor: Clean async fetch, typed products, and error handling.
  */
 
 import { Metadata } from "next";
@@ -14,6 +14,7 @@ export const metadata: Metadata = toolsWorldConfig.metadata;
 export default async function ToolsWorldPage() {
   const supabase = await createClient();
   
+  // --- Fetch published products for the "tools" world ---
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -23,5 +24,12 @@ export default async function ToolsWorldPage() {
   
   const products = (data as Product[]) ?? [];
   
-  return <WorldPage config={toolsWorldConfig} products={products} error={error?.message} />;
+  // --- Render shared WorldPage with fetched products ---
+  return (
+    <WorldPage
+      config={toolsWorldConfig}
+      products={products}
+      error={error?.message}
+    />
+  );
 }
