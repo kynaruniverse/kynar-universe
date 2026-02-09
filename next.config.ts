@@ -1,18 +1,16 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Enable experimental features
+import { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   experimental: {
-    serverActions: true,
+    serverActions: true, // should be inside object
   },
+};
   
   // Public environment variables exposed to the client
   env: {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  },
-  
-  // Optional: Future Next.js optimizations or redirects can go here
+    NEXT_PUBLIC_SUPABASE_URL; process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY; process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 };
 
-module.exports = nextConfig;
+export default nextConfig;
