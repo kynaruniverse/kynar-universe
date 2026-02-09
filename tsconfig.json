@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
-    /** -----------------------------
-     * Core JS/TS Settings
-     * --------------------------- */
     "target": "ES2022",
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "lib": ["dom", "dom.iterable", "esnext"],
     "esModuleInterop": true,
@@ -14,52 +11,24 @@
     "incremental": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    
-    /** -----------------------------
-     * Type Safety
-     * --------------------------- */
+    "baseUrl": ".",
     "strict": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "forceConsistentCasingInFileNames": true,
-    
-    /** -----------------------------
-     * Node / Next.js Integration
-     * --------------------------- */
     "types": ["node"],
     "plugins": [{ "name": "next" }],
-    
-    /** -----------------------------
-     * Path Aliases
-     * Auto-map all top-level folders
-     * --------------------------- */
     "paths": {
       "@/*": ["./*"],
-      
-      /** Components */
       "@/components/*": ["components/*"],
-      
-      /** Application / Pages / App directory */
       "@/app/*": ["app/*"],
-      
-      /** Lib / utilities */
       "@/lib/*": ["lib/*"],
-      
-      /** Public types */
       "@/types": ["lib/supabase/types.ts"]
     },
-    
-    /** -----------------------------
-     * Skip library checks (faster builds)
-     * --------------------------- */
     "skipLibCheck": true
   },
-  
-  /** -----------------------------
-   * Files / Directories to Include
-   * --------------------------- */
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
@@ -71,9 +40,5 @@
     "components/**/*.ts",
     "components/**/*.tsx"
   ],
-  
-  /** -----------------------------
-   * Exclude folders
-   * --------------------------- */
   "exclude": ["node_modules", ".next", "out", "dist"]
 }
