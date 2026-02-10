@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KYNAR UNIVERSE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body class="bg-black text-white overflow-hidden font-sans">
+
+    <main id="app-scaffold" class="h-screen w-full flex flex-col p-6 pb-24">
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl tracking-widest uppercase font-bold text-gray-400">Kynar</h1>
+            <div id="aura-ring" class="w-8 h-8 rounded-full border-2 border-cyan-400 shadow-[0_0_10px_#00ffff]"></div>
+        </header>
+
+        <section id="content-area" class="flex-grow overflow-y-auto">
+            <div class="mb-4 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
+                <p class="text-xs text-cyan-400 mb-2 font-mono uppercase tracking-tighter">System Broadcast</p>
+                <p class="text-sm italic text-gray-300">"Welcome to the Unified Identity. Your digital homestead awaits."</p>
+            </div>
+            </section>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 w-full h-20 bg-black/80 backdrop-blur-xl border-t border-white/10 flex justify-around items-center px-4 z-50">
+        <button class="nav-icon" onclick="teleport('square')">▤</button>
+        <button class="nav-icon" onclick="teleport('worlds')">✦</button>
+        
+        <div id="portal-trigger" class="relative -top-8 w-16 h-16 flex items-center justify-center">
+            <div class="orb-layer orb-glow"></div>
+            <div class="orb-layer orb-glass"></div>
+        </div>
+
+        <button class="nav-icon" onclick="teleport('vault')">⧉</button>
+        <button class="nav-icon" onclick="teleport('identity')">◎</button>
+    </nav>
+
+    <script src="theme.js"></script>
+</body>
+</html>
