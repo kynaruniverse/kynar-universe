@@ -4,7 +4,13 @@ const ASSETS = [
   '/index.html',
   '/styles.css',
   '/theme.js',
-  '/manifest.json'
+  '/identity.js',
+  '/marketplace.js',
+  '/artifact.js',
+  '/manifest.json',
+  '/vault.js',
+  '/social.js',
+  'https://cdn.tailwindcss.com'
 ];
 
 self.addEventListener('install', (event) => {
@@ -15,8 +21,6 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
+    caches.match(event.request).then((response) => response || fetch(event.request))
   );
 });

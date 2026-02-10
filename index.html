@@ -2,52 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>KYNAR UNIVERSE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
+    <style>
+        @font-face { font-family: 'Bantayog'; src: url('https://fonts.cdnfonts.com/s/85631/Bantayog-Regular.woff') format('woff'); }
+        body { background-color: #000; color: #fff; -webkit-tap-highlight-color: transparent; }
+        .font-bantayog { font-family: 'Bantayog', sans-serif; }
+        .kynar-glass { backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); }
+    </style>
 </head>
-<body class="bg-black text-white overflow-hidden font-sans">
+<body class="overflow-hidden select-none">
 
-    <main id="app-scaffold" class="h-screen w-full flex flex-col p-6 pb-24">
-        <header class="flex justify-between items-center mb-8">
-            <h1 class="text-2xl tracking-widest uppercase font-bold text-gray-400">Kynar</h1>
-            <div id="aura-ring" class="w-8 h-8 rounded-full border-2 border-cyan-400 shadow-[0_0_10px_#00ffff]"></div>
-        </header>
+    <main id="app-scaffold" class="h-screen w-full flex flex-col pb-20">
+        
+        <section id="main-stage" class="flex-grow overflow-y-auto overflow-x-hidden">
+            <div id="identity-container" class="w-full h-full">
+                </div>
+        </section>
 
-        <section id="content-area" class="flex-grow overflow-y-auto">
-            <div class="mb-4 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
-                <p class="text-xs text-cyan-400 mb-2 font-mono uppercase tracking-tighter">System Broadcast</p>
-                <p class="text-sm italic text-gray-300">"Welcome to the Unified Identity. Your digital homestead awaits."</p>
-            </div>
-            </section>
     </main>
 
-    <nav class="fixed bottom-0 left-0 w-full h-20 bg-black/80 backdrop-blur-xl border-t border-white/10 flex justify-around items-center px-4 z-50">
-        <button class="nav-icon" onclick="teleport('square')">▤</button>
-        <button class="nav-icon" onclick="teleport('worlds')">✦</button>
+    <nav class="fixed bottom-0 left-0 w-full h-20 bg-black/80 kynar-glass border-t border-white/10 flex justify-around items-center px-4 z-50">
+        <button class="w-12 h-12 flex items-center justify-center opacity-50 active:opacity-100 transition-opacity" onclick="Navigation.teleport('square')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </button>
         
-        <div id="portal-trigger" class="relative -top-8 w-16 h-16 flex items-center justify-center">
-            <div class="orb-layer orb-glow"></div>
-            <div class="orb-layer orb-glass"></div>
+        <button class="w-12 h-12 flex items-center justify-center opacity-50 active:opacity-100 transition-opacity" onclick="Navigation.teleport('worlds')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg>
+        </button>
+        
+        <div id="portal-trigger" class="relative -top-6 w-16 h-16 flex items-center justify-center group" onclick="Portal.activate()">
+            <div class="absolute inset-0 bg-white/20 blur-xl rounded-full animate-pulse group-active:scale-150 transition-transform"></div>
+            <div id="the-orb" class="w-14 h-14 bg-gradient-to-tr from-gray-400 to-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)] border border-white/40 z-10"></div>
         </div>
 
-        <button class="nav-icon" onclick="teleport('vault')">⧉</button>
-        <button class="nav-icon" onclick="teleport('identity')">◎</button>
+        <button class="w-12 h-12 flex items-center justify-center opacity-50 active:opacity-100 transition-opacity" onclick="Navigation.teleport('vault')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 12V8H4v4m16 0v8H4v-8m16 0h2M4 12H2M12 4v4m-4 8h8"/></svg>
+        </button>
+        
+        <button class="w-12 h-12 flex items-center justify-center opacity-100" onclick="Navigation.teleport('identity')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>
+        </button>
     </nav>
-    <script type="module" src="supabase-config.js"></script>
-    <script src="marketplace.js?v=1.2"></script>
-    <script src="artifact.js?v=1.2"></script>
-    <script src="identity.js?v=1.2"></script>
-    <script src="theme.js?v=1.2"></script>
+
+    <script src="theme.js"></script>
+    <script src="identity.js"></script>
+    <script src="app.js"></script>
 
     <script>
-        console.log("Kynar Logic Initialized");
+        // PWA Initialization
         if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW failed', err));
+            });
         }
     </script>
-
 </body>
 </html>

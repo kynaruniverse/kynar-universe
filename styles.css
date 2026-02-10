@@ -76,3 +76,70 @@ body {
     backdrop-filter: var(--kynar-glass);
     transition: transform 0.3s ease;
 }
+
+/* Holographic Scanline Overlay */
+.scanlines {
+    position: relative;
+    overflow: hidden;
+}
+.scanlines::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+}
+
+/* Steady Breathing Animation */
+@keyframes breathe {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+    animation: breathe 4s ease-in-out infinite;
+}
+
+/* Scrollbar Hide for Clean UI */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.perspective-1000 { perspective: 1000px; }
+.preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }
+
+/* Zen Mode Overlay */
+body.zen-active #main-stage {
+    filter: sepia(0.2) contrast(1.1);
+}
+
+/* Hide navigation items in Zen Mode except Vault and Identity */
+body.zen-active button[onclick*="worlds"],
+body.zen-active button[onclick*="square"] {
+    opacity: 0.1 !important;
+    pointer-events: none;
+}
+
+/* Rotating Ring Animation for the Orb */
+#the-orb {
+    animation: rotate-aura 10s linear infinite;
+}
+
+@keyframes rotate-aura {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+    animation: spin 12s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
