@@ -40,9 +40,10 @@
     <script src="marketplace.js"></script>
     <script src="theme.js"></script>
     <script>
-      if ('serviceWorker' in navigator) {
+        console.log("Kynar Logic Initialized");
+        if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js');
-      }
+        }
     </script>
 
 </body>
