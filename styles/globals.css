@@ -8,6 +8,7 @@
 html, body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   height: 100%;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* ===== THEME VARIABLES ===== */
@@ -17,6 +18,7 @@ html[data-theme="light"] {
   --muted: #64748b;
   --card: #f8fafc;
   --border: #e5e7eb;
+  --accent: #2563eb;
 }
 
 html[data-theme="dark"] {
@@ -25,6 +27,7 @@ html[data-theme="dark"] {
   --muted: #94a3b8;
   --card: #111827;
   --border: #1f2933;
+  --accent: #3b82f6;
 }
 
 /* ===== GLOBAL LAYOUT ===== */
@@ -145,8 +148,10 @@ html[data-theme="dark"] {
   background: var(--card);
   border: 1px solid var(--border);
 }
-.world-card:hover {
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .world-card:hover {
+    transform: translateY(-2px);
+  }
 }
 
 button {
@@ -160,6 +165,16 @@ button {
   margin-top: 16px;
 }
 
+button.ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+button.ghost:hover {
+  background: var(--bg);
+}
+
 .composer-overlay {
   position: fixed;
   inset: 0;
@@ -171,7 +186,8 @@ button {
 }
 
 .composer {
-  background: white;
+  background: var(--card);
+  color: var(--text);
   width: 92%;
   max-width: 420px;
   padding: 1rem;
@@ -192,4 +208,45 @@ button {
 .composer-actions {
   display: flex;
   justify-content: space-between;
+}
+
+.product-card {
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+
+/* ===== POSTS ===== */
+.post {
+  padding: 16px;
+  margin-top: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.post strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.hashtags {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hashtag:hover {
+  text-decoration: underline;
+}
+
+.hashtags span {
+  font-size: 14px;
+  color: var(--muted);
 }

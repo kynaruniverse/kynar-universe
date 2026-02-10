@@ -1,11 +1,6 @@
-import { withTRPC } from '@trpc/next'
-import { NextConfig } from 'next'
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
-  compiler: {
-    styledComponents: true
-  },
 }
 
-export default nextConfig
+module.exports = nextConfig

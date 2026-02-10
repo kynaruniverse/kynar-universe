@@ -6,10 +6,10 @@ export default function ProductPage() {
   const router = useRouter()
   const { id } = router.query
   const [product, setProduct] = useState(null)
-
+  
   useEffect(() => {
     if (!id) return
-
+    
     async function loadProduct() {
       const { data } = await supabase
         .from("products")
@@ -21,27 +21,32 @@ export default function ProductPage() {
         `)
         .eq("id", id)
         .single()
-
+      
       setProduct(data)
     }
-
+    
     loadProduct()
   }, [id])
-
+  
   if (!product) return <p>Loading product…</p>
   
   async function addToVault() {
-  const user = (await supabase.auth.getUser()).data.user
-  if (!user) return alert("Please sign in")
-
-  await supabase.from("vault_items").insert({
-    user_id: user.id,
-    product_id: product.id
-  })
-
-  router.push("/library")
-}
-
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return alert("Please sign in")
+    
+    const { error } = await supabase.from("vault_items").insert({
+      user_id: user.id,
+      product_id: product.id
+    })
+    
+    if (error) {
+      alert(error.message)
+      return
+    }
+    
+    router.push("/library")
+  }
+  
   return (
     <div>
       <h1>{product.name}</h1>
@@ -57,12 +62,11 @@ export default function ProductPage() {
           : `Price: £${product.price_cents / 100}`}
       </p>
 
-      <button
-        onClick={addToVault}
-        disabled={product.price_cents > 0}
-      >
-        Add to Vault
-      </button>
+      {product.price_cents === 0 ? (
+        <button onClick={addToVault}>Add to Vault</button>
+      ) : (
+        <button disabled>Coming soon</button>
+      )}
     </div>
   )
 }

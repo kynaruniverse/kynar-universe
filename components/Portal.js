@@ -1,45 +1,108 @@
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
-import PostComposer from "../components/PostComposer"
+import PostComposer from "./PostComposer"
+
 export default function Portal({ open, onClose }) {
   const router = useRouter()
   const [showComposer, setShowComposer] = useState(false)
 
   if (!open) return null
 
+  // Close on ESC
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === "Escape") onClose()
+    }
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
+  }, [onClose])
+
   function getActions() {
     switch (router.pathname) {
       case "/":
-        return ["Search Worlds", "Teleport"]
+        return [
+          {
+            label: "Trending Worlds",
+            action: () => {
+              router.push("/trending")
+              onClose()
+            }
+          },
+          {
+            label: "Explore Worlds",
+            action: () => {
+              router.push("/worlds")
+              onClose()
+            }
+          }
+        ]
+
       case "/square":
-        return ["Create Post"]
+        return [
+          {
+            label: "Broadcast",
+            action: () => setShowComposer(true)
+          }
+        ]
+
       case "/library":
-        return ["Recent Downloads"]
+        return [
+          {
+            label: "Your Vault",
+            action: () => {
+              router.push("/library")
+              onClose()
+            }
+          }
+        ]
+
       case "/account":
-        return ["Edit Profile", "Settings"]
+        return [
+          {
+            label: "Edit Profile",
+            action: () => {
+              router.push("/account")
+              onClose()
+            }
+          }
+        ]
+
       default:
         return []
     }
   }
-  
-  {showComposer && (
-    <PostComposer
-      onClose={() => setShowComposer(false)}
-    />
-  )}
 
   return (
-    <div className="portal-overlay" onClick={onClose}>
-      <div className="portal-sheet" onClick={e => e.stopPropagation()}>
-        {getActions().map(action => (
-          <button onClick={() => setShowComposer(true)}>
-            Portal
+    <>
+      <div className="portal-overlay" onClick={onClose}>
+        <div
+          className="portal-sheet"
+          onClick={e => e.stopPropagation()}
+        >
+          {getActions().map((item, index) => (
+            <button
+              key={index}
+              className="portal-action"
+              onClick={item.action}
+            >
+              {item.label}
+            </button>
+          ))}
+
+          <button
+            className="portal-action"
+            onClick={onClose}
+          >
+            Cancel
           </button>
-          
-          
-        ))}
-        
-        
+        </div>
       </div>
-    </div>
+
+      {showComposer && (
+        <PostComposer
+          onClose={() => setShowComposer(false)}
+        />
+      )}
+    </>
   )
 }

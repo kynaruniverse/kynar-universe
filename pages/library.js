@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react"
 import { supabase } from "../lib/supabase"
+import { useUser } from "@supabase/auth-helpers-react"
 
 export default function Library() {
+  const { user } = useUser()
   const [items, setItems] = useState([])
   
   useEffect(() => {
-    async function loadVault() {
+    if (!user) return
+    
+    async function loadLibrary() {
       const { data } = await supabase
         .from("vault_items")
         .select(`
@@ -16,18 +20,23 @@ export default function Library() {
             description
           )
         `)
+        .eq("user_id", user.id)
       
       setItems(data || [])
     }
     
-    loadVault()
-  }, [])
+    loadLibrary()
+  }, [user])
   
   return (
     <div>
-      <h1>Your Vault</h1>
+      <h1>Your Library</h1>
 
-      {items.length === 0 && <p>Your vault is empty.</p>}
+      {items.length === 0 && (
+        <p className="text-muted">
+          You don’t own any assets yet.
+        </p>
+      )}
 
       {items.map(item => (
         <div key={item.id} className="product-card">

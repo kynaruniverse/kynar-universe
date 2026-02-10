@@ -1,7 +1,27 @@
 import { useEffect, useState } from "react"
 import { supabase } from "../lib/supabase"
+import Link from "next/link"
 
-export default function Square() {
+function renderPostContent(text) {
+  const parts = text.split(/(#[a-zA-Z0-9_-]+)/g)
+
+  return parts.map((part, index) => {
+    if (part.startsWith("#")) {
+      const worldName = part.substring(1)
+      return (
+        <Link
+          key={index}
+          href={`/worlds/${worldName.toLowerCase()}`}
+        >
+          <a className="hashtag">{part}</a>
+        </Link>
+      )
+    }
+    return <span key={index}>{part}</span>
+  })
+}
+
+export default function SocialSquare() {
   const [posts, setPosts] = useState([])
   
   useEffect(() => {
@@ -16,37 +36,42 @@ export default function Square() {
             username,
             avatar_url
           ),
-          worlds (
-            name
+          world_posts (
+            worlds (
+              name
+            )
           )
         `)
         .order("created_at", { ascending: false })
         .limit(50)
       
-      if (!error) setPosts(data || [])
+      if (error) {
+        console.error("Error loading posts:", error)
+        return
+      }
+      
+      setPosts(data || [])
     }
-    
+  
     loadFeed()
   }, [])
   
   return (
-    <div className="page">
+    <div>
       <h1>Social Square</h1>
 
-      {posts.length === 0 && (
-        <p className="muted">The universe is quiet… for now.</p>
-      )}
-
       {posts.map(post => (
-        <div key={post.id} className="card post">
-          <div className="post-header">
-            <strong>@{post.profiles?.username}</strong>
-            <span className="muted">
-              {" "}· {post.worlds?.name}
-            </span>
-          </div>
+        <div key={post.id} className="post">
+          <strong>@{post.profiles?.username}</strong>
+          <p>{renderPostContent(post.content)}</p>
 
-          <p>{post.content}</p>
+          <div className="hashtags">
+            {post.world_posts?.map(wp => (
+              <span key={wp.worlds.name}>
+                #{wp.worlds.name}
+              </span>
+            ))}
+          </div>
         </div>
       ))}
     </div>
