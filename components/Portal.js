@@ -6,16 +6,26 @@ export default function Portal({ open, onClose }) {
   const router = useRouter()
   const [showComposer, setShowComposer] = useState(false)
 
-  if (!open) return null
-
-  // Close on ESC
+  // Close on ESC (client-safe)
   useEffect(() => {
+    if (!open) return
+
     function handleKey(e) {
       if (e.key === "Escape") onClose()
     }
-    window.addEventListener("keydown", handleKey)
-    return () => window.removeEventListener("keydown", handleKey)
-  }, [onClose])
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("keydown", handleKey)
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("keydown", handleKey)
+      }
+    }
+  }, [open, onClose])
+
+  if (!open) return null
 
   function getActions() {
     switch (router.pathname) {
