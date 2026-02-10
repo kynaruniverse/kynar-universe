@@ -1,11 +1,13 @@
 const teleport = (destination) => {
-    // Haptic Feedback API
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(10);
+    if (window.navigator.vibrate) window.navigator.vibrate(10);
+    
+    if (destination === 'worlds') {
+        renderMarketplace();
+    } else if (destination === 'square') {
+        location.reload(); // Temporary return to Home
     }
-    console.log(`Teleporting to: ${destination}`);
-    // Logic for Phase 2 World-shifting will expand here
 };
+
 
 // Initialize Identity Aura
 document.addEventListener('DOMContentLoaded', () => {

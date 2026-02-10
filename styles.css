@@ -38,3 +38,41 @@
     width: 44px; /* Thumb-friendly target */
     height: 44px;
 }
+
+/* World Themes - Visual DNA */
+.world-sage {
+    --aura-color: #71797E;
+    --accent-color: #D4AF37;
+    --world-bg: #1a1c1d;
+}
+
+.world-electric {
+    --aura-color: #00FFFF;
+    --accent-color: #2F4F4F;
+    --world-bg: #000d0d;
+}
+
+.world-terra {
+    --aura-color: #E2725B;
+    --accent-color: #000080;
+    --world-bg: #1a0f0a;
+}
+
+/* UI Transitions */
+body {
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: var(--world-bg, #000);
+}
+
+.nav-icon.active {
+    color: var(--aura-color);
+    text-shadow: 0 0 8px var(--aura-color);
+}
+
+/* Marketplace Card Styles */
+.artifact-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: var(--kynar-border);
+    backdrop-filter: var(--kynar-glass);
+    transition: transform 0.3s ease;
+}
