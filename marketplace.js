@@ -38,12 +38,12 @@ const renderMarketplace = () => {
             <button onclick="shiftWorld('next')" class="p-2">→</button>
         </div>
         <div class="grid grid-cols-1 gap-4">
-            <div class="artifact-card p-6 rounded-2xl">
-                <div class="h-32 bg-white/5 rounded-xl mb-4 flex items-center justify-center text-gray-500 italic">
-                    Artifact Visual Coming Soon
+            <div class="artifact-card p-6 rounded-2xl cursor-pointer active:opacity-80" onclick="openArtifact('zen-01')">
+                <div class="h-32 bg-white/5 rounded-xl mb-4 flex items-center justify-center text-gray-500 italic overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400" class="object-cover w-full h-full opacity-40">
                 </div>
-                <h3 class="font-bold">Sample Artifact</h3>
-                <p class="text-xs text-gray-400">Loading ${world.name} data...</p>
+                <h3 class="font-bold tracking-tight text-lg">Zen Architect v1.0</h3>
+                <p class="text-xs text-cyan-400 font-mono">+15 Efficiency | Sage</p>
             </div>
         </div>
     `;
