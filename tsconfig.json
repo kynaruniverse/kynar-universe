@@ -1,44 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "esModuleInterop": true,
     "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "jsx": "preserve",
     "incremental": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": ".",
-    "strict": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": ["node"],
-    "plugins": [{ "name": "next" }],
-    "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["components/*"],
-      "@/app/*": ["app/*"],
-      "@/lib/*": ["lib/*"],
-      "@/types": ["lib/supabase/types.ts"]
-    },
-    "skipLibCheck": true
+    "types": ["node"]
   },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "app/**/*.ts",
-    "app/**/*.tsx",
-    "lib/**/*.ts",
-    "lib/**/*.tsx",
-    "components/**/*.ts",
-    "components/**/*.tsx"
-  ],
-  "exclude": ["node_modules", ".next", "out", "dist"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

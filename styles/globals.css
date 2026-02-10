@@ -1,0 +1,195 @@
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  height: 100%;
+}
+
+/* ===== THEME VARIABLES ===== */
+html[data-theme="light"] {
+  --bg: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --card: #f8fafc;
+  --border: #e5e7eb;
+}
+
+html[data-theme="dark"] {
+  --bg: #0b0f19;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --card: #111827;
+  --border: #1f2933;
+}
+
+/* ===== GLOBAL LAYOUT ===== */
+.app-root {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.top-bar {
+  height: 56px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.page {
+  padding: 16px;
+  padding-bottom: 88px;
+}
+
+/* ===== MOBILE FIRST ===== */
+@media (min-width: 768px) {
+  .page {
+    padding: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  z-index: 50;
+}
+
+.bottom-nav a,
+.portal-btn {
+  font-size: 22px;
+  color: var(--muted);
+  background: none;
+  border: none;
+}
+
+.bottom-nav a.active {
+  color: var(--text);
+}
+
+.portal-btn {
+  font-size: 28px;
+  color: var(--text);
+  transform: translateY(-10px);
+}
+
+/* ===== PORTAL ===== */
+.portal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 100;
+}
+
+.portal-sheet {
+  width: 100%;
+  background: var(--card);
+  border-radius: 16px 16px 0 0;
+  padding: 16px;
+}
+
+.portal-action {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* ===== WORLDS ===== */
+.world-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.world-card {
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+.world-card:hover {
+  transform: translateY(-2px);
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+.composer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.composer {
+  background: white;
+  width: 92%;
+  max-width: 420px;
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.composer textarea {
+  width: 100%;
+  min-height: 120px;
+  margin: 0.5rem 0;
+}
+
+.composer select {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.composer-actions {
+  display: flex;
+  justify-content: space-between;
+}
