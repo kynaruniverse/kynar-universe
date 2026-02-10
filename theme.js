@@ -1,26 +1,20 @@
-const teleport = (destination) => {
-    // Haptic Feedback
+window.teleport = (destination) => {
     if (window.navigator && window.navigator.vibrate) {
         window.navigator.vibrate(10);
     }
     
-    console.log("Navigating to:", destination);
+    console.log("Teleporting to:", destination);
 
     if (destination === 'worlds') {
-        if (typeof renderMarketplace === "function") {
-            renderMarketplace();
-        } else {
-            console.error("Marketplace engine not loaded.");
+        if (typeof window.renderMarketplace === "function") {
+            window.renderMarketplace();
         }
     } else if (destination === 'square') {
-        // Return to Home without a full reload for better PWA feel
-        location.href = "/"; 
+        window.location.reload(); 
     }
 };
 
-// Initialize Identity Aura
 document.addEventListener('DOMContentLoaded', () => {
     const aura = localStorage.getItem('kynar_aura') || '#00ffff';
     document.documentElement.style.setProperty('--aura-color', aura);
-    console.log("Aura Sync Complete");
 });
