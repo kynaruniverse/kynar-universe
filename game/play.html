@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KYNAR // FIELD OPS</title>
+  <link rel="stylesheet" href="../assets/css/core.css">
+  <style>
+    body {
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .game-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-lg);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .game-header__back {
+      font-family: var(--font-terminal);
+      font-size: var(--text-xs);
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color var(--transition-fast);
+    }
+
+    .game-header__back:hover { color: var(--silver); }
+
+    .game-hud {
+      display: flex;
+      gap: var(--space-lg);
+      align-items: center;
+    }
+
+    .game-hud__item {
+      font-family: var(--font-terminal);
+      font-size: var(--text-xs);
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    .game-hud__item span { color: var(--silver); }
+
+    /* Canvas container */
+    .game-container {
+      position: relative;
+      margin-top: var(--nav-height);
+    }
+
+    canvas {
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    /* Mobile controls */
+    .mobile-controls {
+      position: fixed;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: repeat(3, 52px);
+      grid-template-rows: repeat(2, 52px);
+      gap: 6px;
+      z-index: 100;
+    }
+
+    @media (min-width: 768px) {
+      .mobile-controls { display: none; }
+    }
+
+    .mobile-btn {
+      background: rgba(192,21,42,0.2);
+      border: 1px solid var(--accent-dim);
+      color: var(--silver);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      transition: background var(--transition-fast);
+      border-radius: 2px;
+    }
+
+    .mobile-btn:active,
+    .mobile-btn.pressed {
+      background: var(--accent-dim);
+    }
+
+    .mobile-btn--up    { grid-column: 2; grid-row: 1; }
+    .mobile-btn--left  { grid-column: 1; grid-row: 2; }
+    .mobile-btn--down  { grid-column: 2; grid-row: 2; }
+    .mobile-btn--right { grid-column: 3; grid-row: 2; }
+
+    /* Overlay screens */
+    .game-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6,6,10,0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-lg);
+      z-index: 200;
+      font-family: var(--font-terminal);
+    }
+
+    .game-overlay.hidden { display: none; }
+
+    .game-overlay__title {
+      font-family: var(--font-game);
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: var(--text-bright);
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    .game-overlay__title span { color: var(--accent); }
+
+    .game-overlay__msg {
+      font-size: var(--text-sm);
+      color: var(--text-dim);
+      text-align: center;
+      letter-spacing: 0.1em;
+      max-width: 400px;
+      line-height: 1.8;
+    }
+
+    .game-overlay__btn {
+      font-family: var(--font-game);
+      font-size: var(--text-xs);
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      padding: var(--space-md) var(--space-xl);
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      transition: background var(--transition-fast);
+    }
+
+    .game-overlay__btn:hover { background: var(--wrong); }
+  </style>
+</head>
+<body>
+
+  <!-- Header HUD -->
+  <header class="game-header">
+    <a href="index.html" class="game-header__back">← Abort Mission</a>
+    <div class="game-hud">
+      <div class="game-hud__item">HP: <span id="hudHP">100</span></div>
+      <div class="game-hud__item">OBJ: <span id="hudObj">REACH EXTRACT</span></div>
+      <div class="game-hud__item hide-mobile">ZONE: <span>VAEL OUTER</span></div>
+    </div>
+  </header>
+
+  <!-- Game canvas -->
+  <div class="game-container">
+    <canvas id="gameCanvas"></canvas>
+  </div>
+
+  <!-- Mobile controls -->
+  <div class="mobile-controls" id="mobileControls" aria-label="Game controls">
+    <button class="mobile-btn mobile-btn--up"    id="btnUp"    aria-label="Move up">▲</button>
+    <button class="mobile-btn mobile-btn--left"  id="btnLeft"  aria-label="Move left">◀</button>
+    <button class="mobile-btn mobile-btn--down"  id="btnDown"  aria-label="Move down">▼</button>
+    <button class="mobile-btn mobile-btn--right" id="btnRight" aria-label="Move right">▶</button>
+  </div>
+
+  <!-- Win overlay -->
+  <div class="game-overlay hidden" id="winOverlay">
+    <div class="game-overlay__title">EXTRACTION <span>SUCCESSFUL</span></div>
+    <p class="game-overlay__msg">You reached the extraction point. Mission complete. For now.</p>
+    <button class="game-overlay__btn" onclick="restartGame()">REDEPLOY</button>
+  </div>
+
+  <!-- Lose overlay -->
+  <div class="game-overlay hidden" id="loseOverlay">
+    <div class="game-overlay__title">OPERATIVE <span style="color:var(--wrong)">DOWN</span></div>
+    <p class="game-overlay__msg">You were detected and eliminated. The mission failed. Try again.</p>
+    <button class="game-overlay__btn" onclick="restartGame()">RETRY</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Responsive canvas size
+    function setCanvasSize() {
+      const maxW = Math.min(window.innerWidth, 800);
+      const maxH = window.innerHeight - 52; // nav height
+      const size = Math.min(maxW, maxH);
+      canvas.width  = size;
+      canvas.height = size;
+    }
+    setCanvasSize();
+
+    const TILE  = 32;
+    const COLS  = Math.floor(canvas.width  / TILE);
+    const ROWS  = Math.floor(canvas.height / TILE);
+
+    // Colours
+    const C = {
+      bg:       '#06060a',
+      wall:     '#1e1e2e',
+      wallLine: '#2e2e4e',
+      floor:    '#0e0e16',
+      player:   '#c8d0d8',
+      enemy:    '#c0152a',
+      extract:  '#00ff88',
+      hpBar:    '#c0152a',
+      hpBg:     '#1e1e2e',
+    };
+
+    // Map: 0=floor, 1=wall, 2=extract
+    const MAP_TEMPLATE = [
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+      [1,0,1,1,0,0,1,0,1,1,1,0,1,1,0,1,1,1,0,1],
+      [1,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,1],
+      [1,0,1,0,1,1,1,1,1,0,1,1,0,1,1,1,0,1,0,1],
+      [1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1],
+      [1,1,1,0,1,0,1,0,1,1,1,1,1,0,0,1,0,1,1,1],
+      [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1,1,0,0,0,1],
+      [1,0,1,1,1,0,1,1,1,0,1,0,1,0,0,0,0,1,0,1],
+      [1,0,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0,1],
+      [1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1,0,1],
+      [1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1],
+      [1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1],
+    ];
+
+    // Pad/trim map to fit
+    function buildMap() {
+      const map = [];
+      for (let r = 0; r < ROWS; r++) {
+        const row = [];
+        for (let c = 0; c < COLS; c++) {
+          const tr = MAP_TEMPLATE[r % MAP_TEMPLATE.length];
+          row.push(tr ? (tr[c % tr.length] ?? 1) : 1);
+        }
+        map.push(row);
+      }
+      // Place extract at bottom-right accessible cell
+      map[ROWS-2][COLS-2] = 2;
+      return map;
+    }
+
+    let map, player, enemies, hp, gameActive;
+
+    function initGame() {
+      map = buildMap();
+      player = { x: 1, y: 1, px: TILE, py: TILE };
+      hp = 100;
+      gameActive = true;
+      document.getElementById('hudHP').textContent = hp;
+      document.getElementById('hudObj').textContent = 'REACH EXTRACT';
+      document.getElementById('winOverlay').classList.add('hidden');
+      document.getElementById('loseOverlay').classList.add('hidden');
+
+      // Enemies — patrol along walls
+      enemies = [
+        { x: 5,  y: 5,  dir: 1, axis: 'x', speed: 0.03, t: 0 },
+        { x: 12, y: 3,  dir: 1, axis: 'y', speed: 0.025, t: 0 },
+        { x: 8,  y: 9,  dir:-1, axis: 'x', speed: 0.035, t: 0 },
+        { x: 3,  y: 11, dir: 1, axis: 'y', speed: 0.02,  t: 0 },
+      ].filter(e => e.x < COLS && e.y < ROWS);
+    }
+
+    // Input
+    const keys = {};
+    document.addEventListener('keydown', e => { keys[e.key] = true; });
+    document.addEventListener('keyup',   e => { keys[e.key] = false; });
+
+    const mobileKeys = { up: false, down: false, left: false, right: false };
+
+    ['btnUp','btnDown','btnLeft','btnRight'].forEach(id => {
+      const btn = document.getElementById(id);
+      const dir = id.replace('btn','').toLowerCase();
+      ['touchstart','mousedown'].forEach(evt => {
+        btn.addEventListener(evt, e => { e.preventDefault(); mobileKeys[dir] = true; btn.classList.add('pressed'); });
+      });
+      ['touchend','mouseup','mouseleave'].forEach(evt => {
+        btn.addEventListener(evt, e => { mobileKeys[dir] = false; btn.classList.remove('pressed'); });
+      });
+    });
+
+    function isWall(tx, ty) {
+      if (tx < 0 || ty < 0 || tx >= COLS || ty >= ROWS) return true;
+      return map[ty][tx] === 1;
+    }
+
+    let moveTimer = 0;
+    const MOVE_DELAY = 120; // ms between moves
+
+    function update(dt) {
+      if (!gameActive) return;
+
+      // Player movement
+      moveTimer += dt;
+      if (moveTimer >= MOVE_DELAY) {
+        let nx = player.x, ny = player.y;
+        if ((keys['ArrowUp']    || keys['w'] || keys['W'] || mobileKeys.up)    && !isWall(player.x, player.y-1)) ny--;
+        if ((keys['ArrowDown']  || keys['s'] || keys['S'] || mobileKeys.down)  && !isWall(player.x, player.y+1)) ny++;
+        if ((keys['ArrowLeft']  || keys['a'] || keys['A'] || mobileKeys.left)  && !isWall(player.x-1, player.y)) nx--;
+        if ((keys['ArrowRight'] || keys['d'] || keys['D'] || mobileKeys.right) && !isWall(player.x+1, player.y)) nx++;
+        if (nx !== player.x || ny !== player.y) {
+          player.x = nx;
+          player.y = ny;
+          moveTimer = 0;
+        }
+      }
+
+      // Check win
+      if (map[player.y] && map[player.y][player.x] === 2) {
+        gameActive = false;
+        document.getElementById('winOverlay').classList.remove('hidden');
+        return;
+      }
+
+      // Enemy movement
+      enemies.forEach(e => {
+        e.t += e.speed;
+        const bounce = Math.sin(e.t * Math.PI * 2);
+        if (e.axis === 'x') e.drawX = (e.x + bounce * 1.5) * TILE;
+        else                 e.drawY = (e.y + bounce * 1.5) * TILE;
+
+        // Collision with player
+        const ex = Math.round((e.drawX ?? e.x * TILE) / TILE);
+        const ey = Math.round((e.drawY ?? e.y * TILE) / TILE);
+        if (Math.abs(ex - player.x) <= 1 && Math.abs(ey - player.y) <= 1) {
+          hp = Math.max(0, hp - 0.3);
+          document.getElementById('hudHP').textContent = Math.ceil(hp);
+          if (hp <= 0) {
+            gameActive = false;
+            document.getElementById('loseOverlay').classList.remove('hidden');
+          }
+        }
+      });
+    }
+
+    function drawTile(tx, ty, colour) {
+      ctx.fillStyle = colour;
+      ctx.fillRect(tx * TILE, ty * TILE, TILE, TILE);
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = C.bg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw map
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const cell = map[r] ? map[r][c] : 1;
+          if (cell === 1) {
+            ctx.fillStyle = C.wall;
+            ctx.fillRect(c*TILE, r*TILE, TILE, TILE);
+            ctx.strokeStyle = C.wallLine;
+            ctx.lineWidth = 0.5;
+            ctx.strokeRect(c*TILE+0.5, r*TILE+0.5, TILE-1, TILE-1);
+          } else if (cell === 2) {
+            // Extract point — pulsing green
+            ctx.fillStyle = C.floor;
+            ctx.fillRect(c*TILE, r*TILE, TILE, TILE);
+            const pulse = 0.4 + 0.3 * Math.sin(Date.now() / 300);
+            ctx.fillStyle = `rgba(0,255,136,${pulse})`;
+            ctx.fillRect(c*TILE+6, r*TILE+6, TILE-12, TILE-12);
+            // Label
+            ctx.fillStyle = C.extract;
+            ctx.font = '7px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('EXIT', c*TILE + TILE/2, r*TILE + TILE/2 + 3);
+          } else {
+            ctx.fillStyle = C.floor;
+            ctx.fillRect(c*TILE, r*TILE, TILE, TILE);
+          }
+        }
+      }
+
+      // Enemies
+      enemies.forEach(e => {
+        const ex = e.drawX ?? e.x * TILE;
+        const ey = e.drawY ?? e.y * TILE;
+        ctx.fillStyle = C.enemy;
+        ctx.beginPath();
+        ctx.arc(ex + TILE/2, ey + TILE/2, TILE/2 - 6, 0, Math.PI*2);
+        ctx.fill();
+        // Detection radius
+        ctx.strokeStyle = 'rgba(192,21,42,0.15)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(ex + TILE/2, ey + TILE/2, TILE * 1.5, 0, Math.PI*2);
+        ctx.stroke();
+      });
+
+      // Player
+      ctx.fillStyle = C.player;
+      ctx.fillRect(player.x*TILE+6, player.y*TILE+6, TILE-12, TILE-12);
+      // Player dot
+      ctx.fillStyle = C.bg;
+      ctx.fillRect(player.x*TILE+12, player.y*TILE+12, TILE-24, TILE-24);
+
+      // HP bar (top-left of canvas)
+      const barW = 100;
+      ctx.fillStyle = C.hpBg;
+      ctx.fillRect(8, 8, barW, 6);
+      ctx.fillStyle = hp > 50 ? C.player : C.hpBar;
+      ctx.fillRect(8, 8, barW * (hp/100), 6);
+    }
+
+    let lastTime = 0;
+    function loop(ts) {
+      const dt = ts - lastTime;
+      lastTime = ts;
+      update(dt);
+      render();
+      requestAnimationFrame(loop);
+    }
+
+    function restartGame() {
+      initGame();
+    }
+
+    initGame();
+    requestAnimationFrame(loop);
+
+    // Resize
+    window.addEventListener('resize', () => {
+      setCanvasSize();
+    });
+  </script>
+</body>
+</html>
